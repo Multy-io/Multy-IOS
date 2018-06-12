@@ -155,7 +155,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
         })
         
-        
         return true
     }
     
