@@ -12,7 +12,6 @@ class SendAmountEthPresenter: NSObject {
     var transactionDTO = TransactionDTO() {
         didSet {
             blockedAmount = transactionDTO.choosenWallet!.blockedAmount
-            availableSumInCrypto = transactionDTO.choosenWallet!.availableAmount
             exchangeCourse = transactionDTO.choosenWallet!.exchangeCourse
             
             blockchain = BlockchainType.create(wallet: transactionDTO.choosenWallet!).blockchain
@@ -30,17 +29,21 @@ class SendAmountEthPresenter: NSObject {
                 feeAmountInFiat = feeAmount * exchangeCourse
             }
             
+            availableSumInCrypto = transactionDTO.choosenWallet!.availableAmount
+            
             maxLengthForSum = transactionDTO.choosenWallet!.blockchainType.blockchain.maxLengthForSum
             maxPrecision = transactionDTO.choosenWallet!.blockchainType.blockchain.maxPrecision
         }
     }
     
+    var availableWalletAmount = BigInt.zero()
+    
     var blockchain: Blockchain = BLOCKCHAIN_BITCOIN
     
     var account = DataManager.shared.realmManager.account
-    var blockedAmount = BigInt("0")
+    var blockedAmount = BigInt.zero()
 
-    var availableSumInCrypto = BigInt("0")
+    var availableSumInCrypto = BigInt.zero()
     
     var availableSumInFiat: BigInt { // It is sum in crypto multiplyed by blockchain.multiplyerToMinimalUnits
         return availableSumInCrypto * exchangeCourse
@@ -465,6 +468,7 @@ extension CreateTransactionDelegate {
                 maxAllowedToSpend = availableSumInFiat
             }
         }
+        sendAmountVC?.spendableSumAndCurrencyLbl.text = maxAllowedToSpend.cryptoValueString(for: blockchain)
     }
     
     func makeBTCMaxSumWithFeeAndDonate() {
