@@ -126,7 +126,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         // handler for URI Schemes (depreciated in iOS 9.2+, but still used by some apps)
+        
+        var dataString = url.absoluteString
+        
+        if dataString.hasPrefix("multy://open?link_click_id=") {
+            return true
+        }
+        
         Branch.getInstance().application(app, open: url, options: options)
+        
+        if dataString.hasPrefix("multy://") {
+            dataString.removeSubrange(dataString.range(of: "multy://")!)
+        }
         
         DataManager.shared.getAccount(completion: { (acc, err) in
             if acc == nil {
@@ -134,7 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             var addressStr = ""
             var amountFromQr: String?
-            let array = url.absoluteString.components(separatedBy: CharacterSet(charactersIn: ":?="))
+            let array = dataString.components(separatedBy: CharacterSet(charactersIn: ":?="))
             switch array.count {
             case 1:                              // shit in qr
                 let messageFromQr = array[0]

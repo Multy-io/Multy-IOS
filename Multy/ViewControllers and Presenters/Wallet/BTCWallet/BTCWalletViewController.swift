@@ -13,7 +13,7 @@ private typealias CollectionViewDelegateFlowLayout = BTCWalletViewController
 private typealias CancelDelegate = BTCWalletViewController
 private typealias LocalizeDelegate = BTCWalletViewController
 
-class BTCWalletViewController: UIViewController, AnalyticsProtocol {
+class BTCWalletViewController: UIViewController, AnalyticsProtocol, ContactsProtocol {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
     @IBOutlet var backView: UIView!
@@ -89,52 +89,10 @@ class BTCWalletViewController: UIViewController, AnalyticsProtocol {
         
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(screenWalletWithChain)\(presenter.wallet!.chain)")
         
-        requestAccess { (responce) in
-            if responce{
-                print("Contacts Access Granted")
-                let me = "A87D45C6-C707-4387-A1A9-69A9C89BA0B6"
-                
-                getContactFromID(Identifires: [me], completionHandler: { (result) in
-                    switch result{
-                    case .Success(response: let contacts):
-                        print(contacts.first)
-                        self.updateMyContact(contacts.first!)
-                        break
-                    case .Error(error: let error):
-                        print(error)
-                        break
-                    }
-                })
-
-            } else {
-                print("Contacts Access Denied")
-            }
-        }
+        updateMyContact()
     }
     
-    func updateMyContact(_ contact: CNContact) {
-        let mContact = contact.mutableCopy() as! CNMutableContact
-        
-        let multyProfile = CNSocialProfile(urlString: "multy://", username: "MMM", userIdentifier: "multy-", service: "1PteA8L32kBjwqNAtBao4h6ZKJjJuDVuPG 1PteA8L32kBjwqNAtBao4h6ZKJjJuDVuPG")
-        
-        let myProfile = CNLabeledValue(label: "MULTY", value: multyProfile)
-
-        mContact.socialProfiles = [myProfile]
-        
-        updateContact(Contact: mContact) { (result) in
-            switch result{
-            case .Success(response: let bool):
-                if bool{
-                    print("Contact Sucessfully Updated")
-                }
-                break
-            case .Error(error: let error):
-                print(error.localizedDescription)
-                break
-            }
-        }
-
-    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
