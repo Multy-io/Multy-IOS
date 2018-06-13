@@ -209,7 +209,7 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         if presenter.sumInCrypto != Int64(0) && presenter.transactionDTO.transaction!.donationDTO != nil && !amountTF.text!.isEmpty && convertBTCStringToSatoshi(sum: amountTF.text!) != 0 {
             self.performSegue(withIdentifier: "sendFinishVC", sender: sender)
         } else {
-            self.presentWarning(message: localize(string: Constants.trySendZeroString) + " 0.0 \(self.presenter.cryptoName).\n" + localize(string: Constants.enterCorrectValueString))
+            self.presentWarning(message: localize(string: Constants.trySendZeroString) + "0.0 \(self.presenter.cryptoName).\n" + localize(string: Constants.enterCorrectValueString))
         }
     }
     

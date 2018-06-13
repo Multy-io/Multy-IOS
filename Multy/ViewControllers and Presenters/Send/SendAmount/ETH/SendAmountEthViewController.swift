@@ -209,7 +209,7 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
         if presenter.isEnteredDataAcceptable() {
             self.performSegue(withIdentifier: "sendFinishVC", sender: sender)
         } else {
-            self.presentWarning(message: localize(string: Constants.trySendZeroString) + " 0.0 \(self.presenter.cryptoName).\n" + localize(string: Constants.enterCorrectValueString))
+            self.presentWarning(message: localize(string: Constants.trySendZeroString) + "0.0 \(self.presenter.cryptoName).\n" + localize(string: Constants.enterCorrectValueString))
         }
     }
     

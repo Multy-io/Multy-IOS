@@ -27,7 +27,7 @@ target 'Multy' do
   pod 'SwiftyStoreKit'
   pod 'lottie-ios'
   pod 'UPCarouselFlowLayout'
-
+  pod 'SwiftyContacts'
 
   target 'MultyTests' do
       inherit! :search_paths

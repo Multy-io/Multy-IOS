@@ -49,7 +49,7 @@
 "NOT ENOUGH AMOUNT" = "Not enough amount on choosen wallet!\nYou can`t spend sum more than you have on the wallet!\nYour payment sum equals";
 "PLEASE CHOOSE GAS PRICE" = "Please choose Gas Price.";
 "YOU CAN USE PREDEFINED VALUE" = "You can use predefined one or set a custom value.";
-"TRY TO SEND ZERO" = "You try to send 0.0.";
+"TRY TO SEND ZERO" = "You try to send ";
 "ENTER CORRECT VALUE" = "Please enter the correct value";
 "NO FUNDS" = "You have no available funds";
 "YOU CANT SPEND MORE THEN FEE AND DONATION" = "You can`t spend sum more than you have!\nDon`t forget about Fee and donation.\n\nYour fee is ";
