@@ -19,6 +19,7 @@
 		444066D82059342E00342046 /* Bool+Extantion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444066D72059342E00342046 /* Bool+Extantion.swift */; };
 		4448DCC720C8333100CE80CB /* LocalLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448DCC620C8333100CE80CB /* LocalLanguage.swift */; };
 		444B3B652045723C008129B8 /* BigInt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444B3B642045723C008129B8 /* BigInt+Extension.swift */; };
+		4453507B20D14E21004F8DAE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4453507D20D14E21004F8DAE /* Localizable.strings */; };
 		445B127020BC1BA800FD0D33 /* SeedPhrase.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127220BC1BA800FD0D33 /* SeedPhrase.storyboard */; };
 		445B127320BC1BB100FD0D33 /* Receive.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127520BC1BB100FD0D33 /* Receive.storyboard */; };
 		445B127620BC1BD000FD0D33 /* Wallet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127820BC1BD000FD0D33 /* Wallet.storyboard */; };
@@ -335,6 +336,9 @@
 		444066D72059342E00342046 /* Bool+Extantion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Extantion.swift"; sourceTree = "<group>"; };
 		4448DCC620C8333100CE80CB /* LocalLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLanguage.swift; sourceTree = "<group>"; };
 		444B3B642045723C008129B8 /* BigInt+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BigInt+Extension.swift"; sourceTree = "<group>"; };
+		4453507C20D14E21004F8DAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4453508020D14E43004F8DAE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4453508120D14E47004F8DAE /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		445B127120BC1BA800FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SeedPhrase.storyboard; sourceTree = "<group>"; };
 		445B127420BC1BB100FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Receive.storyboard; sourceTree = "<group>"; };
 		445B127720BC1BD000FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Wallet.storyboard; sourceTree = "<group>"; };
@@ -774,6 +778,7 @@
 				4477265220BECD2A006BF4A7 /* Sends.strings */,
 				4474C5B220BFE60600EA8B01 /* Contacts.strings */,
 				4474C5B920BFE76800EA8B01 /* Activty.strings */,
+				4453507D20D14E21004F8DAE /* Localizable.strings */,
 			);
 			path = Strings;
 			sourceTree = "<group>";
@@ -2023,6 +2028,7 @@
 				445B12E020BD78D000FD0D33 /* CurrencyChooser.strings in Resources */,
 				45EBB6A8200D312700F81322 /* GoogleService-Info.plist in Resources */,
 				45AC16292048214C00E75BD6 /* CurrencyTableViewCell.xib in Resources */,
+				4453507B20D14E21004F8DAE /* Localizable.strings in Resources */,
 				4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */,
 				85DE62E920AC1CE100423D89 /* ActiveRequestCollectionViewCell.xib in Resources */,
 				44BF10E020C971C4009E3E22 /* magicSend.json in Resources */,
@@ -2535,6 +2541,16 @@
 				443056A320C1628000E5415A /* uk */,
 			);
 			name = TransactionPendingCell.xib;
+			sourceTree = "<group>";
+		};
+		4453507D20D14E21004F8DAE /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4453507C20D14E21004F8DAE /* en */,
+				4453508020D14E43004F8DAE /* ru */,
+				4453508120D14E47004F8DAE /* uk */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		445B127220BC1BA800FD0D33 /* SeedPhrase.storyboard */ = {

@@ -54,7 +54,7 @@ extension ContactsProtocol {
             
             let mContact = contact.mutableCopy() as! CNMutableContact
             
-            let multyProfile = CNSocialProfile(urlString: url, username: "Multy", userIdentifier: "multy", service: "1PteA8L32kBjwqNAtBao4h6ZKJjJuDVuPG")
+            let multyProfile = CNSocialProfile(urlString: url, username: "Multy", userIdentifier: "multy", service: "Bitcoin Address")
             let myProfile = CNLabeledValue(label: "Multy", value: multyProfile)
             
 //            let multyProfile2 = CNSocialProfile(urlString: "multy://bitcoin:myUu54neP48SHXNgk5Bs3FSyMcdEcLBkz7", username: "Multy", userIdentifier: "multy", service: "myUu54neP48SHXNgk5Bs3FSyMcdEcLBkz7")
