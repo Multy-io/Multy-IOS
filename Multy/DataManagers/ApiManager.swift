@@ -159,7 +159,7 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func getTransactionInfo(transactionString: String, completion: @escaping (_ answer: NSDictionary?,_ error: Error?) -> ()) {
+    func getTransactionInfo(transactionString: String, completion: @escaping (_ answer: HistoryRLM?,_ error: Error?) -> ()) {
         
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -171,7 +171,8 @@ class ApiManager: NSObject, RequestRetrier {
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
-                    completion((response.result.value as! NSDictionary), nil)
+                    let tx = HistoryRLM.initWithInfo(historyDict: response.result.value as! NSDictionary)
+                    completion((tx), nil)
                 }
             case .failure(_):
                 completion(nil, response.result.error)

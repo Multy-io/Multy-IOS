@@ -3,6 +3,8 @@
 //See LICENSE for details
 
 import UIKit
+import SwiftyContacts
+import Contacts
 
 private typealias TableViewDelegate = BTCWalletViewController
 private typealias ScrollViewDelegate = BTCWalletViewController
@@ -11,7 +13,7 @@ private typealias CollectionViewDelegateFlowLayout = BTCWalletViewController
 private typealias CancelDelegate = BTCWalletViewController
 private typealias LocalizeDelegate = BTCWalletViewController
 
-class BTCWalletViewController: UIViewController, AnalyticsProtocol {
+class BTCWalletViewController: UIViewController, AnalyticsProtocol, ContactsProtocol {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
     @IBOutlet var backView: UIView!
@@ -85,10 +87,12 @@ class BTCWalletViewController: UIViewController, AnalyticsProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
         
-        
-        
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(screenWalletWithChain)\(presenter.wallet!.chain)")
+        
+        updateMyContact()
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

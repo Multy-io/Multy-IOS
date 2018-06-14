@@ -5,7 +5,7 @@
 import UIKit
 import Branch
 
-class AddressViewController: UIViewController, AnalyticsProtocol {
+class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol {
 
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var qrImg: UIImageView!
@@ -112,20 +112,21 @@ class AddressViewController: UIViewController, AnalyticsProtocol {
     
     @IBAction func shareAction(_ sender: Any) {
         let branch = Branch.getInstance()
-        branch?.getShortURL(withParams: self.branchDict() as! [String : Any], andChannel: "Create option \"Multy\"", andFeature: "sharing", andCallback: { (url, err) in
+        branch?.getShortURL(withParams: branchDict(), andChannel: "Create option \"Multy\"", andFeature: "sharing", andCallback: { (url, err) in
             self.presentActivtyVC(objectToShare: self.makeSharedString(urlString: url!))
         })
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(wallet!.chain)", eventName: "\(shareWithChainTap)\(wallet!.chain)")
     }
     
-    func branchDict() -> NSDictionary {
+    func branchDict() -> [String : Any] {
+        return branchDict(wallet!.blockchainType.blockchain, makeStringWithAddress(), "0.0")
         //check for blockchain
         //if bitcoin - address: "\(chainName):\(presenter.walletAddress)"
-        let dict: NSDictionary = ["$og_title" : "Multy",
-                                  "address"   : "\(qrBlockchainString):\(makeStringWithAddress())",
-                                  "amount"    : 0.0]
-
-        return dict
+//        let dict: NSDictionary = ["$og_title" : "Multy",
+//                                  "address"   : "\(qrBlockchainString):\(makeStringWithAddress())",
+//                                  "amount"    : 0.0]
+//
+//        return dict
     }
   
     @IBAction func cancelAction(_ sender: Any) {
