@@ -4,6 +4,9 @@
 
 import UIKit
 import RealmSwift
+import FirebaseMessaging
+
+private typealias FCMDelegate = DataManager
 
 class DataManager: NSObject {
     static let shared = DataManager()
@@ -83,5 +86,49 @@ class DataManager: NSObject {
         let networkString = String(networkID).sha3(.sha256)
         
         return ("\(currencyString)" + "\(walletString) +\(networkString)").sha3(.sha256)
+    }
+    
+    func isFCMSubscribed() -> Bool {
+        if let isAccepted = UserDefaults.standard.value(forKey: "isFCMAccepted") as? Bool {
+            return isAccepted
+        } else {
+            return false
+        }
+    }
+}
+
+extension FCMDelegate {
+    func subscribeToFirebaseMessaging() {
+        getAccount { (acc, err) in
+            Messaging.messaging().subscribe(toTopic: "TransactionUpdate-\(acc?.userID ?? "userId is empty")")
+            UserDefaults.standard.set(true, forKey: "isFCMAccepted")
+        }
+    }
+    
+    func subscribeToFirebaseMessaging(completion: @escaping (_ isOperationSuccessful: Bool) -> ()) {
+        getAccount { (acc, err) in
+            Messaging.messaging().subscribe(toTopic: "TransactionUpdate-\(acc?.userID ?? "userId is empty")") { (error) in
+                let boolValue = error != nil
+                UserDefaults.standard.set(boolValue, forKey: "isFCMAccepted")
+                completion(boolValue)
+            }
+        }
+    }
+    
+    func unsubscribeToFirebaseMessaging() {
+        getAccount { (acc, err) in
+            Messaging.messaging().unsubscribe(fromTopic: "TransactionUpdate-\(acc?.userID ?? "userId is empty")")
+            UserDefaults.standard.set(false, forKey: "isFCMAccepted")
+        }
+    }
+    
+    func unsubscribeToFirebaseMessaging(completion: @escaping (_ isOperationSuccessful: Bool) -> ()) {
+        getAccount { (acc, err) in
+            Messaging.messaging().unsubscribe(fromTopic: "TransactionUpdate-\(acc?.userID ?? "userId is empty")") { (error) in
+                let boolValue = error != nil
+                UserDefaults.standard.set(boolValue, forKey: "isFCMAccepted")
+                completion(boolValue)
+            }
+        }
     }
 }

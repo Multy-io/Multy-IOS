@@ -89,7 +89,7 @@ class BTCWalletViewController: UIViewController, AnalyticsProtocol, ContactsProt
         
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(screenWalletWithChain)\(presenter.wallet!.chain)")
         
-        updateMyContact()
+//        updateMyContact()
     }
     
     

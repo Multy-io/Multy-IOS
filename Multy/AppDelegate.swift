@@ -108,8 +108,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         if UserDefaults.standard.value(forKey: "isTermsAccept") != nil {
-            self.registerPush()
+            registerPush()
         }
+        
         let filePathOpt = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
         if let filePath = filePathOpt, let options = FirebaseOptions(contentsOfFile: filePath) {
             FirebaseApp.configure(options: options)
@@ -345,9 +346,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
 //        let token = Messaging.messaging().fcmToken
         print("FCM token: \(fcmToken)")
         ApiManager.shared.pushToken = fcmToken
-        DataManager.shared.getAccount { (acc, err) in
-            Messaging.messaging().subscribe(toTopic: "TransactionUpdate-\(acc?.userID ?? "userId is empty")")  //userID
-        }
+        
+        DataManager.shared.isFCMSubscribed() ? DataManager.shared.subscribeToFirebaseMessaging() : DataManager.shared.unsubscribeToFirebaseMessaging()
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
@@ -360,7 +360,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         
         // Print full message.
         print(userInfo)
-        
+        openTx(userInfo)
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
@@ -397,11 +397,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         }
         self.application!.registerForRemoteNotifications()
         if Messaging.messaging().fcmToken != nil {
-            ApiManager.shared.pushToken = Messaging.messaging().fcmToken as! String
+            ApiManager.shared.pushToken = Messaging.messaging().fcmToken!
         }
     }
 }
-
 
 extension AppDelegate {
     func openTx(_ info: [AnyHashable: Any]) {
