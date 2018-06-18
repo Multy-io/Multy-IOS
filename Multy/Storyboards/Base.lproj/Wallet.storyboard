@@ -1762,6 +1762,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <outlet property="fiatAmountLbl" destination="8fo-Yl-r7U" id="5Uq-G7-k1E"/>
                         <outlet property="gradientView" destination="MCz-Dk-xEQ" id="dGs-E1-bGJ"/>
                         <outlet property="nameCryptoLbl" destination="kLR-f3-GIE" id="V4o-Nf-xWU"/>
+                        <outlet property="navigationHeaderView" destination="sgo-Sb-5VU" id="oDl-Pc-CqN"/>
                         <outlet property="pendingAmountCryptoLbl" destination="rcB-WF-jBp" id="9Jt-iI-8Bb"/>
                         <outlet property="pendingAmountFiatLbl" destination="R3j-Ky-F9n" id="9t5-Yc-56f"/>
                         <outlet property="pendingNameCryptoLbl" destination="wwm-V8-jwD" id="P6y-xj-CHn"/>

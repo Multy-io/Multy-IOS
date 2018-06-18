@@ -11,6 +11,7 @@ class WalletViewController: UIViewController {
 
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var pendingStack: UIStackView!
+    @IBOutlet weak var navigationHeaderView: UIView!
     
     // HEADER section
     @IBOutlet weak var amountCryptoLbl: UILabel!
@@ -54,6 +55,8 @@ class WalletViewController: UIViewController {
     
     var isAssets = true
     
+    var tablesHeaderStartY = CGFloat()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.walletVC = self
@@ -69,25 +72,32 @@ class WalletViewController: UIViewController {
     }
     
     func setupUI() {
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
+        if assetsTable.gestureRecognizers?.count == 5 {
+            assetsTable.addGestureRecognizer(gestureRecognizer)
+            tablesHeaderView.addGestureRecognizer(gestureRecognizer)
+//            self.recog = gestureRecognizer
+        }
+        
+        
         checkConstraints()
-        makeGradient()
+        makeGradientForBottom()
         setupTransactionAssetsBtns()
         
         //------------  WARNING  ------------//
-        setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
+//        setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
         // ------------  WARNING  ------------
        
-        hideBackup()
+//        hideBackup()
         setupAddressBtns()
-        
         
         showHidePendingScetion(show: false)
         
-        
-        
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
-        assetsTable.contentInset = UIEdgeInsets(top: topOffsetForTable(), left: 0, bottom: bottomGradientHeightConstraint.constant, right: 0)
-        transactionsTable.contentInset = UIEdgeInsets(top: topOffsetForTable(), left: 0, bottom: bottomGradientHeightConstraint.constant, right: 0)
+        assetsTable.contentInset = makeTableInset()
+        transactionsTable.contentInset = makeTableInset()
+        
+        tablesHeaderStartY = tablesHeaderView.frame.origin.y
     }
     
     func checkConstraints() {
@@ -98,7 +108,7 @@ class WalletViewController: UIViewController {
         }
     }
     
-    func makeGradient() {
+    func makeGradientForBottom() {
         let colorTop = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.8).cgColor
         let colorBottom = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.0).cgColor
         let gradientLayer = CAGradientLayer()
@@ -149,6 +159,7 @@ class WalletViewController: UIViewController {
         //if blockchain == BLOCKCHAIN_ETHEREUM {
         shareAddressBtn.frame.origin.x = screenWidth/2 - shareAddressBtn.frame.size.width/2
         showAddressesBtn.isHidden = true
+        self.view.layoutIfNeeded()
         // else all good
     }
     
@@ -168,14 +179,23 @@ class WalletViewController: UIViewController {
         pendingSeparatorWidthConstraint.constant = show ? 150 : 0
         pendingSectionHeightConstraint.constant = show ? 70 : 0
         pendingStack.isHidden = !show
-        UIView.animate(withDuration: 1.0, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.view.layoutIfNeeded()
         }) { (isEnd) in
             self.pendingSectionView.isHidden = !show
         }
     }
     
-    
+    func makeTableInset() -> UIEdgeInsets {
+        var topInset = CGFloat()
+        if assetsTransactionsBtnsView.isHidden && backupView.isHidden {
+            topInset = 0
+        } else if assetsTransactionsBtnsView.isHidden == false || backupView.isHidden == false {
+            topInset = 16
+        }
+        
+        return UIEdgeInsets(top: topInset, left: 0, bottom: bottomGradientHeightConstraint.constant, right: 0)
+    }
     
     
     
@@ -214,6 +234,52 @@ extension TableViewDelegate: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
+    }
+    
+    @IBAction func dragTable(_ gestureRecognizer: UIPanGestureRecognizer) {
+        let translation = gestureRecognizer.translation(in: self.view)
+        let tablesHeaderY = tablesHeaderView.frame.origin.y
+        // check is table on top
+        if tablesHeaderY + translation.y < navigationHeaderView.frame.maxY {
+            if tablesHeaderY + translation.y > 80 {
+                
+            } else {
+                //setTableToTop()
+//                if self.presenter.numberOfTransactions() > 5 {
+//                    self.tableView.removeGestureRecognizer(recog!)
+            }
+        }
+        
+        
+        if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
+            if translation.y > 0 && tablesHeaderY > tablesHeaderStartY {
+                
+                    // show spiner
+                    var transY = translation.y > 200 ? translation.y : translation.y/2
+                    transY = transY > 270 ? transY : transY/2
+                    self.changeTablesHeight(transY: transY)
+                    self.changeSectionsY(transY: transY)
+                    gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+                
+                    
+                
+            }
+        }
+    }
+    
+    func changeTablesHeight(transY: CGFloat) {
+        assetsTable.frame.size.height = assetsTable.frame.size.height - transY
+        assetsTable.center = CGPoint(x: self.view.center.x, y:assetsTable.center.y + transY)
+        
+        transactionsTable.frame.size.height = transactionsTable.frame.size.height - transY
+        transactionsTable.center = CGPoint(x: self.view.center.x, y:transactionsTable.center.y + transY)
+    }
+    
+    func changeSectionsY(transY: CGFloat) {
+        tablesHeaderView.frame.origin.y = tablesHeaderView.frame.origin.y + transY
+        backupView.frame.origin.y = tablesHeaderView.frame.maxY
+        assetsTransactionsBtnsView.frame.origin.y = backupView.frame.maxY
+        
     }
 }
 
