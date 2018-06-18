@@ -50,11 +50,11 @@
 	<key>CFBundleVersion</key>
 	<string>47</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>ETH_Bet_test</string>
+	<string>ETH_Beta_Test</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>3023939</string>
+	<string>79e510b</string>
 	<key>GIT_TAG_NAME</key>
-	<string>iTunesConnect-BUILD-dirty</string>
+	<string>RELEASE_1.0.0-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
