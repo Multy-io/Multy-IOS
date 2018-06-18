@@ -76,5 +76,4 @@ class EthWalletHeaderCollectionViewCell: UICollectionViewCell {
         self.mainVC?.present(adressVC, animated: true, completion: nil)
 //        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(wallet!.chain)", eventName: "\(addressWithChainTap)\(wallet!.chain)")
     }
-    
 }
