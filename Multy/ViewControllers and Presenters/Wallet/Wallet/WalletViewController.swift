@@ -91,7 +91,7 @@ class WalletViewController: UIViewController {
 //        hideBackup()
         setupAddressBtns()
         
-        showHidePendingScetion(show: false)
+        showHidePendingSection(show: false)
         
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
         assetsTable.contentInset = makeTableInset()
@@ -172,7 +172,7 @@ class WalletViewController: UIViewController {
         return 0
     }
     
-    func showHidePendingScetion(show: Bool) {
+    func showHidePendingSection(show: Bool) {
         if show {
             self.pendingSectionView.isHidden = !show
         }
@@ -217,11 +217,11 @@ class WalletViewController: UIViewController {
     }
     
     @IBAction func sendAction(_ sender: Any) {
-        showHidePendingScetion(show: false)
+        showHidePendingSection(show: false)
     }
     
     @IBAction func receiveAction(_ sender: Any) {
-        showHidePendingScetion(show: true)
+        showHidePendingSection(show: true)
     }
     
     
@@ -290,6 +290,6 @@ extension TableViewDataSource: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showHidePendingScetion(show: true)
+        showHidePendingSection(show: true)
     }
 }
