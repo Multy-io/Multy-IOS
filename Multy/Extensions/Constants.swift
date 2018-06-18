@@ -287,4 +287,3 @@ let nonLocalURL = "http://88.198.47.112:7778/"
 // Bluetooth
 let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"
 let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
-

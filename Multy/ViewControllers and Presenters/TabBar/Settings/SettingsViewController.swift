@@ -36,12 +36,15 @@ class SettingsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.makeVersion()
-        self.presenter.settingsVC = self
+        
+        makeVersion()
+        presenter.settingsVC = self
         setupForNotImplementedViews()
         
         sendAnalyticsEvent(screenName: screenSettings, eventName: screenSettings)
         presenter.tabBarFrame = tabBarController?.tabBar.frame
+        
+        pushSwitch.isOn = DataManager.shared.isFCMSubscribed()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,15 +70,17 @@ class SettingsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     }
     
     @IBAction func pushAction(_ sender: Any) {
-        if self.pushSwitch.isOn {
+        if pushSwitch.isOn {
+            DataManager.shared.subscribeToFirebaseMessaging()
             sendAnalyticsEvent(screenName: screenSettings, eventName: pushesEnabled)
         } else {
+            DataManager.shared.unsubscribeToFirebaseMessaging()
             sendAnalyticsEvent(screenName: screenSettings, eventName: pushesDisabled)
         }
     }
     
     func setupForNotImplementedViews() {
-        self.pushView.alpha = opacityForNotImplementedView
+//        self.pushView.alpha = opacityForNotImplementedView
 //        self.defFiatView.alpha = opacityForNotImplementedView
         self.aboutView.alpha = opacityForNotImplementedView
         self.feedbackView.alpha = opacityForNotImplementedView
@@ -183,6 +188,7 @@ class SettingsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
                 UserDefaults.standard.removeObject(forKey: "isFirstLaunch")
                 UserDefaults.standard.removeObject(forKey: "pin")
                 UserDefaults.standard.removeObject(forKey: "isTermsAccept")
+                UserDefaults.standard.removeObject(forKey: "isFCMAccepted")
                 assetVC.isFirstLaunch = true
                 assetVC.presenter.account = nil
                 exit(0)

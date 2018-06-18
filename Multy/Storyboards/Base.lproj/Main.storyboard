@@ -1887,9 +1887,9 @@ correctly</string>
                                                         <color key="textColor" red="0.21176470588235294" green="0.21176470588235294" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <switch opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2Cs-So-yJx">
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2Cs-So-yJx">
                                                         <rect key="frame" x="310.5" y="16.5" width="51" height="31"/>
-                                                        <color key="onTintColor" red="0.01176470588" green="0.49803921569999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="onTintColor" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                                         <connections>
                                                             <action selector="pushAction:" destination="iYV-U9-fj0" eventType="touchUpInside" id="FRN-Il-mdG"/>
                                                         </connections>
@@ -1902,6 +1902,7 @@ correctly</string>
                                                         </constraints>
                                                     </imageView>
                                                 </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="apD-ps-Wne" firstAttribute="centerY" secondItem="x4M-9u-Tco" secondAttribute="centerY" constant="2" id="Gs7-3A-GHc"/>
                                                     <constraint firstItem="E6X-rf-6eP" firstAttribute="centerY" secondItem="x4M-9u-Tco" secondAttribute="centerY" id="Jno-Hw-4Z5"/>

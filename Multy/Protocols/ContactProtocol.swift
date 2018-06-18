@@ -14,16 +14,16 @@ extension ContactsProtocol {
     func updateMyContact() {
         requestAccess { (responce) in
             if responce {
-//                fetchContacts(completionHandler: { (result) in
-//                    switch result{
-//                    case .Success(response: let contacts):
-//                        // Do your thing here with [CNContacts] array
-//                        break
-//                    case .Error(error: let error):
-//                        print(error)
-//                        break
-//                    }
-//                })
+                fetchContacts(completionHandler: { (result) in
+                    switch result{
+                    case .Success(response: let contacts):
+                        // Do your thing here with [CNContacts] array
+                        break
+                    case .Error(error: let error):
+                        print(error)
+                        break
+                    }
+                })
                 
                 print("Contacts Access Granted")
                 let me = "470BA82C-BD3A-49C5-BA1E-F641A9A4D73F" //"A87D45C6-C707-4387-A1A9-69A9C89BA0B6"
@@ -61,6 +61,11 @@ extension ContactsProtocol {
 //            let myProfile2 = CNLabeledValue(label: "Multy", value: multyProfile2)
             
             mContact.socialProfiles = [myProfile]
+            
+            
+            
+            let myURL = CNLabeledValue<NSString>(label: "Bitcoin Address", value: "https://multy.app.link/d8S4NudaKN")
+            mContact.urlAddresses = [myURL]
             
             updateContact(Contact: mContact) { (result) in
                 switch result{
