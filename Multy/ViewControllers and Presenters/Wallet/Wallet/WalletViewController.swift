@@ -91,7 +91,7 @@ class WalletViewController: UIViewController {
 //        hideBackup()
         setupAddressBtns()
         
-        showHidePendingSection(show: false)
+        showHidePendingSection(isNeedToShow: false)
         
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
         assetsTable.contentInset = makeTableInset()
@@ -172,17 +172,17 @@ class WalletViewController: UIViewController {
         return 0
     }
     
-    func showHidePendingSection(show: Bool) {
-        if show {
-            self.pendingSectionView.isHidden = !show
+    func showHidePendingSection(isNeedToShow: Bool) {
+        if isNeedToShow {
+            self.pendingSectionView.isHidden = !isNeedToShow
         }
-        pendingSeparatorWidthConstraint.constant = show ? 150 : 0
-        pendingSectionHeightConstraint.constant = show ? 70 : 0
-        pendingStack.isHidden = !show
+        pendingSeparatorWidthConstraint.constant = isNeedToShow ? 150 : 0
+        pendingSectionHeightConstraint.constant = isNeedToShow ? 70 : 0
+        pendingStack.isHidden = !isNeedToShow
         UIView.animate(withDuration: 0.2, animations: {
             self.view.layoutIfNeeded()
         }) { (isEnd) in
-            self.pendingSectionView.isHidden = !show
+            self.pendingSectionView.isHidden = !isNeedToShow
         }
     }
     
@@ -217,11 +217,11 @@ class WalletViewController: UIViewController {
     }
     
     @IBAction func sendAction(_ sender: Any) {
-        showHidePendingSection(show: false)
+        showHidePendingSection(isNeedToShow: false)
     }
     
     @IBAction func receiveAction(_ sender: Any) {
-        showHidePendingSection(show: true)
+        showHidePendingSection(isNeedToShow: true)
     }
     
     
@@ -290,6 +290,6 @@ extension TableViewDataSource: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showHidePendingSection(show: true)
+        showHidePendingSection(isNeedToShow: true)
     }
 }
