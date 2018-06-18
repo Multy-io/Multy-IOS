@@ -45,6 +45,7 @@ class TermsOfServiceViewController: UIViewController, UIWebViewDelegate {
         appDel.registerPush()
         
         UserDefaults.standard.set(false, forKey: "isTermsAccept")
+        UserDefaults.standard.set(true, forKey: "isFCMAccepted")
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -64,6 +65,8 @@ class TermsOfServiceViewController: UIViewController, UIWebViewDelegate {
     }
     
     @IBAction func discardAction(_ sender: Any) {
+        UserDefaults.standard.set(false, forKey: "isFCMAccepted")
+        
         let message = localize(string: Constants.useTermsOfService)
         let alert = UIAlertController(title: localize(string: Constants.sorryString), message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))

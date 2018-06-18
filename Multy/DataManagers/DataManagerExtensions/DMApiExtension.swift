@@ -281,4 +281,10 @@ extension DataManager {
             completion(answer, error)
         }
     }
+    
+    func getTransactionInfo(transactionString: String, completion: @escaping (_ answer: HistoryRLM?,_ error: Error?) -> ()) {
+        apiManager.getTransactionInfo(transactionString: transactionString) { (answer, error) in
+            completion(answer, error)
+        }
+    }
 }

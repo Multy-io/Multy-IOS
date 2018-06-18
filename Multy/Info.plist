@@ -84,6 +84,8 @@
 	<string>We use that to find other Multy</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Multy needs to scan payment request QR code.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Multy needs contacts to send transaction among your friends</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Needs to authorize user</string>
 	<key>UILaunchStoryboardName</key>

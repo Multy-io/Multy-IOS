@@ -423,7 +423,7 @@ class SendViewController: UIViewController {
     }
     
     func absorbTxInfo() {
-        let activeRequestView = activeRequestsClonesHolderView.subviews.filter{ $0.tag == activeRequestCloneViewTag}.first
+        let activeRequestView = activeRequestsClonesHolderView.subviews.filter{ $0.tag == activeRequestCloneViewTag }.first
         if activeRequestView != nil {
             let centerActiveRequestView = activeRequestsClonesHolderView.convert(activeRequestView!.center, to: animationHolderView)
             UIView.animate(withDuration: 0.15, animations: {
