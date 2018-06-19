@@ -76,7 +76,7 @@ class UserWalletRLM: Object {
     
     var isThereBlockedAmount: Bool {
         get {
-            return blockedAmount != Int64(0)
+            return isTherePendingTx.boolValue
         }
     }
     
