@@ -69,7 +69,7 @@ class WalletPresenter: NSObject {
     }
     
     func isTherePendingMoney(for indexPath: IndexPath) -> Bool {
-        return wallet!.blockedAmount(for: transactionDataSource[indexPath.row]) > 0
+        return transactionDataSource[indexPath.row].isPending()
     }
     
     func getHistoryAndWallet() {
