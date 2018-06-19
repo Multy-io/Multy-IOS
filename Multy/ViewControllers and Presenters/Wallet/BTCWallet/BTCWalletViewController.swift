@@ -49,7 +49,6 @@ class BTCWalletViewController: UIViewController, AnalyticsProtocol, ContactsProt
     
     var lastY: CGFloat = 0.0
     
-    
     var recog: UIPanGestureRecognizer?
     var startY: CGFloat = 0.0
     var startHeight: CGFloat = 0.0
@@ -337,8 +336,6 @@ class BTCWalletViewController: UIViewController, AnalyticsProtocol, ContactsProt
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(settingsWithChainTap)\(presenter.wallet!.chain)")
         self.performSegue(withIdentifier: "settingsVC", sender: sender)
     }
-    
- 
     
     func fixUiWithPendingTransactions() {
         let numberOfPending = presenter.getNumberOfPendingTransactions()
