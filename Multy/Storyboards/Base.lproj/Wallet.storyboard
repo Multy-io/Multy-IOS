@@ -1651,6 +1651,9 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FMM-Wy-IDN" userLabel="SendButton">
                                         <rect key="frame" x="0.0" y="0.0" width="113" height="64"/>
+                                        <connections>
+                                            <action selector="sendAction:" destination="KLb-lE-n1e" eventType="touchUpInside" id="sSx-b0-Ouz"/>
+                                        </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="operationReceive" translatesAutoresizingMaskIntoConstraints="NO" id="wlF-RH-zpq">
                                         <rect key="frame" x="159.5" y="12" width="24" height="24"/>
@@ -1667,8 +1670,11 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gpp-Ji-mgp" userLabel="ReceiveButton">
                                         <rect key="frame" x="115" y="0.0" width="113" height="64"/>
+                                        <connections>
+                                            <action selector="receiveAction:" destination="KLb-lE-n1e" eventType="touchUpInside" id="Olc-aK-DRw"/>
+                                        </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="operationExchange" translatesAutoresizingMaskIntoConstraints="NO" id="zYu-ne-tNh">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="donationIconSmallestWhite" translatesAutoresizingMaskIntoConstraints="NO" id="zYu-ne-tNh">
                                         <rect key="frame" x="274.5" y="12" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="Rar-l0-03I"/>
@@ -2731,9 +2737,9 @@ By donating you help us to bring blockchain technology one step closer to ordina
         <image name="chevron" width="15" height="22"/>
         <image name="chevron__" width="13" height="13"/>
         <image name="donationIcon" width="30" height="35"/>
+        <image name="donationIconSmallestWhite" width="26" height="26"/>
         <image name="donation_icon" width="98" height="78"/>
         <image name="gradientForWallet" width="375" height="370"/>
-        <image name="operationExchange" width="24" height="24"/>
         <image name="operationReceive" width="24" height="24"/>
         <image name="operationSend" width="24" height="24"/>
         <image name="pendingSmallClock" width="10" height="10"/>
