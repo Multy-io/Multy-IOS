@@ -46,6 +46,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     @IBOutlet weak var assetsTable: UITableView!
     @IBOutlet weak var transactionsTable: UITableView!
+    
+    @IBOutlet weak var emptyLbl: UILabel!
+    @IBOutlet weak var emptyArrowImg: UIImageView!
+    
     @IBOutlet weak var actionsBtnsView: UIView!
     @IBOutlet weak var gradientView: UIView!
     
@@ -371,8 +375,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
 extension TableViewDelegate: UITableViewDelegate {
     //FIXME: hideEmptyLbls
     func hideEmptyLbls() {
-//        self.emptySecondLbl.isHidden = true
-//        self.emptyArrowImg.isHidden = true
+        emptyLbl.isHidden = true
+        emptyArrowImg.isHidden = true
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
