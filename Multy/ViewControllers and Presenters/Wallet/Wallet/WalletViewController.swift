@@ -72,6 +72,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     var visibleCells = 5
     
+    var isCanUpdate = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -108,16 +110,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func setupUI() {
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
-        let gestureRecognizer2 = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
         let gestureRecognizer3 = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
-//        if assetsTable.gestureRecognizers?.count == 5 {
-        assetsTable.addGestureRecognizer(gestureRecognizer)
-        transactionsTable.addGestureRecognizer(gestureRecognizer2)
+        addRecognizersToTable()
         view.addGestureRecognizer(gestureRecognizer3)
-//            self.recog = gestureRecognizer
-//        }
-        
         
         checkConstraints()
         makeGradientForBottom()
@@ -135,6 +130,15 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
         assetsTable.contentInset = makeTableInset()
         transactionsTable.contentInset = makeTableInset()
+    }
+    
+    func addRecognizersToTable() {
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
+        let gestureRecognizer2 = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
+        if assetsTable.gestureRecognizers?.count == 5 || transactionsTable.gestureRecognizers?.count == 5 {
+            assetsTable.addGestureRecognizer(gestureRecognizer)
+            transactionsTable.addGestureRecognizer(gestureRecognizer2)
+        }
     }
     
     func checkConstraints() {
@@ -477,6 +481,7 @@ extension AnimationSection {
         transactionsTable.scrollToTop()
         tableHeaderTopConstraint.constant = 36 //default value
         animateLayout()
+        addRecognizersToTable()
     }
     
     func setTableToTop() {
@@ -485,6 +490,9 @@ extension AnimationSection {
         spiner.stopAnimating()
         tableHeaderTopConstraint.constant = -203 // check for pending
         animateLayout()
+        if transactionsTable.gestureRecognizers?.count == 6 {
+            transactionsTable.gestureRecognizers?.removeLast()
+        }
     }
     
     func setDefaultState() {
@@ -516,7 +524,8 @@ extension AnimationSection {
                 self.changeSectionsY(transY: transY)
                 if availableTopConstraint.constant > 52 {
                     spiner.startAnimating()
-                    //need to update
+                    presenter.getHistoryAndWallet()
+                    isCanUpdate = false
                 }
             } else {
                 changeTablesHeight(transY: transY)
@@ -550,8 +559,6 @@ extension AnimationSection {
         
 //        backupView.frame.origin.y = tablesHeaderView.frame.maxY
 //        assetsTransactionsBtnsView.frame.origin.y = backupView.frame.maxY
-        
-
     }
     
     func animateLayout() {
@@ -578,13 +585,12 @@ extension CancelDelegate : CancelProtocol {
 extension ScrollViewDelegate: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y <= -20 {
-//            setTableToBot(duration: 0.2)
-//            tableView.scrollToRow(at: [0,0], at: .top, animated: false)
+            setTableToBottom()
+            transactionsTable.scrollToRow(at: [0,0], at: .top, animated: false)
+            assetsTable.scrollToRow(at: [0,0], at: .top, animated: true)
         }
     }
 }
-
-
 
 extension LocalizeDelegate: Localizable {
     var tableName: String {

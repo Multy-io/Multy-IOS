@@ -73,6 +73,9 @@ class WalletPresenter: NSObject {
     }
     
     func getHistoryAndWallet() {
+        if walletVC?.isCanUpdate == false {
+            return
+        }
         DataManager.shared.getOneWalletVerbose(walletID: wallet!.walletID, blockchain: BlockchainType.create(wallet: wallet!)) { [unowned self] (wallet, error) in
             if wallet != nil {
                 self.wallet = wallet
@@ -80,6 +83,8 @@ class WalletPresenter: NSObject {
             
             DataManager.shared.getTransactionHistory(currencyID: self.wallet!.chain, networkID: self.wallet!.chainType, walletID: self.wallet!.walletID) { [unowned self] (histList, err) in
                 if err == nil && histList != nil {
+                    self.walletVC?.spiner.stopAnimating()
+                    self.walletVC?.isCanUpdate = true
                     self.transactionDataSource = histList!.sorted(by: {
                         let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.blockTime : $0.mempoolTime
                         let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.blockTime : $1.mempoolTime
