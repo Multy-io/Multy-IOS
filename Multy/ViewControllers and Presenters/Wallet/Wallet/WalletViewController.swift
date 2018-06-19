@@ -127,6 +127,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         showHidePendingSection()
         
+        checkForBackup()
+        
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
         assetsTable.contentInset = makeTableInset()
         transactionsTable.contentInset = makeTableInset()
@@ -204,6 +206,12 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    func checkForBackup() {
+        if self.presenter.account!.isSeedPhraseSaved() {
+            hideBackup()
+        }
+    }
+    
     func topOffsetForTable() -> CGFloat {
         if assetsTransactionsBtnsView.isHidden && backupView.isHidden {
             return 0
@@ -259,7 +267,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         self.navigationController?.popViewController(animated: true)
     }
     
-    
     @IBAction func shareAddressAction(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
         let adressVC = storyboard.instantiateViewController(withIdentifier: "walletAdressVC") as! AddressViewController
@@ -285,7 +292,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         navigationController?.pushViewController(vc, animated: true)
 //        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: backupSeedTap)
     }
-    
     
     @IBAction func assetsAction(_ sender: Any) {
         isAssets = true
