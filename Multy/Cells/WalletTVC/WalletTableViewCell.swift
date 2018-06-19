@@ -62,18 +62,21 @@ class WalletTableViewCell: UITableViewCell {
     
     func fillInCell() {
         let blockchainType = BlockchainType.create(wallet: wallet!)
-        self.tokenImage.image = UIImage(named: blockchainType.iconString)
-        self.walletNameLbl.text = self.wallet!.name
-        self.cryptoNameLbl.text = blockchainType.shortName
-        self.fiatSumLbl.text = wallet!.sumInFiatString + " " + self.wallet!.fiatSymbol
+        tokenImage.image = UIImage(named: blockchainType.iconString)
+        walletNameLbl.text = self.wallet!.name
+        cryptoNameLbl.text = blockchainType.shortName
+        fiatSumLbl.text = wallet!.sumInFiatString + " " + self.wallet!.fiatSymbol
+        
+        cryptoSumLbl.text = wallet?.sumInCryptoString
+        
         // FIXME: refactor
-        if blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
-            self.cryptoSumLbl.text  = self.wallet!.sumInCrypto.fixedFraction(digits: 8)
-        } else if blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
-            let sumInCrypto = wallet!.ethWallet!.allBalance
-            self.cryptoSumLbl.text  = sumInCrypto.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
-        }
-    
+//        if blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
+//            self.cryptoSumLbl.text  = self.wallet!.sumInCrypto.fixedFraction(digits: 8)
+//        } else if blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
+//            let sumInCrypto = wallet!.ethWallet!.allBalance
+//            self.cryptoSumLbl.text  = sumInCrypto.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+//        }
+
         if wallet != nil {
             self.statusImage.isHidden = !wallet!.isTherePendingTx.boolValue
         }

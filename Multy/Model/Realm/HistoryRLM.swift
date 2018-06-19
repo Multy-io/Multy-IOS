@@ -184,7 +184,11 @@ class HistoryRLM: Object {
     }
     
     func isIncoming() -> Bool {
-        return self.txStatus.intValue == TxStatus.MempoolIncoming.rawValue || self.txStatus.intValue == TxStatus.BlockIncoming.rawValue || self.txStatus.intValue == TxStatus.BlockConfirmedIncoming.rawValue
+        return txStatus.intValue == TxStatus.MempoolIncoming.rawValue || txStatus.intValue == TxStatus.BlockIncoming.rawValue || txStatus.intValue == TxStatus.BlockConfirmedIncoming.rawValue
+    }
+    
+    func isPending() -> Bool {
+        return txStatus.intValue == TxStatus.MempoolIncoming.rawValue || txStatus.intValue == TxStatus.MempoolOutcoming.rawValue
     }
     
     func getDonationTxOutput(address: String) -> TxHistoryRLM? {
