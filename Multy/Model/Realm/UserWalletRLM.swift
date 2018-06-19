@@ -54,47 +54,12 @@ class UserWalletRLM: Object {
         }
     }
     
-    var blockedAmount: BigInt {
-        get {
-            switch blockchainType.blockchain {
-            case BLOCKCHAIN_BITCOIN:
-                return BigInt("\(calculateBlockedAmount())")
-            case BLOCKCHAIN_ETHEREUM:
-                return ethWallet!.pendingBalance
-            default:
-                return BigInt("0")
-            }
-        }
-    }
-    
-    var availableAmount: BigInt {
-        get {
-            switch blockchainType.blockchain {
-            case BLOCKCHAIN_BITCOIN:
-                return BigInt(sumInCryptoString.convertToSatoshiAmountString()) - blockedAmount
-            case BLOCKCHAIN_ETHEREUM:
-                return ethWallet!.availableBalance
-            default:
-                return BigInt("0")
-            }
-        }
-    }
-    
-    //////////////////////////////////////
-    //not unified
-    
-    var blockchainType: BlockchainType {
-        get {
-            return BlockchainType.create(wallet: self)
-        }
-    }
-    
-    var availableSumInCrypto: Double {
+    var sumInFiatString: String {
         get {
             if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
-                return availableAmount.cryptoValueString(for: BLOCKCHAIN_BITCOIN).stringWithDot.doubleValue
+                return sumInFiat.fixedFraction(digits: 2)
             } else {
-                return 0
+                return (ethWallet!.allBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
             }
         }
     }
@@ -109,12 +74,97 @@ class UserWalletRLM: Object {
         }
     }
     
-    var sumInFiatString: String {
+    var isThereBlockedAmount: Bool {
+        get {
+            return blockedAmount != Int64(0)
+        }
+    }
+    
+    //available part
+    var availableAmount: BigInt {
+        get {
+            switch blockchainType.blockchain {
+            case BLOCKCHAIN_BITCOIN:
+                return BigInt(sumInCryptoString.convertToSatoshiAmountString()) - blockedAmount
+            case BLOCKCHAIN_ETHEREUM:
+                return ethWallet!.availableBalance
+            default:
+                return BigInt("0")
+            }
+        }
+    }
+    
+    var availableAmountString: String {
+        get {
+            return availableAmount.cryptoValueString(for: blockchain)
+        }
+    }
+    
+    var availableAmountInFiat: BigInt {
+        get {
+            return availableAmount * exchangeCourse
+        }
+    }
+    
+    var availableAmountInFiatString: String {
+        get {
+            return availableAmountInFiat.fiatValueString(for: blockchain)
+        }
+    }
+    
+    //blocked part
+    var blockedAmount: BigInt {
+        get {
+            switch blockchainType.blockchain {
+            case BLOCKCHAIN_BITCOIN:
+                return BigInt("\(calculateBlockedAmount())")
+            case BLOCKCHAIN_ETHEREUM:
+                return ethWallet!.pendingBalance
+            default:
+                return BigInt("0")
+            }
+        }
+    }
+    
+    var blockedAmountString: String {
+        get {
+            return blockedAmount.cryptoValueString(for: blockchain)
+        }
+    }
+    
+    var blolckedInFiat: BigInt {
+        get {
+            return blockedAmount * exchangeCourse
+        }
+    }
+    
+    var blolckedInFiatString: String {
+        get {
+            return blolckedInFiat.fiatValueString(for: blockchain)
+        }
+    }
+    
+    //////////////////////////////////////
+    //not unified
+    
+    var blockchainType: BlockchainType {
+        get {
+            return BlockchainType.create(wallet: self)
+        }
+    }
+
+    var blockchain: Blockchain {
+        get {
+            return blockchainType.blockchain
+        }
+    }
+    
+    var availableSumInCrypto: Double {
         get {
             if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
-                return sumInFiat.fixedFraction(digits: 2)
+                return availableAmount.cryptoValueString(for: BLOCKCHAIN_BITCOIN).stringWithDot.doubleValue
             } else {
-                return (ethWallet!.allBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
+                return 0
             }
         }
     }

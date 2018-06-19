@@ -6,8 +6,11 @@ import UIKit
 
 private typealias TableViewDelegate = WalletViewController
 private typealias TableViewDataSource = WalletViewController
+private typealias LocalizeDelegate = WalletViewController
+private typealias CancelDelegate = WalletViewController
+private typealias ScrollViewDelegate = WalletViewController
 
-class WalletViewController: UIViewController {
+class WalletViewController: UIViewController, AnalyticsProtocol {
 
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var pendingStack: UIStackView!
@@ -57,18 +60,47 @@ class WalletViewController: UIViewController {
     
     var tablesHeaderStartY = CGFloat()
     
+    var visibleCells = 5
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         presenter.walletVC = self
+        
+        assetsTable.delegate = self
+        assetsTable.dataSource = self
+        transactionsTable.delegate = self
+        transactionsTable.dataSource = self
+        
+        presenter.registerCells()
+        
         setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        presenter.getHistoryAndWallet()
+        presenter.updateUI()
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+        
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLayoutSubviews() {
         tablesHeaderView.roundCorners(corners: [.topLeft, .topRight], radius: 10)
+    }
+    
+    @objc func updateExchange() {
+        presenter.updateUI()
     }
     
     func setupUI() {
@@ -85,13 +117,13 @@ class WalletViewController: UIViewController {
         setupTransactionAssetsBtns()
         
         //------------  WARNING  ------------//
-//        setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
+        setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
         // ------------  WARNING  ------------
        
 //        hideBackup()
         setupAddressBtns()
         
-        showHidePendingSection(isNeedToShow: false)
+        showHidePendingSection()
         
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
         assetsTable.contentInset = makeTableInset()
@@ -142,7 +174,7 @@ class WalletViewController: UIViewController {
     func setTransactionsTableFirst() {
         hideAssetsBtn()
         assetsTableTrailingConstraint.constant = -screenWidth
-        self.view.layoutIfNeeded()
+        view.layoutIfNeeded()
     }
     
     func hideAssetsBtn() {
@@ -156,11 +188,11 @@ class WalletViewController: UIViewController {
     }
     
     func setupAddressBtns() {
-        //if blockchain == BLOCKCHAIN_ETHEREUM {
-        shareAddressBtn.frame.origin.x = screenWidth/2 - shareAddressBtn.frame.size.width/2
-        showAddressesBtn.isHidden = true
-        self.view.layoutIfNeeded()
-        // else all good
+        if presenter.wallet!.blockchain == BLOCKCHAIN_ETHEREUM {
+            shareAddressBtn.frame.origin.x = screenWidth/2 - shareAddressBtn.frame.size.width/2
+            showAddressesBtn.isHidden = true
+            view.layoutIfNeeded()
+        }
     }
     
     func topOffsetForTable() -> CGFloat {
@@ -172,9 +204,11 @@ class WalletViewController: UIViewController {
         return 0
     }
     
-    func showHidePendingSection(isNeedToShow: Bool) {
+    func showHidePendingSection() {
+        let isNeedToShow = presenter.wallet!.isThereBlockedAmount
+        
         if isNeedToShow {
-            self.pendingSectionView.isHidden = !isNeedToShow
+            pendingSectionView.isHidden = !isNeedToShow
         }
         pendingSeparatorWidthConstraint.constant = isNeedToShow ? 150 : 0
         pendingSectionHeightConstraint.constant = isNeedToShow ? 70 : 0
@@ -184,6 +218,19 @@ class WalletViewController: UIViewController {
         }) { (isEnd) in
             self.pendingSectionView.isHidden = !isNeedToShow
         }
+    }
+    
+    @objc func updateWalletAfterSockets() {
+        if presenter.isSocketInitiateUpdating {
+            return
+        }
+        
+        if !isVisible() {
+            return
+        }
+        
+        presenter.isSocketInitiateUpdating = true
+        presenter.getHistoryAndWallet()
     }
     
     func makeTableInset() -> UIEdgeInsets {
@@ -196,9 +243,6 @@ class WalletViewController: UIViewController {
         
         return UIEdgeInsets(top: topInset, left: 0, bottom: bottomGradientHeightConstraint.constant, right: 0)
     }
-    
-    
-    
     
     @IBAction func backAction(_ sender: Any) {
         assetsTableTrailingConstraint.constant = 0
@@ -217,24 +261,77 @@ class WalletViewController: UIViewController {
     }
     
     @IBAction func sendAction(_ sender: Any) {
-        showHidePendingSection(isNeedToShow: false)
+        if presenter.wallet!.availableAmount.isZero {
+            self.presentAlert(with: localize(string: Constants.noFundsString))
+            
+            return
+        }
+        
+        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+        let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+        sendStartVC.presenter.transactionDTO.choosenWallet = self.presenter.wallet
+        sendStartVC.presenter.isFromWallet = true
+        self.navigationController?.pushViewController(sendStartVC, animated: true)
+        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(sendWithChainTap)\(presenter.wallet!.chain)")
     }
     
     @IBAction func receiveAction(_ sender: Any) {
-        showHidePendingSection(isNeedToShow: true)
+        let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+        let receiveDetailsVC = storyboard.instantiateViewController(withIdentifier: "receiveDetails") as! ReceiveAllDetailsViewController
+        receiveDetailsVC.presenter.wallet = self.presenter.wallet
+        self.navigationController?.pushViewController(receiveDetailsVC, animated: true)
+        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(receiveWithChainTap)\(presenter.wallet!.chain)")
     }
     
+    @IBAction func settingssAction(_ sender: Any) {
+        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(settingsWithChainTap)\(presenter.wallet!.chain)")
+        self.performSegue(withIdentifier: "settingsVC", sender: sender)
+    }
     
+    @IBAction func showAddressAction(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let adressVC = storyboard.instantiateViewController(withIdentifier: "walletAdressVC") as! AddressViewController
+        adressVC.modalPresentationStyle = .overCurrentContext
+        adressVC.modalTransitionStyle = .crossDissolve
+        adressVC.wallet = presenter.wallet
+        present(adressVC, animated: true, completion: nil)
+        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(addressWithChainTap)\(presenter.wallet!.chain)")
+    }
+    
+    @IBAction func showAllAddressessAction(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let adressesVC = storyboard.instantiateViewController(withIdentifier: "walletAddresses") as! WalletAddresessViewController
+        adressesVC.presenter.wallet = presenter.wallet
+        navigationController?.pushViewController(adressesVC, animated: true)
+        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(allAddressesWithChainTap)\(presenter.wallet!.chain)")
+    }
+    
+    @IBAction func exchangeAction(_ sender: Any) {
+        unowned let weakSelf =  self
+        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
+        //        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(exchangeWithChainTap)\(presenter.wallet!.chain)")
+        logAnalytics()
+    }
+    
+    func logAnalytics() {
+        sendDonationAlertScreenPresentedAnalytics(code: donationForExchangeFUNC)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "settingsVC" {
+            let settingsVC = segue.destination as! WalletSettingsViewController
+            settingsVC.presenter.wallet = self.presenter.wallet
+        }
+    }
 }
 
 extension TableViewDelegate: UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    //FIXME: hideEmptyLbls
+    func hideEmptyLbls() {
+//        self.emptySecondLbl.isHidden = true
+//        self.emptyArrowImg.isHidden = true
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
+
     
     @IBAction func dragTable(_ gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: self.view)
@@ -281,15 +378,137 @@ extension TableViewDelegate: UITableViewDelegate {
         assetsTransactionsBtnsView.frame.origin.y = backupView.frame.maxY
         
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == transactionsTable {
+            if tableView.numberOfRows(inSection: 0) == 0 {
+                return
+            }
+            let countOfHistObjs = presenter.transactionDataSource.count
+            if indexPath.row >= countOfHistObjs && countOfHistObjs <= visibleCells {
+                return
+            }
+            
+            let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
+            let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
+            transactionVC.presenter.histObj = presenter.transactionDataSource[indexPath.row]
+            transactionVC.presenter.blockchainType = BlockchainType.create(wallet: presenter.wallet!)
+            transactionVC.presenter.wallet = presenter.wallet!
+            self.navigationController?.pushViewController(transactionVC, animated: true)
+            sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(transactionWithChainTap)\(presenter.wallet!.chain)")
+        } else {
+            
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == transactionsTable {
+            if indexPath.row < presenter.transactionDataSource.count && presenter.isTherePendingMoney(for: indexPath) {
+                return 135
+            } else {
+                return 70
+            }
+        } else {
+            return 70
+        }
+    }
+}
+
+extension CancelDelegate : CancelProtocol {
+    func cancelAction() {
+        self.makePurchaseFor(productId: "io.multy.addingExchange5")
+    }
+    
+    func donate50(idOfProduct: String) {
+        self.makePurchaseFor(productId: idOfProduct)
+    }
+    
+    func presentNoInternet() {
+        
+    }
+}
+
+extension ScrollViewDelegate: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y <= -20 {
+//            setTableToBot(duration: 0.2)
+//            tableView.scrollToRow(at: [0,0], at: .top, animated: false)
+        }
+    }
 }
 
 extension TableViewDataSource: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        return cell
+        let countOfHistObjs = presenter.transactionDataSource.count
+        
+        if tableView == transactionsTable {
+            if indexPath.row < countOfHistObjs && presenter.isTherePendingMoney(for: indexPath) {
+                let pendingTrasactionCell = tableView.dequeueReusableCell(withIdentifier: "TransactionPendingCellID") as! TransactionPendingCell
+                pendingTrasactionCell.selectionStyle = .none
+                pendingTrasactionCell.histObj = presenter.transactionDataSource[indexPath.row]
+                pendingTrasactionCell.wallet = presenter.wallet
+                pendingTrasactionCell.fillCell()
+                
+                return pendingTrasactionCell
+            } else {
+                let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
+                transactionCell.selectionStyle = .none
+                if countOfHistObjs > 0 {
+                    if indexPath.row >= countOfHistObjs {
+                        transactionCell.changeState(isEmpty: true)
+                    } else {
+                        transactionCell.histObj = presenter.transactionDataSource[indexPath.row]
+                        transactionCell.wallet = presenter.wallet!
+                        transactionCell.fillCell()
+                        transactionCell.changeState(isEmpty: false)
+                        hideEmptyLbls()
+                        if indexPath.row != 1 {
+                            transactionCell.changeTopConstraint()
+                        }
+                    }
+                } else {
+                    transactionCell.changeState(isEmpty: true)
+                    //                    fixForiPad()
+                }
+                
+                return transactionCell
+            }
+        } else {
+            let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
+            
+            return transactionCell
+        }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showHidePendingSection(isNeedToShow: true)
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == transactionsTable {
+            let countOfHistObjects = presenter.transactionDataSource.count
+            if countOfHistObjects > 0 {
+                tableView.isScrollEnabled = true
+                if countOfHistObjects < 10 {
+                    return 10
+                } else {
+                    return countOfHistObjects
+                }
+            } else {
+                if screenHeight == heightOfX {
+                    return 13
+                }
+                
+                return 10
+            }
+        } else {
+            return 10
+        }
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Wallets"
     }
 }
