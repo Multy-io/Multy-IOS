@@ -6,14 +6,17 @@ import UIKit
 
 private typealias TableViewDelegate = WalletViewController
 private typealias TableViewDataSource = WalletViewController
+private typealias AnimationSection = WalletViewController
 
 class WalletViewController: UIViewController {
 
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var pendingStack: UIStackView!
     @IBOutlet weak var navigationHeaderView: UIView!
+    @IBOutlet weak var spiner: UIActivityIndicatorView!
     
     // HEADER section
+    @IBOutlet weak var availableSectionView: UIView!
     @IBOutlet weak var amountCryptoLbl: UILabel!
     @IBOutlet weak var nameCryptoLbl: UILabel!
     @IBOutlet weak var fiatAmountLbl: UILabel!
@@ -26,6 +29,7 @@ class WalletViewController: UIViewController {
         //
     //
     
+    @IBOutlet weak var adressWithBtnView: UIView!
     @IBOutlet weak var addressLbl: UILabel!
     @IBOutlet weak var shareAddressBtn: UIButton!
     @IBOutlet weak var showAddressesBtn: UIButton!
@@ -51,11 +55,16 @@ class WalletViewController: UIViewController {
     @IBOutlet weak var bottomGradientHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomGradientConstant: NSLayoutConstraint!
     
+    @IBOutlet weak var tableHeaderTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var availableTopConstraint: NSLayoutConstraint!
+    
+    
+    
     var presenter = WalletPresenter()
     
     var isAssets = true
     
-    var tablesHeaderStartY = CGFloat()
+    var spaceBetweenTablesHeaderNavigationHeader: CGFloat = 373 // For pending
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,11 +82,14 @@ class WalletViewController: UIViewController {
     
     func setupUI() {
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
-        if assetsTable.gestureRecognizers?.count == 5 {
-            assetsTable.addGestureRecognizer(gestureRecognizer)
-            tablesHeaderView.addGestureRecognizer(gestureRecognizer)
+        let gestureRecognizer2 = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
+        let gestureRecognizer3 = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
+//        if assetsTable.gestureRecognizers?.count == 5 {
+        assetsTable.addGestureRecognizer(gestureRecognizer)
+        transactionsTable.addGestureRecognizer(gestureRecognizer2)
+        view.addGestureRecognizer(gestureRecognizer3)
 //            self.recog = gestureRecognizer
-        }
+//        }
         
         
         checkConstraints()
@@ -96,8 +108,6 @@ class WalletViewController: UIViewController {
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
         assetsTable.contentInset = makeTableInset()
         transactionsTable.contentInset = makeTableInset()
-        
-        tablesHeaderStartY = tablesHeaderView.frame.origin.y
     }
     
     func checkConstraints() {
@@ -176,6 +186,7 @@ class WalletViewController: UIViewController {
         if isNeedToShow {
             self.pendingSectionView.isHidden = !isNeedToShow
         }
+        spaceBetweenTablesHeaderNavigationHeader = isNeedToShow ? 397 : 327
         pendingSeparatorWidthConstraint.constant = isNeedToShow ? 150 : 0
         pendingSectionHeightConstraint.constant = isNeedToShow ? 70 : 0
         pendingStack.isHidden = !isNeedToShow
@@ -206,6 +217,33 @@ class WalletViewController: UIViewController {
     }
     
     
+    @IBAction func shareAddressAction(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let adressVC = storyboard.instantiateViewController(withIdentifier: "walletAdressVC") as! AddressViewController
+        adressVC.modalPresentationStyle = .overCurrentContext
+        adressVC.modalTransitionStyle = .crossDissolve
+//        adressVC.wallet = self.wallet
+        //        self.mainVC.present
+        present(adressVC, animated: true, completion: nil)
+//        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(wallet!.chain)", eventName: "\(addressWithChainTap)\(wallet!.chain)")
+    }
+    
+    @IBAction func showAllAddressesAction(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let adressesVC = storyboard.instantiateViewController(withIdentifier: "walletAddresses") as! WalletAddresessViewController
+//        adressesVC.presenter.wallet = self.wallet
+        navigationController?.pushViewController(adressesVC, animated: true)
+//        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(wallet!.chain)", eventName: "\(allAddressesWithChainTap)\(wallet!.chain)")
+    }
+    
+    @IBAction func backupAction(_ sender: Any) {
+        let stroryboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
+        let vc = stroryboard.instantiateViewController(withIdentifier: "seedAbout")
+        navigationController?.pushViewController(vc, animated: true)
+//        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: backupSeedTap)
+    }
+    
+    
     @IBAction func assetsAction(_ sender: Any) {
         isAssets = true
         setupTransactionAssetsBtns()
@@ -215,16 +253,7 @@ class WalletViewController: UIViewController {
         isAssets = false
         setupTransactionAssetsBtns()
     }
-    
-    @IBAction func sendAction(_ sender: Any) {
-        showHidePendingSection(isNeedToShow: false)
-    }
-    
-    @IBAction func receiveAction(_ sender: Any) {
-        showHidePendingSection(isNeedToShow: true)
-    }
-    
-    
+        
 }
 
 extension TableViewDelegate: UITableViewDelegate {
@@ -234,6 +263,45 @@ extension TableViewDelegate: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
+    }
+}
+
+extension TableViewDataSource: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        showHidePendingSection(isNeedToShow: true)
+        if indexPath.row == 2 {
+            setTableToBottom()
+        } else if indexPath.row == 3 {
+            setTableToTop()
+        }
+    }
+}
+
+extension AnimationSection {
+    func setTableToBottom() {
+//        tablesHeaderView.frame.origin.y = adressWithBtnView.frame.maxY + 36 // constraint between TablesHeader and address Btn
+        assetsTable.scrollToTop()
+        transactionsTable.scrollToTop()
+        tableHeaderTopConstraint.constant = 36 //default value
+        animateLayout()
+    }
+    
+    func setTableToTop() {
+        //if pending -273
+        //else -203
+        spiner.stopAnimating()
+        tableHeaderTopConstraint.constant = -203 // check for pending
+        animateLayout()
+    }
+    
+    func setDefaultState() {
+        availableTopConstraint.constant = 26 //default value
+        animateLayout()
     }
     
     @IBAction func dragTable(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -245,51 +313,61 @@ extension TableViewDelegate: UITableViewDelegate {
                 
             } else {
                 //setTableToTop()
-//                if self.presenter.numberOfTransactions() > 5 {
-//                    self.tableView.removeGestureRecognizer(recog!)
+                //                if self.presenter.numberOfTransactions() > 5 {
+                //                    self.tableView.removeGestureRecognizer(recog!)
             }
         }
         
         
         if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
-            if translation.y > 0 && tablesHeaderY > tablesHeaderStartY {
+            var transY = translation.y > 200 ? translation.y : translation.y/2
+            if translation.y > 0 && tableHeaderTopConstraint.constant >= 36 { //36 defult value for constant
+                // show spiner
                 
-                    // show spiner
-                    var transY = translation.y > 200 ? translation.y : translation.y/2
-                    transY = transY > 270 ? transY : transY/2
-                    self.changeTablesHeight(transY: transY)
-                    self.changeSectionsY(transY: transY)
-                    gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
-                
-                    
-                
+                transY = transY > 270 ? transY : transY/2
+                self.changeSectionsY(transY: transY)
+                if availableTopConstraint.constant > 52 {
+                    spiner.startAnimating()
+                    //need to update
+                }
+            } else {
+                changeTablesHeight(transY: transY)
+                tableHeaderTopConstraint.constant = tableHeaderTopConstraint.constant + transY
+            }
+            gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+        }
+        
+        if gestureRecognizer.state == .ended {
+            if tablesHeaderView.frame.origin.y > spaceBetweenTablesHeaderNavigationHeader / 2 + 40 {
+                setDefaultState()
+                setTableToBottom()
+            } else { // if tablesHeaderView.frame.origin.y < spaceBetweenTablesHeaderNavigationHeader / 2
+                setTableToTop()
             }
         }
     }
     
     func changeTablesHeight(transY: CGFloat) {
         assetsTable.frame.size.height = assetsTable.frame.size.height - transY
-        assetsTable.center = CGPoint(x: self.view.center.x, y:assetsTable.center.y + transY)
+//        assetsTable.center = CGPoint(x: self.view.center.x, y:assetsTable.center.y + transY)
         
         transactionsTable.frame.size.height = transactionsTable.frame.size.height - transY
-        transactionsTable.center = CGPoint(x: self.view.center.x, y:transactionsTable.center.y + transY)
+//        transactionsTable.center = CGPoint(x: self.view.center.x, y:transactionsTable.center.y + transY)
     }
     
     func changeSectionsY(transY: CGFloat) {
-        tablesHeaderView.frame.origin.y = tablesHeaderView.frame.origin.y + transY
-        backupView.frame.origin.y = tablesHeaderView.frame.maxY
-        assetsTransactionsBtnsView.frame.origin.y = backupView.frame.maxY
+//        tableHeaderTopConstraint.constant = tableHeaderTopConstraint.constant + transY
+        availableTopConstraint.constant = availableTopConstraint.constant + transY
+        animateLayout()
+        
+//        backupView.frame.origin.y = tablesHeaderView.frame.maxY
+//        assetsTransactionsBtnsView.frame.origin.y = backupView.frame.maxY
         
     }
-}
-
-extension TableViewDataSource: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        return cell
-    }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showHidePendingSection(isNeedToShow: true)
+    func animateLayout() {
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
     }
 }
