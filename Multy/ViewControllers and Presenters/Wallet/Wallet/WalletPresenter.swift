@@ -41,7 +41,6 @@ class WalletPresenter: NSObject {
             return
         }
         
-        walletVC!.showHidePendingSection()
         updateHeader()
     }
     
@@ -54,14 +53,16 @@ class WalletPresenter: NSObject {
     }
     
     func updateHeader() {
-        walletVC!.amountCryptoLbl.text = wallet!.sumInCryptoString
+        walletVC!.showHidePendingSection()
+        
+        walletVC!.amountCryptoLbl.text = wallet!.availableAmountString
         walletVC!.nameCryptoLbl.text = wallet!.blockchain.shortName
-        walletVC!.fiatAmountLbl.text = fiatSymbol + wallet!.sumInFiatString
+        walletVC!.fiatAmountLbl.text = fiatSymbol + wallet!.availableAmountInFiatString
         
         if wallet!.isThereBlockedAmount {
-            walletVC!.pendingAmountCryptoLbl.text = wallet!.blockedAmountString
+            walletVC!.pendingAmountCryptoLbl.text = wallet!.sumInCryptoString
             walletVC!.pendingNameCryptoLbl.text = wallet!.blockchain.shortName
-            walletVC!.pendingAmountFiatLbl.text = fiatSymbol + wallet!.blolckedInFiatString
+            walletVC!.pendingAmountFiatLbl.text = fiatSymbol + wallet!.sumInFiatString
         }
         
         walletVC!.addressLbl.text = wallet!.address
