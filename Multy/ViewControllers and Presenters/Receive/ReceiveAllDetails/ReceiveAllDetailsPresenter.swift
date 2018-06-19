@@ -251,7 +251,8 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
                 
                 let amountString = self.convertAddressDataToString(amount, currencyID, networkID)
                 if txStatus == TxStatus.MempoolIncoming.rawValue && address == self.walletAddress {
-                        self.receiveAllDetailsVC?.presentDidReceivePaymentAlert(address: address, amount: amountString)
+                    self.receiveAllDetailsVC?.presentDidReceivePaymentAlert(address: address, amount: amountString)
+                    self.receiveAllDetailsVC?.sendAnalyticsEvent(screenName: KFReceiveScreen, eventName: KFTransactionReceived)
                 }
             }
         }
