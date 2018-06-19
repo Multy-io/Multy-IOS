@@ -19,6 +19,7 @@ class SendPresenter: NSObject {
     var rawTransactionBigIntEstimation = BigInt.zero()
     
     var isSocketInitiateUpdating = false
+    var isWalletAnalyticsSent = false
     
     var walletsArr = Array<UserWalletRLM>() {
         didSet {
@@ -28,6 +29,11 @@ class SendPresenter: NSObject {
     
     var filteredWalletArray = Array<UserWalletRLM>() {
         didSet {
+            if isWalletAnalyticsSent == false {
+                isWalletAnalyticsSent = true
+                sendVC?.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFWalletsCount + "\(filteredWalletArray.count)")
+            }
+            
             if filteredWalletArray.count == 0 {
                 selectedWalletIndex = nil
             } else {
@@ -393,19 +399,22 @@ class SendPresenter: NSObject {
         
         
         
-        DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
+        DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
             print("---------\(dict)")
             
             if error != nil {
                 self.sendVC?.updateUIWithSendResponse(success: false)
                 print("sendHDTransaction Error: \(error)")
+                self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionError)
                 
                 return
             }
             
             if dict!["code"] as! Int == 200 {
+                self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionError)
                 self.sendVC?.updateUIWithSendResponse(success: true)
             } else {
+                self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionSuccess)
                 self.sendVC?.updateUIWithSendResponse(success: false)
             }
         }

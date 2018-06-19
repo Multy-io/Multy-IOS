@@ -285,11 +285,13 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
                 option = .qrCode
                 changeVisibility(isHidden: true)
                 wirelessButton.setTitle(localize(string: Constants.magicalReceiveString), for: .normal)
+                sendAnalyticsEvent(screenName: KFReceiveScreen, eventName: KFStopReceiving)
                 
             case .qrCode:
                 option = .wireless
                 changeVisibility(isHidden: false)
                 wirelessButton.setTitle(localize(string: Constants.cancelString), for: .normal)
+                sendAnalyticsEvent(screenName: KFReceiveScreen, eventName: KFStartReceiving)
             }
         }
     }

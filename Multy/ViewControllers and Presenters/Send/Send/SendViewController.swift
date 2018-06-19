@@ -18,7 +18,7 @@ enum SendMode {
 
 private typealias LocalizeDelegate = SendViewController
 
-class SendViewController: UIViewController {
+class SendViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var walletsCollectionView: UICollectionView!
     @IBOutlet weak var walletsCollectionViewFL: UICollectionViewFlowLayout!
     @IBOutlet weak var searchingRequestsHolderView: UIView!
@@ -204,12 +204,16 @@ class SendViewController: UIViewController {
         }
     }
     
-    func updateUIForBluetoothState(_ isEnable : Bool) {
-        bluetoothDisabledContentView.isHidden = isEnable
-        bluetoothEnabledContentView.isHidden = !isEnable
-        activeRequestsAmountLabel.isHidden = !isEnable
+    func updateUIForBluetoothState(_ isEnabled : Bool) {
+        bluetoothDisabledContentView.isHidden = isEnabled
+        bluetoothEnabledContentView.isHidden = !isEnabled
+        activeRequestsAmountLabel.isHidden = !isEnabled
         
         refreshBackground()
+        
+        if isEnabled {
+            sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFPermissionGranted)
+        }
     }
     
     private func calculateSectionInset(collectionView : UICollectionView) -> CGFloat {
@@ -614,6 +618,7 @@ class SendViewController: UIViewController {
     }
     
     @IBAction func closeAction(_ sender: Any) {
+        sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFFoundDevices + "\(presenter.numberOfActiveRequests)")
         close()
     }
     
