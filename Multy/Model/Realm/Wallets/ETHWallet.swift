@@ -7,18 +7,22 @@ import RealmSwift
 
 class ETHWallet: Object {
     @objc dynamic var nonce = NSNumber(value: 0)
-    @objc dynamic var balance = String()
+    @objc dynamic var balance = "0"
     @objc dynamic var pendingWeiAmountString = "0"
     
     var allBalance: BigInt {
         get {
-            return BigInt(balance.isEmpty ? "0" : balance) + pendingBalance
+            let balanceBigInt = BigInt(balance)
+            
+            return pendingWeiAmountString == "0" ? balanceBigInt : pendingBalance
         }
     }
     
     var availableBalance: BigInt {
         get {
-            return BigInt(balance)
+            let balanceBigInt = BigInt(balance)
+            
+            return pendingWeiAmountString == "0" ? balanceBigInt : (balanceBigInt < pendingBalance ? balanceBigInt : BigInt.zero())
         }
     }
     

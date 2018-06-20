@@ -27,7 +27,7 @@ target 'Multy' do
   pod 'SwiftyStoreKit'
   pod 'lottie-ios'
   pod 'UPCarouselFlowLayout'
-
+  pod 'SwiftyContacts'
 
   target 'MultyTests' do
       inherit! :search_paths
@@ -46,4 +46,11 @@ target 'Multy' do
       pod 'Firebase'
       
   end
+end
+
+post_install do |installer|
+    installer.pods_project.build_configurations.each do |config|
+        config.build_settings.delete('CODE_SIGNING_ALLOWED')
+        config.build_settings.delete('CODE_SIGNING_REQUIRED')
+    end
 end

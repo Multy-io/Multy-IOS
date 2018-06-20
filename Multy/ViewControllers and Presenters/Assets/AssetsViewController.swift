@@ -338,7 +338,14 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
     }
     
     func goToWalletVC(indexPath: IndexPath) {
-        let walletVC = presenter.getWalletViewController(indexPath: indexPath)
+//        let walletVC = presenter.getWalletViewController(indexPath: indexPath)
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
+        
+        let wallet = presenter.wallets?[indexPath.row - 2]
+        walletVC.presenter.wallet = wallet
+        walletVC.presenter.account = presenter.account
+        
         self.navigationController?.pushViewController(walletVC, animated: true)
     }
     

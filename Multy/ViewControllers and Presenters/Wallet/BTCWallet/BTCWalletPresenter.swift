@@ -108,7 +108,12 @@ class BTCWalletPresenter: NSObject {
                     //                self.mainVC!.refreshControl.endRefreshing()
                     //                self.mainVC!.tableView.isUserInteractionEnabled = true
                     //                self.mainVC!.tableView.contentOffset.y = 0
-                    self.historyArray = histList!.sorted(by: { $0.blockTime > $1.blockTime })
+                    self.historyArray = histList!.sorted(by: {
+                        let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.blockTime : $0.mempoolTime
+                        let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.blockTime : $1.mempoolTime
+                        
+                        return firstDate > secondDate
+                    })
                     //                print("transaction history:\n\(histList)")
                     self.mainVC!.isSocketInitiateUpdating = false
                 }

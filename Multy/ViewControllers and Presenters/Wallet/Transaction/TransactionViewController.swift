@@ -87,11 +87,7 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
         var lineNumber = Double(tapLocation.y / 16.5)
         lineNumber.round(.towardZero)
         var title = ""
-        if labelFor == walletFromAddressLbl {
-            title = presenter.histObj.txInputs[Int(lineNumber)].address
-        } else { // if walletToAddressLbl
-            title = presenter.histObj.txOutputs[Int(lineNumber)].address
-        }
+        title = copyAdressFor(labelFor: labelFor, lineNumber: Int(lineNumber))
         
         let actionSheet = UIAlertController(title: "", message: title, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
@@ -115,6 +111,23 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
             self.present(activityVC, animated: true, completion: nil)
         }))
         self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func copyAdressFor(labelFor: UILabel, lineNumber: Int) -> String {
+        switch self.presenter.wallet.blockchainType.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            if labelFor == walletFromAddressLbl {
+                return presenter.histObj.txInputs[Int(lineNumber)].address
+            } else { // if walletToAddressLbl
+                return presenter.histObj.txOutputs[Int(lineNumber)].address
+            }
+        default:    //case BLOCKCHAIN_ETHEREUM
+            if labelFor == walletFromAddressLbl {
+                return presenter.histObj.addressesArray.first!
+            } else { // if walletToAddressLbl
+                return presenter.histObj.addressesArray.last!
+            }
+        }
     }
     
     func checkHeightForScrollAvailability() {

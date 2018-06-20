@@ -13,7 +13,7 @@ enum ReceivingOption {
 
 private typealias LocalizeDelegate = ReceiveAllDetailsViewController
 
-class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, CancelProtocol, AddressTransferProtocol {
+class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, CancelProtocol, AddressTransferProtocol, BranchProtocol {
 
     @IBOutlet weak var cancelBtn: UIButton!
     @IBOutlet weak var qrImage: UIImageView!
@@ -175,14 +175,17 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
         logAnalytics(code: donationForContactSC)
     }
  
-    func branchDict() -> NSDictionary {
+    func branchDict() -> [String : Any] {
+        return branchDict(presenter.wallet!.blockchainType.blockchain, presenter.walletAddress, presenter.cryptoSum ?? "0.0")
         //check for blockchain
         //if bitcoin - address: "\(chainName):\(presenter.walletAddress)"
-        let dict: NSDictionary = ["$og_title" : "Multy",
-                                  "address"   : "\(presenter.qrBlockchainString):\(presenter.walletAddress)",
-                                  "amount"    : presenter.cryptoSum ?? "0.0"]
+//        let dict: NSDictionary = ["$og_title" : "Multy",
+//                                  "address"   : "\(presenter.qrBlockchainString):\(presenter.walletAddress)",
+//                                  "amount"    : presenter.cryptoSum ?? "0.0"]
         
-        return dict
+        
+        
+//        return dict
     }
     
     func cancelAction() {
@@ -191,7 +194,7 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
     }
     
     @IBAction func enableBluetoothAction(_ sender: Any) {
-        presentGoToBluetoothSettingsAlert()
+//        presentGoToBluetoothSettingsAlert()
     }
     
     func donate50(idOfProduct: String) {
@@ -213,7 +216,7 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
     
     @IBAction func moreOptionsAction(_ sender: Any) {
         let branch = Branch.getInstance()
-        branch?.getShortURL(withParams: branchDict() as! [String : Any], andChannel: "Create option \"Multy\"", andFeature: "sharing", andCallback: { (url, err) in
+        branch?.getShortURL(withParams: branchDict(), andChannel: "Create option \"Multy\"", andFeature: "sharing", andCallback: { (url, err) in
             let objectsToShare = [url] as! [String]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
@@ -282,11 +285,13 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
                 option = .qrCode
                 changeVisibility(isHidden: true)
                 wirelessButton.setTitle(localize(string: Constants.magicalReceiveString), for: .normal)
+                sendAnalyticsEvent(screenName: KFReceiveScreen, eventName: KFStopReceiving)
                 
             case .qrCode:
                 option = .wireless
                 changeVisibility(isHidden: false)
                 wirelessButton.setTitle(localize(string: Constants.cancelString), for: .normal)
+                sendAnalyticsEvent(screenName: KFReceiveScreen, eventName: KFStartReceiving)
             }
         }
     }

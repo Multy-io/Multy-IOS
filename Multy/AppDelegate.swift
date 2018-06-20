@@ -108,8 +108,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         if UserDefaults.standard.value(forKey: "isTermsAccept") != nil {
-            self.registerPush()
+            registerPush()
         }
+        
         let filePathOpt = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
         if let filePath = filePathOpt, let options = FirebaseOptions(contentsOfFile: filePath) {
             FirebaseApp.configure(options: options)
@@ -126,7 +127,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         // handler for URI Schemes (depreciated in iOS 9.2+, but still used by some apps)
+        
+        var dataString = url.absoluteString
+        
+        if dataString.hasPrefix("multy://open?link_click_id=") {
+            return true
+        }
+        
         Branch.getInstance().application(app, open: url, options: options)
+        
+        if dataString.hasPrefix("multy://") {
+            dataString.removeSubrange(dataString.range(of: "multy://")!)
+        }
         
         DataManager.shared.getAccount(completion: { (acc, err) in
             if acc == nil {
@@ -134,7 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             var addressStr = ""
             var amountFromQr: String?
-            let array = url.absoluteString.components(separatedBy: CharacterSet(charactersIn: ":?="))
+            let array = dataString.components(separatedBy: CharacterSet(charactersIn: ":?="))
             switch array.count {
             case 1:                              // shit in qr
                 let messageFromQr = array[0]
@@ -154,7 +166,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
             sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
         })
-        
         
         return true
     }
@@ -335,9 +346,37 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
 //        let token = Messaging.messaging().fcmToken
         print("FCM token: \(fcmToken)")
         ApiManager.shared.pushToken = fcmToken
-        DataManager.shared.getAccount { (acc, err) in
-            Messaging.messaging().subscribe(toTopic: "btcTransactionUpdate-\(acc?.userID ?? "userId is empty")")  //userID
-        }
+        
+        DataManager.shared.isFCMSubscribed() ? DataManager.shared.subscribeToFirebaseMessaging() : DataManager.shared.unsubscribeToFirebaseMessaging()
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+        // If you are receiving a notification message while your app is in the background,
+        // this callback will not be fired till the user taps on the notification launching the application.
+        // TODO: Handle data of notification
+        
+        // With swizzling disabled you must let Messaging know about the message, for Analytics
+        // Messaging.messaging().appDidReceiveMessage(userInfo)
+        
+        // Print full message.
+        print(userInfo)
+        openTx(userInfo)
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // If you are receiving a notification message while your app is in the background,
+        // this callback will not be fired till the user taps on the notification launching the application.
+        // TODO: Handle data of notification
+        
+        // With swizzling disabled you must let Messaging know about the message, for Analytics
+        // Messaging.messaging().appDidReceiveMessage(userInfo)
+        
+        // Print full message.
+        print(userInfo)
+        openTx(userInfo)
+        
+        completionHandler(UIBackgroundFetchResult.newData)
     }
     
     func registerPush() {
@@ -358,8 +397,45 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         }
         self.application!.registerForRemoteNotifications()
         if Messaging.messaging().fcmToken != nil {
-            ApiManager.shared.pushToken = Messaging.messaging().fcmToken as! String
+            ApiManager.shared.pushToken = Messaging.messaging().fcmToken!
         }
     }
 }
 
+extension AppDelegate {
+    //FIXME: uncomment method after implemeting push notification on backend
+    func openTx(_ info: [AnyHashable: Any]) {
+//        if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
+//            let walletID = NSNumber(value: Int(walletIDString)!)
+//
+//            getTxAndPresent(with: txID, currencyID, networkID, walletID)
+//        }
+    }
+    
+    func getTxAndPresent(with txID: String, _ currencyID: UInt32, _ networkID: Int, _ walletID: NSNumber) {
+        let blockchainType = BlockchainType.init(blockchain: Blockchain.init(currencyID), net_type: networkID)
+        DataManager.shared.getOneWalletVerbose(walletID: walletID, blockchain: blockchainType) { (wallet, error) in
+            let networkNumber = NSNumber(value: networkID)
+            let currencyNumber = NSNumber(value: currencyID)
+            DataManager.shared.getTransactionHistory(currencyID: currencyNumber, networkID: networkNumber, walletID: walletID, completion: { (history, error) in
+                guard let history = history, let wallet = wallet else {
+                    return
+                }
+                
+                let tx = history.filter{ $0.txId == txID }.first
+                
+                guard let histObj = tx else {
+                    return
+                }
+                
+                let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
+                let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
+                transactionVC.presenter.histObj = histObj
+                transactionVC.presenter.blockchainType = blockchainType
+                transactionVC.presenter.wallet = wallet
+                
+                ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(transactionVC, animated: false)
+            })
+        }
+    }
+}

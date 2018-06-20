@@ -254,6 +254,19 @@ let buttonSendDonate            = "Button_Send_Donate_"//+FEATURE_ID
 let screenDonationSuccess       = "Screen_Donation_Success"
 let screenDonationSuccessWith_  = "Screen_Donation_Success_"//+FEATURE_ID
 
+//Killer Feature
+let KFSendScreen = "Screen_Killer_Feature_Send"
+let KFReceiveScreen = "Screen_Killer_Feature_Receive"
+
+let KFTransactionError = "KF_Transaction_Error"
+let KFTransactionSuccess = "KF_Transaction_Success"
+let KFFoundDevices = "KF_Found_Devices_"//+number of devices
+let KFPermissionGranted = "KF_Permissions_Granted"
+let KFWalletsCount = "KF_Wallets_Count_"//wallets' count
+let KFStartReceiving = "KF_Start_Receiving"
+let KFStopReceiving = "KF_Stop_Receiving"
+let KFTransactionReceived = "KF_Transaction_Received"
+
 //featues code
 let donationWithTransaction     = 20000
 
