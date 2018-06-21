@@ -627,7 +627,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     @IBAction func enableBluetoothAction(_ sender: Any) {
-        presentGoToBluetoothSettingsAlert()
+//        presentGoToBluetoothSettingsAlert()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

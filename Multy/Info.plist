@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.3</string>
+	<string>1.0.4</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -30,31 +30,15 @@
 				<string>multy</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>App-prefs</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>prefs</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>47</string>
+	<string>49</string>
 	<key>GIT_BRANCH_NAME</key>
 	<string>ETH_Beta_Test</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>79e510b</string>
+	<string>4988d28</string>
 	<key>GIT_TAG_NAME</key>
-	<string>RELEASE_1.0.0-dirty</string>
+	<string>RELEASE_BUILD_1.0.3_47-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

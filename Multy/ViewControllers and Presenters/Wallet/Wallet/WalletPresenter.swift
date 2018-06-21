@@ -24,6 +24,9 @@ class WalletPresenter: NSObject {
     }
     var transactionDataSource = [HistoryRLM]() {
         didSet {
+            if transactionDataSource.isEmpty == false {
+                walletVC?.hideEmptyLbls()
+            }
             walletVC!.transactionsTable.reloadData()
         }
     }
@@ -40,7 +43,7 @@ class WalletPresenter: NSObject {
         if walletVC == nil {
             return
         }
-        
+    
         updateHeader()
     }
     
@@ -82,9 +85,9 @@ class WalletPresenter: NSObject {
             }
             
             DataManager.shared.getTransactionHistory(currencyID: self.wallet!.chain, networkID: self.wallet!.chainType, walletID: self.wallet!.walletID) { [unowned self] (histList, err) in
+                self.walletVC?.spiner.stopAnimating()
+                self.walletVC?.isCanUpdate = true
                 if err == nil && histList != nil {
-                    self.walletVC?.spiner.stopAnimating()
-                    self.walletVC?.isCanUpdate = true
                     self.transactionDataSource = histList!.sorted(by: {
                         let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.blockTime : $0.mempoolTime
                         let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.blockTime : $1.mempoolTime

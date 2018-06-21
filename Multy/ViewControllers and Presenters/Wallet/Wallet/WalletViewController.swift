@@ -46,6 +46,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol, ContactsProtoco
     
     @IBOutlet weak var assetsTable: UITableView!
     @IBOutlet weak var transactionsTable: UITableView!
+    
+    @IBOutlet weak var emptyLbl: UILabel!
+    @IBOutlet weak var emptyArrowImg: UIImageView!
+    
     @IBOutlet weak var actionsBtnsView: UIView!
     @IBOutlet weak var gradientView: UIView!
     
@@ -91,6 +95,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol, ContactsProtoco
         presenter.getHistoryAndWallet()
         presenter.updateUI()
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+        
+        setTableToBottom()
         
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
@@ -266,7 +272,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol, ContactsProtoco
     
     @IBAction func backAction(_ sender: Any) {
         assetsTableTrailingConstraint.constant = 0
-        self.navigationController?.popViewController(animated: true)
+//        self.navigationController?.popViewController(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @IBAction func shareAddressAction(_ sender: Any) {
@@ -373,8 +380,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol, ContactsProtoco
 extension TableViewDelegate: UITableViewDelegate {
     //FIXME: hideEmptyLbls
     func hideEmptyLbls() {
-//        self.emptySecondLbl.isHidden = true
-//        self.emptyArrowImg.isHidden = true
+        emptyLbl.isHidden = true
+        emptyArrowImg.isHidden = true
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -496,7 +503,7 @@ extension AnimationSection {
         //if pending -273
         //else -203
         spiner.stopAnimating()
-        tableHeaderTopConstraint.constant = -203 // check for pending
+        tableHeaderTopConstraint.constant = presenter.wallet!.isThereBlockedAmount ? -273 : -203 // check for pending
         animateLayout()
         if transactionsTable.gestureRecognizers?.count == 6 {
             transactionsTable.gestureRecognizers?.removeLast()
@@ -510,17 +517,17 @@ extension AnimationSection {
     
     @IBAction func dragTable(_ gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: self.view)
-        let tablesHeaderY = tablesHeaderView.frame.origin.y
+//        let tablesHeaderY = tablesHeaderView.frame.origin.y
         // check is table on top
-        if tablesHeaderY + translation.y < navigationHeaderView.frame.maxY {
-            if tablesHeaderY + translation.y > 80 {
-                
-            } else {
-                //setTableToTop()
-                //                if self.presenter.numberOfTransactions() > 5 {
-                //                    self.tableView.removeGestureRecognizer(recog!)
-            }
-        }
+//        if tablesHeaderY + translation.y < navigationHeaderView.frame.maxY {
+//            if tablesHeaderY + translation.y > 80 {
+//
+//            } else {
+//                //setTableToTop()
+//                //                if self.presenter.numberOfTransactions() > 5 {
+//                //                    self.tableView.removeGestureRecognizer(recog!)
+//            }
+//        }
         
         
         if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
@@ -539,11 +546,14 @@ extension AnimationSection {
                 changeTablesHeight(transY: transY)
                 tableHeaderTopConstraint.constant = tableHeaderTopConstraint.constant + transY
             }
+            if translation.x > 0 && translation.y/translation.x < 1/2 && translation.y/translation.x > -1/2 {
+                backAction(Any.self)
+            }
             gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
         }
         
         if gestureRecognizer.state == .ended {
-            if tablesHeaderView.frame.origin.y > spaceBetweenTablesHeaderNavigationHeader / 2 + 40 {
+            if tablesHeaderView.frame.origin.y > spaceBetweenTablesHeaderNavigationHeader / 2 + 120 {
                 setDefaultState()
                 setTableToBottom()
             } else { // if tablesHeaderView.frame.origin.y < spaceBetweenTablesHeaderNavigationHeader / 2

@@ -73,24 +73,9 @@ class CreateWalletViewController: UIViewController, AnalyticsProtocol {
     
     func openNewlyCreatedWallet() {
         let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
-        var walletVC = UIViewController()
-        
-        switch presenter.createdWallet.blockchainType.blockchain {
-        case BLOCKCHAIN_BITCOIN:
-            let vc = storyboard.instantiateViewController(withIdentifier: "WalletMainID") as! BTCWalletViewController
-            vc.presenter.wallet = presenter.createdWallet
-            vc.presenter.account = presenter.account
-            
-            walletVC = vc
-        case BLOCKCHAIN_ETHEREUM:
-            let vc = storyboard.instantiateViewController(withIdentifier: "EthWalletID") as! EthWalletViewController
-            vc.presenter.wallet = presenter.createdWallet
-            vc.presenter.account = presenter.account
-            
-            walletVC = vc
-        default:
-            return
-        }
+        let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
+        walletVC.presenter.wallet = presenter.createdWallet
+        walletVC.presenter.account = presenter.account
         
         navigationController?.pushViewController(walletVC, animated: true)
     }

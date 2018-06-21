@@ -194,7 +194,7 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
     }
     
     @IBAction func enableBluetoothAction(_ sender: Any) {
-        presentGoToBluetoothSettingsAlert()
+//        presentGoToBluetoothSettingsAlert()
     }
     
     func donate50(idOfProduct: String) {
