@@ -12,7 +12,7 @@ private typealias CancelDelegate = WalletViewController
 private typealias ScrollViewDelegate = WalletViewController
 
 
-class WalletViewController: UIViewController, AnalyticsProtocol {
+class WalletViewController: UIViewController, AnalyticsProtocol, ContactsProtocol {
 
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var pendingStack: UIStackView!
@@ -81,6 +81,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         presenter.registerCells()
         
         setupUI()
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
