@@ -357,8 +357,13 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     @IBAction func exchangeAction(_ sender: Any) {
-        unowned let weakSelf =  self
-        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
+//        unowned let weakSelf =  self
+//        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC")
+        navigationController?.pushViewController(exchangeVC, animated: true)
+        
+
         //        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(exchangeWithChainTap)\(presenter.wallet!.chain)")
         logAnalytics()
     }
