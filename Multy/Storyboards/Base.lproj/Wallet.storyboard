@@ -492,6 +492,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="24"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                 <connections>
+                                                    <action selector="sendingCryptoValueChanged:" destination="aod-sy-RfO" eventType="editingChanged" id="DNQ-5v-pTS"/>
                                                     <outlet property="delegate" destination="aod-sy-RfO" id="sIP-qq-Irj"/>
                                                 </connections>
                                             </textField>
@@ -507,6 +508,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 </attributedString>
                                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                 <connections>
+                                                    <action selector="sendingFiatValueChanged:" destination="aod-sy-RfO" eventType="editingChanged" id="uUz-tB-YMb"/>
                                                     <outlet property="delegate" destination="aod-sy-RfO" id="UbJ-Ti-Tqk"/>
                                                 </connections>
                                             </textField>

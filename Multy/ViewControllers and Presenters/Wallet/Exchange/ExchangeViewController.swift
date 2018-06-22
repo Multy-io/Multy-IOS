@@ -158,6 +158,15 @@ class ExchangeViewController: UIViewController {
         view.endEditing(true)
     }
     
+    
+    @IBAction func sendingCryptoValueChanged(_ sender: Any) {
+        presenter.makeSendFiatTfValue()
+    }
+    
+    @IBAction func sendingFiatValueChanged(_ sender: Any) {
+        presenter.makeSendCryptoTfValue()
+    }
+    
 }
 
 extension LocalizableDelegate: Localizable {
@@ -170,13 +179,16 @@ extension TextFieldDelegate: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch string {
         case "":
-            return presenter.checkForDeletingIn(textField: textField)
+            return presenter.deleteEnteredIn(textField: textField)
         case ",", ".":
-            return presenter.checkDelimeter(textField: textField)
+            return presenter.delimiterEnteredIn(textField: textField)
         case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-            break
+            return presenter.numberEnteredIn(textField: textField)
         default: break
         }
+        
         return true
     }
+    
+    
 }

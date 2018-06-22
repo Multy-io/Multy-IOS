@@ -30,9 +30,35 @@ class ExchangePresenter: NSObject {
             return false
         }
     }
+    
+    func maxSymblosAfterDelimiter(textField: UITextField) -> Int {
+        if checkIsFiatTf(textField: textField) {
+            return 2
+        } else {
+            return 8
+        }
+    }
+    
+    func checkNumberOfSymbolsAfterDelimeter(textField: UITextField) -> Bool {
+        let delimeter = textField.text!.contains(",") ? "," : "."
+        let strAfterDot: [String?] = textField.text!.components(separatedBy: delimeter)
+        if checkIsFiatTf(textField: textField) {
+            return strAfterDot[1]!.count == 2 ? false : true
+        } else {
+            return strAfterDot[1]!.count == 8 ? false : true
+        }
+    }
+    
+//    func maxAllowedToSpend(stringWithEnteredNumber: String) -> Bool {
+//        BigInt(stringWithEnteredNumber, <#T##blockchain: Blockchain##Blockchain#>)
+//
+//        walletFromSending?.availableAmount
+//    }
+    
         //Delete section
-    func checkForDeletingIn(textField: UITextField) -> Bool {
-        if textField == exchangeVC?.sendingFiatValueTF || textField == exchangeVC?.receiveFiatValueTF {
+    func deleteEnteredIn(textField: UITextField) -> Bool {
+//        makeSendFiat(enteredNumber: "")
+        if checkIsFiatTf(textField: textField) {
             if textField.text == "$ " {             // "$ " default value in fiat tf
                 return false
             } else if textField.text == "$ 0," || textField.text == "$ 0." {
@@ -49,14 +75,54 @@ class ExchangePresenter: NSObject {
         return true
     }
         // -------- done -------- //
-    func checkDelimeter(textField: UITextField) -> Bool {
-        if textField.text!.isEmpty || textField.text == "$ " {  // "$ " default value in fiat tf
-            textField.text = "0."                                // set first 0 and than delimeter
+        // Delimeter Section
+    func delimiterEnteredIn(textField: UITextField) -> Bool {
+        // if text contains delimeter than return false
+        if textField.text!.contains(",") || textField.text!.contains(".") {
             return false
         }
-        if textField.text!.contains(".") || textField.text!.contains(",") {
+        
+        //if text is empty return 0.
+        if checkIsFiatTf(textField: textField) && textField.text == "$ " {
+            textField.text = "$ 0."
+            return false
+        } else if textField.text!.isEmpty {
+            textField.text = "0."
             return false
         }
+        
         return true
+    }
+        // -------- done -------- //
+        //Value section
+    func numberEnteredIn(textField: UITextField) -> Bool {
+//        makeSendFiat(enteredNumber: enteredNumber)
+        var textInTfWithOneMoreSymbol = textField.text!.replacingOccurrences(of: "$ ", with: "") + " "  //remove "$ " for fiat TF
+        textInTfWithOneMoreSymbol = textInTfWithOneMoreSymbol.replacingOccurrences(of: ".", with: "")
+        if textInTfWithOneMoreSymbol.count > 12 {
+            return false
+        }
+        if textField.text!.contains(",") || textField.text!.contains(".") {
+            return checkNumberOfSymbolsAfterDelimeter(textField: textField)
+        }
+        
+        return true
+    }
+        // -------- done -------- //
+    
+    func makeSendFiatTfValue() {
+        let str: String = exchangeVC!.sendingCryptoValueTF.text!
+        exchangeVC!.sendingFiatValueTF.text = "$ " + str.fiatValueString(for: walletFromSending!.blockchainType)
+    }
+    
+    func makeSendCryptoTfValue() {
+        let valueFromTF = exchangeVC!.sendingFiatValueTF.text!.replacingOccurrences(of: "$ ", with: "")
+        let sumInFiat = walletFromSending!.blockchain.multiplyerToMinimalUnits * Double(valueFromTF.stringWithDot)
+        let endCryptoString = sumInFiat / walletFromSending?.exchangeCourse
+        if valueFromTF.isEmpty {
+            exchangeVC!.sendingCryptoValueTF.text = "0.0"
+        } else {
+            exchangeVC!.sendingCryptoValueTF.text = endCryptoString.cryptoValueString(for: walletFromSending!.blockchain)
+        }
     }
 }
