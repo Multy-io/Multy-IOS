@@ -5,6 +5,7 @@
 import UIKit
 
 private typealias LocalizableDelegate = ExchangeViewController
+private typealias TextFieldDelegate = ExchangeViewController
 
 class ExchangeViewController: UIViewController {
     
@@ -50,8 +51,9 @@ class ExchangeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        presenter.exchangeVC = self
         setupUI()
+        presenter.updateUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -161,5 +163,20 @@ class ExchangeViewController: UIViewController {
 extension LocalizableDelegate: Localizable {
     var tableName: String {
         return "Wallets"
+    }
+}
+
+extension TextFieldDelegate: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        switch string {
+        case "":
+            return presenter.checkForDeletingIn(textField: textField)
+        case ",", ".":
+            return presenter.checkDelimeter(textField: textField)
+        case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
+            break
+        default: break
+        }
+        return true
     }
 }

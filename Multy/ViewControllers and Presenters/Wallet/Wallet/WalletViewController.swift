@@ -333,6 +333,18 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(receiveWithChainTap)\(presenter.wallet!.chain)")
     }
     
+    @IBAction func exchangeAction(_ sender: Any) {
+        //        unowned let weakSelf =  self
+        //        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC") as! ExchangeViewController
+        exchangeVC.presenter.walletFromSending = presenter.wallet
+        navigationController?.pushViewController(exchangeVC, animated: true)
+        
+        
+        logAnalytics()
+    }
+    
     @IBAction func settingssAction(_ sender: Any) {
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(settingsWithChainTap)\(presenter.wallet!.chain)")
         self.performSegue(withIdentifier: "settingsVC", sender: sender)
@@ -354,18 +366,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         adressesVC.presenter.wallet = presenter.wallet
         navigationController?.pushViewController(adressesVC, animated: true)
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(allAddressesWithChainTap)\(presenter.wallet!.chain)")
-    }
-    
-    @IBAction func exchangeAction(_ sender: Any) {
-//        unowned let weakSelf =  self
-//        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
-        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
-        let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC")
-        navigationController?.pushViewController(exchangeVC, animated: true)
-        
-
-        //        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(exchangeWithChainTap)\(presenter.wallet!.chain)")
-        logAnalytics()
     }
     
     func logAnalytics() {
