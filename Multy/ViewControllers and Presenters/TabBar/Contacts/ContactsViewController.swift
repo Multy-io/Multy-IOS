@@ -7,6 +7,7 @@ import UIKit
 private typealias TableViewDelegate = ContactsViewController
 private typealias TableViewDataSource = ContactsViewController
 private typealias LocalizeDelegate = ContactsViewController
+private typealias AnalyticsDelegate = ContactsViewController
 
 class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtocol {
 
@@ -55,12 +56,7 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         unowned let weakSelf =  self
         self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingContacts50")
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
-        logAnalytics()
-    }
-    
-    func logAnalytics() {
-        //FIXME: add user analytics
-//        sendDonationAlertScreenPresentedAnalytics(code: donationForContactSC)
+        logDonationAnalytics()
     }
     
     func setupView() {
@@ -82,14 +78,8 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     }
     
     @IBAction func addUser(_ sender: Any) {
-//        updateMyContact()
-        
-        let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:false, subtitleCellType: SubtitleCellValue.email)
-        let navigationController = UINavigationController(rootViewController: contactPickerScene)
-        self.present(navigationController, animated: true, completion: nil)
-
-        
-        logAnalytics()
+        presentiPhoneContacts()
+        logContactsAnalytics()
     }
 }
 
@@ -104,6 +94,16 @@ extension TableViewDelegate : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+}
+
+extension AnalyticsDelegate {
+    func logDonationAnalytics() {
+        sendDonationAlertScreenPresentedAnalytics(code: donationForContactSC)
+    }
+    
+    func logContactsAnalytics() {
+        sendAnalyticsEvent(screenName: contactsScreen, eventName: openiPhoneContacts)
     }
 }
 
@@ -133,7 +133,7 @@ extension ContactsViewController: EPPickerDelegate {
             return
         }
         
-        presenter.updateContactInfo(contact.contactId!, with: nil, nil, nil) { [unowned self] (result) in
+        presenter.updateContactInfo(contact.contactId!, withAddress: nil, nil, nil) { [unowned self] (result) in
             self.presenter.fetchPhoneContacts()
         }
     }

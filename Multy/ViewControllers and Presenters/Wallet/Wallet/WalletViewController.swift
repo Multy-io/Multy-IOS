@@ -11,7 +11,6 @@ private typealias LocalizeDelegate = WalletViewController
 private typealias CancelDelegate = WalletViewController
 private typealias ScrollViewDelegate = WalletViewController
 
-
 class WalletViewController: UIViewController, AnalyticsProtocol, ContactsProtocol {
 
     @IBOutlet weak var titleLbl: UILabel!
@@ -588,11 +587,11 @@ extension AnimationSection {
 
 extension CancelDelegate : CancelProtocol {
     func cancelAction() {
-        self.makePurchaseFor(productId: "io.multy.addingExchange5")
+        makePurchaseFor(productId: "io.multy.addingExchange5")
     }
     
     func donate50(idOfProduct: String) {
-        self.makePurchaseFor(productId: idOfProduct)
+        makePurchaseFor(productId: idOfProduct)
     }
     
     func presentNoInternet() {

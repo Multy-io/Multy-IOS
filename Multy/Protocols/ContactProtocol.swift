@@ -11,6 +11,10 @@ protocol ContactsProtocol: BranchProtocol {
 }
 
 extension ContactsProtocol {
+    func addAddress(_ address: String, to contact: String) {
+        
+    }
+    
     func fetchPhoneContacts(completion: @escaping (_ contacts: [CNContact]?, _ error: Error?) -> ()) {
         requestAccess { (responce) in
             if responce {
@@ -31,7 +35,7 @@ extension ContactsProtocol {
         }
     }
     
-    func updateContactInfo(_ contactID: String, with address: String?, _ currencyID: UInt32?, _ networkID: UInt32?, _ completion: @escaping(_ result: ContactsFetchResult) -> ()) {
+    func updateContactInfo(_ contactID: String, withAddress address: String?, _ currencyID: UInt32?, _ networkID: UInt32?, _ completion: @escaping(_ result: ContactsFetchResult) -> ()) {
         getContactFromID(Identifires: [contactID], completionHandler: { (result) in
             switch result {
             case .Success(response: let contacts):

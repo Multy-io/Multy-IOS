@@ -7,6 +7,9 @@ import ZFRippleButton
 import Lottie
 
 private typealias LocalizeDelegate = SendStartViewController
+private typealias GestureRecognizerDelegate = SendStartViewController
+private typealias ContactDelegate = SendStartViewController
+private typealias PickerContactsDelegate = SendStartViewController
 
 class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsProtocol, DonationProtocol, CancelProtocol {
 
@@ -36,6 +39,7 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
         self.presenter.sendStartVC = self
         sendAnalyticsEvent(screenName: screenSendTo, eventName: screenSendTo)
         setupUI()
+        setupLongTap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -258,6 +262,16 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
         addressTV.scrollRangeToVisible(NSMakeRange(addressTV.text.count - 1, 0))
         placeholderLabel.isHidden = true
     }
+    
+    func openSheetWithAddress(_ address: RecentAddressesRLM) {
+        let actionSheet = UIAlertController(title: "", message: address.address, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
+            self.presenter.selectedAddress = address
+            self.presentiPhoneContacts()
+        }))
+        self.present(actionSheet, animated: true, completion: nil)
+    }
 }
 
 extension SendStartViewController:  UITableViewDelegate, UITableViewDataSource {
@@ -320,6 +334,42 @@ extension SendStartViewController:  UITableViewDelegate, UITableViewDataSource {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
+    }
+}
+
+extension GestureRecognizerDelegate: UIGestureRecognizerDelegate {
+    func setupLongTap() {
+        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap))
+        longTap.minimumPressDuration = 0.7
+        longTap.delegate = self
+        tableView.addGestureRecognizer(longTap)
+    }
+    
+    @objc func handleLongTap(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == .began {
+            let touchPoint = gestureRecognizer.location(in: tableView)
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                if indexPath.row < presenter.recentAddresses.count {
+                    openSheetWithAddress(presenter.recentAddresses[indexPath.row])
+                }
+            }
+        }
+    }
+}
+
+extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
+    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) {
+        if contact.contactId == nil && presenter.selectedAddress != nil {
+            return
+        }
+        
+        let address = presenter.selectedAddress!.address
+        let currencyID = presenter.selectedAddress!.blockchain.uint32Value
+        let networkID = presenter.selectedAddress?.blockchainNetType.uint32Value
+        
+        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] (result) in
+            
+        }
     }
 }
 

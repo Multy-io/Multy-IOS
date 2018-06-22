@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2903DBF32668295CED1C9139 /* Pods_Multy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7304C17824311A19240183E0 /* Pods_Multy.framework */; };
 		44089D15205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */; };
+		4409E40120DD047900ADBE42 /* LocalizationConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4409E40020DD047900ADBE42 /* LocalizationConstant.swift */; };
 		440AD8D22020D1220015AEF1 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */; };
 		4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4430569D20C1627600E5415A /* TransactionPendingCell.xib */; };
 		4436123020B56F000095F3C6 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436122F20B56F000095F3C6 /* UITableView+Extension.swift */; };
@@ -44,7 +45,6 @@
 		445D150D20DA8513002F6747 /* EPContactsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445D150720DA8513002F6747 /* EPContactsPicker.swift */; };
 		445D150E20DA8513002F6747 /* EPContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445D150820DA8513002F6747 /* EPContactCell.swift */; };
 		445D151020DAB089002F6747 /* CNContact+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445D150F20DAB089002F6747 /* CNContact+Extension.swift */; };
-		445D151220DB9421002F6747 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 445D151120DB9421002F6747 /* Contacts.framework */; };
 		4474C5A520BEFFAB00EA8B01 /* EthWalletHeaderCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4474C5A720BEFFAB00EA8B01 /* EthWalletHeaderCollectionViewCell.xib */; };
 		4474C5B020BFE60600EA8B01 /* Contacts.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4474C5B220BFE60600EA8B01 /* Contacts.strings */; };
 		4474C5B720BFE76800EA8B01 /* Activty.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4474C5B920BFE76800EA8B01 /* Activty.strings */; };
@@ -334,6 +334,7 @@
 		2A100BE42F31871FFE847169 /* Pods-MultyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MultyTests/Pods-MultyTests.release.xcconfig"; sourceTree = "<group>"; };
 		3140FCDE88E15AA96180AE29 /* Pods-Multy-MultyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Multy-MultyUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Multy-MultyUITests/Pods-Multy-MultyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletBlockchainTableViewCell.swift; sourceTree = "<group>"; };
+		4409E40020DD047900ADBE42 /* LocalizationConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstant.swift; sourceTree = "<group>"; };
 		440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		4430569C20C1627600E5415A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TransactionPendingCell.xib; sourceTree = "<group>"; };
 		4430569F20C1627C00E5415A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransactionPendingCell.strings; sourceTree = "<group>"; };
@@ -755,7 +756,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				445D151220DB9421002F6747 /* Contacts.framework in Frameworks */,
 				85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */,
 				FA4125DF2004C0FD00DF9AC3 /* libstdc++.tbd in Frameworks */,
 				FA4125EE2004FF1500DF9AC3 /* libkeccak-tiny.a in Frameworks */,
@@ -1182,6 +1182,7 @@
 				FA4D43E01FC5895D003C7117 /* String+Extension.swift */,
 				444B3B642045723C008129B8 /* BigInt+Extension.swift */,
 				FA74062A1FCC5D6A003C538C /* Constants.swift */,
+				4409E40020DD047900ADBE42 /* LocalizationConstant.swift */,
 				FAFCDA871FD7DD7A0056DD64 /* Request+Extension.swift */,
 				FA58DF601FDC400C00C45303 /* UIColor+Extension.swift */,
 				FA4E559E1FE00F63000FA1A1 /* Double+Extension.swift */,
@@ -2464,6 +2465,7 @@
 				45A9494A1FC5C572003C3A23 /* WalletChooseViewController.swift in Sources */,
 				445D150A20DA8513002F6747 /* EPExtensions.swift in Sources */,
 				45C8D1452007EACE00F5994E /* TxHistoryRLM.swift in Sources */,
+				4409E40120DD047900ADBE42 /* LocalizationConstant.swift in Sources */,
 				4540944C2031EF1600603DB5 /* SecuritySettingsPresenter.swift in Sources */,
 				FA58DF651FDC403E00C45303 /* WrongSeedPhrasePresenter.swift in Sources */,
 				45E215E01FD164F80078945A /* QrScannerPresenter.swift in Sources */,

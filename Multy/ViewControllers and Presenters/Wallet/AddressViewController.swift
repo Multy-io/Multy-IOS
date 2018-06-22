@@ -5,6 +5,8 @@
 import UIKit
 import Branch
 
+private typealias PickerDelegate = AddressViewController
+
 class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol {
 
     @IBOutlet weak var titleLbl: UILabel!
@@ -133,6 +135,10 @@ class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func addToContactAction(_ sender: Any) {
+        presentiPhoneContacts()
+    }
+    
     func makeStringForQRWithSumAndAdress(cryptoName: String) -> String { // cryptoName = bitcoin
         return "\(cryptoName):\(makeStringWithAddress())?amount:0"
     }
@@ -169,5 +175,21 @@ class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol
         let cgImage:CGImage = context.createCGImage(cmage, from: cmage.extent)!
         let image:UIImage = UIImage.init(cgImage: cgImage)
         return image
+    }
+}
+
+extension PickerDelegate: EPPickerDelegate, ContactsProtocol {
+    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) {
+        if contact.contactId == nil {
+            return
+        }
+        
+        let address = makeStringWithAddress()
+        let currencyID = wallet!.chain.uint32Value
+        let networkID = wallet!.chainType.uint32Value
+        
+        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] (result) in
+            self.cancelAction(Any.self)
+        }
     }
 }
