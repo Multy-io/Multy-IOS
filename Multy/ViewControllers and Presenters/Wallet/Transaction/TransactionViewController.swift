@@ -5,6 +5,7 @@
 import UIKit
 
 private typealias LocalizeDelegate = TransactionViewController
+private typealias PickerContactsDelegate = TransactionViewController
 
 class TransactionViewController: UIViewController, AnalyticsProtocol {
 
@@ -93,6 +94,10 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.copyToClipboardString), style: .default, handler: { (action) in
             UIPasteboard.general.string = title
+        }))
+        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
+            self.presenter.selectedAddress = title
+            self.presentiPhoneContacts()
         }))
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.shareString), style: .default, handler: { (action) in
             let objectsToShare = [title]
@@ -282,6 +287,20 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
             blockchainVC.presenter.blockchain = presenter.blockchain
             blockchainVC.presenter.txHash = presenter.histObj.txHash
         }
+    }
+}
+
+extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
+    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) {
+        if contact.contactId == nil {
+            return
+        }
+        
+        let address = presenter.selectedAddress
+        let currencyID = presenter.wallet.chain.uint32Value
+        let networkID = presenter.wallet.chainType.uint32Value
+        
+        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { _ in }
     }
 }
 
