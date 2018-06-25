@@ -23,11 +23,13 @@ class ExchangeViewController: UIViewController {
     
     @IBOutlet weak var sendToReceiveRelation: UILabel!  // 1 BTC = 0.075342 BTC
     
+    @IBOutlet weak var summarySendingWalletNameLbl: UILabel!
     @IBOutlet weak var summarySendingImg: UIImageView!
     @IBOutlet weak var summarySendingCryptoValueLbl: UILabel!
     @IBOutlet weak var summarySendingCryptoNameLbl: UILabel!
     @IBOutlet weak var summarySendingFiatLbl: UILabel!
     
+    @IBOutlet weak var summaryReceiveWalletNameLbl: UILabel!
     @IBOutlet weak var summaryReceiveImg: UIImageView!
     @IBOutlet weak var summaryReceiveCryptoValueLbl: UILabel!
     @IBOutlet weak var summaryReceiveCryptoNameLbl: UILabel!
@@ -54,6 +56,12 @@ class ExchangeViewController: UIViewController {
         presenter.exchangeVC = self
         setupUI()
         presenter.updateUI()
+        
+        
+        presenter.walletToReceive.chain = NSNumber(value: BLOCKCHAIN_ETHEREUM.rawValue)
+        presenter.walletToReceive.chainType = NSNumber(value: ETHEREUM_CHAIN_ID_MAINNET.rawValue)
+        presenter.walletToReceive.name = "To receive"
+        presenter.updateReceiveSection()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,6 +88,9 @@ class ExchangeViewController: UIViewController {
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(slideToSend))
         slideView.isUserInteractionEnabled = true
         slideView.addGestureRecognizer(gestureRecognizer)
+        
+        sendingImg.setShadow(with: #colorLiteral(red: 0.3607843137, green: 0.4784313725, blue: 0.7607843137, alpha: 0.4))
+        receiveCryptoImg.setShadow(with: #colorLiteral(red: 0.3607843137, green: 0.4784313725, blue: 0.7607843137, alpha: 0.4))
     }
 
     
@@ -147,6 +158,8 @@ class ExchangeViewController: UIViewController {
         }
     }
     
+   
+    
     
     
     
@@ -161,11 +174,30 @@ class ExchangeViewController: UIViewController {
     
     @IBAction func sendingCryptoValueChanged(_ sender: Any) {
         presenter.makeSendFiatTfValue()
+        presenter.setEndValueToSend()
     }
     
     @IBAction func sendingFiatValueChanged(_ sender: Any) {
         presenter.makeSendCryptoTfValue()
+        presenter.setEndValueToSend()
     }
+    
+    @IBAction func receiveCryptoValueChanged(_ sender: Any) {
+        presenter.makeReceiveFiatString()
+        presenter.setEndValueToReceive()
+    }
+    
+    @IBAction func receiveFiatValueChanged(_ sender: Any) {
+        presenter.makeReceiveCryptoTfValue()
+        presenter.setEndValueToReceive()
+    }
+    
+    @IBAction func maxToExchangeAction(_ sender: Any) {
+        sendingCryptoValueTF.text = presenter.walletFromSending!.availableAmountString
+        presenter.makeSendFiatTfValue()
+        presenter.setEndValueToSend()
+    }
+    
     
 }
 

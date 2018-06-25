@@ -194,7 +194,8 @@ extension String {
     }
     
     func showString(_ precision: Int) -> String {
-        let components = self.components(separatedBy: CharacterSet.init(charactersIn: "\(defaultDelimeter)"))
+        let stringWithDot = self.replacingOccurrences(of: ".", with: ",")
+        let components = stringWithDot.components(separatedBy: CharacterSet.init(charactersIn: "\(defaultDelimeter)"))
         
         if precision < 1 {
             if isEmpty {
