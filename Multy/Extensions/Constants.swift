@@ -25,6 +25,7 @@ struct Constants {
     struct Storyboard {
         //Assets
         static let createWalletVCSegueID = "createWalletVC"
+        static let contactVCSegueID = "contactVC"
     }
     
     struct UserDefaults {

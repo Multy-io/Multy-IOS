@@ -20,4 +20,8 @@ extension CNLabeledValue where ValueType == CNSocialProfile {
     func isMulty() -> Bool {
         return value.username == "Multy"
     }
+    
+    func isThereAddress() -> Bool {
+        return value.service != "Multy"
+    }
 }

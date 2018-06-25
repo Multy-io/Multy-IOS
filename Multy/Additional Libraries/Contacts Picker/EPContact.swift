@@ -63,7 +63,7 @@ open class EPContact {
             addresses.removeAll()
 
             for socialProfile in contact.socialProfiles {
-                if socialProfile.isMulty() {
+                if socialProfile.isMulty() && socialProfile.isThereAddress() {
                     let addressRLM = convertProfileToAddress(socialProfile)
                     addresses.append(addressRLM)
                 }
@@ -84,21 +84,17 @@ open class EPContact {
     func convertProfileToAddress(_ profile: CNLabeledValue<CNSocialProfile>) -> AddressRLM {
         let address = AddressRLM()
         
-        if profile.value.service == "Multy" {
-            address.address = "Multy"
-        } else {
-            let addressInfo = profile.value.userIdentifier.components(separatedBy: "/")
-            
-            if addressInfo.count != 3 {
-                return address
-            }
-            
-            address.address = addressInfo[0]
-            address.currencyID = NSNumber(value: UInt32(addressInfo[1])!)
-            address.networkID = NSNumber(value: UInt32(addressInfo[2])!)
+        let addressInfo = profile.value.userIdentifier.components(separatedBy: "/")
+        
+        if addressInfo.count != 3 {
+            return address
         }
         
-        return AddressRLM()
+        address.address = addressInfo[0]
+        address.currencyID = NSNumber(value: UInt32(addressInfo[1])!)
+        address.networkID = NSNumber(value: UInt32(addressInfo[2])!)
+        
+        return address
     }
 	
     open func displayName() -> String {

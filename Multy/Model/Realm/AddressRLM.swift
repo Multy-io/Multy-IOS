@@ -18,6 +18,12 @@ class AddressRLM: Object {
     
     var spendableOutput = List<SpendableOutputRLM>()
     
+    var blockchainType: BlockchainType {
+        get {
+            return BlockchainType.create(currencyID: currencyID.uint32Value, netType: networkID.uint32Value)
+        }
+    }
+    
     public class func initWithArray(addressesInfo: NSArray) -> List<AddressRLM> {
         let addresses = List<AddressRLM>()
         
@@ -48,7 +54,7 @@ class AddressRLM: Object {
             addressRLM.address = addressString as! String
         }
         
-        if let date = addressInfo["lastActionTime"] {
+        if let date = addressInfo["lastactiontime"] {
             addressRLM.lastActionDate = NSDate(timeIntervalSince1970: (date as! Double)) as Date
         }
         

@@ -19,7 +19,6 @@ class EPContactCell: UITableViewCell {
     var contact: EPContact?
     
     override func awakeFromNib() {
-        
         super.awakeFromNib()
         // Initialization code
         selectionStyle = UITableViewCellSelectionStyle.none

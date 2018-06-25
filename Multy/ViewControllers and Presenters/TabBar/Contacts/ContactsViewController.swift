@@ -15,6 +15,8 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     var presenter = ContactsPresenter()
     @IBOutlet weak var donationTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var noContactsImageView: UIImageView!
+    @IBOutlet weak var noContactsLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +30,6 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         
         presenter.tabBarFrame = tabBarController?.tabBar.frame
         presenter.registerCell()
-        presenter.fetchPhoneContacts()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -37,6 +38,8 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        presenter.fetchPhoneContacts()
         
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
@@ -81,11 +84,20 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         presentiPhoneContacts()
         logContactsAnalytics()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Storyboard.contactVCSegueID {
+            let contactVC = segue.destination as! ContactViewController
+            let indexPath = sender as! IndexPath
+            contactVC.presenter.contact = presenter.contacts[indexPath.row]
+            contactVC.presenter.indexPath = indexPath
+        }
+    }
 }
 
 extension TableViewDelegate : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        performSegue(withIdentifier: "contactVC", sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
