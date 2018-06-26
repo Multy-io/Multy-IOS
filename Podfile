@@ -28,7 +28,8 @@ target 'Multy' do
   pod 'lottie-ios'
   pod 'UPCarouselFlowLayout'
   pod 'SwiftyContacts'
-
+  pod 'Hash2Pics'
+  
   target 'MultyTests' do
       inherit! :search_paths
     

@@ -17,21 +17,6 @@ class PaymentRequest: NSObject {
     let networkID : Int
     var satisfied = false
     
-    var requestImageName : String {
-        get {
-            let imageNumber = sendAddress.convertToImageIndex
-            
-            return "wirelessRequestImage_" + "\(imageNumber)"
-            
-//            if let userCodeInt = UInt32(userCode, radix: 16) {
-//                let imageNumber = Int(userCodeInt)%wirelessRequestImagesAmount
-//                return "wirelessRequestImage_" + String(imageNumber)
-//            } else {
-//                return ""
-//            }
-        }
-    }
-    
     init(sendAddress : String, userCode : String, currencyID : Int, sendAmount : String, networkID : Int, userID : String) {
         self.sendAddress = sendAddress
         self.currencyID = currencyID
