@@ -18,7 +18,7 @@ class ExchangePresenter: NSObject {
     func updateUI() {
         exchangeVC?.sendingImg.image = UIImage(named: walletFromSending!.blockchainType.iconString)
         exchangeVC?.sendingMaxBtn.setTitle("MAX \(walletFromSending!.availableAmountString)", for: .normal)
-        setEndValueToSend()
+//        setEndValueToSend()
     }
     
     func setEndValueToSend() {

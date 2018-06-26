@@ -23,6 +23,8 @@ class ExchangeViewController: UIViewController {
     
     @IBOutlet weak var sendToReceiveRelation: UILabel!  // 1 BTC = 0.075342 BTC
     
+    @IBOutlet weak var summaryView: UIView!
+    
     @IBOutlet weak var summarySendingWalletNameLbl: UILabel!
     @IBOutlet weak var summarySendingImg: UIImageView!
     @IBOutlet weak var summarySendingCryptoValueLbl: UILabel!
@@ -43,6 +45,9 @@ class ExchangeViewController: UIViewController {
     @IBOutlet weak var arr3: UIImageView!
     @IBOutlet var arrCollection: [UIImageView]!
     
+    
+    @IBOutlet weak var topViewHeightConstraint: NSLayoutConstraint!  // 295 /246
+    
     let presenter = ExchangePresenter()
     var imageArr = [#imageLiteral(resourceName: "slideToSend1"),#imageLiteral(resourceName: "slideToSend2"),#imageLiteral(resourceName: "slideToSend3")]
     var timer: Timer?
@@ -61,17 +66,11 @@ class ExchangeViewController: UIViewController {
         presenter.walletToReceive.chain = NSNumber(value: BLOCKCHAIN_ETHEREUM.rawValue)
         presenter.walletToReceive.chainType = NSNumber(value: ETHEREUM_CHAIN_ID_MAINNET.rawValue)
         presenter.walletToReceive.name = "To receive"
-        presenter.updateReceiveSection()
+//        presenter.updateReceiveSection()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        slideColorView.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
-                                                   UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
-                                     gradientOrientation: .horizontal)
     }
     
     func setupUI() {
@@ -86,13 +85,18 @@ class ExchangeViewController: UIViewController {
         
         startSlideX = slideView.frame.origin.x
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(slideToSend))
-        slideView.isUserInteractionEnabled = true
         slideView.addGestureRecognizer(gestureRecognizer)
         
         sendingImg.setShadow(with: #colorLiteral(red: 0.3607843137, green: 0.4784313725, blue: 0.7607843137, alpha: 0.4))
         receiveCryptoImg.setShadow(with: #colorLiteral(red: 0.3607843137, green: 0.4784313725, blue: 0.7607843137, alpha: 0.4))
     }
 
+    
+    func setGradientToSlide() {
+        slideColorView.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
+                                                   UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
+                                     gradientOrientation: .horizontal)
+    }
     
     func animate() {
         self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.decrease), userInfo: nil, repeats: true)
@@ -171,6 +175,9 @@ class ExchangeViewController: UIViewController {
         view.endEditing(true)
     }
     
+    @IBAction func selectChainToReceiveAction(_ sender: Any) {
+        
+    }
     
     @IBAction func sendingCryptoValueChanged(_ sender: Any) {
         presenter.makeSendFiatTfValue()
