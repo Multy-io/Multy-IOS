@@ -725,6 +725,37 @@ class RealmManager: NSObject {
             }
         }
     }
+    
+    func updateSavedAddresses(_ addresses: SavedAddressesRLM, completion: @escaping(_ error: NSError?) -> ()) {
+        getRealm { [unowned self] (realmOpt, error) in
+            if let realm = realmOpt {
+                try! realm.write {
+                    self.deleteSavedAddresses(from: realm)
+                    realm.add(addresses)
+                }
+            } else {
+                completion(error)
+            }
+        }
+    }
+    
+    func deleteSavedAddresses(from realm: Realm) {
+        let addresses = realm.objects(SavedAddressesRLM.self)
+        
+        realm.delete(addresses)
+    }
+    
+    func fetchSavedAddresses(completion: @escaping(_ addresses: SavedAddressesRLM?, _ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                try! realm.write {
+                    completion(realm.objects(SavedAddressesRLM.self).first, nil)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
 }
 
 extension RealmMigrationManager {

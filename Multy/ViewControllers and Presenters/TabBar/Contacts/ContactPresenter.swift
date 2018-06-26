@@ -4,7 +4,9 @@
 
 import UIKit
 
-class ContactPresenter: NSObject {
+private typealias LocalizeDelegate = ContactPresenter
+
+class ContactPresenter: NSObject, ContactsProtocol {
     var contact: EPContact?
     var indexPath: IndexPath?
     var mainVC: ContactViewController?
@@ -29,15 +31,11 @@ class ContactPresenter: NSObject {
         mainVC!.contactImageLabel.backgroundColor = colorArray[randomValue]
     }
     
-    func fillCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        cell.textLabel?.adjustsFontSizeToFitWidth = true
-        
+    func fillCell(_ cell: ContactCell, at indexPath: IndexPath) {
         let addressRLM = contact!.addresses[indexPath.row]
         
-        cell.textLabel?.text = addressRLM.address
-        let frame = cell.imageView!.frame
-        cell.imageView!.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: 40, height: 40)
-        cell.imageView!.image = UIImage(named: addressRLM.blockchainType.iconString)
+        cell.contactAddressLabel.text = addressRLM.address
+        cell.contactImageView.image = UIImage(named: addressRLM.blockchainType.iconString)
     }
     
     func roundContactImage() {
@@ -48,5 +46,33 @@ class ContactPresenter: NSObject {
         
         mainVC?.contactImageLabel.layer.cornerRadius = CGFloat(height / 2)
         mainVC?.contactImageLabel.clipsToBounds = true
+    }
+    
+    func tappedCell(at IndexPath: IndexPath) {
+        let title = contact!.addresses[IndexPath.row].address
+        let actionSheet = UIAlertController(title: "", message: title, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.deleteFromContact), style: .default, handler: { [unowned self] (action) in
+            self.mainVC?.view.isUserInteractionEnabled = false
+            self.deleteAddress(title, from: self.contact!.contactId!, { (result) in
+                self.fetchPhoneContact(self.contact!.contactId!, completion: { (contact, error) in
+                    DispatchQueue.main.async {
+                        if contact != nil {
+                            self.contact = EPContact.init(contact: contact!)
+                        }
+                        
+                        self.mainVC!.tableView.reloadData()
+                        self.mainVC!.view.isUserInteractionEnabled = true
+                    }
+                })
+            })
+        }))
+        mainVC?.present(actionSheet, animated: true, completion: nil)
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Contacts"
     }
 }

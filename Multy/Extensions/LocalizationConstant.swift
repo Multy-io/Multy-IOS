@@ -100,4 +100,5 @@ extension Constants {
     static let youCantSpendMoreThanFeeString = "YOU CANT SPEND MORE THEN FEE"
     static let andDonationString = "AND DONATION "
     static let addToContacts = "ADD TO CONTACTS"
+    static let deleteFromContact = "DELETE FROM CONTACTS"
 }

@@ -95,6 +95,18 @@ class DataManager: NSObject {
             return false
         }
     }
+    
+    func updateSavedAddresses(_ addresses: SavedAddressesRLM, completion: @escaping(_ error: NSError?) -> ()) {
+        realmManager.updateSavedAddresses(addresses) { (error) in
+            completion(error)
+        }
+    }
+    
+    func fetchSavedAddresses(completion: @escaping(_ addresses: SavedAddressesRLM?, _ error: NSError?) -> ()) {
+        realmManager.fetchSavedAddresses { (addresses, error) in
+            completion(addresses, error)
+        }
+    }
 }
 
 extension FCMDelegate {

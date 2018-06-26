@@ -63,6 +63,8 @@
 		44A3DF93205AA1F300FE9955 /* BlockchainType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DF92205AA1F300FE9955 /* BlockchainType+Extension.swift */; };
 		44AAAE0B20E0ED1400A481A4 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAAE0A20E0ED1400A481A4 /* ContactViewController.swift */; };
 		44AAAE0D20E0ED4300A481A4 /* ContactPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAAE0C20E0ED4300A481A4 /* ContactPresenter.swift */; };
+		44AAAE1020E13BFC00A481A4 /* SavedAddressesRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAAE0F20E13BFC00A481A4 /* SavedAddressesRLM.swift */; };
+		44AAAE1320E258D200A481A4 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAAE1220E258D200A481A4 /* ContactCell.swift */; };
 		44BCBDB520601AD0001611A5 /* BTCWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BCBDB420601AD0001611A5 /* BTCWallet.swift */; };
 		44BCBDB720601AE3001611A5 /* ETHWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BCBDB620601AE3001611A5 /* ETHWallet.swift */; };
 		44BF10E020C971C4009E3E22 /* magicSend.json in Resources */ = {isa = PBXBuildFile; fileRef = 44BF10DF20C971C4009E3E22 /* magicSend.json */; };
@@ -472,6 +474,8 @@
 		44A3DF92205AA1F300FE9955 /* BlockchainType+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockchainType+Extension.swift"; sourceTree = "<group>"; };
 		44AAAE0A20E0ED1400A481A4 /* ContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		44AAAE0C20E0ED4300A481A4 /* ContactPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPresenter.swift; sourceTree = "<group>"; };
+		44AAAE0F20E13BFC00A481A4 /* SavedAddressesRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedAddressesRLM.swift; sourceTree = "<group>"; };
+		44AAAE1220E258D200A481A4 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		44BCBDB420601AD0001611A5 /* BTCWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCWallet.swift; sourceTree = "<group>"; };
 		44BCBDB620601AE3001611A5 /* ETHWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ETHWallet.swift; sourceTree = "<group>"; };
 		44BF10DF20C971C4009E3E22 /* magicSend.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magicSend.json; sourceTree = "<group>"; };
@@ -839,6 +843,14 @@
 				4491514F204976600028195F /* Info.plist */,
 			);
 			path = MultyTests;
+			sourceTree = "<group>";
+		};
+		44AAAE1120E258BA00A481A4 /* ContactCell */ = {
+			isa = PBXGroup;
+			children = (
+				44AAAE1220E258D200A481A4 /* ContactCell.swift */,
+			);
+			path = ContactCell;
 			sourceTree = "<group>";
 		};
 		44BCBDB320601A24001611A5 /* Wallets */ = {
@@ -1545,6 +1557,7 @@
 		45B9CB041FBB4B6600AA2A31 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				44AAAE1120E258BA00A481A4 /* ContactCell */,
 				85DE62E520AC1CD000423D89 /* ActiveRequestCVC */,
 				85DE62E020AB074100423D89 /* WalletCVC */,
 				45DCF9CA1FE13991005A9896 /* AddressCell */,
@@ -1786,6 +1799,7 @@
 				FAB0E6A920189AE300EB53E2 /* StockExchangeRateRLM.swift */,
 				45498F942061698800130B94 /* CurrencyExchangeRLM.swift */,
 				445D14D920DA528D002F6747 /* ContactRLM.swift */,
+				44AAAE0F20E13BFC00A481A4 /* SavedAddressesRLM.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -2369,6 +2383,7 @@
 				FA8835901FD854EC007694A2 /* AddressRLM.swift in Sources */,
 				4575693F1FBDD6C300FDEE20 /* BackupSeedPhraseViewController.swift in Sources */,
 				FA0B618D1FEBC1DD00ED0CE6 /* RecentAddressesRLM.swift in Sources */,
+				44AAAE1020E13BFC00A481A4 /* SavedAddressesRLM.swift in Sources */,
 				45AC163020484F1900E75BD6 /* BlockchainsPresenter.swift in Sources */,
 				45E215DB1FD15D5F0078945A /* DonationDTO.swift in Sources */,
 				451B98651FD94ADC00DC64A5 /* CustomTabBarPresenter.swift in Sources */,
@@ -2491,6 +2506,7 @@
 				45B0B0F01FEBF30C005BB1C0 /* SettingsViewController.swift in Sources */,
 				FA4D43F91FC5D8B0003C7117 /* BTCWalletViewController.swift in Sources */,
 				FAFCDA881FD7DD7A0056DD64 /* Request+Extension.swift in Sources */,
+				44AAAE1320E258D200A481A4 /* ContactCell.swift in Sources */,
 				444066D0205926D400342046 /* UIApplication+Extension.swift in Sources */,
 				444066D4205927B900342046 /* UIActivityViewController+Extension.swift in Sources */,
 				445D150C20DA8513002F6747 /* EPConstants.swift in Sources */,

@@ -9,3 +9,5 @@
 "ERROR" = "Error";
 "SOMETHING WENT WRONG" = "Something went wrong";
 "LOADING" = "Loading";
+"CANCEL" = "Cancel";
+"DELETE FROM CONTACTS" = "Delete from Contact";

@@ -15,6 +15,7 @@ class ContactViewController: UIViewController {
     @IBOutlet weak var contactName: UILabel!
     @IBOutlet weak var noAddressesLabel: UILabel!
     @IBOutlet weak var savedAddressesLabel: UILabel!
+    @IBOutlet weak var tableView: UITableView!
     
     var presenter = ContactPresenter()
     
@@ -48,6 +49,10 @@ extension TableViewDelegate: UITableViewDelegate {
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.tappedCell(at: indexPath)
+    }
 }
 
 extension TableViewDataSource: UITableViewDataSource {
@@ -56,7 +61,8 @@ extension TableViewDataSource: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "Cell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "addressCellID", for: indexPath) as! ContactCell
+        cell.selectionStyle = .none
         
         presenter.fillCell(cell, at: indexPath)
         
