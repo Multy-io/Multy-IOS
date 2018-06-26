@@ -545,7 +545,8 @@ extension AnimationSection {
                 changeTablesHeight(transY: transY)
                 tableHeaderTopConstraint.constant = tableHeaderTopConstraint.constant + transY
             }
-            if translation.x > 0 && translation.y/translation.x < 1/2 && translation.y/translation.x > -1/2 {
+            
+            if translation.x > 0 && translation.y/translation.x < 1/2 && translation.y/translation.x > -1/2 && (translation.x * translation.x + translation.y * translation.y) > 1000 {
                 backAction(Any.self)
             }
             gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
