@@ -35,9 +35,9 @@ class TransactionPendingCell: UITableViewCell {
     
     func fillEthereumCell() {
         if histObj.isIncoming() {
-            self.addressLabel.text = histObj.addressesArray.last
-        } else {
             self.addressLabel.text = histObj.addressesArray.first
+        } else {
+            self.addressLabel.text = histObj.addressesArray.last
         }
         
         let cryptoAmountString = BigInt(histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
