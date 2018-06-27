@@ -13,6 +13,7 @@ class CurrencyToExchangeViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var presenter = CurrencyToExchangePresenter()
+    var sendWalletDelegate: SendWalletProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()

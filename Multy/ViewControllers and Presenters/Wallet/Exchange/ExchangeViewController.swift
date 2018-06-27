@@ -61,11 +61,6 @@ class ExchangeViewController: UIViewController {
         presenter.exchangeVC = self
         setupUI()
         presenter.updateUI()
-        
-        
-        presenter.walletToReceive.chain = NSNumber(value: BLOCKCHAIN_ETHEREUM.rawValue)
-        presenter.walletToReceive.chainType = NSNumber(value: ETHEREUM_CHAIN_ID_MAINNET.rawValue)
-        presenter.walletToReceive.name = "To receive"
 //        presenter.updateReceiveSection()
     }
     
@@ -92,11 +87,7 @@ class ExchangeViewController: UIViewController {
     }
 
     
-    func setGradientToSlide() {
-        slideColorView.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
-                                                   UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
-                                     gradientOrientation: .horizontal)
-    }
+    
     
     func animate() {
         self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.decrease), userInfo: nil, repeats: true)
@@ -179,6 +170,7 @@ class ExchangeViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
         let currenciesVC = storyboard.instantiateViewController(withIdentifier: "exchangeCurrencies") as! CurrencyToExchangeViewController
         currenciesVC.presenter.walletFromExchange = presenter.walletFromSending
+        currenciesVC.sendWalletDelegate = presenter
         navigationController?.pushViewController(currenciesVC, animated: true)
     }
     

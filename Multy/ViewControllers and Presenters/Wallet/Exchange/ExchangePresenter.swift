@@ -4,7 +4,7 @@
 
 import UIKit
 
-class ExchangePresenter: NSObject {
+class ExchangePresenter: NSObject, SendWalletProtocol {
     
     var exchangeVC: ExchangeViewController?
     var walletFromSending: UserWalletRLM? {
@@ -13,11 +13,17 @@ class ExchangePresenter: NSObject {
         }
     }
 
-    var walletToReceive = UserWalletRLM()
+    var walletToReceive: UserWalletRLM? {
+        didSet {
+            updateReceiveSection()
+            enableUI()
+        }
+    }
     
     func updateUI() {
         exchangeVC?.sendingImg.image = UIImage(named: walletFromSending!.blockchainType.iconString)
         exchangeVC?.sendingMaxBtn.setTitle("MAX \(walletFromSending!.availableAmountString)", for: .normal)
+        exchangeVC?.sendingCryptoName.text = walletFromSending?.blockchainType.shortName
 //        setEndValueToSend()
     }
     
@@ -31,23 +37,46 @@ class ExchangePresenter: NSObject {
     
     
     func updateReceiveSection() {
-        exchangeVC?.receiveCryptoImg.image = UIImage(named: walletToReceive.blockchainType.iconString)
-        exchangeVC?.receiveCryptoNameLbl.text = walletToReceive.blockchainType.shortName
+        exchangeVC?.receiveCryptoImg.image = UIImage(named: walletToReceive!.blockchainType.iconString)
+        exchangeVC?.receiveCryptoNameLbl.text = walletToReceive!.blockchainType.shortName
         makeBlockchainRelation()
         setEndValueToReceive()
     }
     
     func setEndValueToReceive() {
-        exchangeVC?.summaryReceiveWalletNameLbl.text = walletToReceive.name
-        exchangeVC?.summaryReceiveImg.image = UIImage(named: walletToReceive.blockchainType.iconString)
+        exchangeVC?.summaryReceiveWalletNameLbl.text = walletToReceive!.name
+        exchangeVC?.summaryReceiveImg.image = UIImage(named: walletToReceive!.blockchainType.iconString)
         exchangeVC?.summaryReceiveCryptoValueLbl.text = exchangeVC?.receiveCryptoValueTF.text
-        exchangeVC?.summaryReceiveCryptoNameLbl.text = walletToReceive.blockchainType.shortName
+        exchangeVC?.summaryReceiveCryptoNameLbl.text = walletToReceive!.blockchainType.shortName
         exchangeVC?.summaryReceiveFiatLbl.text = exchangeVC?.receiveFiatValueTF.text
     }
     
     func makeBlockchainRelation() {
-        let relationString = String(walletFromSending!.exchangeCourse / walletToReceive.exchangeCourse).showString(8)
-        exchangeVC?.sendToReceiveRelation.text = "1 " + walletFromSending!.blockchainType.shortName + "= " + relationString + " " + walletToReceive.blockchainType.shortName
+        let relationString = String(walletFromSending!.exchangeCourse / walletToReceive!.exchangeCourse).showString(8)
+        exchangeVC?.sendToReceiveRelation.text = "1 " + walletFromSending!.blockchainType.shortName + "= " + relationString + " " + walletToReceive!.blockchainType.shortName
+    }
+    
+    func enableUI() {
+        exchangeVC?.receiveFiatValueTF.isUserInteractionEnabled = true
+        exchangeVC?.receiveCryptoValueTF.isUserInteractionEnabled = true
+        exchangeVC?.sendingFiatValueTF.isUserInteractionEnabled = true
+        exchangeVC?.sendingCryptoValueTF.isUserInteractionEnabled = true
+        exchangeVC?.receiveFiatValueTF.textColor = .black
+        exchangeVC?.receiveCryptoValueTF.textColor = .black
+        exchangeVC?.sendingFiatValueTF.textColor = .black
+        exchangeVC?.sendingCryptoValueTF.textColor = .black
+        
+        exchangeVC?.sendToReceiveRelation.isHidden = false
+        exchangeVC?.summaryView.isHidden = false
+        
+        exchangeVC?.slideView.isUserInteractionEnabled = true
+        setGradientToSlide()
+    }
+    
+    func setGradientToSlide() {
+        exchangeVC?.slideColorView.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
+                                                   UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
+                                     gradientOrientation: .horizontal)
     }
     
     //text field section
@@ -159,17 +188,21 @@ class ExchangePresenter: NSObject {
     
     func makeReceiveFiatString() {
         let str = exchangeVC!.receiveCryptoValueTF.text!
-        exchangeVC!.receiveFiatValueTF.text = "$ " + str.fiatValueString(for: walletToReceive.blockchainType)
+        exchangeVC!.receiveFiatValueTF.text = "$ " + str.fiatValueString(for: walletToReceive!.blockchainType)
     }
     
     func makeReceiveCryptoTfValue() {
         let valueFromTF = exchangeVC!.receiveFiatValueTF.text!.replacingOccurrences(of: "$ ", with: "")
-        let sumInFiat = walletToReceive.blockchain.multiplyerToMinimalUnits * Double(valueFromTF.stringWithDot)
-        let endCryptoString = sumInFiat / walletToReceive.exchangeCourse
+        let sumInFiat = walletToReceive!.blockchain.multiplyerToMinimalUnits * Double(valueFromTF.stringWithDot)
+        let endCryptoString = sumInFiat / walletToReceive!.exchangeCourse
         if valueFromTF.isEmpty {
             exchangeVC!.receiveCryptoValueTF.text = "0.0"
         } else {
-            exchangeVC!.receiveCryptoValueTF.text = endCryptoString.cryptoValueString(for: walletToReceive.blockchain)
+            exchangeVC!.receiveCryptoValueTF.text = endCryptoString.cryptoValueString(for: walletToReceive!.blockchain)
         }
+    }
+    
+    func sendWallet(wallet: UserWalletRLM) {
+        walletToReceive = wallet
     }
 }

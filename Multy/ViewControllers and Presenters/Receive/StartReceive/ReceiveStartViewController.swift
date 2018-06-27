@@ -22,6 +22,7 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     
     let loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -98,7 +99,11 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.presenter.selectedIndex = indexPath.row
         if self.presenter.isNeedToPop == true {
-            if self.whereFrom != nil && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
+            if self.whereFrom?.className == CurrencyToExchangeViewController.className {
+                //delegate to send wallet
+                sendWalletDelegate?.sendWallet(wallet: presenter.walletsArr[indexPath.row])
+                navigationController?.popToViewController(navigationController!.childViewControllers[2], animated: true)
+            } else if self.whereFrom != nil && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
                 let message = localize(string: Constants.cannotChooseEmptyWalletString)
                 let alert = UIAlertController(title: localize(string: Constants.sorryString), message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

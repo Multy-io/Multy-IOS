@@ -23,6 +23,8 @@ class CurrencyToExchangePresenter: NSObject {
                 let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
                 walletsVC.presenter.walletsArr = Array(wallets!)
                 walletsVC.presenter.isNeedToPop = true
+                walletsVC.whereFrom = self.mainVC
+                walletsVC.sendWalletDelegate = self.mainVC?.sendWalletDelegate
                 self.mainVC?.navigationController?.pushViewController(walletsVC, animated: true)
             } else {
                 let alert = UIAlertController(title: "Attantion", message: "We crete wallet for this blockchain automatically", preferredStyle: .alert)
