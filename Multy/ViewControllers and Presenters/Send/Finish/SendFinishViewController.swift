@@ -139,10 +139,14 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate, Analytics
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.copyToClipboardString), style: .default, handler: { (action) in
             UIPasteboard.general.string = title
         }))
-        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
-            self.presenter.selectedAddress = title
-            self.presentiPhoneContacts()
-        }))
+        
+        if DataManager.shared.isAddressSaved(title) == false {
+            actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
+                self.presenter.selectedAddress = title
+                self.presentiPhoneContacts()
+            }))
+        }
+        
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.shareString), style: .default, handler: { (action) in
             let objectsToShare = [title]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)

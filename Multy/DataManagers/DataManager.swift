@@ -22,11 +22,21 @@ class DataManager: NSObject {
     var btcMainNetDonationAddress = String()
     
     var currencyExchange = CurrencyExchange()
+    var savedAddresses: SavedAddressesRLM?
     
     override init() {
         super.init()
         
         seedWordsArray = coreLibManager.mnemonicAllWords()
+        fetchSavedAddresses(completion: { [unowned self] (addresses, error) in
+            if error == nil {
+                self.savedAddresses = addresses
+            }
+        })
+    }
+    
+    func isAddressSaved(_ address: String) -> Bool {
+        return savedAddresses?.addresses[address] != nil
     }
     
     func getBTCDonationAddress(netType: UInt32) -> String {
@@ -97,7 +107,10 @@ class DataManager: NSObject {
     }
     
     func updateSavedAddresses(_ addresses: SavedAddressesRLM, completion: @escaping(_ error: NSError?) -> ()) {
-        realmManager.updateSavedAddresses(addresses) { (error) in
+        realmManager.updateSavedAddresses(addresses) { [unowned self] (error) in
+            if error == nil {
+                self.savedAddresses?.addressesData = addresses.addressesData
+            }
             completion(error)
         }
     }

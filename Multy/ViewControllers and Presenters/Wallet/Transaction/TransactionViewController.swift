@@ -95,10 +95,14 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.copyToClipboardString), style: .default, handler: { (action) in
             UIPasteboard.general.string = title
         }))
-        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
-            self.presenter.selectedAddress = title
-            self.presentiPhoneContacts()
-        }))
+        
+        if DataManager.shared.isAddressSaved(title) == false {
+            actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
+                self.presenter.selectedAddress = title
+                self.presentiPhoneContacts()
+            }))
+        }
+        
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.shareString), style: .default, handler: { (action) in
             let objectsToShare = [title]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
@@ -181,11 +185,11 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
             }
             self.noteLbl.text = "" // NOTE FROM HIST OBJ
             self.constraintNoteFiatSum.constant = 10
-            let arrOfInputsAddresses = presenter.histObj.txInputs.map{ $0.address }.joined(separator: "\n")   // top address lbl
+            let arrOfInputsAddresses = presenter.histObj.txInputs.map{ $0.address.stringWithName }.joined(separator: "\n")   // top address lbl
             //        self.transactionCurencyLbl.text = presenter.histObj.     // check currencyID
             self.walletFromAddressLbl.text = arrOfInputsAddresses
             self.personNameLbl.text = ""   // before we don`t have address book    OR    Wallet Name
-            let arrOfOutputsAddresses = presenter.histObj.txOutputs.map{ $0.address }.joined(separator: "\n")
+            let arrOfOutputsAddresses = presenter.histObj.txOutputs.map{ $0.address.stringWithName }.joined(separator: "\n")
             self.walletToAddressLbl.text = arrOfOutputsAddresses
             self.numberOfConfirmationLbl.text = makeConfirmationText()
             self.blockchainImg.image = UIImage(named: presenter.blockchainType.iconString)
@@ -300,7 +304,9 @@ extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
         let currencyID = presenter.wallet.chain.uint32Value
         let networkID = presenter.wallet.chainType.uint32Value
         
-        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { _ in }
+        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] _ in
+            self.updateUI()
+        }
     }
 }
 

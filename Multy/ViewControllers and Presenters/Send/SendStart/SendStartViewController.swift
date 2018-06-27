@@ -264,13 +264,15 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
     }
     
     func openSheetWithAddress(_ address: RecentAddressesRLM) {
-        let actionSheet = UIAlertController(title: "", message: address.address, preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
-            self.presenter.selectedAddress = address
-            self.presentiPhoneContacts()
-        }))
-        self.present(actionSheet, animated: true, completion: nil)
+        if DataManager.shared.isAddressSaved(address.address) == false {
+            let actionSheet = UIAlertController(title: "", message: address.address, preferredStyle: .actionSheet)
+            actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
+                self.presenter.selectedAddress = address
+                self.presentiPhoneContacts()
+            }))
+            self.present(actionSheet, animated: true, completion: nil)
+        }
     }
 }
 

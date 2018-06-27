@@ -98,7 +98,13 @@ open class EPContact {
     }
 	
     open func displayName() -> String {
-        return firstName + " " + lastName
+        if firstName.isEmpty {
+            return lastName
+        } else if lastName.isEmpty {
+            return firstName
+        } else {
+            return firstName + " " + lastName
+        }
     }
     
     open func contactInitials() -> String {

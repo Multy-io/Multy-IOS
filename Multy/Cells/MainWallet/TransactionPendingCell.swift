@@ -13,6 +13,9 @@ class TransactionPendingCell: UITableViewCell {
 
     @IBOutlet weak var lockedCryptoAmountLabel: UILabel!
     @IBOutlet weak var lockedFiatAmountLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    var savedAddresses: SavedAddressesRLM?
     
     var wallet : UserWalletRLM?
     var histObj = HistoryRLM()
@@ -23,6 +26,43 @@ class TransactionPendingCell: UITableViewCell {
     }
     
     public func fillCell() {
+        fillAddressAndName()
+        fillAmountInfo()
+    }
+    
+    func fillAddressAndName() {
+        var address = String()
+        
+        switch wallet!.blockchainType.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            if histObj.txInputs.count == 0 {
+                return
+            }
+            
+            if histObj.isIncoming() {
+                address = histObj.txInputs[0].address
+            } else {
+                address = histObj.txOutputs[0].address
+            }
+        case BLOCKCHAIN_ETHEREUM:
+            if histObj.isIncoming() {
+                address = histObj.addressesArray.first!
+            } else {
+                address = histObj.addressesArray.last!
+            }
+        default:
+            return
+        }
+        
+        if let name = savedAddresses?.addresses[address] {
+            nameLabel.text = name
+        } else {
+            nameLabel.text = ""
+        }
+        self.addressLabel.text = address
+    }
+    
+    func fillAmountInfo() {
         switch wallet!.blockchainType.blockchain {
         case BLOCKCHAIN_BITCOIN:
             fillBitcoinCell()
@@ -34,12 +74,6 @@ class TransactionPendingCell: UITableViewCell {
     }
     
     func fillEthereumCell() {
-        if histObj.isIncoming() {
-            self.addressLabel.text = histObj.addressesArray.first
-        } else {
-            self.addressLabel.text = histObj.addressesArray.last
-        }
-        
         let cryptoAmountString = BigInt(histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
         let labelsCryproText = cryptoAmountString + " " + wallet!.cryptoName
         
@@ -53,15 +87,6 @@ class TransactionPendingCell: UITableViewCell {
     }
     
     func fillBitcoinCell() {
-        if histObj.txInputs.count == 0 {
-            return
-        }
-        
-        if histObj.isIncoming() {
-            self.addressLabel.text = histObj.txInputs[0].address
-        } else {
-            self.addressLabel.text = histObj.txOutputs[0].address
-        }
         
         //        if histObj.txStatus.intValue == TxStatus.BlockIncoming.rawValue {
         //            lockedCryptoAmountLabel.text = "\"

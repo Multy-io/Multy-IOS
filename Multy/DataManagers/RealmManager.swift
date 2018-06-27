@@ -727,22 +727,21 @@ class RealmManager: NSObject {
     }
     
     func updateSavedAddresses(_ addresses: SavedAddressesRLM, completion: @escaping(_ error: NSError?) -> ()) {
-        getRealm { [unowned self] (realmOpt, error) in
+        getRealm { (realmOpt, error) in
             if let realm = realmOpt {
+                let addressesRLM = realm.objects(SavedAddressesRLM.self).first
+                
                 try! realm.write {
-                    self.deleteSavedAddresses(from: realm)
-                    realm.add(addresses)
+                    if addressesRLM == nil {
+                        realm.add(addresses)
+                    } else {
+                        addressesRLM!.addressesData = addresses.addressesData
+                    }
                 }
             } else {
                 completion(error)
             }
         }
-    }
-    
-    func deleteSavedAddresses(from realm: Realm) {
-        let addresses = realm.objects(SavedAddressesRLM.self)
-        
-        realm.delete(addresses)
     }
     
     func fetchSavedAddresses(completion: @escaping(_ addresses: SavedAddressesRLM?, _ error: NSError?) -> ()) {

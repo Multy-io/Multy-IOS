@@ -84,8 +84,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol, ContactsProtoco
         presenter.registerCells()
         
         setupUI()
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -442,11 +440,7 @@ extension TableViewDataSource: UITableViewDataSource {
                         transactionCell.wallet = presenter.wallet!
                         transactionCell.fillCell()
                         transactionCell.changeState(isEmpty: false)
-                        hideEmptyLbls()
-                        if indexPath.row != 1 {
-                            transactionCell.changeTopConstraint()
-                        }
-                    }
+                        hideEmptyLbls()                    }
                 } else {
                     transactionCell.changeState(isEmpty: true)
                     //                    fixForiPad()
