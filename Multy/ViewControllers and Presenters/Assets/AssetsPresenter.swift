@@ -22,14 +22,13 @@ class AssetsPresenter: NSObject {
         didSet {
             backupActivity()
             
-            if self.assetsVC!.isVisible() {
-                if self.assetsVC!.isOnWindow() {
-                    (self.assetsVC!.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: account == nil)
-                }
+            if self.assetsVC!.isOnWindow() {
+                (self.assetsVC!.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: account == nil)
             }
             
+            self.assetsVC?.tableView.alwaysBounceVertical = account != nil
+            
             if account != nil {
-                self.assetsVC?.tableView.alwaysBounceVertical = true
                 NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
                 
@@ -41,14 +40,16 @@ class AssetsPresenter: NSObject {
                 assetsVC!.tableView.frame.size.height = screenHeight - assetsVC!.tabBarController!.tabBar.frame.height
                 
                 self.assetsVC?.view.isUserInteractionEnabled = true
-                if !isSocketInitiateUpdating && self.assetsVC!.tabBarController!.viewControllers![0].childViewControllers.count == 1 {
-                    assetsVC?.tableView.reloadData()
-                }
+                
             } else {
                 NotificationCenter.default.removeObserver(self, name: NSNotification.Name("exchageUpdated"), object: nil)
                 NotificationCenter.default.removeObserver(self, name: NSNotification.Name("transactionUpdated"), object: nil)
                 
                 assetsVC!.tableView.frame.size.height = screenHeight
+            }
+            
+            if !isSocketInitiateUpdating && self.assetsVC!.tabBarController!.viewControllers![0].childViewControllers.count == 1 {
+                assetsVC?.tableView.reloadData()
             }
         }
     }
@@ -56,6 +57,10 @@ class AssetsPresenter: NSObject {
     var wallets: Results<UserWalletRLM>?
     
     @objc func updateExchange() {
+        if !self.assetsVC!.isVisible() {
+            return
+        }
+        
         self.assetsVC?.handleExchangeUpdate()
     }
     
@@ -79,6 +84,9 @@ class AssetsPresenter: NSObject {
         if account != nil {
             self.assetsVC?.backupView?.isHidden = account!.isSeedPhraseSaved()
             self.assetsVC?.backupView?.isUserInteractionEnabled = !account!.isSeedPhraseSaved()
+        } else {
+            self.assetsVC?.backupView?.isHidden = true
+            self.assetsVC?.backupView?.isUserInteractionEnabled = false
         }
     }
     
@@ -135,9 +143,10 @@ class AssetsPresenter: NSObject {
     
     func updateWalletsInfo(isInternetAvailable: Bool) {
         DataManager.shared.getAccount { (acc, err) in
+            self.account = acc
+            
             if acc != nil {
 //                self.blockUI()
-                self.account = acc
                 if isInternetAvailable == false {
 //                    self.unlockUI()
                 }
