@@ -53,6 +53,9 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     func registerCells() {
         let walletCell = UINib.init(nibName: "WalletTableViewCell", bundle: nil)
         self.tableView.register(walletCell, forCellReuseIdentifier: "walletCell")
+        
+        let newWalletCell = UINib.init(nibName: "NewExchangeWalletTableViewCell", bundle: nil)
+        self.tableView.register(newWalletCell, forCellReuseIdentifier: "newWalletCell")
     }
     
     @IBAction func cancelAction(_ sender: Any) {
@@ -84,16 +87,26 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.presenter.numberOfWallets()
+        if whereFrom?.className == CurrencyToExchangeViewController.className {
+            return self.presenter.numberOfWallets() + 1
+        } else {
+            return self.presenter.numberOfWallets()
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell
-        walletCell.arrowImage.image = nil
-        walletCell.wallet = self.presenter.walletsArr[indexPath.row]
-        walletCell.fillInCell()
-        
-        return walletCell
+        if indexPath.row >= presenter.numberOfWallets() {
+            let newWalletCell = self.tableView.dequeueReusableCell(withIdentifier: "newWalletCell") as! NewExchangeWalletTableViewCell
+            newWalletCell.setGradient()
+            return newWalletCell
+        } else {
+            let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell
+            walletCell.arrowImage.image = nil
+            walletCell.wallet = self.presenter.walletsArr[indexPath.row]
+            walletCell.fillInCell()
+            
+            return walletCell
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -101,7 +114,11 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
         if self.presenter.isNeedToPop == true {
             if self.whereFrom?.className == CurrencyToExchangeViewController.className {
                 //delegate to send wallet
-                sendWalletDelegate?.sendWallet(wallet: presenter.walletsArr[indexPath.row])
+                if indexPath.row >= presenter.numberOfWallets() {
+                    sendWalletDelegate?.sendWallet(wallet: DataManager.shared.createTempWallet(blockchainType: presenter.walletsArr[indexPath.row - 1].blockchainType))
+                } else {
+                    sendWalletDelegate?.sendWallet(wallet: presenter.walletsArr[indexPath.row])
+                }
                 navigationController?.popToViewController(navigationController!.childViewControllers[2], animated: true)
             } else if self.whereFrom != nil && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
                 let message = localize(string: Constants.cannotChooseEmptyWalletString)
@@ -116,17 +133,18 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
         } else {
             self.performSegue(withIdentifier: "receiveDetails", sender: Any.self)
         }
-        sendAnalyticsEvent(screenName: screenReceive, eventName: "\(walletWithChainTap)\(presenter.walletsArr[indexPath.row].chain)")
+        if indexPath.row >= presenter.numberOfWallets() {
+            //creating temp wallet
+        } else {
+            sendAnalyticsEvent(screenName: screenReceive, eventName: "\(walletWithChainTap)\(presenter.walletsArr[indexPath.row].chain)")
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 104
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let walletCell = cell as! WalletTableViewCell
-//        walletCell.makeshadow()
-    }
+
     
     func updateUI() {
         self.tableView.reloadData()

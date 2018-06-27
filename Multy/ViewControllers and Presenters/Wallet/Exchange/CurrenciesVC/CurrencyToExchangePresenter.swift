@@ -11,6 +11,8 @@ class CurrencyToExchangePresenter: NSObject {
     
     var walletFromExchange: UserWalletRLM?
     
+    var sendNewWalletDelegate: SendWalletProtocol?
+    
     func addFakeBlockchains() {
         availableBlockchainArray = Constants.DataManager.availableBlockchains.map { blockchainType in CurrencyObj.createCurrencyObj(blockchain: blockchainType) }
         availableBlockchainArray = availableBlockchainArray.filter { currencyObj in currencyObj.currencyBlockchain != walletFromExchange?.blockchainType }
@@ -30,6 +32,7 @@ class CurrencyToExchangePresenter: NSObject {
                 let alert = UIAlertController(title: "Attantion", message: "We crete wallet for this blockchain automatically", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                     //delegate
+                    self.sendNewWalletDelegate?.sendWallet(wallet: DataManager.shared.createTempWallet(blockchainType: self.availableBlockchainArray[index].currencyBlockchain))
                     self.mainVC?.navigationController?.popViewController(animated: true)
                 }))
                 alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
@@ -39,4 +42,6 @@ class CurrencyToExchangePresenter: NSObject {
             }
         }
     }
+    
+    
 }

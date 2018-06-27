@@ -222,6 +222,8 @@
 		45E215E01FD164F80078945A /* QrScannerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E215DF1FD164F80078945A /* QrScannerPresenter.swift */; };
 		45E215E21FD16AA70078945A /* GoToQrProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E215E11FD16AA70078945A /* GoToQrProtocol.swift */; };
 		45E215E41FD179100078945A /* QrDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E215E31FD179100078945A /* QrDataProtocol.swift */; };
+		45E665E420E3F4860063BD29 /* NewExchangeWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E665E220E3F4860063BD29 /* NewExchangeWalletTableViewCell.swift */; };
+		45E665E520E3F4860063BD29 /* NewExchangeWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E665E320E3F4860063BD29 /* NewExchangeWalletTableViewCell.xib */; };
 		45E7A8A620065455005D2D6E /* StockExchanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E7A8A520065455005D2D6E /* StockExchanges.swift */; };
 		45EBB6A8200D312700F81322 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45EBB6A7200D312700F81322 /* GoogleService-Info.plist */; };
 		45ECDBD7203D9E77009FD339 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 45ECDBD5203D9E77009FD339 /* LICENSE */; };
@@ -636,6 +638,8 @@
 		45E215DF1FD164F80078945A /* QrScannerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrScannerPresenter.swift; sourceTree = "<group>"; };
 		45E215E11FD16AA70078945A /* GoToQrProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToQrProtocol.swift; sourceTree = "<group>"; };
 		45E215E31FD179100078945A /* QrDataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrDataProtocol.swift; sourceTree = "<group>"; };
+		45E665E220E3F4860063BD29 /* NewExchangeWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExchangeWalletTableViewCell.swift; sourceTree = "<group>"; };
+		45E665E320E3F4860063BD29 /* NewExchangeWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewExchangeWalletTableViewCell.xib; sourceTree = "<group>"; };
 		45E7A8A520065455005D2D6E /* StockExchanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockExchanges.swift; sourceTree = "<group>"; };
 		45EBB6A7200D312700F81322 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45ECDBD5203D9E77009FD339 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -1111,6 +1115,8 @@
 				45B9CB061FBB51AE00AA2A31 /* WalletTableViewCell.xib */,
 				45B0CB7E1FDAD80D007B38E4 /* CreateOrRestoreBtnTableViewCell.swift */,
 				445B129020BC1CC800FD0D33 /* CreateOrRestoreBtnTableViewCell.xib */,
+				45E665E220E3F4860063BD29 /* NewExchangeWalletTableViewCell.swift */,
+				45E665E320E3F4860063BD29 /* NewExchangeWalletTableViewCell.xib */,
 			);
 			path = WalletTVC;
 			sourceTree = "<group>";
@@ -2063,6 +2069,7 @@
 				445B127320BC1BB100FD0D33 /* Receive.storyboard in Resources */,
 				4477264220BEC818006BF4A7 /* Receives.strings in Resources */,
 				4522905A1FBB18D30024B550 /* Main.storyboard in Resources */,
+				45E665E520E3F4860063BD29 /* NewExchangeWalletTableViewCell.xib in Resources */,
 				445B127C20BC1BE000FD0D33 /* Settings.storyboard in Resources */,
 				445B129720BC1CEE00FD0D33 /* CustomTrasanctionFeeTableViewCell.xib in Resources */,
 				445B127020BC1BA800FD0D33 /* SeedPhrase.storyboard in Resources */,
@@ -2554,6 +2561,7 @@
 				45A9492C1FC426CF003C3A23 /* ReceiveAllDetailsPresenter.swift in Sources */,
 				45C8D143200780CF00F5994E /* SplashViewController.swift in Sources */,
 				45B5CCA21FDA90DF0069BD46 /* NoInternetConnectionViewController.swift in Sources */,
+				45E665E420E3F4860063BD29 /* NewExchangeWalletTableViewCell.swift in Sources */,
 				85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */,
 				455EA8761FD842610093F69D /* CustomTabBarViewController.swift in Sources */,
 				FA4D43FB1FC6C760003C7117 /* BTCWalletPresenter.swift in Sources */,

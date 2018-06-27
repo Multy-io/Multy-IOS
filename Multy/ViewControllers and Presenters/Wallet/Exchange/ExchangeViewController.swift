@@ -171,6 +171,7 @@ class ExchangeViewController: UIViewController {
         let currenciesVC = storyboard.instantiateViewController(withIdentifier: "exchangeCurrencies") as! CurrencyToExchangeViewController
         currenciesVC.presenter.walletFromExchange = presenter.walletFromSending
         currenciesVC.sendWalletDelegate = presenter
+        currenciesVC.presenter.sendNewWalletDelegate = presenter
         navigationController?.pushViewController(currenciesVC, animated: true)
     }
     

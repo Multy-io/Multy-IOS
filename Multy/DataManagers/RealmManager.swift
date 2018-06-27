@@ -309,6 +309,7 @@ class RealmManager: NSObject {
         }
     }
     
+    
     public func clearSeedPhraseInAcc() {
         getRealm { (realmOpt, err) in
             if let realm = realmOpt {
@@ -602,6 +603,17 @@ class RealmManager: NSObject {
                 completion(wallet)
             } else {
                 completion(nil)
+            }
+        }
+    }
+    
+    func deleteWalletBy(primaryKey: String) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let wallet = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
+                try! realm.write {
+                    realm.delete(wallet!)
+                }
             }
         }
     }
