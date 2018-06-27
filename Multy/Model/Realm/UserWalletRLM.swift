@@ -466,7 +466,7 @@ class UserWalletRLM: Object {
     }
     
     func addressesWithSpendableOutputs() -> [String] {
-        return addresses.filter{ addressRLM in addressRLM.spendableOutput.count != 0 }.map{ addressRLM in addressRLM.address }
+        return addresses.filter{ addressRLM in addressRLM.spendableOutput.count != 0 }.map{ addressRLM in addressRLM.address.stringWithName }
     }
     
     override class func primaryKey() -> String? {

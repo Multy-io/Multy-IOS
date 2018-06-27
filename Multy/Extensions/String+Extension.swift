@@ -56,7 +56,7 @@ extension String {
             if addresses?.addresses[self] == nil {
                 return self
             } else {
-                return addresses!.addresses[self]! + ":" + self
+                return addresses!.addresses[self]! + ": " + self
             }
         }
     }
