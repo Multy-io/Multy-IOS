@@ -572,6 +572,8 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addContactButton" destination="QeZ-MK-mx7" id="Oli-dx-Ilu"/>
+                        <outlet property="addContactConstraint" destination="ZR3-cb-qle" id="xqC-Cy-WfU"/>
                         <outlet property="addressLbl" destination="atg-vC-ZHg" id="chQ-dV-vJE"/>
                         <outlet property="copiedView" destination="rhe-gH-QUo" id="IDt-oi-KIL"/>
                         <outlet property="firstConstraint" destination="cdr-ll-YnV" id="toc-SH-bqT"/>

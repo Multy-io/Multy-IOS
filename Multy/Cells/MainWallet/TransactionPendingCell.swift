@@ -15,8 +15,6 @@ class TransactionPendingCell: UITableViewCell {
     @IBOutlet weak var lockedFiatAmountLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     
-    var savedAddresses: SavedAddressesRLM?
-    
     var wallet : UserWalletRLM?
     var histObj = HistoryRLM()
     
@@ -31,6 +29,7 @@ class TransactionPendingCell: UITableViewCell {
     }
     
     func fillAddressAndName() {
+        var savedAddresses = DataManager.shared.savedAddresses?.addresses
         var address = String()
         
         switch wallet!.blockchainType.blockchain {
@@ -54,7 +53,7 @@ class TransactionPendingCell: UITableViewCell {
             return
         }
         
-        if let name = savedAddresses?.addresses[address] {
+        if savedAddresses != nil, let name = savedAddresses![address] {
             nameLabel.text = name
         } else {
             nameLabel.text = ""

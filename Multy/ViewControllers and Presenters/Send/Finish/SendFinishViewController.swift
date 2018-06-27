@@ -90,7 +90,7 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate, Analytics
         cryptoSumLbl.text = presenter.sumInCryptoString
         cryptoNamelbl.text = presenter.cryptoName
         fiatSumAndCurrancyLbl.text = "\(presenter.sumInFiatString) \(presenter.fiatName)"
-        addressLbl.text = presenter.transactionDTO.sendAddress?.stringWithName
+        addressLbl.text = presenter.transactionDTO.sendAddress
         walletNameLbl.text = presenter.transactionDTO.choosenWallet?.name
         
         

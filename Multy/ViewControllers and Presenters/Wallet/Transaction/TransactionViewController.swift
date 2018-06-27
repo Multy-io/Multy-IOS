@@ -185,11 +185,11 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
             }
             self.noteLbl.text = "" // NOTE FROM HIST OBJ
             self.constraintNoteFiatSum.constant = 10
-            let arrOfInputsAddresses = presenter.histObj.txInputs.map{ $0.address.stringWithName }.joined(separator: "\n")   // top address lbl
+            let arrOfInputsAddresses = presenter.histObj.txInputs.map{ $0.address }.joined(separator: "\n")   // top address lbl
             //        self.transactionCurencyLbl.text = presenter.histObj.     // check currencyID
             self.walletFromAddressLbl.text = arrOfInputsAddresses
             self.personNameLbl.text = ""   // before we don`t have address book    OR    Wallet Name
-            let arrOfOutputsAddresses = presenter.histObj.txOutputs.map{ $0.address.stringWithName }.joined(separator: "\n")
+            let arrOfOutputsAddresses = presenter.histObj.txOutputs.map{ $0.address }.joined(separator: "\n")
             self.walletToAddressLbl.text = arrOfOutputsAddresses
             self.numberOfConfirmationLbl.text = makeConfirmationText()
             self.blockchainImg.image = UIImage(named: presenter.blockchainType.iconString)
@@ -225,10 +225,10 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
             self.constraintNoteFiatSum.constant = 10
             
             self.transactionCurencyLbl.text = "ETH"     // check currencyID
-            self.walletFromAddressLbl.text = presenter.histObj.addressesArray.first?.stringWithName
+            self.walletFromAddressLbl.text = presenter.histObj.addressesArray.first
             self.personNameLbl.text = ""   // before we don`t have address book    OR    Wallet Name
             
-            self.walletToAddressLbl.text = presenter.histObj.addressesArray.last?.stringWithName
+            self.walletToAddressLbl.text = presenter.histObj.addressesArray.last
             self.numberOfConfirmationLbl.text = makeConfirmationText()
             self.blockchainImg.image = UIImage(named: presenter.blockchainType.iconString)
             if isIncoming {

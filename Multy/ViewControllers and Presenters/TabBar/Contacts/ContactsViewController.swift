@@ -146,7 +146,9 @@ extension ContactsViewController: EPPickerDelegate {
         }
         
         presenter.updateContactInfo(contact.contactId!, withAddress: nil, nil, nil) { [unowned self] (result) in
-            self.presenter.fetchPhoneContacts()
+            DispatchQueue.main.async {
+                self.presenter.fetchPhoneContacts()
+            }
         }
     }
 }

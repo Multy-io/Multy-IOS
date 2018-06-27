@@ -408,10 +408,10 @@ extension TableViewDelegate: UITableViewDelegate {
             if indexPath.row < presenter.transactionDataSource.count && presenter.isTherePendingMoney(for: indexPath) {
                 return 135
             } else {
-                return 70
+                return 80
             }
         } else {
-            return 70
+            return 80
         }
     }
 }
