@@ -125,15 +125,15 @@ extension ContactsProtocol {
             updateContact(Contact: mContact) { (result) in
                 switch result {
                 case .Success(response: let bool):
-                    if bool {
-                        print("Contact Sucessfully Updated")
-                        completion(ContactsFetchResult.Success(response: []))
-                    } else {
-                        completion(ContactsFetchResult.Success(response: []))
-                    }
-                    
-                    self.fetchPhoneContacts(completion: { _,_  in }) // to update mapping
-                    
+                    // to update mapping
+                    self.fetchPhoneContacts(completion: { _,_  in
+                        if bool {
+                            print("Contact Sucessfully Updated")
+                            completion(ContactsFetchResult.Success(response: []))
+                        } else {
+                            completion(ContactsFetchResult.Success(response: []))
+                        }
+                    })
                 case .Error(error: let error):
                     print(error.localizedDescription)
                     completion(ContactsFetchResult.Error(error: error))

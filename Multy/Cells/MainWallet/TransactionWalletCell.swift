@@ -177,7 +177,7 @@ class TransactionWalletCell: UITableViewCell {
     }
     
     func changeTopConstraint(_ isThereName: Bool) {
-        self.topConstraint.constant = isThereName ? 30 : 20
+        self.topConstraint.constant = isThereName ? 27 : 18
     }
 }
 

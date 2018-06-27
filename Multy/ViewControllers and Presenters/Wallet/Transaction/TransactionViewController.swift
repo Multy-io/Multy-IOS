@@ -225,10 +225,10 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
             self.constraintNoteFiatSum.constant = 10
             
             self.transactionCurencyLbl.text = "ETH"     // check currencyID
-            self.walletFromAddressLbl.text = presenter.histObj.addressesArray.first
+            self.walletFromAddressLbl.text = presenter.histObj.addressesArray.first?.stringWithName
             self.personNameLbl.text = ""   // before we don`t have address book    OR    Wallet Name
             
-            self.walletToAddressLbl.text = presenter.histObj.addressesArray.last
+            self.walletToAddressLbl.text = presenter.histObj.addressesArray.last?.stringWithName
             self.numberOfConfirmationLbl.text = makeConfirmationText()
             self.blockchainImg.image = UIImage(named: presenter.blockchainType.iconString)
             if isIncoming {
@@ -305,7 +305,9 @@ extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
         let networkID = presenter.wallet.chainType.uint32Value
         
         updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] _ in
-            self.updateUI()
+            DispatchQueue.main.async {
+                self.updateUI()
+            }
         }
     }
 }

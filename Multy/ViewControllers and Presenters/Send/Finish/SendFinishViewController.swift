@@ -345,7 +345,11 @@ extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
         let currencyID = presenter.transactionDTO.choosenWallet!.chain.uint32Value
         let networkID = presenter.transactionDTO.choosenWallet!.chainType.uint32Value
         
-        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { _ in }
+        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] _ in
+            DispatchQueue.main.async {
+                self.setupUI()
+            }
+        }
     }
 }
 
