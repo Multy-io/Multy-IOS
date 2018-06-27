@@ -722,6 +722,15 @@ class RealmManager: NSObject {
             }
         }
     }
+    
+    func getAllWalletsFor(blockchainType: BlockchainType, completion: @escaping (_ wallets: Results<UserWalletRLM>?, _ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let wallets = realm.objects(UserWalletRLM.self).filter("cryptoName == '\(blockchainType.shortName)' AND chainType = \(blockchainType.net_type)")
+                completion(wallets, nil)
+            }
+        }
+    }
 }
 
 extension RealmMigrationManager {

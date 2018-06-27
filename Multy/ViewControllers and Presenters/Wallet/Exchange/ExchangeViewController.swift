@@ -176,7 +176,10 @@ class ExchangeViewController: UIViewController {
     }
     
     @IBAction func selectChainToReceiveAction(_ sender: Any) {
-        
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let currenciesVC = storyboard.instantiateViewController(withIdentifier: "exchangeCurrencies") as! CurrencyToExchangeViewController
+        currenciesVC.presenter.walletFromExchange = presenter.walletFromSending
+        navigationController?.pushViewController(currenciesVC, animated: true)
     }
     
     @IBAction func sendingCryptoValueChanged(_ sender: Any) {

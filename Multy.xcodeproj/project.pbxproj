@@ -1462,9 +1462,9 @@
 		45B4A86020DA885C00A4218C /* Exchange */ = {
 			isa = PBXGroup;
 			children = (
-				45B5057E20E14DFF0036EA83 /* CurrenciesVC */,
 				45B4A86120DA888700A4218C /* ExchangeViewController.swift */,
 				45B4A86320DA8BFB00A4218C /* ExchangePresenter.swift */,
+				45B5057E20E14DFF0036EA83 /* CurrenciesVC */,
 			);
 			path = Exchange;
 			sourceTree = "<group>";
