@@ -303,7 +303,7 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
         
         if !isHidden {
             hidedSumLabel.text = "\(sumValueLbl.text!) \(cryptoNameLbl.text!) / \(fiatSumLbl.text!) \(fiatNameLbl.text!)"
-            hidedAddressLabel.text = presenter.walletAddress
+            hidedAddressLabel.text = presenter.walletAddress.stringWithName
         }
         
         updateSearchingAnimation()

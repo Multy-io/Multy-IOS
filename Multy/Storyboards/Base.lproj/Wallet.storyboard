@@ -404,7 +404,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GkQ-RF-l8U">
-                                <rect key="frame" x="16" y="120" width="343" height="425"/>
+                                <rect key="frame" x="16" y="78.5" width="343" height="508"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6T-5X-NVW">
                                         <rect key="frame" x="139" y="20" width="65" height="24"/>
@@ -413,40 +413,43 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ASQ-rH-oFo">
-                                        <rect key="frame" x="111.5" y="64" width="119" height="119"/>
+                                        <rect key="frame" x="99" y="64" width="144" height="144"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="ASQ-rH-oFo" secondAttribute="height" multiplier="1:1" id="BMH-WT-kjL"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="atg-vC-ZHg">
-                                        <rect key="frame" x="42" y="193" width="260" height="16.5"/>
+                                        <rect key="frame" x="42" y="218" width="260" height="16.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVe-sN-64P">
-                                        <rect key="frame" x="0.0" y="239.5" width="343" height="1"/>
+                                        <rect key="frame" x="0.0" y="264" width="343" height="1"/>
                                         <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="uHa-Mp-HaU"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QeZ-MK-mx7">
+                                        <rect key="frame" x="0.0" y="265" width="343" height="60"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
+                                        <state key="normal" title="Add to Contact">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addToContactAction:" destination="hio-Xa-xy7" eventType="touchUpInside" id="Tup-di-eMx"/>
+                                        </connections>
+                                    </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tdq-Ei-BCA">
-                                        <rect key="frame" x="0.0" y="301" width="343" height="1"/>
+                                        <rect key="frame" x="0.0" y="325" width="343" height="1"/>
                                         <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="m1M-De-iaS"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BV2-re-Slw">
-                                        <rect key="frame" x="0.0" y="362" width="343" height="1"/>
-                                        <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="LJP-MB-nCs"/>
-                                        </constraints>
-                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bop-ir-HSr">
-                                        <rect key="frame" x="0.0" y="240.5" width="343" height="60.5"/>
+                                        <rect key="frame" x="0.0" y="326" width="343" height="59.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                         <state key="normal" title="Copy to clipboard">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -455,8 +458,15 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <action selector="copyToClipboardAction:" destination="hio-Xa-xy7" eventType="touchUpInside" id="Jin-wa-mE1"/>
                                         </connections>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BV2-re-Slw">
+                                        <rect key="frame" x="0.0" y="386" width="343" height="1"/>
+                                        <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="LJP-MB-nCs"/>
+                                        </constraints>
+                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-uG-5by">
-                                        <rect key="frame" x="0.0" y="302" width="343" height="60"/>
+                                        <rect key="frame" x="0.0" y="387" width="343" height="60"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                         <state key="normal" title="Share">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -465,8 +475,15 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <action selector="shareAction:" destination="hio-Xa-xy7" eventType="touchUpInside" id="EUl-4H-9Y4"/>
                                         </connections>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8wY-QD-IAC">
+                                        <rect key="frame" x="0.0" y="447" width="343" height="1"/>
+                                        <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="BF7-oN-T7R"/>
+                                        </constraints>
+                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RgG-Y1-olV">
-                                        <rect key="frame" x="0.0" y="373" width="343" height="34"/>
+                                        <rect key="frame" x="0.0" y="448" width="343" height="60"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                         <state key="normal" title="Cancel">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -478,36 +495,44 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="Bop-ir-HSr" firstAttribute="bottom" secondItem="BV2-re-Slw" secondAttribute="top" id="0kC-KF-Jof"/>
                                     <constraint firstItem="7lc-uG-5by" firstAttribute="leading" secondItem="GkQ-RF-l8U" secondAttribute="leading" id="4rT-NX-1jM"/>
-                                    <constraint firstItem="Tdq-Ei-BCA" firstAttribute="top" secondItem="Bop-ir-HSr" secondAttribute="bottom" id="AyZ-KE-dwC"/>
+                                    <constraint firstItem="8wY-QD-IAC" firstAttribute="leading" secondItem="BV2-re-Slw" secondAttribute="leading" id="703-uM-Njd"/>
                                     <constraint firstItem="ASQ-rH-oFo" firstAttribute="height" secondItem="GkQ-RF-l8U" secondAttribute="height" multiplier="135/440" constant="-11.5" id="Bl4-Eb-Mdj"/>
+                                    <constraint firstItem="QeZ-MK-mx7" firstAttribute="leading" secondItem="GkQ-RF-l8U" secondAttribute="leading" id="BoC-KR-ueL"/>
+                                    <constraint firstItem="8wY-QD-IAC" firstAttribute="trailing" secondItem="BV2-re-Slw" secondAttribute="trailing" id="BpU-Dl-Huf"/>
                                     <constraint firstItem="atg-vC-ZHg" firstAttribute="top" secondItem="ASQ-rH-oFo" secondAttribute="bottom" constant="10" id="CDX-P3-0Q9"/>
                                     <constraint firstItem="ASQ-rH-oFo" firstAttribute="top" secondItem="a6T-5X-NVW" secondAttribute="bottom" constant="20" id="Eg8-FA-QS1"/>
                                     <constraint firstItem="a6T-5X-NVW" firstAttribute="top" secondItem="GkQ-RF-l8U" secondAttribute="top" constant="20" id="FUv-gN-cgM"/>
+                                    <constraint firstAttribute="trailing" secondItem="QeZ-MK-mx7" secondAttribute="trailing" id="H7h-TH-9dJ"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="atg-vC-ZHg" secondAttribute="trailing" constant="10" id="HNa-BR-0Up"/>
                                     <constraint firstAttribute="trailing" secondItem="BV2-re-Slw" secondAttribute="trailing" id="HR8-Hg-PsL"/>
-                                    <constraint firstItem="7lc-uG-5by" firstAttribute="top" secondItem="Tdq-Ei-BCA" secondAttribute="bottom" id="IJC-xj-IAq"/>
-                                    <constraint firstItem="BV2-re-Slw" firstAttribute="top" secondItem="7lc-uG-5by" secondAttribute="bottom" id="IVL-Vy-39f"/>
                                     <constraint firstItem="ASQ-rH-oFo" firstAttribute="centerX" secondItem="GkQ-RF-l8U" secondAttribute="centerX" id="Icj-Zn-WYc"/>
+                                    <constraint firstItem="RgG-Y1-olV" firstAttribute="top" secondItem="8wY-QD-IAC" secondAttribute="bottom" id="PDz-iZ-EXZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="8wY-QD-IAC" secondAttribute="bottom" constant="60" id="TgQ-ad-fDy"/>
                                     <constraint firstAttribute="trailing" secondItem="7lc-uG-5by" secondAttribute="trailing" id="Ud7-QL-RQ8"/>
                                     <constraint firstItem="RgG-Y1-olV" firstAttribute="leading" secondItem="GkQ-RF-l8U" secondAttribute="leading" id="Uox-Hm-b5w"/>
                                     <constraint firstItem="BV2-re-Slw" firstAttribute="leading" secondItem="GkQ-RF-l8U" secondAttribute="leading" id="Uq8-Y3-fqQ"/>
-                                    <constraint firstItem="RgG-Y1-olV" firstAttribute="top" secondItem="BV2-re-Slw" secondAttribute="bottom" constant="10" id="VgD-X5-biu"/>
                                     <constraint firstItem="atg-vC-ZHg" firstAttribute="centerX" secondItem="GkQ-RF-l8U" secondAttribute="centerX" id="W2r-6w-VQs"/>
+                                    <constraint firstItem="7lc-uG-5by" firstAttribute="top" secondItem="BV2-re-Slw" secondAttribute="bottom" id="W8M-yS-ax7"/>
                                     <constraint firstItem="Tdq-Ei-BCA" firstAttribute="top" secondItem="uVe-sN-64P" secondAttribute="bottom" constant="60" id="ZR3-cb-qle"/>
                                     <constraint firstAttribute="trailing" secondItem="RgG-Y1-olV" secondAttribute="trailing" id="aom-nU-DGc"/>
                                     <constraint firstItem="Bop-ir-HSr" firstAttribute="leading" secondItem="GkQ-RF-l8U" secondAttribute="leading" id="aps-hF-62O"/>
                                     <constraint firstItem="a6T-5X-NVW" firstAttribute="centerX" secondItem="GkQ-RF-l8U" secondAttribute="centerX" id="auU-0H-gXf"/>
-                                    <constraint firstAttribute="bottom" secondItem="RgG-Y1-olV" secondAttribute="bottom" constant="18" id="bRy-dp-ORP"/>
                                     <constraint firstAttribute="trailing" secondItem="Tdq-Ei-BCA" secondAttribute="trailing" id="bh7-CG-H6t"/>
                                     <constraint firstItem="Tdq-Ei-BCA" firstAttribute="leading" secondItem="GkQ-RF-l8U" secondAttribute="leading" id="bhY-Jb-dhW"/>
                                     <constraint firstItem="uVe-sN-64P" firstAttribute="top" secondItem="atg-vC-ZHg" secondAttribute="bottom" constant="30" id="cdr-ll-YnV"/>
+                                    <constraint firstItem="Bop-ir-HSr" firstAttribute="top" secondItem="Tdq-Ei-BCA" secondAttribute="bottom" id="cit-ul-L0P"/>
+                                    <constraint firstItem="8wY-QD-IAC" firstAttribute="top" secondItem="BV2-re-Slw" secondAttribute="bottom" constant="60" id="d1H-pU-dyJ"/>
+                                    <constraint firstItem="QeZ-MK-mx7" firstAttribute="bottom" secondItem="Tdq-Ei-BCA" secondAttribute="top" id="doQ-DG-cye"/>
                                     <constraint firstItem="uVe-sN-64P" firstAttribute="leading" secondItem="GkQ-RF-l8U" secondAttribute="leading" id="fRl-tm-lHm"/>
-                                    <constraint firstItem="Bop-ir-HSr" firstAttribute="top" secondItem="uVe-sN-64P" secondAttribute="bottom" id="pth-Qb-ABY"/>
+                                    <constraint firstItem="QeZ-MK-mx7" firstAttribute="top" secondItem="uVe-sN-64P" secondAttribute="bottom" id="irg-Tu-KbC"/>
                                     <constraint firstAttribute="trailing" secondItem="Bop-ir-HSr" secondAttribute="trailing" id="srw-8V-1Ri"/>
+                                    <constraint firstItem="7lc-uG-5by" firstAttribute="bottom" secondItem="8wY-QD-IAC" secondAttribute="top" id="ssK-JK-ATB"/>
                                     <constraint firstItem="BV2-re-Slw" firstAttribute="top" secondItem="Tdq-Ei-BCA" secondAttribute="bottom" constant="60" id="tg5-Yc-hAi"/>
                                     <constraint firstItem="atg-vC-ZHg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="GkQ-RF-l8U" secondAttribute="leading" constant="15" id="v6P-TO-17p"/>
                                     <constraint firstAttribute="trailing" secondItem="uVe-sN-64P" secondAttribute="trailing" id="vQk-8D-tYC"/>
+                                    <constraint firstAttribute="bottom" secondItem="RgG-Y1-olV" secondAttribute="bottom" id="yh6-15-o3H"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -537,16 +562,18 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <constraints>
                             <constraint firstItem="GkQ-RF-l8U" firstAttribute="centerY" secondItem="fq5-cu-wzh" secondAttribute="centerY" constant="-1" id="0ig-FD-Ah0"/>
                             <constraint firstItem="GkQ-RF-l8U" firstAttribute="leading" secondItem="fq5-cu-wzh" secondAttribute="leading" constant="16" id="4yG-0x-DXo"/>
-                            <constraint firstItem="ccw-ft-jpV" firstAttribute="top" secondItem="rhe-gH-QUo" secondAttribute="bottom" constant="-40" id="9nv-oV-iXZ"/>
                             <constraint firstAttribute="trailing" secondItem="GkQ-RF-l8U" secondAttribute="trailing" constant="16" id="FiM-12-acl"/>
                             <constraint firstItem="GkQ-RF-l8U" firstAttribute="centerX" secondItem="fq5-cu-wzh" secondAttribute="centerX" id="OFv-W8-pKk"/>
                             <constraint firstItem="rhe-gH-QUo" firstAttribute="leading" secondItem="fq5-cu-wzh" secondAttribute="leading" id="RIy-PF-hiV"/>
+                            <constraint firstItem="ccw-ft-jpV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="GkQ-RF-l8U" secondAttribute="bottom" constant="30" id="S1G-fL-DPd"/>
                             <constraint firstAttribute="trailing" secondItem="rhe-gH-QUo" secondAttribute="trailing" id="Uhg-eS-78z"/>
-                            <constraint firstItem="GkQ-RF-l8U" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Kmd-Ch-PjK" secondAttribute="bottom" constant="30" id="bgk-5m-vLd"/>
-                            <constraint firstItem="ccw-ft-jpV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="GkQ-RF-l8U" secondAttribute="bottom" constant="30" id="z7w-AF-jaG"/>
+                            <constraint firstItem="ccw-ft-jpV" firstAttribute="top" secondItem="rhe-gH-QUo" secondAttribute="bottom" constant="-40" id="XUW-ba-hsg"/>
+                            <constraint firstItem="GkQ-RF-l8U" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Kmd-Ch-PjK" secondAttribute="bottom" constant="30" id="vGE-Ak-NJq"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addContactButton" destination="QeZ-MK-mx7" id="Oli-dx-Ilu"/>
+                        <outlet property="addContactConstraint" destination="ZR3-cb-qle" id="xqC-Cy-WfU"/>
                         <outlet property="addressLbl" destination="atg-vC-ZHg" id="chQ-dV-vJE"/>
                         <outlet property="copiedView" destination="rhe-gH-QUo" id="IDt-oi-KIL"/>
                         <outlet property="firstConstraint" destination="cdr-ll-YnV" id="toc-SH-bqT"/>

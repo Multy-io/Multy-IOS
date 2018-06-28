@@ -5,6 +5,7 @@
 import UIKit
 
 private typealias LocalizeDelegate = SendFinishViewController
+private typealias PickerContactsDelegate = SendFinishViewController
 
 class SendFinishViewController: UIViewController, UITextFieldDelegate, AnalyticsProtocol {
 
@@ -131,18 +132,21 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate, Analytics
         let tapLocation = recog.location(in: labelFor)
         var lineNumber = Double(tapLocation.y / 16.5)
         lineNumber.round(.towardZero)
-        var title = ""
-        if labelFor == walletsAddressesLbl {
-            title = presenter.transactionDTO.choosenWallet!.addressesWithSpendableOutputs()[Int(lineNumber)]
-        } else { // if walletToAddressLbl
-            title = presenter.transactionDTO.sendAddress!
-        }
+        let title = copyAdressFor(labelFor: labelFor, lineNumber: Int(lineNumber))
         
         let actionSheet = UIAlertController(title: "", message: title, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.copyToClipboardString), style: .default, handler: { (action) in
             UIPasteboard.general.string = title
         }))
+        
+        if DataManager.shared.isAddressSaved(title) == false {
+            actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
+                self.presenter.selectedAddress = title
+                self.presentiPhoneContacts()
+            }))
+        }
+        
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.shareString), style: .default, handler: { (action) in
             let objectsToShare = [title]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
@@ -160,6 +164,19 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate, Analytics
             self.present(activityVC, animated: true, completion: nil)
         }))
         self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func copyAdressFor(labelFor: UILabel, lineNumber: Int) -> String {
+        if labelFor == addressLbl {
+            return presenter.transactionDTO.sendAddress!
+        } else {
+            switch self.presenter.transactionDTO.choosenWallet!.blockchainType.blockchain {
+            case BLOCKCHAIN_BITCOIN:
+                return presenter.transactionDTO.choosenWallet!.addressesWithSpendableOutputs()[Int(lineNumber)]
+            default:
+                return presenter.transactionDTO.choosenWallet!.stringAddressesWithSpendableOutputs()
+            }
+        }
     }
     
     @IBAction func slideToSend(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -314,6 +331,24 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate, Analytics
         if segue.identifier == "sendingAnimationVC" {
             let sendAnimationVC = segue.destination as! SendingAnimationViewController
             sendAnimationVC.chainId = presenter.transactionDTO.choosenWallet!.chain as? Int
+        }
+    }
+}
+
+extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
+    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) {
+        if contact.contactId == nil {
+            return
+        }
+        
+        let address = presenter.selectedAddress
+        let currencyID = presenter.transactionDTO.choosenWallet!.chain.uint32Value
+        let networkID = presenter.transactionDTO.choosenWallet!.chainType.uint32Value
+        
+        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] _ in
+            DispatchQueue.main.async {
+                self.setupUI()
+            }
         }
     }
 }

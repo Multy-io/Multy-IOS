@@ -5,6 +5,8 @@
 import UIKit
 import Branch
 
+private typealias PickerDelegate = AddressViewController
+
 class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol {
 
     @IBOutlet weak var titleLbl: UILabel!
@@ -17,6 +19,8 @@ class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol
     @IBOutlet weak var seondConstraint: NSLayoutConstraint!
     @IBOutlet weak var thirdConstraint: NSLayoutConstraint!
     @IBOutlet weak var fourthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var addContactConstraint: NSLayoutConstraint!
+    @IBOutlet weak var addContactButton: UIButton!
     
     var wallet: UserWalletRLM? {
         didSet {
@@ -43,6 +47,11 @@ class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol
         super.viewWillAppear(animated)
         self.makeQRCode()
         self.addressLbl.text = makeStringWithAddress()
+        if DataManager.shared.isAddressSaved(makeStringWithAddress()) {
+            addContactConstraint.constant = 0
+            addContactButton.isHidden = true
+            addContactButton.isUserInteractionEnabled = false
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -133,6 +142,10 @@ class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func addToContactAction(_ sender: Any) {
+        presentiPhoneContacts()
+    }
+    
     func makeStringForQRWithSumAndAdress(cryptoName: String) -> String { // cryptoName = bitcoin
         return "\(cryptoName):\(makeStringWithAddress())?amount:0"
     }
@@ -169,5 +182,23 @@ class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol
         let cgImage:CGImage = context.createCGImage(cmage, from: cmage.extent)!
         let image:UIImage = UIImage.init(cgImage: cgImage)
         return image
+    }
+}
+
+extension PickerDelegate: EPPickerDelegate, ContactsProtocol {
+    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) {
+        if contact.contactId == nil {
+            return
+        }
+        
+        let address = makeStringWithAddress()
+        let currencyID = wallet!.chain.uint32Value
+        let networkID = wallet!.chainType.uint32Value
+        
+        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] (result) in
+            DispatchQueue.main.async {
+                self.cancelAction(Any.self)
+            }
+        }
     }
 }

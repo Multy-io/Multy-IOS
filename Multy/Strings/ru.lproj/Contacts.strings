@@ -9,3 +9,5 @@
 "ERROR" = "Ошибка";
 "SOMETHING WENT WRONG" = "Что-то пошло не так";
 "LOADING" = "Загрузка";
+"CANCEL" = "Отменить";
+"DELETE FROM CONTACTS" = "Удалить из контакта";

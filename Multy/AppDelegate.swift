@@ -138,6 +138,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if dataString.hasPrefix("multy://") {
             dataString.removeSubrange(dataString.range(of: "multy://")!)
+            
+            if dataString.count == 0 {
+                return true
+            }
         }
         
         DataManager.shared.getAccount(completion: { (acc, err) in
