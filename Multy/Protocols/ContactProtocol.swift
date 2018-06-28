@@ -54,6 +54,43 @@ extension ContactsProtocol {
         }
     }
     
+    func deleteContact(_ contactID: String, _ completion: @escaping(_ result: ContactOperationResult) -> ()) {
+        getContactFromID(Identifires: [contactID], completionHandler: { (result) in
+            switch result {
+            case .Success(response: let contacts):
+                if contacts.count == 0 {
+                    return
+                }
+                
+                self.deleteAddressesFromContact(contacts.first!, { (result) in
+                    completion(result)
+                })
+                break
+            case .Error(error: let error):
+                print(error)
+                completion(ContactOperationResult.Error(error: error))
+                break
+            }
+        })
+    }
+    
+    fileprivate func deleteAddressesFromContact(_ contact: CNContact, _ completion: @escaping(_ result: ContactOperationResult) -> ()) {
+        let mContact = contact.mutableCopy() as! CNMutableContact
+        var newSocialProfiles = [CNLabeledValue<CNSocialProfile>]()
+        
+        for socialProfile in contact.socialProfiles {
+            if socialProfile.isMulty() == false {
+                newSocialProfiles.append(socialProfile)
+            }
+        }
+        
+        mContact.socialProfiles = newSocialProfiles
+        
+        customUpdateContact(mContact) { (result) in
+            completion(result)
+        }
+    }
+    
     func updateContactInfo(_ contactID: String, withAddress address: String?, _ currencyID: UInt32?, _ networkID: UInt32?, _ completion: @escaping(_ result: ContactsFetchResult) -> ()) {
         getContactFromID(Identifires: [contactID], completionHandler: { (result) in
             switch result {
@@ -165,15 +202,17 @@ extension ContactsProtocol {
         updateContact(Contact: contact) { (result) in
             switch result {
             case .Success(response: let bool):
+                
+                DispatchQueue.main.async {
+                    self.fetchPhoneContacts(completion: { _,_  in }) // to update mapping
+                }
+                
                 if bool {
                     print("Contact Sucessfully Updated")
                     completion(result)
                 } else {
                     completion(result)
                 }
-                
-                self.fetchPhoneContacts(completion: { _,_  in }) // to update mapping
-                
             case .Error(error: let error):
                 print(error.localizedDescription)
                 completion(ContactOperationResult.Error(error: error))

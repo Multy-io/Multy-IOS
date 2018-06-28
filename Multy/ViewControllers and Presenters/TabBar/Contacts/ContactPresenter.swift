@@ -4,6 +4,7 @@
 
 import UIKit
 
+private typealias NewContactAddressDelegate = ContactPresenter
 private typealias LocalizeDelegate = ContactPresenter
 
 class ContactPresenter: NSObject, ContactsProtocol {
@@ -54,20 +55,45 @@ class ContactPresenter: NSObject, ContactsProtocol {
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
         actionSheet.addAction(UIAlertAction(title: localize(string: Constants.deleteFromContact), style: .default, handler: { [unowned self] (action) in
             self.mainVC?.view.isUserInteractionEnabled = false
-            self.deleteAddress(title, from: self.contact!.contactId!, { (result) in
-                self.fetchPhoneContact(self.contact!.contactId!, completion: { (contact, error) in
-                    DispatchQueue.main.async {
-                        if contact != nil {
-                            self.contact = EPContact.init(contact: contact!)
-                        }
-                        
-                        self.mainVC!.tableView.reloadData()
-                        self.mainVC!.view.isUserInteractionEnabled = true
-                    }
-                })
+            self.deleteAddress(title, from: self.contact!.contactId!, { [unowned self] (result) in
+                self.updateAddresses()
             })
         }))
         mainVC?.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func updateAddresses() {
+        self.fetchPhoneContact(self.contact!.contactId!, completion: { (contact, error) in
+            DispatchQueue.main.async {
+                if contact != nil {
+                    self.contact = EPContact.init(contact: contact!)
+                }
+                
+                self.mainVC!.tableView.reloadData()
+                self.mainVC!.view.isUserInteractionEnabled = true
+            }
+        })
+    }
+    
+    func deleteContact() {
+        //FIXME: add error handling
+        deleteContact(contact!.contactId!) { (result) in
+            DispatchQueue.main.async {
+                self.mainVC!.backAction()
+            }
+        }
+
+    }
+}
+
+extension NewContactAddressDelegate: NewContactAddressProtocol {
+    func passNewAddress(_ address: String, andBlockchainType blockchainType: BlockchainType) {
+        let currencyID = blockchainType.blockchain.rawValue
+        let networkID = UInt32(blockchainType.net_type)
+        
+        updateContactInfo(contact!.contactId!, withAddress: address, currencyID, networkID) { [unowned self] (result) in
+            self.updateAddresses()
+        }
     }
 }
 

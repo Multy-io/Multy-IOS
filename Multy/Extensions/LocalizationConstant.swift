@@ -101,4 +101,6 @@ extension Constants {
     static let andDonationString = "AND DONATION "
     static let addToContacts = "ADD TO CONTACTS"
     static let deleteFromContact = "DELETE FROM CONTACTS"
+    static let savedAddressString = "ADDRESS SAVED"
+    static let addressNotMatchString = "ADDRESS NOT MATCH"
 }

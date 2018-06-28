@@ -5,7 +5,7 @@
 import UIKit
 
 private typealias TableViewDelegate = ContactViewController
-private typealias TableViewDataSource = ContactViewController
+private typealias TableViewDataSourceDelegate = ContactViewController
 
 class ContactViewController: UIViewController {
 
@@ -40,8 +40,19 @@ class ContactViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func deleteAction() {
+        view.isUserInteractionEnabled = false
+        presenter.deleteContact()
+    }
+    
     @IBAction func addAddressAction(_ sender: Any) {
-        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let addAddressVC = storyboard.instantiateViewController(withIdentifier: "addAdressStoryboardID") as! AddAddressViewController
+        addAddressVC.modalPresentationStyle = .overCurrentContext
+        addAddressVC.modalTransitionStyle = .crossDissolve
+        addAddressVC.presenter.delegate = presenter
+        present(addAddressVC, animated: true, completion: nil)
+        //        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(wallet!.chain)", eventName: "\(addressWithChainTap)\(wallet!.chain)")
     }
 }
 
@@ -59,7 +70,7 @@ extension TableViewDelegate: UITableViewDelegate {
     }
 }
 
-extension TableViewDataSource: UITableViewDataSource {
+extension TableViewDataSourceDelegate: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.contact?.addresses.count ?? 0
     }
