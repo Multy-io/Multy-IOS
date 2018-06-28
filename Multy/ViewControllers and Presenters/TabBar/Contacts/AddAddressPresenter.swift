@@ -8,4 +8,6 @@ class AddAddressPresenter: NSObject {
     var mainVC: AddAddressViewController?
     
     let blockchainData = Constants.DataManager.availableBlockchains
+    
+    var delegate: NewContactAddressProtocol?
 }
