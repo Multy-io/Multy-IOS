@@ -188,6 +188,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
     @IBAction func cancelAction(_ sender: Any) {
         let alert = UIAlertController(title: localize(string: Constants.cancelString), message: localize(string: Constants.wantToCancelString), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: localize(string: Constants.yesString), style: .default, handler: { (action) in
+            self.view.endEditing(true)
             self.sendAnalyticsEvent(screenName: screenRestoreSeed, eventName: cancelTap)
             if self.whereFrom != nil {
                 self.navigationController?.popToViewController(self.whereFrom!, animated: true)
