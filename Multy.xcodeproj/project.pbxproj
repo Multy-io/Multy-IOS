@@ -65,6 +65,8 @@
 		44AAAE0D20E0ED4300A481A4 /* ContactPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAAE0C20E0ED4300A481A4 /* ContactPresenter.swift */; };
 		44AAAE1020E13BFC00A481A4 /* SavedAddressesRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAAE0F20E13BFC00A481A4 /* SavedAddressesRLM.swift */; };
 		44AAAE1320E258D200A481A4 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAAE1220E258D200A481A4 /* ContactCell.swift */; };
+		44AAAE1520E3E8C700A481A4 /* AddAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAAE1420E3E8C700A481A4 /* AddAddressViewController.swift */; };
+		44AAAE1720E4D28700A481A4 /* AddAddressPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAAE1620E4D28700A481A4 /* AddAddressPresenter.swift */; };
 		44BCBDB520601AD0001611A5 /* BTCWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BCBDB420601AD0001611A5 /* BTCWallet.swift */; };
 		44BCBDB720601AE3001611A5 /* ETHWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BCBDB620601AE3001611A5 /* ETHWallet.swift */; };
 		44BF10E020C971C4009E3E22 /* magicSend.json in Resources */ = {isa = PBXBuildFile; fileRef = 44BF10DF20C971C4009E3E22 /* magicSend.json */; };
@@ -476,6 +478,8 @@
 		44AAAE0C20E0ED4300A481A4 /* ContactPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPresenter.swift; sourceTree = "<group>"; };
 		44AAAE0F20E13BFC00A481A4 /* SavedAddressesRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedAddressesRLM.swift; sourceTree = "<group>"; };
 		44AAAE1220E258D200A481A4 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		44AAAE1420E3E8C700A481A4 /* AddAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressViewController.swift; sourceTree = "<group>"; };
+		44AAAE1620E4D28700A481A4 /* AddAddressPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressPresenter.swift; sourceTree = "<group>"; };
 		44BCBDB420601AD0001611A5 /* BTCWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCWallet.swift; sourceTree = "<group>"; };
 		44BCBDB620601AE3001611A5 /* ETHWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ETHWallet.swift; sourceTree = "<group>"; };
 		44BF10DF20C971C4009E3E22 /* magicSend.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magicSend.json; sourceTree = "<group>"; };
@@ -1487,6 +1491,8 @@
 				45B0B0EA1FEBF2BB005BB1C0 /* ContactsPresenter.swift */,
 				44AAAE0A20E0ED1400A481A4 /* ContactViewController.swift */,
 				44AAAE0C20E0ED4300A481A4 /* ContactPresenter.swift */,
+				44AAAE1420E3E8C700A481A4 /* AddAddressViewController.swift */,
+				44AAAE1620E4D28700A481A4 /* AddAddressPresenter.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -2407,6 +2413,7 @@
 				FA4D43DF1FC58730003C7117 /* TouchIDAuthentication.swift in Sources */,
 				445D151020DAB089002F6747 /* CNContact+Extension.swift in Sources */,
 				4585BD2E20497D2E004542AE /* DonationCollectionViewCell.swift in Sources */,
+				44AAAE1520E3E8C700A481A4 /* AddAddressViewController.swift in Sources */,
 				4585BD382049AD03004542AE /* ExchangeStockTableViewCell.swift in Sources */,
 				45AC1624204820CB00E75BD6 /* CurrencyToConvertPresenter.swift in Sources */,
 				45B0B0F21FEBF326005BB1C0 /* SettingsPresenter.swift in Sources */,
@@ -2437,6 +2444,7 @@
 				45A87834205FC9E80071D6F1 /* EthSendDetailsPresenter.swift in Sources */,
 				4575F0DA2081FE1A002616DD /* WebTextPagePresenter.swift in Sources */,
 				FA8835921FD856F4007694A2 /* UserWalletRLM.swift in Sources */,
+				44AAAE1720E4D28700A481A4 /* AddAddressPresenter.swift in Sources */,
 				45F6340A202388C900C17A7C /* ViewInBlockchainPresenter.swift in Sources */,
 				445D150D20DA8513002F6747 /* EPContactsPicker.swift in Sources */,
 				45E148A8204553AF006BD4D1 /* DonationAlertViewController.swift in Sources */,

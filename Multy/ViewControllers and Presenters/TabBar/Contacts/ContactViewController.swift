@@ -39,6 +39,10 @@ class ContactViewController: UIViewController {
     @IBAction func backAction() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @IBAction func addAddressAction(_ sender: Any) {
+        
+    }
 }
 
 extension TableViewDelegate: UITableViewDelegate {

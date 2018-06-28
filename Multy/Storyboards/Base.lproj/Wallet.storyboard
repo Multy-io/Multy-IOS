@@ -562,13 +562,13 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <constraints>
                             <constraint firstItem="GkQ-RF-l8U" firstAttribute="centerY" secondItem="fq5-cu-wzh" secondAttribute="centerY" constant="-1" id="0ig-FD-Ah0"/>
                             <constraint firstItem="GkQ-RF-l8U" firstAttribute="leading" secondItem="fq5-cu-wzh" secondAttribute="leading" constant="16" id="4yG-0x-DXo"/>
-                            <constraint firstItem="ccw-ft-jpV" firstAttribute="top" secondItem="rhe-gH-QUo" secondAttribute="bottom" constant="-40" id="9nv-oV-iXZ"/>
                             <constraint firstAttribute="trailing" secondItem="GkQ-RF-l8U" secondAttribute="trailing" constant="16" id="FiM-12-acl"/>
                             <constraint firstItem="GkQ-RF-l8U" firstAttribute="centerX" secondItem="fq5-cu-wzh" secondAttribute="centerX" id="OFv-W8-pKk"/>
                             <constraint firstItem="rhe-gH-QUo" firstAttribute="leading" secondItem="fq5-cu-wzh" secondAttribute="leading" id="RIy-PF-hiV"/>
+                            <constraint firstItem="ccw-ft-jpV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="GkQ-RF-l8U" secondAttribute="bottom" constant="30" id="S1G-fL-DPd"/>
                             <constraint firstAttribute="trailing" secondItem="rhe-gH-QUo" secondAttribute="trailing" id="Uhg-eS-78z"/>
-                            <constraint firstItem="GkQ-RF-l8U" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Kmd-Ch-PjK" secondAttribute="bottom" constant="30" id="bgk-5m-vLd"/>
-                            <constraint firstItem="ccw-ft-jpV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="GkQ-RF-l8U" secondAttribute="bottom" constant="30" id="z7w-AF-jaG"/>
+                            <constraint firstItem="ccw-ft-jpV" firstAttribute="top" secondItem="rhe-gH-QUo" secondAttribute="bottom" constant="-40" id="XUW-ba-hsg"/>
+                            <constraint firstItem="GkQ-RF-l8U" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Kmd-Ch-PjK" secondAttribute="bottom" constant="30" id="vGE-Ak-NJq"/>
                         </constraints>
                     </view>
                     <connections>
