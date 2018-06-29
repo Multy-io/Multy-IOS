@@ -10,20 +10,26 @@ protocol BranchProtocol {
 }
 
 extension BranchProtocol {
-    func createDeepLink(completion: @escaping (_ url: String?) -> ()) {
+    func createDeepLink(_ address: String?, completion: @escaping (_ url: String?) -> ()) {
         let branch = Branch.getInstance()
-        let branchInfo = branchDict(BLOCKCHAIN_BITCOIN, "1PteA8L32kBjwqNAtBao4h6ZKJjJuDVuPG", "0.0")
+        let branchInfo = branchDict(BLOCKCHAIN_BITCOIN, address, nil)
         
         branch?.getShortURL(withParams: branchInfo, andChannel: "Create option \"Multy\"", andFeature: "sharing", andCallback: { (url, err) in
             completion(url)
         })
     }
     
-    func branchDict(_ blockchain: Blockchain, _ address: String, _ amount: String) -> [String : Any] {
-        let dict: NSDictionary = ["$og_title" : "Multy",
-                                  "address"   : blockchain.qrBlockchainString + ":" + address,
-                                  "amount"    : amount]
+    func branchDict(_ blockchain: Blockchain, _ address: String?, _ amount: String?) -> [String : Any] {
+        var dict: Dictionary<String, Any> = ["$og_title" : "Multy"]
         
-        return dict as! [String : Any]
+        if let addressString = address {
+            dict["address"] = blockchain.qrBlockchainString + ":" + addressString
+        }
+        
+        if let amountString = amount {
+            dict["amount"] = amountString
+        }
+        
+        return dict
     }
 }

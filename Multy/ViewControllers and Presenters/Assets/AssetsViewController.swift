@@ -94,6 +94,7 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
                 self.tableView.frame.size.height = screenHeight - self.tabBarController!.tabBar.frame.height
             }
             DataManager.shared.socketManager.start()
+            DataManager.shared.subscribeToFirebaseMessaging()
         }
     }
     

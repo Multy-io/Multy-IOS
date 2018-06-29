@@ -62,6 +62,14 @@ extension Localizable where Self: UIViewController, Self: Localizable {
     }
 }
 
+extension EPPickerDelegate where Self: UIViewController {
+    func presentiPhoneContacts() {
+        let contactPickerScene = EPContactsPicker(delegate: self, multiSelection: false, subtitleCellType: SubtitleCellValue.email)
+        let navigationController = UINavigationController(rootViewController: contactPickerScene)
+        present(navigationController, animated: true, completion: nil)
+    }
+}
+
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))

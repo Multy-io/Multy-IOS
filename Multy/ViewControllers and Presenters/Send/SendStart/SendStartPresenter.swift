@@ -11,6 +11,7 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
     var sendStartVC: SendStartViewController?
     var transactionDTO = TransactionDTO()
     var isFromWallet = false
+    var selectedAddress: RecentAddressesRLM?
     
     var recentAddresses = [RecentAddressesRLM]() 
     

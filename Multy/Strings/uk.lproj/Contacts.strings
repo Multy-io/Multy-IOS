@@ -9,3 +9,9 @@
 "ERROR" = "Помилка";
 "SOMETHING WENT WRONG" = "Щось пішло не так";
 "LOADING" = "Завантаження";
+"CANCEL" = "Скасувати";
+"DELETE FROM CONTACTS" = "Видалити из контакта";
+"ADDRESS SAVED" = "Адреса вже збережений в контактах";
+"ADDRESS NOT MATCH" = "Адресу не підходить для обраного блокчейна";
+"ARE YOU SURE" = "Ви впевнені?";
+"WARNING" = "Попередження";

@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import Hash2Pics
 
 let wirelessRequestImagesAmount = 10
 
@@ -14,10 +15,10 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     var cryptoName: String?
     var fiatSum: String?
     var fiatName: String?
-    var wirelessRequestImageName: String? {
+    var wirelessRequestImage: UIImage? {
         didSet {
-            if wirelessRequestImageName != nil {
-                receiveAllDetailsVC?.hidedImage.image = UIImage(named: wirelessRequestImageName!)
+            if wirelessRequestImage != nil {
+                receiveAllDetailsVC?.hidedImage.image = wirelessRequestImage
             }
         }
     }
@@ -70,6 +71,10 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
         startWirelessReceiverActivity()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.didUpdateTransaction(notification:)), name: Notification.Name("transactionUpdated"), object: nil)
+    }
+    
+    func viewDidAppear() {
+        generateWirelessRequestImage()
     }
     
     func viewControllerViewWillDisappear() {
@@ -154,8 +159,10 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     }
     
     private func generateWirelessRequestImage() {
-        let imageNumber = walletAddress.convertToImageIndex
-        wirelessRequestImageName = "wirelessRequestImage_" + "\(imageNumber)"
+        guard let diameter = receiveAllDetailsVC?.hidedImage.frame.size.width else {
+            return
+        }
+        wirelessRequestImage = PictureConstructor().createPicture(diameter: diameter, seed: walletAddress)
 //
 //        DataManager.shared.getAccount { (account, error) in
 //            if account != nil {

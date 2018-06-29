@@ -26,6 +26,7 @@ class CreateWalletPresenter: NSObject {
             }
             self.account = account
             DataManager.shared.socketManager.start()
+            DataManager.shared.subscribeToFirebaseMessaging()
             completion("ok")
         }
     }

@@ -267,6 +267,10 @@ let KFStartReceiving = "KF_Start_Receiving"
 let KFStopReceiving = "KF_Stop_Receiving"
 let KFTransactionReceived = "KF_Transaction_Received"
 
+//Contacts
+let contactsScreen              = "Screen_Contacts"
+let openiPhoneContacts          = "Open_iPhone_Contacts"
+
 //featues code
 let donationWithTransaction     = 20000
 

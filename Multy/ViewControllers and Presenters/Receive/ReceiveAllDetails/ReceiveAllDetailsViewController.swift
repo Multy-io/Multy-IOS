@@ -94,6 +94,11 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
         super.viewWillDisappear(animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        presenter.viewDidAppear()
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -297,13 +302,13 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
     }
     
     func changeVisibility(isHidden: Bool) {
-        if presenter.wirelessRequestImageName != nil {
-            self.hidedImage.image = UIImage(named: presenter.wirelessRequestImageName!)
+        if presenter.wirelessRequestImage != nil {
+            self.hidedImage.image = presenter.wirelessRequestImage
         }
         
         if !isHidden {
             hidedSumLabel.text = "\(sumValueLbl.text!) \(cryptoNameLbl.text!) / \(fiatSumLbl.text!) \(fiatNameLbl.text!)"
-            hidedAddressLabel.text = presenter.walletAddress
+            hidedAddressLabel.text = presenter.walletAddress.stringWithName
         }
         
         updateSearchingAnimation()
