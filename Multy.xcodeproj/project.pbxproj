@@ -229,6 +229,7 @@
 		45F8CD47208F391B00DEB495 /* TermsOfServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8CD46208F391B00DEB495 /* TermsOfServiceViewController.swift */; };
 		45F8CD49208F393C00DEB495 /* TermsOfServicePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8CD48208F393C00DEB495 /* TermsOfServicePresenter.swift */; };
 		50D1AA3CFDA9BDFA53D3B9D0 /* Pods_MultyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */; };
+		853AF40E20E3E78700DA4141 /* CreateMultiSigWallet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 853AF40D20E3E78700DA4141 /* CreateMultiSigWallet.storyboard */; };
 		854C748B20C56C6900CBAFE9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854C748A20C56C6900CBAFE9 /* Utilities.swift */; };
 		854EF14A20C06DA4000C2247 /* tx_success_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 854EF14920C06DA4000C2247 /* tx_success_animation.json */; };
 		8555721020C7E5C500108FCD /* TxInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8555720F20C7E5C500108FCD /* TxInfoView.swift */; };
@@ -642,6 +643,7 @@
 		572DB9D15F9362827245CF67 /* Pods_Multy_MultyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy_MultyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		647A035491B0F1BEBEB72A55 /* Pods-MultyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultyTests/Pods-MultyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7304C17824311A19240183E0 /* Pods_Multy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		853AF40D20E3E78700DA4141 /* CreateMultiSigWallet.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreateMultiSigWallet.storyboard; sourceTree = "<group>"; };
 		854C748A20C56C6900CBAFE9 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		854EF14920C06DA4000C2247 /* tx_success_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tx_success_animation.json; sourceTree = "<group>"; };
 		8555720F20C7E5C500108FCD /* TxInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoView.swift; sourceTree = "<group>"; };
@@ -1482,6 +1484,7 @@
 				445B127820BC1BD000FD0D33 /* Wallet.storyboard */,
 				445B127B20BC1BD900FD0D33 /* Send.storyboard */,
 				445B127E20BC1BE000FD0D33 /* Settings.storyboard */,
+				853AF40D20E3E78700DA4141 /* CreateMultiSigWallet.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -2052,6 +2055,7 @@
 				4477261720BDA1F2006BF4A7 /* Assets.strings in Resources */,
 				45A9493B1FC59E51003C3A23 /* RecentAddressTableViewCell.xib in Resources */,
 				85741D8520B45E8B0093933B /* circle_grow.json in Resources */,
+				853AF40E20E3E78700DA4141 /* CreateMultiSigWallet.storyboard in Resources */,
 				4583AC931FBC7122001991AA /* PortfolioTableViewCell.xib in Resources */,
 				4583AC991FBC8596001991AA /* PortfolioCollectionViewCell.xib in Resources */,
 				4477263B20BEC565006BF4A7 /* Setting.strings in Resources */,
