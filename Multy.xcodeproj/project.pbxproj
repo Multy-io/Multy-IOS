@@ -79,6 +79,8 @@
 		4522905C1FBB18D30024B550 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4522905B1FBB18D30024B550 /* Assets.xcassets */; };
 		4522905F1FBB18D30024B550 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4522905D1FBB18D30024B550 /* LaunchScreen.storyboard */; };
 		45310D0F2063B9F500105532 /* EthereumGasInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45310D0E2063B9F500105532 /* EthereumGasInfo.swift */; };
+		45344AC420E6587B0039DF30 /* CreateMultiSigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45344AC320E6587B0039DF30 /* CreateMultiSigViewController.swift */; };
+		45344AC620E6589B0039DF30 /* CreateMultiSigPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */; };
 		4538BDCC2099E69900573426 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4538BDCB2099E69900573426 /* StoreKit.framework */; };
 		4540944A2031EEFD00603DB5 /* SecuritySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454094492031EEFD00603DB5 /* SecuritySettingsViewController.swift */; };
 		4540944C2031EF1600603DB5 /* SecuritySettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4540944B2031EF1600603DB5 /* SecuritySettingsPresenter.swift */; };
@@ -491,6 +493,8 @@
 		452290601FBB18D30024B550 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4526F8DD2015383D00D2E491 /* Multy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Multy.entitlements; sourceTree = "<group>"; };
 		45310D0E2063B9F500105532 /* EthereumGasInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumGasInfo.swift; sourceTree = "<group>"; };
+		45344AC320E6587B0039DF30 /* CreateMultiSigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMultiSigViewController.swift; sourceTree = "<group>"; };
+		45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMultiSigPresenter.swift; sourceTree = "<group>"; };
 		4538BDCB2099E69900573426 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		454094492031EEFD00603DB5 /* SecuritySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsViewController.swift; sourceTree = "<group>"; };
 		4540944B2031EF1600603DB5 /* SecuritySettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsPresenter.swift; sourceTree = "<group>"; };
@@ -904,6 +908,15 @@
 			path = Multy;
 			sourceTree = "<group>";
 		};
+		45344AC220E658300039DF30 /* CreateMultiSig */ = {
+			isa = PBXGroup;
+			children = (
+				45344AC320E6587B0039DF30 /* CreateMultiSigViewController.swift */,
+				45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */,
+			);
+			path = CreateMultiSig;
+			sourceTree = "<group>";
+		};
 		454094482031EED500603DB5 /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -957,6 +970,7 @@
 			children = (
 				4585BD24204961CA004542AE /* ActionSheetCreatingWallet */,
 				455CDCF51FC8490700EA5ACE /* WalletInfo */,
+				45344AC220E658300039DF30 /* CreateMultiSig */,
 			);
 			path = "Creating wallet";
 			sourceTree = "<group>";
@@ -2392,6 +2406,7 @@
 				FA58DF5F1FDC3FB800C45303 /* BricksView.swift in Sources */,
 				4506F1741FD9A2E700D575BA /* WalletSettingsPresenter.swift in Sources */,
 				4575693C1FBDC3A800FDEE20 /* SeedPhraseWordViewController.swift in Sources */,
+				45344AC620E6589B0039DF30 /* CreateMultiSigPresenter.swift in Sources */,
 				45D4D168205C12DC008B1F0B /* EthWalletHeaderTableViewCell.swift in Sources */,
 				4583AC921FBC7122001991AA /* PortfolioTableViewCell.swift in Sources */,
 				45E148AC204553E4006BD4D1 /* DonationSendViewController.swift in Sources */,
@@ -2524,6 +2539,7 @@
 				4583AC9F1FBC991E001991AA /* NewWalletTableViewCell.swift in Sources */,
 				4585BD422049CF3D004542AE /* ActivityWebViewPresenter.swift in Sources */,
 				45A9492C1FC426CF003C3A23 /* ReceiveAllDetailsPresenter.swift in Sources */,
+				45344AC420E6587B0039DF30 /* CreateMultiSigViewController.swift in Sources */,
 				45C8D143200780CF00F5994E /* SplashViewController.swift in Sources */,
 				45B5CCA21FDA90DF0069BD46 /* NoInternetConnectionViewController.swift in Sources */,
 				85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */,
