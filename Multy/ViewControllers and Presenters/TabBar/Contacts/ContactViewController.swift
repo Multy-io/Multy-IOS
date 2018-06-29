@@ -6,6 +6,7 @@ import UIKit
 
 private typealias TableViewDelegate = ContactViewController
 private typealias TableViewDataSourceDelegate = ContactViewController
+private typealias LocalizeDelegate = ContactsViewController
 
 class ContactViewController: UIViewController {
 
@@ -16,6 +17,8 @@ class ContactViewController: UIViewController {
     @IBOutlet weak var noAddressesLabel: UILabel!
     @IBOutlet weak var savedAddressesLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var floatingView: UIView!
+    @IBOutlet weak var addNewBtn: UIButton!
     
     var presenter = ContactPresenter()
     
@@ -32,6 +35,9 @@ class ContactViewController: UIViewController {
             savedAddressesLabel.isHidden = true
         }
         
+        floatingView.layer.cornerRadius = floatingView.frame.width / 2
+        addNewBtn.makeBlueGradient()
+        
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -41,8 +47,16 @@ class ContactViewController: UIViewController {
     }
     
     @IBAction func deleteAction() {
-        view.isUserInteractionEnabled = false
-        presenter.deleteContact()
+        let alert = UIAlertController(title: presenter.localize(string: Constants.warningString),
+                                      message: presenter.localize(string: Constants.areYouSureString),
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [unowned self] (_) in
+            self.view.isUserInteractionEnabled = false
+            self.presenter.deleteContact()
+        }))
+        alert.addAction(UIAlertAction(title: presenter.localize(string: Constants.cancelString), style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func addAddressAction(_ sender: Any) {

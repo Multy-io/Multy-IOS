@@ -13,3 +13,5 @@
 "DELETE FROM CONTACTS" = "Delete from Contact";
 "ADDRESS SAVED" = "The address is already saved in Contacts";
 "ADDRESS NOT MATCH" = "The address does not match the selected blockchain";
+"ARE YOU SURE" = "Are you sure?";
+"WARNING" = "Warning";

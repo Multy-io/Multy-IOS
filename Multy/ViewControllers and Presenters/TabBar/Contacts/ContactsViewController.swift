@@ -46,12 +46,7 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
         
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
