@@ -469,9 +469,9 @@ extension EthWalletViewController: UITableViewDelegate, UITableViewDataSource {
                     transactionCell.fillCell()
                     transactionCell.changeState(isEmpty: false)
                     self.hideEmptyLbls()
-                    if indexPath.row != 1 {
-                        transactionCell.changeTopConstraint()
-                    }
+//                    if indexPath.row != 1 {
+//                        transactionCell.changeTopConstraint()
+//                    }
                 }
             } else {
                 transactionCell.changeState(isEmpty: true)

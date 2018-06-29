@@ -691,9 +691,13 @@ class CoreLibManager: NSObject {
     }
     
     func isAddressValid(address: String, for wallet: UserWalletRLM) -> (Bool, String?) {
-        let addressUTF8 = address.UTF8CStringPointer
-        //FIXME: Blockchain values
         let blockchainType = BlockchainType.create(wallet: wallet)
+        
+        return isAddressValid(address, for: blockchainType)
+    }
+    
+    func isAddressValid(_ address: String, for blockchainType: BlockchainType) -> (Bool, String?) {
+        let addressUTF8 = address.UTF8CStringPointer
         let error = validate_address(blockchainType, addressUTF8)
         
         let errorString = self.errorString(from: error, mask: "isAddressValid")

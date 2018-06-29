@@ -7,8 +7,12 @@ import ZFRippleButton
 import Lottie
 
 private typealias LocalizeDelegate = SendStartViewController
+private typealias GestureRecognizerDelegate = SendStartViewController
+private typealias ContactDelegate = SendStartViewController
+private typealias PickerContactsDelegate = SendStartViewController
+private typealias TextViewDelegate = SendStartViewController
 
-class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsProtocol, DonationProtocol, CancelProtocol {
+class SendStartViewController: UIViewController, AnalyticsProtocol, DonationProtocol, CancelProtocol {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var nextBtn: ZFRippleButton!
@@ -36,6 +40,7 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
         self.presenter.sendStartVC = self
         sendAnalyticsEvent(screenName: screenSendTo, eventName: screenSendTo)
         setupUI()
+        setupLongTap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,6 +112,10 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
         view.endEditing(true)
     }
     
+    func checkTVisEmpty() -> Bool {
+        return addressTV.text.isEmpty
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -134,8 +143,6 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
         fixUI()
     }
     
-    
-    
     func registerCells() {
         let searchAddressCell = UINib(nibName: "SearchAddressTableViewCell", bundle: nil)
         self.tableView.register(searchAddressCell, forCellReuseIdentifier: "searchAddressCell")
@@ -150,7 +157,6 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
     @IBAction func backAction(_ sender: Any) {
         self.presenter.cancelAction()
     }
-    
     
     @IBAction func nextAction(_ sender: Any) {
         if self.presenter.transactionDTO.choosenWallet == nil {
@@ -212,7 +218,6 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
         }
     }
     
-    
     func donate(idOfInApp: String) {
         unowned let weakSelf =  self
         self.presentDonationAlertVC(from: weakSelf, with: idOfInApp)
@@ -227,7 +232,6 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
 
     }
 
-    
     func cancelDonation() {
         self.makePurchaseFor(productId: stingIdForInApp)
     }
@@ -246,7 +250,6 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
         
     }
     
-    
     func fixUI() {
         if screenHeight == heightOfX {
             self.nextBtn.frame.origin = CGPoint(x: 0, y: 714)
@@ -257,6 +260,30 @@ class SendStartViewController: UIViewController, UITextViewDelegate, AnalyticsPr
         addressTV.text = address
         addressTV.scrollRangeToVisible(NSMakeRange(addressTV.text.count - 1, 0))
         placeholderLabel.isHidden = true
+    }
+    
+    func openSheetWithAddress(_ address: RecentAddressesRLM) {
+        if DataManager.shared.isAddressSaved(address.address) == false {
+            let actionSheet = UIAlertController(title: "", message: address.address, preferredStyle: .actionSheet)
+            actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
+            actionSheet.addAction(UIAlertAction(title: localize(string: Constants.addToContacts), style: .default, handler: { [unowned self] (action) in
+                self.presenter.selectedAddress = address
+                self.presentiPhoneContacts()
+            }))
+            self.present(actionSheet, animated: true, completion: nil)
+        }
+    }
+    
+    func updateUI() {
+        self.tableView.reloadData()
+        noAddressLbl.isHidden = !self.presenter.recentAddresses.isEmpty
+        recentAddresses.isHidden = self.presenter.recentAddresses.isEmpty
+    }
+    
+    func ipadFix() {
+        if screenHeight == heightOfiPad {
+            self.middleConstraint.constant = 80
+        }
     }
 }
 
@@ -272,11 +299,16 @@ extension SendStartViewController:  UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let recentCell = self.tableView.dequeueReusableCell(withIdentifier: "recentCell") as! RecentAddressTableViewCell
         recentCell.fillingCell(recentAddress: presenter.recentAddresses[indexPath.row])
+        
         return recentCell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 65.0
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -284,25 +316,10 @@ extension SendStartViewController:  UITableViewDelegate, UITableViewDataSource {
         self.setTextToTV(address: presenter.recentAddresses[indexPath.row].address)
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.modifyNextButtonMode()
+    }
+}
 
-    }
-    
-    func updateUI() {
-        self.tableView.reloadData()
-        noAddressLbl.isHidden = !self.presenter.recentAddresses.isEmpty
-        recentAddresses.isHidden = self.presenter.recentAddresses.isEmpty
-    }
-    
-    func ipadFix() {
-        if screenHeight == heightOfiPad {
-            self.middleConstraint.constant = 80
-        }
-    }
-    
-    func checkTVisEmpty() -> Bool {
-        return addressTV.text.isEmpty
-    }
-    
+extension TextViewDelegate: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if(text == "\n") {
             textView.resignFirstResponder()
@@ -320,6 +337,44 @@ extension SendStartViewController:  UITableViewDelegate, UITableViewDataSource {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
+    }
+}
+
+extension GestureRecognizerDelegate: UIGestureRecognizerDelegate {
+    func setupLongTap() {
+        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap))
+        longTap.minimumPressDuration = 0.7
+        longTap.delegate = self
+        tableView.addGestureRecognizer(longTap)
+    }
+    
+    @objc func handleLongTap(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == .began {
+            let touchPoint = gestureRecognizer.location(in: tableView)
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                if indexPath.row < presenter.recentAddresses.count {
+                    openSheetWithAddress(presenter.recentAddresses[indexPath.row])
+                }
+            }
+        }
+    }
+}
+
+extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
+    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) {
+        if contact.contactId == nil && presenter.selectedAddress != nil {
+            return
+        }
+        
+        let address = presenter.selectedAddress!.address
+        let currencyID = presenter.selectedAddress!.blockchain.uint32Value
+        let networkID = presenter.selectedAddress?.blockchainNetType.uint32Value
+        
+        updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] _ in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 

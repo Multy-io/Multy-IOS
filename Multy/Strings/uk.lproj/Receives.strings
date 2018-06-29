@@ -14,8 +14,8 @@
 "SORRY" = "Вибачте";
 "LOADING" = "Завантаження";
 "RECEIVE" = "Отримати";
-"ENABLE BLUETOOTH ALERT TITLE" = "";
-"SETTINGS ACTION TITLE" = "";
+"ENABLE BLUETOOTH ALERT TITLE" = "Щоб включити Bluetooth, перейдіть в налаштування";
+"SETTINGS ACTION TITLE" = "Настроювання";
 "GETTING WALLET" = "Отримання гаманців...";
 "CANNOT CHOOSE EMPTY WALLET" = "Ви не можете вибрати порожній гаманець. Виберіть гаманець з деякою сумою";
 "ENTER NON-ZERO AMOUNT" = "Будь ласка, введіть ненульову кількість!";

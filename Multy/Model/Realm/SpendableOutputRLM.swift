@@ -56,5 +56,4 @@ class SpendableOutputRLM: Object {
      
         return spendable
     }
-        
 }

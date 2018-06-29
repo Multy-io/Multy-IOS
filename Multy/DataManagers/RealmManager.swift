@@ -11,7 +11,7 @@ class RealmManager: NSObject {
     static let shared = RealmManager()
     
     private var realm : Realm? = nil
-    let schemaVersion : UInt64 = 19
+    let schemaVersion : UInt64 = 20
     
     var account: AccountRLM?
     
@@ -81,6 +81,9 @@ class RealmManager: NSObject {
                                                     }
                                                     if oldSchemaVersion < 20 {
                                                         self!.migrateFrom19To20(with: migration)
+                                                    }
+                                                    if oldSchemaVersion < 21 {
+                                                        self!.migrateFrom20To21(with: migration)
                                                     }
             })
             
@@ -722,6 +725,36 @@ class RealmManager: NSObject {
             }
         }
     }
+    
+    func updateSavedAddresses(_ addresses: SavedAddressesRLM, completion: @escaping(_ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let addressesRLM = realm.objects(SavedAddressesRLM.self).first
+                
+                try! realm.write {
+                    if addressesRLM == nil {
+                        realm.add(addresses)
+                    } else {
+                        addressesRLM!.addressesData = addresses.addressesData
+                    }
+                }
+            } else {
+                completion(error)
+            }
+        }
+    }
+    
+    func fetchSavedAddresses(completion: @escaping(_ addresses: SavedAddressesRLM?, _ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                try! realm.write {
+                    completion(realm.objects(SavedAddressesRLM.self).first, nil)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
 }
 
 extension RealmMigrationManager {
@@ -824,6 +857,11 @@ extension RealmMigrationManager {
             newRecentAddress?["lastActionDate"] = Date()
             newRecentAddress?["blockchain"] = NSNumber(value: 0)
             newRecentAddress?["blockchainNetType"] = NSNumber(value: 0)
+        }
+    }
+    func migrateFrom20To21(with migration: Migration) {
+        migration.enumerateObjects(ofType: AddressRLM.className()) { (_, newAddress) in
+            newAddress?["networkID"] = NSNumber(value: 0)
         }
     }
 }

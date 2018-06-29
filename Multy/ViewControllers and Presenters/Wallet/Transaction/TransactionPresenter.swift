@@ -19,6 +19,7 @@ class TransactionPresenter: NSObject {
     }
     
     var blockchain: Blockchain?
+    var selectedAddress: String?
     
     func blockedAmount(for transaction: HistoryRLM) -> UInt64 {
         var sum = UInt64(0)

@@ -365,7 +365,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                 selectedRequestAddressLabel.isHidden = false
                 let blockchainType = BlockchainType.create(currencyID: UInt32(selectedRequest.currencyID), netType: 0)
                 selectedRequestAmountLabel.text = "\(selectedRequest.sendAmount) \(blockchainType.shortName)"
-                selectedRequestAddressLabel.text = selectedRequest.sendAddress
+                selectedRequestAddressLabel.text = selectedRequest.sendAddress.stringWithName
             }
         }
     }

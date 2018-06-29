@@ -14,6 +14,7 @@ class TransactionWalletCell: UITableViewCell {
     @IBOutlet weak var fiatAmountLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var emtptyImage: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
     
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
     
@@ -75,6 +76,50 @@ class TransactionWalletCell: UITableViewCell {
             self.timeLabel.text = dateFormatter.string(from: histObj.blockTime)
         }
         
+        fillSpecificData()
+    }
+    
+    func fillSpecificData() {
+        fillAddressAndName()
+        fillAmountInfo()
+    }
+    
+    func fillAddressAndName() {
+        let savedAddresses = DataManager.shared.savedAddresses
+        var address = String()
+        
+        switch wallet.blockchainType.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            if histObj.txInputs.count == 0 {
+                return
+            }
+            
+            if histObj.isIncoming() {
+                address = histObj.txInputs[0].address
+            } else {
+                address = histObj.txOutputs[0].address
+            }
+        case BLOCKCHAIN_ETHEREUM:
+            if histObj.isIncoming() {
+                address = histObj.addressesArray.first!
+            } else {
+                address = histObj.addressesArray.last!
+            }
+        default:
+            return
+        }
+        
+        if let name = savedAddresses?.addresses[address] {
+            nameLabel.text = name
+            changeTopConstraint(true)
+        } else {
+            nameLabel.text = ""
+            changeTopConstraint(false)
+        }
+        self.addressLabel.text = address
+    }
+    
+    func fillAmountInfo() {
         switch wallet.blockchainType.blockchain {
         case BLOCKCHAIN_BITCOIN:
             fillBitcoinCell()
@@ -86,12 +131,6 @@ class TransactionWalletCell: UITableViewCell {
     }
     
     func fillEthereumCell() {
-        if histObj.isIncoming() {
-            self.addressLabel.text = histObj.addressesArray.first
-        } else {
-            self.addressLabel.text = histObj.addressesArray.last
-        }
-        
         let ethAmountString = BigInt(histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
         let labelsCryproText = ethAmountString + " " + wallet.cryptoName
         self.cryptoAmountLabel.text = labelsCryproText
@@ -103,12 +142,6 @@ class TransactionWalletCell: UITableViewCell {
     func fillBitcoinCell() {
         if histObj.txInputs.count == 0 {
             return
-        }
-        
-        if histObj.isIncoming() {
-            self.addressLabel.text = histObj.txInputs[0].address
-        } else {
-            self.addressLabel.text = histObj.txOutputs[0].address
         }
         
         if histObj.txStatus.intValue == TxStatus.BlockOutcoming.rawValue ||
@@ -143,8 +176,8 @@ class TransactionWalletCell: UITableViewCell {
         self.emtptyImage.isHidden = !isEmpty
     }
     
-    func changeTopConstraint() {
-        self.topConstraint.constant = 15
+    func changeTopConstraint(_ isThereName: Bool) {
+        self.topConstraint.constant = isThereName ? 35 : 20
     }
 }
 

@@ -48,6 +48,18 @@ extension String {
             }
         }
     }
+    
+    var stringWithName: String {
+        get {
+            let addresses = DataManager.shared.savedAddresses
+            
+            if addresses?.addresses[self] == nil {
+                return self
+            } else {
+                return addresses!.addresses[self]! + ": " + self
+            }
+        }
+    }
 
     func createBinaryData() -> BinaryData? {
         let pointer = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
