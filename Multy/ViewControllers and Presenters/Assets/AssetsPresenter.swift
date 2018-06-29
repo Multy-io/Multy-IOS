@@ -9,7 +9,9 @@ class AssetsPresenter: NSObject {
 
     var assetsVC: AssetsViewController?
     
-    var tabBarFrame: CGRect?
+    var tabBarFrame: CGRect {
+        return account != nil ? CGRect(x: 0, y: screenHeight - 49, width: screenWidth, height: 49) : CGRect(x: 0, y: 0, width: 0, height: 0)
+    }
     
     var isJailed = false
     var tappedIndexPath = IndexPath(row: 0, section: 0)
@@ -37,6 +39,7 @@ class AssetsPresenter: NSObject {
                 }
                 
                 wallets = account?.wallets.sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
+                
                 assetsVC!.tableView.frame.size.height = screenHeight - assetsVC!.tabBarController!.tabBar.frame.height
                 
                 self.assetsVC?.view.isUserInteractionEnabled = true
@@ -49,7 +52,7 @@ class AssetsPresenter: NSObject {
             }
             
             if !isSocketInitiateUpdating && self.assetsVC!.tabBarController!.viewControllers![0].childViewControllers.count == 1 {
-                assetsVC?.tableView.reloadData()
+                assetsVC?.updateUI()
             }
         }
     }
