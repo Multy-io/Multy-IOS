@@ -50,7 +50,7 @@ class ContactViewController: UIViewController {
         let alert = UIAlertController(title: presenter.localize(string: Constants.warningString),
                                       message: presenter.localize(string: Constants.areYouSureString),
                                       preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [unowned self] (_) in
+        alert.addAction(UIAlertAction(title: presenter.localize(string: Constants.deleteString), style: .destructive, handler: { [unowned self] (_) in
             self.view.isUserInteractionEnabled = false
             self.presenter.deleteContact()
         }))
