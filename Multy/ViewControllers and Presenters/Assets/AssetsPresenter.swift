@@ -14,39 +14,79 @@ class AssetsPresenter: NSObject {
     var isJailed = false
     var tappedIndexPath = IndexPath(row: 0, section: 0)
     
+    var isSocketInitiateUpdating = false
+    
     var contentOffset = CGPoint.zero
     
     var account : AccountRLM? {
         didSet {
             backupActivity()
-            self.assetsVC?.tableView.alwaysBounceVertical = true
-            if self.assetsVC!.isVisible() {
-                if self.assetsVC!.isOnWindow() {
-                    (self.assetsVC!.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: account == nil)
-                }
+            
+            if self.assetsVC!.isOnWindow() {
+                (self.assetsVC!.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: account == nil)
             }
             
-            wallets = account?.wallets.sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
-            
-            self.assetsVC?.view.isUserInteractionEnabled = true
-            if !assetsVC!.isSocketInitiateUpdating && self.assetsVC!.tabBarController!.viewControllers![0].childViewControllers.count == 1 {
-                assetsVC?.tableView.reloadData()
-            }
+            self.assetsVC?.tableView.alwaysBounceVertical = account != nil
             
             if account != nil {
+                NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
+                
+                if !DataManager.shared.socketManager.isStarted {
+                    DataManager.shared.socketManager.start()
+                }
+                
+                wallets = account?.wallets.sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
                 assetsVC!.tableView.frame.size.height = screenHeight - assetsVC!.tabBarController!.tabBar.frame.height
+                
+                self.assetsVC?.view.isUserInteractionEnabled = true
+                
             } else {
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name("exchageUpdated"), object: nil)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name("transactionUpdated"), object: nil)
+                
                 assetsVC!.tableView.frame.size.height = screenHeight
+            }
+            
+            if !isSocketInitiateUpdating && self.assetsVC!.tabBarController!.viewControllers![0].childViewControllers.count == 1 {
+                assetsVC?.tableView.reloadData()
             }
         }
     }
     
     var wallets: Results<UserWalletRLM>?
     
+    @objc func updateExchange() {
+        if !self.assetsVC!.isVisible() {
+            return
+        }
+        
+        self.assetsVC?.handleExchangeUpdate()
+    }
+    
+    @objc func updateWalletAfterSockets() {
+        if isSocketInitiateUpdating {
+            return
+        }
+        
+        if !self.assetsVC!.isVisible() {
+            return
+        }
+        
+        isSocketInitiateUpdating = true
+        getWalletVerboseForSockets { [unowned self] (_) in
+            self.isSocketInitiateUpdating = false
+            self.assetsVC!.handleUpdateWalletAfterSockets()
+        }
+    }
+    
     func backupActivity() {
         if account != nil {
             self.assetsVC?.backupView?.isHidden = account!.isSeedPhraseSaved()
             self.assetsVC?.backupView?.isUserInteractionEnabled = !account!.isSeedPhraseSaved()
+        } else {
+            self.assetsVC?.backupView?.isHidden = true
+            self.assetsVC?.backupView?.isUserInteractionEnabled = false
         }
     }
     
@@ -103,9 +143,10 @@ class AssetsPresenter: NSObject {
     
     func updateWalletsInfo(isInternetAvailable: Bool) {
         DataManager.shared.getAccount { (acc, err) in
+            self.account = acc
+            
             if acc != nil {
 //                self.blockUI()
-                self.account = acc
                 if isInternetAvailable == false {
 //                    self.unlockUI()
                 }

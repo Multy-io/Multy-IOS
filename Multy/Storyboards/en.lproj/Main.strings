@@ -205,8 +205,8 @@
 /* Class = "UILabel"; text = "Enter Address and Cryptocurrency"; ObjectID = "0kN-rx-Uz2"; */
 "0kN-rx-Uz2.text" = "Enter Address and Cryptocurrency";
 
-"iKO-I8-E8V.placeholder" = "Enter Address"
-"CKZ-bc-snP.normalTitle" = "Cancel"
-"vIi-D1-j5u.text" = "No addresses yet"
-"oge-1a-bae.text" = "Saved Addresses"
-"oBc-4M-4Or.normalTitle" = "Delete Account"
+"iKO-I8-E8V.placeholder" = "Enter Address";
+"CKZ-bc-snP.normalTitle" = "Cancel";
+"vIi-D1-j5u.text" = "No addresses yet";
+"oge-1a-bae.text" = "Saved Addresses";
+"oBc-4M-4Or.normalTitle" = "Delete Account";

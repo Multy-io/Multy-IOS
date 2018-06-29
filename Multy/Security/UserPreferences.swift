@@ -10,19 +10,16 @@ class UserPreferences : NSObject {
     static let shared = UserPreferences()
     
     fileprivate var executedFunction : ((Data?, Error?) -> Void)?
-    fileprivate var executedFunctions : [((Data?, Error?) -> Void)]?
+    fileprivate var executedFunctions = [((Data?, Error?) -> Void)]()
     
     var aes : AES? {
         didSet {
             if aes != nil {
                 writeCiperedDatabasePassword()
                 
-                if executedFunctions != nil {
-                    for function in executedFunctions! {
-                        getAndDecryptDatabasePassword(completion: function)
-                    }
-                    
-                    executedFunctions = nil
+                if executedFunctions.count > 0 {
+                    executedFunctions.forEach { function in getAndDecryptDatabasePassword(completion: function) }
+                    executedFunctions.removeAll()
                 }
             }
         }
@@ -100,11 +97,8 @@ class UserPreferences : NSObject {
         let cipheredData = UserDefaults.standard.data(forKey: "databasePassword")
         
         if cipheredData == nil || aes == nil {
-            if executedFunctions == nil {
-                executedFunctions = [completion]
-            } else {
-                executedFunctions!.append(completion)
-            }
+            executedFunctions.append(completion)
+       //     executedFunction = completion
             
             return
         }
