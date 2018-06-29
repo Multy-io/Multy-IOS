@@ -30,3 +30,4 @@
 "AGREE WITH TERMS" = "I agree with Terms of Service and processing of my personal data according to the Multy Privacy Policy.";
 "ERROR WHILE CREATING WALLET" = "Error while creating wallet!";
 "WALLET NAME NOT EMPTY ALERT" = "Wallet name should be non empty";
+"CREATE OR IMPORT WALLET" = "Tap the button to create or import existing wallet.";

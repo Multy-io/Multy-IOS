@@ -103,4 +103,5 @@ extension Constants {
     static let deleteFromContact = "DELETE FROM CONTACTS"
     static let savedAddressString = "ADDRESS SAVED"
     static let addressNotMatchString = "ADDRESS NOT MATCH"
+    static let createOrImportWalletString = "CREATE OR IMPORT WALLET"
 }
