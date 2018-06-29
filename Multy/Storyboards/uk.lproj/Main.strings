@@ -205,8 +205,8 @@
 /* Class = "UILabel"; text = "Enter Address and Cryptocurrency"; ObjectID = "0kN-rx-Uz2"; */
 "0kN-rx-Uz2.text" = "Введіть адресу і блокчейн";
 
-"iKO-I8-E8V.placeholder" = "Введіть адресу"
-"CKZ-bc-snP.normalTitle" = "Скасувати"
-"vIi-D1-j5u.text" = "Немає адрес"
-"oge-1a-bae.text" = "Збережені адреси"
-"oBc-4M-4Or.normalTitle" = "Видалити акаунт"
+"iKO-I8-E8V.placeholder" = "Введіть адресу";
+"CKZ-bc-snP.normalTitle" = "Скасувати";
+"vIi-D1-j5u.text" = "Немає адрес";
+"oge-1a-bae.text" = "Збережені адреси";
+"oBc-4M-4Or.normalTitle" = "Видалити акаунт";
