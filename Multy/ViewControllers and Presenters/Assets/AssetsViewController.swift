@@ -174,10 +174,8 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
     }
     
     override func viewDidLayoutSubviews() {
-        presenter.tabBarFrame = tabBarController?.tabBar.frame
-        if self.presenter.account != nil {
-            tableView.frame.size.height = screenHeight - presenter.tabBarFrame!.height
-        }
+        tabBarController?.tabBar.frame = presenter.tabBarFrame
+        tableView.frame.size.height = screenHeight - presenter.tabBarFrame.height
     }
     
     func handleExchangeUpdate() {
@@ -298,6 +296,8 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
     }
     
     func updateUI() {
+        tabBarController?.tabBar.frame = presenter.tabBarFrame
+        tableView.frame.size.height = screenHeight - presenter.tabBarFrame.height
         self.tableView.reloadData()
     }
     
