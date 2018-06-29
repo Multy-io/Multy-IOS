@@ -17,6 +17,8 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var noContactsImageView: UIImageView!
     @IBOutlet weak var noContactsLabel: UILabel!
+    @IBOutlet weak var floatingView: UIView!
+    @IBOutlet weak var addNewBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,11 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
@@ -65,6 +72,9 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     func setupView() {
         self.donatView.layer.borderColor = #colorLiteral(red: 0, green: 0.4784313725, blue: 0.9994150996, alpha: 1)
         self.donatView.layer.borderWidth = 1
+        
+        floatingView.layer.cornerRadius = floatingView.frame.width/2
+        addNewBtn.makeBlueGradient()
     }
     
     func cancelAction() {
