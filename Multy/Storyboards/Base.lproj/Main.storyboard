@@ -1691,12 +1691,6 @@ correctly</string>
                                     <constraint firstAttribute="height" constant="1" id="FLR-RI-sjj"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KkX-IY-vC8">
-                                <rect key="frame" x="337" y="27" width="22" height="22"/>
-                                <connections>
-                                    <action selector="addAddressAction:" destination="HTS-F6-9ER" eventType="touchUpInside" id="pUv-SE-1n9"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oBc-4M-4Or" customClass="ZFRippleButton" customModule="ZFRippleButton">
                                 <rect key="frame" x="-1" y="607" width="376" height="60"/>
                                 <color key="backgroundColor" red="0.92156862745098034" green="0.082352941176470587" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1711,17 +1705,44 @@ correctly</string>
                                     <action selector="deleteAction" destination="HTS-F6-9ER" eventType="touchUpInside" id="nxM-TX-bjQ"/>
                                 </connections>
                             </button>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OR0-cO-nL2">
+                                <rect key="frame" x="289" y="507" width="70" height="70"/>
+                                <subviews>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o25-xd-0vq">
+                                        <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="35"/>
+                                        <state key="normal" title="+">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addAddressAction:" destination="HTS-F6-9ER" eventType="touchUpInside" id="knX-jr-Dzq"/>
+                                            <action selector="addUser:" destination="mgl-nb-TC2" eventType="touchUpInside" id="dgY-gr-Het"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="5cd-XS-bPM"/>
+                                    <constraint firstItem="o25-xd-0vq" firstAttribute="leading" secondItem="OR0-cO-nL2" secondAttribute="leading" id="8kQ-HI-OfU"/>
+                                    <constraint firstAttribute="bottom" secondItem="o25-xd-0vq" secondAttribute="bottom" id="EKZ-H5-exq"/>
+                                    <constraint firstAttribute="width" constant="70" id="eJ9-72-WnA"/>
+                                    <constraint firstAttribute="trailing" secondItem="o25-xd-0vq" secondAttribute="trailing" id="lSv-lj-IoD"/>
+                                    <constraint firstItem="o25-xd-0vq" firstAttribute="top" secondItem="OR0-cO-nL2" secondAttribute="top" id="xjN-l4-hqg"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="OR0-cO-nL2" firstAttribute="bottom" secondItem="oBc-4M-4Or" secondAttribute="top" constant="-30" id="0F1-0C-PMs"/>
                             <constraint firstItem="oge-1a-bae" firstAttribute="leading" secondItem="ZL9-td-aqn" secondAttribute="leading" id="0dL-Vi-XAp"/>
                             <constraint firstItem="Rdh-b1-fyI" firstAttribute="leading" secondItem="S21-Sx-8bA" secondAttribute="leading" id="1lg-PS-xiG"/>
                             <constraint firstItem="Wan-Oj-uHS" firstAttribute="leading" secondItem="S21-Sx-8bA" secondAttribute="trailing" constant="34" id="28P-dg-Vwd"/>
                             <constraint firstItem="vIi-D1-j5u" firstAttribute="centerX" secondItem="KUT-Ku-SWd" secondAttribute="centerX" id="3Z8-L7-JUv"/>
-                            <constraint firstItem="KkX-IY-vC8" firstAttribute="centerY" secondItem="ZL9-td-aqn" secondAttribute="centerY" id="3tg-wr-ZSt"/>
                             <constraint firstItem="Rdz-Mj-7Uf" firstAttribute="leading" secondItem="KUT-Ku-SWd" secondAttribute="leading" id="74L-wd-2MU"/>
                             <constraint firstItem="ZL9-td-aqn" firstAttribute="top" secondItem="cXb-Cf-BYJ" secondAttribute="bottom" constant="8" id="8rs-GM-ZBl"/>
                             <constraint firstItem="vIi-D1-j5u" firstAttribute="centerY" secondItem="KUT-Ku-SWd" secondAttribute="centerY" id="Ae6-Cg-BLi"/>
+                            <constraint firstAttribute="trailing" secondItem="OR0-cO-nL2" secondAttribute="trailing" constant="16" id="Ax0-E9-bpq"/>
                             <constraint firstItem="oge-1a-bae" firstAttribute="top" secondItem="Rdh-b1-fyI" secondAttribute="bottom" constant="30" id="DLL-Cb-Q1D"/>
                             <constraint firstItem="nsm-kS-9EQ" firstAttribute="top" secondItem="ZL9-td-aqn" secondAttribute="top" constant="-10" id="FAu-RN-NrP"/>
                             <constraint firstItem="oBc-4M-4Or" firstAttribute="bottom" secondItem="KUT-Ku-SWd" secondAttribute="bottom" id="ICG-gQ-4Yb"/>
@@ -1745,16 +1766,17 @@ correctly</string>
                             <constraint firstAttribute="bottom" secondItem="Rdz-Mj-7Uf" secondAttribute="bottom" constant="60" id="tDb-V2-fVS"/>
                             <constraint firstAttribute="trailing" secondItem="oBc-4M-4Or" secondAttribute="trailing" id="vFC-8B-C9R"/>
                             <constraint firstItem="L7V-Ww-JB1" firstAttribute="centerX" secondItem="KUT-Ku-SWd" secondAttribute="centerX" id="vut-gV-flJ"/>
-                            <constraint firstAttribute="trailing" secondItem="KkX-IY-vC8" secondAttribute="trailing" constant="16" id="z96-CG-syc"/>
                             <constraint firstItem="Rdh-b1-fyI" firstAttribute="bottom" secondItem="S21-Sx-8bA" secondAttribute="bottom" id="zt5-90-X4O"/>
                         </constraints>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="addNewBtn" destination="o25-xd-0vq" id="j2Q-eo-x3i"/>
                         <outlet property="contactAddressesTableView" destination="Rdz-Mj-7Uf" id="k25-3U-Eyt"/>
                         <outlet property="contactImageLabel" destination="Rdh-b1-fyI" id="Acf-7e-UZc"/>
                         <outlet property="contactImageView" destination="S21-Sx-8bA" id="VvR-lX-viE"/>
                         <outlet property="contactName" destination="Wan-Oj-uHS" id="oFd-9V-3WV"/>
+                        <outlet property="floatingView" destination="OR0-cO-nL2" id="83G-3G-Hak"/>
                         <outlet property="noAddressesLabel" destination="vIi-D1-j5u" id="PX0-OE-EDQ"/>
                         <outlet property="savedAddressesLabel" destination="oge-1a-bae" id="fLq-21-UkG"/>
                         <outlet property="tableView" destination="Rdz-Mj-7Uf" id="psp-TJ-fJa"/>
