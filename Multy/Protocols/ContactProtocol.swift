@@ -157,6 +157,13 @@ extension ContactsProtocol {
                 if contact.isThereUserID(userID) == false {
                     mContact.socialProfiles.append(myProfile)
                 }
+                
+                if contact.isThereMultyUserID() == false {
+                    let multyProfile = CNSocialProfile(urlString: "multy://", username: "Multy", userIdentifier: "multy", service: "Multy")
+                    let myProfile = CNLabeledValue(label: "Multy", value: multyProfile)
+                    
+                    mContact.socialProfiles.append(myProfile)
+                }
             }
             
             updateContact(Contact: mContact) { (result) in
