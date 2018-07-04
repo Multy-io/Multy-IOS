@@ -11,8 +11,12 @@ class CreateMultiSigViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
+    let presenter = CreateMultiSigPresenter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter.mainVC = self
         hideKeyboardWhenTappedAround()
         swipeToBack()
         tableView.tableFooterView = nil
@@ -25,10 +29,12 @@ class CreateMultiSigViewController: UIViewController {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
     }
     
-    func openMembersVC() {
+    func openMembersVC(isMembers: Bool) {
         let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
-        let membersVC = storyboard.instantiateViewController(withIdentifier: "membersCountVC")
+        let membersVC = storyboard.instantiateViewController(withIdentifier: "membersCountVC") as! MembersViewController
         membersVC.modalPresentationStyle = .overCurrentContext
+        membersVC.countOfDelegate = presenter
+        membersVC.presenter.isMembers = isMembers
         self.present(membersVC, animated: true, completion: nil)
     }
 
@@ -44,20 +50,34 @@ extension TableViewDataSource: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let nameCell = self.tableView.dequeueReusableCell(withIdentifier: "nameCell") as! CreateWalletNameTableViewCell
+            nameCell.walletNameTF.becomeFirstResponder()
+            
+            return nameCell
+        } else if indexPath.row == 1 {
+            let membersCell = self.tableView.dequeueReusableCell(withIdentifier: "membersCell") as! CreateWalletBlockchainTableViewCell
+            membersCell.setLblValue(value: "\(presenter.countOfMembers)")
+            return membersCell
+        } else if indexPath.row == 2 {
+            let signsCell = self.tableView.dequeueReusableCell(withIdentifier: "signsCell") as! CreateWalletBlockchainTableViewCell
+            signsCell.setLblValue(value: "\(presenter.countOfSigns)")
+            return signsCell
+        }
         return UITableViewCell()
     }
 }
 
 extension TableViewDelegate: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 54
+        return 64
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 1 {
-            openMembersVC()
+            openMembersVC(isMembers: true)
         } else if indexPath.row == 2 {
-            openMembersVC()
+            openMembersVC(isMembers: false)
         }
     }
 }

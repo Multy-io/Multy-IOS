@@ -4,6 +4,19 @@
 
 import UIKit
 
-class CreateMultiSigPresenter: NSObject {
+class CreateMultiSigPresenter: NSObject, CountOfProtocol {
 
+    var mainVC: CreateMultiSigViewController?
+    
+    var countOfMembers = 2
+    var countOfSigns = 2
+    
+    func countSomething(tag: String?, count: Int) {
+        if tag == "members" {
+            countOfMembers = count
+        } else if tag == "signs" {
+            countOfSigns = count
+        }
+        mainVC?.tableView.reloadData()
+    }
 }

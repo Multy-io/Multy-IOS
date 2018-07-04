@@ -202,7 +202,7 @@
                                         </constraints>
                                         <color key="separatorColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell1" id="BdL-bl-07Y" customClass="CreateWalletNameTableViewCell" customModule="Multy" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="nameCell" id="BdL-bl-07Y" customClass="CreateWalletNameTableViewCell" customModule="Multy" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="64"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BdL-bl-07Y" id="BNR-co-7MB">
@@ -245,7 +245,7 @@
                                                     <outlet property="walletNameTF" destination="T4S-R1-JcS" id="OSx-5s-Aus"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell2" id="8gB-2g-BHX" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="membersCell" id="8gB-2g-BHX" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="92" width="375" height="64"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8gB-2g-BHX" id="UfS-Eg-c9s">
@@ -277,7 +277,7 @@
                                                     <outlet property="blockchainLabel" destination="FUC-c4-0GV" id="n3t-4y-Ckb"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell4" id="U9z-EM-Nwh">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="signsCell" id="U9z-EM-Nwh" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="156" width="375" height="64"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U9z-EM-Nwh" id="Qly-tZ-CHH">
@@ -305,7 +305,9 @@
                                                         <constraint firstItem="xwY-2B-wkg" firstAttribute="top" secondItem="J06-E2-5SM" secondAttribute="bottom" constant="4.5" id="men-6K-Snd"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
-                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <connections>
+                                                    <outlet property="blockchainLabel" destination="xwY-2B-wkg" id="2Er-Gp-gx1"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
@@ -355,10 +357,10 @@
             </objects>
             <point key="canvasLocation" x="-5199" y="3695"/>
         </scene>
-        <!--View Controller-->
+        <!--Members View Controller-->
         <scene sceneID="34a-kb-vnf">
             <objects>
-                <viewController storyboardIdentifier="membersCountVC" id="rR2-LI-lPA" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="membersCountVC" id="rR2-LI-lPA" customClass="MembersViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PTW-Kd-494"/>
                         <viewControllerLayoutGuide type="bottom" id="Nq5-5S-d28"/>
@@ -370,6 +372,10 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Rkf-e8-TFU">
                                 <rect key="frame" x="0.0" y="382.5" width="375" height="284.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="rR2-LI-lPA" id="o5k-SF-f4y"/>
+                                    <outlet property="delegate" destination="rR2-LI-lPA" id="5fm-8h-l1n"/>
+                                </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Djx-AX-qj9">
                                 <rect key="frame" x="0.0" y="328.5" width="375" height="54"/>
@@ -388,19 +394,31 @@
                                     <constraint firstAttribute="height" constant="54" id="iK1-DQ-KiV"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ekP-s4-2Vy">
+                                <rect key="frame" x="0.0" y="20" width="375" height="308.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.086274509799999996" blue="0.1764705882" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Rkf-e8-TFU" firstAttribute="leading" secondItem="WOp-zl-JCk" secondAttribute="leading" id="9eg-xn-Oq5"/>
                             <constraint firstAttribute="trailing" secondItem="Djx-AX-qj9" secondAttribute="trailing" id="PGJ-29-diG"/>
+                            <constraint firstItem="1fN-z2-zhY" firstAttribute="trailing" secondItem="ekP-s4-2Vy" secondAttribute="trailing" id="UBF-yQ-VtW"/>
                             <constraint firstItem="Rkf-e8-TFU" firstAttribute="top" secondItem="Djx-AX-qj9" secondAttribute="bottom" id="Yt6-Ch-IkH"/>
+                            <constraint firstItem="Djx-AX-qj9" firstAttribute="top" secondItem="ekP-s4-2Vy" secondAttribute="bottom" id="a8b-2Q-G2u"/>
                             <constraint firstItem="Nq5-5S-d28" firstAttribute="top" secondItem="Rkf-e8-TFU" secondAttribute="bottom" id="fOP-oF-waR"/>
                             <constraint firstItem="Djx-AX-qj9" firstAttribute="leading" secondItem="WOp-zl-JCk" secondAttribute="leading" id="gJH-Tq-i1r"/>
+                            <constraint firstItem="ekP-s4-2Vy" firstAttribute="top" secondItem="PTW-Kd-494" secondAttribute="bottom" id="me8-6P-SCA"/>
                             <constraint firstItem="Rkf-e8-TFU" firstAttribute="height" secondItem="WOp-zl-JCk" secondAttribute="height" multiplier="288/675" id="oJ1-jS-p1d"/>
+                            <constraint firstItem="ekP-s4-2Vy" firstAttribute="leading" secondItem="1fN-z2-zhY" secondAttribute="leading" id="sdx-eb-y46"/>
                             <constraint firstAttribute="trailing" secondItem="Rkf-e8-TFU" secondAttribute="trailing" id="zUf-Mg-m5x"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1fN-z2-zhY"/>
                     </view>
+                    <connections>
+                        <outlet property="clearView" destination="ekP-s4-2Vy" id="Qda-NR-7yG"/>
+                        <outlet property="headerView" destination="Djx-AX-qj9" id="YI4-5e-D5Y"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pCC-fH-L7l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
