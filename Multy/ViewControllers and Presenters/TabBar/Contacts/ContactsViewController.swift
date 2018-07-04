@@ -138,7 +138,7 @@ extension TableViewDataSource : UITableViewDataSource {
         cell.accessoryType = UITableViewCellAccessoryType.none
         //Convert CNContact to EPContact
         let contact = presenter.contacts[indexPath.row]
-        cell.updateContactsinUI(contact, indexPath: indexPath, subtitleType: .phoneNumber)
+        cell.updateContactsinUI(contact, indexPath: indexPath, subtitleType: .cryptoAddresses)
         
         return cell
     }

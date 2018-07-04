@@ -15,6 +15,7 @@ class EPContactCell: UITableViewCell {
     @IBOutlet weak var contactImageView: UIImageView!
     @IBOutlet weak var contactInitialLabel: UILabel!
     @IBOutlet weak var contactContainerView: UIView!
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     
     var contact: EPContact?
     
@@ -41,7 +42,7 @@ class EPContactCell: UITableViewCell {
         self.contact = contact
         //Update all UI in the cell here
         self.contactTextLabel?.text = contact.displayName()
-        updateSubtitleBasedonType(subtitleType, contact: contact)
+        updateSubtitleBasedOnType(subtitleType, contact: contact)
         if contact.thumbnailProfileImage != nil {
             self.contactImageView?.image = contact.thumbnailProfileImage
             self.contactImageView.isHidden = false
@@ -54,38 +55,45 @@ class EPContactCell: UITableViewCell {
         }
     }
     
-    func updateSubtitleBasedonType(_ subtitleType: SubtitleCellValue , contact: EPContact) {
+    func updateSubtitleBasedOnType(_ subtitleType: SubtitleCellValue , contact: EPContact) {
         switch subtitleType {
         case .phoneNumber:
             let phoneNumberCount = contact.phoneNumbers.count
             
             if phoneNumberCount == 1  {
-                self.contactDetailTextLabel.text = "\(contact.phoneNumbers[0].phoneNumber)"
+                contactDetailTextLabel.text = "\(contact.phoneNumbers[0].phoneNumber)"
             }
             else if phoneNumberCount > 1 {
-                self.contactDetailTextLabel.text = "\(contact.phoneNumbers[0].phoneNumber) and \(contact.phoneNumbers.count-1) more"
+                contactDetailTextLabel.text = "\(contact.phoneNumbers[0].phoneNumber) and \(contact.phoneNumbers.count-1) more"
             }
             else {
-                self.contactDetailTextLabel.text = EPGlobalConstants.Strings.phoneNumberNotAvaialable
+                contactDetailTextLabel.text = EPGlobalConstants.Strings.phoneNumberNotAvaialable
             }
         case .email:
             let emailCount = contact.emails.count
         
             if emailCount == 1  {
-                self.contactDetailTextLabel.text = "\(contact.emails[0].email)"
+                contactDetailTextLabel.text = "\(contact.emails[0].email)"
             }
             else if emailCount > 1 {
-                self.contactDetailTextLabel.text = "\(contact.emails[0].email) and \(contact.emails.count-1) more"
+                contactDetailTextLabel.text = "\(contact.emails[0].email) and \(contact.emails.count-1) more"
             }
             else {
-                self.contactDetailTextLabel.text = EPGlobalConstants.Strings.emailNotAvaialable
+                contactDetailTextLabel.text = EPGlobalConstants.Strings.emailNotAvaialable
             }
         case .birthday:
-            self.contactDetailTextLabel.text = contact.birthdayString
+            contactDetailTextLabel.text = contact.birthdayString
         case .organization:
-            self.contactDetailTextLabel.text = contact.company
+            contactDetailTextLabel.text = contact.company
         case .cryptoAddresses:
-            self.contactDetailTextLabel.text = contact.company
+            let subtitle = contact.addresses.map { $0.address }.joined(separator: ", ")
+            contactDetailTextLabel.text = subtitle
+            
+            if subtitle.isEmpty {
+                topConstraint.constant = 18
+            } else {
+                topConstraint.constant = 10
+            }
         }
     }
 }

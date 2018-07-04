@@ -22,12 +22,12 @@ class ContactsPresenter: NSObject, ContactsProtocol {
     func fetchPhoneContacts() {
         fetchPhoneContacts { [unowned self] (contacts, error) in
             if error == nil && contacts != nil {
-                let multyContacts = contacts!.filter { contact in contact.isMulty() }
+                let multyContacts = contacts!.filter { $0.isMulty() }
                 
                 DispatchQueue.main.async {
-                    self.contacts = EPContact.initFromArray(multyContacts).sorted(by: { (contact1, contact2) in
-                        contact1.displayName().lowercased().compare(contact2.displayName().lowercased()).rawValue <= 0
-                    })
+                    self.contacts = EPContact.initFromArray(multyContacts).sorted {
+                        $0.displayName().lowercased().compare($1.displayName().lowercased()).rawValue <= 0
+                    }
                 }
             }
         }

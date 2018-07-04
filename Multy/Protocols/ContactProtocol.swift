@@ -78,9 +78,9 @@ extension ContactsProtocol {
         let mContact = contact.mutableCopy() as! CNMutableContact
         var newSocialProfiles = [CNLabeledValue<CNSocialProfile>]()
         
-        for socialProfile in contact.socialProfiles {
-            if socialProfile.isMulty() == false {
-                newSocialProfiles.append(socialProfile)
+        contact.socialProfiles.forEach {
+            if $0.isMulty() == false {
+                newSocialProfiles.append($0)
             }
         }
         
@@ -201,9 +201,9 @@ extension ContactsProtocol {
         
         var newSocialProfiles = [CNLabeledValue<CNSocialProfile>]()
         
-        for socialProfile in contact.socialProfiles {
-            if socialProfile.value.userIdentifier.hasPrefix(address) == false {
-                newSocialProfiles.append(socialProfile)
+        contact.socialProfiles.forEach {
+            if $0.value.userIdentifier.hasPrefix(address) == false {
+                newSocialProfiles.append($0)
             }
         }
     
@@ -238,7 +238,7 @@ extension ContactsProtocol {
     }
     
     fileprivate func updateAddressMapping(_ contacts: [CNContact]) {
-        let multyContacts = contacts.filter { contact in contact.isMulty() }
+        let multyContacts = contacts.filter { $0.isMulty() }
         
         DispatchQueue.main.async {
             let contacts = EPContact.initFromArray(multyContacts)
