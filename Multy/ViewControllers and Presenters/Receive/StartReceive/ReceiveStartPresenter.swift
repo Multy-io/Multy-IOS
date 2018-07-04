@@ -71,7 +71,8 @@ class ReceiveStartPresenter: NSObject {
                 self.receiveStartVC?.updateUI()
             }
         }
-        
     }
+    
+    
 }
 

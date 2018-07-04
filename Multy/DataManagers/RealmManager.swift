@@ -309,6 +309,7 @@ class RealmManager: NSObject {
         }
     }
     
+    
     public func clearSeedPhraseInAcc() {
         getRealm { (realmOpt, err) in
             if let realm = realmOpt {
@@ -606,6 +607,17 @@ class RealmManager: NSObject {
         }
     }
     
+    func deleteWalletBy(primaryKey: String) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let wallet = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
+                try! realm.write {
+                    realm.delete(wallet!)
+                }
+            }
+        }
+    }
+    
     func fetchAddressesForWalllet(walletID: NSNumber, completion: @escaping(_ : [String]?) -> ()) {
         getWallet(walletID: walletID) { (wallet) in
             if wallet != nil {
@@ -719,6 +731,15 @@ class RealmManager: NSObject {
                 }
             } else {
                 completion(nil, error)
+            }
+        }
+    }
+    
+    func getAllWalletsFor(blockchainType: BlockchainType, completion: @escaping (_ wallets: Results<UserWalletRLM>?, _ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let wallets = realm.objects(UserWalletRLM.self).filter("cryptoName == '\(blockchainType.shortName)' AND chainType = \(blockchainType.net_type)")
+                completion(wallets, nil)
             }
         }
     }
