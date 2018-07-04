@@ -7,7 +7,7 @@ import UIKit
 class AddAddressPresenter: NSObject {
     var mainVC: AddAddressViewController?
     
-    let blockchainData = Constants.DataManager.availableBlockchains
+    let blockchainTypes = Constants.DataManager.availableBlockchains
     
     var delegate: NewContactAddressProtocol?
 }

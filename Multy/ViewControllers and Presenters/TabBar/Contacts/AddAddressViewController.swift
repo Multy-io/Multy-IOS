@@ -30,6 +30,10 @@ class AddAddressViewController: UIViewController {
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         if addressTF.isFirstResponder {
             addressTF.resignFirstResponder()
+            
+            if let address = addressTF.text {
+                scrollToFirstSuitableBlockchainType(for: address)
+            }
         } else {
             let touchPoint = sender.location(in: whiteView)
             if whiteView.bounds.contains(touchPoint) == false {
@@ -46,7 +50,7 @@ class AddAddressViewController: UIViewController {
         }
         
         let address = addressTF.text!
-        let selectedBlockchainType = presenter.blockchainData[blockchainPickerView.selectedRow(inComponent: 0)]
+        let selectedBlockchainType = presenter.blockchainTypes[blockchainPickerView.selectedRow(inComponent: 0)]
         let isAddressAcceptable = DataManager.shared.isAddressValid(address, for: selectedBlockchainType).isValid
         
         if DataManager.shared.isAddressSaved(address) {
@@ -75,9 +79,9 @@ extension PickerDelegate: UIPickerViewDelegate {
         let myView = UIView(frame: CGRect(x: xCoordinate, y: 0, width: size, height: size))
         let myImageView = UIImageView(frame: CGRect(x: xCoordinate, y: 0, width: size, height: size))
         
-        let rowString = presenter.blockchainData[row].fullName
+        let rowString = presenter.blockchainTypes[row].fullName
         
-        myImageView.image = UIImage(named: presenter.blockchainData[row].iconString)
+        myImageView.image = UIImage(named: presenter.blockchainTypes[row].iconString)
         myImageView.contentMode = .scaleAspectFill
         
         let myLabel = UILabel(frame: CGRect(x: xCoordinate + size + 10, y:0, width: pickerView.bounds.width - size * 2, height: size + 10))
@@ -91,7 +95,7 @@ extension PickerDelegate: UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return presenter.blockchainData[row].fullName
+        return presenter.blockchainTypes[row].fullName
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -107,7 +111,13 @@ extension PickerDelegate: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return presenter.blockchainData.count
+        return presenter.blockchainTypes.count
+    }
+    
+    func showSelected(_ blockchainType: BlockchainType) {
+        if let index = presenter.blockchainTypes.index(of: blockchainType) {
+            blockchainPickerView.selectRow(index, inComponent: 0, animated: true)
+        }
     }
 }
 
@@ -123,6 +133,10 @@ extension TextFieldDelegate: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
+        if let address = textField.text {
+            scrollToFirstSuitableBlockchainType(for: address)
+        }
+        
         return true
     }
     
@@ -136,6 +150,18 @@ extension TextFieldDelegate: UITextFieldDelegate {
         blockchainPickerView.isUserInteractionEnabled = true
         okButton.isUserInteractionEnabled = true
         cancelButton.isUserInteractionEnabled = true
+    }
+    
+    func scrollToFirstSuitableBlockchainType(for address: String) {
+        if let blockchainType = firstSuitableBlockchainType(for: address) {
+            showSelected(blockchainType)
+        }
+    }
+    
+    func firstSuitableBlockchainType(for address: String) -> BlockchainType? {
+        let blockchainType = presenter.blockchainTypes.first { blockchainType in DataManager.shared.isAddressValid(address, for: blockchainType).isValid }
+        
+        return blockchainType
     }
 }
 

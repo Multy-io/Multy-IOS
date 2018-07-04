@@ -89,6 +89,7 @@ class CreateWalletPresenter: NSObject {
         }
         
         DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
+            //FIXME: sometimes self is nil?!
             self.mainVC?.loader.hide()
             if error == nil {
                 self.mainVC!.sendAnalyticsEvent(screenName: screenCreateWallet, eventName: cancelTap)

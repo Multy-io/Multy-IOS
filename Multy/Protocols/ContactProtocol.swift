@@ -141,11 +141,15 @@ extension ContactsProtocol {
             
             //added Multy User ID// to enter in Multy App
             if address == nil {
-                let multyProfile = CNSocialProfile(urlString: "multy://", username: "Multy", userIdentifier: "multy", service: "Multy")
+                let multyProfile = CNSocialProfile(urlString: "multy://", username: "Multy", userIdentifier: "Multy", service: "Multy")
                 let myProfile = CNLabeledValue(label: "Multy", value: multyProfile)
                 
                 if contact.isThereMultyUserID() == false {
                     mContact.socialProfiles.append(myProfile)
+                } else {
+                    completion(ContactsFetchResult.Success(response: []))
+                    
+                    return // no need to update contact
                 }
             } else { //added User ID// to enter in Multy App with address
                 let userID = address! + "/\(currencyID!)/\(networkID!)"
@@ -156,13 +160,18 @@ extension ContactsProtocol {
                 
                 if contact.isThereUserID(userID) == false {
                     mContact.socialProfiles.append(myProfile)
-                }
-                
-                if contact.isThereMultyUserID() == false {
-                    let multyProfile = CNSocialProfile(urlString: "multy://", username: "Multy", userIdentifier: "multy", service: "Multy")
-                    let myProfile = CNLabeledValue(label: "Multy", value: multyProfile)
                     
-                    mContact.socialProfiles.append(myProfile)
+                    //Add Multy flag if needed
+                    if contact.isThereMultyUserID() == false {
+                        let multyProfile = CNSocialProfile(urlString: "multy://", username: "Multy", userIdentifier: "Multy", service: "Multy")
+                        let myProfile = CNLabeledValue(label: "Multy", value: multyProfile)
+                        
+                        mContact.socialProfiles.append(myProfile)
+                    }
+                } else {
+                    completion(ContactsFetchResult.Success(response: []))
+                    
+                    return // no need to update contact
                 }
             }
             
