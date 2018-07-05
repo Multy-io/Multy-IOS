@@ -6,8 +6,9 @@ import UIKit
 
 private typealias LocalizeDelegate = TransactionViewController
 private typealias PickerContactsDelegate = TransactionViewController
+private typealias AnalyticsDelegate = TransactionViewController
 
-class TransactionViewController: UIViewController, AnalyticsProtocol {
+class TransactionViewController: UIViewController {
 
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -143,19 +144,6 @@ class TransactionViewController: UIViewController, AnalyticsProtocol {
 //        if screenHeight >= 667 {
 //            self.scrollView.isScrollEnabled = false
 //        }
-    }
-    
-    func sendAnalyticOnStrart() {
-        if self.presenter.blockedAmount(for: presenter.histObj) > 0 {
-            state = 0
-        } else {
-            if isIncoming {
-                state = -1
-            } else {
-                state = 1
-            }
-        }
-        sendAnalyticsEvent(screenName: "\(screenTransactionWithChain)\(presenter.blockchainType.blockchain.rawValue)", eventName: "\(screenTransactionWithChain)\(presenter.blockchainType.blockchain.rawValue)_\(state)")
     }
     
     func checkForSendOrReceive() {
@@ -307,8 +295,28 @@ extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
         updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] _ in
             DispatchQueue.main.async {
                 self.updateUI()
+                self.logAddedAddressAnalytics()
             }
         }
+    }
+}
+
+extension AnalyticsDelegate: AnalyticsProtocol {
+    func sendAnalyticOnStrart() {
+        if self.presenter.blockedAmount(for: presenter.histObj) > 0 {
+            state = 0
+        } else {
+            if isIncoming {
+                state = -1
+            } else {
+                state = 1
+            }
+        }
+        sendAnalyticsEvent(screenName: "\(screenTransactionWithChain)\(presenter.blockchainType.blockchain.rawValue)", eventName: "\(screenTransactionWithChain)\(presenter.blockchainType.blockchain.rawValue)_\(state)")
+    }
+    
+    func logAddedAddressAnalytics() {
+        sendAnalyticsEvent(screenName: transactionInfoScreen, eventName: addressAdded)
     }
 }
 

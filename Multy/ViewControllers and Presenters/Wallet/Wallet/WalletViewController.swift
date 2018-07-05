@@ -11,7 +11,7 @@ private typealias LocalizeDelegate = WalletViewController
 private typealias CancelDelegate = WalletViewController
 private typealias ScrollViewDelegate = WalletViewController
 
-class WalletViewController: UIViewController, AnalyticsProtocol, ContactsProtocol {
+class WalletViewController: UIViewController, AnalyticsProtocol {
 
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var pendingStack: UIStackView!

@@ -137,7 +137,7 @@ let checkTap                    = "Button_Check"
 
 //              new screen  17
 
-let screenSendTo                = "Screen_Send_From"
+let screenSendTo                = "Screen_Send_To"
 //let closeTap                = "Button_Close"                  //cancel or back
 //let addressBookTap              = "Button_Address_Book"
 //let wirelessScanTap             = "Button_Wireless Scan"
@@ -269,7 +269,16 @@ let KFTransactionReceived = "KF_Transaction_Received"
 
 //Contacts
 let contactsScreen              = "Screen_Contacts"
-let openiPhoneContacts          = "Open_iPhone_Contacts"
+let contactScreen               = "Screen_Contact"
+let walletScreen                = "Screen_Wallet"
+let transactionInfoScreen       = "Screen_Transaction_Info"
+let screenSendSummary           = "Screen_Send_Summary"
+let openiPhoneContacts          = "Phone_Contacts_Opened"
+let contactAdded                = "Contact_Added"
+let contactDeleted              = "Contact_Deleted"
+let addressAdded                = "Address_Added"
+let addressDeleted              = "Address_Deleted"
+let addressSelected             = "Address_Selected"
 
 //featues code
 let donationWithTransaction     = 20000

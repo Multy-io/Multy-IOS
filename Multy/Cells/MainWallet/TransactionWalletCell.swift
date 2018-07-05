@@ -174,6 +174,7 @@ class TransactionWalletCell: UITableViewCell {
         self.fiatAmountLabel.isHidden = isEmpty
 //        self.descriptionLabel.isHidden = isEmpty
         self.emtptyImage.isHidden = !isEmpty
+        self.nameLabel.isHidden = isEmpty
     }
     
     func changeTopConstraint(_ isThereName: Bool) {

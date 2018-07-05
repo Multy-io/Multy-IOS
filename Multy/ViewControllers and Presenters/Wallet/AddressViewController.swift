@@ -6,8 +6,9 @@ import UIKit
 import Branch
 
 private typealias PickerDelegate = AddressViewController
+private typealias AnalyticsDelegate = AddressViewController
 
-class AddressViewController: UIViewController, AnalyticsProtocol, BranchProtocol {
+class AddressViewController: UIViewController, BranchProtocol {
 
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var qrImg: UIImageView!
@@ -198,7 +199,14 @@ extension PickerDelegate: EPPickerDelegate, ContactsProtocol {
         updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] (result) in
             DispatchQueue.main.async {
                 self.cancelAction(Any.self)
+                self.logAddedAddressAnalytics()
             }
         }
+    }
+}
+
+extension AnalyticsDelegate: AnalyticsProtocol {
+    func logAddedAddressAnalytics() {
+        sendAnalyticsEvent(screenName: walletScreen, eventName: addressAdded)
     }
 }

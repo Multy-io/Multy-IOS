@@ -13,7 +13,7 @@ private typealias CollectionViewDelegateFlowLayout = BTCWalletViewController
 private typealias CancelDelegate = BTCWalletViewController
 private typealias LocalizeDelegate = BTCWalletViewController
 
-class BTCWalletViewController: UIViewController, AnalyticsProtocol, ContactsProtocol {
+class BTCWalletViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
     @IBOutlet var backView: UIView!

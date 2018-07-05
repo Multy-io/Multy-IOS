@@ -465,9 +465,6 @@
                                         <state key="normal" title="+">
                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
-                                        <connections>
-                                            <action selector="addUser:" destination="mgl-nb-TC2" eventType="touchUpInside" id="abH-e8-o09"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -492,6 +489,12 @@
                                     <constraint firstAttribute="width" constant="12" id="LP0-Ug-RlI"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qUx-D9-E0i">
+                                <rect key="frame" x="337" y="34.5" width="22" height="22"/>
+                                <connections>
+                                    <action selector="addUser:" destination="mgl-nb-TC2" eventType="touchUpInside" id="JQN-TV-97x"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.97644573450088501" green="0.98039692640304565" blue="0.99984890222549438" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -506,8 +509,10 @@
                             <constraint firstItem="eQV-ys-FRR" firstAttribute="centerY" secondItem="2d0-Tb-CkO" secondAttribute="centerY" id="RUv-eG-VCY"/>
                             <constraint firstItem="PMe-Pg-nwa" firstAttribute="leading" secondItem="FqR-yZ-vN6" secondAttribute="leading" constant="46" id="XGh-ar-r5u"/>
                             <constraint firstItem="F39-3R-vjc" firstAttribute="centerX" secondItem="FqR-yZ-vN6" secondAttribute="centerX" id="avc-EH-oEe"/>
+                            <constraint firstAttribute="trailing" secondItem="qUx-D9-E0i" secondAttribute="trailing" constant="16" id="c6J-De-RvO"/>
                             <constraint firstItem="gDA-Sc-RQf" firstAttribute="leading" secondItem="FqR-yZ-vN6" secondAttribute="leading" id="f0t-Yh-Vrd"/>
                             <constraint firstItem="F39-3R-vjc" firstAttribute="top" secondItem="7BV-hB-twF" secondAttribute="bottom" constant="30" id="fDh-xd-Btw"/>
+                            <constraint firstItem="qUx-D9-E0i" firstAttribute="centerY" secondItem="eQV-ys-FRR" secondAttribute="centerY" id="h8T-Jz-RNC"/>
                             <constraint firstItem="SCG-Oy-IO5" firstAttribute="centerX" secondItem="FqR-yZ-vN6" secondAttribute="centerX" id="jnt-if-Cze"/>
                             <constraint firstItem="2d0-Tb-CkO" firstAttribute="centerY" secondItem="SCG-Oy-IO5" secondAttribute="centerY" id="oBB-Ld-i6v"/>
                             <constraint firstItem="PMe-Pg-nwa" firstAttribute="centerX" secondItem="FqR-yZ-vN6" secondAttribute="centerX" id="vIr-le-hyB"/>
@@ -516,16 +521,20 @@
                             <constraint firstItem="7BV-hB-twF" firstAttribute="width" secondItem="FqR-yZ-vN6" secondAttribute="width" multiplier="190/375" id="zD5-cK-KtR"/>
                             <constraint firstItem="SCG-Oy-IO5" firstAttribute="top" secondItem="rpk-wf-apb" secondAttribute="bottom" constant="13" id="zcf-C0-zd3"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="btf-sU-zaV"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="u4f-01-75E"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="addNewBtn" destination="maI-Aa-BkL" id="iVW-QA-9M3"/>
+                        <outlet property="addNewBtn" destination="qUx-D9-E0i" id="QpP-CE-JhU"/>
                         <outlet property="backButton" destination="2d0-Tb-CkO" id="Tge-eM-C73"/>
                         <outlet property="backImageView" destination="eQV-ys-FRR" id="y98-nf-KBA"/>
                         <outlet property="donatView" destination="PMe-Pg-nwa" id="YGe-tM-I0o"/>
                         <outlet property="donationTopConstraint" destination="FXh-Z7-nlk" id="7vb-7z-Tzm"/>
-                        <outlet property="floatingView" destination="btf-sU-zaV" id="nRx-SW-UWa"/>
                         <outlet property="noContactsImageView" destination="7BV-hB-twF" id="YiG-p0-Osn"/>
                         <outlet property="noContactsLabel" destination="F39-3R-vjc" id="Xjf-k7-rAA"/>
                         <outlet property="tableView" destination="gDA-Sc-RQf" id="xlN-yS-Jd3"/>
@@ -1733,10 +1742,6 @@ correctly</string>
                                         <state key="normal" title="+">
                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
-                                        <connections>
-                                            <action selector="addAddressAction:" destination="HTS-F6-9ER" eventType="touchUpInside" id="knX-jr-Dzq"/>
-                                            <action selector="addUser:" destination="mgl-nb-TC2" eventType="touchUpInside" id="dgY-gr-Het"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1749,6 +1754,12 @@ correctly</string>
                                     <constraint firstItem="o25-xd-0vq" firstAttribute="top" secondItem="OR0-cO-nL2" secondAttribute="top" id="xjN-l4-hqg"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKo-Wi-Mkc">
+                                <rect key="frame" x="337" y="27" width="22" height="22"/>
+                                <connections>
+                                    <action selector="addAddressAction:" destination="HTS-F6-9ER" eventType="touchUpInside" id="Vo6-rm-Yv5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -1763,6 +1774,7 @@ correctly</string>
                             <constraint firstAttribute="trailing" secondItem="OR0-cO-nL2" secondAttribute="trailing" constant="16" id="Ax0-E9-bpq"/>
                             <constraint firstItem="oge-1a-bae" firstAttribute="top" secondItem="Rdh-b1-fyI" secondAttribute="bottom" constant="30" id="DLL-Cb-Q1D"/>
                             <constraint firstItem="nsm-kS-9EQ" firstAttribute="top" secondItem="ZL9-td-aqn" secondAttribute="top" constant="-10" id="FAu-RN-NrP"/>
+                            <constraint firstAttribute="trailing" secondItem="dKo-Wi-Mkc" secondAttribute="trailing" constant="16" id="Fib-RF-urv"/>
                             <constraint firstItem="oBc-4M-4Or" firstAttribute="bottom" secondItem="KUT-Ku-SWd" secondAttribute="bottom" id="ICG-gQ-4Yb"/>
                             <constraint firstItem="L7V-Ww-JB1" firstAttribute="top" secondItem="oge-1a-bae" secondAttribute="bottom" constant="3.5" id="Muw-RQ-4nv"/>
                             <constraint firstItem="S21-Sx-8bA" firstAttribute="top" secondItem="KUT-Ku-SWd" secondAttribute="top" constant="80" id="QkE-Nk-01S"/>
@@ -1772,6 +1784,7 @@ correctly</string>
                             <constraint firstItem="nsm-kS-9EQ" firstAttribute="leading" secondItem="KUT-Ku-SWd" secondAttribute="leading" id="Ydz-Ho-FJk"/>
                             <constraint firstItem="oBc-4M-4Or" firstAttribute="leading" secondItem="KUT-Ku-SWd" secondAttribute="leading" constant="-1" id="ZmB-nG-Xdb"/>
                             <constraint firstItem="Rdh-b1-fyI" firstAttribute="trailing" secondItem="S21-Sx-8bA" secondAttribute="trailing" id="aQM-1Y-4gT"/>
+                            <constraint firstItem="dKo-Wi-Mkc" firstAttribute="centerY" secondItem="nsm-kS-9EQ" secondAttribute="centerY" id="btA-U9-hJn"/>
                             <constraint firstItem="nsm-kS-9EQ" firstAttribute="trailing" secondItem="ZL9-td-aqn" secondAttribute="trailing" constant="28" id="c8V-1h-3Pf"/>
                             <constraint firstItem="Wan-Oj-uHS" firstAttribute="top" secondItem="S21-Sx-8bA" secondAttribute="top" id="dWm-8H-ACC"/>
                             <constraint firstItem="Wan-Oj-uHS" firstAttribute="bottom" secondItem="S21-Sx-8bA" secondAttribute="bottom" id="e5d-ON-XK3"/>
@@ -1786,16 +1799,20 @@ correctly</string>
                             <constraint firstItem="L7V-Ww-JB1" firstAttribute="centerX" secondItem="KUT-Ku-SWd" secondAttribute="centerX" id="vut-gV-flJ"/>
                             <constraint firstItem="Rdh-b1-fyI" firstAttribute="bottom" secondItem="S21-Sx-8bA" secondAttribute="bottom" id="zt5-90-X4O"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="OR0-cO-nL2"/>
+                            </mask>
+                        </variation>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="addNewBtn" destination="o25-xd-0vq" id="j2Q-eo-x3i"/>
+                        <outlet property="addNewBtn" destination="dKo-Wi-Mkc" id="EsV-dj-MLB"/>
                         <outlet property="contactAddressesTableView" destination="Rdz-Mj-7Uf" id="k25-3U-Eyt"/>
                         <outlet property="contactImageLabel" destination="Rdh-b1-fyI" id="Acf-7e-UZc"/>
                         <outlet property="contactImageView" destination="S21-Sx-8bA" id="VvR-lX-viE"/>
                         <outlet property="contactName" destination="Wan-Oj-uHS" id="oFd-9V-3WV"/>
                         <outlet property="deleteContactButton" destination="oBc-4M-4Or" id="Swb-9R-2RL"/>
-                        <outlet property="floatingView" destination="OR0-cO-nL2" id="83G-3G-Hak"/>
                         <outlet property="noAddressesLabel" destination="vIi-D1-j5u" id="PX0-OE-EDQ"/>
                         <outlet property="savedAddressesLabel" destination="oge-1a-bae" id="fLq-21-UkG"/>
                         <outlet property="tableView" destination="Rdz-Mj-7Uf" id="psp-TJ-fJa"/>

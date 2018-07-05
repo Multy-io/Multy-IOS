@@ -12,8 +12,9 @@ private typealias ContactDelegate = SendStartViewController
 private typealias PickerContactsDelegate = SendStartViewController
 private typealias TextViewDelegate = SendStartViewController
 private typealias ChooseContactsAddressDelegate = SendStartViewController
+private typealias AnalyticsDelegate = SendStartViewController
 
-class SendStartViewController: UIViewController, AnalyticsProtocol, DonationProtocol, CancelProtocol {
+class SendStartViewController: UIViewController, DonationProtocol, CancelProtocol {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var nextBtn: ZFRippleButton!
@@ -382,8 +383,15 @@ extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
         updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] _ in
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.logAddedAddressAnalytics()
             }
         }
+    }
+}
+
+extension AnalyticsDelegate: AnalyticsProtocol {
+    func logAddedAddressAnalytics() {
+        sendAnalyticsEvent(screenName: screenSendTo, eventName: addressAdded)
     }
 }
 

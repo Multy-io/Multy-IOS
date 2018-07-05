@@ -7,9 +7,27 @@ import UIKit
 private typealias NewContactAddressDelegate = ContactPresenter
 
 class ContactPresenter: NSObject, ContactsProtocol {
-    var contact: EPContact?
+    var contact: EPContact? {
+        didSet {
+            checkEmptyState()
+            mainVC?.tableView.reloadData()
+        }
+    }
+    
     var indexPath: IndexPath?
     var mainVC: ContactViewController?
+    
+    func checkEmptyState() {
+        if mainVC == nil {
+            return
+        }
+        
+        let isTableViewHidden = contact?.addresses.count == 0
+        
+        mainVC?.tableView.isHidden = isTableViewHidden
+        mainVC?.noAddressesLabel.isHidden = !isTableViewHidden
+        mainVC?.savedAddressesLabel.isHidden = isTableViewHidden
+    }
     
     func fillContactImage() {
         if contact!.thumbnailProfileImage != nil {
@@ -58,6 +76,10 @@ class ContactPresenter: NSObject, ContactsProtocol {
                 self.mainVC?.view.isUserInteractionEnabled = false
                 self.deleteAddress(title, from: self.contact!.contactId!, { [unowned self] (result) in
                     self.updateAddresses()
+                    
+                    DispatchQueue.main.async {
+                        self.mainVC?.logDeletedAddressAnalytics()
+                    }
                 })
             }))
         } else {
@@ -77,7 +99,6 @@ class ContactPresenter: NSObject, ContactsProtocol {
                     self.contact = EPContact.init(contact: contact!)
                 }
                 
-                self.mainVC!.tableView.reloadData()
                 self.mainVC!.view.isUserInteractionEnabled = true
             }
         })
@@ -95,6 +116,8 @@ class ContactPresenter: NSObject, ContactsProtocol {
                 let vc = contactVC.chooseContactsAddressDelegate as! SendStartViewController
                 
                 contactVC.navigationController?.popToViewController(vc, animated: true)
+                
+                contactVC.logSelectedAddressAnalytics()
             }
         }
     }
@@ -104,10 +127,13 @@ class ContactPresenter: NSObject, ContactsProtocol {
         deleteContact(contact!.contactId!) { (result) in
             DispatchQueue.main.async {
                 self.mainVC!.backAction()
+                self.mainVC?.logDeletedContactAnalytics()
             }
         }
     }
 }
+
+
 
 extension NewContactAddressDelegate: NewContactAddressProtocol {
     func passNewAddress(_ address: String, andBlockchainType blockchainType: BlockchainType) {
@@ -116,6 +142,10 @@ extension NewContactAddressDelegate: NewContactAddressProtocol {
         
         updateContactInfo(contact!.contactId!, withAddress: address, currencyID, networkID) { [unowned self] (result) in
             self.updateAddresses()
+            
+            DispatchQueue.main.async {
+                self.mainVC?.logAddedAddressAnalytics()
+            }
         }
     }
 }

@@ -6,8 +6,9 @@ import UIKit
 
 private typealias LocalizeDelegate = SendFinishViewController
 private typealias PickerContactsDelegate = SendFinishViewController
+private typealias AnalyticsDelegate = SendFinishViewController
 
-class SendFinishViewController: UIViewController, UITextFieldDelegate, AnalyticsProtocol {
+class SendFinishViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var topView: UIView!
@@ -348,8 +349,15 @@ extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
         updateContactInfo(contact.contactId!, withAddress: address, currencyID, networkID) { [unowned self] _ in
             DispatchQueue.main.async {
                 self.setupUI()
+                self.logAddedAddressAnalytics()
             }
         }
+    }
+}
+
+extension AnalyticsDelegate: AnalyticsProtocol {
+    func logAddedAddressAnalytics() {
+        sendAnalyticsEvent(screenName: screenSendSummary, eventName: addressAdded)
     }
 }
 

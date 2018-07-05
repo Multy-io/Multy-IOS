@@ -8,6 +8,7 @@ import ZFRippleButton
 private typealias TableViewDelegate = ContactViewController
 private typealias TableViewDataSourceDelegate = ContactViewController
 private typealias LocalizeDelegate = ContactViewController
+private typealias AnalyticsDelegate = ContactViewController
 
 class ContactViewController: UIViewController {
 
@@ -18,7 +19,7 @@ class ContactViewController: UIViewController {
     @IBOutlet weak var noAddressesLabel: UILabel!
     @IBOutlet weak var savedAddressesLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var floatingView: UIView!
+//    @IBOutlet weak var floatingView: UIView!
     @IBOutlet weak var addNewBtn: UIButton!
     
     @IBOutlet weak var deleteContactButton: ZFRippleButton!
@@ -36,19 +37,16 @@ class ContactViewController: UIViewController {
         presenter.fillContactImage()
         contactName.text = presenter.contact!.displayName()
         
-        if presenter.contact?.addresses.count == 0 {
-            noAddressesLabel.isHidden = false
-            savedAddressesLabel.isHidden = true
-        }
-        
-        floatingView.layer.cornerRadius = floatingView.frame.width / 2
-        addNewBtn.makeBlueGradient()
+//        floatingView.layer.cornerRadius = floatingView.frame.width / 2
+//        addNewBtn.makeBlueGradient()
         
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
+        presenter.checkEmptyState()
+        
         if chooseContactsAddressDelegate != nil {
-            floatingView.isHidden = true
+            addNewBtn.isHidden = true
             deleteContactButton.isHidden = true
             deleteContactButton.isUserInteractionEnabled = false
         }
@@ -108,6 +106,24 @@ extension TableViewDataSourceDelegate: UITableViewDataSource {
         presenter.fillCell(cell, at: indexPath)
         
         return cell
+    }
+}
+
+extension AnalyticsDelegate: AnalyticsProtocol {
+    func logDeletedContactAnalytics() {
+        sendAnalyticsEvent(screenName: contactScreen, eventName: contactDeleted)
+    }
+    
+    func logAddedAddressAnalytics() {
+        sendAnalyticsEvent(screenName: contactScreen, eventName: addressAdded)
+    }
+    
+    func logDeletedAddressAnalytics() {
+        sendAnalyticsEvent(screenName: contactScreen, eventName: addressDeleted)
+    }
+    
+    func logSelectedAddressAnalytics() {
+        sendAnalyticsEvent(screenName: contactScreen, eventName: addressSelected)
     }
 }
 

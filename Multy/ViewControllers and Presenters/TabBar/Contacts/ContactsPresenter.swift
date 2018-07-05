@@ -10,8 +10,21 @@ class ContactsPresenter: NSObject, ContactsProtocol {
     var tabBarFrame: CGRect?
     var contacts = [EPContact]() {
         didSet {
+            checkEmptyState()
             mainVC?.tableView.reloadData()
         }
+    }
+    
+    func checkEmptyState() {
+        if mainVC == nil {
+            return
+        }
+        
+        let isTableViewHidden = contacts.count == 0
+        
+        mainVC?.tableView.isHidden = isTableViewHidden
+        mainVC?.noContactsLabel.isHidden = !isTableViewHidden
+        mainVC?.noContactsImageView.isHidden = !isTableViewHidden
     }
     
     func registerCell() {

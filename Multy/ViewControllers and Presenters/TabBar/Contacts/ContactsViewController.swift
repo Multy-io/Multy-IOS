@@ -9,7 +9,7 @@ private typealias TableViewDataSource = ContactsViewController
 private typealias LocalizeDelegate = ContactsViewController
 private typealias AnalyticsDelegate = ContactsViewController
 
-class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtocol {
+class ContactsViewController: UIViewController, CancelProtocol {
 
     @IBOutlet weak var donatView: UIView!
     var presenter = ContactsPresenter()
@@ -17,7 +17,7 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var noContactsImageView: UIImageView!
     @IBOutlet weak var noContactsLabel: UILabel!
-    @IBOutlet weak var floatingView: UIView!
+//    @IBOutlet weak var floatingView: UIView!
     @IBOutlet weak var addNewBtn: UIButton!
     @IBOutlet weak var backImageView: UIImageView!
     @IBOutlet weak var backButton: UIButton!
@@ -38,16 +38,12 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         
         presenter.tabBarFrame = tabBarController?.tabBar.frame
         presenter.registerCell()
-        
+        presenter.checkEmptyState()
         if chooseContactsAddressDelegate != nil {
-            floatingView.isHidden = true
+            addNewBtn.isHidden = true
             backButton.isHidden = false
             backImageView.isHidden = false
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,8 +76,8 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         self.donatView.layer.borderColor = #colorLiteral(red: 0, green: 0.4784313725, blue: 0.9994150996, alpha: 1)
         self.donatView.layer.borderWidth = 1
         
-        floatingView.layer.cornerRadius = floatingView.frame.width/2
-        addNewBtn.makeBlueGradient()
+//        floatingView.layer.cornerRadius = floatingView.frame.width/2
+//        addNewBtn.makeBlueGradient()
     }
     
     func cancelAction() {
@@ -132,13 +128,17 @@ extension TableViewDelegate : UITableViewDelegate {
     }
 }
 
-extension AnalyticsDelegate {
+extension AnalyticsDelegate: AnalyticsProtocol {
     func logDonationAnalytics() {
         sendDonationAlertScreenPresentedAnalytics(code: donationForContactSC)
     }
     
     func logContactsAnalytics() {
         sendAnalyticsEvent(screenName: contactsScreen, eventName: openiPhoneContacts)
+    }
+    
+    func logAddedContactAnalytics() {
+        sendAnalyticsEvent(screenName: contactsScreen, eventName: contactAdded)
     }
 }
 
@@ -170,6 +170,7 @@ extension ContactsViewController: EPPickerDelegate {
         
         presenter.updateContactInfo(contact.contactId!, withAddress: nil, nil, nil) { [unowned self] (result) in
             DispatchQueue.main.async {
+                self.logAddedContactAnalytics()
                 self.presenter.fetchPhoneContacts()
             }
         }
