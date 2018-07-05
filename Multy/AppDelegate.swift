@@ -247,6 +247,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
+//    @IBAction func scanAction(_ sender: Any) {
+//        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+//        let qrScanVC = storyboard.instantiateViewController(withIdentifier: "qrScanVC") as! QrScannerViewController
+//        qrScanVC.qrDelegate = self.presenter
+//        qrScanVC.presenter.isFast = true
+//        self.present(qrScanVC, animated: true, completion: nil)
+//        sendAnalyticsEvent(screenName: screenFastOperation, eventName: scanTap)
+//    }
+    
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        print(shortcutItem)
+        switch shortcutItem.type {
+        case "io.multy.scanQr":
+            UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: false)
+            let tabBar = window?.rootViewController as! CustomTabBarViewController
+            let selectedIndex = tabBar.selectedIndex
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
+            assetsVC.openQR()
+            //add ANALYTICS here
+        default: break
+        }
+    }
+    
     func saveMkVersion(){
         if UserDefaults.standard.value(forKey: "MKVersion") != nil {
             
