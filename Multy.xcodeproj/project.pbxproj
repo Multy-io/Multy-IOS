@@ -241,6 +241,8 @@
 		85741D8520B45E8B0093933B /* circle_grow.json in Resources */ = {isa = PBXBuildFile; fileRef = 85741D8420B45E8A0093933B /* circle_grow.json */; };
 		85741D8720B555DB0093933B /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85741D8620B555DB0093933B /* BLEManager.swift */; };
 		85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85741D8820B55A650093933B /* CoreBluetooth.framework */; };
+		859C7AFC20ECF3C8002EA215 /* WaitingMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */; };
+		859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */; };
 		85DE62DD20AB002000423D89 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DC20AB002000423D89 /* SendViewController.swift */; };
 		85DE62DF20AB003A00423D89 /* SendPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DE20AB003A00423D89 /* SendPresenter.swift */; };
 		85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62E120AB077B00423D89 /* WalletCollectionViewCell.swift */; };
@@ -660,6 +662,8 @@
 		85741D8420B45E8A0093933B /* circle_grow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = circle_grow.json; sourceTree = "<group>"; };
 		85741D8620B555DB0093933B /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
 		85741D8820B55A650093933B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersViewController.swift; sourceTree = "<group>"; };
+		859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersPresenter.swift; sourceTree = "<group>"; };
 		85DE62DC20AB002000423D89 /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
 		85DE62DE20AB003A00423D89 /* SendPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPresenter.swift; sourceTree = "<group>"; };
 		85DE62E120AB077B00423D89 /* WalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1522,6 +1526,7 @@
 				45A9493C1FC5A4FB003C3A23 /* Send */,
 				45E148A420455341006BD4D1 /* Donation */,
 				45B5CCA01FDA90BA0069BD46 /* No InternetConnection */,
+				859C7AF920ECF276002EA215 /* CreateMultiSig */,
 			);
 			path = "ViewControllers and Presenters";
 			sourceTree = "<group>";
@@ -1680,6 +1685,23 @@
 				45F8CD48208F393C00DEB495 /* TermsOfServicePresenter.swift */,
 			);
 			path = TermsOfService;
+			sourceTree = "<group>";
+		};
+		859C7AF920ECF276002EA215 /* CreateMultiSig */ = {
+			isa = PBXGroup;
+			children = (
+				859C7AFA20ECF38E002EA215 /* WaitingMembers */,
+			);
+			path = CreateMultiSig;
+			sourceTree = "<group>";
+		};
+		859C7AFA20ECF38E002EA215 /* WaitingMembers */ = {
+			isa = PBXGroup;
+			children = (
+				859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */,
+				859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */,
+			);
+			path = WaitingMembers;
 			sourceTree = "<group>";
 		};
 		85DE62DB20AAFFE700423D89 /* Send */ = {
@@ -2174,6 +2196,7 @@
 				"${BUILT_PRODUCTS_DIR}/ButtonProgressBar-iOS/ButtonProgressBar_iOS.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Hash2Pics/Hash2Pics.framework",
 				"${BUILT_PRODUCTS_DIR}/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/LTMorphingLabel/LTMorphingLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
@@ -2187,6 +2210,7 @@
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyContacts/SwiftyContacts.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyStoreKit/SwiftyStoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/UICircularProgressRing/UICircularProgressRing.framework",
 				"${BUILT_PRODUCTS_DIR}/UPCarouselFlowLayout/UPCarouselFlowLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/ZFRippleButton/ZFRippleButton.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
@@ -2201,6 +2225,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ButtonProgressBar_iOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hash2Pics.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IDZSwiftCommonCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LTMorphingLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
@@ -2214,6 +2239,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyContacts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyStoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICircularProgressRing.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UPCarouselFlowLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZFRippleButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
@@ -2256,6 +2282,7 @@
 				"${BUILT_PRODUCTS_DIR}/ButtonProgressBar-iOS/ButtonProgressBar_iOS.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Hash2Pics/Hash2Pics.framework",
 				"${BUILT_PRODUCTS_DIR}/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/LTMorphingLabel/LTMorphingLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
@@ -2269,6 +2296,7 @@
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyContacts/SwiftyContacts.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyStoreKit/SwiftyStoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/UICircularProgressRing/UICircularProgressRing.framework",
 				"${BUILT_PRODUCTS_DIR}/UPCarouselFlowLayout/UPCarouselFlowLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/ZFRippleButton/ZFRippleButton.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
@@ -2281,6 +2309,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ButtonProgressBar_iOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hash2Pics.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IDZSwiftCommonCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LTMorphingLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
@@ -2294,6 +2323,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyContacts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyStoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICircularProgressRing.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UPCarouselFlowLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZFRippleButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
@@ -2490,6 +2520,7 @@
 				455EA8791FD851830093F69D /* FastOperationsViewController.swift in Sources */,
 				45A949621FC766BE003C3A23 /* SendFinishPresenter.swift in Sources */,
 				4575F0D82081FE01002616DD /* WebTextPageViewController.swift in Sources */,
+				859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */,
 				FADC00481FC3236F00182E45 /* ApiManager.swift in Sources */,
 				FA4D43FE1FC6D058003C7117 /* TransactionWalletCell.swift in Sources */,
 				4436123020B56F000095F3C6 /* UITableView+Extension.swift in Sources */,
@@ -2530,6 +2561,7 @@
 				FADC004E1FC323C300182E45 /* CoreLibManager.swift in Sources */,
 				457569411FBDD6E000FDEE20 /* BackupSeedPhrasePresenter.swift in Sources */,
 				45D083701FCEF94C0066F1CD /* SendWalletProtocol.swift in Sources */,
+				859C7AFC20ECF3C8002EA215 /* WaitingMembersViewController.swift in Sources */,
 				4585BD2B20496E14004542AE /* CreateWalletProtocol.swift in Sources */,
 				45B5CCA41FDA90FE0069BD46 /* NoInternetConnetctionPresenter.swift in Sources */,
 				44C3F38A207E5FAB00AC1BD4 /* ProgressHUD+Extension.swift in Sources */,
