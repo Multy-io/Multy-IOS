@@ -1,10 +1,6 @@
-//
-//  WalletCollectionViewCell.swift
-//  Multy
-//
-//  Created by Artyom Alekseev on 15.05.2018.
-//  Copyright © 2018 Idealnaya rabota. All rights reserved.
-//
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
 
 import UIKit
 import Lottie
