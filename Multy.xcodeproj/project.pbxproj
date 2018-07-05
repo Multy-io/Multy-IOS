@@ -1496,7 +1496,6 @@
 		45B9CB031FBB4B2300AA2A31 /* ViewControllers and Presenters */ = {
 			isa = PBXGroup;
 			children = (
-				859C7AF920ECF276002EA215 /* CreateMultiSig */,
 				45B9CB011FBB4AC200AA2A31 /* Assets */,
 				455EA8721FD841FF0093F69D /* TabBar */,
 				FA4D43E81FC5C305003C7117 /* Wallet */,
@@ -1505,6 +1504,7 @@
 				45A9493C1FC5A4FB003C3A23 /* Send */,
 				45E148A420455341006BD4D1 /* Donation */,
 				45B5CCA01FDA90BA0069BD46 /* No InternetConnection */,
+				859C7AF920ECF276002EA215 /* CreateMultiSig */,
 			);
 			path = "ViewControllers and Presenters";
 			sourceTree = "<group>";

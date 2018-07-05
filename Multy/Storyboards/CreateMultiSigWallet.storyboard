@@ -14,7 +14,7 @@
         <!--Waiting Members View Controller-->
         <scene sceneID="4wt-ow-oYA">
             <objects>
-                <viewController id="KZk-ol-dp7" customClass="WaitingMembersViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="waitingMembers" id="KZk-ol-dp7" customClass="WaitingMembersViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SDz-IP-cU3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -38,16 +38,16 @@
                                                 </constraints>
                                             </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Pkd-FX-jEw">
-                                                <rect key="frame" x="111.5" y="3.5" width="153.5" height="38.5"/>
+                                                <rect key="frame" x="110.5" y="3.5" width="155.5" height="38.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xd5-lj-9MQ" userLabel="Label - MultiSig Wallet Title">
-                                                        <rect key="frame" x="0.0" y="0.0" width="153.5" height="23.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="155.5" height="23.5"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                         <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A1V-b2-Lza">
-                                                        <rect key="frame" x="0.0" y="23.5" width="153.5" height="15"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="A1V-b2-Lza">
+                                                        <rect key="frame" x="0.0" y="23.5" width="155.5" height="15"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pendingSmallClock" translatesAutoresizingMaskIntoConstraints="NO" id="NKV-M3-9fD">
                                                                 <rect key="frame" x="0.0" y="0.0" width="10" height="15"/>
@@ -57,14 +57,13 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Waiting for all members..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EMR-dI-cfF">
-                                                                <rect key="frame" x="10" y="0.0" width="143.5" height="15"/>
+                                                                <rect key="frame" x="12" y="0.0" width="143.5" height="15"/>
                                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
                                                                 <color key="textColor" red="0.59215686270000001" green="0.80784313730000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstItem="EMR-dI-cfF" firstAttribute="leading" secondItem="NKV-M3-9fD" secondAttribute="trailing" id="1Mp-ak-yxW"/>
                                                             <constraint firstItem="NKV-M3-9fD" firstAttribute="centerY" secondItem="EMR-dI-cfF" secondAttribute="centerY" id="cC1-dj-3ja"/>
                                                         </constraints>
                                                     </stackView>
@@ -102,16 +101,16 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BzM-xN-GZV" customClass="UICircularProgressRing" customModule="UICircularProgressRing">
-                                                        <rect key="frame" x="-8" y="0.0" width="150" height="150"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </view>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="BzM-xN-GZV" secondAttribute="trailing" constant="8" id="9Z6-IO-kDz"/>
+                                                    <constraint firstAttribute="trailing" secondItem="BzM-xN-GZV" secondAttribute="trailing" id="9Z6-IO-kDz"/>
                                                     <constraint firstItem="BzM-xN-GZV" firstAttribute="top" secondItem="mtE-fg-Ar8" secondAttribute="top" id="MUH-Zm-l4A"/>
                                                     <constraint firstAttribute="bottom" secondItem="BzM-xN-GZV" secondAttribute="bottom" id="jaS-Oj-81c"/>
-                                                    <constraint firstItem="BzM-xN-GZV" firstAttribute="leading" secondItem="mtE-fg-Ar8" secondAttribute="leading" constant="-8" id="svh-Dd-bNb"/>
+                                                    <constraint firstItem="BzM-xN-GZV" firstAttribute="leading" secondItem="mtE-fg-Ar8" secondAttribute="leading" id="svh-Dd-bNb"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="fullCircle" value="YES"/>
@@ -141,7 +140,7 @@
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 / 4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v6L-sn-crM">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 / 4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v6L-sn-crM" userLabel="Label - Members Joined">
                                                         <rect key="frame" x="0.0" y="20.5" width="71.5" height="46.5"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="34"/>
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -168,6 +167,19 @@
                                             <tableView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fu4-dS-IAS">
                                                 <rect key="frame" x="0.0" y="16" width="375" height="387"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <prototypes>
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="memberCellReuseId" id="Cwf-FR-ciF">
+                                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Cwf-FR-ciF" id="lCR-mK-pmu">
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                        </tableViewCellContentView>
+                                                    </tableViewCell>
+                                                </prototypes>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="KZk-ol-dp7" id="6ZN-3e-Uqn"/>
+                                                </connections>
                                             </tableView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -188,12 +200,19 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RaK-yw-arg" userLabel="View - Invitation Code Holder">
                                         <rect key="frame" x="0.0" y="603" width="375" height="64"/>
                                         <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tp4-5K-jIV" userLabel="View - Invitation Code Background">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HuL-7P-xQq" userLabel="Button - Invitation Code">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
                                                 <state key="normal" title="Invitation Code">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="invitationCodeAction:" destination="KZk-ol-dp7" eventType="touchUpInside" id="8eA-nY-7gW"/>
+                                                </connections>
                                             </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icons8QrCode" translatesAutoresizingMaskIntoConstraints="NO" id="1yW-HP-iRg" userLabel="Image View - QRCode">
                                                 <rect key="frame" x="22" y="22" width="21" height="21"/>
@@ -206,10 +225,14 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="64" id="Lyw-Vt-jL8"/>
+                                            <constraint firstItem="Tp4-5K-jIV" firstAttribute="leading" secondItem="RaK-yw-arg" secondAttribute="leading" id="MvR-Ja-Orv"/>
                                             <constraint firstItem="1yW-HP-iRg" firstAttribute="leading" secondItem="RaK-yw-arg" secondAttribute="leading" constant="22" id="PJo-mY-OT8"/>
+                                            <constraint firstAttribute="trailing" secondItem="Tp4-5K-jIV" secondAttribute="trailing" id="PoD-Ke-LgT"/>
+                                            <constraint firstAttribute="bottom" secondItem="Tp4-5K-jIV" secondAttribute="bottom" id="Tw0-N5-ixY"/>
                                             <constraint firstAttribute="bottom" secondItem="HuL-7P-xQq" secondAttribute="bottom" id="VOb-XN-eLu"/>
                                             <constraint firstAttribute="trailing" secondItem="HuL-7P-xQq" secondAttribute="trailing" id="Xk7-9z-rxk"/>
                                             <constraint firstItem="1yW-HP-iRg" firstAttribute="centerY" secondItem="RaK-yw-arg" secondAttribute="centerY" id="YMr-wU-nnw"/>
+                                            <constraint firstItem="Tp4-5K-jIV" firstAttribute="top" secondItem="RaK-yw-arg" secondAttribute="top" id="fhB-oN-vwW"/>
                                             <constraint firstItem="HuL-7P-xQq" firstAttribute="leading" secondItem="RaK-yw-arg" secondAttribute="leading" id="iUI-gL-wit"/>
                                             <constraint firstItem="HuL-7P-xQq" firstAttribute="top" secondItem="RaK-yw-arg" secondAttribute="top" id="pzc-D5-SHQ"/>
                                         </constraints>
@@ -247,19 +270,26 @@
                     </view>
                     <connections>
                         <outlet property="backRing" destination="mtE-fg-Ar8" id="T1P-Ak-X2a"/>
+                        <outlet property="backgroundView" destination="jVv-7H-yr9" id="KIk-Bp-3Z5"/>
                         <outlet property="contentView" destination="1Gg-mF-wQl" id="P8V-8O-sVd"/>
                         <outlet property="headerView" destination="WjK-BC-Ypu" id="iaT-WV-wZt"/>
+                        <outlet property="invitationCodeBackgroundView" destination="Tp4-5K-jIV" id="dNx-5f-Nak"/>
+                        <outlet property="invitationCodeButton" destination="HuL-7P-xQq" id="0P3-HD-WCe"/>
+                        <outlet property="joinedMembersLabel" destination="v6L-sn-crM" id="Nfc-mk-fwz"/>
+                        <outlet property="membersCounterHolderView" destination="8Nf-gf-5GL" id="nmM-56-Bd4"/>
+                        <outlet property="membersInfoHolderView" destination="pBy-0A-2E6" id="KPp-oj-vIM"/>
+                        <outlet property="membersInfoHolderViewHeightConstraint" destination="HrX-il-2mw" id="WDD-v2-QYT"/>
+                        <outlet property="membersTableView" destination="fu4-dS-IAS" id="Ji4-EV-s8y"/>
+                        <outlet property="multiSigWalletName" destination="xd5-lj-9MQ" id="jfJ-ui-LbG"/>
                         <outlet property="progressRing" destination="BzM-xN-GZV" id="Y3a-GI-mK2"/>
-                        <outlet property="usersCounerHolderView" destination="8Nf-gf-5GL" id="748-9w-tfE"/>
-                        <outlet property="usersCounterHolderView" destination="8Nf-gf-5GL" id="yqf-U7-Yjp"/>
-                        <outlet property="usersInfoHoderViewHeightContraint" destination="HrX-il-2mw" id="isN-iy-J01"/>
-                        <outlet property="usersInfoHolderView" destination="pBy-0A-2E6" id="vkq-TR-nKp"/>
-                        <outlet property="usersInfoHolderViewHeightConstraint" destination="HrX-il-2mw" id="xnQ-Mk-BNV"/>
+                        <outlet property="qrCodeImageView" destination="1yW-HP-iRg" id="9nW-6B-xDM"/>
+                        <outlet property="stateImageView" destination="NKV-M3-9fD" id="3LA-Cx-EEK"/>
+                        <outlet property="stateLabel" destination="EMR-dI-cfF" id="TYP-Og-qSo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rju-q2-XrO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-786" y="188"/>
+            <point key="canvasLocation" x="-786.39999999999998" y="187.55622188905548"/>
         </scene>
     </scenes>
     <resources>
