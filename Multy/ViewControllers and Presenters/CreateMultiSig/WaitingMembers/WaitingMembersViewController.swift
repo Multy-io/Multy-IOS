@@ -29,6 +29,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var membersTableView: UITableView!
     
     var presenter = WaitingMembersPresenter()
+    var lastPosition : CGPoint?
     
     var initialMembersInfoHolderHeight : CGFloat? {
         didSet {
@@ -117,7 +118,6 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource {
         contentView.layoutIfNeeded()
     }
     
-    var lastPosition : CGPoint?
     @objc private func handlePan(_ sender: UIPanGestureRecognizer? = nil) {
         switch sender!.state {
         case .began:
