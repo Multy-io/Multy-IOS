@@ -13,7 +13,8 @@ class WaitingMembersPresenter: NSObject {
     
     var walletName: String = "Family"
     var membersAmount: UInt = 2
-    var membersJoined: UInt = 1
+    var membersJoined = [String]()
+    var createWalletPrice = 0.001
     
     func viewControllerViewDidLoad() {
     }

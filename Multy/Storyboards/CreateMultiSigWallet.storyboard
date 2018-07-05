@@ -164,31 +164,46 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pBy-0A-2E6" userLabel="View - Users Info Holder">
                                         <rect key="frame" x="0.0" y="264" width="375" height="403"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fu4-dS-IAS">
-                                                <rect key="frame" x="0.0" y="16" width="375" height="387"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPk-W2-hXX" userLabel="View - Members Info Touchpad">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="403"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounce" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <tableView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fu4-dS-IAS">
+                                                <rect key="frame" x="0.0" y="25" width="375" height="378"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="memberCellReuseId" id="Cwf-FR-ciF">
                                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Cwf-FR-ciF" id="lCR-mK-pmu">
-                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </tableViewCellContentView>
                                                     </tableViewCell>
                                                 </prototypes>
                                                 <connections>
                                                     <outlet property="dataSource" destination="KZk-ol-dp7" id="6ZN-3e-Uqn"/>
+                                                    <outlet property="delegate" destination="KZk-ol-dp7" id="I4e-7S-GOc"/>
                                                 </connections>
                                             </tableView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="fu4-dS-IAS" firstAttribute="leading" secondItem="pBy-0A-2E6" secondAttribute="leading" id="0bh-de-3l9"/>
-                                            <constraint firstItem="fu4-dS-IAS" firstAttribute="top" secondItem="pBy-0A-2E6" secondAttribute="top" constant="16" id="B0F-K8-gvT"/>
+                                            <constraint firstAttribute="bottom" secondItem="tPk-W2-hXX" secondAttribute="bottom" id="4MC-1q-r9L"/>
+                                            <constraint firstItem="fu4-dS-IAS" firstAttribute="top" secondItem="pBy-0A-2E6" secondAttribute="top" constant="25" id="B0F-K8-gvT"/>
                                             <constraint firstAttribute="height" constant="403" id="HrX-il-2mw"/>
+                                            <constraint firstItem="tPk-W2-hXX" firstAttribute="leading" secondItem="pBy-0A-2E6" secondAttribute="leading" id="Iwn-tK-7fm"/>
                                             <constraint firstAttribute="bottom" secondItem="fu4-dS-IAS" secondAttribute="bottom" id="Y9n-we-871"/>
+                                            <constraint firstItem="tPk-W2-hXX" firstAttribute="top" secondItem="pBy-0A-2E6" secondAttribute="top" id="epV-TW-3Sd"/>
                                             <constraint firstAttribute="trailing" secondItem="fu4-dS-IAS" secondAttribute="trailing" id="mxq-rX-XAI"/>
+                                            <constraint firstAttribute="trailing" secondItem="tPk-W2-hXX" secondAttribute="trailing" id="naR-pe-PhA"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -279,6 +294,7 @@
                         <outlet property="membersCounterHolderView" destination="8Nf-gf-5GL" id="nmM-56-Bd4"/>
                         <outlet property="membersInfoHolderView" destination="pBy-0A-2E6" id="KPp-oj-vIM"/>
                         <outlet property="membersInfoHolderViewHeightConstraint" destination="HrX-il-2mw" id="WDD-v2-QYT"/>
+                        <outlet property="membersInfoTouchpadView" destination="tPk-W2-hXX" id="3bc-oh-yZS"/>
                         <outlet property="membersTableView" destination="fu4-dS-IAS" id="Ji4-EV-s8y"/>
                         <outlet property="multiSigWalletName" destination="xd5-lj-9MQ" id="jfJ-ui-LbG"/>
                         <outlet property="progressRing" destination="BzM-xN-GZV" id="Y3a-GI-mK2"/>

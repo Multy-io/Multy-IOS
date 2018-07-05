@@ -101,6 +101,10 @@ struct Constants {
     static let youCantSpendMoreThanFeeAndDonationString = "YOU CANT SPEND MORE THEN FEE AND DONATION"
     static let youCantSpendMoreThanFeeString = "YOU CANT SPEND MORE THEN FEE"
     static let andDonationString = "AND DONATION "
+    static let readyToStartString = "READY TO START"
+    static let waitingAllMembersString = "WAITING ALL MEMBERS"
+    static let startForString = "START FOR"
+    static let invitationCodeString = "INVITATION CODE"
     
     //Assets screen
     struct AssetsScreen {

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="memberTVCReuseId" rowHeight="154" id="I6r-QP-f5m" customClass="MemberTableViewCell" customModule="Multy" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="I6r-QP-f5m" id="pQM-m3-E6U">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="93.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ju6-ZM-Iab" userLabel="Image View - Member">
+                        <rect key="frame" x="20" y="29" width="34" height="34"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="Ju6-ZM-Iab" secondAttribute="height" multiplier="1:1" id="W6s-KF-l0l"/>
+                            <constraint firstAttribute="width" constant="34" id="YaW-lL-iFv"/>
+                        </constraints>
+                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1hy-TK-nnR">
+                        <rect key="frame" x="70" y="31" width="279" height="33"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Eda9c97B049B7Dcb8DeE1a2d2366db85c176f5A" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VHp-eA-ZGU" userLabel="Label - Member Address">
+                                <rect key="frame" x="0.0" y="0.0" width="279" height="16.5"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7i6-2K-Ody">
+                                <rect key="frame" x="0.0" y="16.5" width="279" height="16.5"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fYW-2l-acJ" userLabel="View - Separator">
+                        <rect key="frame" x="64" y="93" width="311" height="1"/>
+                        <color key="backgroundColor" red="0.90588235294117647" green="0.92549019607843142" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="iwu-Oq-F9d"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Ju6-ZM-Iab" firstAttribute="leading" secondItem="pQM-m3-E6U" secondAttribute="leading" constant="20" id="78d-iE-Gay"/>
+                    <constraint firstItem="fYW-2l-acJ" firstAttribute="leading" secondItem="pQM-m3-E6U" secondAttribute="leading" constant="64" id="9LO-5k-ehL"/>
+                    <constraint firstAttribute="trailing" secondItem="fYW-2l-acJ" secondAttribute="trailing" id="N14-Tf-eIC"/>
+                    <constraint firstItem="Ju6-ZM-Iab" firstAttribute="centerY" secondItem="pQM-m3-E6U" secondAttribute="centerY" id="NO5-DB-5E0"/>
+                    <constraint firstItem="1hy-TK-nnR" firstAttribute="leading" secondItem="Ju6-ZM-Iab" secondAttribute="trailing" constant="16" id="tI5-qv-udW"/>
+                    <constraint firstAttribute="bottom" secondItem="fYW-2l-acJ" secondAttribute="bottom" id="uvQ-Uh-wtv"/>
+                    <constraint firstItem="1hy-TK-nnR" firstAttribute="centerY" secondItem="pQM-m3-E6U" secondAttribute="centerY" id="wDA-o7-EGa"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="infoStackView" destination="1hy-TK-nnR" id="2BB-aB-JVg"/>
+                <outlet property="memberAddressLabel" destination="VHp-eA-ZGU" id="VWY-wo-7gK"/>
+                <outlet property="memberImageView" destination="Ju6-ZM-Iab" id="1Ha-lA-wEA"/>
+                <outlet property="separatorView" destination="fYW-2l-acJ" id="SME-Mz-sst"/>
+                <outlet property="userIndicatorLabel" destination="7i6-2K-Ody" id="S46-bY-CCC"/>
+            </connections>
+            <point key="canvasLocation" x="-115.5" y="47"/>
+        </tableViewCell>
+    </objects>
+</document>
