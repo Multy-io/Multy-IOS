@@ -215,6 +215,12 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         }
     }
     
+    func openShareInviteVC() {
+        let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+        let inviteCodeVC = storyBoard.instantiateViewController(withIdentifier: "inviteCodeVC")
+        present(inviteCodeVC, animated: true, completion: nil)
+    }
+    
     //MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Int(presenter.membersAmount)

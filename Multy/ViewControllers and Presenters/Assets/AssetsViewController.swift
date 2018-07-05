@@ -419,14 +419,20 @@ extension PresentingSheetDelegate: OpenCreatingSheet {
         }
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         sendAnalyticsEvent(screenName: screenMain, eventName: createWalletTap)
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let creatingVC = storyboard.instantiateViewController(withIdentifier: "creatingVC") as! CreatingWalletActionsViewController
-        creatingVC.cancelDelegate = self
-        creatingVC.createProtocol = self
-        creatingVC.modalPresentationStyle = .custom
-        creatingVC.modalTransitionStyle = .crossDissolve
-        self.present(creatingVC, animated: true, completion: nil)
-        self.stringIdForInApp = "io.multy.importWallet5"
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let creatingVC = storyboard.instantiateViewController(withIdentifier: "creatingVC") as! CreatingWalletActionsViewController
+//        creatingVC.cancelDelegate = self
+//        creatingVC.createProtocol = self
+//        creatingVC.modalPresentationStyle = .custom
+//        creatingVC.modalTransitionStyle = .crossDissolve
+//        self.present(creatingVC, animated: true, completion: nil)
+//        self.stringIdForInApp = "io.multy.importWallet5"
+        
+        
+        let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+        let creatingVC = storyboard.instantiateViewController(withIdentifier: "creatingMultiSigVC") as! CreateMultiSigViewController
+
+        navigationController?.pushViewController(creatingVC, animated: true)
     }
 }
 
