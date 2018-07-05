@@ -3,13 +3,16 @@
 //See LICENSE for details
 
 import UIKit
+import ZFRippleButton
 
 private typealias TableViewDataSource = CreateMultiSigViewController
 private typealias TableViewDelegate = CreateMultiSigViewController
+private typealias TextFieldDelegate  = CreateMultiSigViewController
 
 class CreateMultiSigViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var createBtn: ZFRippleButton!
     
     let presenter = CreateMultiSigPresenter()
     
@@ -29,6 +32,13 @@ class CreateMultiSigViewController: UIViewController {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        createBtn.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
+                                              UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
+                        gradientOrientation: .horizontal)
+    }
+    
     func openMembersVC(isMembers: Bool) {
         let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
         let membersVC = storyboard.instantiateViewController(withIdentifier: "membersCountVC") as! MembersViewController
@@ -38,6 +48,9 @@ class CreateMultiSigViewController: UIViewController {
         self.present(membersVC, animated: true, completion: nil)
     }
 
+    @IBAction func cancelAction(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 extension TableViewDataSource: UITableViewDataSource {
@@ -78,6 +91,21 @@ extension TableViewDelegate: UITableViewDelegate {
             openMembersVC(isMembers: true)
         } else if indexPath.row == 2 {
             openMembersVC(isMembers: false)
+        }
+    }
+}
+
+extension TextFieldDelegate: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.dismissKeyboard()
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if (textField.text?.count)! + string.count < maxNameLength {
+            return true
+        } else {
+            return false
         }
     }
 }

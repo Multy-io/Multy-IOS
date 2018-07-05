@@ -11,6 +11,8 @@ class MembersViewController: UIViewController {
 
     @IBOutlet weak var clearView: UIView!
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
     
     var countOfDelegate: CountOfProtocol?
     
@@ -25,6 +27,10 @@ class MembersViewController: UIViewController {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissMe))
         clearView.addGestureRecognizer(tap)
         headerView.roundCorners(corners: [.topLeft, .topRight], radius: 12)
+        if screenHeight == heightOfX {
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 34, right: 0)
+            tableBottomConstraint.constant = -34
+        }
     }
     
     @objc func dismissMe() {
