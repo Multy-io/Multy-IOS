@@ -39,6 +39,10 @@ class DataManager: NSObject {
         return savedAddresses?.addresses[address] != nil
     }
     
+    func name(for address: String) -> String {
+        return savedAddresses?.addresses[address] != nil ? savedAddresses!.addresses[address]! : ""
+    }
+    
     func getBTCDonationAddress(netType: UInt32) -> String {
         return netType == 0 ? btcMainNetDonationAddress : Constants.DataManager.btcTestnetDonationAddress
     }

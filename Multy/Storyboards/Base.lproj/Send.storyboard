@@ -253,17 +253,8 @@
                                                     <outlet property="delegate" destination="v1w-JK-3Sa" id="muK-3j-FVZ"/>
                                                 </connections>
                                             </collectionView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Jpx-D9-l5y" userLabel="Request Address Lbl">
-                                                <rect key="frame" x="20" y="44.5" width="335" height="19.5"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="19.5" id="aCY-rk-B8u"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="0.69523223458904104" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 BTC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otH-zU-Rpe" userLabel="Request Amount Lbl">
-                                                <rect key="frame" x="8" y="12.5" width="359" height="23.5"/>
+                                                <rect key="frame" x="8" y="12" width="359" height="23.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="23.5" id="GkB-gr-luw"/>
                                                 </constraints>
@@ -271,24 +262,42 @@
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZc-PL-8B1">
+                                                <rect key="frame" x="36.5" y="35.5" width="301" height="19.5"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Jpx-D9-l5y" userLabel="Request Address Lbl">
+                                                <rect key="frame" x="36.5" y="56" width="302.5" height="19.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="19.5" id="aCY-rk-B8u"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="0.69523223458904104" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="5E5-tF-NFY" firstAttribute="top" secondItem="Jpx-D9-l5y" secondAttribute="bottom" priority="750" constant="26" id="0od-y7-O7x"/>
                                             <constraint firstItem="aqn-9Z-2ql" firstAttribute="centerX" secondItem="5E5-tF-NFY" secondAttribute="centerX" id="7I3-tN-r6u"/>
+                                            <constraint firstItem="Jpx-D9-l5y" firstAttribute="centerX" secondItem="oZi-At-pK8" secondAttribute="centerX" id="7sX-AM-4FS"/>
                                             <constraint firstAttribute="trailing" secondItem="5E5-tF-NFY" secondAttribute="trailing" id="BWE-Fo-Gs1"/>
                                             <constraint firstAttribute="trailing" secondItem="otH-zU-Rpe" secondAttribute="trailing" constant="8" id="Fjs-un-16I"/>
+                                            <constraint firstItem="bZc-PL-8B1" firstAttribute="centerX" secondItem="oZi-At-pK8" secondAttribute="centerX" id="LSa-Ut-dkI"/>
                                             <constraint firstItem="otH-zU-Rpe" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oZi-At-pK8" secondAttribute="top" constant="12" id="Qta-CY-Z9S"/>
                                             <constraint firstItem="otH-zU-Rpe" firstAttribute="leading" secondItem="oZi-At-pK8" secondAttribute="leading" constant="8" id="S1q-gr-GCg"/>
-                                            <constraint firstItem="Jpx-D9-l5y" firstAttribute="leading" secondItem="oZi-At-pK8" secondAttribute="leading" constant="20" id="TnF-Aa-meF"/>
+                                            <constraint firstItem="Jpx-D9-l5y" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oZi-At-pK8" secondAttribute="leading" constant="16" id="TnF-Aa-meF"/>
+                                            <constraint firstItem="bZc-PL-8B1" firstAttribute="leading" secondItem="Jpx-D9-l5y" secondAttribute="leading" id="Ttr-Rr-w8L"/>
                                             <constraint firstItem="aqn-9Z-2ql" firstAttribute="centerY" secondItem="5E5-tF-NFY" secondAttribute="centerY" id="U3M-bO-Cvs"/>
-                                            <constraint firstItem="Jpx-D9-l5y" firstAttribute="top" secondItem="otH-zU-Rpe" secondAttribute="bottom" constant="8.5" id="UW2-ie-orY"/>
+                                            <constraint firstItem="Jpx-D9-l5y" firstAttribute="top" secondItem="otH-zU-Rpe" secondAttribute="bottom" constant="20" id="UW2-ie-orY"/>
+                                            <constraint firstItem="bZc-PL-8B1" firstAttribute="top" secondItem="otH-zU-Rpe" secondAttribute="bottom" id="YKC-qv-gca"/>
                                             <constraint firstItem="aqn-9Z-2ql" firstAttribute="top" secondItem="5E5-tF-NFY" secondAttribute="top" id="c2M-KG-fxu"/>
                                             <constraint firstItem="5E5-tF-NFY" firstAttribute="leading" secondItem="oZi-At-pK8" secondAttribute="leading" id="dns-L3-7zc"/>
                                             <constraint firstItem="aqn-9Z-2ql" firstAttribute="bottom" secondItem="5E5-tF-NFY" secondAttribute="bottom" id="my9-42-bof"/>
                                             <constraint firstAttribute="width" secondItem="oZi-At-pK8" secondAttribute="height" multiplier="375:343" id="ncf-gz-kG8"/>
                                             <constraint firstItem="5E5-tF-NFY" firstAttribute="centerY" secondItem="oZi-At-pK8" secondAttribute="centerY" id="tWX-jg-U12"/>
-                                            <constraint firstAttribute="trailing" secondItem="Jpx-D9-l5y" secondAttribute="trailing" constant="20" id="umK-xz-yJM"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e8p-3K-xEs" userLabel="Send Tip View">
@@ -431,6 +440,7 @@
                         <outlet property="activeRequestsClonesHolderView" destination="bCM-JP-Iz1" id="Yed-Rj-enl"/>
                         <outlet property="activeRequestsCollectionView" destination="5E5-tF-NFY" id="IyZ-vj-6qO"/>
                         <outlet property="activeRequestsCollectionViewFL" destination="YEn-kK-EPh" id="L5d-YR-2HN"/>
+                        <outlet property="addressLabelTopConstraint" destination="UW2-ie-orY" id="yKe-TF-wWC"/>
                         <outlet property="animationHolderView" destination="Lfk-fx-mmY" id="FZf-FC-UKu"/>
                         <outlet property="backgroundView" destination="IBN-zo-zqI" id="Ejg-gF-2zT"/>
                         <outlet property="bluetoothDisabledContentView" destination="U4k-ix-x0I" id="dim-85-kBz"/>
@@ -444,6 +454,7 @@
                         <outlet property="leftWalletsClonesHolderView" destination="7GT-zF-mP4" id="Uzh-M9-rV8"/>
                         <outlet property="leftWalletsClonesLeadingConstraint" destination="faY-a0-4xU" id="Eqt-xx-KS4"/>
                         <outlet property="leftWalletsClonesWidthConstraint" destination="SEi-Ra-2Ym" id="2hy-kj-bom"/>
+                        <outlet property="nameLabel" destination="bZc-PL-8B1" id="Mzh-kd-vJk"/>
                         <outlet property="navigationButtonsHolderBottomConstraint" destination="jc9-w2-ovM" id="6d2-04-aV3"/>
                         <outlet property="navigationButtonsHolderView" destination="UuR-H7-Z92" id="WHF-bv-eJo"/>
                         <outlet property="qrCodeImageView" destination="LxM-K2-lZq" id="u82-Ij-uDu"/>
