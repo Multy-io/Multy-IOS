@@ -10,11 +10,7 @@ protocol ContactsProtocol: BranchProtocol {
     
 }
 
-extension ContactsProtocol {
-    func addAddress(_ address: String, to contact: String) {
-        
-    }
-    
+extension ContactsProtocol {    
     func fetchPhoneContact(_ contactID: String, completion: @escaping (_ contacts: CNContact?, _ error: Error?) -> ()) {
         getContactFromID(Identifires: [contactID], completionHandler: { (result) in
             switch result {

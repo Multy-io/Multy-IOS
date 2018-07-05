@@ -105,4 +105,5 @@ extension Constants {
     static let addressNotMatchString = "ADDRESS NOT MATCH"
     static let createOrImportWalletString = "CREATE OR IMPORT WALLET"
     static let deleteString = "DELETE"
+    static let chooseAddressString = "CHOOSE ADDRESS"
 }

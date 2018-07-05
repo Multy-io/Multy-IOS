@@ -371,7 +371,7 @@
         <!--Contacts View Controller-->
         <scene sceneID="htg-2c-S9y">
             <objects>
-                <viewController id="mgl-nb-TC2" customClass="ContactsViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="contactsSegueID" id="mgl-nb-TC2" customClass="ContactsViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rpk-wf-apb"/>
                         <viewControllerLayoutGuide type="bottom" id="ivD-82-abP"/>
@@ -480,6 +480,18 @@
                                     <constraint firstItem="maI-Aa-BkL" firstAttribute="top" secondItem="btf-sU-zaV" secondAttribute="top" id="uTh-Wi-6tl"/>
                                 </constraints>
                             </view>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2d0-Tb-CkO">
+                                <rect key="frame" x="16" y="30" width="30" height="30"/>
+                                <connections>
+                                    <action selector="backAction:" destination="mgl-nb-TC2" eventType="touchUpInside" id="bQd-Q0-pST"/>
+                                </connections>
+                            </button>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="eQV-ys-FRR">
+                                <rect key="frame" x="16" y="35" width="12" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="12" id="LP0-Ug-RlI"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.97644573450088501" green="0.98039692640304565" blue="0.99984890222549438" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -491,12 +503,16 @@
                             <constraint firstItem="gDA-Sc-RQf" firstAttribute="top" secondItem="SCG-Oy-IO5" secondAttribute="bottom" constant="13" id="M1G-9v-Wiy"/>
                             <constraint firstItem="ivD-82-abP" firstAttribute="top" secondItem="btf-sU-zaV" secondAttribute="bottom" constant="16" id="NOH-fa-hHP"/>
                             <constraint firstAttribute="trailing" secondItem="gDA-Sc-RQf" secondAttribute="trailing" id="Pqj-de-AfO"/>
+                            <constraint firstItem="eQV-ys-FRR" firstAttribute="centerY" secondItem="2d0-Tb-CkO" secondAttribute="centerY" id="RUv-eG-VCY"/>
                             <constraint firstItem="PMe-Pg-nwa" firstAttribute="leading" secondItem="FqR-yZ-vN6" secondAttribute="leading" constant="46" id="XGh-ar-r5u"/>
                             <constraint firstItem="F39-3R-vjc" firstAttribute="centerX" secondItem="FqR-yZ-vN6" secondAttribute="centerX" id="avc-EH-oEe"/>
                             <constraint firstItem="gDA-Sc-RQf" firstAttribute="leading" secondItem="FqR-yZ-vN6" secondAttribute="leading" id="f0t-Yh-Vrd"/>
                             <constraint firstItem="F39-3R-vjc" firstAttribute="top" secondItem="7BV-hB-twF" secondAttribute="bottom" constant="30" id="fDh-xd-Btw"/>
                             <constraint firstItem="SCG-Oy-IO5" firstAttribute="centerX" secondItem="FqR-yZ-vN6" secondAttribute="centerX" id="jnt-if-Cze"/>
+                            <constraint firstItem="2d0-Tb-CkO" firstAttribute="centerY" secondItem="SCG-Oy-IO5" secondAttribute="centerY" id="oBB-Ld-i6v"/>
                             <constraint firstItem="PMe-Pg-nwa" firstAttribute="centerX" secondItem="FqR-yZ-vN6" secondAttribute="centerX" id="vIr-le-hyB"/>
+                            <constraint firstItem="eQV-ys-FRR" firstAttribute="leading" secondItem="2d0-Tb-CkO" secondAttribute="leading" id="vo3-2J-Ooc"/>
+                            <constraint firstItem="2d0-Tb-CkO" firstAttribute="leading" secondItem="FqR-yZ-vN6" secondAttribute="leading" constant="16" id="xho-Mq-kvl"/>
                             <constraint firstItem="7BV-hB-twF" firstAttribute="width" secondItem="FqR-yZ-vN6" secondAttribute="width" multiplier="190/375" id="zD5-cK-KtR"/>
                             <constraint firstItem="SCG-Oy-IO5" firstAttribute="top" secondItem="rpk-wf-apb" secondAttribute="bottom" constant="13" id="zcf-C0-zd3"/>
                         </constraints>
@@ -505,6 +521,8 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="addNewBtn" destination="maI-Aa-BkL" id="iVW-QA-9M3"/>
+                        <outlet property="backButton" destination="2d0-Tb-CkO" id="Tge-eM-C73"/>
+                        <outlet property="backImageView" destination="eQV-ys-FRR" id="y98-nf-KBA"/>
                         <outlet property="donatView" destination="PMe-Pg-nwa" id="YGe-tM-I0o"/>
                         <outlet property="donationTopConstraint" destination="FXh-Z7-nlk" id="7vb-7z-Tzm"/>
                         <outlet property="floatingView" destination="btf-sU-zaV" id="nRx-SW-UWa"/>
@@ -1776,6 +1794,7 @@ correctly</string>
                         <outlet property="contactImageLabel" destination="Rdh-b1-fyI" id="Acf-7e-UZc"/>
                         <outlet property="contactImageView" destination="S21-Sx-8bA" id="VvR-lX-viE"/>
                         <outlet property="contactName" destination="Wan-Oj-uHS" id="oFd-9V-3WV"/>
+                        <outlet property="deleteContactButton" destination="oBc-4M-4Or" id="Swb-9R-2RL"/>
                         <outlet property="floatingView" destination="OR0-cO-nL2" id="83G-3G-Hak"/>
                         <outlet property="noAddressesLabel" destination="vIi-D1-j5u" id="PX0-OE-EDQ"/>
                         <outlet property="savedAddressesLabel" destination="oge-1a-bae" id="fLq-21-UkG"/>

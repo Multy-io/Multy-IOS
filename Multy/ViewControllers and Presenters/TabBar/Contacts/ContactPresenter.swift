@@ -5,7 +5,6 @@
 import UIKit
 
 private typealias NewContactAddressDelegate = ContactPresenter
-private typealias LocalizeDelegate = ContactPresenter
 
 class ContactPresenter: NSObject, ContactsProtocol {
     var contact: EPContact?
@@ -52,13 +51,22 @@ class ContactPresenter: NSObject, ContactsProtocol {
     func tappedCell(at IndexPath: IndexPath) {
         let title = contact!.addresses[IndexPath.row].address
         let actionSheet = UIAlertController(title: "", message: title, preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: localize(string: Constants.deleteFromContact), style: .default, handler: { [unowned self] (action) in
-            self.mainVC?.view.isUserInteractionEnabled = false
-            self.deleteAddress(title, from: self.contact!.contactId!, { [unowned self] (result) in
-                self.updateAddresses()
-            })
-        }))
+        actionSheet.addAction(UIAlertAction(title: mainVC?.localize(string: Constants.cancelString), style: .cancel, handler: nil))
+        
+        if mainVC?.chooseContactsAddressDelegate == nil {
+            actionSheet.addAction(UIAlertAction(title: mainVC?.localize(string: Constants.deleteFromContact), style: .default, handler: { [unowned self] (action) in
+                self.mainVC?.view.isUserInteractionEnabled = false
+                self.deleteAddress(title, from: self.contact!.contactId!, { [unowned self] (result) in
+                    self.updateAddresses()
+                })
+            }))
+        } else {
+            actionSheet.addAction(UIAlertAction(title: mainVC?.localize(string: Constants.chooseAddressString), style: .default, handler: { [unowned self] (action) in
+                self.mainVC?.view.isUserInteractionEnabled = false
+                self.passAddressToDelegate(title)
+            }))
+        }
+        
         mainVC?.present(actionSheet, animated: true, completion: nil)
     }
     
@@ -75,6 +83,22 @@ class ContactPresenter: NSObject, ContactsProtocol {
         })
     }
     
+    func passAddressToDelegate(_ address: String) {
+        DispatchQueue.main.async {
+            let contactVC = self.mainVC!
+            contactVC.view.isUserInteractionEnabled = true
+            
+            if contactVC.choosenWallet != nil && DataManager.shared.isAddressValid(address: address, for: contactVC.choosenWallet!).isValid == false {
+                contactVC.presentAlert(with: contactVC.localize(string: Constants.addressNotMatchString))
+            } else {
+                contactVC.chooseContactsAddressDelegate?.passAddress(address)
+                let vc = contactVC.chooseContactsAddressDelegate as! SendStartViewController
+                
+                contactVC.navigationController?.popToViewController(vc, animated: true)
+            }
+        }
+    }
+    
     func deleteContact() {
         //FIXME: add error handling
         deleteContact(contact!.contactId!) { (result) in
@@ -82,7 +106,6 @@ class ContactPresenter: NSObject, ContactsProtocol {
                 self.mainVC!.backAction()
             }
         }
-
     }
 }
 
@@ -94,11 +117,5 @@ extension NewContactAddressDelegate: NewContactAddressProtocol {
         updateContactInfo(contact!.contactId!, withAddress: address, currencyID, networkID) { [unowned self] (result) in
             self.updateAddresses()
         }
-    }
-}
-
-extension LocalizeDelegate: Localizable {
-    var tableName: String {
-        return "Contacts"
     }
 }

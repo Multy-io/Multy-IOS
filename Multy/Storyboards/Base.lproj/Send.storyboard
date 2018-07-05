@@ -578,7 +578,7 @@
                                             <constraint firstAttribute="width" constant="1" id="Vwh-6F-vsu"/>
                                         </constraints>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="donationIcon" translatesAutoresizingMaskIntoConstraints="NO" id="9in-yb-2Kq">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contactsIcon" translatesAutoresizingMaskIntoConstraints="NO" id="9in-yb-2Kq">
                                         <rect key="frame" x="36.5" y="48" width="25" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="25" id="8lh-5h-u4K"/>
@@ -592,7 +592,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zJa-f3-tWD">
-                                        <rect key="frame" x="24.5" y="79" width="49" height="16.5"/>
+                                        <rect key="frame" x="25" y="79" width="49" height="33"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -653,6 +653,7 @@ scan</string>
                                     <constraint firstAttribute="height" constant="126" id="sD6-al-egh"/>
                                     <constraint firstItem="9in-yb-2Kq" firstAttribute="top" secondItem="1Kz-IO-SLO" secondAttribute="top" constant="48" id="sih-i6-hne"/>
                                     <constraint firstItem="zJa-f3-tWD" firstAttribute="centerX" secondItem="9in-yb-2Kq" secondAttribute="centerX" id="tQO-57-FTy"/>
+                                    <constraint firstItem="zJa-f3-tWD" firstAttribute="bottom" secondItem="Cmu-SL-LS1" secondAttribute="bottom" id="v0c-B2-YHo"/>
                                     <constraint firstAttribute="bottom" secondItem="Rru-QO-S4G" secondAttribute="bottom" constant="18" id="xTt-2t-Wvp"/>
                                     <constraint firstItem="WHV-qZ-AVE" firstAttribute="top" secondItem="9in-yb-2Kq" secondAttribute="top" constant="3" id="yos-ma-t5y"/>
                                 </constraints>
@@ -661,6 +662,11 @@ scan</string>
                                         <integer key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="uaU-U0-1YQ"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T5g-DB-3sj">
                                 <rect key="frame" x="16" y="108" width="343" height="70"/>
@@ -747,7 +753,7 @@ scan</string>
                                     <outlet property="delegate" destination="kRf-Ct-SnX" id="w68-FU-EyQ"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No recent addresses yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TqU-bF-Cd8">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No recent addresses yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TqU-bF-Cd8">
                                 <rect key="frame" x="50" y="389" width="275" height="23.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
                                 <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="0.5" colorSpace="calibratedRGB"/>
@@ -2695,7 +2701,7 @@ address</string>
         <image name="bluetooth_error_img" width="34" height="34"/>
         <image name="btcIconBig" width="58" height="58"/>
         <image name="closeBtn" width="62" height="62"/>
-        <image name="donationIcon" width="30" height="35"/>
+        <image name="contactsIcon" width="25" height="18"/>
         <image name="fundsReceivedInfo" width="316" height="104"/>
         <image name="if_gtk-close_30632" width="18" height="18"/>
         <image name="loading" width="117" height="117"/>
@@ -2712,7 +2718,7 @@ address</string>
         <segue reference="Nqh-Rv-oVp"/>
         <segue reference="Y3u-nO-qs1"/>
         <segue reference="EUD-ex-a5v"/>
-        <segue reference="N56-qi-Hx5"/>
+        <segue reference="FRo-Sp-aVY"/>
         <segue reference="jSE-EO-qlC"/>
         <segue reference="GW1-5g-oIp"/>
     </inferredMetricsTieBreakers>

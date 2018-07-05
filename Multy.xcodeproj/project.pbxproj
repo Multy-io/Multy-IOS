@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2903DBF32668295CED1C9139 /* Pods_Multy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7304C17824311A19240183E0 /* Pods_Multy.framework */; };
+		4400A53C20EE1B86004CD7AB /* ChooseContactsAddressProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400A53B20EE1B86004CD7AB /* ChooseContactsAddressProtocol.swift */; };
 		44089D15205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */; };
 		4409E40120DD047900ADBE42 /* LocalizationConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4409E40020DD047900ADBE42 /* LocalizationConstant.swift */; };
 		440AD8D22020D1220015AEF1 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */; };
@@ -340,6 +341,7 @@
 /* Begin PBXFileReference section */
 		2A100BE42F31871FFE847169 /* Pods-MultyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MultyTests/Pods-MultyTests.release.xcconfig"; sourceTree = "<group>"; };
 		3140FCDE88E15AA96180AE29 /* Pods-Multy-MultyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Multy-MultyUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Multy-MultyUITests/Pods-Multy-MultyUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4400A53B20EE1B86004CD7AB /* ChooseContactsAddressProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseContactsAddressProtocol.swift; sourceTree = "<group>"; };
 		44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletBlockchainTableViewCell.swift; sourceTree = "<group>"; };
 		4409E40020DD047900ADBE42 /* LocalizationConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstant.swift; sourceTree = "<group>"; };
 		440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
@@ -803,7 +805,7 @@
 			path = BTCWallet;
 			sourceTree = "<group>";
 		};
-		445B12DC20BD782500FD0D33 /* Strings */ = {
+		445B12DC20BD782500FD0D33 /* Localized Strings */ = {
 			isa = PBXGroup;
 			children = (
 				445B12E220BD78D000FD0D33 /* CurrencyChooser.strings */,
@@ -817,7 +819,7 @@
 				4474C5B920BFE76800EA8B01 /* Activty.strings */,
 				4453507D20D14E21004F8DAE /* Localizable.strings */,
 			);
-			path = Strings;
+			path = "Localized Strings";
 			sourceTree = "<group>";
 		};
 		445D14E420DA8364002F6747 /* Contacts Picker */ = {
@@ -933,7 +935,7 @@
 		452290531FBB18D30024B550 /* Multy */ = {
 			isa = PBXGroup;
 			children = (
-				445B12DC20BD782500FD0D33 /* Strings */,
+				445B12DC20BD782500FD0D33 /* Localized Strings */,
 				4526F8DD2015383D00D2E491 /* Multy.entitlements */,
 				452290541FBB18D30024B550 /* AppDelegate.swift */,
 				FA58DF5E1FDC3FB800C45303 /* BricksView.swift */,
@@ -1347,6 +1349,7 @@
 				44768AA620D0015600FA9C28 /* ContactProtocol.swift */,
 				44768AA820D02AC900FA9C28 /* BranchProtocol.swift */,
 				44AAAE1820E4E0D000A481A4 /* NewContactAddressProtocol.swift */,
+				4400A53B20EE1B86004CD7AB /* ChooseContactsAddressProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -2468,6 +2471,7 @@
 				4575693C1FBDC3A800FDEE20 /* SeedPhraseWordViewController.swift in Sources */,
 				45D4D168205C12DC008B1F0B /* EthWalletHeaderTableViewCell.swift in Sources */,
 				4583AC921FBC7122001991AA /* PortfolioTableViewCell.swift in Sources */,
+				4400A53C20EE1B86004CD7AB /* ChooseContactsAddressProtocol.swift in Sources */,
 				45E148AC204553E4006BD4D1 /* DonationSendViewController.swift in Sources */,
 				45A9495A1FC6E785003C3A23 /* UIViewController+Extension.swift in Sources */,
 				FA4E559F1FE00F63000FA1A1 /* Double+Extension.swift in Sources */,

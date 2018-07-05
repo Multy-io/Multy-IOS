@@ -19,6 +19,12 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     @IBOutlet weak var noContactsLabel: UILabel!
     @IBOutlet weak var floatingView: UIView!
     @IBOutlet weak var addNewBtn: UIButton!
+    @IBOutlet weak var backImageView: UIImageView!
+    @IBOutlet weak var backButton: UIButton!
+    
+    //delegate's ivars
+    var chooseContactsAddressDelegate: ChooseContactsAddressProtocol?
+    var choosenWallet: UserWalletRLM?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +38,12 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         
         presenter.tabBarFrame = tabBarController?.tabBar.frame
         presenter.registerCell()
+        
+        if chooseContactsAddressDelegate != nil {
+            floatingView.isHidden = true
+            backButton.isHidden = false
+            backImageView.isHidden = false
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -44,7 +56,7 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         presenter.fetchPhoneContacts()
         
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
-        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
+        (self.tabBarController as? CustomTabBarViewController)?.changeViewVisibility(isHidden: chooseContactsAddressDelegate != nil)
     }
         
     override func viewWillDisappear(_ animated: Bool) {
@@ -90,12 +102,18 @@ class ContactsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         logContactsAnalytics()
     }
     
+    @IBAction func backAction(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Storyboard.contactVCSegueID {
             let contactVC = segue.destination as! ContactViewController
             let indexPath = sender as! IndexPath
             contactVC.presenter.contact = presenter.contacts[indexPath.row]
             contactVC.presenter.indexPath = indexPath
+            contactVC.chooseContactsAddressDelegate = chooseContactsAddressDelegate
+            contactVC.choosenWallet = choosenWallet
         }
     }
 }

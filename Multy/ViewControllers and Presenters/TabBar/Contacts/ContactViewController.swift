@@ -3,10 +3,11 @@
 //See LICENSE for details
 
 import UIKit
+import ZFRippleButton
 
 private typealias TableViewDelegate = ContactViewController
 private typealias TableViewDataSourceDelegate = ContactViewController
-private typealias LocalizeDelegate = ContactsViewController
+private typealias LocalizeDelegate = ContactViewController
 
 class ContactViewController: UIViewController {
 
@@ -20,7 +21,12 @@ class ContactViewController: UIViewController {
     @IBOutlet weak var floatingView: UIView!
     @IBOutlet weak var addNewBtn: UIButton!
     
+    @IBOutlet weak var deleteContactButton: ZFRippleButton!
     var presenter = ContactPresenter()
+    
+    //delegate's ivars
+    var chooseContactsAddressDelegate: ChooseContactsAddressProtocol?
+    var choosenWallet: UserWalletRLM?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,21 +46,27 @@ class ContactViewController: UIViewController {
         
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        if chooseContactsAddressDelegate != nil {
+            floatingView.isHidden = true
+            deleteContactButton.isHidden = true
+            deleteContactButton.isUserInteractionEnabled = false
+        }
     }
-    
+
     @IBAction func backAction() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func deleteAction() {
-        let alert = UIAlertController(title: presenter.localize(string: Constants.warningString),
-                                      message: presenter.localize(string: Constants.areYouSureString),
+        let alert = UIAlertController(title: localize(string: Constants.warningString),
+                                      message: localize(string: Constants.areYouSureString),
                                       preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: presenter.localize(string: Constants.deleteString), style: .destructive, handler: { [unowned self] (_) in
+        alert.addAction(UIAlertAction(title: localize(string: Constants.deleteString), style: .destructive, handler: { [unowned self] (_) in
             self.view.isUserInteractionEnabled = false
             self.presenter.deleteContact()
         }))
-        alert.addAction(UIAlertAction(title: presenter.localize(string: Constants.cancelString), style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: localize(string: Constants.cancelString), style: .cancel, handler: nil))
         
         self.present(alert, animated: true, completion: nil)
     }
@@ -96,5 +108,11 @@ extension TableViewDataSourceDelegate: UITableViewDataSource {
         presenter.fillCell(cell, at: indexPath)
         
         return cell
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Contacts"
     }
 }

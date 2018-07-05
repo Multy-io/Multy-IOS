@@ -49,8 +49,7 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
   
     func qrData(string: String) {
         transactionDTO.update(from: string)
-        sendStartVC?.setTextToTV(address: transactionDTO.sendAddress!)
-        self.sendStartVC?.modifyNextButtonMode()
+        sendStartVC?.updateTVAndNextButton(with: transactionDTO.sendAddress!)
     }
     
     func isValidCryptoAddress() -> Bool {

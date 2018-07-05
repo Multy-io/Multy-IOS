@@ -11,6 +11,7 @@ private typealias GestureRecognizerDelegate = SendStartViewController
 private typealias ContactDelegate = SendStartViewController
 private typealias PickerContactsDelegate = SendStartViewController
 private typealias TextViewDelegate = SendStartViewController
+private typealias ChooseContactsAddressDelegate = SendStartViewController
 
 class SendStartViewController: UIViewController, AnalyticsProtocol, DonationProtocol, CancelProtocol {
 
@@ -186,10 +187,14 @@ class SendStartViewController: UIViewController, AnalyticsProtocol, DonationProt
     }
     
     @IBAction func addressBookAction(_ sender: Any) {
-//        unowned let weakSelf =  self
-//        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingContacts50")
-        self.donate(idOfInApp: "io.multy.addingContacts50")
-        sendDonationAlertScreenPresentedAnalytics(code: donationForContactSC)
+        let contactsVC = viewControllerFrom("Main", "contactsSegueID") as! ContactsViewController
+        contactsVC.chooseContactsAddressDelegate = self
+        
+        if presenter.isFromWallet {
+            contactsVC.choosenWallet = presenter.transactionDTO.choosenWallet
+        }
+        
+        navigationController?.pushViewController(contactsVC, animated: true)
     }
     
     
@@ -256,7 +261,12 @@ class SendStartViewController: UIViewController, AnalyticsProtocol, DonationProt
         }
     }
     
-    func setTextToTV(address: String) {
+    func updateTVAndNextButton(with address: String) {
+        setTextToTV(address)
+        modifyNextButtonMode()
+    }
+    
+    func setTextToTV(_ address: String) {
         addressTV.text = address
         addressTV.scrollRangeToVisible(NSMakeRange(addressTV.text.count - 1, 0))
         placeholderLabel.isHidden = true
@@ -312,10 +322,9 @@ extension SendStartViewController:  UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.presenter.transactionDTO.update(from: presenter.recentAddresses[indexPath.row].address)
-        self.setTextToTV(address: presenter.recentAddresses[indexPath.row].address)
-        self.tableView.deselectRow(at: indexPath, animated: true)
-        self.modifyNextButtonMode()
+        presenter.transactionDTO.update(from: presenter.recentAddresses[indexPath.row].address)
+        updateTVAndNextButton(with: presenter.recentAddresses[indexPath.row].address)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -375,6 +384,12 @@ extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
                 self.tableView.reloadData()
             }
         }
+    }
+}
+
+extension ChooseContactsAddressDelegate: ChooseContactsAddressProtocol {
+    func passAddress(_ address: String) {
+        updateTVAndNextButton(with: address)
     }
 }
 
