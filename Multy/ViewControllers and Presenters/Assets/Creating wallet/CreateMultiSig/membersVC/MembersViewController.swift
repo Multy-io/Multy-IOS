@@ -54,15 +54,13 @@ extension TableViewDataSource: UITableViewDataSource {
         cell.textLabel?.text = "\(indexPath.row + 2)" + " members"
         return cell
     }
-    
+}
+
+extension TableViewDelegate: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tag = presenter.isMembers == true ? "members" : "signs"
         countOfDelegate?.countSomething(tag: tag, count: indexPath.row + 2) // dont have 0 or 1
         tableView.deselectRow(at: indexPath, animated: true)
         dismiss(animated: true, completion: nil)
     }
-}
-
-extension TableViewDelegate: UITableViewDelegate {
-    
 }

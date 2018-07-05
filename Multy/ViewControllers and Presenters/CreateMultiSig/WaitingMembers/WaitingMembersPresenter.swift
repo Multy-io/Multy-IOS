@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class WaitingMembersPresenter: NSObject {
     var viewController : WaitingMembersViewController?
@@ -23,4 +24,5 @@ class WaitingMembersPresenter: NSObject {
     
     func viewControllerViewDidLayoutSubviews() {
     }
+    
 }

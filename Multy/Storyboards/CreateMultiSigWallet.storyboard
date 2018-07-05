@@ -12,10 +12,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Invite Code View Controller-->
         <scene sceneID="J3g-ak-aWT">
             <objects>
-                <viewController id="BXZ-4G-pnx" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="inviteCodeVC" id="BXZ-4G-pnx" customClass="InviteCodeViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="s8q-Lq-IbT"/>
                         <viewControllerLayoutGuide type="bottom" id="l2w-DS-Rel"/>
@@ -42,6 +42,9 @@
                                         <state key="normal" title="Done">
                                             <color key="titleColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="doneAction:" destination="BXZ-4G-pnx" eventType="touchUpInside" id="KdR-pu-XbA"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97647058819999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -86,6 +89,7 @@
                                     <constraint firstItem="FwP-hG-eOD" firstAttribute="centerX" secondItem="yab-NG-thm" secondAttribute="centerX" id="fOq-Gy-HDN"/>
                                     <constraint firstItem="YDW-qE-1rb" firstAttribute="leading" secondItem="gui-Hv-PVX" secondAttribute="leading" constant="33" id="ifb-fm-dGi"/>
                                     <constraint firstItem="yab-NG-thm" firstAttribute="centerX" secondItem="gui-Hv-PVX" secondAttribute="centerX" id="jSj-iN-ohz"/>
+                                    <constraint firstAttribute="height" constant="383.5" id="l9z-Vr-XUh"/>
                                     <constraint firstItem="YDW-qE-1rb" firstAttribute="top" secondItem="FwP-hG-eOD" secondAttribute="bottom" constant="8" id="zwJ-UU-Xm5"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -127,6 +131,9 @@
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AKh-dA-cov">
                                 <rect key="frame" x="0.0" y="603" width="375" height="64"/>
+                                <connections>
+                                    <action selector="shareAction:" destination="BXZ-4G-pnx" eventType="touchUpInside" id="t6O-hv-1j5"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -145,14 +152,18 @@
                             <constraint firstAttribute="trailing" secondItem="AKh-dA-cov" secondAttribute="trailing" id="sx1-7V-zZc"/>
                             <constraint firstAttribute="trailing" secondItem="oz3-57-wo7" secondAttribute="trailing" constant="16" id="tf3-zi-vDY"/>
                             <constraint firstItem="l2w-DS-Rel" firstAttribute="top" secondItem="oz3-57-wo7" secondAttribute="bottom" constant="64" id="xV1-kJ-Il3"/>
-                            <constraint firstItem="gui-Hv-PVX" firstAttribute="height" secondItem="jrm-7l-Bil" secondAttribute="height" multiplier="388/675" id="z20-1U-Avr"/>
                             <constraint firstItem="ttg-vi-7Ax" firstAttribute="leading" secondItem="jrm-7l-Bil" secondAttribute="leading" id="zIL-tb-n5h"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="qrImgView" destination="yab-NG-thm" id="VnV-pY-PSd"/>
+                        <outlet property="shadowView" destination="gui-Hv-PVX" id="Pfx-U4-J85"/>
+                        <outlet property="shareCodeLbl" destination="YDW-qE-1rb" id="IUm-pV-M4i"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qqe-t8-d6C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2769" y="3695"/>
+            <point key="canvasLocation" x="-3636" y="3695"/>
         </scene>
         <!--Create Multi Sig View Controller-->
         <scene sceneID="Egq-zX-dbT">
@@ -176,6 +187,9 @@
                                 <state key="normal" title="Create">
                                     <color key="titleColor" red="0.97647058819999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="createAction:" destination="aEQ-8S-see" eventType="touchUpInside" id="c7C-Pm-yAF"/>
+                                </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3mE-DX-zpQ">
                                 <rect key="frame" x="0.0" y="20" width="375" height="583"/>
@@ -427,7 +441,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pCC-fH-L7l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4006" y="3695"/>
+            <point key="canvasLocation" x="-4433" y="3695"/>
         </scene>
         <!--Waiting Members View Controller-->
         <scene sceneID="4wt-ow-oYA">
@@ -708,7 +722,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rju-q2-XrO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1506" y="3695"/>
+            <point key="canvasLocation" x="-2854" y="3695"/>
         </scene>
     </scenes>
     <resources>

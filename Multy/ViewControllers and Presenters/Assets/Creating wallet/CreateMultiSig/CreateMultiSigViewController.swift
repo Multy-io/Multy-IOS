@@ -51,6 +51,13 @@ class CreateMultiSigViewController: UIViewController {
     @IBAction func cancelAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
+    
+    @IBAction func createAction(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+        let waitingMembersVC = storyBoard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
+        navigationController?.pushViewController(waitingMembersVC, animated: true)
+        waitingMembersVC.openShareInviteVC()
+    }
 }
 
 extension TableViewDataSource: UITableViewDataSource {
