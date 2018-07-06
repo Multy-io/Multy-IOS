@@ -11,7 +11,7 @@ class RealmManager: NSObject {
     static let shared = RealmManager()
     
     private var realm : Realm? = nil
-    let schemaVersion : UInt64 = 20
+    let schemaVersion : UInt64 = 22
     
     var account: AccountRLM?
     
@@ -84,6 +84,9 @@ class RealmManager: NSObject {
                                                     }
                                                     if oldSchemaVersion < 21 {
                                                         self!.migrateFrom20To21(with: migration)
+                                                    }
+                                                    if oldSchemaVersion <= 22 {
+                                                        self!.migrateFrom21To22(with: migration)
                                                     }
             })
             
@@ -404,6 +407,7 @@ class RealmManager: NSObject {
                                 modifiedWallet!.btcWallet =         wallet.btcWallet
                                 modifiedWallet!.ethWallet =         wallet.ethWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
+                                modifiedWallet?.isSyncing =         wallet.isSyncing
 
                                 for (index,address) in wallet.addresses.enumerated() {
 //                                    modifiedWallet!.addresses[index].spendableOutput.removeAll()
@@ -859,9 +863,16 @@ extension RealmMigrationManager {
             newRecentAddress?["blockchainNetType"] = NSNumber(value: 0)
         }
     }
+    
     func migrateFrom20To21(with migration: Migration) {
         migration.enumerateObjects(ofType: AddressRLM.className()) { (_, newAddress) in
             newAddress?["networkID"] = NSNumber(value: 0)
+        }
+    }
+    
+    func migrateFrom21To22(with migration: Migration) {
+        migration.enumerateObjects(ofType: UserWalletRLM.className()) { (_, newWallet) in
+            newWallet?["isSyncing"] = NSNumber(booleanLiteral: false)
         }
     }
 }

@@ -248,17 +248,21 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
             let userInfo = notification.userInfo
             if userInfo != nil {
                 let notifictionMsg = userInfo!["NotificationMsg"] as! NSDictionary
-                guard let txStatus = notifictionMsg["transactionType"] as? Int, let address = notifictionMsg["address"] as? String else {
+                guard let txStatus = notifictionMsg["transactionType"] as? Int,
+                    let addressTo = notifictionMsg["to"] as? String,
+                    let addressFrom = notifictionMsg["from"] as? String else {
                     return
                 }
                 
-                guard let amount = notifictionMsg["amount"] as? String, let currencyID = notifictionMsg["currencyid"] as? UInt32, let networkID = notifictionMsg["networkid"] as? UInt32 else {
+                guard let amount = notifictionMsg["amount"] as? String,
+                    let currencyID = notifictionMsg["currencyid"] as? UInt32,
+                    let networkID = notifictionMsg["networkid"] as? UInt32 else {
                     return
                 }
                 
                 let amountString = self.convertAddressDataToString(amount, currencyID, networkID)
-                if txStatus == TxStatus.MempoolIncoming.rawValue && address == self.walletAddress {
-                    self.receiveAllDetailsVC?.presentDidReceivePaymentAlert(address: address, amount: amountString)
+                if txStatus == TxStatus.MempoolIncoming.rawValue && addressTo == self.walletAddress {
+                    self.receiveAllDetailsVC?.presentDidReceivePaymentAlert(address: addressFrom, amount: amountString)
                     self.receiveAllDetailsVC?.sendAnalyticsEvent(screenName: KFReceiveScreen, eventName: KFTransactionReceived)
                 }
             }

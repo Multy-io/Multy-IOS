@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     var window: UIWindow?
-
+    var info: [AnyHashable: Any]?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.application = application
@@ -114,6 +114,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let filePathOpt = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
         if let filePath = filePathOpt, let options = FirebaseOptions(contentsOfFile: filePath) {
             FirebaseApp.configure(options: options)
+        }
+        
+        if let option = launchOptions {
+            let notification = option[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any]
+            if notification != nil {
+                info = notification!
+            }
         }
         
         return true
@@ -363,8 +370,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         // Messaging.messaging().appDidReceiveMessage(userInfo)
         
         // Print full message.
-        print(userInfo)
-        openTx(userInfo)
+//        print(userInfo)
+//        openTx(userInfo)
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
@@ -376,9 +383,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         // Messaging.messaging().appDidReceiveMessage(userInfo)
         
-        // Print full message.
-        print(userInfo)
-        openTx(userInfo)
+        //to avoid presenting screen while app is foreground
+        let state = UIApplication.shared.applicationState
+        if (state == .inactive || state == .background) {
+            print(userInfo)
+            openTx(userInfo)
+        } else {
+
+        }
         
         completionHandler(UIBackgroundFetchResult.newData)
     }
@@ -409,11 +421,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
 extension AppDelegate {
     //FIXME: uncomment method after implemeting push notification on backend
     func openTx(_ info: [AnyHashable: Any]) {
-//        if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
-//            let walletID = NSNumber(value: Int(walletIDString)!)
-//
-//            getTxAndPresent(with: txID, currencyID, networkID, walletID)
-//        }
+        if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
+            let walletID = NSNumber(value: Int(walletIDString)!)
+
+            getTxAndPresent(with: txID, currencyID, networkID, walletID)
+        }
     }
     
     func getTxAndPresent(with txID: String, _ currencyID: UInt32, _ networkID: Int, _ walletID: NSNumber) {
@@ -426,7 +438,7 @@ extension AppDelegate {
                     return
                 }
                 
-                let tx = history.filter{ $0.txId == txID }.first
+                let tx = history.filter{ $0.txHash == txID }.first
                 
                 guard let histObj = tx else {
                     return

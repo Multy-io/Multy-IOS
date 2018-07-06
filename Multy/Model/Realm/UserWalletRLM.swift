@@ -21,6 +21,7 @@ class UserWalletRLM: Object {
     @objc dynamic var cryptoName = String()  //like BTC
     @objc dynamic var sumInCrypto: Double = 0.0
     @objc dynamic var lastActivityTimestamp = NSNumber(value: 0)
+    @objc dynamic var isSyncing = NSNumber(booleanLiteral: false)
     
     var changeAddressIndex: UInt32 {
         get {
@@ -250,6 +251,10 @@ class UserWalletRLM: Object {
         
         if let lastActivityTimestamp = walletInfo["lastactiontime"] as? Int {
             wallet.lastActivityTimestamp = NSNumber(value: lastActivityTimestamp)
+        }
+        
+        if let isSyncing = walletInfo["issyncing"] as? Bool {
+            wallet.isSyncing = NSNumber(booleanLiteral: isSyncing)
         }
         
         //parse addition info for each chain

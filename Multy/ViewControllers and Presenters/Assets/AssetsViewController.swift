@@ -95,6 +95,17 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
             }
             DataManager.shared.socketManager.start()
             DataManager.shared.subscribeToFirebaseMessaging()
+            
+            //FIXME: add later or refactor
+//            openTxFromPush()
+        }
+    }
+    
+    func openTxFromPush() {
+        let app = UIApplication.shared.delegate as? AppDelegate
+        
+        if app?.info != nil {
+            app?.openTx(app!.info!)
         }
     }
     
