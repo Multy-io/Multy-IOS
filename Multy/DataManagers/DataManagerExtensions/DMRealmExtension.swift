@@ -51,18 +51,24 @@ extension DataManager {
     
     func clearDB(completion: @escaping (_ error: NSError?) -> ()) {
         let fileManager = FileManager.default
-        do {
-            let url = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: Realm.Configuration.defaultConfiguration.fileURL!, create: false)
-            if let enumerator = fileManager.enumerator(at: url, includingPropertiesForKeys: nil) {
-                while let fileURL = enumerator.nextObject() as? URL {
-                    try fileManager.removeItem(at: fileURL)
+        let config = realmManager.config!
+        
+        autoreleasepool {
+            do {
+                let oldRealm = try Realm(configuration: config)
+                oldRealm.invalidate()
+                
+                let url = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: config.fileURL!, create: false)
+                if let enumerator = fileManager.enumerator(at: url, includingPropertiesForKeys: nil) {
+                    while let fileURL = enumerator.nextObject() as? URL {
+                        try fileManager.removeItem(at: fileURL)
+                    }
                 }
+            } catch {
+                fatalError(error.localizedDescription)
             }
-        }  catch  {
-            print(error)
         }
-//        try! FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
-//        realmManager.clearRealm()
+        
         completion(nil)
     }
     
@@ -84,6 +90,7 @@ extension DataManager {
     
     func updateToken(_ token: String) {
         let tokenData = ["token" : token] as NSDictionary;
+        apiManager.token = token
         realmManager.updateAccount(tokenData) { (_, _) in }
     }
 }
