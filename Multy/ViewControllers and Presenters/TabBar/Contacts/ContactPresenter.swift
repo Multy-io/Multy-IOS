@@ -72,6 +72,9 @@ class ContactPresenter: NSObject, ContactsProtocol {
         actionSheet.addAction(UIAlertAction(title: mainVC?.localize(string: Constants.cancelString), style: .cancel, handler: nil))
         
         if mainVC?.chooseContactsAddressDelegate == nil {
+            actionSheet.addAction(UIAlertAction(title: mainVC?.localize(string: Constants.copyToClipboardString), style: .default, handler: { (action) in
+                UIPasteboard.general.string = title
+            }))
             actionSheet.addAction(UIAlertAction(title: mainVC?.localize(string: Constants.deleteFromContact), style: .default, handler: { [unowned self] (action) in
                 self.mainVC?.view.isUserInteractionEnabled = false
                 self.deleteAddress(title, from: self.contact!.contactId!, { [unowned self] (result) in
