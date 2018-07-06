@@ -11,7 +11,7 @@ import UserNotifications
 import SwiftyStoreKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
     var presentedVC: UIViewController?
     var openedAlert: UIAlertController?
     var sharedDialog: UIActivityViewController?
@@ -268,19 +268,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             tabBar.setSelectIndex(from: selectedIndex, to: 0)
             let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
             assetsVC.openQR()
-            //add ANALYTICS here
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceScanQr)
         case "io.multy.sendTo":
             tabBar.setSelectIndex(from: selectedIndex, to: 0)
             let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
             assetsVC.sendTransactionTo()
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceSendTransction)
         case "io.multy.magicSend":
             tabBar.changeViewVisibility(isHidden: true)
             tabBar.setSelectIndex(from: selectedIndex, to: 2)
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceMagicSend)
         case "io.multy.magicReceive":
             tabBar.changeViewVisibility(isHidden: true)
             tabBar.setSelectIndex(from: selectedIndex, to: 0)
             let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
             assetsVC.openReceive()
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceReceive)
         default: break
         }
     }
