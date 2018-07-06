@@ -262,15 +262,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: false)
         let tabBar = window?.rootViewController as! CustomTabBarViewController
         let selectedIndex = tabBar.selectedIndex
-        tabBar.setSelectIndex(from: selectedIndex, to: 0)
-        let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
         
         switch shortcutItem.type {
         case "io.multy.scanQr":
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
             assetsVC.openQR()
             //add ANALYTICS here
         case "io.multy.sendTo":
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
             assetsVC.sendTransactionTo()
+        case "io.multy.magicSend":
+            tabBar.changeViewVisibility(isHidden: true)
+            tabBar.setSelectIndex(from: selectedIndex, to: 2)
+        case "io.multy.magicReceive":
+            tabBar.changeViewVisibility(isHidden: true)
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
+            assetsVC.openReceive()
         default: break
         }
     }

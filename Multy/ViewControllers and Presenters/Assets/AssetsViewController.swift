@@ -415,6 +415,15 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         }
     }
     // -------------
+    
+    // receive
+    func openReceive() {
+        let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+        let receiveVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart")
+        navigationController?.pushViewController(receiveVC, animated: true)
+    }
+    // -------------
+    
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
