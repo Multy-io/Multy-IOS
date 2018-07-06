@@ -63,10 +63,8 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         
         let panGR = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(_:)))
         membersInfoTouchpadView.addGestureRecognizer(panGR)
-        let memberCell = UINib.init(nibName: "MemberTableViewCell", bundle: nil)
-        membersTableView.register(memberCell, forCellReuseIdentifier: "memberTVCReuseId")
-        
-        configureMembersInfoUI()
+        registerCells()
+        initialConfig()
         
         presenter.viewController = self
         presenter.viewControllerViewDidLoad()
@@ -88,7 +86,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         presenter.viewControllerViewWillAppear()
     }
     
-    func configureMembersInfoUI() {
+    func initialConfig() {
         backRing.ringStyle = .dashed
         backRing.outerRingColor = .white
         backRing.outerRingWidth = 1
@@ -102,8 +100,14 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         progressRing.outerCapStyle = .round
         progressRing.fullCircle = false
         progressRing.startAngle = -90
+        
+        membersTableView.contentInset = UIEdgeInsetsMake(0, 0, invitationCodeButton.frame.size.height, 0)
     }
     
+    func registerCells() {
+        let memberCell = UINib.init(nibName: "MemberTableViewCell", bundle: nil)
+        membersTableView.register(memberCell, forCellReuseIdentifier: "memberTVCReuseId")
+    }
     
     func updateUI() {
         multiSigWalletName.text = presenter.walletName
@@ -221,6 +225,23 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         present(inviteCodeVC, animated: true, completion: nil)
     }
     
+    func setMembersInfoHolderPosition() {
+        var membersInfoHolderViewHeight = self.membersInfoHolderViewHeight
+        if membersInfoHolderViewHeight < initialMembersInfoHolderHeight {
+            membersInfoHolderViewHeight = initialMembersInfoHolderHeight
+        } else {
+            if (contentView.frame.size.height - initialMembersInfoHolderHeight) / 2 > contentView.frame.size.height - membersInfoHolderViewHeight {
+                membersInfoHolderViewHeight = topEdge
+            } else {
+                membersInfoHolderViewHeight = initialMembersInfoHolderHeight
+            }
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.membersInfoHolderViewHeight = membersInfoHolderViewHeight
+        }
+    }
+    
     //MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Int(presenter.membersAmount)
@@ -273,25 +294,20 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        var membersInfoHolderViewHeight = self.membersInfoHolderViewHeight
-        if membersInfoHolderViewHeight < initialMembersInfoHolderHeight {
-            membersInfoHolderViewHeight = initialMembersInfoHolderHeight
-        } else {
-            if (contentView.frame.size.height - initialMembersInfoHolderHeight) / 2 > contentView.frame.size.height - membersInfoHolderViewHeight {
-                membersInfoHolderViewHeight = topEdge
-            } else {
-                membersInfoHolderViewHeight = initialMembersInfoHolderHeight
-            }
-        }
-        
-        UIView.animate(withDuration: 0.3) {
-            self.membersInfoHolderViewHeight = membersInfoHolderViewHeight
-        }
+        setMembersInfoHolderPosition()
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        setMembersInfoHolderPosition()
     }
     
     //MARK: Actions
     @IBAction func invitationCodeAction(_ sender: Any) {
-        
+        openShareInviteVC()
+    }
+    
+    @IBAction func backAction(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
