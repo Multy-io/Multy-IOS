@@ -100,16 +100,40 @@ class SecuritySettingsViewController: UIViewController, AnalyticsProtocol, Cance
     
     func cancelAction() {
         RealmManager.shared.clearRealm { (ok, err) in
-            if err == nil {
-
-                DispatchQueue.main.async {
-                    let customTabBarController = self.tabBarController as! CustomTabBarViewController
-                    customTabBarController.setSelectIndex(from: 4, to: 0)
-                    customTabBarController.selectedIndex = 0
-                    self.navigationController?.popToRootViewController(animated: false)
-                }
+            DataManager.shared.finishRealmSession()
+            
+            UserDefaults.standard.removeObject(forKey: "databasePassword")
+            UserDefaults.standard.removeObject(forKey: "isFirstLaunch")
+            UserDefaults.standard.removeObject(forKey: "pin")
+            UserDefaults.standard.removeObject(forKey: "isTermsAccept")
+            UserDefaults.standard.removeObject(forKey: "isFCMAccepted")
+            UserPreferences.shared.resetUserPreferences()
+            
+            DataManager.shared.clearDB { (err) in
+                
+                let customTabBarController = self.tabBarController as! CustomTabBarViewController
+                
+                let assets = customTabBarController.viewControllers![0].childViewControllers[0] as! AssetsViewController
+                assets.presenter.account = nil
+                assets.presenter.wallets = nil
+                
+                customTabBarController.setSelectIndex(from: 4, to: 0)
+                customTabBarController.selectedIndex = 0
+                
+                self.navigationController?.popToRootViewController(animated: false)
             }
         }
+//        RealmManager.shared.clearRealm { (ok, err) in
+//            if err == nil {
+//
+//                DispatchQueue.main.async {
+//                    let customTabBarController = self.tabBarController as! CustomTabBarViewController
+//                    customTabBarController.setSelectIndex(from: 4, to: 0)
+//                    customTabBarController.selectedIndex = 0
+//                    self.navigationController?.popToRootViewController(animated: false)
+//                }
+//            }
+//        }
     }
     
     func presentNoInternet() {

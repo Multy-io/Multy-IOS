@@ -142,7 +142,8 @@ extension UIViewController {
         if self.className.hasPrefix("SendStart") ||
             self.className.hasPrefix("WalletSettings") ||
             self.className.hasPrefix("CreateWallet") ||
-            self.className.hasPrefix("ReceiveAmount") {
+            self.className.hasPrefix("ReceiveAmount") ||
+            self.className.hasPrefix("CheckWordsViewController") {
                 return true
         }
         

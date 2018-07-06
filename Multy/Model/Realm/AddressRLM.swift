@@ -8,6 +8,7 @@ import RealmSwift
 class AddressRLM: Object {
     @objc dynamic var addressID = NSNumber(value: 0)    //UInt32
     @objc dynamic var currencyID = NSNumber(value: 0)   //UInt32
+    @objc dynamic var networkID = NSNumber(value: 0)   //UInt32
 //    @objc dynamic var walletID = NSNumber(value: 0)     //UInt32
     
     @objc dynamic var address = String()                //Double
