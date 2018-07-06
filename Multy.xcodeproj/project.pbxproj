@@ -67,6 +67,7 @@
 		4506F1741FD9A2E700D575BA /* WalletSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */; };
 		4506F1761FD9A30700D575BA /* WalletSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506F1751FD9A30700D575BA /* WalletSettingsViewController.swift */; };
 		45090AE01FE95E7700019D00 /* BackupSeedPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45090ADF1FE95E7700019D00 /* BackupSeedPhraseView.swift */; };
+		4511D77520EFAFE800538578 /* DoubleSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4511D77420EFAFE800538578 /* DoubleSlideViewController.swift */; };
 		451B98631FD947A400DC64A5 /* FastOperationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B98621FD947A400DC64A5 /* FastOperationsPresenter.swift */; };
 		451B98651FD94ADC00DC64A5 /* CustomTabBarPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B98641FD94ADC00DC64A5 /* CustomTabBarPresenter.swift */; };
 		451ED78F207CBCBF00542F00 /* PrivateKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451ED78E207CBCBF00542F00 /* PrivateKeyViewController.swift */; };
@@ -475,6 +476,7 @@
 		4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsPresenter.swift; sourceTree = "<group>"; };
 		4506F1751FD9A30700D575BA /* WalletSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsViewController.swift; sourceTree = "<group>"; };
 		45090ADF1FE95E7700019D00 /* BackupSeedPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupSeedPhraseView.swift; sourceTree = "<group>"; };
+		4511D77420EFAFE800538578 /* DoubleSlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleSlideViewController.swift; sourceTree = "<group>"; };
 		451B98621FD947A400DC64A5 /* FastOperationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastOperationsPresenter.swift; sourceTree = "<group>"; };
 		451B98641FD94ADC00DC64A5 /* CustomTabBarPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarPresenter.swift; sourceTree = "<group>"; };
 		451ED78E207CBCBF00542F00 /* PrivateKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKeyViewController.swift; sourceTree = "<group>"; };
@@ -1322,6 +1324,7 @@
 				45A9495B1FC70EFB003C3A23 /* SendAmount */,
 				45A949601FC76697003C3A23 /* Finish */,
 				455CDCED1FC8338100EA5ACE /* Sending Animation */,
+				4511D77420EFAFE800538578 /* DoubleSlideViewController.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -2351,6 +2354,7 @@
 				45B0B0F21FEBF326005BB1C0 /* SettingsPresenter.swift in Sources */,
 				4448DCC720C8333100CE80CB /* LocalLanguage.swift in Sources */,
 				45AC162B2048380700E75BD6 /* CurrencyObj.swift in Sources */,
+				4511D77520EFAFE800538578 /* DoubleSlideViewController.swift in Sources */,
 				FADC00461FC3231A00182E45 /* DataManager.swift in Sources */,
 				45F8CD49208F393C00DEB495 /* TermsOfServicePresenter.swift in Sources */,
 				FA8C87852010B44300F8D5D9 /* UITableViewCell+Extension.swift in Sources */,
