@@ -55,6 +55,10 @@ class CreateMultiSigViewController: UIViewController {
     @IBAction func createAction(_ sender: Any) {
         let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
         let waitingMembersVC = storyBoard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
+        waitingMembersVC.presenter.membersAmount = presenter.countOfMembers
+        //FIXME:
+        let nameCell = self.tableView.cellForRow(at: IndexPath(item: 0, section: 0)) as! CreateWalletNameTableViewCell
+        waitingMembersVC.presenter.walletName = nameCell.walletNameTF.text!
         navigationController?.pushViewController(waitingMembersVC, animated: true)
         waitingMembersVC.openShareInviteVC()
     }
