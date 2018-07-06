@@ -99,17 +99,17 @@ class SecuritySettingsViewController: UIViewController, AnalyticsProtocol, Cance
     }
     
     func cancelAction() {
-        self.navigationController?.popToRootViewController(animated: true)
-        self.resetDelegate?.cancelAction()
-//        RealmManager.shared.clearRealm { (ok, err) in
-//            if err == nil {
-//
-////                DispatchQueue.main.async {
-////                    self.navigationController?.popToRootViewController(animated: false)
-////                    self.tabBarController?.selectedIndex = 0
-////                }
-//            }
-//        }
+        RealmManager.shared.clearRealm { (ok, err) in
+            if err == nil {
+
+                DispatchQueue.main.async {
+                    let customTabBarController = self.tabBarController as! CustomTabBarViewController
+                    customTabBarController.setSelectIndex(from: 4, to: 0)
+                    customTabBarController.selectedIndex = 0
+                    self.navigationController?.popToRootViewController(animated: false)
+                }
+            }
+        }
     }
     
     func presentNoInternet() {

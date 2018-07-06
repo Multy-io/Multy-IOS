@@ -40,23 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         self.storeKit()
-        DataManager.shared.realmManager.getAccount { (acc, err) in
-            DataManager.shared.realmManager.fetchCurrencyExchange { (currencyExchange) in
-                if currencyExchange != nil {
-                    DataManager.shared.currencyExchange.update(currencyExchangeRLM: currencyExchange!)
-                }
-            }
-            isNeedToAutorise = acc != nil
-            DataManager.shared.apiManager.userID = acc == nil ? "" : acc!.userID
-            //MAKR: Check here isPin option from NSUserDefaults
-            UserPreferences.shared.getAndDecryptPin(completion: { (code, err) in
-                if code != nil && code != "" {
-                    isNeedToAutorise = true
-                    let appDel = UIApplication.shared.delegate as! AppDelegate
-                    appDel.authorization(isNeedToPresentBiometric: true)
-                }
-            })
-        }
+        
 //        exchangeCourse = UserDefaults.standard.double(forKey: "exchangeCourse")
         
         //FOR TEST NOT MAIN STRORYBOARD
@@ -66,46 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        self.window?.rootViewController = initialViewController
 //        self.window?.makeKeyAndVisible()
         
-        // for debug and development only
-        Branch.getInstance().setDebug()
-        Branch.getInstance().initSession(launchOptions: launchOptions) { [weak self] (params, error) in
-            if error == nil {
-                let dictFormLink = params! as NSDictionary
-                if (dictFormLink["address"] != nil) {
-                    DataManager.shared.getAccount(completion: { (acc, err) in
-                        if acc == nil {
-                            return
-                        }
-                        
-                        //FIXME: amountFromLink pass as String
-                        var amountFromLink: String?
-                        let deepLinkAddressInfoArray = (dictFormLink["address"] as! String).split(separator: ":")
-                        
-                        let chainNameFromLink = deepLinkAddressInfoArray.first
-                        let addressFromLink = deepLinkAddressInfoArray.last
-                        if let amount = dictFormLink["amount"] as? String {
-                            amountFromLink = amount
-                        } else if let number = dictFormLink["amount"] as? NSNumber {
-                            amountFromLink = "\(number)"
-                        } else {
-                            print("\n\n\nAmount from deepLink not parsed!\n\n\n")
-                        }
-                        
-                        let storyboard = UIStoryboard(name: "Send", bundle: nil)
-                        let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
-                        sendStartVC.presenter.transactionDTO.sendAddress = "\(addressFromLink ?? "")"
-                        sendStartVC.presenter.transactionDTO.sendAmountString = amountFromLink
-                        switch chainNameFromLink {
-                        case "ethereum":
-                            sendStartVC.presenter.transactionDTO.blockchainType?.blockchain = BLOCKCHAIN_ETHEREUM
-                        default: break   //by default create tr for bitcoin
-                        }
-                        ((self!.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
-                        sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
-                    })
-                }
-            }
-        }
         
         if UserDefaults.standard.value(forKey: "isTermsAccept") != nil {
             registerPush()
@@ -116,9 +60,70 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             FirebaseApp.configure(options: options)
         }
         
+        performFirstSegue(launchOptions: launchOptions)
+        
         return true
     }
 
+    func performFirstSegue(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
+        DataManager.shared.realmManager.getAccount { (acc, err) in
+            DataManager.shared.realmManager.fetchCurrencyExchange { (currencyExchange) in
+                if currencyExchange != nil {
+                    DataManager.shared.currencyExchange.update(currencyExchangeRLM: currencyExchange!)
+                }
+            }
+
+            DataManager.shared.apiManager.userID = acc == nil ? "" : acc!.userID
+            //MAKR: Check here isPin option from NSUserDefaults
+            UserPreferences.shared.getAndDecryptPin(completion: { (code, err) in
+                if code != nil && code != "" {
+                    isNeedToAutorise = true
+                }
+                
+                // for debug and development only
+                Branch.getInstance().setDebug()
+                Branch.getInstance().initSession(launchOptions: launchOptions) { [weak self] (params, error) in
+                    if error == nil {
+                        let dictFormLink = params! as NSDictionary
+                        if (dictFormLink["address"] != nil) {
+                            if acc == nil {
+                                return
+                            }
+                            
+                            //FIXME: amountFromLink pass as String
+                            var amountFromLink: String?
+                            let deepLinkAddressInfoArray = (dictFormLink["address"] as! String).split(separator: ":")
+                            
+                            let chainNameFromLink = deepLinkAddressInfoArray.first
+                            let addressFromLink = deepLinkAddressInfoArray.last
+                            if let amount = dictFormLink["amount"] as? String {
+                                amountFromLink = amount
+                            } else if let number = dictFormLink["amount"] as? NSNumber {
+                                amountFromLink = "\(number)"
+                            } else {
+                                print("\n\n\nAmount from deepLink not parsed!\n\n\n")
+                            }
+                            
+                            let storyboard = UIStoryboard(name: "Send", bundle: nil)
+                            let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+                            sendStartVC.presenter.transactionDTO.sendAddress = "\(addressFromLink ?? "")"
+                            sendStartVC.presenter.transactionDTO.sendAmountString = amountFromLink
+                            switch chainNameFromLink {
+                            case "ethereum":
+                                sendStartVC.presenter.transactionDTO.blockchainType?.blockchain = BLOCKCHAIN_ETHEREUM
+                            default: break   //by default create tr for bitcoin
+                            }
+                            ((self!.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
+                            sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
+                        }
+                    }
+                }
+                
+                let appDel = UIApplication.shared.delegate as! AppDelegate
+                appDel.authorization(isNeedToPresentBiometric: true)
+            })
+        }
+    }
     
     // Respond to URI scheme links
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
