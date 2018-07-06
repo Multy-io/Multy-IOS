@@ -386,12 +386,16 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         return self.navigationController!.topViewController!.isKind(of: AssetsViewController.self)
     }
     
+    //    FORCE TOUCH EVENTS
+    // qr
     func openQR() {
-        let storyboard = UIStoryboard(name: "Send", bundle: nil)
-        let qrScanVC = storyboard.instantiateViewController(withIdentifier: "qrScanVC") as! QrScannerViewController
-        qrScanVC.qrDelegate = self
-        qrScanVC.presenter.isFast = true
-        present(qrScanVC, animated: true, completion: nil)
+        if presenter.account != nil {
+            let storyboard = UIStoryboard(name: "Send", bundle: nil)
+            let qrScanVC = storyboard.instantiateViewController(withIdentifier: "qrScanVC") as! QrScannerViewController
+            qrScanVC.qrDelegate = self
+            qrScanVC.presenter.isFast = true
+            present(qrScanVC, animated: true, completion: nil)
+        }
     }
     
     func qrData(string: String) {
@@ -400,6 +404,17 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         destVC.presenter.transactionDTO.update(from: string)
         navigationController?.pushViewController(destVC, animated: true)
     }
+    // -------------
+    
+    // send to
+    func sendTransactionTo() {
+        if presenter.account != nil {
+            let storyboard = UIStoryboard(name: "Send", bundle: nil)
+            let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+            navigationController?.pushViewController(destVC, animated: true)
+        }
+    }
+    // -------------
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
@@ -416,7 +431,7 @@ extension CancelDelegate: CancelProtocol {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
     
-    func donate50(idOfProduct: String) {
+        func donate50(idOfProduct: String) {
         self.makePurchaseFor(productId: idOfProduct)
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }

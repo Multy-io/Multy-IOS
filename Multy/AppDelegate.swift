@@ -258,15 +258,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         print(shortcutItem)
+        
+        UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: false)
+        let tabBar = window?.rootViewController as! CustomTabBarViewController
+        let selectedIndex = tabBar.selectedIndex
+        tabBar.setSelectIndex(from: selectedIndex, to: 0)
+        let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
+        
         switch shortcutItem.type {
         case "io.multy.scanQr":
-            UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: false)
-            let tabBar = window?.rootViewController as! CustomTabBarViewController
-            let selectedIndex = tabBar.selectedIndex
-            tabBar.setSelectIndex(from: selectedIndex, to: 0)
-            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
             assetsVC.openQR()
             //add ANALYTICS here
+        case "io.multy.sendTo":
+            assetsVC.sendTransactionTo()
         default: break
         }
     }
