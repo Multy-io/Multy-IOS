@@ -8,9 +8,10 @@ import UIKit
 class WaitingMembersPresenter: NSObject {
     var viewController : WaitingMembersViewController?
     
-    var walletName: String = "Family"
-    var membersAmount: UInt = 2
-    var membersJoined: UInt = 1
+    var walletName = String()
+    var membersAmount: Int = 2
+    var membersJoined = [String]()
+    var createWalletPrice = 0.001
     
     func viewControllerViewDidLoad() {
     }

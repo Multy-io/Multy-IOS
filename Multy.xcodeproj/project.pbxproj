@@ -245,6 +245,9 @@
 		85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85741D8820B55A650093933B /* CoreBluetooth.framework */; };
 		859C7AFC20ECF3C8002EA215 /* WaitingMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */; };
 		859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */; };
+		859C7B0120EE2CEC002EA215 /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */; };
+		859C7B0320EE2CFF002EA215 /* MemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */; };
+		859C7B0620EE66F0002EA215 /* CreateMultiSig.strings in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */; };
 		85DE62DD20AB002000423D89 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DC20AB002000423D89 /* SendViewController.swift */; };
 		85DE62DF20AB003A00423D89 /* SendPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DE20AB003A00423D89 /* SendPresenter.swift */; };
 		85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62E120AB077B00423D89 /* WalletCollectionViewCell.swift */; };
@@ -668,6 +671,11 @@
 		85741D8820B55A650093933B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersViewController.swift; sourceTree = "<group>"; };
 		859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersPresenter.swift; sourceTree = "<group>"; };
+		859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
+		859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemberTableViewCell.xib; sourceTree = "<group>"; };
+		859C7B0720EE66F0002EA215 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CreateMultiSig.strings; sourceTree = "<group>"; };
+		859C7B0920EE66F6002EA215 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/CreateMultiSig.strings; sourceTree = "<group>"; };
+		859C7B0A20EE66F9002EA215 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/CreateMultiSig.strings; sourceTree = "<group>"; };
 		85DE62DC20AB002000423D89 /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
 		85DE62DE20AB003A00423D89 /* SendPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPresenter.swift; sourceTree = "<group>"; };
 		85DE62E120AB077B00423D89 /* WalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -803,6 +811,7 @@
 				4474C5B220BFE60600EA8B01 /* Contacts.strings */,
 				4474C5B920BFE76800EA8B01 /* Activty.strings */,
 				4453507D20D14E21004F8DAE /* Localizable.strings */,
+				859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */,
 			);
 			path = Strings;
 			sourceTree = "<group>";
@@ -1553,6 +1562,7 @@
 				45AC16252048211600E75BD6 /* CurrencyCell */,
 				45AC16312048506800E75BD6 /* BloclchainCell */,
 				4585BD352049ACBE004542AE /* ExchangeStockCell */,
+				859C7AFF20EE2CC2002EA215 /* MemberTVC */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1716,6 +1726,15 @@
 				859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */,
 			);
 			path = WaitingMembers;
+			sourceTree = "<group>";
+		};
+		859C7AFF20EE2CC2002EA215 /* MemberTVC */ = {
+			isa = PBXGroup;
+			children = (
+				859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */,
+				859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */,
+			);
+			path = MemberTVC;
 			sourceTree = "<group>";
 		};
 		85DE62DB20AAFFE700423D89 /* Send */ = {
@@ -2100,6 +2119,7 @@
 				445B127920BC1BD900FD0D33 /* Send.storyboard in Resources */,
 				445B128820BC1CA600FD0D33 /* LogoTableViewCell.xib in Resources */,
 				45ECDBD8203D9E77009FD339 /* README.md in Resources */,
+				859C7B0620EE66F0002EA215 /* CreateMultiSig.strings in Resources */,
 				4474C5A520BEFFAB00EA8B01 /* EthWalletHeaderCollectionViewCell.xib in Resources */,
 				45DCF9CE1FE139C9005A9896 /* WalletAddressTableViewCell.xib in Resources */,
 				445B127320BC1BB100FD0D33 /* Receive.storyboard in Resources */,
@@ -2112,6 +2132,7 @@
 				445B12E020BD78D000FD0D33 /* CurrencyChooser.strings in Resources */,
 				45EBB6A8200D312700F81322 /* GoogleService-Info.plist in Resources */,
 				45AC16292048214C00E75BD6 /* CurrencyTableViewCell.xib in Resources */,
+				859C7B0320EE2CFF002EA215 /* MemberTableViewCell.xib in Resources */,
 				4453507B20D14E21004F8DAE /* Localizable.strings in Resources */,
 				4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */,
 				85DE62E920AC1CE100423D89 /* ActiveRequestCollectionViewCell.xib in Resources */,
@@ -2508,6 +2529,7 @@
 				45C8D1452007EACE00F5994E /* TxHistoryRLM.swift in Sources */,
 				4540944C2031EF1600603DB5 /* SecuritySettingsPresenter.swift in Sources */,
 				FA58DF651FDC403E00C45303 /* WrongSeedPhrasePresenter.swift in Sources */,
+				859C7B0120EE2CEC002EA215 /* MemberTableViewCell.swift in Sources */,
 				45E215E01FD164F80078945A /* QrScannerPresenter.swift in Sources */,
 				44CD6B8F208B5018009C07F6 /* BigInt.swift in Sources */,
 				8555721020C7E5C500108FCD /* TxInfoView.swift in Sources */,
@@ -2954,6 +2976,16 @@
 				445B12BF20BC21AE00FD0D33 /* en */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				859C7B0720EE66F0002EA215 /* en */,
+				859C7B0920EE66F6002EA215 /* ru */,
+				859C7B0A20EE66F9002EA215 /* uk */,
+			);
+			name = CreateMultiSig.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
