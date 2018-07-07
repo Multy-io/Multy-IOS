@@ -69,7 +69,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     var presenter = WalletPresenter()
     
-    var isAssets = true
+    //FIXME: set true when add assets functionality
+    var isAssets = false
     
     var visibleCells = 5
     
@@ -92,6 +93,12 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             if oldValue != tablesHolderBottomEdge {
                 tableHolderViewHeight = tablesHolderBottomEdge
             }
+        }
+    }
+    
+    var infoHolderViewHeigth: CGFloat = 0 {
+        didSet {
+            updateTablesHolderBottomEdge()
         }
     }
     
@@ -127,6 +134,15 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    var pendingSectionHeight : CGFloat = 70 {
+        didSet {
+            if oldValue != pendingSectionHeight {
+                pendingSectionHeightConstraint.constant = pendingSectionHeight
+                infoHolderViewHeigth = infoHolderViewHeigth + (pendingSectionHeight - oldValue)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -157,6 +173,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self)
+        isViewDidAppear = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -189,7 +206,13 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
         assetsTable.contentInset = makeTableInset()
         transactionsTable.contentInset = makeTableInset()
-        tablesHolderBottomEdge = contentHeight - (infoHolderView.frame.origin.y + infoHolderView.frame.size.height)
+        infoHolderViewHeigth = infoHolderView.frame.size.height
+    }
+    
+    func updateTablesHolderBottomEdge() {
+        UIView.animate(withDuration: 0.2) {
+            self.tablesHolderBottomEdge = self.contentHeight - (self.infoHolderView.frame.origin.y + self.infoHolderViewHeigth)
+        }
     }
     
     func checkConstraints() {
@@ -277,7 +300,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             pendingSectionView.isHidden = !isNeedToShow
         }
         pendingSeparatorWidthConstraint.constant = isNeedToShow ? 150 : 0
-        pendingSectionHeightConstraint.constant = isNeedToShow ? 70 : 0
+        pendingSectionHeight = isNeedToShow ? 70 : 0
         pendingStack.isHidden = !isNeedToShow
         
         if animated {
@@ -333,12 +356,29 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    func setInitialTableHolderPosition() {
+        let tableView = isAssets ? assetsTable : transactionsTable
+        tableView?.setContentOffset(CGPoint.zero, animated: false)
+        UIView.animate(withDuration: 0.3, animations: {
+            self.tableHolderViewHeight = self.tablesHolderBottomEdge
+            
+        }) { (succeeded) in
+            
+        }
+    }
+    
     func updateWalletsAfterDragging() {
         UIView.animate(withDuration: 0.3) {
             self.tableHolderViewHeight = self.tablesHolderBottomEdge - 40
         }
         
         presenter.getHistoryAndWallet()
+    }
+    
+    @IBAction func titleAction(_ sender: Any) {
+        if tableHolderViewHeight == tablesHolderTopEdge {
+            setInitialTableHolderPosition()
+        }
     }
     
     @IBAction func backAction(_ sender: Any) {
