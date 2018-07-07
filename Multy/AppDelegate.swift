@@ -11,7 +11,7 @@ import UserNotifications
 import SwiftyStoreKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
     var presentedVC: UIViewController?
     var openedAlert: UIAlertController?
     var sharedDialog: UIActivityViewController?
@@ -245,6 +245,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UserDefaults.standard.set(exchangeCourse, forKey: "exchangeCourse")
         DataManager.shared.finishRealmSession()
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+//    @IBAction func scanAction(_ sender: Any) {
+//        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+//        let qrScanVC = storyboard.instantiateViewController(withIdentifier: "qrScanVC") as! QrScannerViewController
+//        qrScanVC.qrDelegate = self.presenter
+//        qrScanVC.presenter.isFast = true
+//        self.present(qrScanVC, animated: true, completion: nil)
+//        sendAnalyticsEvent(screenName: screenFastOperation, eventName: scanTap)
+//    }
+    
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        print(shortcutItem)
+        
+        UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: false)
+        let tabBar = window?.rootViewController as! CustomTabBarViewController
+        let selectedIndex = tabBar.selectedIndex
+        
+        switch shortcutItem.type {
+        case "io.multy.scanQr":
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
+            assetsVC.openQR()
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceScanQr)
+        case "io.multy.sendTo":
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
+            assetsVC.sendTransactionTo()
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceSendTransction)
+        case "io.multy.magicSend":
+            tabBar.changeViewVisibility(isHidden: true)
+            tabBar.setSelectIndex(from: selectedIndex, to: 2)
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceMagicSend)
+        case "io.multy.magicReceive":
+            tabBar.changeViewVisibility(isHidden: true)
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
+            assetsVC.openReceive()
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceReceive)
+        default: break
+        }
     }
     
     func saveMkVersion(){

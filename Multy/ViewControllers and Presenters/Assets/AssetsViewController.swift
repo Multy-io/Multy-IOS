@@ -18,7 +18,7 @@ private typealias CancelDelegate = AssetsViewController
 private typealias CreateWalletDelegate = AssetsViewController
 private typealias LocalizeDelegate = AssetsViewController
 
-class AssetsViewController: UIViewController, AnalyticsProtocol {
+class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol {
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
@@ -385,6 +385,47 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
     func isOnWindow() -> Bool {
         return self.navigationController!.topViewController!.isKind(of: AssetsViewController.self)
     }
+    
+    //    FORCE TOUCH EVENTS
+    // qr
+    func openQR() {
+        if presenter.account != nil {
+            let storyboard = UIStoryboard(name: "Send", bundle: nil)
+            let qrScanVC = storyboard.instantiateViewController(withIdentifier: "qrScanVC") as! QrScannerViewController
+            qrScanVC.qrDelegate = self
+            qrScanVC.presenter.isFast = true
+            present(qrScanVC, animated: true, completion: nil)
+        }
+    }
+    
+    func qrData(string: String) {
+        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+        let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+        destVC.presenter.transactionDTO.update(from: string)
+        navigationController?.pushViewController(destVC, animated: true)
+    }
+    // -------------
+    
+    // send to
+    func sendTransactionTo() {
+        if presenter.account != nil {
+            let storyboard = UIStoryboard(name: "Send", bundle: nil)
+            let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+            navigationController?.pushViewController(destVC, animated: true)
+        }
+    }
+    // -------------
+    
+    // receive
+    func openReceive() {
+        if presenter.account != nil {
+            let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+            let receiveVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart")
+            navigationController?.pushViewController(receiveVC, animated: true)
+        }
+    }
+    // -------------
+    
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
@@ -401,7 +442,7 @@ extension CancelDelegate: CancelProtocol {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
     
-    func donate50(idOfProduct: String) {
+        func donate50(idOfProduct: String) {
         self.makePurchaseFor(productId: idOfProduct)
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
