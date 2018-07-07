@@ -113,7 +113,7 @@
                                             <constraint firstAttribute="width" constant="30" id="eOK-40-EKi"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vote for activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xU0-fA-viF">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vote for activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xU0-fA-viF">
                                         <rect key="frame" x="76.5" y="49" width="128.5" height="25"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
                                         <color key="textColor" red="0.0" green="0.55181312559999995" blue="0.99944168330000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -134,6 +134,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.97644573450000005" green="0.98039692639999998" blue="0.9998489022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="xU0-fA-viF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="icd-E7-CL7" secondAttribute="leading" constant="5" id="1V6-MN-iCP"/>
                                     <constraint firstItem="c3e-nc-JSe" firstAttribute="centerX" secondItem="icd-E7-CL7" secondAttribute="centerX" id="4jg-bs-Sso"/>
                                     <constraint firstItem="xU0-fA-viF" firstAttribute="centerX" secondItem="icd-E7-CL7" secondAttribute="centerX" id="Lnd-xD-Sy6"/>
                                     <constraint firstAttribute="trailing" secondItem="3Ab-Sf-D1k" secondAttribute="trailing" id="Vqx-24-lcm"/>
@@ -1393,10 +1394,10 @@ and develop new application functionality</string>
                                         <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="donationAlert" translatesAutoresizingMaskIntoConstraints="NO" id="HuK-Pv-zoM">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="donationAlert" translatesAutoresizingMaskIntoConstraints="NO" id="HuK-Pv-zoM">
                                         <rect key="frame" x="21" y="22" width="280" height="198"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Donate for this option" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2af-jb-4m3">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Donate for this option" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2af-jb-4m3">
                                         <rect key="frame" x="75" y="234" width="172.5" height="23.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
                                         <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1447,9 +1448,10 @@ and develop new application functionality</string>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lQD-5J-hkF" secondAttribute="trailing" constant="10" id="g4i-LI-lwb"/>
                                     <constraint firstItem="2af-jb-4m3" firstAttribute="centerX" secondItem="llE-Kv-zdT" secondAttribute="centerX" id="htj-uJ-gZe"/>
                                     <constraint firstItem="gwH-0Q-jV7" firstAttribute="top" secondItem="lQD-5J-hkF" secondAttribute="bottom" constant="25" id="kZG-K1-2gH"/>
+                                    <constraint firstItem="2af-jb-4m3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="llE-Kv-zdT" secondAttribute="leading" constant="5" id="lxP-LS-zXr"/>
                                     <constraint firstItem="lQD-5J-hkF" firstAttribute="top" secondItem="2af-jb-4m3" secondAttribute="bottom" constant="14" id="nMd-3w-q1q"/>
                                     <constraint firstItem="HN9-93-SEg" firstAttribute="top" secondItem="97Y-tc-SZM" secondAttribute="top" id="o5X-1L-dvF"/>
-                                    <constraint firstItem="HuK-Pv-zoM" firstAttribute="height" secondItem="llE-Kv-zdT" secondAttribute="height" multiplier="198/475" id="pVG-vo-mtG"/>
+                                    <constraint firstItem="HuK-Pv-zoM" firstAttribute="leading" secondItem="llE-Kv-zdT" secondAttribute="leading" constant="21" id="pC1-kZ-1HS"/>
                                     <constraint firstItem="HuK-Pv-zoM" firstAttribute="top" relation="greaterThanOrEqual" secondItem="llE-Kv-zdT" secondAttribute="top" constant="2" id="pcT-CT-zBL"/>
                                     <constraint firstItem="AUj-xL-0v1" firstAttribute="leading" secondItem="llE-Kv-zdT" secondAttribute="leading" id="u03-BV-fiZ"/>
                                     <constraint firstItem="97Y-tc-SZM" firstAttribute="leading" secondItem="HN9-93-SEg" secondAttribute="trailing" id="vC5-Tw-osi"/>
