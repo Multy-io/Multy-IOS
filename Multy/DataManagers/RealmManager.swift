@@ -4,6 +4,7 @@
 
 import UIKit
 import RealmSwift
+import Realm
 
 private typealias RealmMigrationManager = RealmManager
 
@@ -38,7 +39,11 @@ class RealmManager: NSObject {
                 return
             }
             
-            let realmConfig = Realm.Configuration(encryptionKey: pass,
+            let nameSuffix = String(pass!.hexEncodedString().suffix(8))
+            let realmName = "default_" + nameSuffix + ".realm"
+            
+            let realmConfig = Realm.Configuration(fileURL: URL(fileURLWithPath: RLMRealmPathForFile(realmName), isDirectory: false),
+                                                  encryptionKey: pass,
                                                   schemaVersion: self.schemaVersion,
                                                   migrationBlock: { migration, oldSchemaVersion in
                                                     if oldSchemaVersion < 7 {
