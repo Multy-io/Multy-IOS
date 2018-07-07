@@ -11,7 +11,6 @@ private typealias LocalizeDelegate = WalletViewController
 private typealias CancelDelegate = WalletViewController
 private typealias ScrollViewDelegate = WalletViewController
 
-
 class WalletViewController: UIViewController, AnalyticsProtocol {
 
     @IBOutlet weak var titleLbl: UILabel!
@@ -409,10 +408,10 @@ extension TableViewDelegate: UITableViewDelegate {
             if indexPath.row < presenter.transactionDataSource.count && presenter.isTherePendingMoney(for: indexPath) {
                 return 135
             } else {
-                return 70
+                return 80
             }
         } else {
-            return 70
+            return 80
         }
     }
 }
@@ -441,11 +440,7 @@ extension TableViewDataSource: UITableViewDataSource {
                         transactionCell.wallet = presenter.wallet!
                         transactionCell.fillCell()
                         transactionCell.changeState(isEmpty: false)
-                        hideEmptyLbls()
-                        if indexPath.row != 1 {
-                            transactionCell.changeTopConstraint()
-                        }
-                    }
+                        hideEmptyLbls()                    }
                 } else {
                     transactionCell.changeState(isEmpty: true)
                     //                    fixForiPad()
@@ -544,7 +539,8 @@ extension AnimationSection {
                 changeTablesHeight(transY: transY)
                 tableHeaderTopConstraint.constant = tableHeaderTopConstraint.constant + transY
             }
-            if translation.x > 0 && translation.y/translation.x < 1/2 && translation.y/translation.x > -1/2 {
+            
+            if translation.x > 0 && translation.y/translation.x < 1/2 && translation.y/translation.x > -1/2 && (translation.x * translation.x + translation.y * translation.y) > 1000 {
                 backAction(Any.self)
             }
             gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
@@ -586,11 +582,11 @@ extension AnimationSection {
 
 extension CancelDelegate : CancelProtocol {
     func cancelAction() {
-        self.makePurchaseFor(productId: "io.multy.addingExchange5")
+        makePurchaseFor(productId: "io.multy.addingExchange5")
     }
     
     func donate50(idOfProduct: String) {
-        self.makePurchaseFor(productId: idOfProduct)
+        makePurchaseFor(productId: idOfProduct)
     }
     
     func presentNoInternet() {

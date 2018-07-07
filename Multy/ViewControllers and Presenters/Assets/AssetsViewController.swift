@@ -17,8 +17,9 @@ private typealias PresentingSheetDelegate = AssetsViewController
 private typealias CancelDelegate = AssetsViewController
 private typealias CreateWalletDelegate = AssetsViewController
 private typealias LocalizeDelegate = AssetsViewController
+private typealias PushTxDelegate = AssetsViewController
 
-class AssetsViewController: UIViewController, AnalyticsProtocol {
+class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol {
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
@@ -60,7 +61,7 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setpuUI()
-        self.performFirstEnterFlow { (isUpToDate) in
+        self.performFirstEnterFlow { [unowned self] (isUpToDate) in
             guard self.isFlowPassed else {
                 self.view.isUserInteractionEnabled = true
                 return
@@ -94,6 +95,10 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
                 self.tableView.frame.size.height = screenHeight - self.tabBarController!.tabBar.frame.height
             }
             DataManager.shared.socketManager.start()
+            DataManager.shared.subscribeToFirebaseMessaging()
+            
+            //FIXME: add later or refactor
+            self.openTxFromPush()
         }
     }
     
@@ -385,6 +390,53 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
     func isOnWindow() -> Bool {
         return self.navigationController!.topViewController!.isKind(of: AssetsViewController.self)
     }
+    
+    //    FORCE TOUCH EVENTS
+    // qr
+    func openQR() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if self.presenter.account != nil {
+                let storyboard = UIStoryboard(name: "Send", bundle: nil)
+                let qrScanVC = storyboard.instantiateViewController(withIdentifier: "qrScanVC") as! QrScannerViewController
+                qrScanVC.qrDelegate = self
+                qrScanVC.presenter.isFast = true
+                self.present(qrScanVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func qrData(string: String) {
+        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+        let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+        destVC.presenter.transactionDTO.update(from: string)
+        navigationController?.pushViewController(destVC, animated: true)
+    }
+    // -------------
+    
+    // send to
+    func sendTransactionTo() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if self.presenter.account != nil {
+                let storyboard = UIStoryboard(name: "Send", bundle: nil)
+                let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+                self.navigationController?.pushViewController(destVC, animated: true)
+            }
+        }
+    }
+    // -------------
+    
+    // receive
+    func openReceive() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if self.presenter.account != nil {
+                let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+                let receiveVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart")
+                self.navigationController?.pushViewController(receiveVC, animated: true)
+            }
+        }
+    }
+    // -------------
+    
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
@@ -401,7 +453,7 @@ extension CancelDelegate: CancelProtocol {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
     
-    func donate50(idOfProduct: String) {
+        func donate50(idOfProduct: String) {
         self.makePurchaseFor(productId: idOfProduct)
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
@@ -713,6 +765,59 @@ extension CollectionViewDelegate : UICollectionViewDelegate {
         guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
         let firstCellCollectionView = firstCell.collectionView!
         firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
+    }
+}
+
+extension PushTxDelegate {
+    func openTxFromPush() {
+        let app = UIApplication.shared.delegate as? AppDelegate
+        
+        if app?.info != nil {
+//            presentAlert(with: app?.info.debugDescription)
+            openTx(app!.info!)
+//            app?.info = nil
+        }
+    }
+    
+    func openTx(_ info: [AnyHashable: Any]) {
+        if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
+            let walletID = NSNumber(value: Int(walletIDString)!)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.getTxAndPresent(with: txID, currencyID, networkID, walletID)
+            }
+        }
+    }
+    
+    func getTxAndPresent(with txID: String, _ currencyID: UInt32, _ networkID: Int, _ walletID: NSNumber) {
+        let blockchainType = BlockchainType.init(blockchain: Blockchain.init(currencyID), net_type: networkID)
+        
+        DataManager.shared.getOneWalletVerbose(walletID: walletID, blockchain: blockchainType) { (wallet, error) in
+            if error != nil {
+                self.presentAlert(with: error.debugDescription)
+            }
+            let networkNumber = NSNumber(value: networkID)
+            let currencyNumber = NSNumber(value: currencyID)
+            DataManager.shared.getTransactionHistory(currencyID: currencyNumber, networkID: networkNumber, walletID: walletID, completion: { (history, error) in
+                guard let history = history, let wallet = wallet else {
+                    return
+                }
+                
+                let tx = history.filter{ $0.txHash == txID }.first
+                
+                guard let histObj = tx else {
+                    return
+                }
+                
+                let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
+                let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
+                transactionVC.presenter.histObj = histObj
+                transactionVC.presenter.blockchainType = blockchainType
+                transactionVC.presenter.wallet = wallet
+                
+                self.navigationController?.pushViewController(transactionVC, animated: false)
+            })
+        }
     }
 }
 

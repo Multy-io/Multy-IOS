@@ -63,6 +63,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     var txTokenImageView: UIImageView?
     var selectedRequestAmountCloneLabel: UILabel?
     var selectedRequestAddressCloneLabel: UILabel?
+    var cloneNameLabel: UILabel!
     
     var searchingAnimationView : LOTAnimationView?
     var sendLongPressGR : UILongPressGestureRecognizer?
@@ -78,6 +79,9 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     var sendMode = SendMode.searching
     let ANIMATION_DURATION = 0.2
     let activeRequestCloneViewTag = 100
+    
+    @IBOutlet weak var addressLabelTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nameLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -173,12 +177,14 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             if presenter.numberOfActiveRequests() > 0 {
                 selectedRequestAmountLabel.isHidden = false
                 selectedRequestAddressLabel.isHidden = false
-                searchingActiveRequestsLabel.isHidden =  true
-
+                presenter.changeNameLabelVisibility(false)
                 
+                searchingActiveRequestsLabel.isHidden =  true
             } else {
                 selectedRequestAmountLabel.isHidden = true
                 selectedRequestAddressLabel.isHidden = true
+                presenter.changeNameLabelVisibility(true)
+                
                 searchingActiveRequestsLabel.isHidden =  false
             }
             
@@ -366,6 +372,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                 let blockchainType = BlockchainType.create(currencyID: UInt32(selectedRequest.currencyID), netType: 0)
                 selectedRequestAmountLabel.text = "\(selectedRequest.sendAmount) \(blockchainType.shortName)"
                 selectedRequestAddressLabel.text = selectedRequest.sendAddress
+                presenter.changeNameLabelVisibility(false)
             }
         }
     }
@@ -433,6 +440,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             UIView.animate(withDuration: 0.15, animations: {
                 self.selectedRequestAmountCloneLabel!.alpha = 0
                 self.selectedRequestAddressCloneLabel!.alpha = 0
+                self.cloneNameLabel.alpha = 0
                 self.txTokenImageView!.frame = CGRect(x: centerActiveRequestView.x, y: centerActiveRequestView.y, width: 0, height: 0)
                 self.txInfoView!.frame = CGRect(x: self.txTokenImageView!.center.x, y: (self.txTokenImageView!.frame.origin.y - 5 - self.txInfoView!.frame.size.height), width: 0, height: 0)
                  self.txTokenImageView!.alpha = 0
@@ -463,27 +471,30 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
 
     func prepareClonesViews() {
-        selectedRequestAmountCloneLabel = UILabel(frame: selectedRequestAmountLabel.frame)
-        selectedRequestAmountCloneLabel!.font = selectedRequestAmountLabel.font
-        selectedRequestAmountCloneLabel!.textColor = selectedRequestAmountLabel.textColor
-        selectedRequestAmountCloneLabel!.adjustsFontSizeToFitWidth = true
-        selectedRequestAmountCloneLabel!.minimumScaleFactor = selectedRequestAmountLabel.minimumScaleFactor
-        selectedRequestAmountCloneLabel!.textAlignment = .center
-        selectedRequestAmountCloneLabel!.text = selectedRequestAmountLabel.text
-        
-        selectedRequestAddressCloneLabel = UILabel(frame: selectedRequestAddressLabel.frame)
-        selectedRequestAddressCloneLabel!.font = selectedRequestAddressLabel.font
-        selectedRequestAddressCloneLabel!.textColor = selectedRequestAddressLabel.textColor
-        selectedRequestAddressCloneLabel!.adjustsFontSizeToFitWidth = true
-        selectedRequestAddressCloneLabel!.minimumScaleFactor = selectedRequestAddressLabel.minimumScaleFactor
-        selectedRequestAddressCloneLabel!.textAlignment = .center
-        selectedRequestAddressCloneLabel!.text = selectedRequestAddressLabel.text
+        selectedRequestAmountCloneLabel = cloneLabel(selectedRequestAmountLabel)
+        selectedRequestAddressCloneLabel = cloneLabel(selectedRequestAddressLabel)
+        cloneNameLabel = cloneLabel(nameLabel)
         
         activeRequestsClonesHolderView.addSubview(selectedRequestAmountCloneLabel!)
         activeRequestsClonesHolderView.addSubview(selectedRequestAddressCloneLabel!)
+        activeRequestsClonesHolderView.addSubview(cloneNameLabel!)
         
         prepareWalletsCellsClones()
         prepareActiveRequestsCellsClones()
+    }
+    
+    func cloneLabel(_ label: UILabel) -> UILabel {
+        let clonedLabel = UILabel(frame: label.frame)
+        
+        clonedLabel.font = label.font
+        clonedLabel.textColor = label.textColor
+        clonedLabel.adjustsFontSizeToFitWidth = true
+        clonedLabel.minimumScaleFactor = label.minimumScaleFactor
+        clonedLabel.textAlignment = .center
+        clonedLabel.text = label.text
+        clonedLabel.isHidden = label.isHidden
+        
+        return clonedLabel
     }
     
     func removeClonesViews() {
@@ -491,6 +502,8 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         selectedRequestAmountCloneLabel = nil
         selectedRequestAddressCloneLabel!.removeFromSuperview()
         selectedRequestAddressCloneLabel = nil
+        cloneNameLabel.removeFromSuperview()
+        cloneNameLabel = nil
         
         removeWalletsCellsClones()
         removeActiveRequestsCellsClones()

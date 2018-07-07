@@ -45,6 +45,10 @@ extension DataManager {
         return coreLibManager.isAddressValid(address: address, for: wallet)
     }
     
+    func isAddressValid(_ address: String, for blockchainType: BlockchainType) -> (isValid: Bool, message: String?) {
+        return coreLibManager.isAddressValid(address, for: blockchainType)
+    }
+    
     func createAndSendDonationTransaction(transactionDTO: TransactionDTO, completion: @escaping(_ answer: String?,_ error: Error?) -> ()) {
         let core = DataManager.shared.coreLibManager
         let wallet = transactionDTO.choosenWallet!

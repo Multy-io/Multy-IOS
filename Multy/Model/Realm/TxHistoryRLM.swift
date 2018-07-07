@@ -34,5 +34,4 @@ class TxHistoryRLM: Object {
         
         return txHist
     }
-    
 }
