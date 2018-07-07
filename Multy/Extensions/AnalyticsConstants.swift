@@ -280,6 +280,14 @@ let addressAdded                = "Address_Added"
 let addressDeleted              = "Address_Deleted"
 let addressSelected             = "Address_Selected"
 
+//Force Touch
+let forceTouchScreenName        = "Force_Touch"
+let forceScanQr                 = "Force_Scan_QR"
+let forceSendTransction         = "Force_Send_Transaction"
+let forceMagicSend              = "Force_Magic_Send"
+let forceReceive                = "Force_Receive"
+
+
 //featues code
 let donationWithTransaction     = 20000
 

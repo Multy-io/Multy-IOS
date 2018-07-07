@@ -48,11 +48,11 @@ class AddressViewController: UIViewController, BranchProtocol {
         super.viewWillAppear(animated)
         self.makeQRCode()
         self.addressLbl.text = makeStringWithAddress()
-        if DataManager.shared.isAddressSaved(makeStringWithAddress()) {
+//        if DataManager.shared.isAddressSaved(makeStringWithAddress()) {
             addContactConstraint.constant = 0
             addContactButton.isHidden = true
             addContactButton.isUserInteractionEnabled = false
-        }
+//        }
     }
     
     override func viewDidLayoutSubviews() {
