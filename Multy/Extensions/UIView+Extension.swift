@@ -62,6 +62,17 @@ extension UIView {
         self.layer.insertSublayer(gradient, at: 0)
     }
     
+    func makeBlueGradient() -> Void {
+        let colours = [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
+                       UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))]
+        let locations: [NSNumber] = [0,1]
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = colours.map { $0.cgColor }
+        gradient.locations = locations
+        self.layer.insertSublayer(gradient, at: 0)
+    }
+    
     func applyGradient(withColours colours: [UIColor], gradientOrientation orientation: GradientOrientation) {
         if frame.width != screenWidth {
             return

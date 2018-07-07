@@ -50,56 +50,56 @@ class AssetsPresenter: NSObject {
         }
     }
     
-    func auth() {
-        //MARK: need refactoring
-        self.blockUI()
-        DataManager.shared.getAccount { (acc, err) in
-            self.unlockUI()
-            if acc == nil {
-//                self.assetsVC?.progressHUD.show()
-                DataManager.shared.auth(rootKey: nil) { (account, error) in
-                    self.unlockUI()
-                    guard account != nil else {
-                        return
-                    }
-                    
-                    DispatchQueue.main.async {
-                        self.account = account
-                        
-                        self.getWalletsVerbose(completion: {_ in })
-                    }
-                }
-            } else {
-                self.account = acc
-                DataManager.shared.auth(rootKey: self.account?.backupSeedPhrase, completion: { (acc, err) in
-                    if acc != nil {
-                        self.account = acc
-                        self.getWalletsVerbose(completion: {_ in})
-//                        DataManager.shared.socketManager.start()
-                    }
-                })
-            }
-            DataManager.shared.socketManager.start()
-//            self.assetsVC?.progressHUD.hide()
-        }
-    }
+//    func auth() {
+//        //MARK: need refactoring
+//        self.blockUI()
+//        DataManager.shared.getAccount { (acc, err) in
+//            self.unlockUI()
+//            if acc == nil {
+////                self.assetsVC?.progressHUD.show()
+//                DataManager.shared.auth(rootKey: nil) { (account, error) in
+//                    self.unlockUI()
+//                    guard account != nil else {
+//                        return
+//                    }
+//                    
+//                    DispatchQueue.main.async {
+//                        self.account = account
+//                        
+//                        self.getWalletsVerbose(completion: {_ in })
+//                    }
+//                }
+//            } else {
+//                self.account = acc
+//                DataManager.shared.auth(rootKey: self.account?.backupSeedPhrase, completion: { (acc, err) in
+//                    if acc != nil {
+//                        self.account = acc
+//                        self.getWalletsVerbose(completion: {_ in})
+////                        DataManager.shared.socketManager.start()
+//                    }
+//                })
+//            }
+//            DataManager.shared.socketManager.start()
+////            self.assetsVC?.progressHUD.hide()
+//        }
+//    }
     
-    func guestAuth(completion: @escaping (_ answer: String) -> ()) {
-        self.assetsVC?.view.isUserInteractionEnabled = false
-        DataManager.shared.auth(rootKey: nil) { (account, error) in
-            self.assetsVC?.view.isUserInteractionEnabled = true
-//            self.assetsVC?.progressHUD.hide()
-            guard account != nil else {
-                return
-            }
-            
-            self.account = account
-            
-            DataManager.shared.socketManager.start()
-            
-            completion("ok")
-        }
-    }
+//    func guestAuth(completion: @escaping (_ answer: String) -> ()) {
+//        self.assetsVC?.view.isUserInteractionEnabled = false
+//        DataManager.shared.auth(rootKey: nil) { (account, error) in
+//            self.assetsVC?.view.isUserInteractionEnabled = true
+////            self.assetsVC?.progressHUD.hide()
+//            guard account != nil else {
+//                return
+//            }
+//            
+//            self.account = account
+//            
+//            DataManager.shared.socketManager.start()
+//            
+//            completion("ok")
+//        }
+//    }
     
     func updateWalletsInfo(isInternetAvailable: Bool) {
         DataManager.shared.getAccount { (acc, err) in
@@ -226,6 +226,7 @@ class AssetsPresenter: NSObject {
             }
             self.account = account
             DataManager.shared.socketManager.start()
+            DataManager.shared.subscribeToFirebaseMessaging()
             completion("ok")
         }
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -22,37 +22,37 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="recieve" translatesAutoresizingMaskIntoConstraints="NO" id="0fb-sf-7dQ">
-                        <rect key="frame" x="23" y="21" width="18" height="18"/>
+                        <rect key="frame" x="23" y="30" width="18" height="18"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="0fb-sf-7dQ" secondAttribute="height" multiplier="1:1" id="B9B-qy-h36"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="748" text="83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HoU-C3-WIc">
-                        <rect key="frame" x="54" y="21" width="182.5" height="22"/>
+                        <rect key="frame" x="54" y="30" width="182.5" height="22"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                         <color key="textColor" red="0.21176470588235294" green="0.21176470588235294" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.052509 BTC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Nq-Xx-0YW">
-                        <rect key="frame" x="251.5" y="21.5" width="103.5" height="22"/>
+                        <rect key="frame" x="251.5" y="30.5" width="103.5" height="22"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                         <color key="textColor" red="0.21176470588235294" green="0.21176470588235294" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18:30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MhC-GT-MHY">
-                        <rect key="frame" x="54" y="47.5" width="32" height="14.5"/>
+                        <rect key="frame" x="54" y="57" width="32" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="200.34 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xiz-uF-aUP">
-                        <rect key="frame" x="285" y="48" width="70" height="15"/>
+                        <rect key="frame" x="285" y="57.5" width="70" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From SuperHero with Best wishes!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofF-nW-jBI">
-                        <rect key="frame" x="54" y="73.5" width="195" height="14.5"/>
+                        <rect key="frame" x="54" y="71.5" width="195" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -67,8 +67,15 @@
                     <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="combinedShape" translatesAutoresizingMaskIntoConstraints="NO" id="xag-Zn-BqQ">
                         <rect key="frame" x="20" y="25" width="335" height="40"/>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="fJI-Gp-FnY">
+                        <rect key="frame" x="54" y="6.5" width="4.5" height="23.5"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fJI-Gp-FnY" secondAttribute="trailing" constant="10" id="5Pz-U4-fRK"/>
                     <constraint firstAttribute="trailing" secondItem="45o-xQ-dp9" secondAttribute="trailing" id="5zp-0l-I9M"/>
                     <constraint firstAttribute="trailing" secondItem="xag-Zn-BqQ" secondAttribute="trailing" constant="20" id="CM6-Qu-6c3"/>
                     <constraint firstItem="0fb-sf-7dQ" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="18/375" id="GCk-bw-NqC"/>
@@ -79,12 +86,14 @@
                     <constraint firstItem="MhC-GT-MHY" firstAttribute="leading" secondItem="HoU-C3-WIc" secondAttribute="leading" id="co3-tV-k03"/>
                     <constraint firstAttribute="bottom" secondItem="45o-xQ-dp9" secondAttribute="bottom" constant="-0.5" id="fNK-Er-mKE"/>
                     <constraint firstItem="45o-xQ-dp9" firstAttribute="leading" secondItem="ofF-nW-jBI" secondAttribute="leading" id="fXy-k9-8Xs"/>
-                    <constraint firstItem="0fb-sf-7dQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="21" id="g95-EQ-WBG"/>
-                    <constraint firstItem="ofF-nW-jBI" firstAttribute="top" secondItem="MhC-GT-MHY" secondAttribute="bottom" constant="11" id="gMY-uK-OQk"/>
+                    <constraint firstItem="0fb-sf-7dQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="30" id="g95-EQ-WBG"/>
+                    <constraint firstItem="ofF-nW-jBI" firstAttribute="top" secondItem="MhC-GT-MHY" secondAttribute="bottom" id="gMY-uK-OQk"/>
                     <constraint firstItem="MhC-GT-MHY" firstAttribute="top" secondItem="HoU-C3-WIc" secondAttribute="bottom" constant="5" id="gig-lQ-tUJ"/>
                     <constraint firstItem="HoU-C3-WIc" firstAttribute="top" secondItem="0fb-sf-7dQ" secondAttribute="top" id="gnz-ug-Pqq"/>
                     <constraint firstAttribute="trailing" secondItem="3Nq-Xx-0YW" secondAttribute="trailing" constant="20" id="jvR-cG-Hep"/>
+                    <constraint firstItem="HoU-C3-WIc" firstAttribute="top" secondItem="fJI-Gp-FnY" secondAttribute="bottom" id="kPv-5W-vZV"/>
                     <constraint firstItem="xag-Zn-BqQ" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="o9Z-tX-963"/>
+                    <constraint firstItem="fJI-Gp-FnY" firstAttribute="leading" secondItem="HoU-C3-WIc" secondAttribute="leading" id="pZ3-mQ-ONM"/>
                     <constraint firstItem="3Nq-Xx-0YW" firstAttribute="centerY" secondItem="HoU-C3-WIc" secondAttribute="centerY" id="ph8-U0-hu5"/>
                     <constraint firstItem="0fb-sf-7dQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="23" id="poW-4q-j0k"/>
                     <constraint firstItem="ofF-nW-jBI" firstAttribute="leading" secondItem="MhC-GT-MHY" secondAttribute="leading" id="tX2-Vh-XtH"/>
@@ -99,6 +108,7 @@
                 <outlet property="descriptionLabel" destination="ofF-nW-jBI" id="45Y-wM-vQz"/>
                 <outlet property="emtptyImage" destination="xag-Zn-BqQ" id="ol8-rf-3yy"/>
                 <outlet property="fiatAmountLabel" destination="Xiz-uF-aUP" id="mRG-ma-EmN"/>
+                <outlet property="nameLabel" destination="fJI-Gp-FnY" id="8fF-yg-9lv"/>
                 <outlet property="timeLabel" destination="MhC-GT-MHY" id="JMK-qS-N2o"/>
                 <outlet property="topConstraint" destination="g95-EQ-WBG" id="O0A-I0-cBf"/>
                 <outlet property="transactionImage" destination="0fb-sf-7dQ" id="QJN-da-L12"/>

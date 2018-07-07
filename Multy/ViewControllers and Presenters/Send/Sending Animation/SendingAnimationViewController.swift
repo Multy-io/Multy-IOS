@@ -16,6 +16,8 @@ class SendingAnimationViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var transactionInfoView: UIView!
     @IBOutlet weak var transactionAddressLabel: UILabel!
     @IBOutlet weak var transactionAmountLabel: UILabel!
+    @IBOutlet weak var addressNameLabel: UILabel!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     let presenter = SendingAnimationPresenter()
     
@@ -48,7 +50,20 @@ class SendingAnimationViewController: UIViewController, AnalyticsProtocol {
         if presenter.transactionAddress != nil && presenter.transactionAmount != nil {
             transactionInfoView.isHidden = false
             transactionAmountLabel.text = presenter.transactionAmount
-            transactionAddressLabel.text = presenter.transactionAddress
+            
+            let address = presenter.transactionAddress!
+            transactionAddressLabel.text = address
+            
+            let addressName = DataManager.shared.name(for: address)
+            if addressName.isEmpty {
+                addressNameLabel.isHidden = true
+                addressNameLabel.text = ""
+                bottomConstraint.constant = 20
+            } else {
+                addressNameLabel.isHidden = false
+                addressNameLabel.text = addressName
+                bottomConstraint.constant = 12
+            }
         } else {
             transactionInfoView.isHidden = true
         }

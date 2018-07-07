@@ -48,6 +48,18 @@ extension String {
             }
         }
     }
+    
+    var stringWithName: String {
+        get {
+            let addresses = DataManager.shared.savedAddresses
+            
+            if addresses[self] == nil {
+                return self
+            } else {
+                return addresses[self]! + ": " + self
+            }
+        }
+    }
 
     func createBinaryData() -> BinaryData? {
         let pointer = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
@@ -269,7 +281,7 @@ extension String {
 
 extension Wireless {
     var convertToImageIndex: UInt32 {
-        let sum = map{ char in char.asciiCode }.reduce(0, +)
+        let sum = map{ $0.asciiCode }.reduce(0, +)
         
         return sum % 20
     }

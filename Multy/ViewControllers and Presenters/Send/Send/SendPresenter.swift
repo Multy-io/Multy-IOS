@@ -119,6 +119,8 @@ class SendPresenter: NSObject {
     
     var blockActivityUpdating = false
     
+    var checkNewUserCodesCounter = 0
+    
     func filterArray() {
         if selectedActiveRequestIndex != nil  {
             let request = activeRequestsArr[selectedActiveRequestIndex!]
@@ -535,7 +537,6 @@ class SendPresenter: NSObject {
         startSearchingActiveRequests()
     }
     
-    var checkNewUserCodesCounter = 0
     @objc func checkNewUserCodes() {
         checkNewUserCodesCounter += 1
         
@@ -564,6 +565,33 @@ class SendPresenter: NSObject {
             becomeSenderForUsersWithCodes(userCodes)
             newUserCodes.removeAll()
         }
+    }
+    
+    func changeNameLabelVisibility(_ isHidden: Bool) {
+        if isHidden {
+            sendVC?.nameLabel.isHidden = true
+            sendVC?.nameLabel.text = ""
+            sendVC?.addressLabelTopConstraint.constant = 12
+        } else {
+            if isNameLabelShouldBeHidden() {
+                sendVC?.nameLabel.isHidden = true
+                sendVC?.nameLabel.text = ""
+                sendVC?.addressLabelTopConstraint.constant = 12
+            } else {
+                let address = sendVC?.selectedRequestAddressLabel.text != nil ? sendVC!.selectedRequestAddressLabel.text! : ""
+                sendVC?.nameLabel.text = DataManager.shared.name(for: address)
+                sendVC?.nameLabel.isHidden = false
+                sendVC?.addressLabelTopConstraint.constant = 20
+            }
+        }
+    }
+    
+    func isNameLabelShouldBeHidden() -> Bool {
+        guard let address = sendVC?.selectedRequestAddressLabel.text, address.isEmpty == false else {
+            return true
+        }
+        
+        return DataManager.shared.isAddressSaved(address) == false
     }
     
 //

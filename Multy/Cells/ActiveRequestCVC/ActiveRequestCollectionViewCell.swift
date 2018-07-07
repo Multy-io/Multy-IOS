@@ -8,6 +8,7 @@
 
 import UIKit
 import Lottie
+import Hash2Pics
 
 class ActiveRequestCollectionViewCell: UICollectionViewCell {
 
@@ -17,15 +18,18 @@ class ActiveRequestCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         requestImage.layer.cornerRadius = requestImage.frame.size.width/2
         requestImage.layer.masksToBounds = true
+        satisfiedImage.layer.cornerRadius = satisfiedImage.frame.size.width/2
+        satisfiedImage.layer.masksToBounds = true
     }
 
     var request : PaymentRequest!
     
     func fillInCell() {
-        requestImage.image  = UIImage(named: request!.requestImageName)
-        satisfiedImage.isHidden = !self.request.satisfied 
+        requestImage.image  = PictureConstructor().createPicture(diameter: requestImage.frame.size.width, seed: request!.sendAddress)
+        satisfiedImage.isHidden = !self.request.satisfied
     }
 }
 

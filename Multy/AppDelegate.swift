@@ -11,7 +11,7 @@ import UserNotifications
 import SwiftyStoreKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
     var presentedVC: UIViewController?
     var openedAlert: UIAlertController?
     var sharedDialog: UIActivityViewController?
@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     var window: UIWindow?
-
+    var info: [AnyHashable: Any]?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.application = application
@@ -116,6 +116,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             FirebaseApp.configure(options: options)
         }
         
+        if let option = launchOptions {
+            let notification = option[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any]
+            if notification != nil {
+                info = notification!
+            }
+        }
+        
         return true
     }
 
@@ -138,6 +145,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if dataString.hasPrefix("multy://") {
             dataString.removeSubrange(dataString.range(of: "multy://")!)
+            
+            if dataString.count == 0 {
+                return true
+            }
         }
         
         DataManager.shared.getAccount(completion: { (acc, err) in
@@ -245,6 +256,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UserDefaults.standard.set(exchangeCourse, forKey: "exchangeCourse")
         DataManager.shared.finishRealmSession()
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+//    @IBAction func scanAction(_ sender: Any) {
+//        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+//        let qrScanVC = storyboard.instantiateViewController(withIdentifier: "qrScanVC") as! QrScannerViewController
+//        qrScanVC.qrDelegate = self.presenter
+//        qrScanVC.presenter.isFast = true
+//        self.present(qrScanVC, animated: true, completion: nil)
+//        sendAnalyticsEvent(screenName: screenFastOperation, eventName: scanTap)
+//    }
+    
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        print(shortcutItem)
+        
+        UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: false)
+        let tabBar = window?.rootViewController as! CustomTabBarViewController
+        let selectedIndex = tabBar.selectedIndex
+        
+        switch shortcutItem.type {
+        case "io.multy.scanQr":
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
+            assetsVC.openQR()
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceScanQr)
+        case "io.multy.sendTo":
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
+            assetsVC.sendTransactionTo()
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceSendTransction)
+        case "io.multy.magicSend":
+            tabBar.changeViewVisibility(isHidden: true)
+            tabBar.setSelectIndex(from: selectedIndex, to: 2)
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceMagicSend)
+        case "io.multy.magicReceive":
+            tabBar.changeViewVisibility(isHidden: true)
+            tabBar.setSelectIndex(from: selectedIndex, to: 0)
+            let assetsVC = tabBar.selectedViewController?.childViewControllers[0] as! AssetsViewController
+            assetsVC.openReceive()
+            sendAnalyticsEvent(screenName: forceTouchScreenName, eventName: forceReceive)
+        default: break
+        }
     }
     
     func saveMkVersion(){
@@ -359,8 +411,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         // Messaging.messaging().appDidReceiveMessage(userInfo)
         
         // Print full message.
-        print(userInfo)
-        openTx(userInfo)
+//        print(userInfo)
+//        openTx(userInfo)
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
@@ -372,9 +424,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         // Messaging.messaging().appDidReceiveMessage(userInfo)
         
-        // Print full message.
-        print(userInfo)
-        openTx(userInfo)
+        //to avoid presenting screen while app is foreground
+        let state = UIApplication.shared.applicationState
+        if (state == .inactive || state == .background) {
+            print(userInfo)
+            openTx(userInfo)
+        } else {
+
+        }
         
         completionHandler(UIBackgroundFetchResult.newData)
     }
@@ -405,11 +462,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
 extension AppDelegate {
     //FIXME: uncomment method after implemeting push notification on backend
     func openTx(_ info: [AnyHashable: Any]) {
-//        if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
-//            let walletID = NSNumber(value: Int(walletIDString)!)
-//
-//            getTxAndPresent(with: txID, currencyID, networkID, walletID)
-//        }
+        if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
+            let walletID = NSNumber(value: Int(walletIDString)!)
+
+            getTxAndPresent(with: txID, currencyID, networkID, walletID)
+        }
     }
     
     func getTxAndPresent(with txID: String, _ currencyID: UInt32, _ networkID: Int, _ walletID: NSNumber) {
@@ -422,7 +479,7 @@ extension AppDelegate {
                     return
                 }
                 
-                let tx = history.filter{ $0.txId == txID }.first
+                let tx = history.filter{ $0.txHash == txID }.first
                 
                 guard let histObj = tx else {
                     return
