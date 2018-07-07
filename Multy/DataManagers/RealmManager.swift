@@ -478,7 +478,35 @@ class RealmManager: NSObject {
             }
             if let realm = realmOpt {
                 try! realm.write {
+                    
+                    let resultSeedPhrase = realm.objects(SeedPhraseRLM.self)
+                    realm.delete(resultSeedPhrase)
+                    
+                    let resultTopIndex = realm.objects(TopIndexRLM.self)
+                    realm.delete(resultTopIndex)
+
+                    let resultHistory = realm.objects(HistoryRLM.self)
+                    realm.delete(resultHistory)
+                    
+                    let resultExchange = realm.objects(ExchangePriceRLM.self)
+                    realm.delete(resultExchange)
+                    let resultAddress = realm.objects(AddressRLM.self)
+                    realm.delete(resultAddress)
+                    let resultWallet = realm.objects(UserWalletRLM.self)
+                    realm.delete(resultWallet)
+                    let resultOutput = realm.objects(SpendableOutputRLM.self)
+                    realm.delete(resultOutput)
+                    let resultRecent = realm.objects(RecentAddressesRLM.self)
+                    realm.delete(resultRecent)
+                    let resultExchanges = realm.objects(StockExchangeRateRLM.self)
+                    realm.delete(resultExchanges)
+                    let resultCurrency = realm.objects(CurrencyExchangeRLM.self)
+                    realm.delete(resultCurrency)
+                    let resultContacts = realm.objects(ContactRLM.self)
+                    realm.delete(resultContacts)
+                    
                     realm.deleteAll()
+                    
                     completion("ok", nil)
                 }
             }
