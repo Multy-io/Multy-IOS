@@ -56,7 +56,7 @@ class WalletPresenter: NSObject {
     }
     
     func updateHeader() {
-        walletVC!.showHidePendingSection()
+        walletVC!.showHidePendingSection(true)
         
         walletVC!.amountCryptoLbl.text = wallet!.availableAmountString
         walletVC!.nameCryptoLbl.text = wallet!.blockchain.shortName

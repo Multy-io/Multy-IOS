@@ -13,6 +13,7 @@ private typealias ScrollViewDelegate = WalletViewController
 
 class WalletViewController: UIViewController, AnalyticsProtocol {
 
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var pendingStack: UIStackView!
     @IBOutlet weak var navigationHeaderView: UIView!
@@ -33,10 +34,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     //
     
     @IBOutlet weak var adressWithBtnView: UIView!
+    @IBOutlet weak var addressButtonsStackView: UIStackView!
     @IBOutlet weak var addressLbl: UILabel!
     @IBOutlet weak var shareAddressBtn: UIButton!
     @IBOutlet weak var showAddressesBtn: UIButton!
-    @IBOutlet weak var tablesHeaderView: UIView!
     @IBOutlet weak var backupView: UIView!
     @IBOutlet weak var assetsTransactionsBtnsView: UIView!
     @IBOutlet weak var assetsBtn: UIButton!
@@ -51,39 +52,86 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     @IBOutlet weak var actionsBtnsView: UIView!
     @IBOutlet weak var gradientView: UIView!
+    @IBOutlet weak var infoHolderView: UIView!
     
     // Constraints Section
     @IBOutlet weak var pendingSectionHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var pendingSeparatorWidthConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var backupViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var assetsTansactionsHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var assetsTableTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomGradientHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var assetsTransactionsTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var underlineViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableHolderViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var infoHolderTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomGradientConstant: NSLayoutConstraint!
-    
-    @IBOutlet weak var tableHeaderTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var availableTopConstraint: NSLayoutConstraint!
-    
-    
     
     var presenter = WalletPresenter()
     
     var isAssets = true
     
-    var spaceBetweenTablesHeaderNavigationHeader: CGFloat = 373 // For pending
-    
     var visibleCells = 5
     
-    var isCanUpdate = true
+    var isCanUpdate = true {
+        didSet {
+            if isCanUpdate == true && tableHolderViewHeight < tablesHolderBottomEdge {
+                setTableHolderPosition()
+            }
+        }
+    }
+    
+    var isViewDidAppear = false
+    
+    var tablesHolderTopEdge: CGFloat {
+        return contentHeight - (navigationHeaderView.frame.origin.y + navigationHeaderView.frame.size.height)
+    }
+    
+    var tablesHolderBottomEdge: CGFloat = 0 {
+        didSet {
+            if oldValue != tablesHolderBottomEdge {
+                tableHolderViewHeight = tablesHolderBottomEdge
+            }
+        }
+    }
+    
+    var tablesHolderFlipEdge: CGFloat {
+        return contentHeight - (infoHolderView.frame.origin.y + infoHolderView.frame.size.height / 2 )
+    }
+    
+    var contentHeight : CGFloat {
+        return self.contentView.frame.size.height
+    }
+    
+    var tableHolderViewHeight : CGFloat = 0 {
+        didSet {
+            if oldValue != tableHolderViewHeight {
+                var infoHolderTopSpace : CGFloat = 0
+                if tableHolderViewHeight < tablesHolderBottomEdge {
+                    infoHolderTopSpace = tablesHolderBottomEdge - tableHolderViewHeight
+                }
+                infoHolderTopConstraint.constant = infoHolderTopSpace
+                if infoHolderTopSpace >= 40 {
+                    if !spiner.isAnimating {
+                        spiner.startAnimating()
+                    }
+                } else {
+                    if spiner.isAnimating {
+                        spiner.stopAnimating()
+                    }
+                }
+ 
+                tableHolderViewHeightConstraint.constant = tableHolderViewHeight
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter.walletVC = self
         presenter.registerCells()
-        
-        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,11 +141,16 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         presenter.updateUI()
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         
-        setTableToBottom()
         
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        isViewDidAppear = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -107,7 +160,11 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     override func viewDidLayoutSubviews() {
-        tablesHeaderView.roundCorners(corners: [.topLeft, .topRight], radius: 10)
+        super.viewDidLayoutSubviews()
+        
+        if !isViewDidAppear {
+            setupUI()
+        }
     }
     
     @objc func updateExchange() {
@@ -115,37 +172,24 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func setupUI() {
-        let gestureRecognizer3 = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
-        addRecognizersToTable()
-        view.addGestureRecognizer(gestureRecognizer3)
-        
         checkConstraints()
         makeGradientForBottom()
-        setupTransactionAssetsBtns()
+        setupTransactionAssetsBtns(false)
         
         //------------  WARNING  ------------//
         setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
         // ------------  WARNING  ------------
        
-//        hideBackup()
         setupAddressBtns()
         
-        showHidePendingSection()
+        showHidePendingSection(false)
         
         checkForBackup()
         
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
         assetsTable.contentInset = makeTableInset()
         transactionsTable.contentInset = makeTableInset()
-    }
-    
-    func addRecognizersToTable() {
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
-        let gestureRecognizer2 = UIPanGestureRecognizer(target: self, action: #selector(dragTable))
-        if assetsTable.gestureRecognizers?.count == 5 || transactionsTable.gestureRecognizers?.count == 5 {
-            assetsTable.addGestureRecognizer(gestureRecognizer)
-            transactionsTable.addGestureRecognizer(gestureRecognizer2)
-        }
+        tablesHolderBottomEdge = contentHeight - (infoHolderView.frame.origin.y + infoHolderView.frame.size.height)
     }
     
     func checkConstraints() {
@@ -166,24 +210,25 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         gradientView.layer.addSublayer(gradientLayer)
     }
     
-    func setupTransactionAssetsBtns() {
+    func setupTransactionAssetsBtns(_ animated: Bool) {
         if isAssets {
             transactionsBtn.setTitleColor(#colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1), for: .normal)
             assetsBtn.setTitleColor(#colorLiteral(red: 0.2117647059, green: 0.2117647059, blue: 0.2117647059, alpha: 1), for: .normal)
             assetsTableTrailingConstraint.constant = 0
-            UIView.animate(withDuration: 0.2) {
-                self.underlineView.frame.origin.x = 16
-                self.view.layoutIfNeeded()
-            }
-            
+            underlineViewLeadingConstraint.constant = (assetsBtn.frame.size.width - underlineView.frame.size.width) / 2
         } else {
             transactionsBtn.setTitleColor(#colorLiteral(red: 0.2117647059, green: 0.2117647059, blue: 0.2117647059, alpha: 1), for: .normal)
             assetsBtn.setTitleColor(#colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1), for: .normal)
             assetsTableTrailingConstraint.constant = -screenWidth
+            underlineViewLeadingConstraint.constant = assetsBtn.frame.size.width + (transactionsBtn.frame.size.width - underlineView.frame.size.width) / 2
+        }
+        
+        if animated {
             UIView.animate(withDuration: 0.2) {
-                self.underlineView.frame.origin.x = screenWidth - self.underlineView.frame.width - 16
                 self.view.layoutIfNeeded()
             }
+        } else {
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -199,15 +244,14 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func hideBackup() {
-        backupViewHeightConstraint.constant = 0
+        assetsTransactionsTopConstraint.constant = 20
         backupView.isHidden = true
     }
     
     func setupAddressBtns() {
         if presenter.wallet!.blockchain == BLOCKCHAIN_ETHEREUM {
-            shareAddressBtn.frame.origin.x = screenWidth/2 - shareAddressBtn.frame.size.width/2
+            addressButtonsStackView.removeArrangedSubview(showAddressesBtn)
             showAddressesBtn.isHidden = true
-            view.layoutIfNeeded()
         }
     }
     
@@ -226,20 +270,25 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         return 0
     }
     
-    func showHidePendingSection() {
+    func showHidePendingSection(_ animated: Bool) {
         let isNeedToShow = presenter.wallet!.isThereBlockedAmount
         
         if isNeedToShow {
             pendingSectionView.isHidden = !isNeedToShow
         }
-        spaceBetweenTablesHeaderNavigationHeader = isNeedToShow ? 397 : 327
         pendingSeparatorWidthConstraint.constant = isNeedToShow ? 150 : 0
         pendingSectionHeightConstraint.constant = isNeedToShow ? 70 : 0
         pendingStack.isHidden = !isNeedToShow
-        UIView.animate(withDuration: 0.2, animations: {
-            self.view.layoutIfNeeded()
-        }) { (isEnd) in
+        
+        if animated {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.view.layoutIfNeeded()
+            }) { (isEnd) in
+                self.pendingSectionView.isHidden = !isNeedToShow
+            }
+        } else {
             self.pendingSectionView.isHidden = !isNeedToShow
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -265,6 +314,31 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
         
         return UIEdgeInsets(top: topInset, left: 0, bottom: bottomGradientHeightConstraint.constant, right: 0)
+    }
+    
+    func setTableHolderPosition() {
+        var tableHolderViewHeight = self.tableHolderViewHeight
+        if tableHolderViewHeight < tablesHolderBottomEdge {
+            tableHolderViewHeight = tablesHolderBottomEdge
+        } else {
+            if tableHolderViewHeight > tablesHolderFlipEdge {
+                tableHolderViewHeight = tablesHolderTopEdge
+            } else {
+                tableHolderViewHeight = tablesHolderBottomEdge
+            }
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.tableHolderViewHeight = tableHolderViewHeight
+        }
+    }
+    
+    func updateWalletsAfterDragging() {
+        UIView.animate(withDuration: 0.3) {
+            self.tableHolderViewHeight = self.tablesHolderBottomEdge - 40
+        }
+        
+        presenter.getHistoryAndWallet()
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -301,12 +375,12 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     @IBAction func assetsAction(_ sender: Any) {
         isAssets = true
-        setupTransactionAssetsBtns()
+        setupTransactionAssetsBtns(true)
     }
     
     @IBAction func transactionsAction(_ sender: Any) {
         isAssets = false
-        setupTransactionAssetsBtns()
+        setupTransactionAssetsBtns(true)
     }
 
     @IBAction func sendAction(_ sender: Any) {
@@ -481,105 +555,6 @@ extension TableViewDataSource: UITableViewDataSource {
     }
 }
 
-
-extension AnimationSection {
-    func setTableToBottom() {
-//        tablesHeaderView.frame.origin.y = adressWithBtnView.frame.maxY + 36 // constraint between TablesHeader and address Btn
-        assetsTable.scrollToTop()
-        transactionsTable.scrollToTop()
-        tableHeaderTopConstraint.constant = 36 //default value
-        animateLayout()
-        addRecognizersToTable()
-    }
-    
-    func setTableToTop() {
-        //if pending -273
-        //else -203
-        spiner.stopAnimating()
-        tableHeaderTopConstraint.constant = presenter.wallet!.isThereBlockedAmount ? -273 : -203 // check for pending
-        animateLayout()
-        if transactionsTable.gestureRecognizers?.count == 6 {
-            transactionsTable.gestureRecognizers?.removeLast()
-        }
-    }
-    
-    func setDefaultState() {
-        availableTopConstraint.constant = 26 //default value
-        animateLayout()
-    }
-    
-    @IBAction func dragTable(_ gestureRecognizer: UIPanGestureRecognizer) {
-        let translation = gestureRecognizer.translation(in: self.view)
-//        let tablesHeaderY = tablesHeaderView.frame.origin.y
-        // check is table on top
-//        if tablesHeaderY + translation.y < navigationHeaderView.frame.maxY {
-//            if tablesHeaderY + translation.y > 80 {
-//
-//            } else {
-//                //setTableToTop()
-//                //                if self.presenter.numberOfTransactions() > 5 {
-//                //                    self.tableView.removeGestureRecognizer(recog!)
-//            }
-//        }
-        
-        
-        if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
-            var transY = translation.y > 200 ? translation.y : translation.y/2
-            if translation.y > 0 && tableHeaderTopConstraint.constant >= 36 { //36 defult value for constant
-                // show spiner
-                
-                transY = transY > 270 ? transY : transY/2
-                self.changeSectionsY(transY: transY)
-                if availableTopConstraint.constant > 52 {
-                    spiner.startAnimating()
-                    presenter.getHistoryAndWallet()
-                    isCanUpdate = false
-                }
-            } else {
-                changeTablesHeight(transY: transY)
-                tableHeaderTopConstraint.constant = tableHeaderTopConstraint.constant + transY
-            }
-            
-            if translation.x > 0 && translation.y/translation.x < 1/2 && translation.y/translation.x > -1/2 && (translation.x * translation.x + translation.y * translation.y) > 1000 {
-                backAction(Any.self)
-            }
-            gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
-        }
-        
-        if gestureRecognizer.state == .ended {
-            if tablesHeaderView.frame.origin.y > spaceBetweenTablesHeaderNavigationHeader / 2 + 120 {
-                setDefaultState()
-                setTableToBottom()
-            } else { // if tablesHeaderView.frame.origin.y < spaceBetweenTablesHeaderNavigationHeader / 2
-                setTableToTop()
-            }
-        }
-    }
-    
-    func changeTablesHeight(transY: CGFloat) {
-        assetsTable.frame.size.height = assetsTable.frame.size.height - transY
-//        assetsTable.center = CGPoint(x: self.view.center.x, y:assetsTable.center.y + transY)
-        
-        transactionsTable.frame.size.height = transactionsTable.frame.size.height - transY
-//        transactionsTable.center = CGPoint(x: self.view.center.x, y:transactionsTable.center.y + transY)
-    }
-    
-    func changeSectionsY(transY: CGFloat) {
-//        tableHeaderTopConstraint.constant = tableHeaderTopConstraint.constant + transY
-        availableTopConstraint.constant = availableTopConstraint.constant + transY
-        animateLayout()
-        
-//        backupView.frame.origin.y = tablesHeaderView.frame.maxY
-//        assetsTransactionsBtnsView.frame.origin.y = backupView.frame.maxY
-    }
-    
-    func animateLayout() {
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
-        }
-    }
-}
-
 extension CancelDelegate : CancelProtocol {
     func cancelAction() {
         makePurchaseFor(productId: "io.multy.addingExchange5")
@@ -596,11 +571,43 @@ extension CancelDelegate : CancelProtocol {
 
 extension ScrollViewDelegate: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y <= -20 {
-            setTableToBottom()
-            transactionsTable.scrollToRow(at: [0,0], at: .top, animated: false)
-            assetsTable.scrollToRow(at: [0,0], at: .top, animated: true)
+        var tableHolderViewHeight = self.tableHolderViewHeight
+        
+        if tableHolderViewHeight < tablesHolderTopEdge {
+            if tableHolderViewHeight < tablesHolderBottomEdge {
+                if scrollView.contentOffset.y < 0 {
+                    tableHolderViewHeight += scrollView.contentOffset.y / 3
+                } else {
+                    tableHolderViewHeight += scrollView.contentOffset.y
+                }
+            } else {
+                tableHolderViewHeight += scrollView.contentOffset.y
+                tableHolderViewHeight = tableHolderViewHeight > tablesHolderTopEdge ? tablesHolderTopEdge : tableHolderViewHeight
+            }
+            
+            if scrollView.contentOffset.y > 0 {
+                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+            }
+            
+            self.tableHolderViewHeight = tableHolderViewHeight
+        } else {
+            if scrollView.contentOffset.y < 0 {
+                tableHolderViewHeight += scrollView.contentOffset.y
+                self.tableHolderViewHeight = tableHolderViewHeight
+            }
         }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if tableHolderViewHeight < tablesHolderBottomEdge - 40 {
+            updateWalletsAfterDragging()
+        } else {
+            setTableHolderPosition()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        setTableHolderPosition()
     }
 }
 
