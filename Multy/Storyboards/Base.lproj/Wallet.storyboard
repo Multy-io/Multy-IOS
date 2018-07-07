@@ -1262,7 +1262,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91J-wu-geI">
-                                                <rect key="frame" x="139" y="4" width="99" height="38"/>
+                                                <rect key="frame" x="76" y="0.0" width="241" height="44"/>
                                                 <connections>
                                                     <action selector="titleAction:" destination="KLb-lE-n1e" eventType="touchUpInside" id="xer-DE-TSh"/>
                                                 </connections>
@@ -1270,23 +1270,23 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="91J-wu-geI" firstAttribute="leading" secondItem="obI-jq-bPP" secondAttribute="leading" id="4iR-vH-yzk"/>
+                                            <constraint firstAttribute="bottom" secondItem="91J-wu-geI" secondAttribute="bottom" id="2IV-8G-CWB"/>
                                             <constraint firstAttribute="bottom" secondItem="feu-hn-1gj" secondAttribute="bottom" id="8TI-hc-G23"/>
+                                            <constraint firstItem="0hh-xw-DNt" firstAttribute="leading" secondItem="91J-wu-geI" secondAttribute="trailing" constant="16" id="CnV-0f-VDf"/>
                                             <constraint firstItem="0hh-xw-DNt" firstAttribute="centerY" secondItem="obI-jq-bPP" secondAttribute="centerY" id="Cw6-eb-HXz"/>
                                             <constraint firstItem="feu-hn-1gj" firstAttribute="leading" secondItem="sgo-Sb-5VU" secondAttribute="leading" id="D0B-XX-DT0"/>
                                             <constraint firstItem="feu-hn-1gj" firstAttribute="top" secondItem="sgo-Sb-5VU" secondAttribute="top" id="Eow-eX-GKb"/>
                                             <constraint firstItem="obI-jq-bPP" firstAttribute="centerX" secondItem="sgo-Sb-5VU" secondAttribute="centerX" id="GsS-1L-fAq"/>
                                             <constraint firstItem="D5f-iZ-t4o" firstAttribute="centerY" secondItem="sgo-Sb-5VU" secondAttribute="centerY" id="JZH-qG-9cj"/>
-                                            <constraint firstItem="91J-wu-geI" firstAttribute="trailing" secondItem="obI-jq-bPP" secondAttribute="trailing" id="KvP-DU-s01"/>
                                             <constraint firstItem="D5f-iZ-t4o" firstAttribute="leading" secondItem="sgo-Sb-5VU" secondAttribute="leading" constant="9" id="MAh-pe-jly"/>
                                             <constraint firstItem="bM7-D6-kiZ" firstAttribute="leading" secondItem="0hh-xw-DNt" secondAttribute="leading" constant="-21" id="Sl7-fT-4rD"/>
-                                            <constraint firstItem="91J-wu-geI" firstAttribute="bottom" secondItem="obI-jq-bPP" secondAttribute="bottom" id="Vr7-a3-TZ3"/>
                                             <constraint firstAttribute="trailing" secondItem="bM7-D6-kiZ" secondAttribute="trailing" id="Zui-AR-rdr"/>
                                             <constraint firstItem="obI-jq-bPP" firstAttribute="centerY" secondItem="D5f-iZ-t4o" secondAttribute="centerY" id="cff-kG-H5q"/>
                                             <constraint firstAttribute="bottom" secondItem="obI-jq-bPP" secondAttribute="bottom" constant="2.5" id="fCM-ii-uR2"/>
-                                            <constraint firstItem="91J-wu-geI" firstAttribute="top" secondItem="obI-jq-bPP" secondAttribute="top" id="hiN-Gg-M2u"/>
+                                            <constraint firstItem="91J-wu-geI" firstAttribute="leading" secondItem="feu-hn-1gj" secondAttribute="trailing" constant="16" id="leo-Z4-PBT"/>
                                             <constraint firstAttribute="trailing" secondItem="0hh-xw-DNt" secondAttribute="trailing" constant="17" id="o2l-cl-bEe"/>
                                             <constraint firstItem="bM7-D6-kiZ" firstAttribute="top" secondItem="0hh-xw-DNt" secondAttribute="top" constant="-13" id="qO3-fa-9pd"/>
+                                            <constraint firstItem="91J-wu-geI" firstAttribute="top" secondItem="sgo-Sb-5VU" secondAttribute="top" id="qOg-H9-Yys"/>
                                             <constraint firstAttribute="height" constant="44" id="u68-qc-yK7"/>
                                             <constraint firstItem="bM7-D6-kiZ" firstAttribute="bottom" secondItem="0hh-xw-DNt" secondAttribute="bottom" constant="13" id="ynb-Z6-sxU"/>
                                         </constraints>
@@ -1422,10 +1422,10 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ISH-Gm-oNb">
-                                                        <rect key="frame" x="79" y="28.5" width="218" height="34"/>
+                                                        <rect key="frame" x="58" y="28.5" width="260" height="34"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Jb-Vr-nch">
-                                                                <rect key="frame" x="0.0" y="0.0" width="105" height="34"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="126" height="34"/>
                                                                 <color key="backgroundColor" red="0.14901960784313725" green="0.65098039215686276" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="34" id="cYc-yL-j8o"/>
@@ -1451,11 +1451,11 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8RE-29-d1G">
-                                                                <rect key="frame" x="113" y="0.0" width="105" height="34"/>
+                                                                <rect key="frame" x="134" y="0.0" width="126" height="34"/>
                                                                 <color key="backgroundColor" red="0.14901960780000001" green="0.65098039220000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <state key="normal">
                                                                     <attributedString key="attributedTitle">
-                                                                        <fragment content="Show all addresses">
+                                                                        <fragment content=" Show all addresses      ">
                                                                             <attributes>
                                                                                 <color key="NSColor" red="0.78823529411764703" green="0.9137254901960784" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <font key="NSFont" size="12" name="AvenirNext-Regular"/>

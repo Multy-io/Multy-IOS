@@ -96,6 +96,12 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    var infoHolderViewHeigth: CGFloat = 0 {
+        didSet {
+            updateTablesHolderBottomEdge()
+        }
+    }
+    
     var tablesHolderFlipEdge: CGFloat {
         return contentHeight - (infoHolderView.frame.origin.y + infoHolderView.frame.size.height / 2 )
     }
@@ -124,6 +130,15 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
  
                 tableHolderViewHeightConstraint.constant = tableHolderViewHeight
                 self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    var pendingSectionHeight : CGFloat = 70 {
+        didSet {
+            if oldValue != pendingSectionHeight {
+                pendingSectionHeightConstraint.constant = pendingSectionHeight
+                infoHolderViewHeigth = infoHolderViewHeigth + (pendingSectionHeight - oldValue)
             }
         }
     }
@@ -158,6 +173,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self)
+        isViewDidAppear = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -190,7 +206,13 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         actionsBtnsView.setShadow(with: #colorLiteral(red: 0, green: 0.2705882353, blue: 0.5607843137, alpha: 0.15))
         assetsTable.contentInset = makeTableInset()
         transactionsTable.contentInset = makeTableInset()
-        tablesHolderBottomEdge = contentHeight - (infoHolderView.frame.origin.y + infoHolderView.frame.size.height)
+        infoHolderViewHeigth = infoHolderView.frame.size.height
+    }
+    
+    func updateTablesHolderBottomEdge() {
+        UIView.animate(withDuration: 0.2) {
+            self.tablesHolderBottomEdge = self.contentHeight - (self.infoHolderView.frame.origin.y + self.infoHolderViewHeigth)
+        }
     }
     
     func checkConstraints() {
@@ -278,7 +300,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             pendingSectionView.isHidden = !isNeedToShow
         }
         pendingSeparatorWidthConstraint.constant = isNeedToShow ? 150 : 0
-        pendingSectionHeightConstraint.constant = isNeedToShow ? 70 : 0
+        pendingSectionHeight = isNeedToShow ? 70 : 0
         pendingStack.isHidden = !isNeedToShow
         
         if animated {
