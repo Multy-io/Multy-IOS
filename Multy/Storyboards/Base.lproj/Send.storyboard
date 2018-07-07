@@ -886,21 +886,21 @@ scan</string>
                                     <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hsW-S6-RIt">
                                         <rect key="frame" x="297" y="0.0" width="78" height="64"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToSend1" translatesAutoresizingMaskIntoConstraints="NO" id="v4V-sq-xzZ">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToDecline1" translatesAutoresizingMaskIntoConstraints="NO" id="v4V-sq-xzZ">
                                                 <rect key="frame" x="0.0" y="21" width="13" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="13" id="O7a-cf-8Ma"/>
                                                     <constraint firstAttribute="height" constant="22" id="ecn-s1-RGg"/>
                                                 </constraints>
                                             </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToSend2" translatesAutoresizingMaskIntoConstraints="NO" id="JLq-pk-16w">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToDecline2" translatesAutoresizingMaskIntoConstraints="NO" id="JLq-pk-16w">
                                                 <rect key="frame" x="16" y="21" width="13" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="13" id="SqH-D8-61c"/>
                                                     <constraint firstAttribute="height" constant="22" id="l0p-OG-0Hh"/>
                                                 </constraints>
                                             </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToSend3" translatesAutoresizingMaskIntoConstraints="NO" id="TRL-7S-4BH">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToDecline3" translatesAutoresizingMaskIntoConstraints="NO" id="TRL-7S-4BH">
                                                 <rect key="frame" x="32" y="21" width="13" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="22" id="Q9L-Fc-V05"/>
@@ -2816,6 +2816,9 @@ address</string>
         <image name="qrIconGray" width="22" height="22"/>
         <image name="remove_cross_alt" width="14" height="14"/>
         <image name="sendTipArrow" width="20" height="8"/>
+        <image name="slideToDecline1" width="13" height="22"/>
+        <image name="slideToDecline2" width="13" height="22"/>
+        <image name="slideToDecline3" width="13" height="22"/>
         <image name="slideToSend1" width="13" height="22"/>
         <image name="slideToSend2" width="13" height="22"/>
         <image name="slideToSend3" width="13" height="22"/>
