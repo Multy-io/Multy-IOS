@@ -22,6 +22,7 @@ private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, origin
 }
 
 extension Localizable where Self: UIViewController, Self: Localizable {
+
     func presentAlert(with message: String?) {
         let alert = UIAlertController(title: localize(string: Constants.errorString), message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
@@ -240,4 +241,6 @@ extension UIViewController {
             }
         }
     }
+    
+    
 }
