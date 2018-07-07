@@ -53,10 +53,10 @@ extension String {
         get {
             let addresses = DataManager.shared.savedAddresses
             
-            if addresses?.addresses[self] == nil {
+            if addresses[self] == nil {
                 return self
             } else {
-                return addresses!.addresses[self]! + ": " + self
+                return addresses[self]! + ": " + self
             }
         }
     }

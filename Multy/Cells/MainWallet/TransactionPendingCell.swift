@@ -29,7 +29,7 @@ class TransactionPendingCell: UITableViewCell {
     }
     
     func fillAddressAndName() {
-        var savedAddresses = DataManager.shared.savedAddresses?.addresses
+        var savedAddresses = DataManager.shared.savedAddresses
         var address = String()
         
         switch wallet!.blockchainType.blockchain {
@@ -53,7 +53,7 @@ class TransactionPendingCell: UITableViewCell {
             return
         }
         
-        if savedAddresses != nil, let name = savedAddresses![address] {
+        if let name = savedAddresses[address] {
             nameLabel.text = name
         } else {
             nameLabel.text = ""

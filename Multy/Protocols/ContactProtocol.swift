@@ -51,23 +51,27 @@ extension ContactsProtocol {
     }
     
     func deleteContact(_ contactID: String, _ completion: @escaping(_ result: ContactOperationResult) -> ()) {
-        getContactFromID(Identifires: [contactID], completionHandler: { (result) in
-            switch result {
-            case .Success(response: let contacts):
-                if contacts.count == 0 {
-                    return
-                }
-                
-                self.deleteAddressesFromContact(contacts.first!, { (result) in
-                    completion(result)
+        requestAccess { (responce) in
+            if responce {
+                getContactFromID(Identifires: [contactID], completionHandler: { (result) in
+                    switch result {
+                    case .Success(response: let contacts):
+                        if contacts.count == 0 {
+                            return
+                        }
+                        
+                        self.deleteAddressesFromContact(contacts.first!, { (result) in
+                            completion(result)
+                        })
+                        break
+                    case .Error(error: let error):
+                        print(error)
+                        completion(ContactOperationResult.Error(error: error))
+                        break
+                    }
                 })
-                break
-            case .Error(error: let error):
-                print(error)
-                completion(ContactOperationResult.Error(error: error))
-                break
             }
-        })
+        }
     }
     
     fileprivate func deleteAddressesFromContact(_ contact: CNContact, _ completion: @escaping(_ result: ContactOperationResult) -> ()) {
@@ -88,43 +92,51 @@ extension ContactsProtocol {
     }
     
     func updateContactInfo(_ contactID: String, withAddress address: String?, _ currencyID: UInt32?, _ networkID: UInt32?, _ completion: @escaping(_ result: ContactsFetchResult) -> ()) {
-        getContactFromID(Identifires: [contactID], completionHandler: { (result) in
-            switch result {
-            case .Success(response: let contacts):
-                if contacts.count == 0 {
-                    return
-                }
-                
-                print(contacts.first!)
-                self.updateContactInfo(contacts.first!, with: address, currencyID, networkID, completion)
-                break
-            case .Error(error: let error):
-                print(error)
-                completion(result)
-                break
+        requestAccess { (responce) in
+            if responce {
+                getContactFromID(Identifires: [contactID], completionHandler: { (result) in
+                    switch result {
+                    case .Success(response: let contacts):
+                        if contacts.count == 0 {
+                            return
+                        }
+                        
+                        print(contacts.first!)
+                        self.updateContactInfo(contacts.first!, with: address, currencyID, networkID, completion)
+                        break
+                    case .Error(error: let error):
+                        print(error)
+                        completion(result)
+                        break
+                    }
+                })
             }
-        })
+        }
     }
     
     func deleteAddress(_ address: String, from contactID: String, _ completion: @escaping(_ result: ContactOperationResult) -> ()) {
-        getContactFromID(Identifires: [contactID], completionHandler: { (result) in
-            switch result {
-            case .Success(response: let contacts):
-                if contacts.count == 0 {
-                    return
-                }
-                
-                print(contacts.first!)
-                self.deleteAddress(address, from: contacts.first!, { (result) in
-                    completion(result)
+        requestAccess { (responce) in
+            if responce {
+                getContactFromID(Identifires: [contactID], completionHandler: { (result) in
+                    switch result {
+                    case .Success(response: let contacts):
+                        if contacts.count == 0 {
+                            return
+                        }
+                        
+                        print(contacts.first!)
+                        self.deleteAddress(address, from: contacts.first!, { (result) in
+                            completion(result)
+                        })
+                        break
+                    case .Error(error: let error):
+                        print(error)
+                        completion(ContactOperationResult.Error(error: error))
+                        break
+                    }
                 })
-                break
-            case .Error(error: let error):
-                print(error)
-                completion(ContactOperationResult.Error(error: error))
-                break
             }
-        })
+        }
     }
     
     fileprivate func updateContactInfo(_ contact: CNContact, with address: String?, _ currencyID: UInt32?, _ networkID: UInt32?, _ completion: @escaping(_ result: ContactsFetchResult) -> ()) {
@@ -238,7 +250,8 @@ extension ContactsProtocol {
         
         DispatchQueue.main.async {
             let contacts = EPContact.initFromArray(multyContacts)
-            SavedAddressesRLM().mapAddressesAndSave(contacts)
+//            SavedAddressesRLM().mapAddressesAndSave(contacts)
+            DataManager.shared.mapAddressesAndSave(contacts)
         }
     }
 }

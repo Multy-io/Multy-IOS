@@ -25,3 +25,13 @@ func viewControllerFrom(_ storyboardName: String, _ vcIdentifier: String) -> UIV
     
     return vc
 }
+
+func saveAddressesToUD(_ addresses: [String: String]) {
+    UserDefaults.standard.set(addresses, forKey: "savedAddresses")
+}
+
+func fetchAddressesFromUD() -> [String: String] {
+    let addresses = UserDefaults.standard.dictionary(forKey: "savedAddresses") as? [String: String]
+    
+    return addresses == nil ? [String: String]() : addresses!
+}

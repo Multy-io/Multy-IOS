@@ -109,7 +109,7 @@ class TransactionWalletCell: UITableViewCell {
             return
         }
         
-        if let name = savedAddresses?.addresses[address] {
+        if let name = savedAddresses[address] {
             nameLabel.text = name
             changeTopConstraint(true)
         } else {

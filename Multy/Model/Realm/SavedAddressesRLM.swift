@@ -27,7 +27,7 @@ class SavedAddressesRLM: Object {
                 let data = try JSONSerialization.data(withJSONObject: newValue, options: [])
                 addressesData = data
                 
-                DataManager.shared.updateSavedAddresses(self) { _ in }
+//                DataManager.shared.updateSavedAddresses(self) { _ in }
             } catch {
                 addressesData = nil
             }
@@ -35,7 +35,7 @@ class SavedAddressesRLM: Object {
     }
     
     func mapAddressesAndSave(_ contacts: [EPContact]) {
-        var localAddresses = Dictionary<String, String>()
+        var localAddresses = [String: String]()
         
         for contact in contacts {
             for addressRLM in contact.addresses {

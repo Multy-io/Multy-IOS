@@ -755,7 +755,9 @@ class RealmManager: NSObject {
                     completion(realm.objects(SavedAddressesRLM.self).first, nil)
                 }
             } else {
-                completion(nil, error)
+                let savedAddresses = SavedAddressesRLM()
+                savedAddresses.addresses = [String: String]()
+                completion(savedAddresses, error)
             }
         }
     }

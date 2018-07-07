@@ -24,9 +24,9 @@ class RecentAddressTableViewCell: UITableViewCell {
         addressLbl.text = recentAddress.address
         cryptoImage.image = UIImage(named: blockchainType.iconString)
         
-        let addresses = DataManager.shared.savedAddresses?.addresses
+        let addresses = DataManager.shared.savedAddresses
         
-        if addresses != nil, let name = addresses![recentAddress.address] {
+        if let name = addresses[recentAddress.address] {
             addressNameLbl.text = name
             topConstraint.constant = 14
         } else {
