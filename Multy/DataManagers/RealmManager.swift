@@ -482,11 +482,17 @@ class RealmManager: NSObject {
                     let resultSeedPhrase = realm.objects(SeedPhraseRLM.self)
                     realm.delete(resultSeedPhrase)
                     
+                    let resultAccount = realm.objects(AccountRLM.self)
+                    realm.delete(resultAccount)
+                    
                     let resultTopIndex = realm.objects(TopIndexRLM.self)
                     realm.delete(resultTopIndex)
 
                     let resultHistory = realm.objects(HistoryRLM.self)
                     realm.delete(resultHistory)
+                    
+                    let resultTxHistory = realm.objects(TxHistoryRLM.self)
+                    realm.delete(resultTxHistory)
                     
                     let resultExchange = realm.objects(ExchangePriceRLM.self)
                     realm.delete(resultExchange)
