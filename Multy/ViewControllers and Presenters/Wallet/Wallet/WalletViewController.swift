@@ -69,7 +69,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     var presenter = WalletPresenter()
     
-    var isAssets = true
+    //FIXME: set true when add assets functionality
+    var isAssets = false
     
     var visibleCells = 5
     
@@ -333,12 +334,29 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    func setInitialTableHolderPosition() {
+        let tableView = isAssets ? assetsTable : transactionsTable
+        tableView?.setContentOffset(CGPoint.zero, animated: false)
+        UIView.animate(withDuration: 0.3, animations: {
+            self.tableHolderViewHeight = self.tablesHolderBottomEdge
+            
+        }) { (succeeded) in
+            
+        }
+    }
+    
     func updateWalletsAfterDragging() {
         UIView.animate(withDuration: 0.3) {
             self.tableHolderViewHeight = self.tablesHolderBottomEdge - 40
         }
         
         presenter.getHistoryAndWallet()
+    }
+    
+    @IBAction func titleAction(_ sender: Any) {
+        if tableHolderViewHeight == tablesHolderTopEdge {
+            setInitialTableHolderPosition()
+        }
     }
     
     @IBAction func backAction(_ sender: Any) {
