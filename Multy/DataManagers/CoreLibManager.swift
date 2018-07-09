@@ -156,8 +156,8 @@ class CoreLibManager: NSObject {
             addressPublicKeyPointer.deallocate()
             publicKeyStringPointer.deallocate()
         }
-
-        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, walletID, newAccountPointer)
+        
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, walletID, newAccountPointer)
         if mHDa != nil {
             _ = errorString(from: mHDa, mask: "make_hd_account")
             
@@ -245,7 +245,7 @@ class CoreLibManager: NSObject {
             newAddressPointer.deallocate()
         }
         
-        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, walletID, newAccountPointer)
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, walletID, newAccountPointer)
         if mHDa != nil {
             _ = errorString(from: mHDa!, mask: "mHDa")
             
@@ -330,7 +330,7 @@ class CoreLibManager: NSObject {
             publicKeyStringPointer.deallocate()
         }
         
-        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, walletID, newAccountPointer)
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, walletID, newAccountPointer)
         if mHDa != nil {
             _ = errorString(from: mHDa!, mask: "make_hd_account")
             
@@ -681,9 +681,10 @@ class CoreLibManager: NSObject {
             return nil
         }
         
-        defer { free_error(opaquePointer) }
-        
         let pointer = UnsafeMutablePointer<MultyError>(opaquePointer)
+        
+        defer { free_error(pointer) }
+        
         let errorString = String(cString: pointer.pointee.message)
         
         print("\(mask): \(errorString))")
@@ -790,7 +791,7 @@ extension TestCoreLibManager {
         let publicKeyStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
         
         let blockchain = BlockchainType.create(currencyID: BLOCKCHAIN_BITCOIN.rawValue, netType: BITCOIN_NET_TYPE_MAINNET.rawValue)
-        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, UInt32(0), newAccountPointer)
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, UInt32(0), newAccountPointer)
         print("make_hd_account: \(mHDa)")
         
         if mHDa != nil {

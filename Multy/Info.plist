@@ -34,9 +34,9 @@
 	<key>CFBundleVersion</key>
 	<string>51</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>master</string>
+	<string>MUL-1708</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>24a177d3</string>
+	<string>7345defb</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_1.0.0-dirty</string>
 	<key>LSRequiresIPhoneOS</key>

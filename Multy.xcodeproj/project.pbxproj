@@ -22,6 +22,7 @@
 		4448DCC720C8333100CE80CB /* LocalLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448DCC620C8333100CE80CB /* LocalLanguage.swift */; };
 		444B3B652045723C008129B8 /* BigInt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444B3B642045723C008129B8 /* BigInt+Extension.swift */; };
 		4453507B20D14E21004F8DAE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4453507D20D14E21004F8DAE /* Localizable.strings */; };
+		4456964920F391FE00B0C496 /* libccan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4456964820F391FD00B0C496 /* libccan.a */; };
 		445B127020BC1BA800FD0D33 /* SeedPhrase.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127220BC1BA800FD0D33 /* SeedPhrase.storyboard */; };
 		445B127320BC1BB100FD0D33 /* Receive.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127520BC1BB100FD0D33 /* Receive.storyboard */; };
 		445B127620BC1BD000FD0D33 /* Wallet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127820BC1BD000FD0D33 /* Wallet.storyboard */; };
@@ -360,6 +361,7 @@
 		4453507C20D14E21004F8DAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4453508020D14E43004F8DAE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4453508120D14E47004F8DAE /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4456964820F391FD00B0C496 /* libccan.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libccan.a; sourceTree = "<group>"; };
 		445B127120BC1BA800FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SeedPhrase.storyboard; sourceTree = "<group>"; };
 		445B127420BC1BB100FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Receive.storyboard; sourceTree = "<group>"; };
 		445B127720BC1BD000FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Wallet.storyboard; sourceTree = "<group>"; };
@@ -774,6 +776,7 @@
 			files = (
 				85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */,
 				FA4125DF2004C0FD00DF9AC3 /* libstdc++.tbd in Frameworks */,
+				4456964920F391FE00B0C496 /* libccan.a in Frameworks */,
 				FA4125EE2004FF1500DF9AC3 /* libkeccak-tiny.a in Frameworks */,
 				FA4125EF2004FF1500DF9AC3 /* libmulty_core.a in Frameworks */,
 				4538BDCC2099E69900573426 /* StoreKit.framework in Frameworks */,
@@ -1891,6 +1894,7 @@
 				FA4125E82004FF1400DF9AC3 /* libmini-gmp.a */,
 				FA4125E72004FF1300DF9AC3 /* libmulty_core.a */,
 				FA4125EA2004FF1400DF9AC3 /* libsecp256k1.a */,
+				4456964820F391FD00B0C496 /* libccan.a */,
 				7304C17824311A19240183E0 /* Pods_Multy.framework */,
 				B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */,
 				572DB9D15F9362827245CF67 /* Pods_Multy_MultyUITests.framework */,
