@@ -95,6 +95,8 @@ class WalletPresenter: NSObject {
                         return firstDate > secondDate
                     })
                     self.isSocketInitiateUpdating = false
+                    
+                    self.updateHeader()
                 }
             }
         }
