@@ -4,6 +4,7 @@
 
 import Foundation
 import RealmSwift
+import Realm
 
 extension DataManager {
     func writeSeedPhrase(_ seedPhrase : String, completion: @escaping (_ error: NSError?) -> ()) {
@@ -47,6 +48,24 @@ extension DataManager {
         realmManager.updateAccount(accountDict) { (account, error) in
             completion(account, error)
         }
+    }
+    
+    func isThereDefaultRealmFile() -> Bool {
+        let fileManager = FileManager.default
+        let realmPath = RLMRealmPathForFile("default.realm")
+        
+        let url = try! fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: URL(string: realmPath), create: false)
+        if let enumerator = fileManager.enumerator(at: url, includingPropertiesForKeys: nil) {
+            while let fileURL = enumerator.nextObject() as? URL {
+                if fileURL.absoluteString.hasSuffix("default.realm") {
+                    return true
+                }
+            }
+            
+            return false
+        }
+        
+        return false
     }
     
     func clearDB(completion: @escaping (_ error: NSError?) -> ()) {

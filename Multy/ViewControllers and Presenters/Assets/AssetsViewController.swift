@@ -171,6 +171,10 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
         self.isFirstLaunch = false
         
         self.updateUI()
+        
+        if presenter.account == nil {
+            let _ = presentTermsOfService()
+        }
     }
     
     override func viewDidLayoutSubviews() {

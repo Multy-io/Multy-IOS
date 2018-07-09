@@ -25,6 +25,17 @@ class RealmManager: NSObject {
         realm = nil
     }
     
+    func getCurrentRealmName(_ pass: Data) -> String {
+        if DataManager.shared.isThereDefaultRealmFile() {
+            return "default.realm"
+        } else {
+            let hash = pass.bytes.sha3(.keccak512).data.hexEncodedString()
+            let nameSuffix = String(hash.suffix(8))
+            
+            return  "default_" + nameSuffix + ".realm"
+        }
+    }
+    
     public func getRealm(completion: @escaping (_ realm: Realm?, _ error: NSError?) -> ()) {
         if realm != nil {
             completion(realm!, nil)
@@ -39,8 +50,7 @@ class RealmManager: NSObject {
                 return
             }
             
-            let nameSuffix = String(pass!.hexEncodedString().suffix(8))
-            let realmName = "default_" + nameSuffix + ".realm"
+            let realmName = self.getCurrentRealmName(pass!)
             
             let realmConfig = Realm.Configuration(fileURL: URL(fileURLWithPath: RLMRealmPathForFile(realmName), isDirectory: false),
                                                   encryptionKey: pass,
