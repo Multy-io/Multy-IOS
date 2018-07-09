@@ -406,12 +406,8 @@ extension TableViewDelegate: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == transactionsTable {
-            if indexPath.row < presenter.transactionDataSource.count && presenter.isTherePendingMoney(for: indexPath) {
-                return 135
-            } else {
-                return 70
-            }
-        } else {
+            return presenter.makeHeightForTableCells(indexPath: indexPath)
+        } else { // if tableView == tokensTable
             return 70
         }
     }
@@ -422,40 +418,41 @@ extension TableViewDataSource: UITableViewDataSource {
         let countOfHistObjs = presenter.transactionDataSource.count
         
         if tableView == transactionsTable {
-            let multiSigCell = tableView.dequeueReusableCell(withIdentifier: "multiSigPendingCell") as! MultiSigPendingTableViewCell
-            multiSigCell.setupCell()
-            return multiSigCell
-//            if indexPath.row < countOfHistObjs && presenter.isTherePendingMoney(for: indexPath) {
-//                let pendingTrasactionCell = tableView.dequeueReusableCell(withIdentifier: "TransactionPendingCellID") as! TransactionPendingCell
-//                pendingTrasactionCell.selectionStyle = .none
-//                pendingTrasactionCell.histObj = presenter.transactionDataSource[indexPath.row]
-//                pendingTrasactionCell.wallet = presenter.wallet
-//                pendingTrasactionCell.fillCell()
-//
-//                return pendingTrasactionCell
-//            } else {
-//                let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
-//                transactionCell.selectionStyle = .none
-//                if countOfHistObjs > 0 {
-//                    if indexPath.row >= countOfHistObjs {
-//                        transactionCell.changeState(isEmpty: true)
-//                    } else {
-//                        transactionCell.histObj = presenter.transactionDataSource[indexPath.row]
-//                        transactionCell.wallet = presenter.wallet!
-//                        transactionCell.fillCell()
-//                        transactionCell.changeState(isEmpty: false)
-//                        hideEmptyLbls()
-//                        if indexPath.row != 1 {
-//                            transactionCell.changeTopConstraint()
-//                        }
-//                    }
-//                } else {
-//                    transactionCell.changeState(isEmpty: true)
-//                    //                    fixForiPad()
-//                }
-//
-//                return transactionCell
-//            }
+            // MULTI SIG CELL
+//            let multiSigCell = tableView.dequeueReusableCell(withIdentifier: "multiSigPendingCell") as! MultiSigPendingTableViewCell
+//            return multiSigCell
+
+            if indexPath.row < countOfHistObjs && presenter.isTherePendingMoney(for: indexPath) {
+                let pendingTrasactionCell = tableView.dequeueReusableCell(withIdentifier: "TransactionPendingCellID") as! TransactionPendingCell
+                pendingTrasactionCell.selectionStyle = .none
+                pendingTrasactionCell.histObj = presenter.transactionDataSource[indexPath.row]
+                pendingTrasactionCell.wallet = presenter.wallet
+                pendingTrasactionCell.fillCell()
+                
+                return pendingTrasactionCell
+            } else {
+                let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
+                transactionCell.selectionStyle = .none
+                if countOfHistObjs > 0 {
+                    if indexPath.row >= countOfHistObjs {
+                        transactionCell.changeState(isEmpty: true)
+                    } else {
+                        transactionCell.histObj = presenter.transactionDataSource[indexPath.row]
+                        transactionCell.wallet = presenter.wallet!
+                        transactionCell.fillCell()
+                        transactionCell.changeState(isEmpty: false)
+                        hideEmptyLbls()
+                        if indexPath.row != 1 {
+                            transactionCell.changeTopConstraint()
+                        }
+                    }
+                } else {
+                    transactionCell.changeState(isEmpty: true)
+                    //                    fixForiPad()
+                }
+                
+                return transactionCell
+            }
         } else {
             let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
             

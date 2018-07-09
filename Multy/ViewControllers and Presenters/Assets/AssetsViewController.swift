@@ -733,4 +733,3 @@ extension LocalizeDelegate: Localizable {
         return "Assets"
     }
 }
-
