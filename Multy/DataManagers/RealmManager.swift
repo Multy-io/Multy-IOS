@@ -4,6 +4,7 @@
 
 import UIKit
 import RealmSwift
+import Realm
 
 private typealias RealmMigrationManager = RealmManager
 
@@ -14,6 +15,7 @@ class RealmManager: NSObject {
     let schemaVersion : UInt64 = 22
     
     var account: AccountRLM?
+    var config: Realm.Configuration?
     
     private override init() {
         super.init()
@@ -23,6 +25,17 @@ class RealmManager: NSObject {
         realm = nil
     }
     
+    func getCurrentRealmName(_ pass: Data) -> String {
+        if DataManager.shared.isThereDefaultRealmFile() {
+            return "default.realm"
+        } else {
+            let hash = pass.bytes.sha3(.keccak512).data.hexEncodedString()
+            let nameSuffix = String(hash.suffix(8))
+            
+            return  "default_" + nameSuffix + ".realm"
+        }
+    }
+    
     public func getRealm(completion: @escaping (_ realm: Realm?, _ error: NSError?) -> ()) {
         if realm != nil {
             completion(realm!, nil)
@@ -30,69 +43,74 @@ class RealmManager: NSObject {
             return
         }
         
-        UserPreferences.shared.getAndDecryptDatabasePassword { [weak self] (pass, error) in
+        UserPreferences.shared.getAndDecryptDatabasePassword { [unowned self] (pass, error) in
             guard pass != nil else {
                 completion(nil, nil)
                 
                 return
             }
             
-            let realmConfig = Realm.Configuration(encryptionKey: pass,
-                                                  schemaVersion: self!.schemaVersion,
+            let realmName = self.getCurrentRealmName(pass!)
+            
+            let realmConfig = Realm.Configuration(fileURL: URL(fileURLWithPath: RLMRealmPathForFile(realmName), isDirectory: false),
+                                                  encryptionKey: pass,
+                                                  schemaVersion: self.schemaVersion,
                                                   migrationBlock: { migration, oldSchemaVersion in
                                                     if oldSchemaVersion < 7 {
-                                                        self!.migrateFrom6To7(with: migration)
+                                                        self.migrateFrom6To7(with: migration)
                                                     }
                                                     if oldSchemaVersion < 8 {
-                                                        self!.migrateFrom7To8(with: migration)
+                                                        self.migrateFrom7To8(with: migration)
                                                     }
                                                     if oldSchemaVersion < 9 {
-                                                        self!.migrateFrom8To9(with: migration)
+                                                        self.migrateFrom8To9(with: migration)
                                                     }
                                                     if oldSchemaVersion < 10 {
-                                                        self!.migrateFrom9To10(with: migration)
+                                                        self.migrateFrom9To10(with: migration)
                                                     }
                                                     if oldSchemaVersion < 11 {
-                                                        self!.migrateFrom10To11(with: migration)
+                                                        self.migrateFrom10To11(with: migration)
                                                     }
                                                     if oldSchemaVersion < 12 {
-                                                        self!.migrateFrom11To12(with: migration)
+                                                        self.migrateFrom11To12(with: migration)
                                                     }
                                                     if oldSchemaVersion < 13 {
-                                                        self!.migrateFrom12To13(with: migration)
+                                                        self.migrateFrom12To13(with: migration)
                                                     }
                                                     if oldSchemaVersion < 14 {
-                                                        self!.migrateFrom13To14(with: migration)
+                                                        self.migrateFrom13To14(with: migration)
                                                     }
                                                     if oldSchemaVersion < 15 {
-                                                        self!.migrateFrom14To15(with: migration)
+                                                        self.migrateFrom14To15(with: migration)
                                                     }
                                                     if oldSchemaVersion < 16 {
-                                                        self!.migrateFrom15To16(with: migration)
+                                                        self.migrateFrom15To16(with: migration)
                                                     }
                                                     if oldSchemaVersion < 17 {
-                                                        self!.migrateFrom16To17(with: migration)
+                                                        self.migrateFrom16To17(with: migration)
                                                     }
                                                     if oldSchemaVersion < 18 {
-                                                        self!.migrateFrom17To18(with: migration)
+                                                        self.migrateFrom17To18(with: migration)
                                                     }
                                                     if oldSchemaVersion < 19 {
-                                                        self!.migrateFrom18To19(with: migration)
+                                                        self.migrateFrom18To19(with: migration)
                                                     }
                                                     if oldSchemaVersion < 20 {
-                                                        self!.migrateFrom19To20(with: migration)
+                                                        self.migrateFrom19To20(with: migration)
                                                     }
                                                     if oldSchemaVersion < 21 {
-                                                        self!.migrateFrom20To21(with: migration)
+                                                        self.migrateFrom20To21(with: migration)
                                                     }
                                                     if oldSchemaVersion <= 22 {
-                                                        self!.migrateFrom21To22(with: migration)
+                                                        self.migrateFrom21To22(with: migration)
                                                     }
             })
             
+            self.config = realmConfig
+            
             do {
-                let realm = try Realm(configuration: realmConfig)
-                self!.realm = realm
+                let realm = try Realm(configuration: self.config!)
+                self.realm = realm
                 
                 completion(realm, nil)
             } catch let error as NSError {
@@ -167,6 +185,13 @@ class RealmManager: NSObject {
         getRealm { [weak self] (realmOpt, error) in
             if let realm = realmOpt {
                 let account = realm.object(ofType: AccountRLM.self, forPrimaryKey: 1)
+                
+                //avoid creating account
+                if account == nil && accountDict["token"] != nil && accountDict.allKeys.count == 1 {
+                    completion(nil, nil)
+                    
+                    return
+                }
                 
                 try! realm.write {
                     //replace old value if exists
@@ -472,7 +497,41 @@ class RealmManager: NSObject {
             }
             if let realm = realmOpt {
                 try! realm.write {
+                    
+                    let resultSeedPhrase = realm.objects(SeedPhraseRLM.self)
+                    realm.delete(resultSeedPhrase)
+                    
+                    let resultAccount = realm.objects(AccountRLM.self)
+                    realm.delete(resultAccount)
+                    
+                    let resultTopIndex = realm.objects(TopIndexRLM.self)
+                    realm.delete(resultTopIndex)
+
+                    let resultHistory = realm.objects(HistoryRLM.self)
+                    realm.delete(resultHistory)
+                    
+                    let resultTxHistory = realm.objects(TxHistoryRLM.self)
+                    realm.delete(resultTxHistory)
+                    
+                    let resultExchange = realm.objects(ExchangePriceRLM.self)
+                    realm.delete(resultExchange)
+                    let resultAddress = realm.objects(AddressRLM.self)
+                    realm.delete(resultAddress)
+                    let resultWallet = realm.objects(UserWalletRLM.self)
+                    realm.delete(resultWallet)
+                    let resultOutput = realm.objects(SpendableOutputRLM.self)
+                    realm.delete(resultOutput)
+                    let resultRecent = realm.objects(RecentAddressesRLM.self)
+                    realm.delete(resultRecent)
+                    let resultExchanges = realm.objects(StockExchangeRateRLM.self)
+                    realm.delete(resultExchanges)
+                    let resultCurrency = realm.objects(CurrencyExchangeRLM.self)
+                    realm.delete(resultCurrency)
+                    let resultContacts = realm.objects(ContactRLM.self)
+                    realm.delete(resultContacts)
+                    
                     realm.deleteAll()
+                    
                     completion("ok", nil)
                 }
             }

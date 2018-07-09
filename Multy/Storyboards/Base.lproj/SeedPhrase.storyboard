@@ -206,7 +206,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="01" translatesAutoresizingMaskIntoConstraints="NO" id="pgs-ef-H1K">
-                                <rect key="frame" x="52" y="115" width="270" height="40"/>
+                                <rect key="frame" x="52.5" y="115" width="270" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="EI3-3A-XA9"/>
                                     <constraint firstAttribute="width" constant="270" id="pCR-Dj-EXK"/>
@@ -332,7 +332,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="06" translatesAutoresizingMaskIntoConstraints="NO" id="VoS-64-Gwe">
-                                <rect key="frame" x="52" y="139" width="270" height="40"/>
+                                <rect key="frame" x="52.5" y="139" width="270" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="1yg-Zm-XNF"/>
                                     <constraint firstAttribute="width" constant="270" id="76C-oU-Quk"/>
@@ -552,7 +552,7 @@ Your wallet is protected!</string>
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="done" translatesAutoresizingMaskIntoConstraints="NO" id="vmu-HR-7AY">
-                                <rect key="frame" x="128.5" y="294.5" width="117" height="117"/>
+                                <rect key="frame" x="129" y="294.5" width="117" height="117"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="117" id="8Xt-nX-rbi"/>
                                     <constraint firstAttribute="height" constant="117" id="GI4-LG-hWh"/>
@@ -637,7 +637,7 @@ Seed Phrase!</string>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="error" translatesAutoresizingMaskIntoConstraints="NO" id="abo-WQ-T1q">
-                                <rect key="frame" x="135.5" y="281.5" width="103" height="103"/>
+                                <rect key="frame" x="136" y="281.5" width="103" height="103"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="abo-WQ-T1q" secondAttribute="height" multiplier="1:1" id="v7u-G8-XKe"/>
                                 </constraints>
