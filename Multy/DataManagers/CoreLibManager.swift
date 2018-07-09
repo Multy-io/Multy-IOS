@@ -940,7 +940,7 @@ extension EthereumCoreLibManager {
         let tgp = transaction_get_properties(transactionPointer.pointee!, accountProperties)
         
         setAmountValue(key: "nonce", value: "\(nonce)", pointer: accountProperties.pointee!)
-        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
+//        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
         
         //balance
         let transactionSource = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
@@ -950,7 +950,7 @@ extension EthereumCoreLibManager {
         //destination
         let transactionDestination = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
         let tas2 = transaction_add_destination(transactionPointer.pointee, transactionDestination)
-        setAmountValue(key: "amount", value: sendAmountString, pointer: transactionDestination.pointee!) //10^15 wei
+        setAmountValue(key: "amount", value: sendAmountString, pointer: transactionDestination.pointee!)
         setStringValue(key: "address", value: sendAddress, pointer: transactionDestination.pointee!)
 //        setBinaryDataValue(key: "address", value: sendAddress, pointer: transactionDestination.pointee!)
         
@@ -970,7 +970,7 @@ extension EthereumCoreLibManager {
             
             print("tSer: \(errrString))")
             
-            defer { pointer?.deallocate(capacity: 1) }
+            defer { pointer?.deallocate() }
             
             return (errrString, false)
         }
