@@ -89,6 +89,8 @@
 		45409456203348DD00603DB5 /* EntranceSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45409455203348DD00603DB5 /* EntranceSettingsPresenter.swift */; };
 		45409459203352B800603DB5 /* PinCodePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45409458203352B800603DB5 /* PinCodePresenter.swift */; };
 		4540945B203352CC00603DB5 /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4540945A203352CC00603DB5 /* PinCodeViewController.swift */; };
+		4540B23820F4FB5D00F28C77 /* JoinMultiSigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4540B23720F4FB5D00F28C77 /* JoinMultiSigViewController.swift */; };
+		4540B23A20F4FB7000F28C77 /* JoinMultiSigPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4540B23920F4FB7000F28C77 /* JoinMultiSigPresenter.swift */; };
 		45498F932061662A00130B94 /* CurrencyExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45498F922061662A00130B94 /* CurrencyExchange.swift */; };
 		45498F952061698800130B94 /* CurrencyExchangeRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45498F942061698800130B94 /* CurrencyExchangeRLM.swift */; };
 		454A9D7C20067E530035966F /* HistoryRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454A9D7B20067E530035966F /* HistoryRLM.swift */; };
@@ -515,6 +517,8 @@
 		45409455203348DD00603DB5 /* EntranceSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntranceSettingsPresenter.swift; sourceTree = "<group>"; };
 		45409458203352B800603DB5 /* PinCodePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodePresenter.swift; sourceTree = "<group>"; };
 		4540945A203352CC00603DB5 /* PinCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeViewController.swift; sourceTree = "<group>"; };
+		4540B23720F4FB5D00F28C77 /* JoinMultiSigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMultiSigViewController.swift; sourceTree = "<group>"; };
+		4540B23920F4FB7000F28C77 /* JoinMultiSigPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMultiSigPresenter.swift; sourceTree = "<group>"; };
 		45498F922061662A00130B94 /* CurrencyExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyExchange.swift; sourceTree = "<group>"; };
 		45498F942061698800130B94 /* CurrencyExchangeRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyExchangeRLM.swift; sourceTree = "<group>"; };
 		454A9D7B20067E530035966F /* HistoryRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRLM.swift; sourceTree = "<group>"; };
@@ -985,6 +989,15 @@
 			path = PinCode;
 			sourceTree = "<group>";
 		};
+		4540B23620F4FB1100F28C77 /* ScanInviteCode */ = {
+			isa = PBXGroup;
+			children = (
+				4540B23720F4FB5D00F28C77 /* JoinMultiSigViewController.swift */,
+				4540B23920F4FB7000F28C77 /* JoinMultiSigPresenter.swift */,
+			);
+			path = ScanInviteCode;
+			sourceTree = "<group>";
+		};
 		455CDCED1FC8338100EA5ACE /* Sending Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1000,6 +1013,7 @@
 				4585BD24204961CA004542AE /* ActionSheetCreatingWallet */,
 				455CDCF51FC8490700EA5ACE /* WalletInfo */,
 				45344AC220E658300039DF30 /* CreateMultiSig */,
+				4540B23620F4FB1100F28C77 /* ScanInviteCode */,
 			);
 			path = "Creating wallet";
 			sourceTree = "<group>";
@@ -2497,9 +2511,11 @@
 				45E148A8204553AF006BD4D1 /* DonationAlertViewController.swift in Sources */,
 				455CDCEF1FC833A500EA5ACE /* SendingAnimationViewController.swift in Sources */,
 				44FB26C0205A6D5600F208EB /* ChooseBlockchainProtocol.swift in Sources */,
+				4540B23820F4FB5D00F28C77 /* JoinMultiSigViewController.swift in Sources */,
 				45D7890B20ECF776001AB402 /* MembersViewController.swift in Sources */,
 				45F42C841FDC081400210B1F /* IsJailbroken.swift in Sources */,
 				44768AA720D0015600FA9C28 /* ContactProtocol.swift in Sources */,
+				4540B23A20F4FB7000F28C77 /* JoinMultiSigPresenter.swift in Sources */,
 				455CDCF11FC833C700EA5ACE /* SendingAnimationPresenter.swift in Sources */,
 				458C8B0220724B2D00B8D71B /* UIScrollView+Extension.swift in Sources */,
 				45B5CCAD1FDACF3C0069BD46 /* LogoTableViewCell.swift in Sources */,
