@@ -39,6 +39,9 @@ class HistoryRLM: Object {
     var walletInput = List<UserWalletRLM>()
     var walletOutput = List<UserWalletRLM>()
     
+    @objc dynamic var isMultisigTx = true
+    @objc dynamic var isWaitingConfirmation = true
+    
     override static func ignoredProperties() -> [String] {
         return ["addressesArray"]
     }

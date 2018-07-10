@@ -252,6 +252,8 @@
 		85741D8520B45E8B0093933B /* circle_grow.json in Resources */ = {isa = PBXBuildFile; fileRef = 85741D8420B45E8A0093933B /* circle_grow.json */; };
 		85741D8720B555DB0093933B /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85741D8620B555DB0093933B /* BLEManager.swift */; };
 		85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85741D8820B55A650093933B /* CoreBluetooth.framework */; };
+		859C7B1220F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7B1120F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift */; };
+		859C7B1420F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B1320F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib */; };
 		85DE62DD20AB002000423D89 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DC20AB002000423D89 /* SendViewController.swift */; };
 		85DE62DF20AB003A00423D89 /* SendPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DE20AB003A00423D89 /* SendPresenter.swift */; };
 		85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62E120AB077B00423D89 /* WalletCollectionViewCell.swift */; };
@@ -683,6 +685,8 @@
 		85741D8420B45E8A0093933B /* circle_grow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = circle_grow.json; sourceTree = "<group>"; };
 		85741D8620B555DB0093933B /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
 		85741D8820B55A650093933B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		859C7B1120F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationStatusCollectionViewCell.swift; sourceTree = "<group>"; };
+		859C7B1320F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmationStatusCollectionViewCell.xib; sourceTree = "<group>"; };
 		85DE62DC20AB002000423D89 /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
 		85DE62DE20AB003A00423D89 /* SendPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPresenter.swift; sourceTree = "<group>"; };
 		85DE62E120AB077B00423D89 /* WalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1569,6 +1573,7 @@
 		45B9CB041FBB4B6600AA2A31 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				859C7B1020F4D3A8002EA215 /* ConfirmationStatusCVC */,
 				44AAAE1120E258BA00A481A4 /* ContactCell */,
 				85DE62E520AC1CD000423D89 /* ActiveRequestCVC */,
 				85DE62E020AB074100423D89 /* WalletCVC */,
@@ -1712,6 +1717,15 @@
 				45F8CD48208F393C00DEB495 /* TermsOfServicePresenter.swift */,
 			);
 			path = TermsOfService;
+			sourceTree = "<group>";
+		};
+		859C7B1020F4D3A8002EA215 /* ConfirmationStatusCVC */ = {
+			isa = PBXGroup;
+			children = (
+				859C7B1120F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift */,
+				859C7B1320F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib */,
+			);
+			path = ConfirmationStatusCVC;
 			sourceTree = "<group>";
 		};
 		85DE62DB20AAFFE700423D89 /* Send */ = {
@@ -2093,6 +2107,7 @@
 				4474C5B020BFE60600EA8B01 /* Contacts.strings in Resources */,
 				4522905F1FBB18D30024B550 /* LaunchScreen.storyboard in Resources */,
 				4522905C1FBB18D30024B550 /* Assets.xcassets in Resources */,
+				859C7B1420F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib in Resources */,
 				FA4D43FF1FC6D058003C7117 /* TransactionWalletCell.xib in Resources */,
 				445B129420BC1CE700FD0D33 /* TransactionFeeTableViewCell.xib in Resources */,
 				45ECDBD7203D9E77009FD339 /* LICENSE in Resources */,
@@ -2465,6 +2480,7 @@
 				44768AA720D0015600FA9C28 /* ContactProtocol.swift in Sources */,
 				455CDCF11FC833C700EA5ACE /* SendingAnimationPresenter.swift in Sources */,
 				458C8B0220724B2D00B8D71B /* UIScrollView+Extension.swift in Sources */,
+				859C7B1220F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift in Sources */,
 				45B5CCAD1FDACF3C0069BD46 /* LogoTableViewCell.swift in Sources */,
 				FA58DF5F1FDC3FB800C45303 /* BricksView.swift in Sources */,
 				4506F1741FD9A2E700D575BA /* WalletSettingsPresenter.swift in Sources */,
