@@ -844,6 +844,130 @@ scan</string>
             </objects>
             <point key="canvasLocation" x="9" y="770"/>
         </scene>
+        <!--Double Slide View Controller-->
+        <scene sceneID="Z1W-2t-bry">
+            <objects>
+                <viewController storyboardIdentifier="doubleSlideView" id="Pfb-NK-z4R" customClass="DoubleSlideViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="U58-N4-DCW"/>
+                        <viewControllerLayoutGuide type="bottom" id="d2L-Vz-g7H"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QGZ-89-Kja">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VQm-2h-4LC">
+                                <rect key="frame" x="0.0" y="603" width="375" height="64"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Slide to Send" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SDl-uz-uUZ">
+                                        <rect key="frame" x="132.5" y="19.5" width="110" height="25"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
+                                        <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jiX-qd-s0W">
+                                        <rect key="frame" x="0.0" y="0.0" width="78" height="64"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToSend1" translatesAutoresizingMaskIntoConstraints="NO" id="8oq-fN-uBC">
+                                                <rect key="frame" x="33" y="21" width="13" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="13" id="F9p-0F-oUD"/>
+                                                    <constraint firstAttribute="height" constant="22" id="WwO-p5-XLf"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToSend2" translatesAutoresizingMaskIntoConstraints="NO" id="8nm-Io-dYh">
+                                                <rect key="frame" x="49" y="21" width="13" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="13" id="6Sm-IJ-Quf"/>
+                                                    <constraint firstAttribute="height" constant="22" id="d9X-5X-LP6"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToSend3" translatesAutoresizingMaskIntoConstraints="NO" id="p2R-Bk-bcx">
+                                                <rect key="frame" x="65" y="21" width="13" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="13" id="C9g-hn-y29"/>
+                                                    <constraint firstAttribute="height" constant="22" id="CkX-2J-gtU"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="8oq-fN-uBC" firstAttribute="centerY" secondItem="jiX-qd-s0W" secondAttribute="centerY" id="BVa-Xy-lYx"/>
+                                            <constraint firstItem="8nm-Io-dYh" firstAttribute="centerY" secondItem="jiX-qd-s0W" secondAttribute="centerY" id="GTb-5j-378"/>
+                                            <constraint firstAttribute="trailing" secondItem="p2R-Bk-bcx" secondAttribute="trailing" id="MqX-eN-9EJ"/>
+                                            <constraint firstItem="8nm-Io-dYh" firstAttribute="leading" secondItem="8oq-fN-uBC" secondAttribute="trailing" constant="3" id="VQF-OR-fY2"/>
+                                            <constraint firstItem="p2R-Bk-bcx" firstAttribute="centerY" secondItem="jiX-qd-s0W" secondAttribute="centerY" id="g2Q-ya-sEV"/>
+                                            <constraint firstAttribute="width" constant="78" id="mnI-yg-3H9"/>
+                                            <constraint firstItem="p2R-Bk-bcx" firstAttribute="leading" secondItem="8nm-Io-dYh" secondAttribute="trailing" constant="3" id="uZe-N5-hNk"/>
+                                        </constraints>
+                                    </view>
+                                    <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hsW-S6-RIt">
+                                        <rect key="frame" x="297" y="0.0" width="78" height="64"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToDecline1" translatesAutoresizingMaskIntoConstraints="NO" id="v4V-sq-xzZ">
+                                                <rect key="frame" x="0.0" y="21" width="13" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="13" id="O7a-cf-8Ma"/>
+                                                    <constraint firstAttribute="height" constant="22" id="ecn-s1-RGg"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToDecline2" translatesAutoresizingMaskIntoConstraints="NO" id="JLq-pk-16w">
+                                                <rect key="frame" x="16" y="21" width="13" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="13" id="SqH-D8-61c"/>
+                                                    <constraint firstAttribute="height" constant="22" id="l0p-OG-0Hh"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slideToDecline3" translatesAutoresizingMaskIntoConstraints="NO" id="TRL-7S-4BH">
+                                                <rect key="frame" x="32" y="21" width="13" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="22" id="Q9L-Fc-V05"/>
+                                                    <constraint firstAttribute="width" constant="13" id="jA4-aS-X76"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="v4V-sq-xzZ" firstAttribute="leading" secondItem="hsW-S6-RIt" secondAttribute="leading" id="GbH-XL-Bul"/>
+                                            <constraint firstItem="JLq-pk-16w" firstAttribute="leading" secondItem="v4V-sq-xzZ" secondAttribute="trailing" constant="3" id="PoC-Dc-Yt8"/>
+                                            <constraint firstItem="JLq-pk-16w" firstAttribute="centerY" secondItem="hsW-S6-RIt" secondAttribute="centerY" id="YCE-wE-pq0"/>
+                                            <constraint firstAttribute="width" constant="78" id="YaW-lF-dRi"/>
+                                            <constraint firstItem="TRL-7S-4BH" firstAttribute="centerY" secondItem="hsW-S6-RIt" secondAttribute="centerY" id="eUj-dg-Fgn"/>
+                                            <constraint firstItem="TRL-7S-4BH" firstAttribute="leading" secondItem="JLq-pk-16w" secondAttribute="trailing" constant="3" id="eXa-m0-P7e"/>
+                                            <constraint firstItem="v4V-sq-xzZ" firstAttribute="centerY" secondItem="hsW-S6-RIt" secondAttribute="centerY" id="tGz-wc-n7c"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0078431372550000003" green="0.69803921570000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="hsW-S6-RIt" firstAttribute="top" secondItem="VQm-2h-4LC" secondAttribute="top" id="0Vb-je-6Ig"/>
+                                    <constraint firstItem="jiX-qd-s0W" firstAttribute="leading" secondItem="VQm-2h-4LC" secondAttribute="leading" id="0rF-Sv-4PU"/>
+                                    <constraint firstItem="SDl-uz-uUZ" firstAttribute="centerX" secondItem="VQm-2h-4LC" secondAttribute="centerX" id="3UT-Be-53y"/>
+                                    <constraint firstItem="jiX-qd-s0W" firstAttribute="top" secondItem="VQm-2h-4LC" secondAttribute="top" id="EMI-a7-txs"/>
+                                    <constraint firstAttribute="bottom" secondItem="jiX-qd-s0W" secondAttribute="bottom" id="H5j-c9-ugS"/>
+                                    <constraint firstItem="SDl-uz-uUZ" firstAttribute="centerY" secondItem="VQm-2h-4LC" secondAttribute="centerY" id="HPE-3M-31W"/>
+                                    <constraint firstAttribute="trailing" secondItem="hsW-S6-RIt" secondAttribute="trailing" id="Jch-eA-43h"/>
+                                    <constraint firstAttribute="bottom" secondItem="hsW-S6-RIt" secondAttribute="bottom" id="Sgb-4w-RfV"/>
+                                    <constraint firstItem="jiX-qd-s0W" firstAttribute="centerY" secondItem="VQm-2h-4LC" secondAttribute="centerY" id="Yy7-Az-veI"/>
+                                    <constraint firstAttribute="height" constant="64" id="tG8-8e-njg"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="VQm-2h-4LC" secondAttribute="trailing" id="Hme-Oy-c07"/>
+                            <constraint firstItem="d2L-Vz-g7H" firstAttribute="top" secondItem="VQm-2h-4LC" secondAttribute="bottom" id="XXs-NR-dmX"/>
+                            <constraint firstItem="VQm-2h-4LC" firstAttribute="leading" secondItem="QGZ-89-Kja" secondAttribute="leading" id="ozR-JX-V0J"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="acceptSlideView" destination="jiX-qd-s0W" id="Hgg-qF-jXy"/>
+                        <outlet property="declineSlideView" destination="hsW-S6-RIt" id="Gr8-W6-p9c"/>
+                        <outlet property="slideTextLbl" destination="SDl-uz-uUZ" id="yqE-wT-cd7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E9t-n7-RAe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="857" y="770"/>
+        </scene>
         <!--Custom Fee View Controller-->
         <scene sceneID="Tq0-BY-Ni9">
             <objects>
@@ -2717,6 +2841,9 @@ address</string>
         <image name="qrIconGray" width="22" height="22"/>
         <image name="remove_cross_alt" width="14" height="14"/>
         <image name="sendTipArrow" width="20" height="8"/>
+        <image name="slideToDecline1" width="13" height="22"/>
+        <image name="slideToDecline2" width="13" height="22"/>
+        <image name="slideToDecline3" width="13" height="22"/>
         <image name="slideToSend1" width="13" height="22"/>
         <image name="slideToSend2" width="13" height="22"/>
         <image name="slideToSend3" width="13" height="22"/>
