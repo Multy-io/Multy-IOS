@@ -191,7 +191,18 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         self.updateUI()
         
         if presenter.account == nil {
-            let _ = presentTermsOfService()
+            view.isUserInteractionEnabled = false
+            
+            DataManager.shared.isAccountExists { [unowned self] in
+                if !$0 {
+                    DispatchQueue.main.async { [unowned self] in
+                        let _ = self.presentTermsOfService()
+                        self.view.isUserInteractionEnabled = true
+                    }
+                } else {
+                    self.view.isUserInteractionEnabled = true
+                }
+            }
         }
     }
     

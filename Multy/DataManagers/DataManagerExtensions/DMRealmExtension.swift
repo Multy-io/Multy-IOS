@@ -44,6 +44,13 @@ extension DataManager {
         }
     }
     
+    func isAccountExists(completion: @escaping (_ isExists: Bool) -> ()) {
+        realmManager.getAccount { (acc, err) in
+            completion(acc != nil)
+        }
+    }
+
+    
     func updateAccount(_ accountDict: NSDictionary, completion: @escaping (_ account : AccountRLM?, _ error: NSError?) -> ()) {
         realmManager.updateAccount(accountDict) { (account, error) in
             completion(account, error)
