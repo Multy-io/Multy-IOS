@@ -103,7 +103,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     var tablesHolderFlipEdge: CGFloat {
-        return contentHeight - (infoHolderView.frame.origin.y + infoHolderView.frame.size.height / 2 )
+        return contentHeight - (infoHolderView.frame.origin.y + infoHolderViewHeigth / 2 )
     }
     
     var contentHeight : CGFloat {
@@ -148,6 +148,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         presenter.walletVC = self
         presenter.registerCells()
+        addGestureRecognizers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -181,6 +182,53 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         if !isViewDidAppear {
             setupUI()
+        }
+    }
+    
+    
+    
+    private func addGestureRecognizers() {
+        let panGR = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+        infoHolderView.addGestureRecognizer(panGR)
+    }
+    
+    private var lastPanY : CGFloat?
+    @objc func handlePan(_ sender: UIPanGestureRecognizer) {
+        let locationYRaw = sender.location(in: view).y
+
+        switch sender.state {
+        case .began:
+            lastPanY = locationYRaw
+            break
+            
+        case .changed:
+            let translationYRaw = locationYRaw - lastPanY!
+            var translationY = translationYRaw
+            if infoHolderTopConstraint.constant == 0 {
+                translationY = translationYRaw > 0 ? translationYRaw / 3 : 0
+            } else {
+                if translationYRaw > 0 {
+                    translationY = translationYRaw / 3
+                } else {
+                    translationY = infoHolderTopConstraint.constant + translationYRaw < 0 ? tableHolderViewHeight - tablesHolderBottomEdge  : translationYRaw
+                }
+            }
+            
+            tableHolderViewHeight = tableHolderViewHeight - translationY
+            lastPanY = locationYRaw
+            break
+            
+        case .cancelled, .ended, .failed:
+            if tableHolderViewHeight < tablesHolderBottomEdge - 40 {
+                updateWalletsAfterDragging()
+            } else {
+                setTableHolderPosition()
+            }
+            lastPanY = nil
+            break
+            
+        default:
+            break
         }
     }
     
@@ -333,7 +381,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         if assetsTransactionsBtnsView.isHidden && backupView.isHidden {
             topInset = 0
         } else if assetsTransactionsBtnsView.isHidden == false || backupView.isHidden == false {
-            topInset = 16
+            topInset = 0
         }
         
         return UIEdgeInsets(top: topInset, left: 0, bottom: bottomGradientHeightConstraint.constant, right: 0)
@@ -362,9 +410,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         UIView.animate(withDuration: 0.3, animations: {
             self.tableHolderViewHeight = self.tablesHolderBottomEdge
             
-        }) { (succeeded) in
-            
-        }
+        })
     }
     
     func updateWalletsAfterDragging() {
@@ -625,24 +671,25 @@ extension ScrollViewDelegate: UIScrollViewDelegate {
                 tableHolderViewHeight = tableHolderViewHeight > tablesHolderTopEdge ? tablesHolderTopEdge : tableHolderViewHeight
             }
             
-            if scrollView.contentOffset.y > 0 {
-                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+            if !scrollView.isDecelerating || scrollView.contentOffset.y > 0 {
+                scrollView.setContentOffset(CGPoint.zero, animated: false)
             }
-            
-            self.tableHolderViewHeight = tableHolderViewHeight
         } else {
             if scrollView.contentOffset.y < 0 {
                 tableHolderViewHeight += scrollView.contentOffset.y
-                self.tableHolderViewHeight = tableHolderViewHeight
             }
         }
+        
+        self.tableHolderViewHeight = tableHolderViewHeight
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if tableHolderViewHeight < tablesHolderBottomEdge - 40 {
             updateWalletsAfterDragging()
         } else {
-            setTableHolderPosition()
+            if !scrollView.isDecelerating {
+                setTableHolderPosition()
+            }
         }
     }
     
