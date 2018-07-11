@@ -250,5 +250,28 @@ extension UIViewController {
         }
     }
     
+    func add(_ child: UIViewController, to view: UIView) {
+        addChildViewController(child)
+        addChildView(child.view, to: view)
+        
+        child.didMove(toParentViewController: self)
+    }
     
+    func remove() {
+        guard parent != nil else {
+            return
+        }
+        willMove(toParentViewController: nil)
+        removeFromParentViewController()
+        view.removeFromSuperview()
+    }
+    
+    func addChildView(_ childView: UIView, to parentView: UIView) {
+        childView.frame = parentView.bounds
+        parentView.addSubview(childView)
+        
+        childView.translatesAutoresizingMaskIntoConstraints = false
+        parentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-0-[childView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["childView" : childView]))
+        parentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[childView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["childView" : childView]))
+    }
 }
