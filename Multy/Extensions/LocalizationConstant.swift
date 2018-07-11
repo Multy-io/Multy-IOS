@@ -107,4 +107,5 @@ extension Constants {
     static let deleteString = "DELETE"
     static let chooseAddressString = "CHOOSE ADDRESS"
     static let enteredInvalidSumString = "ENTERED INVALID SUM"
+    static let holdOnString = "HOLD ON"
 }
