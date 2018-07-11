@@ -126,7 +126,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
             if screenHeight == heightOfX {
                 bottomConstraint.constant = inset.bottom - 19 //def is 35 but it for top of keyboard
             }
-            cameraView.alpha = 0.9.
+            cameraView.alpha = 0.9
             animateLayout()
         }
     }

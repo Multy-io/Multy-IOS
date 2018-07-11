@@ -393,12 +393,12 @@ extension CreateWalletDelegate: CreateWalletProtocol {
         if tag == "createNewWallet" {
             performSegue(withIdentifier: Constants.Storyboard.createWalletVCSegueID, sender: Any.self)
         } else if tag == "newEthMultiSig" {
-//            let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
-//            let createMSVC = storyboard.instantiateViewController(withIdentifier: "creatingMultiSigVC")
-//            navigationController?.pushViewController(createMSVC, animated: true)
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let joinVC = storyboard.instantiateViewController(withIdentifier: "joinMultiSig")
-            navigationController?.pushViewController(joinVC, animated: true)
+            let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+            let createMSVC = storyboard.instantiateViewController(withIdentifier: "creatingMultiSigVC")
+            navigationController?.pushViewController(createMSVC, animated: true)
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let joinVC = storyboard.instantiateViewController(withIdentifier: "joinMultiSig")
+//            navigationController?.pushViewController(joinVC, animated: true)
         }
     }
 }

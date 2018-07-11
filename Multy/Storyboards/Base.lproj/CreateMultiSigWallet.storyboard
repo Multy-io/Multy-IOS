@@ -207,10 +207,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="64" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ccs-AU-i8v">
-                                        <rect key="frame" x="0.0" y="57" width="375" height="221"/>
+                                        <rect key="frame" x="0.0" y="57" width="375" height="283"/>
                                         <color key="backgroundColor" red="0.97647058819999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="221" id="SkW-aJ-Axd"/>
+                                            <constraint firstAttribute="height" constant="283" id="SkW-aJ-Axd"/>
                                         </constraints>
                                         <color key="separatorColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
@@ -323,6 +323,35 @@
                                                 <connections>
                                                     <outlet property="blockchainLabel" destination="xwY-2B-wkg" id="2Er-Gp-gx1"/>
                                                 </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="chainCell" id="Gqi-sM-rdB" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="220" width="375" height="64"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gqi-sM-rdB" id="R9c-W9-mB9">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9xW-Ym-49u">
+                                                            <rect key="frame" x="20" y="11" width="32.5" height="17"/>
+                                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
+                                                            <color key="textColor" red="0.53671032190000001" green="0.63738411660000005" blue="0.77729958300000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum ∙ ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6l-4Z-Gl8">
+                                                            <rect key="frame" x="20" y="33" width="121.5" height="24"/>
+                                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9xW-Ym-49u" secondAttribute="trailing" constant="20" symbolic="YES" id="Lr4-XF-dT0"/>
+                                                        <constraint firstItem="n6l-4Z-Gl8" firstAttribute="leading" secondItem="R9c-W9-mB9" secondAttribute="leading" constant="20" id="R92-Fj-afr"/>
+                                                        <constraint firstItem="9xW-Ym-49u" firstAttribute="leading" secondItem="R9c-W9-mB9" secondAttribute="leading" constant="20" id="YU3-q6-4Ph"/>
+                                                        <constraint firstItem="n6l-4Z-Gl8" firstAttribute="top" secondItem="9xW-Ym-49u" secondAttribute="bottom" constant="4.5" id="fnj-73-hTU"/>
+                                                        <constraint firstItem="9xW-Ym-49u" firstAttribute="top" secondItem="R9c-W9-mB9" secondAttribute="top" constant="11" id="jM9-2w-BD1"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>

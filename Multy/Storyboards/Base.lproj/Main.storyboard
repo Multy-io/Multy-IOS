@@ -2610,9 +2610,8 @@ correctly</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bxL-6P-L4b" userLabel="CreateView">
                                         <rect key="frame" x="0.0" y="67" width="355" height="64"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgF-yi-Usi">
-                                                <rect key="frame" x="0.0" y="-1" width="355" height="64"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgF-yi-Usi">
+                                                <rect key="frame" x="0.0" y="0.0" width="355" height="64"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                                 <state key="normal" title="Create New">
                                                     <color key="titleColor" red="0.21175149083137512" green="0.21177384257316589" blue="0.21173283457756042" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2624,7 +2623,11 @@ correctly</string>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="hgF-yi-Usi" firstAttribute="top" secondItem="bxL-6P-L4b" secondAttribute="top" id="2oL-xX-qzL"/>
+                                            <constraint firstAttribute="trailing" secondItem="hgF-yi-Usi" secondAttribute="trailing" id="EmN-Xi-Pbu"/>
                                             <constraint firstAttribute="height" constant="64" id="JC1-TM-Jru"/>
+                                            <constraint firstAttribute="bottom" secondItem="hgF-yi-Usi" secondAttribute="bottom" id="QC8-hN-Snr"/>
+                                            <constraint firstItem="hgF-yi-Usi" firstAttribute="leading" secondItem="bxL-6P-L4b" secondAttribute="leading" id="Xph-bb-1s1"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W2L-hD-6eN" userLabel="SeparatorView">
@@ -2640,7 +2643,7 @@ correctly</string>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9G-zI-eT6">
                                                 <rect key="frame" x="0.0" y="0.0" width="355" height="64"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
-                                                <state key="normal" title="Create Ethereum MultiSig">
+                                                <state key="normal" title="Create MultiSig">
                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>

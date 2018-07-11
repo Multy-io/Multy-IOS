@@ -8,6 +8,7 @@ import ZFRippleButton
 private typealias TableViewDataSource = CreateMultiSigViewController
 private typealias TableViewDelegate = CreateMultiSigViewController
 private typealias TextFieldDelegate  = CreateMultiSigViewController
+private typealias LocalizeDelegate = CreateMultiSigViewController
 
 class CreateMultiSigViewController: UIViewController {
 
@@ -53,6 +54,12 @@ class CreateMultiSigViewController: UIViewController {
     }
     
     @IBAction func createAction(_ sender: Any) {
+        if presenter.walletName.isEmpty {
+            presentAlert(with: localize(string: Constants.walletNameAlertString))
+            
+            return
+        }
+        
         let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
         let waitingMembersVC = storyBoard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
         waitingMembersVC.presenter.membersAmount = presenter.countOfMembers
@@ -70,7 +77,7 @@ extension TableViewDataSource: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -82,12 +89,19 @@ extension TableViewDataSource: UITableViewDataSource {
         } else if indexPath.row == 1 {
             let membersCell = self.tableView.dequeueReusableCell(withIdentifier: "membersCell") as! CreateWalletBlockchainTableViewCell
             membersCell.setLblValue(value: "\(presenter.countOfMembers)")
+            
             return membersCell
         } else if indexPath.row == 2 {
             let signsCell = self.tableView.dequeueReusableCell(withIdentifier: "signsCell") as! CreateWalletBlockchainTableViewCell
             signsCell.setLblValue(value: "\(presenter.countOfSigns)")
+            
             return signsCell
+        } else if indexPath.row == 3 {
+            let chainCell = self.tableView.dequeueReusableCell(withIdentifier: "chainCell") as! CreateWalletBlockchainTableViewCell
+
+            return chainCell
         }
+        
         return UITableViewCell()
     }
 }
@@ -119,6 +133,16 @@ extension TextFieldDelegate: UITextFieldDelegate {
             return false
         }
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text {
+            presenter.walletName = text.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+        }
+    }
 }
 
-
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Assets"
+    }
+}
