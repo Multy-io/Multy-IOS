@@ -4,6 +4,11 @@
 
 import UIKit
 
+protocol DoubleSliderDelegate: class {
+    func slideToSend()
+    func slideToDecline()
+}
+
 class DoubleSlideViewController: UIViewController {
 
     @IBOutlet weak var acceptSlideView: UIView!
@@ -16,6 +21,7 @@ class DoubleSlideViewController: UIViewController {
     var finishSlideX: CGFloat = screenWidth - 33
     
     var animateTimer: Timer?
+    weak var delegate : DoubleSliderDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,11 +59,14 @@ class DoubleSlideViewController: UIViewController {
             return
         }
         if acceptSlideView.frame.maxX + translation.x >= finishSlideX {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.3, animations: {
                 self.isAnimateEnded = true
                 self.acceptSlideView.frame.origin.x = self.finishSlideX - self.acceptSlideView.frame.width
+                
                 //                self.view.isUserInteractionEnabled = false
-//                self.nextAction(Any.self)
+                //                self.nextAction(Any.self)
+            }) { succeeded in
+                self.delegate?.slideToSend()
             }
             return
         }
