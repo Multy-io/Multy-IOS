@@ -2611,17 +2611,17 @@ correctly</string>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcq-vK-VZQ">
-                                <rect key="frame" x="10" y="323" width="355" height="261"/>
+                                <rect key="frame" x="10" y="262" width="355" height="322"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lHM-QD-4LC" userLabel="SeparatorView">
-                                        <rect key="frame" x="0.0" y="66" width="355" height="1"/>
+                                        <rect key="frame" x="0.0" y="62" width="355" height="1"/>
                                         <color key="backgroundColor" red="0.47057175639999999" green="0.64270669219999998" blue="0.8545452952" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="wLr-PX-sJp"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bxL-6P-L4b" userLabel="CreateView">
-                                        <rect key="frame" x="0.0" y="67" width="355" height="64"/>
+                                        <rect key="frame" x="0.0" y="63" width="355" height="64"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgF-yi-Usi">
                                                 <rect key="frame" x="0.0" y="-1" width="355" height="64"/>
@@ -2641,14 +2641,14 @@ correctly</string>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W2L-hD-6eN" userLabel="SeparatorView">
-                                        <rect key="frame" x="0.0" y="131" width="355" height="1"/>
+                                        <rect key="frame" x="0.0" y="127" width="355" height="1"/>
                                         <color key="backgroundColor" red="0.47057175639999999" green="0.64270669219999998" blue="0.8545452952" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="69o-uQ-soz"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sxA-6k-ZJp" userLabel="MultiSigEthView">
-                                        <rect key="frame" x="0.0" y="132" width="355" height="64"/>
+                                        <rect key="frame" x="0.0" y="128" width="355" height="64"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9G-zI-eT6">
                                                 <rect key="frame" x="0.0" y="0.0" width="355" height="64"/>
@@ -2671,14 +2671,21 @@ correctly</string>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ice-Mz-kUQ" userLabel="SeparatorView">
-                                        <rect key="frame" x="0.0" y="196" width="355" height="1"/>
+                                        <rect key="frame" x="0.0" y="257" width="355" height="1"/>
                                         <color key="backgroundColor" red="0.47057175636291504" green="0.64270669221878052" blue="0.85454529523849487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="gyz-wf-PPE"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KXf-qV-RZk" userLabel="SeparatorView">
+                                        <rect key="frame" x="0.0" y="192" width="355" height="1"/>
+                                        <color key="backgroundColor" red="0.47057175639999999" green="0.64270669219999998" blue="0.8545452952" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="ckc-z5-7mp"/>
+                                        </constraints>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CKO-lz-2o7" userLabel="ImportView">
-                                        <rect key="frame" x="0.0" y="197" width="355" height="64"/>
+                                        <rect key="frame" x="0.0" y="258" width="355" height="64"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UK0-lJ-Jn2">
                                                 <rect key="frame" x="0.0" y="69" width="355" height="64"/>
@@ -2714,6 +2721,7 @@ correctly</string>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYv-Z8-df6">
                                                 <rect key="frame" x="0.0" y="0.0" width="355" height="64"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                                 <connections>
                                                     <action selector="importWalletAction:" destination="5ib-Lv-Rdk" eventType="touchUpInside" id="OhR-IZ-o9K"/>
                                                 </connections>
@@ -2738,28 +2746,57 @@ correctly</string>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ni9-G7-c1c">
+                                        <rect key="frame" x="0.0" y="193" width="355" height="64"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HGd-JI-MhQ">
+                                                <rect key="frame" x="0.0" y="0.0" width="355" height="64"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
+                                                <state key="normal" title="Join To MultiSig Wallet">
+                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="joinToMultiSigAction:" destination="5ib-Lv-Rdk" eventType="touchUpInside" id="Y4j-Ip-6Qc"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="HGd-JI-MhQ" firstAttribute="leading" secondItem="ni9-G7-c1c" secondAttribute="leading" id="0EO-z0-oOi"/>
+                                            <constraint firstAttribute="bottom" secondItem="HGd-JI-MhQ" secondAttribute="bottom" id="LzW-L7-5If"/>
+                                            <constraint firstItem="HGd-JI-MhQ" firstAttribute="top" secondItem="ni9-G7-c1c" secondAttribute="top" id="Whf-ot-sTB"/>
+                                            <constraint firstAttribute="trailing" secondItem="HGd-JI-MhQ" secondAttribute="trailing" id="lpq-tp-Xtp"/>
+                                            <constraint firstAttribute="height" constant="64" id="xhm-Tp-iut"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.84693354368209839" green="0.90970176458358765" blue="0.9762539267539978" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="ice-Mz-kUQ" firstAttribute="top" secondItem="ni9-G7-c1c" secondAttribute="bottom" id="54s-DV-C3F"/>
                                     <constraint firstAttribute="trailing" secondItem="CKO-lz-2o7" secondAttribute="trailing" id="5A2-bP-yzQ"/>
+                                    <constraint firstItem="KXf-qV-RZk" firstAttribute="leading" secondItem="vcq-vK-VZQ" secondAttribute="leading" id="8uK-PL-1Gg"/>
                                     <constraint firstAttribute="bottom" secondItem="CKO-lz-2o7" secondAttribute="bottom" id="9aA-dl-16E"/>
                                     <constraint firstItem="bxL-6P-L4b" firstAttribute="leading" secondItem="vcq-vK-VZQ" secondAttribute="leading" id="9kf-Km-WtO"/>
                                     <constraint firstItem="W2L-hD-6eN" firstAttribute="top" secondItem="bxL-6P-L4b" secondAttribute="bottom" id="CsE-2d-GZn"/>
                                     <constraint firstAttribute="trailing" secondItem="sxA-6k-ZJp" secondAttribute="trailing" id="Dd5-FV-dNp"/>
                                     <constraint firstAttribute="trailing" secondItem="lHM-QD-4LC" secondAttribute="trailing" id="G4S-GB-ec3"/>
+                                    <constraint firstAttribute="trailing" secondItem="KXf-qV-RZk" secondAttribute="trailing" id="GTT-yv-lIe"/>
                                     <constraint firstItem="sRz-3m-UVg" firstAttribute="top" secondItem="vcq-vK-VZQ" secondAttribute="top" constant="25" id="MMq-Hr-BZF"/>
                                     <constraint firstItem="bxL-6P-L4b" firstAttribute="top" secondItem="lHM-QD-4LC" secondAttribute="bottom" id="NC7-F4-TVO"/>
                                     <constraint firstAttribute="trailing" secondItem="bxL-6P-L4b" secondAttribute="trailing" id="P5B-zI-Ehp"/>
                                     <constraint firstItem="ice-Mz-kUQ" firstAttribute="leading" secondItem="vcq-vK-VZQ" secondAttribute="leading" id="Vjb-wC-eKb"/>
                                     <constraint firstItem="lHM-QD-4LC" firstAttribute="leading" secondItem="vcq-vK-VZQ" secondAttribute="leading" id="aQO-Bt-geX"/>
-                                    <constraint firstItem="ice-Mz-kUQ" firstAttribute="top" secondItem="sxA-6k-ZJp" secondAttribute="bottom" id="gzF-bs-Vcw"/>
+                                    <constraint firstItem="ni9-G7-c1c" firstAttribute="top" secondItem="KXf-qV-RZk" secondAttribute="bottom" id="bp6-IM-nY2"/>
+                                    <constraint firstItem="ni9-G7-c1c" firstAttribute="leading" secondItem="vcq-vK-VZQ" secondAttribute="leading" id="fW8-3j-AMV"/>
+                                    <constraint firstItem="KXf-qV-RZk" firstAttribute="top" secondItem="sxA-6k-ZJp" secondAttribute="bottom" id="g23-XF-RBR"/>
                                     <constraint firstItem="CKO-lz-2o7" firstAttribute="leading" secondItem="vcq-vK-VZQ" secondAttribute="leading" id="j8D-Ml-fvq"/>
                                     <constraint firstItem="W2L-hD-6eN" firstAttribute="leading" secondItem="vcq-vK-VZQ" secondAttribute="leading" id="kB5-eO-ipH"/>
                                     <constraint firstItem="sxA-6k-ZJp" firstAttribute="leading" secondItem="vcq-vK-VZQ" secondAttribute="leading" id="m86-sa-Enn"/>
                                     <constraint firstAttribute="trailing" secondItem="W2L-hD-6eN" secondAttribute="trailing" id="nXs-Vf-DKR"/>
                                     <constraint firstAttribute="trailing" secondItem="ice-Mz-kUQ" secondAttribute="trailing" id="rBS-Pw-qvm"/>
                                     <constraint firstItem="sxA-6k-ZJp" firstAttribute="top" secondItem="W2L-hD-6eN" secondAttribute="bottom" id="s8e-RU-yc2"/>
-                                    <constraint firstAttribute="height" constant="261" id="sWg-jQ-ysu"/>
+                                    <constraint firstAttribute="height" constant="322" id="sWg-jQ-ysu"/>
+                                    <constraint firstAttribute="trailing" secondItem="ni9-G7-c1c" secondAttribute="trailing" id="sZT-li-bhP"/>
                                     <constraint firstItem="CKO-lz-2o7" firstAttribute="top" secondItem="ice-Mz-kUQ" secondAttribute="bottom" id="soM-O3-8bD"/>
                                     <constraint firstItem="sRz-3m-UVg" firstAttribute="centerX" secondItem="vcq-vK-VZQ" secondAttribute="centerX" id="txt-k2-nfG"/>
                                 </constraints>
@@ -2770,7 +2807,7 @@ correctly</string>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="walletIcon" translatesAutoresizingMaskIntoConstraints="NO" id="BRE-Ia-6WJ">
-                                <rect key="frame" x="160.5" y="287" width="54" height="54"/>
+                                <rect key="frame" x="160.5" y="226" width="54" height="54"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="54" id="S6J-F5-br0"/>
                                     <constraint firstAttribute="width" secondItem="BRE-Ia-6WJ" secondAttribute="height" multiplier="1:1" id="WBC-Yq-sYn"/>

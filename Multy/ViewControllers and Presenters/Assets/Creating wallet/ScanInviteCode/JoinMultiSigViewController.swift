@@ -181,6 +181,18 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         navigationController?.popViewController(animated: true)
     }
     
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        captureSession?.stopRunning()
+        
+        if let metatdataObject = metadataObjects.first {
+            guard let readableObject = metatdataObject as? AVMetadataMachineReadableCodeObject else { return }
+            guard let stringValue = readableObject.stringValue else { return }
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            self.navigationController?.popViewController(animated: true)
+//            self.qrDelegate?.qrData(string: stringValue)
+        }
+    }
+    
     
     // TEXT VIEW DELEGATE
     //------------------------
