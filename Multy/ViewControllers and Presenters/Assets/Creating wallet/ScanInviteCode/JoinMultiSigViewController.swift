@@ -12,6 +12,8 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
     
     @IBOutlet weak var cameraView: UIView!
     
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
     let presenter = JoinMultiSigPresenter()
     
     let supportedCodeTypes = [AVMetadataObject.ObjectType.upce,
@@ -35,6 +37,12 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.mainVC = self
+        hideKeyboardWhenTappedAround()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
+                                               name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
+                                               name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,6 +57,11 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         setupGradients()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        captureSession?.stopRunning()
+    }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -58,7 +71,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         let colorBottom = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 100.0).cgColor
         let gradientBottomLayer = CAGradientLayer()
         gradientBottomLayer.colors = [colorTop, colorBottom]
-        gradientBottomLayer.locations = [0.5, 1.0]
+        gradientBottomLayer.locations = [0.3, 1.0]
         gradientBottomLayer.frame = CGRect(x: 0, y: 0, width: screenWidth, height: bottomGradientView.frame.height)
         bottomGradientView.layer.addSublayer(gradientBottomLayer)
         
@@ -105,5 +118,28 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
             return
         }
     }
+    
+    @objc func keyboardWillShow(_ notification : Notification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let inset : UIEdgeInsets = UIEdgeInsetsMake(64, 0, keyboardSize.height, 0)
+            bottomConstraint.constant = inset.bottom + 16
+            if screenHeight == heightOfX {
+                bottomConstraint.constant = inset.bottom - 19 //def is 35 but it for top of keyboard
+            }
+            cameraView.alpha = 0.9.
+            animateLayout()
+        }
+    }
+    
+    @objc func keyboardWillHide() {
+        bottomConstraint.constant = 16 // Default
+        animateLayout()
+    }
+    
+    
+    @IBAction func cancelAction(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
 
 }

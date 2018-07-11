@@ -577,11 +577,6 @@ extension AnimationSection {
 //        assetsTransactionsBtnsView.frame.origin.y = backupView.frame.maxY
     }
     
-    func animateLayout() {
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
-        }
-    }
 }
 
 extension CancelDelegate : CancelProtocol {

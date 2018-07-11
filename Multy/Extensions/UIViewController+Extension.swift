@@ -82,6 +82,12 @@ extension UIViewController {
     @objc func dismissVC() {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    func animateLayout() { // animation when changed constraint
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+    }
 
     func isOperationSystemAtLeast11() -> Bool {
         return ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 11, minorVersion: 0, patchVersion: 0))
