@@ -853,11 +853,11 @@ scan</string>
                         <viewControllerLayoutGuide type="bottom" id="d2L-Vz-g7H"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="QGZ-89-Kja">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VQm-2h-4LC">
-                                <rect key="frame" x="0.0" y="603" width="375" height="64"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Slide to Send" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SDl-uz-uUZ">
                                         <rect key="frame" x="132.5" y="19.5" width="110" height="25"/>
@@ -947,17 +947,18 @@ scan</string>
                                     <constraint firstAttribute="trailing" secondItem="hsW-S6-RIt" secondAttribute="trailing" id="Jch-eA-43h"/>
                                     <constraint firstAttribute="bottom" secondItem="hsW-S6-RIt" secondAttribute="bottom" id="Sgb-4w-RfV"/>
                                     <constraint firstItem="jiX-qd-s0W" firstAttribute="centerY" secondItem="VQm-2h-4LC" secondAttribute="centerY" id="Yy7-Az-veI"/>
-                                    <constraint firstAttribute="height" constant="64" id="tG8-8e-njg"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="VQm-2h-4LC" firstAttribute="top" secondItem="U58-N4-DCW" secondAttribute="bottom" id="90z-X5-GIO"/>
                             <constraint firstAttribute="trailing" secondItem="VQm-2h-4LC" secondAttribute="trailing" id="Hme-Oy-c07"/>
                             <constraint firstItem="d2L-Vz-g7H" firstAttribute="top" secondItem="VQm-2h-4LC" secondAttribute="bottom" id="XXs-NR-dmX"/>
                             <constraint firstItem="VQm-2h-4LC" firstAttribute="leading" secondItem="QGZ-89-Kja" secondAttribute="leading" id="ozR-JX-V0J"/>
                         </constraints>
                     </view>
+                    <size key="freeformSize" width="375" height="64"/>
                     <connections>
                         <outlet property="acceptSlideView" destination="jiX-qd-s0W" id="Hgg-qF-jXy"/>
                         <outlet property="declineSlideView" destination="hsW-S6-RIt" id="Gr8-W6-p9c"/>
