@@ -40,9 +40,7 @@ class CreateWalletViewController: UIViewController, AnalyticsProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
-        self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        (self.tabBarController as! CustomTabBarViewController).menuButton.isHidden = true
+
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
     }
     

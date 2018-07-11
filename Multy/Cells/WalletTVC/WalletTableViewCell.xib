@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -36,7 +36,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4q-xh-0f4">
-                                        <rect key="frame" x="130" y="32.5" width="38" height="28"/>
+                                        <rect key="frame" x="130" y="32" width="38" height="28"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                         <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -67,13 +67,21 @@
                                             <constraint firstAttribute="width" constant="33" id="Hkl-wf-pZm"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pending" translatesAutoresizingMaskIntoConstraints="NO" id="fKf-uC-vtg">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pending" translatesAutoresizingMaskIntoConstraints="NO" id="fKf-uC-vtg">
                                         <rect key="frame" x="288" y="35" width="22" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="fKf-uC-vtg" secondAttribute="height" multiplier="1:1" id="PJa-z9-J2q"/>
                                             <constraint firstAttribute="width" constant="22" id="gD3-Gz-2rC"/>
                                         </constraints>
                                     </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dSJ-UU-BM0">
+                                        <rect key="frame" x="238.5" y="33.5" width="76.5" height="25"/>
+                                        <string key="text">Hold on
+Wallet is resyncing</string>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="9"/>
+                                        <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <accessibility key="accessibilityConfiguration">
@@ -82,6 +90,7 @@
                                 <constraints>
                                     <constraint firstItem="bGK-TI-pDK" firstAttribute="centerY" secondItem="srv-bR-zld" secondAttribute="centerY" id="0Ym-P2-81O"/>
                                     <constraint firstAttribute="trailing" secondItem="Vd1-0D-jGB" secondAttribute="trailing" constant="13" id="2Ov-Ph-ySE"/>
+                                    <constraint firstItem="dSJ-UU-BM0" firstAttribute="centerY" secondItem="srv-bR-zld" secondAttribute="centerY" id="Gtj-7v-5X2"/>
                                     <constraint firstItem="Msb-b9-SS7" firstAttribute="top" secondItem="pYm-cg-fCJ" secondAttribute="bottom" id="JCA-ck-fXq"/>
                                     <constraint firstItem="Msb-b9-SS7" firstAttribute="centerY" secondItem="srv-bR-zld" secondAttribute="centerY" id="PVL-Vx-uOg"/>
                                     <constraint firstItem="Vd1-0D-jGB" firstAttribute="centerY" secondItem="srv-bR-zld" secondAttribute="centerY" id="QCT-WT-Z4K"/>
@@ -90,6 +99,7 @@
                                     <constraint firstItem="d4q-xh-0f4" firstAttribute="centerY" secondItem="Msb-b9-SS7" secondAttribute="centerY" id="Ut4-Vb-XaM"/>
                                     <constraint firstItem="Vd1-0D-jGB" firstAttribute="leading" secondItem="fKf-uC-vtg" secondAttribute="trailing" constant="5" id="V7h-S1-k9w"/>
                                     <constraint firstItem="Vd1-0D-jGB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pYm-cg-fCJ" secondAttribute="trailing" constant="12" id="W3D-aX-gib"/>
+                                    <constraint firstItem="Vd1-0D-jGB" firstAttribute="leading" secondItem="dSJ-UU-BM0" secondAttribute="trailing" id="XxL-JC-aY5"/>
                                     <constraint firstItem="pYm-cg-fCJ" firstAttribute="leading" secondItem="bGK-TI-pDK" secondAttribute="trailing" constant="13" id="bue-Yq-uRL"/>
                                     <constraint firstItem="wjl-lP-yts" firstAttribute="leading" secondItem="Msb-b9-SS7" secondAttribute="leading" id="g8A-6I-Mq6"/>
                                     <constraint firstItem="d4q-xh-0f4" firstAttribute="leading" secondItem="Msb-b9-SS7" secondAttribute="trailing" constant="5" id="nKg-fV-HCx"/>
@@ -101,6 +111,11 @@
                                         <integer key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="dSJ-UU-BM0"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.92549019607843142" green="0.93333333333333335" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -140,7 +155,7 @@
                 <outlet property="viewForShadow" destination="7NZ-TM-DTv" id="yXu-Xx-rvc"/>
                 <outlet property="walletNameLbl" destination="pYm-cg-fCJ" id="6sb-yS-ylc"/>
             </connections>
-            <point key="canvasLocation" x="-183" y="2"/>
+            <point key="canvasLocation" x="-183.5" y="2"/>
         </tableViewCell>
     </objects>
     <resources>

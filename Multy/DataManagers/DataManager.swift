@@ -93,7 +93,7 @@ class DataManager: NSObject {
         if let isFirst = UserDefaults.standard.value(forKey: "isFirstLaunch") {
             return isFirst as! Bool
         } else {
-//            UserDefaults.standard.set(true, forKey: "isFirstLaunch")
+            UserDefaults.standard.set(false, forKey: "isFirstLaunch")
             return true
         }
     }
@@ -103,7 +103,7 @@ class DataManager: NSObject {
             return isTerms as! Bool
         } else {
             //            UserDefaults.standard.set(true, forKey: "isFirstLaunch")
-            return true
+            return false
         }
     }
     

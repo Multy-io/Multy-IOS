@@ -12,6 +12,9 @@ class Socket: NSObject {
     var manager : SocketManager
     var socket : SocketIOClient
     
+    var isStarted : Bool {
+        return socket.status == SocketIOStatus.connected
+    }
     override init() {
         manager = SocketManager(socketURL: URL(string: socketUrl)!, config: [.log(false), .compress, .forceWebsockets(true), .reconnectAttempts(3), .forcePolling(false), .secure(false)])
         socket = manager.defaultSocket
