@@ -5,12 +5,17 @@
 import UIKit
 import AVFoundation
 
-class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+private typealias LocalizeDelegate = JoinMultiSigViewController
+
+class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UITextViewDelegate {
 
     @IBOutlet weak var bottomGradientView: UIView!
     @IBOutlet weak var topGradientView: UIView!
     
     @IBOutlet weak var cameraView: UIView!
+    
+    @IBOutlet weak var placeHolderLbl: UILabel!
+    @IBOutlet weak var textView: UITextView!
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
@@ -33,6 +38,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
     
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
+    var isGradientOn = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,12 +55,26 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         super.viewWillAppear(animated)
         
         if AVCaptureDevice.authorizationStatus(for: .video) ==  .authorized {
+//            self.sendAnalyticsEvent(screenName: screenQR, eventName: scanGotPermossion)
             camera()
+        } else {
+            AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                if granted {
+//                    self.sendAnalyticsEvent(screenName: screenQR, eventName: scanGotPermossion)
+                    self.camera()
+                } else {
+//                    self.sendAnalyticsEvent(screenName: screenQR, eventName: scanDeniedPermission)
+                    self.alertForGetNewPermission()
+                }
+            })
         }
     }
     
     override func viewDidLayoutSubviews() {
-        setupGradients()
+        if isGradientOn == false {
+            setupGradients()
+            textView.setContentOffset(CGPoint.zero, animated: false)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -80,8 +100,10 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         gradientTopLayer.locations = [0.0, 0.8]
         gradientTopLayer.frame = CGRect(x: 0, y: 0, width: screenWidth, height: topGradientView.frame.height)
         topGradientView.layer.addSublayer(gradientTopLayer)
+        
+        isGradientOn = true
     }
-    
+
     
     func camera() {
         let captureDevice = AVCaptureDevice.devices(for: AVMediaType.video)
@@ -119,6 +141,23 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         }
     }
     
+    func alertForGetNewPermission() {
+        let alert = UIAlertController(title: localize(string: Constants.warningString), message: localize(string: Constants.goToSettingsString), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
+            let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)
+            if UIApplication.shared.canOpenURL(settingsUrl!) {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(settingsUrl!, options: [:], completionHandler: { (success) in
+                        self.cancelAction(Any.self)
+                    })
+                } else {
+                    UIApplication.shared.openURL(settingsUrl!)
+                }
+            }
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+    
     @objc func keyboardWillShow(_ notification : Notification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let inset : UIEdgeInsets = UIEdgeInsetsMake(64, 0, keyboardSize.height, 0)
@@ -126,12 +165,13 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
             if screenHeight == heightOfX {
                 bottomConstraint.constant = inset.bottom - 19 //def is 35 but it for top of keyboard
             }
-            cameraView.alpha = 0.9.
+            cameraView.alpha = 0.2
             animateLayout()
         }
     }
     
     @objc func keyboardWillHide() {
+        cameraView.alpha = 1.0
         bottomConstraint.constant = 16 // Default
         animateLayout()
     }
@@ -141,5 +181,55 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         navigationController?.popViewController(animated: true)
     }
     
+    
+    // TEXT VIEW DELEGATE
+    //------------------------
+    //    ----------------
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        placeHolderLbl.isHidden = true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            placeHolderLbl.isHidden = false
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            //make request here
+            return false
+        }
+        
+        if text.count >= 12 {
+            textView.text = text.replacingOccurrences(of: " ", with: "")
+            dismissKeyboard()
+            //make request here
+            return false
+        }
+        
+        if text == " " {
+            return false
+        }
+        
+        return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.count == 12 { // 12 for example
+            
+            //make request here
+            
+            dismissKeyboard()
+        }
+    }
+    
+    
+}
 
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Sends" //FIX ME: change to Main
+    }
 }
