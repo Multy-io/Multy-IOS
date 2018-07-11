@@ -406,12 +406,8 @@ extension TableViewDelegate: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == transactionsTable {
-            if indexPath.row < presenter.transactionDataSource.count && presenter.isTherePendingMoney(for: indexPath) {
-                return 135
-            } else {
-                return 70
-            }
-        } else {
+            return presenter.makeHeightForTableCells(indexPath: indexPath)
+        } else { // if tableView == tokensTable
             return 70
         }
     }
@@ -422,6 +418,10 @@ extension TableViewDataSource: UITableViewDataSource {
         let countOfHistObjs = presenter.transactionDataSource.count
         
         if tableView == transactionsTable {
+            // MULTI SIG CELL
+//            let multiSigCell = tableView.dequeueReusableCell(withIdentifier: "multiSigPendingCell") as! MultiSigPendingTableViewCell
+//            return multiSigCell
+
             if indexPath.row < countOfHistObjs && presenter.isTherePendingMoney(for: indexPath) {
                 let pendingTrasactionCell = tableView.dequeueReusableCell(withIdentifier: "TransactionPendingCellID") as! TransactionPendingCell
                 pendingTrasactionCell.selectionStyle = .none
@@ -577,11 +577,6 @@ extension AnimationSection {
 //        assetsTransactionsBtnsView.frame.origin.y = backupView.frame.maxY
     }
     
-    func animateLayout() {
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
-        }
-    }
 }
 
 extension CancelDelegate : CancelProtocol {

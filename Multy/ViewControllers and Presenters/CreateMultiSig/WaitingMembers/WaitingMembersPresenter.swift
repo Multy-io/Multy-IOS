@@ -1,10 +1,6 @@
-//
-//  WaitingMembersPresenter.swift
-//  Multy
-//
-//  Created by Artyom Alekseev on 04.07.2018.
-//  Copyright © 2018 Idealnaya rabota. All rights reserved.
-//
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
 
 import Foundation
 import UIKit
@@ -12,9 +8,10 @@ import UIKit
 class WaitingMembersPresenter: NSObject {
     var viewController : WaitingMembersViewController?
     
-    var walletName: String = "Family"
-    var membersAmount: UInt = 2
-    var membersJoined: UInt = 1
+    var walletName = String()
+    var membersAmount: Int = 2
+    var membersJoined = [String]()
+    var createWalletPrice = 0.001
     
     func viewControllerViewDidLoad() {
     }

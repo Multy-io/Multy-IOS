@@ -1911,9 +1911,11 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <outlet property="delegate" destination="ArP-lC-npA" id="RrL-XL-vcd"/>
                                 </connections>
                             </collectionView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lhA-QM-jnv">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lhA-QM-jnv">
                                 <rect key="frame" x="0.0" y="370" width="375" height="242"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="separatorColor" red="0.85490196078431369" green="0.88627450980392153" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <inset key="separatorInset" minX="58" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="dataSource" destination="ArP-lC-npA" id="K8h-n9-3Ou"/>
                                     <outlet property="delegate" destination="ArP-lC-npA" id="oi5-de-PPU"/>
@@ -2750,6 +2752,6 @@ By donating you help us to bring blockchain technology one step closer to ordina
         <image name="warninngBigWhite" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WR6-7w-V2n"/>
+        <segue reference="bAg-Ts-2PT"/>
     </inferredMetricsTieBreakers>
 </document>

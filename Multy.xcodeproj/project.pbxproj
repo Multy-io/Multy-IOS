@@ -89,6 +89,8 @@
 		45409456203348DD00603DB5 /* EntranceSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45409455203348DD00603DB5 /* EntranceSettingsPresenter.swift */; };
 		45409459203352B800603DB5 /* PinCodePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45409458203352B800603DB5 /* PinCodePresenter.swift */; };
 		4540945B203352CC00603DB5 /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4540945A203352CC00603DB5 /* PinCodeViewController.swift */; };
+		4540B23820F4FB5D00F28C77 /* JoinMultiSigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4540B23720F4FB5D00F28C77 /* JoinMultiSigViewController.swift */; };
+		4540B23A20F4FB7000F28C77 /* JoinMultiSigPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4540B23920F4FB7000F28C77 /* JoinMultiSigPresenter.swift */; };
 		45498F932061662A00130B94 /* CurrencyExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45498F922061662A00130B94 /* CurrencyExchange.swift */; };
 		45498F952061698800130B94 /* CurrencyExchangeRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45498F942061698800130B94 /* CurrencyExchangeRLM.swift */; };
 		454A9D7C20067E530035966F /* HistoryRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454A9D7B20067E530035966F /* HistoryRLM.swift */; };
@@ -141,6 +143,8 @@
 		458C8B062072516900B8D71B /* SendAmountEthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458C8B052072516900B8D71B /* SendAmountEthViewController.swift */; };
 		458C8B082072518000B8D71B /* SendAmountEthPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458C8B072072518000B8D71B /* SendAmountEthPresenter.swift */; };
 		458FD4C71FE3C2CB001C25BA /* SpendableOutputRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD4C61FE3C2CB001C25BA /* SpendableOutputRLM.swift */; };
+		459A0B3420F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A0B3220F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift */; };
+		459A0B3520F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459A0B3320F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib */; };
 		459D482E1FE280ED0044740F /* CustomFeeRateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459D482D1FE280ED0044740F /* CustomFeeRateProtocol.swift */; };
 		45A87832205FC73C0071D6F1 /* EthSendDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A87831205FC73C0071D6F1 /* EthSendDetailsViewController.swift */; };
 		45A87834205FC9E80071D6F1 /* EthSendDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A87833205FC9E80071D6F1 /* EthSendDetailsPresenter.swift */; };
@@ -245,6 +249,9 @@
 		85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85741D8820B55A650093933B /* CoreBluetooth.framework */; };
 		859C7AFC20ECF3C8002EA215 /* WaitingMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */; };
 		859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */; };
+		859C7B0120EE2CEC002EA215 /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */; };
+		859C7B0320EE2CFF002EA215 /* MemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */; };
+		859C7B0620EE66F0002EA215 /* CreateMultiSig.strings in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */; };
 		85DE62DD20AB002000423D89 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DC20AB002000423D89 /* SendViewController.swift */; };
 		85DE62DF20AB003A00423D89 /* SendPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DE20AB003A00423D89 /* SendPresenter.swift */; };
 		85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62E120AB077B00423D89 /* WalletCollectionViewCell.swift */; };
@@ -510,6 +517,8 @@
 		45409455203348DD00603DB5 /* EntranceSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntranceSettingsPresenter.swift; sourceTree = "<group>"; };
 		45409458203352B800603DB5 /* PinCodePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodePresenter.swift; sourceTree = "<group>"; };
 		4540945A203352CC00603DB5 /* PinCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeViewController.swift; sourceTree = "<group>"; };
+		4540B23720F4FB5D00F28C77 /* JoinMultiSigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMultiSigViewController.swift; sourceTree = "<group>"; };
+		4540B23920F4FB7000F28C77 /* JoinMultiSigPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMultiSigPresenter.swift; sourceTree = "<group>"; };
 		45498F922061662A00130B94 /* CurrencyExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyExchange.swift; sourceTree = "<group>"; };
 		45498F942061698800130B94 /* CurrencyExchangeRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyExchangeRLM.swift; sourceTree = "<group>"; };
 		454A9D7B20067E530035966F /* HistoryRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRLM.swift; sourceTree = "<group>"; };
@@ -562,6 +571,8 @@
 		458C8B052072516900B8D71B /* SendAmountEthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAmountEthViewController.swift; sourceTree = "<group>"; };
 		458C8B072072518000B8D71B /* SendAmountEthPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAmountEthPresenter.swift; sourceTree = "<group>"; };
 		458FD4C61FE3C2CB001C25BA /* SpendableOutputRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendableOutputRLM.swift; sourceTree = "<group>"; };
+		459A0B3220F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSigPendingTableViewCell.swift; sourceTree = "<group>"; };
+		459A0B3320F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSigPendingTableViewCell.xib; sourceTree = "<group>"; };
 		459D482D1FE280ED0044740F /* CustomFeeRateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeeRateProtocol.swift; sourceTree = "<group>"; };
 		45A87831205FC73C0071D6F1 /* EthSendDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthSendDetailsViewController.swift; sourceTree = "<group>"; };
 		45A87833205FC9E80071D6F1 /* EthSendDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthSendDetailsPresenter.swift; sourceTree = "<group>"; };
@@ -668,6 +679,11 @@
 		85741D8820B55A650093933B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersViewController.swift; sourceTree = "<group>"; };
 		859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersPresenter.swift; sourceTree = "<group>"; };
+		859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
+		859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemberTableViewCell.xib; sourceTree = "<group>"; };
+		859C7B0720EE66F0002EA215 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CreateMultiSig.strings; sourceTree = "<group>"; };
+		859C7B0920EE66F6002EA215 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/CreateMultiSig.strings; sourceTree = "<group>"; };
+		859C7B0A20EE66F9002EA215 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/CreateMultiSig.strings; sourceTree = "<group>"; };
 		85DE62DC20AB002000423D89 /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
 		85DE62DE20AB003A00423D89 /* SendPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPresenter.swift; sourceTree = "<group>"; };
 		85DE62E120AB077B00423D89 /* WalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -803,6 +819,7 @@
 				4474C5B220BFE60600EA8B01 /* Contacts.strings */,
 				4474C5B920BFE76800EA8B01 /* Activty.strings */,
 				4453507D20D14E21004F8DAE /* Localizable.strings */,
+				859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */,
 			);
 			path = Strings;
 			sourceTree = "<group>";
@@ -972,6 +989,15 @@
 			path = PinCode;
 			sourceTree = "<group>";
 		};
+		4540B23620F4FB1100F28C77 /* ScanInviteCode */ = {
+			isa = PBXGroup;
+			children = (
+				4540B23720F4FB5D00F28C77 /* JoinMultiSigViewController.swift */,
+				4540B23920F4FB7000F28C77 /* JoinMultiSigPresenter.swift */,
+			);
+			path = ScanInviteCode;
+			sourceTree = "<group>";
+		};
 		455CDCED1FC8338100EA5ACE /* Sending Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -987,6 +1013,7 @@
 				4585BD24204961CA004542AE /* ActionSheetCreatingWallet */,
 				455CDCF51FC8490700EA5ACE /* WalletInfo */,
 				45344AC220E658300039DF30 /* CreateMultiSig */,
+				4540B23620F4FB1100F28C77 /* ScanInviteCode */,
 			);
 			path = "Creating wallet";
 			sourceTree = "<group>";
@@ -1254,6 +1281,15 @@
 				458C8B072072518000B8D71B /* SendAmountEthPresenter.swift */,
 			);
 			path = ETH;
+			sourceTree = "<group>";
+		};
+		459A0B2F20F0E9A50076D10C /* MultiSigTransaction Cell */ = {
+			isa = PBXGroup;
+			children = (
+				459A0B3220F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift */,
+				459A0B3320F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib */,
+			);
+			path = "MultiSigTransaction Cell";
 			sourceTree = "<group>";
 		};
 		45A87830205FC7110071D6F1 /* EthSendDetails */ = {
@@ -1553,6 +1589,7 @@
 				45AC16252048211600E75BD6 /* CurrencyCell */,
 				45AC16312048506800E75BD6 /* BloclchainCell */,
 				4585BD352049ACBE004542AE /* ExchangeStockCell */,
+				859C7AFF20EE2CC2002EA215 /* MemberTVC */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1718,6 +1755,15 @@
 			path = WaitingMembers;
 			sourceTree = "<group>";
 		};
+		859C7AFF20EE2CC2002EA215 /* MemberTVC */ = {
+			isa = PBXGroup;
+			children = (
+				859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */,
+				859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */,
+			);
+			path = MemberTVC;
+			sourceTree = "<group>";
+		};
 		85DE62DB20AAFFE700423D89 /* Send */ = {
 			isa = PBXGroup;
 			children = (
@@ -1844,6 +1890,7 @@
 				FA4D43FD1FC6D058003C7117 /* TransactionWalletCell.xib */,
 				FACEB59F200A46F600055788 /* TransactionPendingCell.swift */,
 				4430569D20C1627600E5415A /* TransactionPendingCell.xib */,
+				459A0B2F20F0E9A50076D10C /* MultiSigTransaction Cell */,
 			);
 			path = MainWallet;
 			sourceTree = "<group>";
@@ -2100,6 +2147,7 @@
 				445B127920BC1BD900FD0D33 /* Send.storyboard in Resources */,
 				445B128820BC1CA600FD0D33 /* LogoTableViewCell.xib in Resources */,
 				45ECDBD8203D9E77009FD339 /* README.md in Resources */,
+				859C7B0620EE66F0002EA215 /* CreateMultiSig.strings in Resources */,
 				4474C5A520BEFFAB00EA8B01 /* EthWalletHeaderCollectionViewCell.xib in Resources */,
 				45DCF9CE1FE139C9005A9896 /* WalletAddressTableViewCell.xib in Resources */,
 				445B127320BC1BB100FD0D33 /* Receive.storyboard in Resources */,
@@ -2112,6 +2160,7 @@
 				445B12E020BD78D000FD0D33 /* CurrencyChooser.strings in Resources */,
 				45EBB6A8200D312700F81322 /* GoogleService-Info.plist in Resources */,
 				45AC16292048214C00E75BD6 /* CurrencyTableViewCell.xib in Resources */,
+				859C7B0320EE2CFF002EA215 /* MemberTableViewCell.xib in Resources */,
 				4453507B20D14E21004F8DAE /* Localizable.strings in Resources */,
 				4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */,
 				85DE62E920AC1CE100423D89 /* ActiveRequestCollectionViewCell.xib in Resources */,
@@ -2125,6 +2174,7 @@
 				853AF40E20E3E78700DA4141 /* CreateMultiSigWallet.storyboard in Resources */,
 				4583AC931FBC7122001991AA /* PortfolioTableViewCell.xib in Resources */,
 				4583AC991FBC8596001991AA /* PortfolioCollectionViewCell.xib in Resources */,
+				459A0B3520F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib in Resources */,
 				4477263B20BEC565006BF4A7 /* Setting.strings in Resources */,
 				4477265020BECD2A006BF4A7 /* Sends.strings in Resources */,
 				445B128B20BC1CBA00FD0D33 /* DonationCollectionViewCell.xib in Resources */,
@@ -2408,6 +2458,7 @@
 				45E215DB1FD15D5F0078945A /* DonationDTO.swift in Sources */,
 				451B98651FD94ADC00DC64A5 /* CustomTabBarPresenter.swift in Sources */,
 				444066D82059342E00342046 /* Bool+Extantion.swift in Sources */,
+				459A0B3420F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift in Sources */,
 				45A949571FC6DF5F003C3A23 /* CustomTrasanctionFeeTableViewCell.swift in Sources */,
 				45C738C320358D56005AB761 /* AnalyticsProtocol.swift in Sources */,
 				4575694B1FBDEDE300FDEE20 /* BackupFinishViewController.swift in Sources */,
@@ -2460,9 +2511,11 @@
 				45E148A8204553AF006BD4D1 /* DonationAlertViewController.swift in Sources */,
 				455CDCEF1FC833A500EA5ACE /* SendingAnimationViewController.swift in Sources */,
 				44FB26C0205A6D5600F208EB /* ChooseBlockchainProtocol.swift in Sources */,
+				4540B23820F4FB5D00F28C77 /* JoinMultiSigViewController.swift in Sources */,
 				45D7890B20ECF776001AB402 /* MembersViewController.swift in Sources */,
 				45F42C841FDC081400210B1F /* IsJailbroken.swift in Sources */,
 				44768AA720D0015600FA9C28 /* ContactProtocol.swift in Sources */,
+				4540B23A20F4FB7000F28C77 /* JoinMultiSigPresenter.swift in Sources */,
 				455CDCF11FC833C700EA5ACE /* SendingAnimationPresenter.swift in Sources */,
 				458C8B0220724B2D00B8D71B /* UIScrollView+Extension.swift in Sources */,
 				45B5CCAD1FDACF3C0069BD46 /* LogoTableViewCell.swift in Sources */,
@@ -2508,6 +2561,7 @@
 				45C8D1452007EACE00F5994E /* TxHistoryRLM.swift in Sources */,
 				4540944C2031EF1600603DB5 /* SecuritySettingsPresenter.swift in Sources */,
 				FA58DF651FDC403E00C45303 /* WrongSeedPhrasePresenter.swift in Sources */,
+				859C7B0120EE2CEC002EA215 /* MemberTableViewCell.swift in Sources */,
 				45E215E01FD164F80078945A /* QrScannerPresenter.swift in Sources */,
 				44CD6B8F208B5018009C07F6 /* BigInt.swift in Sources */,
 				8555721020C7E5C500108FCD /* TxInfoView.swift in Sources */,
@@ -2954,6 +3008,16 @@
 				445B12BF20BC21AE00FD0D33 /* en */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				859C7B0720EE66F0002EA215 /* en */,
+				859C7B0920EE66F6002EA215 /* ru */,
+				859C7B0A20EE66F9002EA215 /* uk */,
+			);
+			name = CreateMultiSig.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -26,11 +26,15 @@ class MembersViewController: UIViewController {
         presenter.mainVC = self
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissMe))
         clearView.addGestureRecognizer(tap)
-        headerView.roundCorners(corners: [.topLeft, .topRight], radius: 12)
         if screenHeight == heightOfX {
             tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 34, right: 0)
             tableBottomConstraint.constant = -34
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        headerView.roundCorners(corners: [.topLeft, .topRight], radius: 12)
     }
     
     @objc func dismissMe() {
