@@ -383,22 +383,12 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uag-1j-c6H" userLabel="View - Double Slider Holder">
-                                                <rect key="frame" x="0.0" y="864" width="375" height="64"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="64" id="JbD-Jy-c9A"/>
-                                                </constraints>
-                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="uag-1j-c6H" firstAttribute="leading" secondItem="8Vb-Wr-Uh3" secondAttribute="leading" id="0bo-KS-P2e"/>
-                                            <constraint firstAttribute="trailing" secondItem="uag-1j-c6H" secondAttribute="trailing" id="3Q2-mA-6ua"/>
                                             <constraint firstAttribute="trailing" secondItem="IJm-Zq-RUr" secondAttribute="trailing" constant="16" id="3tO-7k-1xt"/>
                                             <constraint firstItem="WCU-ts-kWp" firstAttribute="top" secondItem="IJm-Zq-RUr" secondAttribute="bottom" constant="16" id="Ecq-8l-0S8"/>
                                             <constraint firstItem="IJm-Zq-RUr" firstAttribute="top" secondItem="8Vb-Wr-Uh3" secondAttribute="top" constant="16" id="GRE-Jg-y4c"/>
-                                            <constraint firstAttribute="bottom" secondItem="uag-1j-c6H" secondAttribute="bottom" id="JRR-i1-Hxx"/>
                                             <constraint firstItem="Ssb-nB-rPb" firstAttribute="trailing" secondItem="IJm-Zq-RUr" secondAttribute="trailing" id="LYV-KZ-Gw1"/>
                                             <constraint firstItem="WCU-ts-kWp" firstAttribute="trailing" secondItem="IJm-Zq-RUr" secondAttribute="trailing" id="RGx-ms-oof"/>
                                             <constraint firstItem="WCU-ts-kWp" firstAttribute="leading" secondItem="IJm-Zq-RUr" secondAttribute="leading" id="Wqz-5A-DhZ"/>
@@ -423,6 +413,13 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <outlet property="delegate" destination="ckJ-B1-hh7" id="aJk-h2-RnN"/>
                                 </connections>
                             </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uag-1j-c6H" userLabel="View - Double Slider Holder">
+                                <rect key="frame" x="0.0" y="936" width="375" height="64"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="JbD-Jy-c9A"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.37111347913742065" green="0.80185776948928833" blue="0.49193811416625977" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -431,8 +428,11 @@ By donating you help us to bring blockchain technology one step closer to ordina
                             <constraint firstAttribute="trailing" secondItem="2bc-PL-C8n" secondAttribute="trailing" id="In8-DT-3WW"/>
                             <constraint firstItem="SKe-xc-jl5" firstAttribute="top" secondItem="2bc-PL-C8n" secondAttribute="bottom" id="RzC-Hg-BRr"/>
                             <constraint firstItem="Czg-lZ-KFq" firstAttribute="leading" secondItem="CHj-pJ-c9i" secondAttribute="leading" id="T5N-pF-AiZ"/>
+                            <constraint firstItem="SKe-xc-jl5" firstAttribute="top" secondItem="uag-1j-c6H" secondAttribute="bottom" id="Ygg-5X-Bma"/>
                             <constraint firstItem="2bc-PL-C8n" firstAttribute="leading" secondItem="CHj-pJ-c9i" secondAttribute="leading" id="fgT-hJ-mkS"/>
+                            <constraint firstItem="uag-1j-c6H" firstAttribute="leading" secondItem="CHj-pJ-c9i" secondAttribute="leading" id="gPh-bw-FQD"/>
                             <constraint firstAttribute="trailing" secondItem="Czg-lZ-KFq" secondAttribute="trailing" id="gry-cg-RuV"/>
+                            <constraint firstAttribute="trailing" secondItem="uag-1j-c6H" secondAttribute="trailing" id="svH-CN-SAN"/>
                         </constraints>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>

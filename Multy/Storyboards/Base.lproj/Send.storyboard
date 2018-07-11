@@ -952,9 +952,9 @@ scan</string>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="VQm-2h-4LC" firstAttribute="top" secondItem="U58-N4-DCW" secondAttribute="bottom" id="90z-X5-GIO"/>
+                            <constraint firstItem="VQm-2h-4LC" firstAttribute="top" secondItem="QGZ-89-Kja" secondAttribute="top" id="90z-X5-GIO"/>
                             <constraint firstAttribute="trailing" secondItem="VQm-2h-4LC" secondAttribute="trailing" id="Hme-Oy-c07"/>
-                            <constraint firstItem="d2L-Vz-g7H" firstAttribute="top" secondItem="VQm-2h-4LC" secondAttribute="bottom" id="XXs-NR-dmX"/>
+                            <constraint firstAttribute="bottom" secondItem="VQm-2h-4LC" secondAttribute="bottom" id="XXs-NR-dmX"/>
                             <constraint firstItem="VQm-2h-4LC" firstAttribute="leading" secondItem="QGZ-89-Kja" secondAttribute="leading" id="ozR-JX-V0J"/>
                         </constraints>
                     </view>

@@ -63,6 +63,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     
     var state = 0
     
+    var doubleSliderVC : DoubleSlideViewController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.swipeToBack()
@@ -92,6 +94,19 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+        
+        if isMultisig {
+            let sendStoryboard = UIStoryboard(name: "Send", bundle: nil)
+            doubleSliderVC = sendStoryboard.instantiateViewController(withIdentifier: "doubleSlideView") as! DoubleSlideViewController
+            doubleSliderVC.delegate = self
+            add(doubleSliderVC, to: doubleSliderHolderView)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        doubleSliderVC.remove()
     }
     
     override func viewDidLayoutSubviews() {
@@ -382,7 +397,7 @@ extension AnalyticsDelegate: AnalyticsProtocol {
     }
 }
 
-extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DoubleSliderDelegate {
     
     //MARK: UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -418,6 +433,17 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
     //MARK: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: confirmationMembersCollectionView.frame.size.width, height: 64)
+    }
+    
+    //MARK: Slider actions
+    func slideToSend() {
+        //FIXME: stub
+        print("Slide to Send")
+    }
+    
+    func slideToDecline() {
+        //FIXME: stub
+        print("Slide to Decline")
     }
 }
 
