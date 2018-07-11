@@ -5,8 +5,8 @@
 import UIKit
 
 protocol DoubleSliderDelegate: class {
-    func slideToSend()
-    func slideToDecline()
+    func didSlideToSend(_ sender: DoubleSlideViewController)
+    func didSlideToDecline(_ sender: DoubleSlideViewController)
 }
 
 class DoubleSlideViewController: UIViewController {
@@ -28,8 +28,11 @@ class DoubleSlideViewController: UIViewController {
         
         startTimer()
         startSlideX = acceptSlideView.frame.origin.x
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(slideToSend))
-        acceptSlideView.addGestureRecognizer(gestureRecognizer)
+        let slideToSendGR = UIPanGestureRecognizer(target: self, action: #selector(slideToSend))
+        acceptSlideView.addGestureRecognizer(slideToSendGR)
+        
+        let slideToDeclineGR = UIPanGestureRecognizer(target: self, action: #selector(slideToDecline(_ :)))
+        declineSlideView.addGestureRecognizer(slideToDeclineGR)
     }
     
     func startTimer() {
@@ -59,15 +62,7 @@ class DoubleSlideViewController: UIViewController {
             return
         }
         if acceptSlideView.frame.maxX + translation.x >= finishSlideX {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.isAnimateEnded = true
-                self.acceptSlideView.frame.origin.x = self.finishSlideX - self.acceptSlideView.frame.width
-                
-                //                self.view.isUserInteractionEnabled = false
-                //                self.nextAction(Any.self)
-            }) { succeeded in
-                self.delegate?.slideToSend()
-            }
+            performSend()
             return
         }
         
@@ -85,8 +80,43 @@ class DoubleSlideViewController: UIViewController {
         }
         
         if gestureRecognizer.state == .ended {
-            if gestureRecognizer.view!.frame.origin.x < screenWidth - 100 {
+            if gestureRecognizer.view!.frame.origin.x < screenWidth / 2 {
                 slideToStart()
+            } else {
+                performSend()
+            }
+        }
+    }
+    
+    @objc func slideToDecline(_ gestureRecognizer: UIPanGestureRecognizer) {
+        animateTimer?.invalidate()
+        let translation = gestureRecognizer.translation(in: self.view)
+        if isAnimateEnded {
+            return
+        }
+        if declineSlideView.frame.origin.x + translation.x <= screenWidth - finishSlideX {
+            performDecline()
+            return
+        }
+        
+        gestureRecognizer.view!.center = CGPoint(x: declineSlideView.center.x + translation.x, y: declineSlideView.center.y)
+        gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+        
+        if gestureRecognizer.view!.frame.maxX > screenWidth / 2 {
+            UIView.animate(withDuration: 0.3) {
+                self.slideTextLbl.alpha = 0.5
+            }
+        } else if gestureRecognizer.view!.frame.maxX < screenWidth / 2 {
+            UIView.animate(withDuration: 0.3) {
+                self.slideTextLbl.alpha = 0
+            }
+        }
+        
+        if gestureRecognizer.state == .ended {
+            if gestureRecognizer.view!.frame.maxX > screenWidth / 2 {
+                slideToStart()
+            } else {
+                performDecline()
             }
         }
     }
@@ -94,9 +124,30 @@ class DoubleSlideViewController: UIViewController {
     func slideToStart() {
         UIView.animate(withDuration: 0.3) {
             self.acceptSlideView.frame.origin.x = self.startSlideX
+            self.declineSlideView.frame.origin.x = screenWidth - self.declineSlideView.frame.size.width
             self.slideTextLbl.alpha = 1.0
             self.isAnimateEnded = false
         }
         startTimer()
+    }
+    
+    func performSend() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.isAnimateEnded = true
+            self.acceptSlideView.frame.origin.x = screenWidth
+            
+        }) { succeeded in
+            self.delegate?.didSlideToSend(self)
+        }
+    }
+    
+    func performDecline() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.isAnimateEnded = true
+            self.declineSlideView.frame.origin.x = -self.declineSlideView.frame.size.width
+            
+        }) { succeeded in
+            self.delegate?.didSlideToDecline(self)
+        }
     }
 }

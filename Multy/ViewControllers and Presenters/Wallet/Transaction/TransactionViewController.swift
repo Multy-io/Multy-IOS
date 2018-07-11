@@ -436,12 +436,12 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     //MARK: Slider actions
-    func slideToSend() {
+    func didSlideToSend(_ sender: DoubleSlideViewController) {
         //FIXME: stub
         print("Slide to Send")
     }
     
-    func slideToDecline() {
+    func didSlideToDecline(_ sender: DoubleSlideViewController) {
         //FIXME: stub
         print("Slide to Decline")
     }
