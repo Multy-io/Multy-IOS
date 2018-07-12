@@ -187,12 +187,24 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         if let metatdataObject = metadataObjects.first {
             guard let readableObject = metatdataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
-            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            self.navigationController?.popViewController(animated: true)
+            if stringValue.contains("invite code:") {
+                let array = stringValue.components(separatedBy: CharacterSet(charactersIn: ":"))
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                pasteInTextView(string: array[1])
+            } else {
+                captureSession?.startRunning()
+                presentAlert(with: "Invite code not found.")
+            }
+//            self.navigationController?.popViewController(animated: true)
 //            self.qrDelegate?.qrData(string: stringValue)
         }
     }
     
+    
+    func pasteInTextView(string: String) {
+        textView.text = string.replacingOccurrences(of: " ", with: "")
+        placeHolderLbl.isHidden = true
+    }
     
     // TEXT VIEW DELEGATE
     //------------------------
@@ -215,7 +227,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         }
         
         if text.count >= 12 {
-            textView.text = text.replacingOccurrences(of: " ", with: "")
+            pasteInTextView(string: text)
             dismissKeyboard()
             //make request here
             return false

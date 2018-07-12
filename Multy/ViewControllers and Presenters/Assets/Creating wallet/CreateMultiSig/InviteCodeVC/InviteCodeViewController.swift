@@ -53,7 +53,7 @@ class InviteCodeViewController: UIViewController {
     
     // MARK: QRCode Activity
     func makeQRCode() {
-        let data = shareCodeLbl.text?.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)
+        let data = ("invite code: " + shareCodeLbl.text!).data(using: String.Encoding.isoLatin1, allowLossyConversion: false)
         let filter = CIFilter(name: "CIQRCodeGenerator")
         filter?.setValue(data, forKey: "inputMessage")
         filter?.setValue("Q", forKey: "inputCorrectionLevel")
