@@ -5,5 +5,5 @@
 import UIKit
 
 protocol CountOfProtocol: class {
-    func countSomething(tag: String? ,count: Int)
+    func passMultiSigInfo(signaturesCount: Int, membersCount: Int)
 }

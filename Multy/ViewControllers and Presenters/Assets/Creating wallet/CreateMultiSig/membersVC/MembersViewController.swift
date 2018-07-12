@@ -6,6 +6,10 @@ import UIKit
 
 private typealias TableViewDelegate = MembersViewController
 private typealias TableViewDataSource = MembersViewController
+private typealias PickerViewDataSource = MembersViewController
+private typealias PickerViewDelegate = MembersViewController
+
+fileprivate let countOffset = 2
 
 class MembersViewController: UIViewController {
 
@@ -14,6 +18,7 @@ class MembersViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var countsPicker: UIPickerView!
     var countOfDelegate: CountOfProtocol?
     
     let presenter = MembersPresenter()
@@ -27,9 +32,11 @@ class MembersViewController: UIViewController {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissMe))
         clearView.addGestureRecognizer(tap)
         if screenHeight == heightOfX {
-            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 34, right: 0)
-            tableBottomConstraint.constant = -34
+            
         }
+        
+        countsPicker.selectRow(presenter.signaturesCount - countOffset, inComponent: 0, animated: false)
+        countsPicker.selectRow(presenter.membersCount - countOffset, inComponent: 1, animated: false)
     }
     
     override func viewDidLayoutSubviews() {
@@ -37,34 +44,49 @@ class MembersViewController: UIViewController {
         headerView.roundCorners(corners: [.topLeft, .topRight], radius: 12)
     }
     
-    @objc func dismissMe() {
-        self.dismiss(animated: true, completion: nil)
-    }
-
-}
-
-extension TableViewDataSource: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.font = UIFont(name: "AvenirNext-Regular", size: 16)
-        cell.textLabel?.text = "\(indexPath.row + 2)" + " members"
-        return cell
-    }
-}
-
-extension TableViewDelegate: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let tag = presenter.isMembers == true ? "members" : "signs"
-        countOfDelegate?.countSomething(tag: tag, count: indexPath.row + 2) // dont have 0 or 1
-        tableView.deselectRow(at: indexPath, animated: true)
+    @objc @IBAction func dismissMe() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func doneAction() {
+        let firstSectionCount = countOffset + countsPicker.selectedRow(inComponent: 0)
+        let secondSectionCount = countOffset + countsPicker.selectedRow(inComponent: 1)
+        countOfDelegate?.passMultiSigInfo(signaturesCount: firstSectionCount, membersCount: secondSectionCount)
+        dismissMe()
+    }
+}
+
+extension PickerViewDelegate: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return "\(row + countOffset)"
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        switch component {
+        case 0:
+            let secondSectionRow = pickerView.selectedRow(inComponent: 1)
+            if row > secondSectionRow {
+                pickerView.selectRow(row, inComponent: 1, animated: true)
+            }
+        case 1:
+            let firstSectionRow = pickerView.selectedRow(inComponent: 0)
+            if firstSectionRow > row {
+                pickerView.selectRow(row, inComponent: 0, animated: true)
+            }
+        default:
+            break
+        }
+    }
+}
+
+extension PickerViewDataSource: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        pickerView.subviews.forEach{ $0.isHidden = $0.frame.height < 1.0 }
+        
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 49
     }
 }

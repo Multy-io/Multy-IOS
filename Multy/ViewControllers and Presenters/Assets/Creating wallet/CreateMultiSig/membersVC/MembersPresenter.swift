@@ -8,5 +8,6 @@ class MembersPresenter: NSObject {
 
     var mainVC: MembersViewController?
     
-    var isMembers = true
+    var membersCount = 2
+    var signaturesCount = 2
 }
