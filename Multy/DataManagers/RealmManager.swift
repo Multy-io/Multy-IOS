@@ -6,6 +6,11 @@ import UIKit
 import RealmSwift
 
 private typealias RealmMigrationManager = RealmManager
+private typealias RecentAddressManager = RealmManager
+private typealias CurrencyExchangeManager = RealmManager
+private typealias WalletManager = RealmManager
+private typealias LegacyCodeManager = RealmManager
+private typealias SeedPhraseManager = RealmManager
 
 class RealmManager: NSObject {
     static let shared = RealmManager()
@@ -97,66 +102,6 @@ class RealmManager: NSObject {
         }
     }
     
-    public func getSeedPhrase(completion: @escaping (_ seedPhrase: String?, _ error: NSError?) -> ()) {
-        getRealm { (realmOpt, error) in
-            if let realm = realmOpt {
-                let seedPhraseOpt = realm.object(ofType: SeedPhraseRLM.self, forPrimaryKey: 1)
-                
-                if seedPhraseOpt == nil {
-                    completion(nil, nil)
-                } else {
-                    completion(seedPhraseOpt!.seedString, nil)
-                }
-            } else {
-                print("Error fetching realm:\(#function)")
-                completion(nil, nil)
-            }
-        }
-    }
-    
-    public func writeSeedPhrase(_ seedPhrase: String, completion: @escaping (_ error: NSError?) -> ()) {
-        getRealm { (realmOpt, error) in
-            if let realm = realmOpt {
-                let seedPhraseOpt = realm.object(ofType: SeedPhraseRLM.self, forPrimaryKey: 1)
-                
-                try! realm.write {
-                    //replace old value if exists
-                    let seedRLM = seedPhraseOpt == nil ? SeedPhraseRLM() : seedPhraseOpt!
-                    seedRLM.seedString = seedPhrase
-                    
-                    realm.add(seedRLM, update: true)
-                    print("Successful writing seed phrase")
-                }
-            } else {
-                print("Error fetching realm:\(#function)")
-            }
-        }
-        
-    }
-    
-    public func deleteSeedPhrase(completion: @escaping (_ error: NSError?) -> ()) {
-        getRealm { (realmOpt, error) in
-            if let realm = realmOpt {
-                let seedPhraseOpt = realm.object(ofType: SeedPhraseRLM.self, forPrimaryKey: 1)
-                
-                if let seedPhrase = seedPhraseOpt {
-                    try! realm.write {
-                        realm.delete(seedPhrase)
-                        
-                        completion(nil)
-                        print("Successful writing seed phrase")
-                    }
-                } else {
-                    completion(NSError())
-                    print("Error fetching seedPhrase")
-                }
-            } else {
-                completion(NSError())
-                print("Error fetching realm")
-            }
-        }
-    }
-    
     public func updateAccount(_ accountDict: NSDictionary, completion: @escaping (_ account : AccountRLM?, _ error: NSError?) -> ()) {
         getRealm { [weak self] (realmOpt, error) in
             if let realm = realmOpt {
@@ -237,25 +182,6 @@ class RealmManager: NSObject {
         }
     }
     
-    public func createWallet(_ walletDict: Dictionary<String, Any>, completion: @escaping (_ account : UserWalletRLM?, _ error: NSError?) -> ()) {
-        getRealm { (realmOpt, error) in
-            if let realm = realmOpt {
-                let wallet = UserWalletRLM.initWithInfo(walletInfo: NSDictionary(dictionary: walletDict))
-                
-                try! realm.write {
-                    realm.add(wallet, update: true)
-                    
-                    completion(wallet, nil)
-                    
-                    print("Successful writing wallet")
-                }
-            } else {
-                print("Error fetching realm:\(#function)")
-                completion(nil, nil)
-            }
-        }
-    }
-    
     public func updateExchangePrice(_ ratesDict: NSDictionary, completion: @escaping (_ exchangePrice : ExchangePriceRLM?, _ error: NSError?) -> ()) {
         getRealm { (realmOpt, error) in
             if let realm = realmOpt {
@@ -309,6 +235,129 @@ class RealmManager: NSObject {
         }
     }
     
+    public func clearRealm(completion: @escaping(_ ok: String?, _ error: Error?) -> ()) {
+        getRealm { (realmOpt, err) in
+            if err != nil {
+                completion(nil, err)
+                return
+            }
+            if let realm = realmOpt {
+                try! realm.write {
+                    realm.deleteAll()
+                    completion("ok", nil)
+                }
+            }
+            
+        }
+        
+        account = nil
+    }
+    
+    func spendableOutput(addresses: List<AddressRLM>) -> [SpendableOutputRLM] {
+        let ouputs = List<SpendableOutputRLM>()
+        
+        for address in addresses {
+            //add checking output (in/out)
+            
+            for out in address.spendableOutput {
+                ouputs.append(out)
+            }
+        }
+        
+        let results = ouputs.sorted(by: { (out1, out2) -> Bool in
+            out1.transactionOutAmount.uint64Value > out2.transactionOutAmount.int64Value
+        })
+        
+        return results
+    }
+    
+    func getTransactionHistoryBy(walletIndex: Int, completion: @escaping(_ arrOfHist: Results<HistoryRLM>?) -> ()) {
+        getRealm { (realmOpt, err) in
+            if let realm = realmOpt {
+                let allHistoryObjects = realm.objects(HistoryRLM.self).filter("walletIndex = \(walletIndex)")
+                if !allHistoryObjects.isEmpty {
+                    completion(allHistoryObjects)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+    }
+    
+    func deleteTopIndexes(from realm: Realm) {
+        let topIndexObjects = realm.objects(TopIndexRLM.self)
+        realm.delete(topIndexObjects)
+    }
+
+    func deleteAddressesAndSpendableInfo(_ addresses: List<AddressRLM>,  from realm: Realm) {
+        for address in addresses {
+            realm.delete(address.spendableOutput)
+            realm.delete(address)
+        }
+    }
+}
+
+extension SeedPhraseManager {
+    public func getSeedPhrase(completion: @escaping (_ seedPhrase: String?, _ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let seedPhraseOpt = realm.object(ofType: SeedPhraseRLM.self, forPrimaryKey: 1)
+                
+                if seedPhraseOpt == nil {
+                    completion(nil, nil)
+                } else {
+                    completion(seedPhraseOpt!.seedString, nil)
+                }
+            } else {
+                print("Error fetching realm:\(#function)")
+                completion(nil, nil)
+            }
+        }
+    }
+    
+    public func writeSeedPhrase(_ seedPhrase: String, completion: @escaping (_ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let seedPhraseOpt = realm.object(ofType: SeedPhraseRLM.self, forPrimaryKey: 1)
+                
+                try! realm.write {
+                    //replace old value if exists
+                    let seedRLM = seedPhraseOpt == nil ? SeedPhraseRLM() : seedPhraseOpt!
+                    seedRLM.seedString = seedPhrase
+                    
+                    realm.add(seedRLM, update: true)
+                    print("Successful writing seed phrase")
+                }
+            } else {
+                print("Error fetching realm:\(#function)")
+            }
+        }
+        
+    }
+    
+    public func deleteSeedPhrase(completion: @escaping (_ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let seedPhraseOpt = realm.object(ofType: SeedPhraseRLM.self, forPrimaryKey: 1)
+                
+                if let seedPhrase = seedPhraseOpt {
+                    try! realm.write {
+                        realm.delete(seedPhrase)
+                        
+                        completion(nil)
+                        print("Successful writing seed phrase")
+                    }
+                } else {
+                    completion(NSError())
+                    print("Error fetching seedPhrase")
+                }
+            } else {
+                completion(NSError())
+                print("Error fetching realm")
+            }
+        }
+    }
+    
     public func clearSeedPhraseInAcc() {
         getRealm { (realmOpt, err) in
             if let realm = realmOpt {
@@ -317,6 +366,27 @@ class RealmManager: NSObject {
                     acc?.seedPhrase = ""
                     print("Seed phrase was deleted from db by realm Manager")
                 }
+            }
+        }
+    }
+}
+
+extension WalletManager {
+    public func createWallet(_ walletDict: Dictionary<String, Any>, completion: @escaping (_ account : UserWalletRLM?, _ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let wallet = UserWalletRLM.initWithInfo(walletInfo: NSDictionary(dictionary: walletDict))
+                
+                try! realm.write {
+                    realm.add(wallet, update: true)
+                    
+                    completion(wallet, nil)
+                    
+                    print("Successful writing wallet")
+                }
+            } else {
+                print("Error fetching realm:\(#function)")
+                completion(nil, nil)
             }
         }
     }
@@ -345,14 +415,14 @@ class RealmManager: NSObject {
                 let walletID = wallet["WalletIndex"] != nil ? wallet["WalletIndex"] : wallet["walletindex"]
                 
                 let modifiedWallet = accountWallets.filter("walletID = \(walletID)").first
-
+                
                 try! realm.write {
-//                    if modifiedWallet != nil {
-//                        modifiedWallet!.addresses = wallet.addresses
-//                        newWallets.append(modifiedWallet!)
-//                    } else {
-//                        newWallets.append(wallet)
-//                    }
+                    //                    if modifiedWallet != nil {
+                    //                        modifiedWallet!.addresses = wallet.addresses
+                    //                        newWallets.append(modifiedWallet!)
+                    //                    } else {
+                    //                        newWallets.append(wallet)
+                    //                    }
                 }
             }
             
@@ -371,9 +441,6 @@ class RealmManager: NSObject {
                         }
                     }
                 }
-                
-                //                        acc!.wallets = newWallets
-                //                        acc?.wallets = arrOfWallets
                 
                 self!.account = account
                 
@@ -401,20 +468,6 @@ class RealmManager: NSObject {
                                 modifiedWallet!.btcWallet =         wallet.btcWallet
                                 modifiedWallet!.ethWallet =         wallet.ethWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
-
-                                for (index,address) in wallet.addresses.enumerated() {
-//                                    modifiedWallet!.addresses[index].spendableOutput.removeAll()
-//                                    for out in address.spendableOutput {
-//                                        modifiedWallet!.addresses[index].spendableOutput.append(out)
-//                                    }
-                                }
-                                
-//                                for address in wallet.addresses {
-//
-//                                    for output in address.spendableOutput {
-//                                        modifiedWallet!.addresses.last!.spendableOutput.append(output)
-//                                    }
-//                                }
                                 
                                 newWallets.append(modifiedWallet!)
                             } else {
@@ -423,22 +476,13 @@ class RealmManager: NSObject {
                         }
                     }
                     
-                    //append wallets without spendOut
-//                    for wallet in accWallets {
-//                        let unmodifiedWallet = newWallets.filter("walletID = \(wallet.walletID)").first
-//
-//                        if (unmodifiedWallet == nil) {
-//                            newWallets.append(wallet)
-//                        }
-//                    }
-                    
                     try! realm.write {
                         acc!.wallets.removeAll()
                         for wallet in newWallets {
                             acc!.wallets.append(wallet)
                             
                             self!.deleteAddressesAndSpendableInfo(acc!.wallets.last!.addresses, from: realm)
-//                            self!.renewCustomWallets(in: acc!.wallets.last!, from: wallet, for: realm)
+                            //                            self!.renewCustomWallets(in: acc!.wallets.last!, from: wallet, for: realm)
                             
                             acc!.wallets.last!.addresses.removeAll()
                             
@@ -447,147 +491,11 @@ class RealmManager: NSObject {
                                 acc!.wallets.last!.addresses.append(address)
                             }
                         }
-
+                        
                         completion(acc, nil)
                     }
                 } else {
                     completion(nil, err)
-                }
-            }
-        }
-    }
-    
-    public func clearRealm(completion: @escaping(_ ok: String?, _ error: Error?) -> ()) {
-        getRealm { (realmOpt, err) in
-            if err != nil {
-                completion(nil, err)
-                return
-            }
-            if let realm = realmOpt {
-                try! realm.write {
-                    realm.deleteAll()
-                    completion("ok", nil)
-                }
-            }
-            
-        }
-        
-        account = nil
-    }
-    
-    //Greedy algorithm
-    func spendableOutput(addresses: List<AddressRLM>) -> [SpendableOutputRLM] {
-        let ouputs = List<SpendableOutputRLM>()
-        
-        for address in addresses {
-            //add checking output (in/out)
-            
-            for out in address.spendableOutput {
-                ouputs.append(out)
-            }
-        }
-        
-        let results = ouputs.sorted(by: { (out1, out2) -> Bool in
-            out1.transactionOutAmount.uint64Value > out2.transactionOutAmount.int64Value
-        })
-        
-        return results
-    }
-    
-    func spendableOutput(wallet: UserWalletRLM) -> [SpendableOutputRLM] {
-        let ouputs = List<SpendableOutputRLM>()
-        
-        let addresses = wallet.addresses
-        for address in addresses {
-            //add checking output (in/out)
-            
-            for out in address.spendableOutput {
-                ouputs.append(out)
-            }
-        }
-        
-        let results = ouputs.sorted(by: { (out1, out2) -> Bool in
-            out1.transactionOutAmount.uint64Value > out2.transactionOutAmount.int64Value
-        })
-        
-        return results
-    }
-    
-    func greedySubSet(outputs: [SpendableOutputRLM], threshold: UInt64) -> [SpendableOutputRLM] {
-        var sum = spendableOutputSum(outputs: outputs)
-        var result = outputs
-        
-        if sum < threshold {
-            return [SpendableOutputRLM]()
-        }
-        
-        var index = 0
-        while index < result.count {
-            let output = result[index]
-            if sum > threshold + output.transactionOutAmount.uint64Value {
-                sum = sum - output.transactionOutAmount.uint64Value
-                result.remove(at: index)
-            } else {
-                index += 1
-            }
-        }
-        
-        return result
-    }
-    
-    func spendableOutputSum(outputs: [SpendableOutputRLM]) -> UInt64 {
-        var sum = UInt64(0)
-        
-        for output in outputs {
-            sum += output.transactionOutAmount.uint64Value
-        }
-        
-        return sum
-    }
-    
-    func saveHistoryForWallet(historyArr: List<HistoryRLM>, completion: @escaping(_ historyArr: List<HistoryRLM>?) -> ()) {
-        getRealm { (realmOpt, err) in
-            if let realm = realmOpt {
-                try! realm.write {
-                    let oldHistoryObjects = realm.objects(HistoryRLM.self)
-                    
-                    for obj in historyArr {
-                        //add checking for repeated tx and updated status
-                        let repeatedObj = oldHistoryObjects.filter("txHash = \(obj.txHash)").first
-                        if repeatedObj != nil {
-                            realm.add(obj, update: true)
-                        } else {
-                            realm.add(obj, update: true)
-                        }
-                    }
-                    completion(historyArr)
-                }
-            } else {
-                print("Err from realm GetAcctount:\(#function)")
-                completion(nil)
-            }
-        }
-    }
-    
-    func getTransactionHistoryBy(walletIndex: Int, completion: @escaping(_ arrOfHist: Results<HistoryRLM>?) -> ()) {
-        getRealm { (realmOpt, err) in
-//            if let realm = realmOpt {
-//                let acc = realm.object(ofType: AccountRLM.self, forPrimaryKey: 1)
-//                if acc != nil {
-//                    completion(acc, nil)
-//                } else {
-//                    completion(nil, nil)
-//                }
-//            } else {
-//                print("Err from realm GetAcctount:\(#function)")
-//                completion(nil,nil)
-//            }
-            if let realm = realmOpt {
-                let allHistoryObjects = realm.objects(HistoryRLM.self).filter("walletIndex = \(walletIndex)")
-                if !allHistoryObjects.isEmpty {
-                    completion(allHistoryObjects)
-                } else {
-                    completion(nil)
                 }
             }
         }
@@ -628,45 +536,28 @@ class RealmManager: NSObject {
             }
         }
     }
-    
-    func updateCurrencyExchangeRLM(curExchange: CurrencyExchange) {
-        getRealm { (realmOpt, error) in
+
+    func saveHistoryForWallet(historyArr: List<HistoryRLM>, completion: @escaping(_ historyArr: List<HistoryRLM>?) -> ()) {
+        getRealm { (realmOpt, err) in
             if let realm = realmOpt {
-//                let currencyExchange = realm.object(ofType: CurrencyExchangeRLM.self, forPrimaryKey: 1)
-                let curRlm = CurrencyExchangeRLM()
-                curRlm.createCurrencyExchange(currencyExchange: curExchange)
                 try! realm.write {
-//                    curRlm.btcToUSD = DataManager.shared.currencyExchange.btcToUSD
-//                    curRlm.btcToUSD = DataManager.shared.currencyExchange.ethToUSD
-                    realm.add(curRlm, update: true)
+                    let oldHistoryObjects = realm.objects(HistoryRLM.self)
+                    
+                    for obj in historyArr {
+                        //add checking for repeated tx and updated status
+                        let repeatedObj = oldHistoryObjects.filter("txHash = \(obj.txHash)").first
+                        if repeatedObj != nil {
+                            realm.add(obj, update: true)
+                        } else {
+                            realm.add(obj, update: true)
+                        }
+                    }
+                    completion(historyArr)
                 }
             } else {
-                print("Error fetching realm:\(#function)")
-            }
-        }
-    }
-    
-    func fetchCurrencyExchange(completion: @escaping(_ curExhange: CurrencyExchangeRLM?) -> ()) {
-        getRealm { (realmOpt, error) in
-            if let realm = realmOpt {
-                let currencyExchange = realm.object(ofType: CurrencyExchangeRLM.self, forPrimaryKey: 1)
-                completion(currencyExchange)
-            } else {
-                print("Error fetching realm:\(#function)")
+                print("Err from realm GetAcctount:\(#function)")
                 completion(nil)
             }
-        }
-    }
-    
-    func deleteTopIndexes(from realm: Realm) {
-        let topIndexObjects = realm.objects(TopIndexRLM.self)
-        realm.delete(topIndexObjects)
-    }
-
-    func deleteAddressesAndSpendableInfo(_ addresses: List<AddressRLM>,  from realm: Realm) {
-        for address in addresses {
-            realm.delete(address.spendableOutput)
-            realm.delete(address)
         }
     }
     
@@ -690,7 +581,40 @@ class RealmManager: NSObject {
         wallet.ethWallet = newWallet.ethWallet
         wallet.btcWallet = newWallet.btcWallet
     }
+}
+
+extension CurrencyExchangeManager {
+    func updateCurrencyExchangeRLM(curExchange: CurrencyExchange) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                //                let currencyExchange = realm.object(ofType: CurrencyExchangeRLM.self, forPrimaryKey: 1)
+                let curRlm = CurrencyExchangeRLM()
+                curRlm.createCurrencyExchange(currencyExchange: curExchange)
+                try! realm.write {
+                    //                    curRlm.btcToUSD = DataManager.shared.currencyExchange.btcToUSD
+                    //                    curRlm.btcToUSD = DataManager.shared.currencyExchange.ethToUSD
+                    realm.add(curRlm, update: true)
+                }
+            } else {
+                print("Error fetching realm:\(#function)")
+            }
+        }
+    }
     
+    func fetchCurrencyExchange(completion: @escaping(_ curExhange: CurrencyExchangeRLM?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let currencyExchange = realm.object(ofType: CurrencyExchangeRLM.self, forPrimaryKey: 1)
+                completion(currencyExchange)
+            } else {
+                print("Error fetching realm:\(#function)")
+                completion(nil)
+            }
+        }
+    }
+}
+
+extension RecentAddressManager {
     func writeOrUpdateRecentAddress(blockchainType: BlockchainType, address: String, date: Date) {
         getRealm { (realmOpt, error) in
             if let realm = realmOpt {
@@ -825,5 +749,59 @@ extension RealmMigrationManager {
             newRecentAddress?["blockchain"] = NSNumber(value: 0)
             newRecentAddress?["blockchainNetType"] = NSNumber(value: 0)
         }
+    }
+}
+
+extension LegacyCodeManager {
+    //Greedy algorithm
+    func spendableOutput(wallet: UserWalletRLM) -> [SpendableOutputRLM] {
+        let ouputs = List<SpendableOutputRLM>()
+        
+        let addresses = wallet.addresses
+        for address in addresses {
+            //add checking output (in/out)
+            
+            for out in address.spendableOutput {
+                ouputs.append(out)
+            }
+        }
+        
+        let results = ouputs.sorted(by: { (out1, out2) -> Bool in
+            out1.transactionOutAmount.uint64Value > out2.transactionOutAmount.int64Value
+        })
+        
+        return results
+    }
+    
+    func greedySubSet(outputs: [SpendableOutputRLM], threshold: UInt64) -> [SpendableOutputRLM] {
+        var sum = spendableOutputSum(outputs: outputs)
+        var result = outputs
+        
+        if sum < threshold {
+            return [SpendableOutputRLM]()
+        }
+        
+        var index = 0
+        while index < result.count {
+            let output = result[index]
+            if sum > threshold + output.transactionOutAmount.uint64Value {
+                sum = sum - output.transactionOutAmount.uint64Value
+                result.remove(at: index)
+            } else {
+                index += 1
+            }
+        }
+        
+        return result
+    }
+    
+    func spendableOutputSum(outputs: [SpendableOutputRLM]) -> UInt64 {
+        var sum = UInt64(0)
+        
+        for output in outputs {
+            sum += output.transactionOutAmount.uint64Value
+        }
+        
+        return sum
     }
 }
