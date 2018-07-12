@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import CryptoSwift
 
 class InviteCodeViewController: UIViewController {
 
@@ -10,16 +11,20 @@ class InviteCodeViewController: UIViewController {
     @IBOutlet weak var qrImgView: UIImageView!
     @IBOutlet weak var shareCodeLbl: UILabel!
     
+    
+    let presenter = InviteCodePresenter()
     var qrcodeImage: CIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.mainVC = self
         setupUI()
     }
 
     func setupUI() {
-        makeQRCode()
+        shareCodeLbl.text = presenter.inviteCode
         shadowView.setShadow(with: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.3))
+        makeQRCode()
     }
     
     
@@ -45,7 +50,6 @@ class InviteCodeViewController: UIViewController {
     @IBAction func doneAction(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
     
     // MARK: QRCode Activity
     func makeQRCode() {
