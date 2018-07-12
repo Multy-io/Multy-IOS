@@ -113,7 +113,10 @@ extension TableViewDelegate: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        openMembersVC()
+        let selectedRow = indexPath.row
+        if selectedRow == 1 || selectedRow == 2 {
+            openMembersVC()
+        }
     }
 }
 
