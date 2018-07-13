@@ -6,8 +6,10 @@ import UIKit
 import AVFoundation
 
 private typealias LocalizeDelegate = JoinMultiSigViewController
+private typealias TextViewDelegate = JoinMultiSigViewController
 
-class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UITextViewDelegate {
+
+class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
     @IBOutlet weak var bottomGradientView: UIView!
     @IBOutlet weak var topGradientView: UIView!
@@ -193,7 +195,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
                 pasteInTextView(string: array[1])
             } else {
                 captureSession?.startRunning()
-                presentAlert(with: "Invite code not found.")
+                presentAlert(with: localize(string: Constants.inviteCodeNotFoundString))
             }
 //            self.navigationController?.popViewController(animated: true)
 //            self.qrDelegate?.qrData(string: stringValue)
@@ -204,11 +206,11 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
     func pasteInTextView(string: String) {
         textView.text = string.replacingOccurrences(of: " ", with: "")
         placeHolderLbl.isHidden = true
+        presenter.jointoWalletWith(inviteCode: textView.text)
     }
-    
-    // TEXT VIEW DELEGATE
-    //------------------------
-    //    ----------------
+}
+
+extension TextViewDelegate: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         placeHolderLbl.isHidden = true
     }
@@ -222,18 +224,18 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
             textView.resignFirstResponder()
-            //make request here
+            presenter.jointoWalletWith(inviteCode: textView.text)
             return false
         }
         
-        if text.count >= 12 {
+        if text.count >= inviteCodeCount {
             pasteInTextView(string: text)
             dismissKeyboard()
-            //make request here
+            presenter.jointoWalletWith(inviteCode: textView.text)
             return false
         }
         
-        if text == " " {
+        if text == " " {        //check for disable space
             return false
         }
         
@@ -241,19 +243,15 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        if textView.text.count == 12 { // 12 for example
-            
-            //make request here
-            
+        if textView.text.count == inviteCodeCount {
+            presenter.jointoWalletWith(inviteCode: textView.text)
             dismissKeyboard()
         }
     }
-    
-    
 }
 
 extension LocalizeDelegate: Localizable {
     var tableName: String {
-        return "Sends" //FIX ME: change to Main
+        return "Assets"
     }
 }
