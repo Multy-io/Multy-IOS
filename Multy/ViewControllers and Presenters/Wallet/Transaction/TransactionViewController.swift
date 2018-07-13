@@ -106,7 +106,9 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        doubleSliderVC.remove()
+        if isMultisig {
+            doubleSliderVC.remove()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -192,7 +194,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func checkStatus() {
-        if isMultisig && presenter.histObj.isWaitingConfirmation {
+        if isMultisig && presenter.histObj.isWaitingConfirmation.boolValue {
             // Multisig transaction waiting confirmation
             self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
             self.titleLbl.text = "Transaction details"
@@ -213,7 +215,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func checkMultisig() {
-        isMultisig = presenter.histObj.isMultisigTx
+        isMultisig = presenter.histObj.isMultisigTx.boolValue
         confirmationDetailsHolderView.isHidden = !isMultisig
         doubleSliderHolderView.isHidden = !isMultisig
     }
@@ -224,7 +226,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
             result = result + confirmaitionDetailsHeightConstraint.constant + 16
             
-            if presenter.histObj.isWaitingConfirmation {
+            if presenter.histObj.isWaitingConfirmation.boolValue {
                 result += doubleSliderHolderView.frame.size.height
             }
         }
@@ -237,7 +239,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         dateFormatter.dateFormat = "HH:mm, d MMMM yyyy"
         let cryptoSumInBTC = UInt64(truncating: presenter.histObj.txOutAmount).btcValue
         
-        if isMultisig && presenter.histObj.isWaitingConfirmation {
+        if isMultisig && presenter.histObj.isWaitingConfirmation.boolValue {
             self.dateLbl.text = "Waiting for confirmations..."
             
             self.blockchainInfoView.isHidden = true
