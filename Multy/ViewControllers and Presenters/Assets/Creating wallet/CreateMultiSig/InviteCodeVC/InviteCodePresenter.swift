@@ -7,4 +7,6 @@ import UIKit
 class InviteCodePresenter: NSObject {
 
     var mainVC: InviteCodeViewController?
+    
+    var inviteCode = ""
 }

@@ -105,6 +105,8 @@ struct Constants {
     static let waitingAllMembersString = "WAITING ALL MEMBERS"
     static let startForString = "START FOR"
     static let invitationCodeString = "INVITATION CODE"
+    static let badInviteCodeString = "INVALID INVITE CODE"
+    static let inviteCodeNotFoundString = "INVITE CODE NOT FOUND"
     
     //Assets screen
     struct AssetsScreen {
@@ -291,3 +293,5 @@ let nonLocalURL = "http://88.198.47.112:7778/"
 // Bluetooth
 let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"
 let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
+
+let inviteCodeCount = 56
