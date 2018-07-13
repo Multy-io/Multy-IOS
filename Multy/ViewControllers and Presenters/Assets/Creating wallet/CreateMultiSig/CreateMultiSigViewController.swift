@@ -8,6 +8,8 @@ import ZFRippleButton
 private typealias TableViewDataSource = CreateMultiSigViewController
 private typealias TableViewDelegate = CreateMultiSigViewController
 private typealias TextFieldDelegate  = CreateMultiSigViewController
+private typealias LocalizeDelegate = CreateMultiSigViewController
+private typealias SendWalletDelegate = CreateMultiSigViewController
 
 class CreateMultiSigViewController: UIViewController {
 
@@ -32,6 +34,21 @@ class CreateMultiSigViewController: UIViewController {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let nameCell = tableView.cellForRow(at: [0, 0]) as! CreateWalletNameTableViewCell
+        if let name = nameCell.walletNameTF.text, name.isEmpty {
+            nameCell.walletNameTF.becomeFirstResponder()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        tableView.resignFirstResponder()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         createBtn.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
@@ -39,12 +56,13 @@ class CreateMultiSigViewController: UIViewController {
                         gradientOrientation: .horizontal)
     }
     
-    func openMembersVC(isMembers: Bool) {
+    func openMembersVC() {
         let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
         let membersVC = storyboard.instantiateViewController(withIdentifier: "membersCountVC") as! MembersViewController
         membersVC.modalPresentationStyle = .overCurrentContext
         membersVC.countOfDelegate = presenter
-        membersVC.presenter.isMembers = isMembers
+        membersVC.presenter.membersCount = presenter.membersCount
+        membersVC.presenter.signaturesCount = presenter.signaturesCount
         self.present(membersVC, animated: true, completion: nil)
     }
 
@@ -53,14 +71,42 @@ class CreateMultiSigViewController: UIViewController {
     }
     
     @IBAction func createAction(_ sender: Any) {
+        if presenter.walletName.isEmpty {
+            presentAlert(with: localize(string: Constants.walletNameAlertString))
+            
+            return
+        }
+        
+        if presenter.choosenWallet == nil {
+            presentAlert(with: localize(string: Constants.chooseWalletString))
+            
+            return
+        }
+        
         let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
         let waitingMembersVC = storyBoard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
-        waitingMembersVC.presenter.membersAmount = presenter.countOfMembers
+        waitingMembersVC.presenter.membersAmount = presenter.membersCount
         //FIXME:
         let nameCell = self.tableView.cellForRow(at: IndexPath(item: 0, section: 0)) as! CreateWalletNameTableViewCell
         waitingMembersVC.presenter.walletName = nameCell.walletNameTF.text!
         navigationController?.pushViewController(waitingMembersVC, animated: true)
 //        waitingMembersVC.openShareInviteVC()
+    }
+    
+    func chooseAnotherWalletAction() {
+        let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+        let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
+        walletsVC.presenter.isNeedToPop = true
+        walletsVC.presenter.displayedBlockchainOnly = presenter.selectedBlockchainType
+        walletsVC.sendWalletDelegate = self
+        self.navigationController?.pushViewController(walletsVC, animated: true)
+//        sendAnalyticsEvent(screenName: "\(screenReceiveSummaryWithChain)\(presenter.wallet!.chain)", eventName: changeWalletTap)
+    }
+}
+
+extension SendWalletDelegate: SendWalletProtocol {
+    func sendWallet(wallet: UserWalletRLM) {
+        presenter.choosenWallet = wallet
     }
 }
 
@@ -70,25 +116,39 @@ extension TableViewDataSource: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
+        switch indexPath.row {
+        case 0:
             let nameCell = self.tableView.dequeueReusableCell(withIdentifier: "nameCell") as! CreateWalletNameTableViewCell
-            nameCell.walletNameTF.becomeFirstResponder()
             
             return nameCell
-        } else if indexPath.row == 1 {
+        case 1:
+            let blockchainCell = self.tableView.dequeueReusableCell(withIdentifier: "blockchainCell") as! CreateWalletBlockchainTableViewCell
+            let blockchainString = presenter.selectedBlockchainType.combinedName
+            blockchainCell.setLblValue(value: blockchainString)
+            
+            return blockchainCell
+        case 2:
             let membersCell = self.tableView.dequeueReusableCell(withIdentifier: "membersCell") as! CreateWalletBlockchainTableViewCell
-            membersCell.setLblValue(value: "\(presenter.countOfMembers)")
+            membersCell.setLblValue(value: "\(presenter.membersCount)")
+            
             return membersCell
-        } else if indexPath.row == 2 {
+        case 3:
             let signsCell = self.tableView.dequeueReusableCell(withIdentifier: "signsCell") as! CreateWalletBlockchainTableViewCell
-            signsCell.setLblValue(value: "\(presenter.countOfSigns)")
+            signsCell.setLblValue(value: "\(presenter.signaturesCount)")
+            
             return signsCell
+        case 4:
+            let chainCell = self.tableView.dequeueReusableCell(withIdentifier: "chainCell") as! MultiSigWalletCell
+            chainCell.setInfo(wallet: presenter.choosenWallet)
+            
+            return chainCell
+        default:
+            return UITableViewCell()
         }
-        return UITableViewCell()
     }
 }
 
@@ -98,10 +158,11 @@ extension TableViewDelegate: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 1 {
-            openMembersVC(isMembers: true)
-        } else if indexPath.row == 2 {
-            openMembersVC(isMembers: false)
+        let selectedRow = indexPath.row
+        if selectedRow == 2 || selectedRow == 3 {
+            openMembersVC()
+        } else if selectedRow == 4 {
+            chooseAnotherWalletAction()
         }
     }
 }
@@ -119,6 +180,16 @@ extension TextFieldDelegate: UITextFieldDelegate {
             return false
         }
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text {
+            presenter.walletName = text.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+        }
+    }
 }
 
-
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Assets"
+    }
+}

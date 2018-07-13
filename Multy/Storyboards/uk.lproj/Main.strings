@@ -150,7 +150,7 @@
 "gwH-0Q-jV7.normalTitle" = "Пожертвувати USD 5";
 
 /* Class = "UIButton"; normalTitle = "Create New"; ObjectID = "hgF-yi-Usi"; */
-"hgF-yi-Usi.normalTitle" = "Створювати Новий";
+"hgF-yi-Usi.normalTitle" = "Створити Новий";
 
 /* Class = "UILabel"; text = "Select wallet and donation sum"; ObjectID = "kVh-aV-sdy"; */
 "kVh-aV-sdy.text" = "Виберіть гаманець і суму пожертви";
@@ -201,3 +201,6 @@
 "zG3-vO-HLP.text" = "Долари США ∙ USD";
 
 "tRx-hg-wDk.normalTitle" = " Скопіювати ";
+
+"Z9G-zI-eT6.normalTitle" = "Створити MultiSig";
+"HGd-JI-MhQ.normalTitle" = "Приєднатися до MultiSig";

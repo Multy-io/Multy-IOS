@@ -52,6 +52,8 @@
 		449151402049764D0028195F /* MultyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491513F2049764D0028195F /* MultyUITests.swift */; };
 		4491514E204976600028195F /* MultyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491514D204976600028195F /* MultyTests.swift */; };
 		44A3DF93205AA1F300FE9955 /* BlockchainType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DF92205AA1F300FE9955 /* BlockchainType+Extension.swift */; };
+		44A5BB0320F64282007FBB68 /* MultiSig.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44A5BB0520F64282007FBB68 /* MultiSig.strings */; };
+		44A5BB0820F644C4007FBB68 /* CreateMultiSigWallet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44A5BB0A20F644C4007FBB68 /* CreateMultiSigWallet.storyboard */; };
 		44BCBDB520601AD0001611A5 /* BTCWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BCBDB420601AD0001611A5 /* BTCWallet.swift */; };
 		44BCBDB720601AE3001611A5 /* ETHWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BCBDB620601AE3001611A5 /* ETHWallet.swift */; };
 		44BF10E020C971C4009E3E22 /* magicSend.json in Resources */ = {isa = PBXBuildFile; fileRef = 44BF10DF20C971C4009E3E22 /* magicSend.json */; };
@@ -62,6 +64,7 @@
 		44CD6B8F208B5018009C07F6 /* BigInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CD6B8E208B5018009C07F6 /* BigInt.swift */; };
 		44DCC201205A9D34001080FB /* TopIndexRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DCC200205A9D34001080FB /* TopIndexRLM.swift */; };
 		44DFEF9F206A51AF0068769C /* UInt64+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */; };
+		44E0245C20F7AB1F00F822D6 /* MultiSigWalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */; };
 		44EFBE5B20923EAC0081EE3A /* Blockchain+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44EFBE5A20923EAC0081EE3A /* Blockchain+Extension.swift */; };
 		44FB26C0205A6D5600F208EB /* ChooseBlockchainProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FB26BF205A6D5600F208EB /* ChooseBlockchainProtocol.swift */; };
 		4506F1741FD9A2E700D575BA /* WalletSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */; };
@@ -240,7 +243,6 @@
 		45F8CD47208F391B00DEB495 /* TermsOfServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8CD46208F391B00DEB495 /* TermsOfServiceViewController.swift */; };
 		45F8CD49208F393C00DEB495 /* TermsOfServicePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8CD48208F393C00DEB495 /* TermsOfServicePresenter.swift */; };
 		50D1AA3CFDA9BDFA53D3B9D0 /* Pods_MultyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */; };
-		853AF40E20E3E78700DA4141 /* CreateMultiSigWallet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 853AF40D20E3E78700DA4141 /* CreateMultiSigWallet.storyboard */; };
 		854C748B20C56C6900CBAFE9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854C748A20C56C6900CBAFE9 /* Utilities.swift */; };
 		854EF14A20C06DA4000C2247 /* tx_success_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 854EF14920C06DA4000C2247 /* tx_success_animation.json */; };
 		8555721020C7E5C500108FCD /* TxInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8555720F20C7E5C500108FCD /* TxInfoView.swift */; };
@@ -466,6 +468,13 @@
 		4491514D204976600028195F /* MultyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultyTests.swift; sourceTree = "<group>"; };
 		4491514F204976600028195F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		44A3DF92205AA1F300FE9955 /* BlockchainType+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockchainType+Extension.swift"; sourceTree = "<group>"; };
+		44A5BB0420F64282007FBB68 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MultiSig.strings; sourceTree = "<group>"; };
+		44A5BB0620F64285007FBB68 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MultiSig.strings; sourceTree = "<group>"; };
+		44A5BB0720F64286007FBB68 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/MultiSig.strings; sourceTree = "<group>"; };
+		44A5BB0920F644C4007FBB68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CreateMultiSigWallet.storyboard; sourceTree = "<group>"; };
+		44A5BB0C20F644C9007FBB68 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CreateMultiSigWallet.strings; sourceTree = "<group>"; };
+		44A5BB0E20F644D2007FBB68 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/CreateMultiSigWallet.strings; sourceTree = "<group>"; };
+		44A5BB1020F644D3007FBB68 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/CreateMultiSigWallet.strings; sourceTree = "<group>"; };
 		44BCBDB420601AD0001611A5 /* BTCWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCWallet.swift; sourceTree = "<group>"; };
 		44BCBDB620601AE3001611A5 /* ETHWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ETHWallet.swift; sourceTree = "<group>"; };
 		44BF10DF20C971C4009E3E22 /* magicSend.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magicSend.json; sourceTree = "<group>"; };
@@ -484,6 +493,7 @@
 		44DFEFA2206A64ED0068769C /* bitcoin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bitcoin.h; sourceTree = "<group>"; };
 		44DFEFA3206A64ED0068769C /* ethereum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ethereum.h; sourceTree = "<group>"; };
 		44DFEFA4206A64ED0068769C /* golos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = golos.h; sourceTree = "<group>"; };
+		44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSigWalletCell.swift; sourceTree = "<group>"; };
 		44EFBE5A20923EAC0081EE3A /* Blockchain+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blockchain+Extension.swift"; sourceTree = "<group>"; };
 		44FA86BE2035A75A00263C72 /* key.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = key.h; sourceTree = "<group>"; };
 		44FA86BF2035A76400263C72 /* big_int.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = big_int.h; sourceTree = "<group>"; };
@@ -670,7 +680,6 @@
 		572DB9D15F9362827245CF67 /* Pods_Multy_MultyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy_MultyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		647A035491B0F1BEBEB72A55 /* Pods-MultyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultyTests/Pods-MultyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7304C17824311A19240183E0 /* Pods_Multy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		853AF40D20E3E78700DA4141 /* CreateMultiSigWallet.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreateMultiSigWallet.storyboard; sourceTree = "<group>"; };
 		854C748A20C56C6900CBAFE9 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		854EF14920C06DA4000C2247 /* tx_success_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tx_success_animation.json; sourceTree = "<group>"; };
 		8555720F20C7E5C500108FCD /* TxInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoView.swift; sourceTree = "<group>"; };
@@ -820,6 +829,7 @@
 				4474C5B920BFE76800EA8B01 /* Activty.strings */,
 				4453507D20D14E21004F8DAE /* Localizable.strings */,
 				859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */,
+				44A5BB0520F64282007FBB68 /* MultiSig.strings */,
 			);
 			path = Strings;
 			sourceTree = "<group>";
@@ -1551,7 +1561,7 @@
 				445B127820BC1BD000FD0D33 /* Wallet.storyboard */,
 				445B127B20BC1BD900FD0D33 /* Send.storyboard */,
 				445B127E20BC1BE000FD0D33 /* Settings.storyboard */,
-				853AF40D20E3E78700DA4141 /* CreateMultiSigWallet.storyboard */,
+				44A5BB0A20F644C4007FBB68 /* CreateMultiSigWallet.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -1751,6 +1761,7 @@
 			children = (
 				859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */,
 				859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */,
+				44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */,
 			);
 			path = WaitingMembers;
 			sourceTree = "<group>";
@@ -2171,7 +2182,8 @@
 				4477261720BDA1F2006BF4A7 /* Assets.strings in Resources */,
 				45A9493B1FC59E51003C3A23 /* RecentAddressTableViewCell.xib in Resources */,
 				85741D8520B45E8B0093933B /* circle_grow.json in Resources */,
-				853AF40E20E3E78700DA4141 /* CreateMultiSigWallet.storyboard in Resources */,
+				44A5BB0320F64282007FBB68 /* MultiSig.strings in Resources */,
+				44A5BB0820F644C4007FBB68 /* CreateMultiSigWallet.storyboard in Resources */,
 				4583AC931FBC7122001991AA /* PortfolioTableViewCell.xib in Resources */,
 				4583AC991FBC8596001991AA /* PortfolioCollectionViewCell.xib in Resources */,
 				459A0B3520F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib in Resources */,
@@ -2450,6 +2462,7 @@
 				FA86A7411FC2C72B002826EC /* MasterKeyGenerator.swift in Sources */,
 				FA58DF611FDC400C00C45303 /* UIColor+Extension.swift in Sources */,
 				45F8CD47208F391B00DEB495 /* TermsOfServiceViewController.swift in Sources */,
+				44E0245C20F7AB1F00F822D6 /* MultiSigWalletCell.swift in Sources */,
 				FA8835901FD854EC007694A2 /* AddressRLM.swift in Sources */,
 				4575693F1FBDD6C300FDEE20 /* BackupSeedPhraseViewController.swift in Sources */,
 				FA0B618D1FEBC1DD00ED0CE6 /* RecentAddressesRLM.swift in Sources */,
@@ -2975,6 +2988,27 @@
 				4477265420BECD2E006BF4A7 /* uk */,
 			);
 			name = Sends.strings;
+			sourceTree = "<group>";
+		};
+		44A5BB0520F64282007FBB68 /* MultiSig.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				44A5BB0420F64282007FBB68 /* en */,
+				44A5BB0620F64285007FBB68 /* ru */,
+				44A5BB0720F64286007FBB68 /* uk */,
+			);
+			name = MultiSig.strings;
+			sourceTree = "<group>";
+		};
+		44A5BB0A20F644C4007FBB68 /* CreateMultiSigWallet.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				44A5BB0920F644C4007FBB68 /* Base */,
+				44A5BB0C20F644C9007FBB68 /* en */,
+				44A5BB0E20F644D2007FBB68 /* ru */,
+				44A5BB1020F644D3007FBB68 /* uk */,
+			);
+			name = CreateMultiSigWallet.storyboard;
 			sourceTree = "<group>";
 		};
 		44CBABA120BEEC8A005F04C6 /* EthWalletHeaderTableViewCell.xib */ = {

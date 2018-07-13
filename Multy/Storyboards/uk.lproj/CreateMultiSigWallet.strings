@@ -1,0 +1,68 @@
+
+/* Class = "UILabel"; text = "Cancel"; ObjectID = "9NV-A7-uxP"; */
+"9NV-A7-uxP.text" = "Скасувати";
+
+/* Class = "UILabel"; text = "Chain"; ObjectID = "9xW-Ym-49u"; */
+"9xW-Ym-49u.text" = "Прив'язаний гаманець";
+
+"Ay0-tF-3x3.text" = "Блокчейн";
+
+/* Class = "UILabel"; text = " "; ObjectID = "BBT-d0-xCd"; */
+"BBT-d0-xCd.text" = " ";
+
+/* Class = "UILabel"; text = " Waiting for all members..."; ObjectID = "EMR-dI-cfF"; */
+"EMR-dI-cfF.text" = " Waiting for all members...";
+
+/* Class = "UILabel"; text = "Select Total members count"; ObjectID = "Edo-kk-Ay1"; */
+"Edo-kk-Ay1.text" = "Select Total members count";
+
+/* Class = "UILabel"; text = "Your wallet identification code"; ObjectID = "FwP-hG-eOD"; */
+"FwP-hG-eOD.text" = "Ідентифікаційний код гаманця";
+
+/* Class = "UILabel"; text = "Create MultiSig Wallet"; ObjectID = "Hi6-bd-grP"; */
+"Hi6-bd-grP.text" = "Створити MultiSig";
+
+/* Class = "UIButton"; normalTitle = "Invitation Code"; ObjectID = "HuL-7P-xQq"; */
+"HuL-7P-xQq.normalTitle" = "Invitation Code";
+
+/* Class = "UILabel"; text = "Signs to Send"; ObjectID = "J06-E2-5SM"; */
+"J06-E2-5SM.text" = "Необхідну кількість підписів";
+
+/* Class = "UIButton"; normalTitle = "Create"; ObjectID = "Jgz-s4-pgP"; */
+"Jgz-s4-pgP.normalTitle" = "Створити";
+
+/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "KpW-1Z-48m"; */
+"KpW-1Z-48m.normalTitle" = "Готово";
+
+/* Class = "UITextField"; placeholder = "Wallet name"; ObjectID = "T4S-R1-JcS"; */
+"T4S-R1-JcS.placeholder" = "Назва Гаманця";
+
+/* Class = "UILabel"; text = "Share"; ObjectID = "TG7-MK-AIq"; */
+"TG7-MK-AIq.text" = "Поділитися";
+
+/* Class = "UILabel"; text = "Share MultiSig wallet"; ObjectID = "UHR-VD-lj0"; */
+"UHR-VD-lj0.text" = "Поділитися MultiSig";
+
+/* Class = "UILabel"; text = "3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K3DA28WCp4Cu5LQiddJnDJJm"; ObjectID = "YDW-qE-1rb"; */
+"YDW-qE-1rb.text" = "3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K3DA28WCp4Cu5LQiddJnDJJm";
+
+/* Class = "UILabel"; text = "Wallet Name"; ObjectID = "cTN-bG-Iqc"; */
+"cTN-bG-Iqc.text" = "Назва Гаманця";
+
+/* Class = "UILabel"; text = "Users joined "; ObjectID = "f2W-zb-3lg"; */
+"f2W-zb-3lg.text" = "Users joined ";
+
+/* Class = "UILabel"; text = "3 / 4"; ObjectID = "v6L-sn-crM"; */
+"v6L-sn-crM.text" = "3 / 4";
+
+/* Class = "UILabel"; text = "Family"; ObjectID = "xd5-lj-9MQ"; */
+"xd5-lj-9MQ.text" = "Family";
+
+/* Class = "UILabel"; text = "2"; ObjectID = "xwY-2B-wkg"; */
+"xwY-2B-wkg.text" = "2";
+
+"N27-Sb-Bug.text" = "Співвласників Гаманця";
+
+"1Sw-Kf-zr9.text" = "з";
+
+"diO-2a-JyO.text" = "Кількість співвласників";

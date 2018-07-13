@@ -2636,6 +2636,8 @@ correctly</string>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="hgF-yi-Usi" firstAttribute="top" secondItem="bxL-6P-L4b" secondAttribute="top" id="2oL-xX-qzL"/>
+                                            <constraint firstAttribute="trailing" secondItem="hgF-yi-Usi" secondAttribute="trailing" id="EmN-Xi-Pbu"/>
                                             <constraint firstAttribute="height" constant="64" id="JC1-TM-Jru"/>
                                             <constraint firstItem="hgF-yi-Usi" firstAttribute="top" secondItem="bxL-6P-L4b" secondAttribute="top" id="Mi4-M8-AHV"/>
                                             <constraint firstAttribute="bottom" secondItem="hgF-yi-Usi" secondAttribute="bottom" id="abH-Co-eMN"/>
@@ -2656,7 +2658,7 @@ correctly</string>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9G-zI-eT6">
                                                 <rect key="frame" x="0.0" y="0.0" width="355" height="64"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
-                                                <state key="normal" title="Create Ethereum MultiSig">
+                                                <state key="normal" title="Create MultiSig">
                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>

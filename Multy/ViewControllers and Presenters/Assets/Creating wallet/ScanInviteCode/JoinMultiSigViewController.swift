@@ -167,6 +167,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
             if screenHeight == heightOfX {
                 bottomConstraint.constant = inset.bottom - 19 //def is 35 but it for top of keyboard
             }
+            
             cameraView.alpha = 0.2
             animateLayout()
         }
@@ -177,7 +178,6 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         bottomConstraint.constant = 16 // Default
         animateLayout()
     }
-    
     
     @IBAction func cancelAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)

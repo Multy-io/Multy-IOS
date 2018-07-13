@@ -18,6 +18,8 @@ class ReceiveStartPresenter: NSObject {
     
     var selectedIndex: Int?
     
+    var displayedBlockchainOnly: BlockchainType?
+    
     //test func
 //    func createWallets() {
 //        for index in 1...10 {
@@ -59,15 +61,19 @@ class ReceiveStartPresenter: NSObject {
 //            }
 //        }
         blockUI()
-        DataManager.shared.getWalletsVerbose() { (walletsArrayFromApi, err) in
+        DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             self.unlockUI()
             if err != nil {
                 return
             } else {
-                let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
+                var walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
                 print("afterVerbose:rawdata: \(walletsArrayFromApi)")
                 
-                self.walletsArr = walletsArr.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
+                if let blockchainType = self.displayedBlockchainOnly {
+                    walletsArray = walletsArray.filter{ $0.blockchainType == blockchainType }
+                }
+                
+                self.walletsArr = walletsArray.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
                 self.receiveStartVC?.updateUI()
             }
         }
