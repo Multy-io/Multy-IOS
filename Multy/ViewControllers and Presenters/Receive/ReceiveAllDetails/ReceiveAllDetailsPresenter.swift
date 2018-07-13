@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import Hash2Pics
 
 let wirelessRequestImagesAmount = 10
 
@@ -14,10 +15,10 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     var cryptoName: String?
     var fiatSum: String?
     var fiatName: String?
-    var wirelessRequestImageName: String? {
+    var wirelessRequestImage: UIImage? {
         didSet {
-            if wirelessRequestImageName != nil {
-                receiveAllDetailsVC?.hidedImage.image = UIImage(named: wirelessRequestImageName!)
+            if wirelessRequestImage != nil {
+                receiveAllDetailsVC?.hidedImage.image = wirelessRequestImage
             }
         }
     }
@@ -70,6 +71,10 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
         startWirelessReceiverActivity()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.didUpdateTransaction(notification:)), name: Notification.Name("transactionUpdated"), object: nil)
+    }
+    
+    func viewDidAppear() {
+        generateWirelessRequestImage()
     }
     
     func viewControllerViewWillDisappear() {
@@ -154,8 +159,10 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     }
     
     private func generateWirelessRequestImage() {
-        let imageNumber = walletAddress.convertToImageIndex
-        wirelessRequestImageName = "wirelessRequestImage_" + "\(imageNumber)"
+        guard let diameter = receiveAllDetailsVC?.hidedImage.frame.size.width else {
+            return
+        }
+        wirelessRequestImage = PictureConstructor().createPicture(diameter: diameter, seed: walletAddress)
 //
 //        DataManager.shared.getAccount { (account, error) in
 //            if account != nil {
@@ -241,17 +248,21 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
             let userInfo = notification.userInfo
             if userInfo != nil {
                 let notifictionMsg = userInfo!["NotificationMsg"] as! NSDictionary
-                guard let txStatus = notifictionMsg["transactionType"] as? Int, let address = notifictionMsg["address"] as? String else {
+                guard let txStatus = notifictionMsg["transactionType"] as? Int,
+                    let addressTo = notifictionMsg["to"] as? String,
+                    let addressFrom = notifictionMsg["from"] as? String else {
                     return
                 }
                 
-                guard let amount = notifictionMsg["amount"] as? String, let currencyID = notifictionMsg["currencyid"] as? UInt32, let networkID = notifictionMsg["networkid"] as? UInt32 else {
+                guard let amount = notifictionMsg["amount"] as? String,
+                    let currencyID = notifictionMsg["currencyid"] as? UInt32,
+                    let networkID = notifictionMsg["networkid"] as? UInt32 else {
                     return
                 }
                 
                 let amountString = self.convertAddressDataToString(amount, currencyID, networkID)
-                if txStatus == TxStatus.MempoolIncoming.rawValue && address == self.walletAddress {
-                    self.receiveAllDetailsVC?.presentDidReceivePaymentAlert(address: address, amount: amountString)
+                if txStatus == TxStatus.MempoolIncoming.rawValue && addressTo == self.walletAddress {
+                    self.receiveAllDetailsVC?.presentDidReceivePaymentAlert(address: addressFrom, amount: amountString)
                     self.receiveAllDetailsVC?.sendAnalyticsEvent(screenName: KFReceiveScreen, eventName: KFTransactionReceived)
                 }
             }

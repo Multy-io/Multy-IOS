@@ -22,11 +22,48 @@ class DataManager: NSObject {
     var btcMainNetDonationAddress = String()
     
     var currencyExchange = CurrencyExchange()
+    var savedAddresses = [String: String]()
     
     override init() {
         super.init()
         
         seedWordsArray = coreLibManager.mnemonicAllWords()
+        
+        savedAddresses = fetchAddressesFromUD()
+//        fetchSavedAddresses(completion: { [unowned self] (addresses, error) in
+//            if error == nil {
+//                if addresses == nil {
+//                    self.savedAddresses = SavedAddressesRLM()
+//                } else {
+//                    self.savedAddresses = addresses!
+//                }
+//            } else {
+//                self.savedAddresses = SavedAddressesRLM()
+//            }
+//        })
+    }
+    
+    func mapAddressesAndSave(_ contacts: [EPContact]) {
+        savedAddresses.removeAll()
+        
+        for contact in contacts {
+            for addressRLM in contact.addresses {
+                //check if exist address for another user
+                if savedAddresses[addressRLM.address] == nil {
+                    savedAddresses[addressRLM.address] = contact.displayName()
+                }
+            }
+        }
+        
+        saveAddressesToUD(savedAddresses)
+    }
+    
+    func isAddressSaved(_ address: String) -> Bool {
+        return savedAddresses[address] != nil
+    }
+    
+    func name(for address: String) -> String {
+        return savedAddresses[address] != nil ? savedAddresses[address]! : ""
     }
     
     func getBTCDonationAddress(netType: UInt32) -> String {
@@ -56,7 +93,7 @@ class DataManager: NSObject {
         if let isFirst = UserDefaults.standard.value(forKey: "isFirstLaunch") {
             return isFirst as! Bool
         } else {
-//            UserDefaults.standard.set(true, forKey: "isFirstLaunch")
+            UserDefaults.standard.set(false, forKey: "isFirstLaunch")
             return true
         }
     }
@@ -66,7 +103,7 @@ class DataManager: NSObject {
             return isTerms as! Bool
         } else {
             //            UserDefaults.standard.set(true, forKey: "isFirstLaunch")
-            return true
+            return false
         }
     }
     
@@ -93,6 +130,22 @@ class DataManager: NSObject {
             return isAccepted
         } else {
             return false
+        }
+    }
+    
+    func updateSavedAddresses(_ addresses: [String: String], completion: @escaping(_ error: NSError?) -> ()) {
+        savedAddresses = addresses
+//        realmManager.updateSavedAddresses(addresses) { [unowned self] (error) in
+//            if error == nil {
+//                self.savedAddresses.addressesData = addresses.addressesData
+//            }
+//            completion(error)
+//        }
+    }
+    
+    func fetchSavedAddresses(completion: @escaping(_ addresses: SavedAddressesRLM?, _ error: NSError?) -> ()) {
+        realmManager.fetchSavedAddresses { (addresses, error) in
+            completion(addresses, error)
         }
     }
 }

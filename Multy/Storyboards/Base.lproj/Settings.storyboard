@@ -583,7 +583,7 @@ Make sure that Seed Phrase backup was successfully done!</string>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.92156862745098034" green="0.081802509725093842" blue="0.23179471492767334" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.92156862745098034" green="0.082352941176470587" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="ks4-fV-dj4" firstAttribute="leading" secondItem="Wzk-mA-tvc" secondAttribute="leading" id="0lz-1H-oYT"/>
                                     <constraint firstItem="Byc-KO-XkA" firstAttribute="centerY" secondItem="Wzk-mA-tvc" secondAttribute="centerY" id="Aqd-tn-THs"/>

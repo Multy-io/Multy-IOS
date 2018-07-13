@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.4</string>
+	<string>1.0.5</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -36,7 +36,7 @@
 	<key>GIT_BRANCH_NAME</key>
 	<string>CreatingMultiSigWallet</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>6e441888</string>
+	<string>71f3af09</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_BUILD_1.0.3_47-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -72,6 +72,45 @@
 	<string>Multy needs contacts to send transaction among your friends</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Needs to authorize user</string>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>operationReceive</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Receive</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>io.multy.magicReceive</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>wirelessIcon</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Magic Send</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>io.multy.magicSend</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>operationSend</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Send Transaction</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>io.multy.sendTo</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>qrIconGray</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Scan QR</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>io.multy.scanQr</string>
+		</dict>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

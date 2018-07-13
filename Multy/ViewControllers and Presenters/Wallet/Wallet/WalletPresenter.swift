@@ -59,7 +59,7 @@ class WalletPresenter: NSObject {
     }
     
     func updateHeader() {
-        walletVC!.showHidePendingSection()
+        walletVC!.showHidePendingSection(true)
         
         walletVC!.amountCryptoLbl.text = wallet!.availableAmountString
         walletVC!.nameCryptoLbl.text = wallet!.blockchain.shortName
@@ -112,6 +112,8 @@ class WalletPresenter: NSObject {
                         return firstDate > secondDate
                     })
                     self.isSocketInitiateUpdating = false
+                    
+                    self.updateHeader()
                 }
             }
         }

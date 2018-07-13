@@ -16,6 +16,7 @@ class WalletTableViewCell: UITableViewCell {
     @IBOutlet weak var statusImage: UIImageView!
     
     @IBOutlet weak var viewForShadow: UIView!
+    @IBOutlet weak var resyncingStatusLabel: UILabel!
     
     var isBorderOn = false
     
@@ -68,17 +69,17 @@ class WalletTableViewCell: UITableViewCell {
         fiatSumLbl.text = wallet!.sumInFiatString + " " + self.wallet!.fiatSymbol
         
         cryptoSumLbl.text = wallet?.sumInCryptoString
-        
-        // FIXME: refactor
-//        if blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
-//            self.cryptoSumLbl.text  = self.wallet!.sumInCrypto.fixedFraction(digits: 8)
-//        } else if blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
-//            let sumInCrypto = wallet!.ethWallet!.allBalance
-//            self.cryptoSumLbl.text  = sumInCrypto.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
-//        }
 
         if wallet != nil {
-            self.statusImage.isHidden = !wallet!.isTherePendingTx.boolValue
+            if wallet!.isTherePendingTx.boolValue {
+                statusImage.image = UIImage(named: "pending")
+                statusImage.isHidden = false
+            } else if wallet!.isSyncing.boolValue {
+                statusImage.image = UIImage(named: "resyncing")
+                statusImage.isHidden = false
+            } else {
+                statusImage.isHidden = true
+            }
         }
     }
 }

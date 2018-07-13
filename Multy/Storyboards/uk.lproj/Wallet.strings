@@ -161,10 +161,12 @@
 /* Class = "UILabel"; text = "Address has been copied to clipboard"; ObjectID = "ztv-dw-RMV"; */
 "ztv-dw-RMV.text" = "Адреса скопійований в буфер обміну";
 
-"TXL-5Z-CpV.text" = "Відправити"
+"TXL-5Z-CpV.text" = "Відправити";
 
-"Vl5-l1-Y6g.text" = "Отримати"
+"Vl5-l1-Y6g.text" = "Отримати";
 
-"zRh-am-gEl.text" = "Біржа"
+"zRh-am-gEl.text" = "Біржа";
 
-"f6g-fm-Ou2.text" = "Натисніть кнопку, щоб створити запит на отримання коштів."
+"f6g-fm-Ou2.text" = "Натисніть кнопку, щоб створити запит на отримання коштів.";
+
+"QeZ-MK-mx7.normalTitle" = "Додати в контакт";
