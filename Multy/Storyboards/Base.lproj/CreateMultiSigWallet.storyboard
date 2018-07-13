@@ -207,10 +207,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="64" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ccs-AU-i8v">
-                                        <rect key="frame" x="0.0" y="57" width="375" height="283"/>
+                                        <rect key="frame" x="0.0" y="57" width="375" height="344"/>
                                         <color key="backgroundColor" red="0.97647058819999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="283" id="SkW-aJ-Axd"/>
+                                            <constraint firstAttribute="height" constant="344" id="SkW-aJ-Axd"/>
                                         </constraints>
                                         <color key="separatorColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
@@ -260,21 +260,21 @@
                                                     <outlet property="walletNameTF" destination="T4S-R1-JcS" id="OSx-5s-Aus"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="membersCell" id="8gB-2g-BHX" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="blockchainCell" id="8gB-2g-BHX" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="92" width="375" height="64"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8gB-2g-BHX" id="UfS-Eg-c9s">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Members" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ay0-tF-3x3">
-                                                            <rect key="frame" x="20" y="10" width="83" height="17"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blockchain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ay0-tF-3x3">
+                                                            <rect key="frame" x="20" y="10" width="60.5" height="17"/>
                                                             <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
                                                             <color key="textColor" red="0.53671032190000001" green="0.63738411660000005" blue="0.77729958300000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUC-c4-0GV">
-                                                            <rect key="frame" x="20" y="31" width="10.5" height="24"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum ∙ ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUC-c4-0GV">
+                                                            <rect key="frame" x="20" y="31" width="121.5" height="24"/>
                                                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -292,8 +292,40 @@
                                                     <outlet property="blockchainLabel" destination="FUC-c4-0GV" id="n3t-4y-Ckb"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="signsCell" id="U9z-EM-Nwh" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="membersCell" id="waZ-RL-BOH" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="156" width="375" height="64"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="waZ-RL-BOH" id="Ya3-lW-W4J">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Members" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diO-2a-JyO">
+                                                            <rect key="frame" x="20" y="10" width="83" height="17"/>
+                                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
+                                                            <color key="textColor" red="0.53671032190000001" green="0.63738411660000005" blue="0.77729958300000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSW-G7-ro4">
+                                                            <rect key="frame" x="20" y="31" width="10.5" height="24"/>
+                                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="wSW-G7-ro4" firstAttribute="leading" secondItem="Ya3-lW-W4J" secondAttribute="leading" constant="20" id="8CL-sC-d5x"/>
+                                                        <constraint firstItem="wSW-G7-ro4" firstAttribute="top" secondItem="diO-2a-JyO" secondAttribute="bottom" constant="4.5" id="Gpd-Tr-Lcz"/>
+                                                        <constraint firstItem="diO-2a-JyO" firstAttribute="top" secondItem="Ya3-lW-W4J" secondAttribute="top" constant="10" id="Na0-OH-TF5"/>
+                                                        <constraint firstItem="diO-2a-JyO" firstAttribute="leading" secondItem="Ya3-lW-W4J" secondAttribute="leading" constant="20" id="hnR-Vc-uBG"/>
+                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="diO-2a-JyO" secondAttribute="trailing" constant="20" symbolic="YES" id="nKw-GS-Hvf"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="blockchainLabel" destination="wSW-G7-ro4" id="lX8-Fo-2GO"/>
+                                                </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="signsCell" id="U9z-EM-Nwh" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="220" width="375" height="64"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U9z-EM-Nwh" id="Qly-tZ-CHH">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
@@ -324,34 +356,47 @@
                                                     <outlet property="blockchainLabel" destination="xwY-2B-wkg" id="2Er-Gp-gx1"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="chainCell" id="Gqi-sM-rdB" customClass="CreateWalletBlockchainTableViewCell" customModule="Multy" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="220" width="375" height="64"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="chainCell" id="Gqi-sM-rdB" customClass="MultiSigWalletCell" customModule="Multy" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="284" width="375" height="64"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gqi-sM-rdB" id="R9c-W9-mB9">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9xW-Ym-49u">
-                                                            <rect key="frame" x="20" y="11" width="32.5" height="17"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Linked Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9xW-Ym-49u">
+                                                            <rect key="frame" x="20" y="6" width="76" height="17"/>
                                                             <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
                                                             <color key="textColor" red="0.53671032190000001" green="0.63738411660000005" blue="0.77729958300000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum ∙ ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6l-4Z-Gl8">
-                                                            <rect key="frame" x="20" y="33" width="121.5" height="24"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6l-4Z-Gl8">
+                                                            <rect key="frame" x="70" y="29" width="4.5" height="23.5"/>
                                                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nEo-4N-9he">
+                                                            <rect key="frame" x="20" y="26" width="28" height="28"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="28" id="HrM-K2-vpL"/>
+                                                                <constraint firstAttribute="width" secondItem="nEo-4N-9he" secondAttribute="height" multiplier="1:1" id="LQc-5k-XFn"/>
+                                                            </constraints>
+                                                        </imageView>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="n6l-4Z-Gl8" firstAttribute="centerY" secondItem="nEo-4N-9he" secondAttribute="centerY" id="KKi-WR-EW1"/>
                                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9xW-Ym-49u" secondAttribute="trailing" constant="20" symbolic="YES" id="Lr4-XF-dT0"/>
-                                                        <constraint firstItem="n6l-4Z-Gl8" firstAttribute="leading" secondItem="R9c-W9-mB9" secondAttribute="leading" constant="20" id="R92-Fj-afr"/>
+                                                        <constraint firstItem="nEo-4N-9he" firstAttribute="top" secondItem="9xW-Ym-49u" secondAttribute="bottom" constant="3" id="TQi-bP-wcf"/>
                                                         <constraint firstItem="9xW-Ym-49u" firstAttribute="leading" secondItem="R9c-W9-mB9" secondAttribute="leading" constant="20" id="YU3-q6-4Ph"/>
-                                                        <constraint firstItem="n6l-4Z-Gl8" firstAttribute="top" secondItem="9xW-Ym-49u" secondAttribute="bottom" constant="4.5" id="fnj-73-hTU"/>
-                                                        <constraint firstItem="9xW-Ym-49u" firstAttribute="top" secondItem="R9c-W9-mB9" secondAttribute="top" constant="11" id="jM9-2w-BD1"/>
+                                                        <constraint firstItem="nEo-4N-9he" firstAttribute="leading" secondItem="9xW-Ym-49u" secondAttribute="leading" id="Z8U-Jm-ohV"/>
+                                                        <constraint firstItem="9xW-Ym-49u" firstAttribute="top" secondItem="R9c-W9-mB9" secondAttribute="top" constant="6" id="jM9-2w-BD1"/>
+                                                        <constraint firstItem="n6l-4Z-Gl8" firstAttribute="leading" secondItem="nEo-4N-9he" secondAttribute="trailing" constant="22" id="r4O-il-gKd"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="blockchainImage" destination="nEo-4N-9he" id="HV0-jG-rfu"/>
+                                                    <outlet property="blockchainLabel" destination="n6l-4Z-Gl8" id="FvU-Jj-ihd"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
@@ -403,7 +448,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SWr-QV-WED" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5199" y="3695"/>
+            <point key="canvasLocation" x="-5199.1999999999998" y="3694.9025487256376"/>
         </scene>
         <!--Members View Controller-->
         <scene sceneID="34a-kb-vnf">

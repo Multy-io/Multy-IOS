@@ -105,6 +105,7 @@ struct Constants {
     static let waitingAllMembersString = "WAITING ALL MEMBERS"
     static let startForString = "START FOR"
     static let invitationCodeString = "INVITATION CODE"
+    static let chooseWalletString = "CHOOSE WALLET"
     
     //Assets screen
     struct AssetsScreen {

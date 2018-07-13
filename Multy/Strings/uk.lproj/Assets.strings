@@ -1,10 +1,6 @@
-/* 
-  Assets.strings
-  Multy
-
-  Created by Alex Pro on 5/29/18.
-  Copyright © 2018 Idealnaya rabota. All rights reserved.
-*/
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
 
 "BACKUP IS NEEDED" = "Потрібно резервне копіювання!";
 "RESTORE MULTY" = "Відновити Multy";
@@ -30,3 +26,4 @@
 "AGREE WITH TERMS" = "Я погоджуюся з Умовами надання послуг та обробкою своїх персональних даних відповідно до Політики конфідеційності Multy.";
 "ERROR WHILE CREATING WALLET" = "Помилка при створенні гаманця!";
 "WALLET NAME NOT EMPTY ALERT" = "Ім'я гаманця не повинно бути порожнім";
+"CHOOSE WALLET" = "Будь ласка, виберіть гаманець";

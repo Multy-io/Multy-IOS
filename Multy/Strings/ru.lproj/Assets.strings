@@ -1,10 +1,6 @@
-/* 
-  Assets.strings
-  Multy
-
-  Created by Alex Pro on 5/29/18.
-  Copyright © 2018 Idealnaya rabota. All rights reserved.
-*/
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
 
 "BACKUP IS NEEDED" = "Требуется резервное копирование!";
 "RESTORE MULTY" = "Восстановить Multy";
@@ -30,3 +26,4 @@
 "AGREE WITH TERMS" = "Я согласен с Условиями предоставления услуг и обработкой своих персональных данных в соответствии с Политикой конфиденциальности Multy.";
 "ERROR WHILE CREATING WALLET" = "Ошибка при создании кошелька!";
 "WALLET NAME NOT EMPTY ALERT" = "Имя кошелька не должно быть пустым";
+"CHOOSE WALLET" = "Пожалуйста, выберите кошелек";

@@ -3,10 +3,9 @@
 "9NV-A7-uxP.text" = "Отменить";
 
 /* Class = "UILabel"; text = "Chain"; ObjectID = "9xW-Ym-49u"; */
-"9xW-Ym-49u.text" = "Блокчейн";
+"9xW-Ym-49u.text" = "Привязанный кошелек";
 
-/* Class = "UILabel"; text = "Total Members"; ObjectID = "Ay0-tF-3x3"; */
-"Ay0-tF-3x3.text" = "Количество совладельцев";
+"Ay0-tF-3x3.text" = "Блокчейн";
 
 /* Class = "UILabel"; text = " "; ObjectID = "BBT-d0-xCd"; */
 "BBT-d0-xCd.text" = " ";
@@ -16,9 +15,6 @@
 
 /* Class = "UILabel"; text = "Select Total members count"; ObjectID = "Edo-kk-Ay1"; */
 "Edo-kk-Ay1.text" = "Количество Подписей";
-
-/* Class = "UILabel"; text = "3"; ObjectID = "FUC-c4-0GV"; */
-"FUC-c4-0GV.text" = "3";
 
 /* Class = "UILabel"; text = "Your wallet identification code"; ObjectID = "FwP-hG-eOD"; */
 "FwP-hG-eOD.text" = "Идентификационный код кошелька";
@@ -68,3 +64,5 @@
 "N27-Sb-Bug.text" = "Совладельцев Кошелька";
 
 "1Sw-Kf-zr9.text" = "из";
+
+"diO-2a-JyO.text" = "Количество совладельцев";
