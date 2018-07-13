@@ -7,10 +7,12 @@ import UIKit
 private typealias LocalizeDelegate = TransactionViewController
 private typealias PickerContactsDelegate = TransactionViewController
 private typealias AnalyticsDelegate = TransactionViewController
+private typealias MultisigDelegate = TransactionViewController
 
-class TransactionViewController: UIViewController {
+class TransactionViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var backImageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dateLbl: UILabel!
@@ -27,12 +29,24 @@ class TransactionViewController: UIViewController {
     @IBOutlet weak var numberOfConfirmationLbl: UILabel! // 6 Confirmations
     @IBOutlet weak var viewInBlockchainBtn: UIButton!
     @IBOutlet weak var constraintNoteFiatSum: NSLayoutConstraint! // set 20 if note == ""
+    @IBOutlet weak var blockchainInfoView: UIView!
+    @IBOutlet weak var transactionInfoHolderView: UIView!
     
     @IBOutlet weak var donationView: UIView!
     @IBOutlet weak var donationCryptoSum: UILabel!
     @IBOutlet weak var donationCryptoName: UILabel!
     @IBOutlet weak var donationFiatSumAndName: UILabel!
     @IBOutlet weak var constraintDonationHeight: NSLayoutConstraint!
+    @IBOutlet weak var blockchainInfoViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollContentHeightConstraint: NSLayoutConstraint!
+    
+    
+    // MultiSig outlets
+    @IBOutlet weak var confirmationDetailsHolderView: UIView!
+    @IBOutlet weak var confirmationAmount: UILabel!
+    @IBOutlet weak var confirmationMembersCollectionView: UICollectionView!
+    @IBOutlet weak var confirmaitionDetailsHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var doubleSliderHolderView: UIView!
     
     let presenter = TransactionPresenter()
     
@@ -45,17 +59,23 @@ class TransactionViewController: UIViewController {
     
     var isIncoming = true
     
+    var isMultisig = false 
+    
     var state = 0
+    
+    var doubleSliderVC : DoubleSlideViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.swipeToBack()
         self.presenter.transctionVC = self
+        configureCollectionViews()
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         self.isIncoming = presenter.histObj.isIncoming()
+        self.checkMultisig()
         self.checkHeightForScrollAvailability()
-        self.checkForSendOrReceive()
+        self.checkStatus()
         self.constraintDonationHeight.constant = 0
         self.donationView.isHidden = true
         self.updateUI()
@@ -74,6 +94,33 @@ class TransactionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+        
+        if isMultisig {
+            let sendStoryboard = UIStoryboard(name: "Send", bundle: nil)
+            doubleSliderVC = sendStoryboard.instantiateViewController(withIdentifier: "doubleSlideView") as! DoubleSlideViewController
+            doubleSliderVC.delegate = self
+            add(doubleSliderVC, to: doubleSliderHolderView)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isMultisig {
+            doubleSliderVC.remove()
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        scrollContentHeightConstraint.constant = contentHeight()
+        self.view.layoutIfNeeded()
+    }
+    
+    func configureCollectionViews() {
+        let confirmationStatusNib = UINib(nibName: "ConfirmationStatusCollectionViewCell", bundle: nil)
+        confirmationMembersCollectionView.register(confirmationStatusNib, forCellWithReuseIdentifier: "ConfirmationStatusCVCReuseId")
     }
     
     @objc func tapOnToAddress(recog: UITapGestureRecognizer) {
@@ -146,15 +193,44 @@ class TransactionViewController: UIViewController {
 //        }
     }
     
-    func checkForSendOrReceive() {
-        if isIncoming {  // RECEIVE
-            self.makeBackColor(color: self.presenter.receiveBackColor)
-            self.titleLbl.text = localize(string: Constants.transactionInfoString)
-        } else {                        // SEND
-            self.makeBackColor(color: self.presenter.sendBackColor)
-            self.titleLbl.text = localize(string: Constants.transactionInfoString)
-            self.transactionImg.image = #imageLiteral(resourceName: "sendBigIcon")
+    func checkStatus() {
+        if isMultisig && presenter.histObj.isWaitingConfirmation.boolValue {
+            // Multisig transaction waiting confirmation
+            self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
+            self.titleLbl.text = "Transaction details"
+            self.titleLbl.textColor = .black
+        } else {
+            if isIncoming {  // RECEIVE
+                self.makeBackColor(color: self.presenter.receiveBackColor)
+                self.titleLbl.text = localize(string: Constants.transactionInfoString)
+            } else {                        // SEND
+                self.makeBackColor(color: self.presenter.sendBackColor)
+                self.titleLbl.text = localize(string: Constants.transactionInfoString)
+                self.transactionImg.image = #imageLiteral(resourceName: "sendBigIcon")
+            }
+            self.titleLbl.textColor = .white
+            backImageView.image = UIImage(named: "backWhite")
         }
+        
+    }
+    
+    func checkMultisig() {
+        isMultisig = presenter.histObj.isMultisigTx.boolValue
+        confirmationDetailsHolderView.isHidden = !isMultisig
+        doubleSliderHolderView.isHidden = !isMultisig
+    }
+    
+    func contentHeight() -> CGFloat {
+        var result = transactionInfoHolderView.frame.origin.y + transactionInfoHolderView.frame.size.height + 16
+        if isMultisig {
+            confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
+            result = result + confirmaitionDetailsHeightConstraint.constant + 16
+            
+            if presenter.histObj.isWaitingConfirmation.boolValue {
+                result += doubleSliderHolderView.frame.size.height
+            }
+        }
+        return result
     }
     
     func updateUI() {
@@ -163,24 +239,37 @@ class TransactionViewController: UIViewController {
         dateFormatter.dateFormat = "HH:mm, d MMMM yyyy"
         let cryptoSumInBTC = UInt64(truncating: presenter.histObj.txOutAmount).btcValue
         
-        switch self.presenter.wallet.blockchainType.blockchain {
-        case BLOCKCHAIN_BITCOIN:
+        if isMultisig && presenter.histObj.isWaitingConfirmation.boolValue {
+            self.dateLbl.text = "Waiting for confirmations..."
+            
+            self.blockchainInfoView.isHidden = true
+            self.blockchainInfoViewHeightConstraint.constant = 8
+        } else {
             if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
                 presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue {
                 self.dateLbl.text = dateFormatter.string(from: presenter.histObj.mempoolTime)
             } else {
                 self.dateLbl.text = dateFormatter.string(from: presenter.histObj.blockTime)
             }
-            self.noteLbl.text = "" // NOTE FROM HIST OBJ
-            self.constraintNoteFiatSum.constant = 10
+            
+            self.blockchainInfoView.isHidden = false
+            self.blockchainInfoViewHeightConstraint.constant = 104
+            self.numberOfConfirmationLbl.text = makeConfirmationText()
+        }
+        
+        self.noteLbl.text = "" // NOTE FROM HIST OBJ
+        self.constraintNoteFiatSum.constant = 10
+        self.personNameLbl.text = "" // before we don`t have address book    OR    Wallet Name
+        self.blockchainImg.image = UIImage(named: presenter.blockchainType.iconString)
+        
+        switch self.presenter.wallet.blockchainType.blockchain {
+        case BLOCKCHAIN_BITCOIN:
             let arrOfInputsAddresses = presenter.histObj.txInputs.map{ $0.address }.joined(separator: "\n")   // top address lbl
             //        self.transactionCurencyLbl.text = presenter.histObj.     // check currencyID
             self.walletFromAddressLbl.text = arrOfInputsAddresses
-            self.personNameLbl.text = ""   // before we don`t have address book    OR    Wallet Name
             let arrOfOutputsAddresses = presenter.histObj.txOutputs.map{ $0.address }.joined(separator: "\n")
             self.walletToAddressLbl.text = arrOfOutputsAddresses
-            self.numberOfConfirmationLbl.text = makeConfirmationText()
-            self.blockchainImg.image = UIImage(named: presenter.blockchainType.iconString)
+            
             if isIncoming {
                 self.transctionSumLbl.text = "+\(cryptoSumInBTC.fixedFraction(digits: 8))"
                 self.sumInFiatLbl.text = "+\((cryptoSumInBTC * presenter.histObj.fiatCourseExchange).fixedFraction(digits: 2)) USD"
@@ -203,22 +292,11 @@ class TransactionViewController: UIViewController {
                 }
             }
         case BLOCKCHAIN_ETHEREUM:
-            if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
-                presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue {
-                self.dateLbl.text = dateFormatter.string(from: presenter.histObj.blockTime)
-            } else {
-                self.dateLbl.text = dateFormatter.string(from: presenter.histObj.blockTime)
-            }
-            self.noteLbl.text = "" // NOTE FROM HIST OBJ
-            self.constraintNoteFiatSum.constant = 10
-            
             self.transactionCurencyLbl.text = "ETH"     // check currencyID
             self.walletFromAddressLbl.text = presenter.histObj.addressesArray.first
-            self.personNameLbl.text = ""   // before we don`t have address book    OR    Wallet Name
-            
             self.walletToAddressLbl.text = presenter.histObj.addressesArray.last
-            self.numberOfConfirmationLbl.text = makeConfirmationText()
-            self.blockchainImg.image = UIImage(named: presenter.blockchainType.iconString)
+            
+            
             if isIncoming {
                 let fiatAmountInWei = BigInt(presenter.histObj.txOutAmountString) * presenter.histObj.fiatCourseExchange
                 self.transctionSumLbl.text = "+" + BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
@@ -227,10 +305,11 @@ class TransactionViewController: UIViewController {
                 let fiatAmountInWei = BigInt(presenter.histObj.txOutAmountString) * presenter.histObj.fiatCourseExchange
                 self.transctionSumLbl.text = "-" + BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
                 self.sumInFiatLbl.text = "-" + fiatAmountInWei.fiatValueString(for: BLOCKCHAIN_ETHEREUM) + " USD"
-                
             }
         default: break
         }
+        
+        self.view.layoutIfNeeded()
     }
     
     func makeDonationConstraint() -> CGFloat {
@@ -317,6 +396,56 @@ extension AnalyticsDelegate: AnalyticsProtocol {
     
     func logAddedAddressAnalytics() {
         sendAnalyticsEvent(screenName: transactionInfoScreen, eventName: addressAdded)
+    }
+}
+
+extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DoubleSliderDelegate {
+    
+    //MARK: UICollectionViewDataSource
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ConfirmationStatusCVCReuseId", for: indexPath) as! ConfirmationStatusCollectionViewCell
+        switch indexPath.item {
+        case 0:
+            cell.fill(address: "1KaNqVt2aUPY5Yyh6XiM6gn2KqC8zbGE63", status: .confirmed, memberName: "Zigmund", date: Date(timeIntervalSinceNow: -360))
+            break
+            
+        case 1:
+            cell.fill(address: "1LAjEP52mMaJWSRC6g5wdF8wwNFbzCkiRo", status: .waiting, memberName: "Alfredo", date: nil)
+            break
+            
+        case 2:
+            cell.fill(address: "13buGNTTQ6dGyAMXJofBRNTgCQPccApMLz", status: .declined, memberName: nil, date: Date(timeIntervalSinceNow: -360))
+            break
+            
+        case 3:
+            cell.fill(address: "1DYvmjLcMHuVWHwePyrW6DAAcKwMBbW9j1", status: .viewed, memberName: nil, date: Date(timeIntervalSinceNow: -360))
+            break
+            
+        default:
+            break
+        }
+        
+        return cell
+    }
+    
+    //MARK: UICollectionViewDelegateFlowLayout
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: confirmationMembersCollectionView.frame.size.width, height: 64)
+    }
+    
+    //MARK: Slider actions
+    func didSlideToSend(_ sender: DoubleSlideViewController) {
+        //FIXME: stub
+        print("Slide to Send")
+    }
+    
+    func didSlideToDecline(_ sender: DoubleSlideViewController) {
+        //FIXME: stub
+        print("Slide to Decline")
     }
 }
 
