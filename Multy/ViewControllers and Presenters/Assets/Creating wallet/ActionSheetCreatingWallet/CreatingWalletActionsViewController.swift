@@ -41,6 +41,13 @@ class CreatingWalletActionsViewController: UIViewController, CancelProtocol, Ana
         }
     }
     
+    @IBAction func joinToMultiSigAction(_ sender: Any) {
+        ((cancelDelegate! as! AssetsViewController).tabBarController! as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
+        self.dismiss(animated: true) {
+            self.createProtocol?.goToCreateWallet(tag: "joinToMultiSig")
+        }
+    }
+    
     @IBAction func importWalletAction(_ sender: Any) {
         unowned let weakSelf =  self
         self.presentDonationAlertVC(from: weakSelf, with: "io.multy.importWallet50")

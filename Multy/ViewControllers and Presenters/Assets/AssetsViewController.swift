@@ -396,9 +396,10 @@ extension CreateWalletDelegate: CreateWalletProtocol {
             let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
             let createMSVC = storyboard.instantiateViewController(withIdentifier: "creatingMultiSigVC")
             navigationController?.pushViewController(createMSVC, animated: true)
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            let joinVC = storyboard.instantiateViewController(withIdentifier: "joinMultiSig")
-//            navigationController?.pushViewController(joinVC, animated: true)
+        } else if tag == "joinToMultiSig" {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let joinVC = storyboard.instantiateViewController(withIdentifier: "joinMultiSig")
+            navigationController?.pushViewController(joinVC, animated: true)
         }
     }
 }

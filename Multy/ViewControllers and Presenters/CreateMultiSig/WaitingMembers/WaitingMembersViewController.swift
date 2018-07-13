@@ -217,7 +217,8 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     
     func openShareInviteVC() {
         let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
-        let inviteCodeVC = storyBoard.instantiateViewController(withIdentifier: "inviteCodeVC")
+        let inviteCodeVC = storyBoard.instantiateViewController(withIdentifier: "inviteCodeVC") as! InviteCodeViewController
+        inviteCodeVC.presenter.inviteCode = presenter.inviteCode
         present(inviteCodeVC, animated: true, completion: nil)
     }
     

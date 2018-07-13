@@ -12,14 +12,23 @@ class WaitingMembersPresenter: NSObject {
     var membersAmount: Int = 2
     var membersJoined = [String]()
     var createWalletPrice = 0.001
+    var inviteCode = ""             //send it to server
     
     func viewControllerViewDidLoad() {
+        inviteCode = makeInviteCode()
+        viewController?.openShareInviteVC()
     }
-    
+
     func viewControllerViewWillAppear() {
     }
     
     func viewControllerViewDidLayoutSubviews() {
+    }
+    
+    func makeInviteCode() -> String {
+        let uuid = UUID().uuidString
+        let deviceName = UIDevice.current.name
+        return (uuid + deviceName).sha3(.keccak224)
     }
     
 }

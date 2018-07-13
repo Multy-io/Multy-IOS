@@ -27,3 +27,6 @@
 "ERROR WHILE CREATING WALLET" = "Error while creating wallet!";
 "WALLET NAME NOT EMPTY ALERT" = "Wallet name should be non empty";
 "CHOOSE WALLET" = "Please, select wallet";
+"INVALID INVITE CODE" = "Invalid Invite Code";
+"INVITE CODE NOT FOUND" = "Invite code not found";
+"GO TO SETTINGS" = "Please go to the Settings -> Multy and allow camera usage";

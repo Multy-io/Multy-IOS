@@ -90,7 +90,7 @@ class CreateMultiSigViewController: UIViewController {
         let nameCell = self.tableView.cellForRow(at: IndexPath(item: 0, section: 0)) as! CreateWalletNameTableViewCell
         waitingMembersVC.presenter.walletName = nameCell.walletNameTF.text!
         navigationController?.pushViewController(waitingMembersVC, animated: true)
-        waitingMembersVC.openShareInviteVC()
+//        waitingMembersVC.openShareInviteVC()
     }
     
     func chooseAnotherWalletAction() {
