@@ -882,7 +882,7 @@ extension RealmMigrationManager {
     }
     
     func migrateFrom22To23(with migration: Migration) {
-        migration.enumerateObjects(ofType: HistoryRLM.className()) { (_, newWallet) in
+        migration.enumerateObjects(ofType: HistoryRLM.className()) { (_, newHistory) in
             newWallet?["isMultisigTx"] = NSNumber(booleanLiteral: false)
             newWallet?["isWaitingConfirmation"] = NSNumber(booleanLiteral: false)
         }
