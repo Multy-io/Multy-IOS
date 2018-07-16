@@ -59,8 +59,6 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         self.setpuUI()
 
         self.performFirstEnterFlow { (succeeded) in
-
-            
             guard succeeded else {
                 return
             }
