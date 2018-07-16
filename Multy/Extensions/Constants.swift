@@ -107,6 +107,7 @@ struct Constants {
     static let invitationCodeString = "INVITATION CODE"
     static let badInviteCodeString = "INVALID INVITE CODE"
     static let inviteCodeNotFoundString = "INVITE CODE NOT FOUND"
+    static let buildUpdateMessage = "YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE"
     
     //Assets screen
     struct AssetsScreen {

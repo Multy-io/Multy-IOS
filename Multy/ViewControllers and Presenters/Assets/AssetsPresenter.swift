@@ -285,4 +285,23 @@ class AssetsPresenter: NSObject {
             }
         }
     }
+    
+    func presentSoftUpdate() {
+        let title = Constants.weHaveUpdateString
+        let message = Constants.buildUpdateMessage
+        let alert = UIAlertController(title: assetsVC?.localize(string: title), message: assetsVC?.localize(string: message), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: assetsVC?.localize(string: Constants.goToUpdateString), style: .default) { (action) in
+            if let url = URL(string: "itms-apps://itunes.apple.com/us/app/multy-blockchain-wallet/id1328551769"),
+                UIApplication.shared.canOpenURL(url){
+                UIApplication.shared.openURL(url)
+                exit(0)
+            }
+        })
+        alert.addAction(UIAlertAction(title: assetsVC?.localize(string: Constants.cancelString), style: .cancel, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        
+        assetsVC?.present(alert, animated: true, completion: nil)
+        
+    }
 }

@@ -136,6 +136,8 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
                 if err != nil || buildVersion >= hardVersion! {
                     self.successLaunch()
                     completion(true)
+                } else if softVersion! > hardVersion! && softVersion! > buildVersion {
+                    self.presenter.presentSoftUpdate()
                 } else {
                     self.presentUpdateAlert()
                     completion(false)
