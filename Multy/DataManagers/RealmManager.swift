@@ -105,7 +105,7 @@ class RealmManager: NSObject {
                                                         self.migrateFrom21To22(with: migration)
                                                     }
                                                     if oldSchemaVersion <= 23 {
-                                                        self!.migrateFrom22To23(with: migration)
+                                                        self.migrateFrom22To23(with: migration)
                                                     }
             })
             
