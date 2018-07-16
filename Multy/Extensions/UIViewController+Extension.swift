@@ -22,6 +22,7 @@ private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, origin
 }
 
 extension Localizable where Self: UIViewController, Self: Localizable {
+
     func presentAlert(with message: String?) {
         let alert = UIAlertController(title: localize(string: Constants.errorString), message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
@@ -59,6 +60,14 @@ extension Localizable where Self: UIViewController, Self: Localizable {
                 }
             }
         }
+    }
+}
+
+extension EPPickerDelegate where Self: UIViewController {
+    func presentiPhoneContacts() {
+        let contactPickerScene = EPContactsPicker(delegate: self, multiSelection: false, subtitleCellType: SubtitleCellValue.email)
+        let navigationController = UINavigationController(rootViewController: contactPickerScene)
+        present(navigationController, animated: true, completion: nil)
     }
 }
 
@@ -158,7 +167,8 @@ extension UIViewController {
         if self.className.hasPrefix("SendStart") ||
             self.className.hasPrefix("WalletSettings") ||
             self.className.hasPrefix("CreateWallet") ||
-            self.className.hasPrefix("ReceiveAmount") {
+            self.className.hasPrefix("ReceiveAmount") ||
+            self.className.hasPrefix("CheckWordsViewController") {
                 return true
         }
         
@@ -255,5 +265,30 @@ extension UIViewController {
                 completion(nil)
             }
         }
+    }
+    
+    func add(_ child: UIViewController, to view: UIView) {
+        addChildViewController(child)
+        addChildView(child.view, to: view)
+        
+        child.didMove(toParentViewController: self)
+    }
+    
+    func remove() {
+        guard parent != nil else {
+            return
+        }
+        willMove(toParentViewController: nil)
+        removeFromParentViewController()
+        view.removeFromSuperview()
+    }
+    
+    func addChildView(_ childView: UIView, to parentView: UIView) {
+        childView.frame = parentView.bounds
+        parentView.addSubview(childView)
+        
+        childView.translatesAutoresizingMaskIntoConstraints = false
+        parentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-0-[childView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["childView" : childView]))
+        parentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[childView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["childView" : childView]))
     }
 }

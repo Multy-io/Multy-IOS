@@ -29,6 +29,7 @@ class SendFinishPresenter: NSObject {
     var fiatName = "USD" // MARK: get from settings
     
     var isCrypto = true
+    var selectedAddress: String?
     
     func makeEndSum() {
 //        switch isCrypto {

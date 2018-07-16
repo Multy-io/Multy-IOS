@@ -33,8 +33,8 @@ extension Data {
     static func generateRandom64ByteData() -> Data? {
         
         var keyData = Data(count: 64)
-        let result = keyData.withUnsafeMutableBytes {
-            SecRandomCopyBytes(kSecRandomDefault, keyData.count, $0)
+        let result = keyData.withUnsafeMutableBytes { [count = keyData.count] in
+            SecRandomCopyBytes(kSecRandomDefault, count, $0)
         }
         if result == errSecSuccess {
             print("keyData:\(keyData.base64EncodedString())")

@@ -17,8 +17,9 @@ private typealias PresentingSheetDelegate = AssetsViewController
 private typealias CancelDelegate = AssetsViewController
 private typealias CreateWalletDelegate = AssetsViewController
 private typealias LocalizeDelegate = AssetsViewController
+private typealias PushTxDelegate = AssetsViewController
 
-class AssetsViewController: UIViewController, AnalyticsProtocol {
+class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol {
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
@@ -32,10 +33,6 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
     var isSeedBackupOnScreen = false
     
     var isFirstLaunch = true
-    
-    var isFlowPassed = false
-    
-    var isSocketInitiateUpdating = false
     
     var isInsetCorrect = false
     
@@ -60,32 +57,23 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setpuUI()
-        self.performFirstEnterFlow { (isUpToDate) in
-            guard self.isFlowPassed else {
-                self.view.isUserInteractionEnabled = true
+
+        self.performFirstEnterFlow { (succeeded) in
+            guard succeeded else {
                 return
-            }
-            
-            if !self.isFirstLaunch {
-                self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
-                //            self.presenter.auth()
             }
             
             let isFirst = DataManager.shared.checkIsFirstLaunch()
             if isFirst {
                 self.sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: screenFirstLaunch)
                 self.view.isUserInteractionEnabled = true
-                return
+            } else {
+                self.sendAnalyticsEvent(screenName: screenMain, eventName: screenMain)
             }
-            
-            self.autorizeFromAppdelegate()
-            
-            self.sendAnalyticsEvent(screenName: screenMain, eventName: screenMain)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
             
             let _ = MasterKeyGenerator.shared.generateMasterKey{_,_, _ in }
             
+
             self.checkOSForConstraints()
             
 //            self.view.addSubview(self.progressHUD)
@@ -94,11 +82,19 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
                 self.tableView.frame.size.height = screenHeight - self.tabBarController!.tabBar.frame.height
             }
             DataManager.shared.socketManager.start()
+            DataManager.shared.subscribeToFirebaseMessaging()
+            
+            //FIXME: add later or refactor
+            
+            self.successLaunch()
+            
+            self.openTxFromPush()
         }
     }
     
     func setpuUI() {
         presenter.assetsVC = self
+        checkOSForConstraints()
         backUpView()
         setupStatusBar()
         registerCells()
@@ -117,13 +113,10 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
         case false:
             self.presenter.isJailed = false
             loader.show(customTitle: localize(string: Constants.checkingVersionString))
-//            let hud = PreloaderView(frame: HUDFrame, text: "Checking version", image: #imageLiteral(resourceName: "walletHuge"))
-//            hud.show()
+
             if !(ConnectionCheck.isConnectedToNetwork()) {
                 self.isInternetAvailable = false
-//                self.hideHud(view: hud as? ProgressHUD)
                 loader.hide()
-                self.successLaunch()
                 completion(true)
                 return
             }
@@ -134,44 +127,42 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
                 
                 //MARK: change > to <
                 if err != nil || buildVersion >= hardVersion! {
-                    self.successLaunch()
                     completion(true)
                 } else {
                     self.presentUpdateAlert()
                     completion(false)
                 }
-                
             }
         }
     }
     
     func successLaunch() {
-        self.isFlowPassed = true
-        self.presentTermsOfService()
         let _ = UserPreferences.shared
         AppDelegate().saveMkVersion()
-    }
-    
-    
-    func autorizeFromAppdelegate() {
-        DataManager.shared.realmManager.getAccount { (acc, err) in
-            DataManager.shared.realmManager.fetchCurrencyExchange { (currencyExchange) in
-                if currencyExchange != nil {
-                    DataManager.shared.currencyExchange.update(currencyExchangeRLM: currencyExchange!)
-                }
-            }
-            isNeedToAutorise = acc != nil
-            DataManager.shared.apiManager.userID = acc == nil ? "" : acc!.userID
-            //MAKR: Check here isPin option from NSUserDefaults
-            UserPreferences.shared.getAndDecryptPin(completion: { [weak self] (code, err) in
-                if code != nil && code != "" {
-                    isNeedToAutorise = true
-                    let appDel = UIApplication.shared.delegate as! AppDelegate
-                    appDel.authorization(isNeedToPresentBiometric: true)
-                }
-            })
+        if !self.presentTermsOfService() {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
+    
+//    func autorizeFromAppdelegate() {
+//        DataManager.shared.realmManager.getAccount { (acc, err) in
+//            DataManager.shared.realmManager.fetchCurrencyExchange { (currencyExchange) in
+//                if currencyExchange != nil {
+//                    DataManager.shared.currencyExchange.update(currencyExchangeRLM: currencyExchange!)
+//                }
+//            }
+//            isNeedToAutorise = acc != nil
+//            DataManager.shared.apiManager.userID = acc == nil ? "" : acc!.userID
+//            //MAKR: Check here isPin option from NSUserDefaults
+//            UserPreferences.shared.getAndDecryptPin(completion: { [weak self] (code, err) in
+//                if code != nil && code != "" {
+//                    isNeedToAutorise = true
+//                    let appDel = UIApplication.shared.delegate as! AppDelegate
+//                    appDel.authorization(isNeedToPresentBiometric: true)
+//                }
+//            })
+//        }
+//    }
     
     override func viewDidAppear(_ animated: Bool) {
         if self.presenter.isJailed {
@@ -193,29 +184,32 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
         if !self.isFirstLaunch || !self.isInternetAvailable {
             self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
         }
-        
         self.isFirstLaunch = false
-        guard isFlowPassed == true else {
-            return
-        }
-
-        self.tabBarController?.tabBar.frame = self.presenter.tabBarFrame!
-        if self.presenter.account != nil {
-            tableView.frame.size.height = screenHeight - tabBarController!.tabBar.frame.height
-        }
-        if isInternetAvailable == false {
-            self.updateUI()
+        
+        self.updateUI()
+        
+        if presenter.account == nil {
+            view.isUserInteractionEnabled = false
+            
+            DataManager.shared.isAccountExists { [unowned self] in
+                if !$0 {
+                    DispatchQueue.main.async { [unowned self] in
+                        let _ = self.presentTermsOfService()
+                        self.view.isUserInteractionEnabled = true
+                    }
+                } else {
+                    self.view.isUserInteractionEnabled = true
+                }
+            }
         }
     }
     
     override func viewDidLayoutSubviews() {
-        presenter.tabBarFrame = tabBarController?.tabBar.frame
-        if self.presenter.account != nil {
-            tableView.frame.size.height = screenHeight - tabBarController!.tabBar.frame.height
-        }
+        tabBarController?.tabBar.frame = presenter.tabBarFrame
+        tableView.frame.size.height = screenHeight - presenter.tabBarFrame.height
     }
     
-    @objc func updateExchange() {
+    func handleExchangeUpdate() {
         for cell in self.tableView.visibleCells {
             if cell.isKind(of: WalletTableViewCell.self) {
                 (cell as! WalletTableViewCell).fillInCell()
@@ -223,25 +217,8 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
-    @objc func updateWalletAfterSockets() {
-        if isSocketInitiateUpdating {
-            return
-        }
-        
-        if !isVisible() {
-            return
-        }
-        
-        isSocketInitiateUpdating = true
-        presenter.getWalletVerboseForSockets { [unowned self] (_) in
-            self.isSocketInitiateUpdating = false
-            self.tableView.reloadData()
-//            for cell in self.tableView.visibleCells {
-//                if cell.isKind(of: WalletTableViewCell.self) {
-//                    (cell as! WalletTableViewCell).fillInCell()
-//                }
-//            }
-        }
+    func handleUpdateWalletAfterSockets() {
+        self.tableView.reloadData()
     }
     
     func backUpView() {
@@ -350,6 +327,8 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
     }
     
     func updateUI() {
+        tabBarController?.tabBar.frame = presenter.tabBarFrame
+        tableView.frame.size.height = screenHeight - presenter.tabBarFrame.height
         self.tableView.reloadData()
     }
     
@@ -374,17 +353,66 @@ class AssetsViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
-    func presentTermsOfService() {
-        if DataManager.shared.checkTermsOfService() {
+    func presentTermsOfService() -> Bool {
+        let result = DataManager.shared.checkTermsOfService()
+        if !result {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
             let termsVC = storyBoard.instantiateViewController(withIdentifier: "termsVC")
             self.present(termsVC, animated: true, completion: nil)
         }
+        return !result
     }
     
     func isOnWindow() -> Bool {
         return self.navigationController!.topViewController!.isKind(of: AssetsViewController.self)
     }
+    
+    //    FORCE TOUCH EVENTS
+    // qr
+    func openQR() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if self.presenter.account != nil {
+                let storyboard = UIStoryboard(name: "Send", bundle: nil)
+                let qrScanVC = storyboard.instantiateViewController(withIdentifier: "qrScanVC") as! QrScannerViewController
+                qrScanVC.qrDelegate = self
+                qrScanVC.presenter.isFast = true
+                self.present(qrScanVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func qrData(string: String) {
+        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+        let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+        destVC.presenter.transactionDTO.update(from: string)
+        navigationController?.pushViewController(destVC, animated: true)
+    }
+    // -------------
+    
+    // send to
+    func sendTransactionTo() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if self.presenter.account != nil {
+                let storyboard = UIStoryboard(name: "Send", bundle: nil)
+                let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+                self.navigationController?.pushViewController(destVC, animated: true)
+            }
+        }
+    }
+    // -------------
+    
+    // receive
+    func openReceive() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if self.presenter.account != nil {
+                let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+                let receiveVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart")
+                self.navigationController?.pushViewController(receiveVC, animated: true)
+            }
+        }
+    }
+    // -------------
+    
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
@@ -411,7 +439,7 @@ extension CancelDelegate: CancelProtocol {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
     
-    func donate50(idOfProduct: String) {
+        func donate50(idOfProduct: String) {
         self.makePurchaseFor(productId: idOfProduct)
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
@@ -729,6 +757,59 @@ extension CollectionViewDelegate : UICollectionViewDelegate {
         guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
         let firstCellCollectionView = firstCell.collectionView!
         firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
+    }
+}
+
+extension PushTxDelegate {
+    func openTxFromPush() {
+        let app = UIApplication.shared.delegate as? AppDelegate
+        
+        if app?.info != nil {
+//            presentAlert(with: app?.info.debugDescription)
+            openTx(app!.info!)
+//            app?.info = nil
+        }
+    }
+    
+    func openTx(_ info: [AnyHashable: Any]) {
+        if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
+            let walletID = NSNumber(value: Int(walletIDString)!)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.getTxAndPresent(with: txID, currencyID, networkID, walletID)
+            }
+        }
+    }
+    
+    func getTxAndPresent(with txID: String, _ currencyID: UInt32, _ networkID: Int, _ walletID: NSNumber) {
+        let blockchainType = BlockchainType.init(blockchain: Blockchain.init(currencyID), net_type: networkID)
+        
+        DataManager.shared.getOneWalletVerbose(walletID: walletID, blockchain: blockchainType) { (wallet, error) in
+            if error != nil {
+                self.presentAlert(with: error.debugDescription)
+            }
+            let networkNumber = NSNumber(value: networkID)
+            let currencyNumber = NSNumber(value: currencyID)
+            DataManager.shared.getTransactionHistory(currencyID: currencyNumber, networkID: networkNumber, walletID: walletID, completion: { (history, error) in
+                guard let history = history, let wallet = wallet else {
+                    return
+                }
+                
+                let tx = history.filter{ $0.txHash == txID }.first
+                
+                guard let histObj = tx else {
+                    return
+                }
+                
+                let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
+                let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
+                transactionVC.presenter.histObj = histObj
+                transactionVC.presenter.blockchainType = blockchainType
+                transactionVC.presenter.wallet = wallet
+                
+                self.navigationController?.pushViewController(transactionVC, animated: false)
+            })
+        }
     }
 }
 

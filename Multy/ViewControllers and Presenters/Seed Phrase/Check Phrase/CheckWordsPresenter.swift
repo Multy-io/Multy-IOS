@@ -60,6 +60,7 @@ class CheckWordsPresenter: NSObject {
             self.checkWordsVC?.loader.hide()
             
             DataManager.shared.socketManager.start()
+            DataManager.shared.subscribeToFirebaseMessaging()
         }
     }
 }

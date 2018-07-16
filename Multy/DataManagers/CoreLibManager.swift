@@ -8,6 +8,7 @@ import RealmSwift
 private typealias TestCoreLibManager = CoreLibManager
 private typealias BigIntCoreLibManager = CoreLibManager
 private typealias EthereumCoreLibManager = CoreLibManager
+private typealias LocalizeDelegate = CoreLibManager
 
 class CoreLibManager: NSObject {
     static let shared = CoreLibManager()
@@ -476,7 +477,7 @@ class CoreLibManager: NSObject {
         let donationSumInSatoshi = convertBTCStringToSatoshi(sum: donationAmount)
 
         if sendSumInSatoshi < donationSumInSatoshi {
-            return ("Sending amount (\(sendAmountString) BTC) must be greater then donation amount (\(donationAmount) BTC)", -2, "0")
+            return (localize(string: Constants.enteredInvalidSumString), -2, "0") //("Sending amount (\(sendAmountString) BTC) must be greater then donation amount (\(donationAmount) BTC)", -2, "0")
         }
         
         sendSum = sendSumInSatoshi
@@ -579,14 +580,14 @@ class CoreLibManager: NSObject {
         if isPayCommission {
             sendSum = sendSumInSatoshi
             if inputSum < sendSum + donationSumInSatoshi + feeInSatoshiAmount {
-                return ("Wallet amount (\(convertSatoshiToBTCString(sum: inputSum))) must be greater the send amount (\(convertSatoshiToBTCString(sum: sendSum))) plus fee amount (\(convertSatoshiToBTCString(sum: feeInSatoshiAmount))) plus donation amount (\(donationAmount) BTC)", -2, "0")
+                return (localize(string: Constants.enteredInvalidSumString), -2, "0")//("Wallet amount (\(convertSatoshiToBTCString(sum: inputSum))) must be greater the send amount (\(convertSatoshiToBTCString(sum: sendSum))) plus fee amount (\(convertSatoshiToBTCString(sum: feeInSatoshiAmount))) plus donation amount (\(donationAmount) BTC)", -2, "0")
             } else {
                 //reamins just for checking all sums - automatically calculated in core library
                 changeSum = inputSum - (sendSum + donationSumInSatoshi + feeInSatoshiAmount)
             }
         } else {
             if sendSumInSatoshi < donationSumInSatoshi + feeInSatoshiAmount {
-                return ("Sending amount (\(sendAmountString) BTC) must be greater then fee amount (\(convertSatoshiToBTCString(sum: feeInSatoshiAmount))) plus donation (\(donationAmount) BTC)", -2, "0")
+                return (localize(string: Constants.enteredInvalidSumString), -2, "0")//("Sending amount (\(sendAmountString) BTC) must be greater then fee amount (\(convertSatoshiToBTCString(sum: feeInSatoshiAmount))) plus donation (\(donationAmount) BTC)", -2, "0")
             } else {
                 if sendSumInSatoshi != inputSum {
                     sendSum = sendSumInSatoshi - (donationSumInSatoshi + feeInSatoshiAmount)
@@ -691,9 +692,13 @@ class CoreLibManager: NSObject {
     }
     
     func isAddressValid(address: String, for wallet: UserWalletRLM) -> (Bool, String?) {
-        let addressUTF8 = address.UTF8CStringPointer
-        //FIXME: Blockchain values
         let blockchainType = BlockchainType.create(wallet: wallet)
+        
+        return isAddressValid(address, for: blockchainType)
+    }
+    
+    func isAddressValid(_ address: String, for blockchainType: BlockchainType) -> (Bool, String?) {
+        let addressUTF8 = address.UTF8CStringPointer
         let error = validate_address(blockchainType, addressUTF8)
         
         let errorString = self.errorString(from: error, mask: "isAddressValid")
@@ -975,5 +980,11 @@ extension EthereumCoreLibManager {
         print("end transaction: \(str)")
         
         return (str, true)
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Assets"
     }
 }
