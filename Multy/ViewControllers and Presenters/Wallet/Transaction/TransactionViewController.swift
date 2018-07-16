@@ -47,6 +47,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var confirmationMembersCollectionView: UICollectionView!
     @IBOutlet weak var confirmaitionDetailsHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var doubleSliderHolderView: UIView!
+    @IBOutlet weak var noBalanceErrorHolderView: UIView!
     
     let presenter = TransactionPresenter()
     
