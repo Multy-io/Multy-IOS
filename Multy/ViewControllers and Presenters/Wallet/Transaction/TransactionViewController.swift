@@ -48,6 +48,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var confirmaitionDetailsHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var doubleSliderHolderView: UIView!
     @IBOutlet weak var noBalanceErrorHolderView: UIView!
+    @IBOutlet weak var noBalanceAddress: UILabel!
     
     let presenter = TransactionPresenter()
     
@@ -360,6 +361,30 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             blockchainVC.presenter.txHash = presenter.histObj.txHash
         }
     }
+    
+    @IBAction func copyNoBalanceAddressAction(_ sender: Any) {
+        UIPasteboard.general.string = noBalanceAddress.text
+        UIView.animate(withDuration: 0.5, animations: {
+            self.copiedView.frame.origin.y = screenHeight - 40
+        }) { (isEnd) in
+            Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.hideView), userInfo: nil, repeats: false)
+        }
+        
+    }
+    
+    @objc func hideView() {
+        UIView.animate(withDuration: 1, animations: {
+            self.copiedView.frame.origin.y = screenHeight + 40
+        })
+    }
+    
+    @IBAction func receiveToNoBalanceAddressAction(_ sender: Any) {
+        
+    }
+    
+    @IBAction func exchangeAction(_ sender: Any) {
+        
+    }
 }
 
 extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
@@ -448,6 +473,8 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
         //FIXME: stub
         print("Slide to Decline")
     }
+    
+    
 }
 
 extension LocalizeDelegate: Localizable {
