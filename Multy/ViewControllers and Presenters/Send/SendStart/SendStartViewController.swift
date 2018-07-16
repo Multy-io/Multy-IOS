@@ -161,14 +161,14 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
     }
     
     @IBAction func nextAction(_ sender: Any) {
-//        if self.presenter.transactionDTO.choosenWallet == nil {
-//            self.performSegue(withIdentifier: "chooseWalletVC", sender: sender)
-//        } else {
-//            self.performSegue(withIdentifier: presenter.destinationSegueString(), sender: sender)
-//        }
-        let storyboard = UIStoryboard(name: "Send", bundle: nil)
-        let doubleSlideVC = storyboard.instantiateViewController(withIdentifier: "doubleSlideView")
-        navigationController?.pushViewController(doubleSlideVC, animated: true)
+        if self.presenter.transactionDTO.choosenWallet == nil {
+            self.performSegue(withIdentifier: "chooseWalletVC", sender: sender)
+        } else {
+            self.performSegue(withIdentifier: presenter.destinationSegueString(), sender: sender)
+        }
+//        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+//        let doubleSlideVC = storyboard.instantiateViewController(withIdentifier: "doubleSlideView")
+//        navigationController?.pushViewController(doubleSlideVC, animated: true)
     }
     
     func modifyNextButtonMode() {
