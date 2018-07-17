@@ -27,6 +27,8 @@ class SendPresenter: NSObject {
         }
     }
     
+    var feeRate = "1"
+    
     var filteredWalletArray = Array<UserWalletRLM>() {
         didSet {
             if isWalletAnalyticsSent == false {
@@ -120,6 +122,26 @@ class SendPresenter: NSObject {
     var blockActivityUpdating = false
     
     var checkNewUserCodesCounter = 0
+    
+    func getFeeRate(_ blockchainType: BlockchainType, completion: @escaping (_ feeRateDict: String) -> ()) {
+        DataManager.shared.getFeeRate(currencyID: blockchainType.blockchain.rawValue,
+                                      networkID: UInt32(blockchainType.net_type),
+                                      completion: { (dict, error) in
+                                        if let feeRates = dict, let feeRate = feeRates["Fast"] as? String {
+                                            completion(feeRate)
+                                        } else {
+                                            //default values
+                                            switch blockchainType.blockchain {
+                                            case BLOCKCHAIN_BITCOIN:
+                                                return completion("10")
+                                            case BLOCKCHAIN_ETHEREUM:
+                                                return completion("1000000000")
+                                            default:
+                                                return completion("1")
+                                            }
+                                        }
+        })
+    }
     
     func filterArray() {
         if selectedActiveRequestIndex != nil  {
@@ -361,77 +383,83 @@ class SendPresenter: NSObject {
         
         createPreliminaryData()
         
-        let isCreated = createTransaction()
-        
-        let wallet = filteredWalletArray[index]
-        
-        if isCreated == false {
-            var message = rawTransaction
+        createTransaction { [unowned self] (isCreated) in
+            let wallet = self.filteredWalletArray[index]
             
-            if message.hasPrefix("BigInt value is not representable as") {
-                message = sendVC!.localize(string: Constants.youEnteredTooSmallAmountString)
-            } else if message.hasPrefix("Transaction is trying to spend more than available in inputs") {
-                message = sendVC!.localize(string: Constants.youTryingSpendMoreThenHaveString)
-            }
-            
-//            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in }))
-//            sendVC!.present(alert, animated: true, completion: nil)
-            
-            //FIXME: show error message
-            self.sendVC?.updateUIWithSendResponse(success: false)
-            
-            return
-        }
-        
-        let newAddressParams = [
-            "walletindex"   : wallet.walletID.intValue,
-            "address"       : addressData!["address"] as! String,
-            "addressindex"  : wallet.addresses.count,
-            "transaction"   : rawTransaction,
-            "ishd"          : wallet.shouldCreateNewAddressAfterTransaction
-            ] as [String : Any]
-        
-        let params = [
-            "currencyid": wallet.chain,
-            /*"JWT"       : jwtToken,*/
-            "networkid" : wallet.chainType,
-            "payload"   : newAddressParams
-            ] as [String : Any]
-        
-        
-        
-        DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
-            print("---------\(dict)")
-            
-            if error != nil {
+            if isCreated == false {
+                var message = self.rawTransaction
+                
+                if message.hasPrefix("BigInt value is not representable as") {
+                    message = self.sendVC!.localize(string: Constants.youEnteredTooSmallAmountString)
+                } else if message.hasPrefix("Transaction is trying to spend more than available in inputs") {
+                    message = self.sendVC!.localize(string: Constants.youTryingSpendMoreThenHaveString)
+                }
+                
+                //            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+                //            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in }))
+                //            sendVC!.present(alert, animated: true, completion: nil)
+                
+                //FIXME: show error message
                 self.sendVC?.updateUIWithSendResponse(success: false)
-                print("sendHDTransaction Error: \(error)")
-                self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionError)
                 
                 return
             }
             
-            if dict!["code"] as! Int == 200 {
-                self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionError)
-                self.sendVC?.updateUIWithSendResponse(success: true)
-            } else {
-                self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionSuccess)
-                self.sendVC?.updateUIWithSendResponse(success: false)
+            let newAddressParams = [
+                "walletindex"   : wallet.walletID.intValue,
+                "address"       : self.addressData!["address"] as! String,
+                "addressindex"  : wallet.addresses.count,
+                "transaction"   : self.rawTransaction,
+                "ishd"          : wallet.shouldCreateNewAddressAfterTransaction
+                ] as [String : Any]
+            
+            let params = [
+                "currencyid": wallet.chain,
+                /*"JWT"       : jwtToken,*/
+                "networkid" : wallet.chainType,
+                "payload"   : newAddressParams
+                ] as [String : Any]
+            
+            
+            
+            DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
+                print("---------\(dict)")
+                
+                if error != nil {
+                    self.sendVC?.updateUIWithSendResponse(success: false)
+                    print("sendHDTransaction Error: \(error)")
+                    self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionError)
+                    
+                    return
+                }
+                
+                if dict!["code"] as! Int == 200 {
+                    self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionError)
+                    self.sendVC?.updateUIWithSendResponse(success: true)
+                } else {
+                    self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionSuccess)
+                    self.sendVC?.updateUIWithSendResponse(success: false)
+                }
             }
         }
     }
     
-    func createTransaction() -> Bool {
+    func createTransaction(completion: @escaping (_ feeRateDict: Bool) -> ()) {
         let wallet = filteredWalletArray[selectedWalletIndex!]
         
-        switch wallet.blockchainType.blockchain {
-        case BLOCKCHAIN_BITCOIN:
-            return createBTCTransaction()
-        case BLOCKCHAIN_ETHEREUM:
-            return createETHTransaction()
-        default:
-            return false
+        getFeeRate(wallet.blockchainType) { [unowned self] (feeRate) in
+            DispatchQueue.main.async {
+                self.feeRate = feeRate
+                print(feeRate)
+                switch wallet.blockchainType.blockchain {
+                case BLOCKCHAIN_BITCOIN:
+                    completion(self.createBTCTransaction())
+                case BLOCKCHAIN_ETHEREUM:
+                    completion(self.createETHTransaction())
+                default:
+                    completion(false)
+                }
+            }
         }
     }
     
@@ -640,7 +668,7 @@ extension CreateTransactionDelegate {
         let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                          sendAddress: request.sendAddress,
                                                                          sendAmountString: request.sendAmount,
-                                                                         feePerByteAmount: "10",
+                                                                         feePerByteAmount: feeRate,
                                                                          isDonationExists: false,
                                                                          donationAmount: "0",
                                                                          isPayCommission: true,
@@ -672,7 +700,7 @@ extension CreateTransactionDelegate {
                                                                               nonce: wallet.ethWallet!.nonce.intValue,
                                                                               balanceAmount: wallet.ethWallet!.balance,
                                                                               ethereumChainID: UInt32(wallet.blockchainType.net_type),
-                                                                              gasPrice: "1000000000",
+                                                                              gasPrice: feeRate,
                                                                               gasLimit: "21000")
         
         rawTransaction = trData.message
