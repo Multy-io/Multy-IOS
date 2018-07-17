@@ -238,7 +238,6 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
             return
         }
         stingIdForInApp = idOfInApp
-
     }
 
     func cancelDonation() {
