@@ -1,0 +1,16 @@
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
+
+"WARNING" = "Предупреждение";
+"CANCEL" = "Отменить";
+"ERROR" = "Ошибка";
+"SOMETHING WENT WRONG" = "Что-то пошло не так";
+"YES STRING" = "Да";
+"NO STRING" = "Нет";
+"BACKUP NEEDED" = "Восстановить Seed-фразу";
+"VIEW SEED PHRASE" = "Просмотреть Seed-фразу";
+"ARE YOU SURE" = "Вы уверены?";
+"REPEAT PIN-CODE" = "Повторите ваш PIN-код";
+"SORRY" = "Извините";
+"LOADING" = "Загрузка";

@@ -1,0 +1,9 @@
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
+
+"AVAILABLE" = "ДОСТУПНО";
+"WORK IN PROGRESS" = "В РАЗРАБОТКЕ";
+"ERROR" = "Ошибка";
+"SOMETHING WENT WRONG" = "Что-то пошло не так";
+"LOADING" = "Загрузка";

@@ -96,6 +96,10 @@ extension BlockchainType {
         return blockchain.fullName
     }
     
+    var combinedName: String {
+        return fullName + " ∙ " + shortName
+    }
+    
     var qrBlockchainString : String {
         return blockchain.qrBlockchainString
     }

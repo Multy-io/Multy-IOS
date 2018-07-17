@@ -1,9 +1,0 @@
-/* 
-  Localizable.strings
-  Multy
-
-  Created by Alex Pro on 6/13/18.
-  Copyright © 2018 Idealnaya rabota. All rights reserved.
-*/
-
-"NewIncoming" = "You got transaction with %@ %@";

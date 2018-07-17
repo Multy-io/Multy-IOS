@@ -21,6 +21,7 @@ class UserWalletRLM: Object {
     @objc dynamic var cryptoName = String()  //like BTC
     @objc dynamic var sumInCrypto: Double = 0.0
     @objc dynamic var lastActivityTimestamp = NSNumber(value: 0)
+    @objc dynamic var isSyncing = NSNumber(booleanLiteral: false)
     
     var changeAddressIndex: UInt32 {
         get {
@@ -218,6 +219,17 @@ class UserWalletRLM: Object {
         return wallets
     }
     
+    public class func initArrayWithArray(walletsArray: NSArray) -> [UserWalletRLM] {
+        var wallets = [UserWalletRLM]()
+        
+        for walletInfo in walletsArray {
+            let wallet = UserWalletRLM.initWithInfo(walletInfo: walletInfo as! NSDictionary)
+            wallets.append(wallet)
+        }
+        
+        return wallets
+    }
+    
     public class func initWithInfo(walletInfo: NSDictionary) -> UserWalletRLM {
         let wallet = UserWalletRLM()
         wallet.ethWallet = ETHWallet()
@@ -250,6 +262,10 @@ class UserWalletRLM: Object {
         
         if let lastActivityTimestamp = walletInfo["lastactiontime"] as? Int {
             wallet.lastActivityTimestamp = NSNumber(value: lastActivityTimestamp)
+        }
+        
+        if let isSyncing = walletInfo["issyncing"] as? Bool {
+            wallet.isSyncing = NSNumber(booleanLiteral: isSyncing)
         }
         
         //parse addition info for each chain
@@ -466,7 +482,7 @@ class UserWalletRLM: Object {
     }
     
     func addressesWithSpendableOutputs() -> [String] {
-        return addresses.filter{ addressRLM in addressRLM.spendableOutput.count != 0 }.map{ addressRLM in addressRLM.address }
+        return addresses.filter{ addressRLM in addressRLM.spendableOutput.count != 0 }.map{ $0.address }
     }
     
     override class func primaryKey() -> String? {

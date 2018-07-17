@@ -1,4 +1,4 @@
-///Copyright 2017 Idealnaya rabota LLC
+//Copyright 2017 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -9,7 +9,6 @@ import RAMAnimatedTabBarController
 let tabbarSelectedBackground = UIColor(redInt: 3, greenInt: 127, blueInt: 255, alpha: 1.0)
 
 class CustomTabBarViewController: RAMAnimatedTabBarController, UITabBarControllerDelegate, AnalyticsProtocol {
-    
     let presenter = CustomTabBarPresenter()
     // MARK: - View lifecycle
     let menuButton = UIButton()
