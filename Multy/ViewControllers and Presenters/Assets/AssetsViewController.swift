@@ -59,8 +59,6 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         self.setpuUI()
 
         self.performFirstEnterFlow { (succeeded) in
-
-            
             guard succeeded else {
                 return
             }
@@ -418,9 +416,19 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
-    func goToCreateWallet() {
+    func goToCreateWallet(tag: String) {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
-        self.performSegue(withIdentifier: Constants.Storyboard.createWalletVCSegueID, sender: Any.self)
+        if tag == "createNewWallet" {
+            performSegue(withIdentifier: Constants.Storyboard.createWalletVCSegueID, sender: Any.self)
+        } else if tag == "newEthMultiSig" {
+            let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+            let createMSVC = storyboard.instantiateViewController(withIdentifier: "creatingMultiSigVC")
+            navigationController?.pushViewController(createMSVC, animated: true)
+        } else if tag == "joinToMultiSig" {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let joinVC = storyboard.instantiateViewController(withIdentifier: "joinMultiSig")
+            navigationController?.pushViewController(joinVC, animated: true)
+        }
     }
 }
 
@@ -457,6 +465,12 @@ extension PresentingSheetDelegate: OpenCreatingSheet {
         creatingVC.modalTransitionStyle = .crossDissolve
         self.present(creatingVC, animated: true, completion: nil)
         self.stringIdForInApp = "io.multy.importWallet5"
+        
+        
+//        let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+//        let creatingVC = storyboard.instantiateViewController(withIdentifier: "creatingMultiSigVC") as! CreateMultiSigViewController
+//
+//        navigationController?.pushViewController(creatingVC, animated: true)
     }
 }
 
@@ -804,4 +818,3 @@ extension LocalizeDelegate: Localizable {
         return "Assets"
     }
 }
-

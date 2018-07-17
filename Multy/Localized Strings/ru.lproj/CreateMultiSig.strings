@@ -1,0 +1,12 @@
+/* 
+  CreateMultiSig.strings
+  Multy
+
+  Created by Artyom Alekseev on 05.07.2018.
+  Copyright © 2018 Idealnaya rabota. All rights reserved.
+*/
+
+"READY TO START" = "Готов Начать...";
+"WAITING ALL MEMBERS" = "Ожидание всех участников...";
+"START FOR" = "Почати за";
+"INVITATION CODE" = "Код приглашения";

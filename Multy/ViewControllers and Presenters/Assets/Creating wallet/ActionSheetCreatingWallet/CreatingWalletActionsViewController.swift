@@ -30,8 +30,22 @@ class CreatingWalletActionsViewController: UIViewController, CancelProtocol, Ana
     @IBAction func createAction(_ sender: Any) {
         ((cancelDelegate! as! AssetsViewController).tabBarController! as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         self.dismiss(animated: true) {
-            self.createProtocol?.goToCreateWallet()
+            self.createProtocol?.goToCreateWallet(tag: "createNewWallet")
         }       
+    }
+    
+    @IBAction func createEthMultiSigAction(_ sender: Any) {
+        ((cancelDelegate! as! AssetsViewController).tabBarController! as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
+        self.dismiss(animated: true) {
+            self.createProtocol?.goToCreateWallet(tag: "newEthMultiSig")
+        }
+    }
+    
+    @IBAction func joinToMultiSigAction(_ sender: Any) {
+        ((cancelDelegate! as! AssetsViewController).tabBarController! as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
+        self.dismiss(animated: true) {
+            self.createProtocol?.goToCreateWallet(tag: "joinToMultiSig")
+        }
     }
     
     @IBAction func importWalletAction(_ sender: Any) {

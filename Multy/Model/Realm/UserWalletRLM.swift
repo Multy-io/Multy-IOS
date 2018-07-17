@@ -219,6 +219,17 @@ class UserWalletRLM: Object {
         return wallets
     }
     
+    public class func initArrayWithArray(walletsArray: NSArray) -> [UserWalletRLM] {
+        var wallets = [UserWalletRLM]()
+        
+        for walletInfo in walletsArray {
+            let wallet = UserWalletRLM.initWithInfo(walletInfo: walletInfo as! NSDictionary)
+            wallets.append(wallet)
+        }
+        
+        return wallets
+    }
+    
     public class func initWithInfo(walletInfo: NSDictionary) -> UserWalletRLM {
         let wallet = UserWalletRLM()
         wallet.ethWallet = ETHWallet()

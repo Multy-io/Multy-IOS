@@ -108,4 +108,11 @@ extension Constants {
     static let chooseAddressString = "CHOOSE ADDRESS"
     static let enteredInvalidSumString = "ENTERED INVALID SUM"
     static let holdOnString = "HOLD ON"
+    static let readyToStartString = "READY TO START"
+    static let waitingAllMembersString = "WAITING ALL MEMBERS"
+    static let startForString = "START FOR"
+    static let invitationCodeString = "INVITATION CODE"
+    static let chooseWalletString = "CHOOSE WALLET"
+    static let badInviteCodeString = "INVALID INVITE CODE"
+    static let inviteCodeNotFoundString = "INVITE CODE NOT FOUND"
 }
