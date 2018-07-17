@@ -8,6 +8,7 @@ private typealias LocalizeDelegate = TransactionViewController
 private typealias PickerContactsDelegate = TransactionViewController
 private typealias AnalyticsDelegate = TransactionViewController
 private typealias MultisigDelegate = TransactionViewController
+private typealias CancelDelegate = TransactionViewController
 
 class TransactionViewController: UIViewController, UIScrollViewDelegate {
 
@@ -49,6 +50,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var doubleSliderHolderView: UIView!
     @IBOutlet weak var noBalanceErrorHolderView: UIView!
     @IBOutlet weak var noBalanceAddress: UILabel!
+    @IBOutlet weak var copiedView: UIView!
     
     let presenter = TransactionPresenter()
     
@@ -362,6 +364,11 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    
+    func showNoBalanceView() {
+        noBalanceErrorHolderView.isHidden = false
+    }
+    
     @IBAction func copyNoBalanceAddressAction(_ sender: Any) {
         UIPasteboard.general.string = noBalanceAddress.text
         UIView.animate(withDuration: 0.5, animations: {
@@ -379,11 +386,17 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func receiveToNoBalanceAddressAction(_ sender: Any) {
-        
+        let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+        let receiveDetailsVC = storyboard.instantiateViewController(withIdentifier: "receiveDetails") as! ReceiveAllDetailsViewController
+        receiveDetailsVC.presenter.wallet = self.presenter.wallet
+        self.navigationController?.pushViewController(receiveDetailsVC, animated: true)
+        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet.chain)", eventName: "\(receiveWithChainTap)\(presenter.wallet.chain)")
     }
     
     @IBAction func exchangeAction(_ sender: Any) {
-        
+        unowned let weakSelf =  self
+        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
+        sendDonationAlertScreenPresentedAnalytics(code: donationForExchangeFUNC)
     }
 }
 
@@ -467,6 +480,7 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
     func didSlideToSend(_ sender: DoubleSlideViewController) {
         //FIXME: stub
         print("Slide to Send")
+        showNoBalanceView()
     }
     
     func didSlideToDecline(_ sender: DoubleSlideViewController) {
@@ -480,5 +494,19 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
 extension LocalizeDelegate: Localizable {
     var tableName: String {
         return "Wallets"
+    }
+}
+
+extension CancelDelegate : CancelProtocol {
+    func cancelAction() {
+        makePurchaseFor(productId: "io.multy.addingExchange5")
+    }
+    
+    func donate50(idOfProduct: String) {
+        makePurchaseFor(productId: idOfProduct)
+    }
+    
+    func presentNoInternet() {
+        
     }
 }

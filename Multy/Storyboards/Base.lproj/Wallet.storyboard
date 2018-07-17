@@ -420,7 +420,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <constraint firstAttribute="height" constant="64" id="JbD-Jy-c9A"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nvH-xQ-NcT" userLabel="View - No Balance Error Holder">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nvH-xQ-NcT" userLabel="View - No Balance Error Holder">
                                 <rect key="frame" x="0.0" y="813" width="375" height="187"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unfortunately, you don't have enough money on your wallet to confirm the transaction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JpR-rx-IQW">
@@ -630,6 +630,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <outlet property="confirmationMembersCollectionView" destination="uV4-Dm-hqS" id="esi-82-6fQ"/>
                         <outlet property="constraintDonationHeight" destination="0og-eb-YdS" id="NR2-Zr-NNJ"/>
                         <outlet property="constraintNoteFiatSum" destination="UH7-bo-PC2" id="zi0-De-c9M"/>
+                        <outlet property="copiedView" destination="5Bc-EX-g8p" id="v48-zF-tGP"/>
                         <outlet property="dateLbl" destination="ewV-6V-pAK" id="1OL-Va-Qfb"/>
                         <outlet property="donationCryptoName" destination="SDr-Di-etU" id="cQ6-Mi-3Sr"/>
                         <outlet property="donationCryptoSum" destination="jBc-LF-5Kf" id="Ug8-Kl-dNj"/>
