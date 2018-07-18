@@ -21,23 +21,23 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BTC_medium_icon" translatesAutoresizingMaskIntoConstraints="NO" id="2Bf-si-y8G">
-                        <rect key="frame" x="16" y="14" width="35" height="35"/>
+                        <rect key="frame" x="6" y="8.5" width="46" height="46"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="35" id="1GN-ED-W2u"/>
+                            <constraint firstAttribute="height" constant="46" id="1GN-ED-W2u"/>
                             <constraint firstAttribute="width" secondItem="2Bf-si-y8G" secondAttribute="height" multiplier="1:1" id="oIa-BN-6LK"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zbd-7b-Nym">
-                        <rect key="frame" x="64" y="0.0" width="311" height="65"/>
+                        <rect key="frame" x="58" y="0.0" width="317" height="65"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Alex" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gMd-XH-lMt">
-                                <rect key="frame" x="20" y="0.0" width="32.5" height="19.5"/>
+                                <rect key="frame" x="13" y="0.0" width="32.5" height="19.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="b9s-3A-Msa">
-                                <rect key="frame" x="20" y="21.5" width="271" height="16.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="b9s-3A-Msa">
+                                <rect key="frame" x="13" y="21.5" width="271" height="16.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -45,20 +45,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="b9s-3A-Msa" firstAttribute="centerX" secondItem="zbd-7b-Nym" secondAttribute="centerX" id="6DP-MF-h9Y"/>
+                            <constraint firstItem="b9s-3A-Msa" firstAttribute="centerX" secondItem="zbd-7b-Nym" secondAttribute="centerX" constant="-10" id="6DP-MF-h9Y"/>
                             <constraint firstItem="gMd-XH-lMt" firstAttribute="top" secondItem="zbd-7b-Nym" secondAttribute="top" id="B64-Gy-NfB"/>
                             <constraint firstItem="gMd-XH-lMt" firstAttribute="leading" secondItem="b9s-3A-Msa" secondAttribute="leading" id="Ji1-5n-E4N"/>
                             <constraint firstItem="b9s-3A-Msa" firstAttribute="top" secondItem="gMd-XH-lMt" secondAttribute="bottom" constant="2" id="Lty-zT-fNu"/>
                             <constraint firstItem="b9s-3A-Msa" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zbd-7b-Nym" secondAttribute="leading" id="NMT-cN-w7o"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b9s-3A-Msa" secondAttribute="trailing" constant="8" id="V0t-ID-rQE"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b9s-3A-Msa" secondAttribute="trailing" constant="16" id="V0t-ID-rQE"/>
                         </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="zbd-7b-Nym" firstAttribute="leading" secondItem="2Bf-si-y8G" secondAttribute="trailing" constant="13" id="9R7-NW-KJy"/>
+                    <constraint firstItem="zbd-7b-Nym" firstAttribute="leading" secondItem="2Bf-si-y8G" secondAttribute="trailing" constant="6" id="9R7-NW-KJy"/>
                     <constraint firstAttribute="bottom" secondItem="zbd-7b-Nym" secondAttribute="bottom" id="QmO-sX-z7h"/>
                     <constraint firstItem="zbd-7b-Nym" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="TaI-si-yRA"/>
-                    <constraint firstItem="2Bf-si-y8G" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Vtm-zM-EL3"/>
+                    <constraint firstItem="2Bf-si-y8G" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="Vtm-zM-EL3"/>
                     <constraint firstItem="2Bf-si-y8G" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="b63-xA-GLs"/>
                     <constraint firstAttribute="trailing" secondItem="zbd-7b-Nym" secondAttribute="trailing" id="oHZ-yK-dfJ"/>
                 </constraints>
