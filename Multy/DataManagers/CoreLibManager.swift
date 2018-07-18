@@ -156,8 +156,8 @@ class CoreLibManager: NSObject {
             addressPublicKeyPointer.deallocate()
             publicKeyStringPointer.deallocate()
         }
-
-        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, walletID, newAccountPointer)
+        
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, walletID, newAccountPointer)
         if mHDa != nil {
             _ = errorString(from: mHDa, mask: "make_hd_account")
             
@@ -245,7 +245,7 @@ class CoreLibManager: NSObject {
             newAddressPointer.deallocate()
         }
         
-        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, walletID, newAccountPointer)
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, walletID, newAccountPointer)
         if mHDa != nil {
             _ = errorString(from: mHDa!, mask: "mHDa")
             
@@ -330,7 +330,7 @@ class CoreLibManager: NSObject {
             publicKeyStringPointer.deallocate()
         }
         
-        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, walletID, newAccountPointer)
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, walletID, newAccountPointer)
         if mHDa != nil {
             _ = errorString(from: mHDa!, mask: "make_hd_account")
             
@@ -681,9 +681,10 @@ class CoreLibManager: NSObject {
             return nil
         }
         
-        defer { free_error(opaquePointer) }
-        
         let pointer = UnsafeMutablePointer<MultyError>(opaquePointer)
+        
+        defer { free_error(pointer) }
+        
         let errorString = String(cString: pointer.pointee.message)
         
         print("\(mask): \(errorString))")
@@ -790,7 +791,7 @@ extension TestCoreLibManager {
         let publicKeyStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
         
         let blockchain = BlockchainType.create(currencyID: BLOCKCHAIN_BITCOIN.rawValue, netType: BITCOIN_NET_TYPE_MAINNET.rawValue)
-        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, UInt32(0), newAccountPointer)
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, UInt32(0), newAccountPointer)
         print("make_hd_account: \(mHDa)")
         
         if mHDa != nil {
@@ -939,7 +940,7 @@ extension EthereumCoreLibManager {
         let tgp = transaction_get_properties(transactionPointer.pointee!, accountProperties)
         
         setAmountValue(key: "nonce", value: "\(nonce)", pointer: accountProperties.pointee!)
-        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
+//        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
         
         //balance
         let transactionSource = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
@@ -949,7 +950,7 @@ extension EthereumCoreLibManager {
         //destination
         let transactionDestination = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
         let tas2 = transaction_add_destination(transactionPointer.pointee, transactionDestination)
-        setAmountValue(key: "amount", value: sendAmountString, pointer: transactionDestination.pointee!) //10^15 wei
+        setAmountValue(key: "amount", value: sendAmountString, pointer: transactionDestination.pointee!)
         setStringValue(key: "address", value: sendAddress, pointer: transactionDestination.pointee!)
 //        setBinaryDataValue(key: "address", value: sendAddress, pointer: transactionDestination.pointee!)
         
@@ -969,7 +970,7 @@ extension EthereumCoreLibManager {
             
             print("tSer: \(errrString))")
             
-            defer { pointer?.deallocate(capacity: 1) }
+            defer { pointer?.deallocate() }
             
             return (errrString, false)
         }
