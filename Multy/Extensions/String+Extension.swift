@@ -176,11 +176,15 @@ extension String {
         let stringParts = self.components(separatedBy: "\(defaultDelimeter)")
         var fractionString = stringParts[1]
         
-        while fractionString.last == "0" && fractionString.count > 1 {
+        while fractionString.last == "0" {
             fractionString.removeLast()
         }
         
-        self = stringParts[0] + "\(defaultDelimeter)" + fractionString
+        if fractionString.isEmpty {
+            self = stringParts[0]
+        } else {
+            self = stringParts[0] + "\(defaultDelimeter)" + fractionString
+        }
     }
     
     func convertCryptoAmountStringToMinimalUnits(in blockchain: Blockchain) -> BigInt {
@@ -236,6 +240,8 @@ extension String {
             default:
                 return "0"
             }
+            
+            finalString.deletetTrailingZeroes()
             
             return finalString
         }

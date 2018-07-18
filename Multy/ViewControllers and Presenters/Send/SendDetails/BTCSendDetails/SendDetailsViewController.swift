@@ -57,6 +57,13 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
 //            self.tableView.delegate?.tableView!(self.tableView, didSelectRowAt: [0,2])
         }
         
+        presenter.feeRate = ["VeryFast" : 32,
+                        "Fast" : 16,
+                        "Medium" : 8,
+                        "Slow" : 4,
+                        "VerySlow" : 2,
+        ]
+        
         presenter.requestFee()
         
         presenter.getData()

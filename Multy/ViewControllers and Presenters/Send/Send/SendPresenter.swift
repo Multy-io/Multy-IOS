@@ -147,13 +147,14 @@ class SendPresenter: NSObject {
     func filterArray() {
         if selectedActiveRequestIndex != nil  {
             let request = activeRequestsArr[selectedActiveRequestIndex!]
-            //FIXEME: add all blockchains
+            
             let blockchainType = BlockchainType.create(currencyID: UInt32(request.currencyID), netType: UInt32(request.networkID))
             let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain)
-            let address = request.sendAddress
+//            let address = request.sendAddress
             
+            filteredWalletArray = walletsArr.filter{ $0.blockchainType == blockchainType && $0.availableAmount > sendAmount }
 
-            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: address, for: $0).isValid && $0.availableAmount > sendAmount}
+//            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: address, for: $0).isValid && $0.availableAmount > sendAmount}
         } else {
             filteredWalletArray = walletsArr.filter{ $0.availableAmount > BigInt.zero()}
         }
