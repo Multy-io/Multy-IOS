@@ -48,9 +48,11 @@ extension BlockchainType {
         case BLOCKCHAIN_BITCOIN:
             switch UInt32(self.net_type) {
             case BITCOIN_NET_TYPE_MAINNET.rawValue:
-                iconString = "btcIconBig"
+//                iconString = "btcMediumIcon"
+                iconString = "btcMaediumIcon"
             case BITCOIN_NET_TYPE_TESTNET.rawValue:
-                iconString = "btcTest"
+//                iconString = "btcTest"
+                iconString = "btcTestBg"
             default:
                 iconString = ""
             }
@@ -63,7 +65,8 @@ extension BlockchainType {
             case ETHEREUM_CHAIN_ID_MAINNET.rawValue:
                 iconString = "ethMediumIcon"
             case ETHEREUM_CHAIN_ID_RINKEBY.rawValue:
-                iconString = "ethTest"
+//                iconString = "ethTest"
+                iconString = "ethTestBg"
             default:
                 iconString = ""
             }

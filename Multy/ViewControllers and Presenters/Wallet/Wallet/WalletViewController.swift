@@ -149,6 +149,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         presenter.walletVC = self
         presenter.registerCells()
         addGestureRecognizers()
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
