@@ -370,7 +370,8 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                 selectedRequestAmountLabel.isHidden = false
                 selectedRequestAddressLabel.isHidden = false
                 let blockchainType = BlockchainType.create(currencyID: UInt32(selectedRequest.currencyID), netType: 0)
-                selectedRequestAmountLabel.text = "\(selectedRequest.sendAmount) \(blockchainType.shortName)"
+                let fiatAmount = selectedRequest.sendAmount.doubleValue * DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
+                selectedRequestAmountLabel.text = "\(selectedRequest.sendAmount) \(blockchainType.shortName)  / \(fiatAmount.fixedFraction(digits: 2)) USD"
                 selectedRequestAddressLabel.text = selectedRequest.sendAddress
                 presenter.changeNameLabelVisibility(false)
             }
