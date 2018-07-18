@@ -2237,7 +2237,7 @@ correctly</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BOe-fA-coW">
-                                <rect key="frame" x="0.0" y="64" width="375" height="817"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="787"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vHL-uD-DHH">
                                         <rect key="frame" x="0.0" y="106.5" width="375" height="380"/>
@@ -2738,7 +2738,7 @@ correctly</string>
                         </subviews>
                         <color key="backgroundColor" red="0.97641962766647339" green="0.97650605440139771" blue="0.97634750604629517" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="WU9-9d-Ces" firstAttribute="top" secondItem="BOe-fA-coW" secondAttribute="bottom" constant="-30" id="MHV-a2-0aN"/>
+                            <constraint firstItem="WU9-9d-Ces" firstAttribute="top" secondItem="BOe-fA-coW" secondAttribute="bottom" id="MHV-a2-0aN"/>
                             <constraint firstAttribute="trailing" secondItem="BOe-fA-coW" secondAttribute="trailing" id="kRO-qo-1NE"/>
                             <constraint firstItem="BOe-fA-coW" firstAttribute="top" secondItem="ydE-vw-AGj" secondAttribute="bottom" id="mQU-cp-bzS"/>
                             <constraint firstItem="BOe-fA-coW" firstAttribute="leading" secondItem="oAY-1d-N0f" secondAttribute="leading" id="uEY-rx-fTp"/>

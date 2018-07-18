@@ -10,7 +10,11 @@ class AssetsPresenter: NSObject {
     var assetsVC: AssetsViewController?
     
     var tabBarFrame: CGRect {
-        return account != nil ? CGRect(x: 0, y: screenHeight - 49, width: screenWidth, height: 49) : CGRect(x: 0, y: 0, width: 0, height: 0)
+        if screenHeight == heightOfX {
+            return account != nil ? CGRect(x: 0, y: screenHeight - 85, width: screenWidth, height: 85) : CGRect(x: 0, y: 0, width: 0, height: 0)
+        } else {
+            return account != nil ? CGRect(x: 0, y: screenHeight - 49, width: screenWidth, height: 49) : CGRect(x: 0, y: 0, width: 0, height: 0)
+        }
     }
     
     var isJailed = false
