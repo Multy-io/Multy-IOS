@@ -127,8 +127,9 @@ class SendPresenter: NSObject {
         DataManager.shared.getFeeRate(currencyID: blockchainType.blockchain.rawValue,
                                       networkID: UInt32(blockchainType.net_type),
                                       completion: { (dict, error) in
-                                        if let feeRates = dict, let feeRate = feeRates["Fast"] as? String {
-                                            completion(feeRate)
+                                        print(dict)
+                                        if let feeRates = dict, let feeRate = feeRates["Fast"] as? UInt64 {
+                                            completion("\(feeRate)")
                                         } else {
                                             //default values
                                             switch blockchainType.blockchain {
