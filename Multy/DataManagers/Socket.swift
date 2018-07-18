@@ -91,6 +91,21 @@ class Socket: NSObject {
         }
     }
     
+    func jackstest() { // event with dict params
+        let param: NSDictionary = [
+            "type":"join:multisig",  // it's kinda signature method eg: join:multisig.
+            "from":"multy",
+            "to":"ur userid",
+            "date":1531820490, // time unix
+            "status":0,
+            "payload":"string"
+        ]
+        
+        socket.emitWithAck("message:send", with: [param]).timingOut(after: 1) { data in
+            print(data)
+        }
+    }
+    
     func getExchangeReq() {
         let abc = NSDictionary(dictionary: ["From": "USD",
                                             "To": "BTC"]).socketRepresentation()
