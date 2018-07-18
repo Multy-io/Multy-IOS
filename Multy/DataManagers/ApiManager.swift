@@ -436,5 +436,45 @@ class ApiManager: NSObject, RequestRetrier {
             }
         }
     }
+    
+    
+    
+    // ---------------------------------- MULTI SIG ---------------------------------------------------//
+    
+    func createMultiSig(completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        let header: HTTPHeaders = [
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        let multiSigParams: NSDictionary = [
+            "isMultisig": true,
+            "signaturesRequired": 3,
+            "ownersCount": 4,
+            "inviteCode": "kek-string"
+        ]
+        
+        let walletParams: Parameters = [
+            "currencyID": 60,
+            "networkID": 4,
+            "address": "sample",
+            "addressIndex": 0,
+            "walletIndex": 0,
+            "walletName": "kek",
+            "multisig": multiSigParams
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/wallet", method: .post, parameters: walletParams, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    completion((response.result.value as! NSDictionary), nil)
+                }
+            case .failure(_):
+                completion(nil, response.result.error)
+                break
+            }
+        }
+    }
+    
 }
 
