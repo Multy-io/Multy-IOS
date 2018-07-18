@@ -471,12 +471,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
 
     @IBAction func sendAction(_ sender: Any) {
-        if presenter.wallet!.isSyncing.boolValue {
-            presentAlert(with: localize(string: Constants.holdOnString))
-            
-            return
-        }
-        
         if presenter.wallet!.availableAmount.isZero {
             self.presentAlert(with: localize(string: Constants.noFundsString))
             
