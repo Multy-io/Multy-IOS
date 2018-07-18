@@ -494,6 +494,8 @@
 		4477265320BECD2D006BF4A7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Sends.strings; sourceTree = "<group>"; };
 		4477265420BECD2E006BF4A7 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Sends.strings; sourceTree = "<group>"; };
 		447ECAD220330C2C0085C26D /* TransactionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDTO.swift; sourceTree = "<group>"; };
+		448000D620FF3D6900813624 /* EOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EOS.h; sourceTree = "<group>"; };
+		448000D720FF3D6900813624 /* transaction_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transaction_builder.h; sourceTree = "<group>"; };
 		4491513D2049764D0028195F /* MultyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4491513F2049764D0028195F /* MultyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultyUITests.swift; sourceTree = "<group>"; };
 		449151412049764D0028195F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1850,8 +1852,8 @@
 				859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */,
 			);
 			path = MemberTVC;
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		859C7B1020F4D3A8002EA215 /* ConfirmationStatusCVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -2008,21 +2010,23 @@
 			children = (
 				FA7406191FCC14C4003C538C /* account.h */,
 				FA74061B1FCC14C4003C538C /* api.h */,
+				44FA86BF2035A76400263C72 /* big_int.h */,
 				44DFEFA0206A64ED0068769C /* binary_data.h */,
 				FAFCDA891FD7FD250056DD64 /* bip44_coin_types.h */,
 				44DFEFA2206A64ED0068769C /* bitcoin.h */,
 				44DFEFA1206A64ED0068769C /* blockchain.h */,
 				FA74061C1FCC14C4003C538C /* common.h */,
+				448000D620FF3D6900813624 /* EOS.h */,
 				FA869D081FD5AD9700C815C3 /* error.h */,
 				44DFEFA3206A64ED0068769C /* ethereum.h */,
 				44DFEFA4206A64ED0068769C /* golos.h */,
 				44FA86BE2035A75A00263C72 /* key.h */,
 				FA74061A1FCC14C4003C538C /* mnemonic.h */,
+				FA7406161FCC14C4003C538C /* properties.h */,
 				FA74061D1FCC14C4003C538C /* run_tests.h */,
 				44FA86C02035A77100263C72 /* sha3.h */,
-				44FA86BF2035A76400263C72 /* big_int.h */,
+				448000D720FF3D6900813624 /* transaction_builder.h */,
 				FA7406151FCC14C4003C538C /* transaction.h */,
-				FA7406161FCC14C4003C538C /* properties.h */,
 			);
 			path = "Core Libs";
 			sourceTree = "<group>";

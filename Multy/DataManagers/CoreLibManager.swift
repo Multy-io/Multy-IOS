@@ -683,7 +683,10 @@ class CoreLibManager: NSObject {
         
         let pointer = UnsafeMutablePointer<MultyError>(opaquePointer)
         
-        defer { free_error(pointer) }
+        defer {
+            free_error(opaquePointer)
+            pointer.deallocate()
+        }
         
         let errorString = String(cString: pointer.pointee.message)
         
