@@ -368,7 +368,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
     }
     
     func isOnWindow() -> Bool {
-        return self.navigationController!.topViewController!.isKind(of: AssetsViewController.self)
+        return self.navigationController!.topViewController!.isKind(of: AssetsViewController.self) && isVisible()
     }
     
     //    FORCE TOUCH EVENTS
