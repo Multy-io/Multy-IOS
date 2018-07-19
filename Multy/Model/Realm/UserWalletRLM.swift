@@ -185,7 +185,8 @@ class UserWalletRLM: Object {
     
     @objc dynamic var ethWallet: ETHWallet?
     @objc dynamic var btcWallet: BTCWallet?
-        
+    @objc dynamic var multisigWallet: MultisigWallet?
+
     var exchangeCourse: Double {
         get {
             return DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
