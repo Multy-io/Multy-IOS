@@ -26,7 +26,7 @@
 "HuL-7P-xQq.normalTitle" = "Invitation Code";
 
 /* Class = "UILabel"; text = "Signs to Send"; ObjectID = "J06-E2-5SM"; */
-"J06-E2-5SM.text" = "Требуемое число подписей";
+"J06-E2-5SM.text" = "Требуемое число подписей и совладельцев";
 
 /* Class = "UIButton"; normalTitle = "Create"; ObjectID = "Jgz-s4-pgP"; */
 "Jgz-s4-pgP.normalTitle" = "Создать";
@@ -66,3 +66,11 @@
 "1Sw-Kf-zr9.text" = "из";
 
 "diO-2a-JyO.text" = "Количество совладельцев";
+
+"pUC-xy-VxT.text" = "ПРИВЯЗАННЫЙ КОШЕЛЕК";
+
+"xJZ-Op-SST.text" = "ОБЩИЕ";
+
+"kNf-MA-qmP.text" = "Выберите кошелек";
+
+"H8Q-1D-9u6.text" = "Ваш привязанный кошелек будет использоваться для платы за MultiSig транзакции";
