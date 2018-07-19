@@ -87,16 +87,16 @@ class HistoryRLM: Object {
             hist.confirmations = confirmations
         }
         
-        if let blocktime = historyDict["blocktime"] {
-            hist.blockTime = NSDate(timeIntervalSince1970: (blocktime as! Double)) as Date
+        if let blocktime = historyDict["blocktime"] as? TimeInterval {
+            hist.blockTime = NSDate(timeIntervalSince1970: blocktime / nanosecondsInOneSecond) as Date
         }
         
         if hist.blockHeight == -1 {
             hist.blockTime = Date()
         }
         
-        if let mempoolTime = historyDict["mempooltime"] {
-            hist.mempoolTime = NSDate(timeIntervalSince1970: (mempoolTime as! Double)) as Date
+        if let mempoolTime = historyDict["mempooltime"] as? TimeInterval {
+            hist.mempoolTime = NSDate(timeIntervalSince1970: mempoolTime / nanosecondsInOneSecond) as Date
         }
         
         if let txfee = historyDict["txfee"] {
