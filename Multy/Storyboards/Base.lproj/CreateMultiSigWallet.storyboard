@@ -440,29 +440,42 @@
                                                     <constraint firstAttribute="width" secondItem="nEo-4N-9he" secondAttribute="height" multiplier="1:1" id="LQc-5k-XFn"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6l-4Z-Gl8">
-                                                <rect key="frame" x="64" y="20.5" width="4.5" height="23.5"/>
-                                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="6lB-5T-yOh">
+                                                <rect key="frame" x="56" y="19" width="280" height="28"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6l-4Z-Gl8">
+                                                        <rect key="frame" x="0.0" y="0.0" width="4" height="13"/>
+                                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HSB-9S-gur" userLabel="Linked Wallet Address Label">
+                                                        <rect key="frame" x="0.0" y="15" width="30.5" height="13"/>
+                                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                                        <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="wva-mT-XhB" secondAttribute="trailing" id="1HD-Ec-nKh"/>
-                                            <constraint firstItem="n6l-4Z-Gl8" firstAttribute="leading" secondItem="nEo-4N-9he" secondAttribute="trailing" constant="16" id="3bJ-vv-9Kj"/>
                                             <constraint firstAttribute="trailing" secondItem="cn8-TF-6KF" secondAttribute="trailing" id="4ca-uf-EoN"/>
-                                            <constraint firstItem="n6l-4Z-Gl8" firstAttribute="centerY" secondItem="nEo-4N-9he" secondAttribute="centerY" id="5XB-92-CZ9"/>
+                                            <constraint firstItem="6lB-5T-yOh" firstAttribute="top" secondItem="nEo-4N-9he" secondAttribute="top" id="8hA-GA-4XW"/>
                                             <constraint firstAttribute="trailing" secondItem="QNb-LV-4KA" secondAttribute="trailing" id="9EX-CN-WMz"/>
+                                            <constraint firstItem="6lB-5T-yOh" firstAttribute="bottom" secondItem="nEo-4N-9he" secondAttribute="bottom" id="BMc-cZ-Ph4"/>
                                             <constraint firstItem="wva-mT-XhB" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" id="CzL-l2-uqC"/>
                                             <constraint firstAttribute="bottom" secondItem="wva-mT-XhB" secondAttribute="bottom" id="IhX-fA-Idn"/>
                                             <constraint firstAttribute="bottom" secondItem="cn8-TF-6KF" secondAttribute="bottom" id="StA-jF-a5Z"/>
                                             <constraint firstItem="wva-mT-XhB" firstAttribute="top" secondItem="QNb-LV-4KA" secondAttribute="bottom" id="T6Q-Pq-SvX"/>
                                             <constraint firstAttribute="trailing" secondItem="XGX-Rj-7NI" secondAttribute="trailing" constant="16" id="VFr-Jz-kvl"/>
+                                            <constraint firstItem="6lB-5T-yOh" firstAttribute="leading" secondItem="nEo-4N-9he" secondAttribute="trailing" constant="8" id="YLY-eZ-gg4"/>
                                             <constraint firstItem="cn8-TF-6KF" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" id="ZCc-Cx-ck5"/>
                                             <constraint firstItem="nEo-4N-9he" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" constant="20" id="c26-fa-f9T"/>
                                             <constraint firstItem="nEo-4N-9he" firstAttribute="centerY" secondItem="wva-mT-XhB" secondAttribute="centerY" id="eTA-ks-Hbf"/>
                                             <constraint firstItem="QNb-LV-4KA" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" id="j38-r5-bSh"/>
+                                            <constraint firstItem="XGX-Rj-7NI" firstAttribute="leading" secondItem="6lB-5T-yOh" secondAttribute="trailing" constant="8" id="jeP-HC-Vhz"/>
                                             <constraint firstItem="XGX-Rj-7NI" firstAttribute="centerY" secondItem="mGm-SD-4OZ" secondAttribute="centerY" id="osE-bC-VSc"/>
                                             <constraint firstItem="kNf-MA-qmP" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" constant="20" id="pDX-yK-yAB"/>
                                             <constraint firstAttribute="height" constant="64" id="stm-rZ-NBi"/>
@@ -527,8 +540,10 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="createBtn" destination="Jgz-s4-pgP" id="DGb-pL-s5h"/>
+                        <outlet property="linkedWalletAddressLabel" destination="HSB-9S-gur" id="nDE-hN-bcs"/>
                         <outlet property="linkedWalletImageView" destination="nEo-4N-9he" id="XlH-pF-pnI"/>
                         <outlet property="linkedWalletNameLabel" destination="n6l-4Z-Gl8" id="UWM-k8-jQN"/>
+                        <outlet property="linkedWalletStackView" destination="6lB-5T-yOh" id="ukx-s3-acK"/>
                         <outlet property="selectWalletLabel" destination="kNf-MA-qmP" id="fir-wY-lNh"/>
                         <outlet property="tableView" destination="Ccs-AU-i8v" id="VSy-QV-ccW"/>
                     </connections>
