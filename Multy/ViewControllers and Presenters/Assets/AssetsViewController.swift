@@ -127,12 +127,14 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
                 let dictionary = Bundle.main.infoDictionary!
                 let buildVersion = (dictionary["CFBundleVersion"] as! NSString).integerValue
                 
-                //MARK: change > to <
-                if err != nil || buildVersion >= hardVersion! {
-                    completion(true)
-                } else {
+                if buildVersion < hardVersion! {
                     self.presentUpdateAlert()
                     completion(false)
+                } else if buildVersion < softVersion! {
+                    self.presenter.presentSoftUpdate()
+                    completion(true)
+                } else {
+                    completion(true)
                 }
             }
         }
