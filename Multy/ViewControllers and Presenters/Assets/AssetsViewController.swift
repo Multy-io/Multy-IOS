@@ -475,13 +475,13 @@ extension TableViewDelegate : UITableViewDelegate {
                 sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
 //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
                 self.presenter.makeAuth { (answer) in
-//                    self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { (answer, err) in
+                    self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { (answer, err) in
                         self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { (answer, err) in
                             self.presenter.getWalletsVerbose(completion: { (complete) in
                                 
                             })
                         })
-//                    })
+                    })
                 }
             } else {
                 if self.presenter.isWalletExist() {
