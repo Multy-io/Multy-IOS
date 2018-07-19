@@ -190,13 +190,7 @@ class BigInt: NSObject {
         }
         big_int_get_value(valuePointer.pointee, amountStringPointer)
         
-        let value = amountStringPointer.pointee
-        
-        if value != nil {
-            return String(cString: value!)
-        } else {
-            return "0.0"
-        }
+        return String(cString: amountStringPointer.pointee!)
     }
     
     func fiatValueString(for blockchain: Blockchain) -> String {
