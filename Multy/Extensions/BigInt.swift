@@ -188,7 +188,6 @@ class BigInt: NSObject {
         defer {
             free_string(amountStringPointer.pointee)
         }
-        
         big_int_get_value(valuePointer.pointee, amountStringPointer)
         
         return String(cString: amountStringPointer.pointee!)
