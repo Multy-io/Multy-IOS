@@ -32,3 +32,5 @@
 "WALLET NAME NOT EMPTY ALERT" = "Ім'я гаманця не повинно бути порожнім";
 "CREATE OR IMPORT WALLET" = "Натисніть кнопку, щоб створити новий або імпортувати існуючий гаманець.";
 "ENTERED INVALID SUM" = "Введена невірна сума";
+"YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE" = "Завантажити нову версію можна в AppStore";
+

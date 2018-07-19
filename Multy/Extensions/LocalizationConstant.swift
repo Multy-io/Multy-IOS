@@ -21,6 +21,7 @@ extension Constants {
     static let weHaveUpdateString = "WE HAVE AN UPDATE"
     static let updateMultyString = "UPDATE MULTY"
     static let goToUpdateString = "GO TO UPDATE"
+    static let buildUpdateMessage = "YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE"
     static let warningString = "WARNING"
     static let cancelString = "CANCEL"
     static let errorString = "ERROR"
