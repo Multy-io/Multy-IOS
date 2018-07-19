@@ -124,6 +124,11 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
             }
             DataManager.shared.getServerConfig { (hardVersion, softVersion, err) in
                 self.loader.hide()
+                
+                if hardVersion == nil || softVersion == nil {
+                    
+                }
+                
                 let dictionary = Bundle.main.infoDictionary!
                 let buildVersion = (dictionary["CFBundleVersion"] as! NSString).integerValue
                 
