@@ -26,7 +26,7 @@
 "HuL-7P-xQq.normalTitle" = "Invitation Code";
 
 /* Class = "UILabel"; text = "Signs to Send"; ObjectID = "J06-E2-5SM"; */
-"J06-E2-5SM.text" = "Required Number of Signatures";
+"J06-E2-5SM.text" = "Required Number of Signatures and Owners";
 
 /* Class = "UIButton"; normalTitle = "Create"; ObjectID = "Jgz-s4-pgP"; */
 "Jgz-s4-pgP.normalTitle" = "Create";
@@ -66,3 +66,11 @@
 "1Sw-Kf-zr9.text" = "of";
 
 "diO-2a-JyO.text" = "Total Number of Members";
+
+"pUC-xy-VxT.text" = "LINKED WALLET";
+
+"xJZ-Op-SST.text" = "GENERAL";
+
+"kNf-MA-qmP.text" = "Select your wallet";
+
+"H8Q-1D-9u6.text" = "Your linked wallet will be used to pay for multisig wallet transactions";
