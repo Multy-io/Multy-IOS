@@ -109,4 +109,6 @@ extension Constants {
     static let chooseAddressString = "CHOOSE ADDRESS"
     static let enteredInvalidSumString = "ENTERED INVALID SUM"
     static let holdOnString = "HOLD ON"
+    static let serverNotWorkTitleString = "TEMPORARY OUT OF SERVICE"
+    static let serverNotWorkingMessageString = "SERVER STOP STRING"
 }

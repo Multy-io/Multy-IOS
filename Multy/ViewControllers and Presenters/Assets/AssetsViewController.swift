@@ -126,14 +126,16 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
                 self.loader.hide()
                 
                 if hardVersion == nil || softVersion == nil {
-                    
+                    self.presentUpdateAlert(idOfAlert: 2)
+                    completion(true)
+                    return
                 }
                 
                 let dictionary = Bundle.main.infoDictionary!
                 let buildVersion = (dictionary["CFBundleVersion"] as! NSString).integerValue
                 
                 if buildVersion < hardVersion! {
-                    self.presentUpdateAlert()
+                    self.presentUpdateAlert(idOfAlert: 0)
                     completion(false)
                 } else if buildVersion < softVersion! {
                     self.presenter.presentSoftUpdate()
@@ -175,7 +177,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
     
     override func viewDidAppear(_ animated: Bool) {
         if self.presenter.isJailed {
-            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
+            self.presentUpdateAlert(idOfAlert: 0)
+//            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
         }
         
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
@@ -341,17 +344,12 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         self.tableView.reloadData()
     }
     
-    func presentWarningAlert(message: String) {
+    func presentUpdateAlert(idOfAlert: Int) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let slpashScreen = storyboard.instantiateViewController(withIdentifier: "splash") as! SplashViewController
-        slpashScreen.isJailAlert = 1
-        self.present(slpashScreen, animated: true, completion: nil)
-    }
-    
-    func presentUpdateAlert() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let slpashScreen = storyboard.instantiateViewController(withIdentifier: "splash") as! SplashViewController
-        slpashScreen.isJailAlert = 0
+        slpashScreen.isJailAlert = idOfAlert
+        slpashScreen.parentVC = self
+        slpashScreen.modalPresentationStyle = .overCurrentContext
         self.present(slpashScreen, animated: true, completion: nil)
     }
     
