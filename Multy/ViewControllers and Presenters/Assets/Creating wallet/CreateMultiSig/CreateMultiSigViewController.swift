@@ -15,6 +15,7 @@ class CreateMultiSigViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var createBtn: ZFRippleButton!
+    let loader = PreloaderView(frame: HUDFrame, text: "Creating Wallet...", image: #imageLiteral(resourceName: "walletHuge"))
     
     let presenter = CreateMultiSigPresenter()
     
@@ -25,6 +26,9 @@ class CreateMultiSigViewController: UIViewController {
         hideKeyboardWhenTappedAround()
         swipeToBack()
         tableView.tableFooterView = nil
+        loader.show(customTitle: localize(string: Constants.creatingWalletString))
+        self.view.addSubview(loader)
+        loader.hide()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,6 +69,15 @@ class CreateMultiSigViewController: UIViewController {
         membersVC.presenter.signaturesCount = presenter.signaturesCount
         self.present(membersVC, animated: true, completion: nil)
     }
+    
+    func openNewlyCreatedWallet() {
+        let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+        let waitingMembersVC = storyBoard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
+        waitingMembersVC.presenter.wallet = presenter.createdWallet
+        waitingMembersVC.presenter.account = presenter.account
+        
+        navigationController?.pushViewController(waitingMembersVC, animated: true)
+    }
 
     @IBAction func cancelAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)
@@ -83,14 +96,11 @@ class CreateMultiSigViewController: UIViewController {
             return
         }
         
-        let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
-        let waitingMembersVC = storyBoard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
-        waitingMembersVC.presenter.membersAmount = presenter.membersCount
-        //FIXME:
-        let nameCell = self.tableView.cellForRow(at: IndexPath(item: 0, section: 0)) as! CreateWalletNameTableViewCell
-        waitingMembersVC.presenter.walletName = nameCell.walletNameTF.text!
-        navigationController?.pushViewController(waitingMembersVC, animated: true)
-//        waitingMembersVC.openShareInviteVC()
+        loader.show(customTitle: localize(string: Constants.creatingWalletString))
+        presenter.createNewWallet { (dict) in
+            print(dict!)
+        }
+        
     }
     
     func chooseAnotherWalletAction() {
