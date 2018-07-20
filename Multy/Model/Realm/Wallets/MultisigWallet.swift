@@ -6,7 +6,6 @@ import Foundation
 import RealmSwift
 
 class MultisigWallet: Object {
-    @objc dynamic var ethWallet: ETHWallet?
     
     @objc dynamic var factoryAddress = String()
     

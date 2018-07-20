@@ -272,14 +272,15 @@ class UserWalletRLM: Object {
         //parse addition info for each chain
         wallet.updateSpecificInfo(from: walletInfo)
         
+        wallet.updateWalletWithInfo(walletInfo: walletInfo)
+        
         //MARK: temporary only 0-currency
         //MARK: server BUG: WalletIndex and walletindex
         //No data from server
+        let addressString = walletInfo["multisig"] != nil ? wallet.address : nil
         if walletInfo["walletindex"] != nil || walletInfo["WalletIndex"] != nil {
-            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value)
+            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, multisigAddress:addressString)
         }
-        
-        wallet.updateWalletWithInfo(walletInfo: walletInfo)
         
         return wallet
     }
@@ -530,6 +531,10 @@ extension WalletUpdateRLM {
             break
         case BLOCKCHAIN_ETHEREUM.rawValue:
             updateETHWallet(from: infoDict)
+            
+            if Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue) == self.chainType.intValue {
+                updateMultiSigWallet(from: infoDict)
+            }
         default:
             break
         }
@@ -555,6 +560,75 @@ extension WalletUpdateRLM {
             
             if ethWallet!.pendingWeiAmountString != "0" {
                 isTherePendingTx = NSNumber(booleanLiteral: true)
+            }
+        }
+    }
+    
+    func updateMultiSigWallet(from infoDict: NSDictionary) {
+        if let multisig = infoDict["multisig"] as? NSDictionary {
+            multisigWallet = MultisigWallet()
+            
+            if let ownersCount = multisig["ownersCount"] as? Int {
+                multisigWallet!.ownersCount = ownersCount
+            }
+            
+            if let signaturesRequired = multisig["confirmations"] as? Int {
+                multisigWallet!.signaturesRequired = signaturesRequired
+            }
+            
+            if let inviteCode = multisig["inviteCode"] as? String {
+                multisigWallet!.inviteCode = inviteCode
+            }
+            
+            if let ownersStruct = multisig["owners"] as? [NSDictionary] {
+                let owners = List<MultisigOwnerRLM>()
+                for ownerStruct in ownersStruct {
+                    let owner = MultisigOwnerRLM()
+                    
+                    if let userID = ownerStruct["userID"] as? String {
+                        owner.userID = userID
+                    }
+                    
+                    if let address = ownerStruct["address"] as? String {
+                        owner.address = address
+                    }
+                    
+                    if let associated = ownerStruct["associated"] as? Bool {
+                        owner.associated = NSNumber(booleanLiteral: associated)
+                    }
+                    
+                    if let walletIndex = ownerStruct["walletIndex"] as? Int {
+                        owner.walletIndex = NSNumber(value: walletIndex)
+                    }
+                    
+                    if let addressIndex = ownerStruct["addressIndex"] as? Int {
+                        owner.addressIndex = NSNumber(value: addressIndex)
+                    }
+                    
+                    if let creator = ownerStruct["creator"] as? Bool {
+                        owner.creator = NSNumber(booleanLiteral: creator)
+                    }
+                    
+                    owners.append(owner)
+                }
+                
+                multisigWallet!.owners = owners
+            }
+            
+            if let deployStatus = multisig["deployStatus"] as? Int {
+                multisigWallet!.deployStatus = NSNumber(integerLiteral: deployStatus)
+            }
+            
+            if let status = multisig["status"] as? Int {
+                multisigWallet!.status = NSNumber(integerLiteral: status)
+            }
+            
+            if let TxOfCreation = multisig["txOfCreation"] as? String {
+                multisigWallet!.TxOfCreation = TxOfCreation
+            }
+            
+            if let factoryAddress = multisig["factoryAddress"] as? String {
+                multisigWallet!.factoryAddress = factoryAddress
             }
         }
     }

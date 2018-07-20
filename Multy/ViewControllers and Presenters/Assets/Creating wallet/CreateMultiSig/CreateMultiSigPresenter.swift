@@ -91,7 +91,7 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
             } else {
                 // Multisig
                 createdWallet.multisigWallet = MultisigWallet()
-                createdWallet.multisigWallet!.ethWallet = ethWallet
+                createdWallet.ethWallet = ethWallet
                 createdWallet.multisigWallet!.inviteCode = makeInviteCode()
                 createdWallet.multisigWallet!.ownersCount = membersCount
                 createdWallet.multisigWallet!.signaturesRequired = signaturesCount
