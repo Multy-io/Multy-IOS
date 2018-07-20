@@ -115,4 +115,5 @@ extension Constants {
     static let chooseWalletString = "CHOOSE WALLET"
     static let badInviteCodeString = "INVALID INVITE CODE"
     static let inviteCodeNotFoundString = "INVITE CODE NOT FOUND"
+    static let deleteMultisigWalletAlertString = "DELETE MULTISIG WALLET WARNING"
 }

@@ -129,6 +129,7 @@ struct Constants {
         //Assets
         static let createWalletVCSegueID = "createWalletVC"
         static let contactVCSegueID = "contactVC"
+        static let waitingMembersSettingsVCSegueID = "waitingMembersSettings"
     }
     
     struct UserDefaults {
