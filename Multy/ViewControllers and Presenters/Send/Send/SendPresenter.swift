@@ -678,7 +678,7 @@ extension CreateTransactionDelegate {
 }
 
 extension SendPresenter: QrDataProtocol {
-    func qrData(string: String) {
+    func qrData(string: String, tag: String?) {
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
         sendStartVC.presenter.transactionDTO.update(from: string)

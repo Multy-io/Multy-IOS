@@ -97,6 +97,10 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.presenter.selectedIndex = indexPath.row
+        if presenter.isForMultisig {
+            presenter.joinRequest()
+        }
+        
         if self.presenter.isNeedToPop == true {
             if self.whereFrom != nil && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
                 let message = localize(string: Constants.cannotChooseEmptyWalletString)

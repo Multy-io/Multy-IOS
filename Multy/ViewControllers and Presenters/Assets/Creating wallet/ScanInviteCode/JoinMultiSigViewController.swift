@@ -42,6 +42,8 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var isGradientOn = false
     
+    var qrDelegate: QrDataProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.mainVC = self

@@ -184,4 +184,30 @@ extension FCMDelegate {
             }
         }
     }
+    
+    func joinToMultisigWith(wallet: UserWalletRLM, inviteCode: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        let payloadForJoin: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "address": wallet.address,
+            "invitecode": inviteCode,
+            "addresstokik":"", //omitempty
+            "walletindex": wallet.walletID,
+            "currencyid": wallet.chain,
+            "networkid": wallet.chainType
+        ]
+        
+        let paramsForMsgSend: NSDictionary = [
+            "type": "join:multisig",  // it's kinda signature method eg: join:multisig.
+            "from": "",              // not requied
+            "to":"",                // not requied
+            "date": Date().timeIntervalSince1970, // time unix
+            "status": 0,
+            "payload": payloadForJoin
+        ]
+        
+        
+        socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
+            completion(answerDict, err)
+        }
+    }
 }
