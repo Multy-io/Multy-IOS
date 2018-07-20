@@ -1,10 +1,6 @@
-/* 
-  Assets.strings
-  Multy
-
-  Created by Alex Pro on 5/29/18.
-  Copyright © 2018 Idealnaya rabota. All rights reserved.
-*/
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
 
 "BACKUP IS NEEDED" = "Backup is needed!";
 "RESTORE MULTY" = "Restore Multy";
@@ -30,4 +26,9 @@
 "AGREE WITH TERMS" = "I agree with Terms of Service and processing of my personal data according to the Multy Privacy Policy.";
 "ERROR WHILE CREATING WALLET" = "Error while creating wallet!";
 "WALLET NAME NOT EMPTY ALERT" = "Wallet name should be non empty";
+"CHOOSE WALLET" = "Please, select wallet";
+"INVALID INVITE CODE" = "Invalid Invite Code";
+"INVITE CODE NOT FOUND" = "Invite code not found";
+"GO TO SETTINGS" = "Please go to the Settings -> Multy and allow camera usage";
+"YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE" = "You can download new version in the AppStore";
 "CREATE OR IMPORT WALLET" = "Tap the button to create or import existing wallet.";

@@ -172,6 +172,46 @@ class Socket: NSObject {
         }
     }
     
+    
+    // ================================== MULTI SIG TEST =================================================== //
+    
+    func jackstest() { // event with dict params
+        let param1: NSDictionary = [
+            "type":"join:multisig",  // it's kinda signature method eg: join:multisig.
+            "from":"multy",
+            "to":"ur userid",
+            "date":1531820490, // time unix
+            "status":0,
+            "payload":"string"
+        ]
+        
+        let payload2: NSDictionary = [
+            "userid":DataManager.shared.apiManager.userID,
+            "address":"0xe51777adb0aa5facc5fe9ee9e56d30ee4984c266",
+            "invitecode":"kek-string1",
+            "addresstokik":"", //omitempty
+            "walletindex":0,
+            "currencyid":60,
+            "networkid":1
+        ]
+        
+        let param2: NSDictionary = [
+            "type":"join:multisig",  // it's kinda signature method eg: join:multisig.
+            "from":"",              // not requied
+            "to":"",                // not requied
+            "date":1531840490, // time unix
+            "status":0,
+            "payload":payload2
+        ]
+        
+        
+        
+        socket.emitWithAck("message:send", with: [param2]).timingOut(after: 1) { data in
+            print(data)
+        }
+    }
+    
+    
 //    func txSend(params : [String: Any]) {
 //        print("txSend : \(params)")
 //

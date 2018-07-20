@@ -219,6 +219,17 @@ class UserWalletRLM: Object {
         return wallets
     }
     
+    public class func initArrayWithArray(walletsArray: NSArray) -> [UserWalletRLM] {
+        var wallets = [UserWalletRLM]()
+        
+        for walletInfo in walletsArray {
+            let wallet = UserWalletRLM.initWithInfo(walletInfo: walletInfo as! NSDictionary)
+            wallets.append(wallet)
+        }
+        
+        return wallets
+    }
+    
     public class func initWithInfo(walletInfo: NSDictionary) -> UserWalletRLM {
         let wallet = UserWalletRLM()
         wallet.ethWallet = ETHWallet()
@@ -531,7 +542,7 @@ extension WalletUpdateRLM {
     func updateETHWallet(from infoDict: NSDictionary) {
         if let balance = infoDict["balance"] as? String {
             ethWallet = ETHWallet()
-            ethWallet!.balance = balance
+            ethWallet!.balance = balance.isEmpty ? "0" : balance
         }
         
         if let nonce = infoDict["nonce"] as? NSNumber {
@@ -539,7 +550,7 @@ extension WalletUpdateRLM {
         }
         
         if let pendingBalance = infoDict["pendingbalance"] as? String {
-            ethWallet!.pendingWeiAmountString = pendingBalance
+            ethWallet!.pendingWeiAmountString = pendingBalance.isEmpty ? "0" : pendingBalance
             
             if ethWallet!.pendingWeiAmountString != "0" {
                 isTherePendingTx = NSNumber(booleanLiteral: true)

@@ -53,6 +53,9 @@ class WalletPresenter: NSObject {
         
         let transactionPendingCell = UINib.init(nibName: "TransactionPendingCell", bundle: nil)
         walletVC!.transactionsTable.register(transactionPendingCell, forCellReuseIdentifier: "TransactionPendingCellID")
+        
+        let multiSigPendingCell = UINib.init(nibName: "MultiSigPendingTableViewCell", bundle: nil)
+        walletVC!.transactionsTable.register(multiSigPendingCell, forCellReuseIdentifier: "multiSigPendingCell")
     }
     
     func updateHeader() {
@@ -74,6 +77,20 @@ class WalletPresenter: NSObject {
     func isTherePendingMoney(for indexPath: IndexPath) -> Bool {
         return transactionDataSource[indexPath.row].isPending()
     }
+    
+    func makeHeightForTableCells(indexPath: IndexPath) -> CGFloat {
+        if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
+            return 135
+        } else {
+            return 70
+        }
+        //FOR MULTISIG TRANSACTIONS
+        //            if indexPath.row == 0 {
+        //                return 172            //cell with locked and info view
+        //            }
+        //            return 126                //cell with only locked or only info viewr
+    }
+    
     
     func getHistoryAndWallet() {
         if walletVC?.isCanUpdate == false {

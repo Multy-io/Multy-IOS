@@ -202,6 +202,9 @@
 
 "tRx-hg-wDk.normalTitle" = " Copy ";
 
+"Z9G-zI-eT6.normalTitle" = "Create MultiSig";
+"HGd-JI-MhQ.normalTitle" = "Join to MultiSig";
+
 /* Class = "UILabel"; text = "Enter Address and Cryptocurrency"; ObjectID = "0kN-rx-Uz2"; */
 "0kN-rx-Uz2.text" = "Enter Address and Cryptocurrency";
 

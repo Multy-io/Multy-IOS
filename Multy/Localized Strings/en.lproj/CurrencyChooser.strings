@@ -1,10 +1,6 @@
-/* 
-  CurrencyChooser.strings
-  Multy
-
-  Created by Alex Pro on 5/29/18.
-  Copyright © 2018 Idealnaya rabota. All rights reserved.
-*/
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
 
 "AVAILABLE" = "AVAILABLE";
 "WORK IN PROGRESS" = "WORK IN PROGRESS";
