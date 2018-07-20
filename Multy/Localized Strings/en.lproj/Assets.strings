@@ -33,3 +33,6 @@
 "CREATE OR IMPORT WALLET" = "Tap the button to create or import existing wallet.";
 "ENTERED INVALID SUM" = "Entered Invalid Sum";
 "YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE" = "You can download new version in the AppStore";
+"TEMPORARY OUT OF SERVICE" = "Temporary out of service";
+"SERVER STOP STRING"= "We are sorry, but Multy is temporary out of service. Please come back later.";
+

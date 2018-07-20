@@ -88,7 +88,7 @@ class HistoryRLM: Object {
         }
         
         if let blocktime = historyDict["blocktime"] as? TimeInterval {
-            hist.blockTime = NSDate(timeIntervalSince1970: blocktime / nanosecondsInOneSecond) as Date
+            hist.blockTime = NSDate(timeIntervalSince1970: blocktime) as Date
         }
         
         if hist.blockHeight == -1 {
@@ -96,7 +96,7 @@ class HistoryRLM: Object {
         }
         
         if let mempoolTime = historyDict["mempooltime"] as? TimeInterval {
-            hist.mempoolTime = NSDate(timeIntervalSince1970: mempoolTime / nanosecondsInOneSecond) as Date
+            hist.mempoolTime = NSDate(timeIntervalSince1970: mempoolTime) as Date
         }
         
         if let txfee = historyDict["txfee"] {

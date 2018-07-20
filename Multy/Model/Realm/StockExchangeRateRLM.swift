@@ -52,7 +52,7 @@ class StockExchangeRateRLM: Object {
         }
         
         if let date = stockInfo["timestamp"] as? TimeInterval  {
-            stock.date = NSDate(timeIntervalSince1970: date / nanosecondsInOneSecond) as Date
+            stock.date = NSDate(timeIntervalSince1970: date) as Date
         }
         
         return stock

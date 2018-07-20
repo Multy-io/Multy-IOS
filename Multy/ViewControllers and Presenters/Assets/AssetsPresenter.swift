@@ -351,6 +351,5 @@ class AssetsPresenter: NSObject {
         }))
         
         assetsVC?.present(alert, animated: true, completion: nil)
-        
     }
 }
