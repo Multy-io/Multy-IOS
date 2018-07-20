@@ -167,6 +167,7 @@ let idOfInapps50 = ["io.multy.addingActivity50", "io.multy.addingCharts50", "io.
 
 enum TxStatus : Int {
     case
+        Rejected =                  0,
         MempoolIncoming =           1,
         BlockIncoming =             2,
         MempoolOutcoming =          3,
