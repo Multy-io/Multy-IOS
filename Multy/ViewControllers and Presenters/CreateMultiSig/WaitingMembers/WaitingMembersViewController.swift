@@ -300,6 +300,13 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         setMembersInfoHolderPosition()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Storyboard.waitingMembersSettingsVCSegueID {
+            let waitingMembersSettingsVC = segue.destination as! WaitingMembersSettingsViewController
+            waitingMembersSettingsVC.presenter.wallet = presenter.wallet
+        }
+    }
+    
     //MARK: Actions
     @IBAction func invitationCodeAction(_ sender: Any) {
         openShareInviteVC()

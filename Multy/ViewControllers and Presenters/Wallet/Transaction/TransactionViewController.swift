@@ -203,6 +203,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
             self.titleLbl.text = "Transaction details"
             self.titleLbl.textColor = .black
+            self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
         } else {
             if isIncoming {  // RECEIVE
                 self.makeBackColor(color: self.presenter.receiveBackColor)

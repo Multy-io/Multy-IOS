@@ -22,5 +22,7 @@ class MultisigWallet: Object {
     
     @objc dynamic var status = NSNumber(value: 0)
     
+    @objc dynamic var linkedWalletID = NSNumber(value: 0)
+    
     var owners = List<MultisigOwnerRLM>()
 }

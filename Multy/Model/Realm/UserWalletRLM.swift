@@ -543,7 +543,7 @@ extension WalletUpdateRLM {
     func updateETHWallet(from infoDict: NSDictionary) {
         if let balance = infoDict["balance"] as? String {
             ethWallet = ETHWallet()
-            ethWallet!.balance = balance
+            ethWallet!.balance = balance.isEmpty ? "0" : balance
         }
         
         if let nonce = infoDict["nonce"] as? NSNumber {
@@ -551,7 +551,7 @@ extension WalletUpdateRLM {
         }
         
         if let pendingBalance = infoDict["pendingbalance"] as? String {
-            ethWallet!.pendingWeiAmountString = pendingBalance
+            ethWallet!.pendingWeiAmountString = pendingBalance.isEmpty ? "0" : pendingBalance
             
             if ethWallet!.pendingWeiAmountString != "0" {
                 isTherePendingTx = NSNumber(booleanLiteral: true)

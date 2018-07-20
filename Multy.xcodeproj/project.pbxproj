@@ -269,6 +269,8 @@
 		85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85741D8820B55A650093933B /* CoreBluetooth.framework */; };
 		8592E02320FF9B5D0040125B /* MultisigWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02220FF9B5D0040125B /* MultisigWallet.swift */; };
 		8592E02521008D860040125B /* MultisigOwnerRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02421008D860040125B /* MultisigOwnerRLM.swift */; };
+		8592E02A2101CCBD0040125B /* WaitingMembersSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */; };
+		8592E02C2101DE0B0040125B /* WaitingMembersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02B2101DE0B0040125B /* WaitingMembersSettingsViewController.swift */; };
 		859C7AFC20ECF3C8002EA215 /* WaitingMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */; };
 		859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */; };
 		859C7B0120EE2CEC002EA215 /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */; };
@@ -729,6 +731,8 @@
 		85741D8820B55A650093933B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		8592E02220FF9B5D0040125B /* MultisigWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigWallet.swift; sourceTree = "<group>"; };
 		8592E02421008D860040125B /* MultisigOwnerRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigOwnerRLM.swift; sourceTree = "<group>"; };
+		8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersSettingsPresenter.swift; sourceTree = "<group>"; };
+		8592E02B2101DE0B0040125B /* WaitingMembersSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersSettingsViewController.swift; sourceTree = "<group>"; };
 		859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersViewController.swift; sourceTree = "<group>"; };
 		859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersPresenter.swift; sourceTree = "<group>"; };
 		859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
@@ -1827,9 +1831,19 @@
 			path = TermsOfService;
 			sourceTree = "<group>";
 		};
+		8592E0262101CBCB0040125B /* WaitingMembersSettings */ = {
+			isa = PBXGroup;
+			children = (
+				8592E02B2101DE0B0040125B /* WaitingMembersSettingsViewController.swift */,
+				8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */,
+			);
+			path = WaitingMembersSettings;
+			sourceTree = "<group>";
+		};
 		859C7AF920ECF276002EA215 /* CreateMultiSig */ = {
 			isa = PBXGroup;
 			children = (
+				8592E0262101CBCB0040125B /* WaitingMembersSettings */,
 				859C7AFA20ECF38E002EA215 /* WaitingMembers */,
 			);
 			path = CreateMultiSig;
@@ -2658,6 +2672,7 @@
 				45BCB3C720EE43D6009369D1 /* InviteCodeViewController.swift in Sources */,
 				455CDCFB1FC8537200EA5ACE /* CreateWalletViewController.swift in Sources */,
 				455CDCFD1FC85BB700EA5ACE /* CreateWalletNameTableViewCell.swift in Sources */,
+				8592E02C2101DE0B0040125B /* WaitingMembersSettingsViewController.swift in Sources */,
 				451ED791207CBCDF00542F00 /* PrivateKeyPresenter.swift in Sources */,
 				455CDCF91FC8535C00EA5ACE /* CreateWalletPresenter.swift in Sources */,
 				452290551FBB18D30024B550 /* AppDelegate.swift in Sources */,
@@ -2705,6 +2720,7 @@
 				FAFCDA881FD7DD7A0056DD64 /* Request+Extension.swift in Sources */,
 				44AAAE1320E258D200A481A4 /* ContactCell.swift in Sources */,
 				444066D0205926D400342046 /* UIApplication+Extension.swift in Sources */,
+				8592E02A2101CCBD0040125B /* WaitingMembersSettingsPresenter.swift in Sources */,
 				444066D4205927B900342046 /* UIActivityViewController+Extension.swift in Sources */,
 				445D150C20DA8513002F6747 /* EPConstants.swift in Sources */,
 				45A9495F1FC70F4A003C3A23 /* SendAmountPresenter.swift in Sources */,
