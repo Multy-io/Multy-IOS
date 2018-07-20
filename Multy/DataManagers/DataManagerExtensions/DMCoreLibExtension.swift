@@ -55,7 +55,7 @@ extension DataManager {
         var binaryData = DataManager.shared.realmManager.account!.binaryDataString.createBinaryData()!
         
         
-        let addressData = core.createAddress(blockchain: transactionDTO.blockchainType!,
+        let addressData = core.createAddress(blockchainType: transactionDTO.blockchainType!,
                                              walletID: transactionDTO.choosenWallet!.walletID.uint32Value,
                                              addressID: UInt32(transactionDTO.choosenWallet!.addresses.count),
                                              binaryData: &binaryData)
@@ -111,7 +111,7 @@ extension DataManager {
     
     func createEtherTx(binaryData: inout BinaryData, wallet: UserWalletRLM, sendAddress: String, sendAmountString: String, gasPriceString: String, gasLimitString: String) {
         let blockchain = BlockchainType.create(wallet: wallet)
-        let addressData = self.coreLibManager.createAddress(blockchain: blockchain, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
+        let addressData = self.coreLibManager.createAddress(blockchainType: blockchain, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
         
         let _ = self.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                            sendAddress: sendAddress,
@@ -121,6 +121,22 @@ extension DataManager {
                                                            ethereumChainID: UInt32(4), //RINKEBY
                                                            gasPrice: gasPriceString,
                                                            gasLimit: gasLimitString)
+    }
+    
+    func createMultiSigWallet(binaryData: inout BinaryData, wallet: UserWalletRLM, sendAddress: String, sendAmountString: String, gasPriceString: String, gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
+        let blockchainType = BlockchainType.create(wallet: wallet)
+        let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
+        
+        let multiSigWalletCreationInfo = coreLibManager.createMutiSigWallet(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                                sendAddress: sendAddress,
+                                                                sendAmountString: sendAmountString,
+                                                                nonce: 0,
+                                                                balanceAmount: "\(wallet.availableAmount)",
+                                                                blockchainType: blockchainType,
+                                                                gasPrice: "1000000000",
+                                                                gasLimit: "21000")
+        
+        return multiSigWalletCreationInfo
     }
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {

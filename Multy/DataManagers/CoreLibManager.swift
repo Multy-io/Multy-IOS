@@ -284,7 +284,7 @@ class CoreLibManager: NSObject {
         return privateKeyString
     }
     
-    func createAddress(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> Dictionary<String, Any>? {
+    func createAddress(blockchainType: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> Dictionary<String, Any>? {
         let binaryDataPointer = UnsafeMutablePointer(mutating: &binaryData)
         let masterKeyPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
         
@@ -331,7 +331,7 @@ class CoreLibManager: NSObject {
             publicKeyStringPointer.deallocate()
         }
         
-        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, walletID, newAccountPointer)
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchainType, ACCOUNT_TYPE_DEFAULT.rawValue, walletID, newAccountPointer)
         if mHDa != nil {
             _ = errorString(from: mHDa!, mask: "make_hd_account")
             
@@ -347,7 +347,7 @@ class CoreLibManager: NSObject {
         
         //Create wallet
         var addressDict = Dictionary<String, Any>()
-        addressDict["currencyID"] = blockchain.blockchain.rawValue
+        addressDict["currencyID"] = blockchainType.blockchain.rawValue
         addressDict["walletIndex"] = walletID
         addressDict["addressIndex"] = addressID
         addressDict["addressPointer"] = newAddressPointer
@@ -510,7 +510,7 @@ class CoreLibManager: NSObject {
         
         //change
         //MARK: UInt32(wallet.addresses.count)
-        let dict = createAddress(blockchain: blockchain,
+        let dict = createAddress(blockchainType: blockchain,
                                  walletID: wallet.walletID.uint32Value,
                                  addressID: UInt32(wallet.addresses.count),
                                  binaryData: &binaryData)
@@ -652,6 +652,16 @@ class CoreLibManager: NSObject {
         
         let psbdv = properties_set_binary_data_value(pointer, binaryKey, binDataPointer.pointee)
         _ = errorString(from: psbdv, mask: "properties_set_binary_data_value")
+    }
+    
+    func setBigIntValue(key: String, value: UInt32, pointer: OpaquePointer) {
+        let intKey = key.UTF8CStringPointer
+        let intValue = Int32(value)
+        
+        let psi = properties_se
+            
+            properties_set_int32_value(pointer, intKey, intValue)
+        _ = errorString(from: psi, mask: "setIntValue")
     }
     
     func setIntValue(key: String, value: UInt32, pointer: OpaquePointer) {
@@ -875,7 +885,7 @@ extension TestCoreLibManager {
         //creating tx
         //Check if exist wallet by walletID
         DataManager.shared.realmManager.getWallet(walletID: 1) { (wallet) in
-            let addressData = self.createAddress(blockchain:    blockchain,
+            let addressData = self.createAddress(blockchainType:    blockchain,
                                                  walletID:      wallet!.walletID.uint32Value,
                                                  addressID:     UInt32(wallet!.addresses.count),
                                                  binaryData:    &binaryDataPointer.pointee!.pointee)
@@ -993,53 +1003,75 @@ extension MultiSigCoreLibManager {
                              sendAddress: String,
                              sendAmountString: String,
                              nonce: Int,
-                             balanceAmount: String,st
+                             balanceAmount: String,
                              blockchainType: BlockchainType,
                              gasPrice: String,
                              gasLimit: String) -> (message: String, isTransactionCorrect: Bool) {
         
+        let accountPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let privateKeypointer = UnsafePointer<Int8>(addressPointer.pointee)
         
-        
-        
-        make_account(blockchainType, ACCOUNT_TYPE_DEFAULT.rawValue, <#T##serialized_private_key: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>, <#T##new_account: UnsafeMutablePointer<OpaquePointer?>!##UnsafeMutablePointer<OpaquePointer?>!#>)
-        
-        make_transaction_builder(<#T##account: OpaquePointer!##OpaquePointer!#>, <#T##type: UInt32##UInt32#>, <#T##action: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>, <#T##new_transaction_builder: UnsafeMutablePointer<OpaquePointer?>!##UnsafeMutablePointer<OpaquePointer?>!#>)
-        
-        //create transaction
-        let transactionPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        
-        let mt = make_transaction(addressPointer.pointee, transactionPointer)
-        defer { free_transaction(transactionPointer.pointee) }
-        if mt != nil {
-            _ = errorString(from: mt!, mask: "make_transaction")
+        if privateKeypointer == nil {
+            return ("error:privateKeypointer", false)
         }
         
-        //properties
-        let accountProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        let tgp = transaction_get_properties(transactionPointer.pointee!, accountProperties)
+        let ma = make_account(blockchainType, ACCOUNT_TYPE_DEFAULT.rawValue, privateKeypointer, accountPointer)
         
-        setAmountValue(key: "nonce", value: "\(nonce)", pointer: accountProperties.pointee!)
-        //        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
+        if accountPointer.pointee == nil {
+            return ("error:accountPointer", false)
+        }
         
-        //balance
-        let transactionSource = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        let tas = transaction_add_source(transactionPointer.pointee, transactionSource)
-        setAmountValue(key: "amount", value: balanceAmount, pointer: transactionSource.pointee!)
+        let walletAction = "new_wallet".UTF8CStringPointer
+        let transactionBuilder = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
         
-        //destination
-        let transactionDestination = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        let tas2 = transaction_add_destination(transactionPointer.pointee, transactionDestination)
-        setAmountValue(key: "amount", value: sendAmountString, pointer: transactionDestination.pointee!)
-        setStringValue(key: "address", value: sendAddress, pointer: transactionDestination.pointee!)
-        //        setBinaryDataValue(key: "address", value: sendAddress, pointer: transactionDestination.pointee!)
+        let mtb = make_transaction_builder(accountPointer.pointee,
+                                           ETHEREUM_TRANSACTION_BUILDER_MULTISIG.rawValue,
+                                           walletAction, transactionBuilder)
+        
+        if transactionBuilder.pointee == nil {
+            return ("error:transactionBuilder", false)
+        }
+
+        //properties section
+        let transactionBuilderProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        transaction_builder_get_properties(transactionBuilder.pointee, transactionBuilderProperties)
+        
+        if transactionBuilderProperties.pointee == nil {
+            return ("error:transactionBuilderProperties", false)
+        }
+        
+        setAmountValue(key: "price", value: "0", pointer: transactionBuilderProperties.pointee!)
+        setAmountValue(key: "balance", value: balanceAmount, pointer: transactionBuilderProperties.pointee!)
+        setStringValue(key: "factory_address", value: "0x116ffa11dd8829524767f561da5d33d3d170e17d", pointer: transactionBuilderProperties.pointee!)
+        setStringValue(key: "owners", value: "[0x6b4be1fc5fa05c5d959d27155694643b8af72fd8, 0x2b74679d2a190fd679a85ce7767c05605237f030, 0xbc11d8f8d741515d2696e34333a0671adb6aee34]", pointer: transactionBuilderProperties.pointee!)
+        setIntValue(key: "confirmations", value: UInt32(2), pointer: transactionBuilderProperties.pointee!)
+        
+        //transaction section
+        let transaction = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        make_transaction(accountPointer.pointee!, transaction)
+        if transaction.pointee == nil {
+            return ("error:transactionBuilderProperties", false)
+        }
+        
+        //nonce
+        let transactionProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        transaction_get_properties(transaction.pointee!, transactionProperties)
+        if transactionProperties.pointee == nil {
+            return ("error:transactionBuilderProperties", false)
+        }
+        
+        setAmountValue(key: "nonce", value: "0", pointer: transactionProperties.pointee!)
         
         //fee
         let feeProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        let tgpfp = transaction_get_fee(transactionPointer.pointee!, feeProperties)
+        transaction_get_fee(transaction.pointee!, feeProperties)
+        if feeProperties.pointee == nil {
+            return ("error:feeProperties", false)
+        }
         setAmountValue(key: "gas_price", value: gasPrice, pointer: feeProperties.pointee!)
         setAmountValue(key: "gas_limit", value: gasLimit, pointer: feeProperties.pointee!)
         
-        //final
+        //final stage
         let serializedTransaction = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
         let tSer = transaction_serialize(transactionPointer.pointee, serializedTransaction)
         
