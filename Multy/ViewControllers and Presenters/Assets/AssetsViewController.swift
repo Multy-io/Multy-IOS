@@ -322,8 +322,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
         
         let wallet = presenter.wallets?[indexPath.row - 2]
-        walletVC.presenter.wallet = wallet
         walletVC.presenter.account = presenter.account
+        walletVC.presenter.wallet = wallet
         
         self.navigationController?.pushViewController(walletVC, animated: true)
     }

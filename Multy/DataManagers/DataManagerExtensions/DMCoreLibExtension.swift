@@ -123,18 +123,24 @@ extension DataManager {
                                                            gasLimit: gasLimitString)
     }
     
-    func createMultiSigWallet(binaryData: inout BinaryData, wallet: UserWalletRLM, sendAddress: String, sendAmountString: String, gasPriceString: String, gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
+    func createMultiSigWallet(binaryData: inout BinaryData,
+                              wallet: UserWalletRLM,
+                              sendAddress: String,
+                              sendAmountString: String,
+                              gasPriceString: String,
+                              gasLimitString: String,
+                              factoryAddress: String) -> (message: String, isTransactionCorrect: Bool) {
         let blockchainType = BlockchainType.create(wallet: wallet)
         let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
         
         let multiSigWalletCreationInfo = coreLibManager.createMutiSigWallet(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                 sendAddress: sendAddress,
                                                                 sendAmountString: sendAmountString,
-                                                                nonce: 0,
-                                                                balanceAmount: "\(wallet.availableAmount)",
+                                                                nonce: wallet.ethWallet!.nonce.intValue,
+                                                                balanceAmount: wallet.availableAmount.stringValue,
                                                                 blockchainType: blockchainType,
-                                                                gasPrice: "1000000000",
-                                                                gasLimit: "21000")
+                                                                gasPrice: "6000000000",
+                                                                gasLimit: "2029935")
         
         return multiSigWalletCreationInfo
     }

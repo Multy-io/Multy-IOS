@@ -658,9 +658,7 @@ class CoreLibManager: NSObject {
         let intKey = key.UTF8CStringPointer
         let intValue = Int32(value)
         
-        let psi = properties_se
-            
-            properties_set_int32_value(pointer, intKey, intValue)
+        let psi = properties_set_int32_value(pointer, intKey, intValue)
         _ = errorString(from: psi, mask: "setIntValue")
     }
     
@@ -1008,35 +1006,42 @@ extension MultiSigCoreLibManager {
                              gasPrice: String,
                              gasLimit: String) -> (message: String, isTransactionCorrect: Bool) {
         
-        let accountPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        let privateKeypointer = UnsafePointer<Int8>(addressPointer.pointee)
-        
-        if privateKeypointer == nil {
-            return ("error:privateKeypointer", false)
-        }
-        
-        let ma = make_account(blockchainType, ACCOUNT_TYPE_DEFAULT.rawValue, privateKeypointer, accountPointer)
-        
-        if accountPointer.pointee == nil {
-            return ("error:accountPointer", false)
-        }
+//        let accountPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+//        let privateKeyPointer = UnsafePointer<Int8>(addressPointer.pointee)
+//
+//        if privateKeyPointer == nil {
+//            return ("error:privateKeypointer", false)
+//        }
+//
+//        let ma = make_account(blockchainType, ACCOUNT_TYPE_DEFAULT.rawValue, privateKeyPointer, accountPointer)
+//
+//        if accountPointer.pointee == nil {
+//            _ = errorString(from: ma, mask: "accountPointer")
+//
+//            return ("error:accountPointer", false)
+//        }
         
         let walletAction = "new_wallet".UTF8CStringPointer
         let transactionBuilder = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
         
-        let mtb = make_transaction_builder(accountPointer.pointee,
+        let mtb = make_transaction_builder(addressPointer.pointee,
                                            ETHEREUM_TRANSACTION_BUILDER_MULTISIG.rawValue,
-                                           walletAction, transactionBuilder)
+                                           walletAction,
+                                           transactionBuilder)
         
         if transactionBuilder.pointee == nil {
+            _ = errorString(from: mtb, mask: "transactionBuilder")
+            
             return ("error:transactionBuilder", false)
         }
 
         //properties section
         let transactionBuilderProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        transaction_builder_get_properties(transactionBuilder.pointee, transactionBuilderProperties)
+        let tbgp = transaction_builder_get_properties(transactionBuilder.pointee, transactionBuilderProperties)
         
         if transactionBuilderProperties.pointee == nil {
+            _ = errorString(from: tbgp, mask: "transactionBuilderProperties")
+            
             return ("error:transactionBuilderProperties", false)
         }
         
@@ -1047,47 +1052,48 @@ extension MultiSigCoreLibManager {
         setIntValue(key: "confirmations", value: UInt32(2), pointer: transactionBuilderProperties.pointee!)
         
         //transaction section
-        let transaction = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        transaction_builder_make_transaction(transactionBuilder.pointee!, transaction)
-        if transaction.pointee == nil {
+        let transactionPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let tbmt = transaction_builder_make_transaction(transactionBuilder.pointee!, transactionPointer)
+        if transactionPointer.pointee == nil {
+            _ = errorString(from: tbmt, mask: "transactionBuilderProperties")
+            
             return ("error:transactionBuilderProperties", false)
         }
         
         //nonce
         let transactionProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        transaction_get_properties(transaction.pointee!, transactionProperties)
+        let tgp2 = transaction_get_properties(transactionPointer.pointee!, transactionProperties)
         if transactionProperties.pointee == nil {
+            _ = errorString(from: tgp2, mask: "transactionBuilderProperties")
+            
             return ("error:transactionBuilderProperties", false)
         }
         
-        setAmountValue(key: "nonce", value: "0", pointer: transactionProperties.pointee!)
+        setAmountValue(key: "nonce", value: "\(nonce)", pointer: transactionProperties.pointee!)
         
         //fee
-        let feeProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        transaction_get_fee(transaction.pointee!, feeProperties)
-        if feeProperties.pointee == nil {
+        let feePropertiesPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let tgf = transaction_get_fee(transactionPointer.pointee!, feePropertiesPointer)
+        if feePropertiesPointer.pointee == nil {
+            _ = errorString(from: tgf, mask: "transactionBuilderProperties")
+            
             return ("error:feeProperties", false)
         }
-        setAmountValue(key: "gas_price", value: gasPrice, pointer: feeProperties.pointee!)
-        setAmountValue(key: "gas_limit", value: gasLimit, pointer: feeProperties.pointee!)
+        setAmountValue(key: "gas_price", value: gasPrice, pointer: feePropertiesPointer.pointee!)
+        setAmountValue(key: "gas_limit", value: gasLimit, pointer: feePropertiesPointer.pointee!)
         
         //final stage
         let serializedTransaction = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
         let tSer = transaction_serialize(transactionPointer.pointee, serializedTransaction)
         
         if tSer != nil {
-            let pointer = UnsafeMutablePointer<MultyError>(tSer)
-            let errrString = String(cString: pointer!.pointee.message)
+            let errrString = errorString(from: tSer, mask: "transactionBuilderProperties")
             
-            print("tSer: \(errrString))")
-            
-            defer { pointer?.deallocate() }
-            
-            return (errrString, false)
+            return (errrString!, false)
         }
         
         let data = serializedTransaction.pointee!.pointee.convertToData()
-        let str = "0x" + data.hexEncodedString()
+        let str = data.hexEncodedString()
         
         print("end transaction: \(str)")
         
