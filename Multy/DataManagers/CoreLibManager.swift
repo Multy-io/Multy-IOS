@@ -1048,7 +1048,7 @@ extension MultiSigCoreLibManager {
         
         //transaction section
         let transaction = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        make_transaction(accountPointer.pointee!, transaction)
+        transaction_builder_make_transaction(transactionBuilder.pointee!, transaction)
         if transaction.pointee == nil {
             return ("error:transactionBuilderProperties", false)
         }
