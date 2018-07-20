@@ -1507,6 +1507,7 @@ Members</string>
                     </view>
                     <connections>
                         <outlet property="linkedWalletAddressLabel" destination="lfj-9j-Va0" id="fVI-91-TMZ"/>
+                        <outlet property="linkedWalletImageView" destination="8Hh-E8-YWM" id="Kbf-fk-AOx"/>
                         <outlet property="linkedWalletNameLabel" destination="bIi-Ut-L3X" id="P2U-xD-HNe"/>
                         <outlet property="signToSendAndTotalMembersLabel" destination="pgh-zJ-JVC" id="kMc-yX-J2j"/>
                         <outlet property="walletNameTF" destination="0Ht-Zp-Skf" id="PiM-PL-YdV"/>

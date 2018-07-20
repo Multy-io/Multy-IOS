@@ -304,6 +304,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         if segue.identifier == Constants.Storyboard.waitingMembersSettingsVCSegueID {
             let waitingMembersSettingsVC = segue.destination as! WaitingMembersSettingsViewController
             waitingMembersSettingsVC.presenter.wallet = presenter.wallet
+            waitingMembersSettingsVC.presenter.account = presenter.account!
         }
     }
     

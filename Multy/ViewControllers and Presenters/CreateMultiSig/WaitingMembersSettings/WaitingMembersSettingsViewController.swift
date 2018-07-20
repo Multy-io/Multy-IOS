@@ -9,7 +9,7 @@ private typealias WaitingMembersSettingsTextFieldDelegate = WaitingMembersSettin
 private typealias SendWalletDelegate = WaitingMembersSettingsViewController
 
 class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
-    
+    @IBOutlet weak var linkedWalletImageView: UIImageView!
     @IBOutlet weak var walletNameTF: UITextField!
     @IBOutlet weak var linkedWalletNameLabel: UILabel!
     @IBOutlet weak var linkedWalletAddressLabel: UILabel!
@@ -38,8 +38,11 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
     
     func updateUI() {
         self.walletNameTF.text = self.presenter.wallet?.name
-        let linkedWallet = presenter.wallet?.multisigWallet?.linkedWalletID
-        self.linkedWalletNameLabel.
+        let linkedWallet = presenter.account.wallets.filter("walletID = \(presenter.wallet.multisigWallet!.linkedWalletID)").first
+        self.linkedWalletNameLabel.text = linkedWallet?.name
+        self.linkedWalletAddressLabel.text = linkedWallet?.address
+        self.linkedWalletImageView.image = UIImage(named: (linkedWallet?.blockchainType.iconString)!)
+        signToSendAndTotalMembersLabel.text = " \(presenter.wallet.multisigWallet!.signaturesRequired) of \(presenter.wallet.multisigWallet!.ownersCount)"
     }
     
     func chooseAnotherWalletAction() {
