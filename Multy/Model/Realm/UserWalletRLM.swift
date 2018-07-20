@@ -6,6 +6,7 @@ import Foundation
 import RealmSwift
 
 private typealias WalletUpdateRLM = UserWalletRLM
+private typealias ETHWalletRLM = UserWalletRLM
 
 class UserWalletRLM: Object {
     @objc dynamic var id = String()    //
@@ -48,7 +49,7 @@ class UserWalletRLM: Object {
             case BLOCKCHAIN_BITCOIN:
                 return sumInCrypto.fixedFraction(digits: 8)
             case BLOCKCHAIN_ETHEREUM:
-                return ethWallet!.allBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+                return allETHBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
             default:
                 return ""
             }
@@ -60,7 +61,7 @@ class UserWalletRLM: Object {
             if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
                 return sumInFiat.fixedFraction(digits: 2)
             } else {
-                return (ethWallet!.allBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
+                return (allETHBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
             }
         }
     }
@@ -70,7 +71,7 @@ class UserWalletRLM: Object {
             if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
                 return sumInCrypto * exchangeCourse
             } else {
-                return Double((ethWallet!.allBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM).replacingOccurrences(of: ",", with: "."))!
+                return Double((allETHBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM).replacingOccurrences(of: ",", with: "."))!
             }
         }
     }
@@ -88,7 +89,7 @@ class UserWalletRLM: Object {
             case BLOCKCHAIN_BITCOIN:
                 return BigInt(sumInCryptoString.convertToSatoshiAmountString()) - blockedAmount
             case BLOCKCHAIN_ETHEREUM:
-                return ethWallet!.availableBalance
+                return availableBalance
             default:
                 return BigInt("0")
             }
@@ -325,7 +326,7 @@ class UserWalletRLM: Object {
         case BLOCKCHAIN_BITCOIN:
             return availableAmount > Int64(0)
         case BLOCKCHAIN_ETHEREUM:
-            return ethWallet!.isThereAvailableBalance
+            return isThereAvailableBalance
         default:
             return true
         }
@@ -336,7 +337,7 @@ class UserWalletRLM: Object {
         case BLOCKCHAIN_BITCOIN:
             return amount.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_BITCOIN) < Constants.BigIntSwift.oneBTCInSatoshiKey * sumInCrypto
         case BLOCKCHAIN_ETHEREUM:
-            return ethWallet!.availableBalance > (Constants.BigIntSwift.oneETHInWeiKey * amount.stringWithDot.doubleValue)
+            return availableBalance > (Constants.BigIntSwift.oneETHInWeiKey * amount.stringWithDot.doubleValue)
         default:
             return true
         }
@@ -509,6 +510,38 @@ class UserWalletRLM: Object {
 //        self.fiatName = "USD"
 //        self.fiatSymbol = "$"
 //    }
+}
+
+extension ETHWalletRLM {
+    var isThereAvailableBalance: Bool {
+        get {
+            if ethWallet == nil {
+                return false
+            }
+            
+            return availableBalance > Int64(0)
+        }
+    }
+    
+    var allETHBalance: BigInt {
+        get {
+            if ethWallet == nil {
+                return BigInt.zero()
+            }
+            
+            return isTherePendingTx.boolValue ? ethWallet!.pendingBalance : ethWallet!.ethBalance
+        }
+    }
+    
+    var availableBalance: BigInt {
+        get {
+            if ethWallet == nil {
+                return BigInt.zero()
+            }
+            
+            return isTherePendingTx.boolValue ? (ethWallet!.ethBalance < ethWallet!.pendingBalance ? ethWallet!.ethBalance : BigInt.zero()) : ethWallet!.ethBalance
+        }
+    }
 }
 
 extension WalletUpdateRLM {
