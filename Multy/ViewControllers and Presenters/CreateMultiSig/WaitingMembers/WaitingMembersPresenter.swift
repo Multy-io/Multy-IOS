@@ -13,6 +13,7 @@ class WaitingMembersPresenter: NSObject {
     var membersJoined = [String]()
     var createWalletPrice = 0.001
     var inviteCode = ""             //send it to server
+    var wallet : UserWalletRLM?
     
     func viewControllerViewDidLoad() {
         inviteCode = makeInviteCode()
