@@ -117,7 +117,7 @@ extension DataManager {
                                                            sendAddress: sendAddress,
                                                            sendAmountString: sendAmountString,
                                                            nonce: wallet.ethWallet!.nonce.intValue,
-                                                           balanceAmount: "\(wallet.availableAmount)",
+                                                           balanceAmount: wallet.availableAmount.stringValue,
                                                            ethereumChainID: UInt32(4), //RINKEBY
                                                            gasPrice: gasPriceString,
                                                            gasLimit: gasLimitString)
@@ -143,11 +143,32 @@ extension DataManager {
                                                                 confirmationsCount: confirmationsCount,
                                                                 nonce: wallet.ethWallet!.nonce.intValue,
                                                                 balanceAmountString: wallet.availableAmount.stringValue,
-                                                                blockchainType: blockchainType,
                                                                 gasPriceString: gasPriceString,
                                                                 gasLimitString: gasLimitString)
         
         return multiSigWalletCreationInfo
+    }
+    
+    func createMultiSigTx(binaryData: inout BinaryData,
+                          wallet: UserWalletRLM,
+                          sendFromAddress: String,
+                          sendAmountString: String,
+                          sendToAddress: String,
+                          gasPriceString: String,
+                          gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
+        let blockchainType = BlockchainType.create(wallet: wallet)
+        let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
+        
+        let multiSigTxCreationInfo = coreLibManager.createMultiSigTx(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                                     sendFromAddress: sendFromAddress,
+                                                                     sendAmountString: sendAmountString,
+                                                                     sendToAddress: wallet.address, //sendToAddress,
+                                                                     nonce: wallet.ethWallet!.nonce.intValue,
+                                                                     balanceAmountString: wallet.availableAmount.stringValue,
+                                                                     gasPriceString: gasPriceString,
+                                                                     gasLimitString: gasLimitString)
+        
+        return multiSigTxCreationInfo
     }
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {

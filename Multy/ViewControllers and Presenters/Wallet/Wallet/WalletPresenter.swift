@@ -14,15 +14,30 @@ class WalletPresenter: NSObject {
             
             if wallet != nil && wallet!.chain.intValue == 60 && wallet!.chainType.intValue == 4 {
                 var binData = account!.binaryDataString.createBinaryData()!
-                let _ = DataManager.shared.createMultiSigWallet(binaryData: &binData,
-                                                                wallet: wallet!,
-                                                                sendAddress: wallet!.address,
-                                                                creationPriceString: "0",
-                                                                gasPriceString: "6000000000",
-                                                                gasLimitString: "2029935",
-                                                                factoryAddress: "0x116ffa11dd8829524767f561da5d33d3d170e17d",
-                                                                owners: "[0x6b4be1fc5fa05c5d959d27155694643b8af72fd8, 0x2b74679d2a190fd679a85ce7767c05605237f030, 0xbc11d8f8d741515d2696e34333a0671adb6aee34]",
-                                                                confirmationsCount: UInt32(2))
+//                let _ = DataManager.shared.createMultiSigWallet(binaryData: &binData,
+//                                                                wallet: wallet!,
+//                                                                sendAddress: wallet!.address,
+//                                                                creationPriceString: "0",
+//                                                                gasPriceString: "6000000000",
+//                                                                gasLimitString: "2029935",
+//                                                                factoryAddress: "0x116ffa11dd8829524767f561da5d33d3d170e17d",
+//                                                                owners: "[\(wallet!.address), 0x2b74679d2a190fd679a85ce7767c05605237f030, 0xbc11d8f8d741515d2696e34333a0671adb6aee34]",
+//                                                                confirmationsCount: UInt32(1))
+                
+//                let _ = DataManager.shared.createMultiSigTx(binaryData: &binData,
+//                                                            wallet: wallet!,
+//                                                            sendFromAddress: "0x999ca3a3fae81ad0616e97acad1c0996acdf485c",
+//                                                            sendAmountString: "10000000000000000",
+//                                                            sendToAddress: "0xf1a35b31f582408d3bc93096784e4fbd124c89a8",
+//                                                            gasPriceString: "1000000000",
+//                                                            gasLimitString: "341346")
+                
+//                let _ = DataManager.shared.createEtherTx(binaryData: &binData,
+//                                                       wallet: wallet!,
+//                                                       sendAddress: "0x999ca3a3fae81ad0616e97acad1c0996acdf485c",
+//                                                       sendAmountString: "10000000000000000",
+//                                                       gasPriceString: "3000000000",
+//                                                       gasLimitString: "25000")
             }
         }
     }

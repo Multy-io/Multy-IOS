@@ -11,6 +11,8 @@ private typealias EthereumCoreLibManager = CoreLibManager
 private typealias MultiSigCoreLibManager = CoreLibManager
 private typealias LocalizeDelegate = CoreLibManager
 
+
+
 class CoreLibManager: NSObject {
     static let shared = CoreLibManager()
     
@@ -1005,7 +1007,6 @@ extension MultiSigCoreLibManager {
                              confirmationsCount: UInt32,
                              nonce: Int,
                              balanceAmountString: String,
-                             blockchainType: BlockchainType,
                              gasPriceString: String,
                              gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
         
@@ -1075,7 +1076,7 @@ extension MultiSigCoreLibManager {
         let tSer = transaction_serialize(transactionPointer.pointee, serializedTransaction)
         
         if tSer != nil {
-            let errrString = errorString(from: tSer, mask: "transactionBuilderProperties")
+            let errrString = errorString(from: tSer, mask: "transactionSrialize")
             
             return (errrString!, false)
         }
@@ -1089,18 +1090,15 @@ extension MultiSigCoreLibManager {
     }
     
     func createMultiSigTx(addressPointer: UnsafeMutablePointer<OpaquePointer?>,
-                          sendAddress: String,
-                          creationPriceString: String,
-                          factoryAddress: String,
-                          owners: String,
-                          confirmationsCount: UInt32,
+                          sendFromAddress: String,
+                          sendAmountString: String,
+                          sendToAddress: String,
                           nonce: Int,
                           balanceAmountString: String,
-                          blockchainType: BlockchainType,
                           gasPriceString: String,
                           gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
         
-        let walletAction = "request".UTF8CStringPointer
+        let walletAction = "new_request".UTF8CStringPointer
         let transactionBuilder = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
         
         let mtb = make_transaction_builder(addressPointer.pointee,
@@ -1124,11 +1122,10 @@ extension MultiSigCoreLibManager {
             return ("error:transactionBuilderProperties", false)
         }
         
-        setAmountValue(key: "price", value: "0", pointer: transactionBuilderProperties.pointee!)
         setAmountValue(key: "balance", value: balanceAmountString, pointer: transactionBuilderProperties.pointee!)
-        setStringValue(key: "factory_address", value: "0x116ffa11dd8829524767f561da5d33d3d170e17d", pointer: transactionBuilderProperties.pointee!)
-        setStringValue(key: "owners", value: "[0x6b4be1fc5fa05c5d959d27155694643b8af72fd8, 0x2b74679d2a190fd679a85ce7767c05605237f030, 0xbc11d8f8d741515d2696e34333a0671adb6aee34]", pointer: transactionBuilderProperties.pointee!)
-        setIntValue(key: "confirmations", value: UInt32(2), pointer: transactionBuilderProperties.pointee!)
+        setStringValue(key: "wallet_address", value: sendFromAddress, pointer: transactionBuilderProperties.pointee!)
+        setStringValue(key: "dest_address", value: sendToAddress, pointer: transactionBuilderProperties.pointee!)
+        setAmountValue(key: "amount", value: sendAmountString, pointer: transactionBuilderProperties.pointee!)
         
         //transaction section
         let transactionPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
@@ -1158,15 +1155,15 @@ extension MultiSigCoreLibManager {
             
             return ("error:feeProperties", false)
         }
-        setAmountValue(key: "gas_price", value: gasPrice, pointer: feePropertiesPointer.pointee!)
-        setAmountValue(key: "gas_limit", value: gasLimit, pointer: feePropertiesPointer.pointee!)
+        setAmountValue(key: "gas_price", value: gasPriceString, pointer: feePropertiesPointer.pointee!)
+        setAmountValue(key: "gas_limit", value: gasLimitString, pointer: feePropertiesPointer.pointee!)
         
         //final stage
         let serializedTransaction = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
         let tSer = transaction_serialize(transactionPointer.pointee, serializedTransaction)
         
         if tSer != nil {
-            let errrString = errorString(from: tSer, mask: "transactionBuilderProperties")
+            let errrString = errorString(from: tSer, mask: "transactionSrialize")
             
             return (errrString!, false)
         }
