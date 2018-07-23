@@ -69,9 +69,9 @@ extension BlockchainType {
             case ETHEREUM_CHAIN_ID_RINKEBY.rawValue:
                 iconString = "ethTest"
             case ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue:
-                iconString = "ethMediumIcon"
+                iconString = "ethMSMediumIcon"
             case ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue:
-                iconString = "ethTest"
+                iconString = "ethMSMediumIconGrey"
             default:
                 iconString = ""
             }
