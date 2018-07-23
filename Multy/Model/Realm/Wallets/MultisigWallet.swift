@@ -9,17 +9,17 @@ class MultisigWallet: Object {
     
     @objc dynamic var factoryAddress = String()
     
-    @objc dynamic var TxOfCreation = String()
+    @objc dynamic var txOfCreation = String()
     
     @objc dynamic var inviteCode = String()
     
-    @objc dynamic var signaturesRequired = Int()
+    @objc dynamic var signaturesRequiredCount = Int()
     
     @objc dynamic var ownersCount = Int()
         
     @objc dynamic var deployStatus = NSNumber(value: 0)
     
-    @objc dynamic var status = NSNumber(value: 0)
+    @objc dynamic var isDeleted = NSNumber(booleanLiteral: false)
     
     @objc dynamic var linkedWalletID = NSNumber(value: 0)
     

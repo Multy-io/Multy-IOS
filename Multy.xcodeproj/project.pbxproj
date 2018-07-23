@@ -271,6 +271,7 @@
 		8592E02521008D860040125B /* MultisigOwnerRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02421008D860040125B /* MultisigOwnerRLM.swift */; };
 		8592E02A2101CCBD0040125B /* WaitingMembersSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */; };
 		8592E02C2101DE0B0040125B /* WaitingMembersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02B2101DE0B0040125B /* WaitingMembersSettingsViewController.swift */; };
+		8592E02E2105E0040040125B /* MultisigConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02D2105E0040040125B /* MultisigConstants.swift */; };
 		859C7AFC20ECF3C8002EA215 /* WaitingMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */; };
 		859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */; };
 		859C7B0120EE2CEC002EA215 /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */; };
@@ -733,6 +734,7 @@
 		8592E02421008D860040125B /* MultisigOwnerRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigOwnerRLM.swift; sourceTree = "<group>"; };
 		8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersSettingsPresenter.swift; sourceTree = "<group>"; };
 		8592E02B2101DE0B0040125B /* WaitingMembersSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersSettingsViewController.swift; sourceTree = "<group>"; };
+		8592E02D2105E0040040125B /* MultisigConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigConstants.swift; sourceTree = "<group>"; };
 		859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersViewController.swift; sourceTree = "<group>"; };
 		859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersPresenter.swift; sourceTree = "<group>"; };
 		859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
@@ -1290,6 +1292,7 @@
 				FA4D43E01FC5895D003C7117 /* String+Extension.swift */,
 				444B3B642045723C008129B8 /* BigInt+Extension.swift */,
 				FA74062A1FCC5D6A003C538C /* Constants.swift */,
+				8592E02D2105E0040040125B /* MultisigConstants.swift */,
 				4409E40020DD047900ADBE42 /* LocalizationConstant.swift */,
 				45D2D6DE203463FB00751ED4 /* AnalyticsConstants.swift */,
 				FAFCDA871FD7DD7A0056DD64 /* Request+Extension.swift */,
@@ -2687,6 +2690,7 @@
 				445D150E20DA8513002F6747 /* EPContactCell.swift in Sources */,
 				45A9492F1FC4780F003C3A23 /* ReceiveProtocol.swift in Sources */,
 				45A9495D1FC70F2F003C3A23 /* SendAmountViewController.swift in Sources */,
+				8592E02E2105E0040040125B /* MultisigConstants.swift in Sources */,
 				45B5CCA61FDA94360069BD46 /* ConnectionCheck.swift in Sources */,
 				4522361F1FCD6B94004BA490 /* TransactionViewController.swift in Sources */,
 				45AC16282048214C00E75BD6 /* CurrencyTableViewCell.swift in Sources */,

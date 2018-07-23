@@ -21,6 +21,7 @@ enum EthereumChainId
     ETHEREUM_CHAIN_ID_MORDEN = 2, // 	Morden (disused), Expanse mainnet
     ETHEREUM_CHAIN_ID_ROPSTEN = 3, // 	Ropsten
     ETHEREUM_CHAIN_ID_RINKEBY = 4, // 	Rinkeby
+    ETHEREUM_CHAIN_ID_MULTISIG = 20, // Multisig
     ETHEREUM_CHAIN_ID_ROOTSTOCK_MAINNET = 30, // 	Rootstock mainnet
     ETHEREUM_CHAIN_ID_ROOTSTOCK_TESTNET = 31, // 	Rootstock testnet
     ETHEREUM_CHAIN_ID_KOVAN = 42, // 	Kovan

@@ -156,7 +156,7 @@ class CreateMultiSigViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Receive", bundle: nil)
         let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
         walletsVC.presenter.isNeedToPop = true
-        walletsVC.presenter.displayedBlockchainOnly = presenter.selectedBlockchainType
+        walletsVC.presenter.displayedBlockchainOnly = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MAINNET.rawValue))
         walletsVC.sendWalletDelegate = self
         walletsVC.titleTextKey = ""
         self.navigationController?.pushViewController(walletsVC, animated: true)

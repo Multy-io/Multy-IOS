@@ -42,7 +42,7 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
         self.linkedWalletNameLabel.text = linkedWallet?.name
         self.linkedWalletAddressLabel.text = linkedWallet?.address
         self.linkedWalletImageView.image = UIImage(named: (linkedWallet?.blockchainType.iconString)!)
-        signToSendAndTotalMembersLabel.text = " \(presenter.wallet.multisigWallet!.signaturesRequired) of \(presenter.wallet.multisigWallet!.ownersCount)"
+        signToSendAndTotalMembersLabel.text = " \(presenter.wallet.multisigWallet!.signaturesRequiredCount) of \(presenter.wallet.multisigWallet!.ownersCount)"
     }
     
     func chooseAnotherWalletAction() {

@@ -12,7 +12,7 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
     var membersCount = 2
     var signaturesCount = 2
     var walletName: String = ""
-    var selectedBlockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))
+    var selectedBlockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MULTISIG.rawValue))
     let createdWallet = UserWalletRLM()
     
     var choosenWallet: UserWalletRLM? {
@@ -86,15 +86,14 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
             ethWallet.balance = "0"
             ethWallet.nonce = NSNumber(value: 0)
             ethWallet.pendingWeiAmountString = "0"
-            if createdWallet.blockchainType.net_type != Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue) {
-                createdWallet.ethWallet = ethWallet
-            } else {
+            createdWallet.ethWallet = ethWallet
+            if createdWallet.blockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MULTISIG.rawValue) {
                 // Multisig
                 createdWallet.multisigWallet = MultisigWallet()
                 createdWallet.ethWallet = ethWallet
                 createdWallet.multisigWallet!.inviteCode = makeInviteCode()
                 createdWallet.multisigWallet!.ownersCount = membersCount
-                createdWallet.multisigWallet!.signaturesRequired = signaturesCount
+                createdWallet.multisigWallet!.signaturesRequiredCount = signaturesCount
                 createdWallet.multisigWallet!.linkedWalletID = choosenWallet!.walletID
             }
         }

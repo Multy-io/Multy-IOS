@@ -570,7 +570,7 @@ extension WalletUpdateRLM {
             }
             
             if let signaturesRequired = multisig["confirmations"] as? Int {
-                multisigWallet!.signaturesRequired = signaturesRequired
+                multisigWallet!.signaturesRequiredCount = signaturesRequired
             }
             
             if let inviteCode = multisig["inviteCode"] as? String {
@@ -616,12 +616,12 @@ extension WalletUpdateRLM {
                 multisigWallet!.deployStatus = NSNumber(integerLiteral: deployStatus)
             }
             
-            if let status = multisig["status"] as? Int {
-                multisigWallet!.status = NSNumber(integerLiteral: status)
+            if let isDeleted = multisig["status"] as? Bool {
+                multisigWallet!.isDeleted = NSNumber(booleanLiteral: isDeleted)
             }
             
             if let TxOfCreation = multisig["txOfCreation"] as? String {
-                multisigWallet!.TxOfCreation = TxOfCreation
+                multisigWallet!.txOfCreation = TxOfCreation
             }
             
             if let factoryAddress = multisig["factoryAddress"] as? String {
