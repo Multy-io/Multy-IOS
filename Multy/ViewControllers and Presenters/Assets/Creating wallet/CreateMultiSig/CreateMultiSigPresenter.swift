@@ -12,14 +12,20 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
     var membersCount = 2
     var signaturesCount = 2
     var walletName: String = ""
-    var selectedBlockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MULTISIG.rawValue))
-    let createdWallet = UserWalletRLM()
-    
-    var choosenWallet: UserWalletRLM? {
+    var selectedBlockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue)) {
         didSet {
-            mainVC?.tableView.reloadData()
+            if selectedBlockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MAINNET.rawValue) {
+                selectedBlockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue))
+            } else if selectedBlockchainType.net_type == Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue) {
+                selectedBlockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue))
+            }
+            choosenWallet = nil
+            mainVC?.tableView.reloadRows(at: [[0, 2]], with: .none)
         }
     }
+    let createdWallet = UserWalletRLM()
+    
+    var choosenWallet: UserWalletRLM?
     
     func passMultiSigInfo(signaturesCount: Int, membersCount: Int) {
         self.signaturesCount = signaturesCount
@@ -87,7 +93,7 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
             ethWallet.nonce = NSNumber(value: 0)
             ethWallet.pendingWeiAmountString = "0"
             createdWallet.ethWallet = ethWallet
-            if createdWallet.blockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MULTISIG.rawValue) {
+            if createdWallet.blockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue) || createdWallet.blockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue) {
                 // Multisig
                 createdWallet.multisigWallet = MultisigWallet()
                 createdWallet.ethWallet = ethWallet

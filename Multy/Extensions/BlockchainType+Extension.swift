@@ -33,8 +33,10 @@ extension BlockchainType {
                 return true
             case ETHEREUM_CHAIN_ID_RINKEBY.rawValue:
                 return false
-            case ETHEREUM_CHAIN_ID_MULTISIG.rawValue:
+            case ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue:
                 return true
+            case ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue:
+                return false
             default:
                 return false
             }
@@ -66,8 +68,10 @@ extension BlockchainType {
                 iconString = "ethMediumIcon"
             case ETHEREUM_CHAIN_ID_RINKEBY.rawValue:
                 iconString = "ethTest"
-            case ETHEREUM_CHAIN_ID_MULTISIG.rawValue:
+            case ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue:
                 iconString = "ethMediumIcon"
+            case ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue:
+                iconString = "ethTest"
             default:
                 iconString = ""
             }

@@ -49,7 +49,7 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
         let storyboard = UIStoryboard(name: "Receive", bundle: nil)
         let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
         walletsVC.presenter.isNeedToPop = true
-        walletsVC.presenter.displayedBlockchainOnly = presenter.wallet?.blockchainType
+        walletsVC.presenter.displayedBlockchainsOnly = [presenter.wallet?.blockchainType] as! [BlockchainType]
         walletsVC.sendWalletDelegate = self
         walletsVC.titleTextKey = ""
         self.navigationController?.pushViewController(walletsVC, animated: true)
