@@ -126,21 +126,26 @@ extension DataManager {
     func createMultiSigWallet(binaryData: inout BinaryData,
                               wallet: UserWalletRLM,
                               sendAddress: String,
-                              sendAmountString: String,
+                              creationPriceString: String,
                               gasPriceString: String,
                               gasLimitString: String,
-                              factoryAddress: String) -> (message: String, isTransactionCorrect: Bool) {
+                              factoryAddress: String,
+                              owners: String,
+                              confirmationsCount: UInt32) -> (message: String, isTransactionCorrect: Bool) {
         let blockchainType = BlockchainType.create(wallet: wallet)
         let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
         
         let multiSigWalletCreationInfo = coreLibManager.createMutiSigWallet(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                 sendAddress: sendAddress,
-                                                                sendAmountString: sendAmountString,
+                                                                creationPriceString: creationPriceString,
+                                                                factoryAddress: factoryAddress,
+                                                                owners: owners,
+                                                                confirmationsCount: confirmationsCount,
                                                                 nonce: wallet.ethWallet!.nonce.intValue,
-                                                                balanceAmount: wallet.availableAmount.stringValue,
+                                                                balanceAmountString: wallet.availableAmount.stringValue,
                                                                 blockchainType: blockchainType,
-                                                                gasPrice: "6000000000",
-                                                                gasLimit: "2029935")
+                                                                gasPriceString: gasPriceString,
+                                                                gasLimitString: gasLimitString)
         
         return multiSigWalletCreationInfo
     }

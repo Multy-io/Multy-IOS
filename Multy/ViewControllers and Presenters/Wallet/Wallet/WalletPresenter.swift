@@ -17,10 +17,12 @@ class WalletPresenter: NSObject {
                 let _ = DataManager.shared.createMultiSigWallet(binaryData: &binData,
                                                                 wallet: wallet!,
                                                                 sendAddress: wallet!.address,
-                                                                sendAmountString: "1000000000000000000",
-                                                                gasPriceString: "21000",
-                                                                gasLimitString: "21000",
-                                                                factoryAddress: "0x116ffa11dd8829524767f561da5d33d3d170e17d")
+                                                                creationPriceString: "0",
+                                                                gasPriceString: "6000000000",
+                                                                gasLimitString: "2029935",
+                                                                factoryAddress: "0x116ffa11dd8829524767f561da5d33d3d170e17d",
+                                                                owners: "[0x6b4be1fc5fa05c5d959d27155694643b8af72fd8, 0x2b74679d2a190fd679a85ce7767c05605237f030, 0xbc11d8f8d741515d2696e34333a0671adb6aee34]",
+                                                                confirmationsCount: UInt32(2))
             }
         }
     }
