@@ -531,10 +531,7 @@ extension WalletUpdateRLM {
             break
         case BLOCKCHAIN_ETHEREUM.rawValue:
             updateETHWallet(from: infoDict)
-            
-            if Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue) == self.chainType.intValue {
-                updateMultiSigWallet(from: infoDict)
-            }
+            updateMultiSigWallet(from: infoDict)
         default:
             break
         }
