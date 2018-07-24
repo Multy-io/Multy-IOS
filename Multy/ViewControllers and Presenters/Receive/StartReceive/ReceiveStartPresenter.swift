@@ -18,7 +18,7 @@ class ReceiveStartPresenter: NSObject {
     
     var selectedIndex: Int?
     
-    var displayedBlockchainOnly: BlockchainType?
+    var displayedBlockchainsOnly: [BlockchainType]?
     
     //test func
 //    func createWallets() {
@@ -69,8 +69,8 @@ class ReceiveStartPresenter: NSObject {
                 var walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
                 print("afterVerbose:rawdata: \(walletsArrayFromApi)")
                 
-                if let blockchainType = self.displayedBlockchainOnly {
-                    walletsArray = walletsArray.filter{ $0.blockchainType == blockchainType }
+                if let blockchainTypes = self.displayedBlockchainsOnly {
+                    walletsArray = walletsArray.filter{ blockchainTypes.contains($0.blockchainType) }
                 }
                 
                 self.walletsArr = walletsArray.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })

@@ -8,15 +8,13 @@ import UIKit
 class WaitingMembersPresenter: NSObject {
     var viewController : WaitingMembersViewController?
     
-    var walletName = String()
-    var membersAmount: Int = 2
-    var membersJoined = [String]()
+    var wallet = UserWalletRLM()
+    var account : AccountRLM?
+    
     var createWalletPrice = 0.001
-    var inviteCode = ""             //send it to server
-    var wallet : UserWalletRLM?
     
     func viewControllerViewDidLoad() {
-        inviteCode = makeInviteCode()
+//        inviteCode = makeInviteCode()
         viewController?.openShareInviteVC()
     }
 
@@ -25,11 +23,4 @@ class WaitingMembersPresenter: NSObject {
     
     func viewControllerViewDidLayoutSubviews() {
     }
-    
-    func makeInviteCode() -> String {
-        let uuid = UUID().uuidString
-        let deviceName = UIDevice.current.name
-        return (uuid + deviceName).sha3(.keccak224)
-    }
-    
 }

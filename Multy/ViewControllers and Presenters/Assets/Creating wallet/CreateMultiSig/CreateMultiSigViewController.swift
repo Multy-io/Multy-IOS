@@ -33,6 +33,9 @@ class CreateMultiSigViewController: UIViewController {
         hideKeyboardWhenTappedAround()
         swipeToBack()
         tableView.tableFooterView = nil
+        loader.show(customTitle: localize(string: Constants.creatingWalletString))
+        self.view.addSubview(loader)
+        loader.hide()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +53,7 @@ class CreateMultiSigViewController: UIViewController {
         } else {
             linkedWalletStackView.isHidden = true
             selectWalletLabel.isHidden = false
+            linkedWalletImageView.image = nil
         }
     }
     
@@ -85,34 +89,44 @@ class CreateMultiSigViewController: UIViewController {
         self.present(membersVC, animated: true, completion: nil)
     }
     
+
+    func openNewlyCreatedWallet() {
+        let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+        let waitingMembersVC = storyBoard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
+        waitingMembersVC.presenter.wallet = presenter.createdWallet
+        waitingMembersVC.presenter.account = presenter.account
+        
+        navigationController?.pushViewController(waitingMembersVC, animated: true)
+    }
+
     fileprivate func chooseBlockchain() {
-                /*
-                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                     let chainsVC = storyboard.instantiateViewController(withIdentifier: "chainsVC") as! BlockchainsViewController
-            
-                     chainsVC.presenter.selectedBlockchain = presenter.selectedBlockchainType
-                     chainsVC.delegate = self
-             
-                     self.navigationController?.pushViewController(chainsVC, animated: true)
-             
-                     updateBlockchainCell(blockchainCell: nil)
-              */
-            }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let chainsVC = storyboard.instantiateViewController(withIdentifier: "chainsVC") as! BlockchainsViewController
+        
+        chainsVC.presenter.selectedBlockchain = presenter.selectedBlockchainType
+        chainsVC.presenter.isMultisigChains = true
+        chainsVC.delegate = self
+        
+        self.navigationController?.pushViewController(chainsVC, animated: true)
+        
+        updateBlockchainCell(blockchainCell: nil)
+    }
     
         fileprivate func updateBlockchainCell(blockchainCell: CreateWalletBlockchainTableViewCell?) {
-                /*
-                     let cell = blockchainCell == nil ? self.tableView.dequeueReusableCell(withIdentifier: "blockchainCell") as! CreateWalletBlockchainTableViewCell : blockchainCell!
-                     cell.blockchainLabel.text = presenter.selectedBlockchainType.combinedName
-             
-                     if presenter.selectedBlockchainType.isMainnet == false {
-                         cell.blockchainLabel.text! += "  Testnet"
-                     }
-             
-                     if blockchainCell == nil {
-                         tableView.reloadRows(at: [[0, 2]], with: .none)
-                     }
-              */
+            
+            let cell = blockchainCell == nil ? self.tableView.dequeueReusableCell(withIdentifier: "blockchainCell") as! CreateWalletBlockchainTableViewCell : blockchainCell!
+            cell.blockchainLabel.text = presenter.selectedBlockchainType.combinedName
+            
+            if presenter.selectedBlockchainType.isMainnet == false {
+                let blockchain = cell.blockchainLabel.text! + " Testnet"
+                cell.blockchainLabel.text! = blockchain
             }
+            
+            if blockchainCell == nil {
+                tableView.reloadRows(at: [[0, 2]], with: .none)
+            }
+        }
     
 
     @IBAction func cancelAction(_ sender: Any) {
@@ -132,21 +146,19 @@ class CreateMultiSigViewController: UIViewController {
             return
         }
         
-        let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
-        let waitingMembersVC = storyBoard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
-        waitingMembersVC.presenter.membersAmount = presenter.membersCount
-        //FIXME:
-        let nameCell = self.tableView.cellForRow(at: IndexPath(item: 0, section: 0)) as! CreateWalletNameTableViewCell
-        waitingMembersVC.presenter.walletName = nameCell.walletNameTF.text!
-        navigationController?.pushViewController(waitingMembersVC, animated: true)
-//        waitingMembersVC.openShareInviteVC()
+        loader.show(customTitle: localize(string: Constants.creatingWalletString))
+        presenter.createNewWallet { (dict) in
+            print(dict!)
+        }
+        
     }
     
     func chooseAnotherWalletAction() {
         let storyboard = UIStoryboard(name: "Receive", bundle: nil)
         let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
         walletsVC.presenter.isNeedToPop = true
-        walletsVC.presenter.displayedBlockchainOnly = presenter.selectedBlockchainType
+        let isMain = presenter.selectedBlockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue)
+        walletsVC.presenter.displayedBlockchainsOnly = isMain ? [BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MAINNET.rawValue))] : [BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))]
         walletsVC.sendWalletDelegate = self
         walletsVC.titleTextKey = ""
         self.navigationController?.pushViewController(walletsVC, animated: true)

@@ -117,12 +117,19 @@ class DataManager: NSObject {
         }
     }
     
-    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: UInt32) -> String {
+    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: UInt32, multisigAddress: String?) -> String {
         let currencyString = String(currencyID).sha3(.sha256)
         let walletString = String(walletID).sha3(.sha256)
         let networkString = String(networkID).sha3(.sha256)
+        let multisigAddressString = multisigAddress?.sha3(.sha256)
         
-        return ("\(currencyString)" + "\(walletString) +\(networkString)").sha3(.sha256)
+        var resultString = "\(currencyString)" + "\(walletString) +\(networkString)"
+        
+        if multisigAddressString != nil {
+            resultString += multisigAddressString!
+        }
+        
+        return resultString.sha3(.sha256)
     }
     
     func isFCMSubscribed() -> Bool {

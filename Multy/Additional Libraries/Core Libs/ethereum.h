@@ -26,6 +26,8 @@ enum EthereumChainId
     ETHEREUM_CHAIN_ID_KOVAN = 42, // 	Kovan
     ETHEREUM_CHAIN_ID_ETC_MAINNET = 61, // 	Ethereum Classic mainnet
     ETHEREUM_CHAIN_ID_ETC_TESTNET = 62, //	Ethereum Classic testnet
+    ETHEREUM_CHAIN_ID_MULTISIG_MAINNET = 128, // Multisig mainnet
+    ETHEREUM_CHAIN_ID_MULTISIG_TESTNET = 129  // Multisig testnet
 };
 
 #ifdef __cplusplus

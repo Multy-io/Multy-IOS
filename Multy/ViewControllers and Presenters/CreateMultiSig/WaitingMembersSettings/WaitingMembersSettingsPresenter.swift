@@ -7,7 +7,8 @@ import UIKit
 class WaitingMembersSettingsPresenter: NSObject {
     var presentedVC : WaitingMembersSettingsViewController?
     
-    var wallet: UserWalletRLM?
+    var wallet: UserWalletRLM!
+    var account : AccountRLM!
     
     func changeWalletName() {
         //        walletSettingsVC?.progressHUD.text = "Changing name"

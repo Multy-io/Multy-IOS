@@ -357,9 +357,16 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum ∙ ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUC-c4-0GV">
                                                             <rect key="frame" x="20" y="31" width="121.5" height="24"/>
                                                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                                            <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron" translatesAutoresizingMaskIntoConstraints="NO" id="wRS-5Z-YGc">
+                                                            <rect key="frame" x="344" y="24" width="15" height="15"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="15" id="DQp-y6-GdN"/>
+                                                                <constraint firstAttribute="width" secondItem="wRS-5Z-YGc" secondAttribute="height" multiplier="1:1" id="jhr-ck-iDP"/>
+                                                            </constraints>
+                                                        </imageView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="43B-rq-5cB">
                                                             <rect key="frame" x="0.0" y="63" width="375" height="1"/>
                                                             <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40459118150000001" colorSpace="calibratedRGB"/>
@@ -370,9 +377,11 @@
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="FUC-c4-0GV" firstAttribute="top" secondItem="Ay0-tF-3x3" secondAttribute="bottom" constant="4.5" id="5vw-kc-u7J"/>
+                                                        <constraint firstAttribute="trailing" secondItem="wRS-5Z-YGc" secondAttribute="trailing" constant="16" id="6uI-m5-9Je"/>
                                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ay0-tF-3x3" secondAttribute="trailing" constant="20" symbolic="YES" id="D0t-cV-kkn"/>
                                                         <constraint firstItem="FUC-c4-0GV" firstAttribute="leading" secondItem="UfS-Eg-c9s" secondAttribute="leading" constant="20" id="JR5-ex-tDc"/>
                                                         <constraint firstItem="43B-rq-5cB" firstAttribute="leading" secondItem="UfS-Eg-c9s" secondAttribute="leading" id="LdB-t8-H8c"/>
+                                                        <constraint firstItem="wRS-5Z-YGc" firstAttribute="centerY" secondItem="UfS-Eg-c9s" secondAttribute="centerY" id="YIt-zy-DZn"/>
                                                         <constraint firstAttribute="trailing" secondItem="43B-rq-5cB" secondAttribute="trailing" id="YKk-mZ-6FF"/>
                                                         <constraint firstAttribute="bottom" secondItem="43B-rq-5cB" secondAttribute="bottom" id="lwC-Wj-Bam"/>
                                                         <constraint firstItem="Ay0-tF-3x3" firstAttribute="leading" secondItem="UfS-Eg-c9s" secondAttribute="leading" constant="20" id="pcr-bJ-bQt"/>
@@ -1507,6 +1516,7 @@ Members</string>
                     </view>
                     <connections>
                         <outlet property="linkedWalletAddressLabel" destination="lfj-9j-Va0" id="fVI-91-TMZ"/>
+                        <outlet property="linkedWalletImageView" destination="8Hh-E8-YWM" id="Kbf-fk-AOx"/>
                         <outlet property="linkedWalletNameLabel" destination="bIi-Ut-L3X" id="P2U-xD-HNe"/>
                         <outlet property="signToSendAndTotalMembersLabel" destination="pgh-zJ-JVC" id="kMc-yX-J2j"/>
                         <outlet property="walletNameTF" destination="0Ht-Zp-Skf" id="PiM-PL-YdV"/>

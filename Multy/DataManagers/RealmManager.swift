@@ -17,7 +17,7 @@ class RealmManager: NSObject {
     static let shared = RealmManager()
     
     private var realm : Realm? = nil
-    let schemaVersion : UInt64 = 23
+    let schemaVersion : UInt64 = 24
     
     var account: AccountRLM?
     var config: Realm.Configuration?
@@ -111,6 +111,9 @@ class RealmManager: NSObject {
                                                     }
                                                     if oldSchemaVersion <= 23 {
                                                         self.migrateFrom22To23(with: migration)
+                                                    }
+                                                    if oldSchemaVersion <= 24 {
+                                                        self.migrateFrom23To24(with: migration)
                                                     }
             })
             
@@ -568,7 +571,7 @@ extension WalletManager {
     func getWallet(walletID: NSNumber, completion: @escaping(_ wallet: UserWalletRLM?) -> ()) {
         getRealm { (realmOpt, error) in
             if let realm = realmOpt {
-                let primaryKey = DataManager.shared.generateWalletPrimaryKey(currencyID: 0, networkID: 0, walletID: walletID.uint32Value)
+                let primaryKey = DataManager.shared.generateWalletPrimaryKey(currencyID: 0, networkID: 0, walletID: walletID.uint32Value, multisigAddress: nil)
                 let wallet = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
                 
                 completion(wallet)
@@ -881,6 +884,12 @@ extension RealmMigrationManager {
         migration.enumerateObjects(ofType: HistoryRLM.className()) { (_, newHistory) in
             newHistory?["isMultisigTx"] = NSNumber(booleanLiteral: false)
             newHistory?["isWaitingConfirmation"] = NSNumber(booleanLiteral: false)
+        }
+    }
+    
+    func migrateFrom23To24(with migration: Migration) {
+        migration.enumerateObjects(ofType: UserWalletRLM.className()) { (_, newWallet) in
+            newWallet?["multisigWallet"] = nil
         }
     }
 }
