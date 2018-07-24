@@ -18,7 +18,10 @@ class ReceiveStartPresenter: NSObject {
     
     var selectedIndex: Int?
     
-    var displayedBlockchainOnly: BlockchainType?
+    var displayedBlockchainsOnly: [BlockchainType]?
+    
+    var isForMultisig = false
+    var inviteCode = ""
     
     //test func
 //    func createWallets() {
@@ -69,15 +72,29 @@ class ReceiveStartPresenter: NSObject {
                 var walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
                 print("afterVerbose:rawdata: \(walletsArrayFromApi)")
                 
-                if let blockchainType = self.displayedBlockchainOnly {
-                    walletsArray = walletsArray.filter{ $0.blockchainType == blockchainType }
+                if let blockchainTypes = self.displayedBlockchainsOnly {
+                    walletsArray = walletsArray.filter{ blockchainTypes.contains($0.blockchainType) }
                 }
                 
                 self.walletsArr = walletsArray.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
                 self.receiveStartVC?.updateUI()
             }
         }
-        
+    }
+    
+    func multisigFunc(inviteCode: String) {
+        isForMultisig = true
+        self.inviteCode = inviteCode
+        displayedBlockchainOnly = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))
+    }
+    
+    func joinRequest() {
+//        DataManager.shared.joinToMultisigWith(wallet: walletsArr[selectedIndex!], inviteCode: inviteCode) { (answer, err) in
+//
+//        }
+        let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+        let waitingVC = storyboard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
+        receiveStartVC?.navigationController?.pushViewController(waitingVC, animated: true)
     }
 }
 

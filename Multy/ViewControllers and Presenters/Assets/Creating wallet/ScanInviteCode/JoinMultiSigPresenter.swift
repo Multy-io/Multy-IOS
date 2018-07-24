@@ -14,8 +14,7 @@ class JoinMultiSigPresenter: NSObject {
             return
         }
         
-        //Join request with(inviteCode: String)
-        //mainVC!.navigationController.popViewController
-        //goToWaitingMembersVC
+        mainVC!.navigationController?.popViewController(animated: true)
+        mainVC!.qrDelegate?.qrData(string: inviteCode, tag: "joinMS")
     }
 }

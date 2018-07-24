@@ -117,12 +117,19 @@ class DataManager: NSObject {
         }
     }
     
-    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: UInt32) -> String {
+    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: UInt32, multisigAddress: String?) -> String {
         let currencyString = String(currencyID).sha3(.sha256)
         let walletString = String(walletID).sha3(.sha256)
         let networkString = String(networkID).sha3(.sha256)
+        let multisigAddressString = multisigAddress?.sha3(.sha256)
         
-        return ("\(currencyString)" + "\(walletString) +\(networkString)").sha3(.sha256)
+        var resultString = "\(currencyString)" + "\(walletString) +\(networkString)"
+        
+        if multisigAddressString != nil {
+            resultString += multisigAddressString!
+        }
+        
+        return resultString.sha3(.sha256)
     }
     
     func isFCMSubscribed() -> Bool {
@@ -182,6 +189,32 @@ extension FCMDelegate {
                 UserDefaults.standard.set(boolValue, forKey: "isFCMAccepted")
                 completion(boolValue)
             }
+        }
+    }
+    
+    func joinToMultisigWith(wallet: UserWalletRLM, inviteCode: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        let payloadForJoin: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "address": wallet.address,
+            "invitecode": inviteCode,
+            "addresstokik":"", //omitempty
+            "walletindex": wallet.walletID,
+            "currencyid": wallet.chain,
+            "networkid": wallet.chainType
+        ]
+        
+        let paramsForMsgSend: NSDictionary = [
+            "type": "join:multisig",  // it's kinda signature method eg: join:multisig.
+            "from": "",              // not requied
+            "to":"",                // not requied
+            "date": Date().timeIntervalSince1970, // time unix
+            "status": 0,
+            "payload": payloadForJoin
+        ]
+        
+        
+        socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
+            completion(answerDict, err)
         }
     }
 }

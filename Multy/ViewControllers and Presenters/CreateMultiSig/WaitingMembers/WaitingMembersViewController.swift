@@ -106,13 +106,15 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func updateUI() {
-        multiSigWalletName.text = presenter.walletName
+        multiSigWalletName.text = presenter.wallet.name
         
-        joinedMembersLabel.text = "\(presenter.membersJoined.count) / \(presenter.membersAmount)"
-        progressRing.endAngle = -90 + (CGFloat(presenter.membersJoined.count) / CGFloat(presenter.membersAmount) * 360)
+        let joinedCount = presenter.wallet.multisigWallet!.owners.count
+        let totalCount = presenter.wallet.multisigWallet!.ownersCount
+        joinedMembersLabel.text = "\(joinedCount) / \(totalCount)"
+        progressRing.endAngle = -90 + (CGFloat(joinedCount) / CGFloat(totalCount) * 360)
         
         
-        if (presenter.membersJoined.count == presenter.membersAmount) {
+        if (joinedCount == totalCount) {
             stateImageView.image = UIImage(named: "readyToStart")
             stateLabel.text = localize(string: Constants.readyToStartString)
             stateLabel.textColor = #colorLiteral(red: 0.8117647059, green: 1, blue: 0.8666666667, alpha: 1)
@@ -218,7 +220,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     func openShareInviteVC() {
         let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
         let inviteCodeVC = storyBoard.instantiateViewController(withIdentifier: "inviteCodeVC") as! InviteCodeViewController
-        inviteCodeVC.presenter.inviteCode = presenter.inviteCode
+        inviteCodeVC.presenter.inviteCode = presenter.wallet.multisigWallet!.inviteCode
         present(inviteCodeVC, animated: true, completion: nil)
     }
     
@@ -241,19 +243,19 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     
     //MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(presenter.membersAmount)
+        return Int(presenter.wallet.multisigWallet!.ownersCount)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "memberTVCReuseId")! as! MemberTableViewCell
-        if (indexPath.item + 1) > presenter.membersJoined.count {
+        if (indexPath.item + 1) > presenter.wallet.multisigWallet!.owners.count {
             cell.fillWaitingMember()
         } else {
-            let memberAddress = presenter.membersJoined[indexPath.item]
-            let memberImage = PictureConstructor().createPicture(diameter: 34, seed: memberAddress)
-            cell.fillWithMember(address: memberAddress, image: memberImage!, isCurrentUser: true)
+            let owner = presenter.wallet.multisigWallet!.owners[indexPath.item]
+            let memberImage = PictureConstructor().createPicture(diameter: 34, seed: owner.address)
+            cell.fillWithMember(address: owner.address, image: memberImage!, isCurrentUser: owner.creator.boolValue)
         }
-        cell.hideSeparator = indexPath.item == (presenter.membersAmount - 1)
+        cell.hideSeparator = indexPath.item == (presenter.wallet.multisigWallet!.ownersCount - 1)
         
         return cell
     }
@@ -296,6 +298,14 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         setMembersInfoHolderPosition()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Storyboard.waitingMembersSettingsVCSegueID {
+            let waitingMembersSettingsVC = segue.destination as! WaitingMembersSettingsViewController
+            waitingMembersSettingsVC.presenter.wallet = presenter.wallet
+            waitingMembersSettingsVC.presenter.account = presenter.account!
+        }
     }
     
     //MARK: Actions

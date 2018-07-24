@@ -10,6 +10,7 @@ class BlockchainsPresenter: NSObject {
     var donateBlockchainArray = [CurrencyObj]()
     var availableBlockchainArray = [CurrencyObj]()
     var selectedBlockchain = BlockchainType.create(currencyID: 0, netType: 0)
+    var isMultisigChains = false
     
     func createChains() {
         createAvailableChains()
@@ -17,11 +18,19 @@ class BlockchainsPresenter: NSObject {
     }
     
     private func createAvailableChains() {
-        addCurrencyObjects(blockchainArray: Constants.DataManager.availableBlockchains, into: &availableBlockchainArray)
+        if !isMultisigChains {
+            addCurrencyObjects(blockchainArray: Constants.DataManager.availableBlockchains, into: &availableBlockchainArray)
+        } else {
+            addCurrencyObjects(blockchainArray: Constants.DataManager.availableMultisigBlockchains, into: &availableBlockchainArray)
+        }
     }
     
     private func createDonationChains() {
-        addCurrencyObjects(blockchainArray: Constants.DataManager.donationBlockchains, into: &donateBlockchainArray)
+        if !isMultisigChains {
+            addCurrencyObjects(blockchainArray: Constants.DataManager.donationBlockchains, into: &donateBlockchainArray)
+        } else {
+            addCurrencyObjects(blockchainArray: [], into: &donateBlockchainArray)
+        }
     }
     
     private func addCurrencyObjects(blockchainArray: [BlockchainType], into array: inout [CurrencyObj]) {

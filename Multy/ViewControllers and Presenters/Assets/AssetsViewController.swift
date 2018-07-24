@@ -383,11 +383,19 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         }
     }
     
-    func qrData(string: String) {
-        let storyboard = UIStoryboard(name: "Send", bundle: nil)
-        let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
-        destVC.presenter.transactionDTO.update(from: string)
-        navigationController?.pushViewController(destVC, animated: true)
+    func qrData(string: String, tag: String?) {
+        if tag == "joinMS" {
+            let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+            let chooseWalletVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
+            chooseWalletVC.presenter.multisigFunc(inviteCode: string)
+            chooseWalletVC.presenter.isNeedToPop = true
+            navigationController?.pushViewController(chooseWalletVC, animated: true)
+        } else {
+            let storyboard = UIStoryboard(name: "Send", bundle: nil)
+            let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+            destVC.presenter.transactionDTO.update(from: string)
+            navigationController?.pushViewController(destVC, animated: true)
+        }
     }
     // -------------
     
@@ -428,7 +436,8 @@ extension CreateWalletDelegate: CreateWalletProtocol {
             navigationController?.pushViewController(createMSVC, animated: true)
         } else if tag == "joinToMultiSig" {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let joinVC = storyboard.instantiateViewController(withIdentifier: "joinMultiSig")
+            let joinVC = storyboard.instantiateViewController(withIdentifier: "joinMultiSig") as! JoinMultiSigViewController
+            joinVC.qrDelegate = self
             navigationController?.pushViewController(joinVC, animated: true)
         }
     }

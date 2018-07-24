@@ -129,6 +129,7 @@ struct Constants {
         //Assets
         static let createWalletVCSegueID = "createWalletVC"
         static let contactVCSegueID = "contactVC"
+        static let waitingMembersSettingsVCSegueID = "waitingMembersSettings"
     }
     
     struct UserDefaults {
@@ -150,6 +151,9 @@ struct Constants {
             BlockchainType.create(currencyID: BLOCKCHAIN_BITCOIN.rawValue, netType: BITCOIN_NET_TYPE_TESTNET.rawValue),
             BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_RINKEBY.rawValue)),
         ]
+        
+        static let availableMultisigBlockchains = [BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_MAINNET.rawValue)),
+                                                   BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))]
         
         static let donationBlockchains = [
             BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_MAINNET.rawValue)),

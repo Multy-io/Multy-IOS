@@ -30,7 +30,7 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        self.titleLbl.text = localize(string: titleTextKey)
+        self.titleLbl.text = titleTextKey.count > 0 ? localize(string: titleTextKey):""
         
         self.presenter.receiveStartVC = self
         self.registerCells()
@@ -97,6 +97,10 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.presenter.selectedIndex = indexPath.row
+        if presenter.isForMultisig {
+            presenter.joinRequest()
+        }
+        
         if self.presenter.isNeedToPop == true {
             if self.whereFrom != nil && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
                 let message = localize(string: Constants.cannotChooseEmptyWalletString)

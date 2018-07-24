@@ -268,6 +268,11 @@
 		85741D8520B45E8B0093933B /* circle_grow.json in Resources */ = {isa = PBXBuildFile; fileRef = 85741D8420B45E8A0093933B /* circle_grow.json */; };
 		85741D8720B555DB0093933B /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85741D8620B555DB0093933B /* BLEManager.swift */; };
 		85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85741D8820B55A650093933B /* CoreBluetooth.framework */; };
+		8592E02320FF9B5D0040125B /* MultisigWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02220FF9B5D0040125B /* MultisigWallet.swift */; };
+		8592E02521008D860040125B /* MultisigOwnerRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02421008D860040125B /* MultisigOwnerRLM.swift */; };
+		8592E02A2101CCBD0040125B /* WaitingMembersSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */; };
+		8592E02C2101DE0B0040125B /* WaitingMembersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02B2101DE0B0040125B /* WaitingMembersSettingsViewController.swift */; };
+		8592E02E2105E0040040125B /* MultisigConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02D2105E0040040125B /* MultisigConstants.swift */; };
 		859C7AFC20ECF3C8002EA215 /* WaitingMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */; };
 		859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */; };
 		859C7B0120EE2CEC002EA215 /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */; };
@@ -729,6 +734,11 @@
 		85741D8420B45E8A0093933B /* circle_grow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = circle_grow.json; sourceTree = "<group>"; };
 		85741D8620B555DB0093933B /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
 		85741D8820B55A650093933B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		8592E02220FF9B5D0040125B /* MultisigWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigWallet.swift; sourceTree = "<group>"; };
+		8592E02421008D860040125B /* MultisigOwnerRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigOwnerRLM.swift; sourceTree = "<group>"; };
+		8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersSettingsPresenter.swift; sourceTree = "<group>"; };
+		8592E02B2101DE0B0040125B /* WaitingMembersSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersSettingsViewController.swift; sourceTree = "<group>"; };
+		8592E02D2105E0040040125B /* MultisigConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigConstants.swift; sourceTree = "<group>"; };
 		859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersViewController.swift; sourceTree = "<group>"; };
 		859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersPresenter.swift; sourceTree = "<group>"; };
 		859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
@@ -924,6 +934,7 @@
 			children = (
 				44BCBDB420601AD0001611A5 /* BTCWallet.swift */,
 				44BCBDB620601AE3001611A5 /* ETHWallet.swift */,
+				8592E02220FF9B5D0040125B /* MultisigWallet.swift */,
 			);
 			path = Wallets;
 			sourceTree = "<group>";
@@ -1286,6 +1297,7 @@
 				FA4D43E01FC5895D003C7117 /* String+Extension.swift */,
 				444B3B642045723C008129B8 /* BigInt+Extension.swift */,
 				FA74062A1FCC5D6A003C538C /* Constants.swift */,
+				8592E02D2105E0040040125B /* MultisigConstants.swift */,
 				4409E40020DD047900ADBE42 /* LocalizationConstant.swift */,
 				45D2D6DE203463FB00751ED4 /* AnalyticsConstants.swift */,
 				FAFCDA871FD7DD7A0056DD64 /* Request+Extension.swift */,
@@ -1827,9 +1839,19 @@
 			path = TermsOfService;
 			sourceTree = "<group>";
 		};
+		8592E0262101CBCB0040125B /* WaitingMembersSettings */ = {
+			isa = PBXGroup;
+			children = (
+				8592E02B2101DE0B0040125B /* WaitingMembersSettingsViewController.swift */,
+				8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */,
+			);
+			path = WaitingMembersSettings;
+			sourceTree = "<group>";
+		};
 		859C7AF920ECF276002EA215 /* CreateMultiSig */ = {
 			isa = PBXGroup;
 			children = (
+				8592E0262101CBCB0040125B /* WaitingMembersSettings */,
 				859C7AFA20ECF38E002EA215 /* WaitingMembers */,
 			);
 			path = CreateMultiSig;
@@ -1955,6 +1977,7 @@
 				FA869D111FD6C17900C815C3 /* ExchangePriceRLM.swift */,
 				FA88358F1FD854EC007694A2 /* AddressRLM.swift */,
 				FA8835911FD856F4007694A2 /* UserWalletRLM.swift */,
+				8592E02421008D860040125B /* MultisigOwnerRLM.swift */,
 				458FD4C61FE3C2CB001C25BA /* SpendableOutputRLM.swift */,
 				FA0B618C1FEBC1DD00ED0CE6 /* RecentAddressesRLM.swift */,
 				FAB0E6A920189AE300EB53E2 /* StockExchangeRateRLM.swift */,
@@ -2561,6 +2584,7 @@
 				FA86A7411FC2C72B002826EC /* MasterKeyGenerator.swift in Sources */,
 				FA58DF611FDC400C00C45303 /* UIColor+Extension.swift in Sources */,
 				45F8CD47208F391B00DEB495 /* TermsOfServiceViewController.swift in Sources */,
+				8592E02521008D860040125B /* MultisigOwnerRLM.swift in Sources */,
 				44E0245C20F7AB1F00F822D6 /* MultiSigWalletCell.swift in Sources */,
 				FA8835901FD854EC007694A2 /* AddressRLM.swift in Sources */,
 				4575693F1FBDD6C300FDEE20 /* BackupSeedPhraseViewController.swift in Sources */,
@@ -2659,6 +2683,7 @@
 				45BCB3C720EE43D6009369D1 /* InviteCodeViewController.swift in Sources */,
 				455CDCFB1FC8537200EA5ACE /* CreateWalletViewController.swift in Sources */,
 				455CDCFD1FC85BB700EA5ACE /* CreateWalletNameTableViewCell.swift in Sources */,
+				8592E02C2101DE0B0040125B /* WaitingMembersSettingsViewController.swift in Sources */,
 				451ED791207CBCDF00542F00 /* PrivateKeyPresenter.swift in Sources */,
 				455CDCF91FC8535C00EA5ACE /* CreateWalletPresenter.swift in Sources */,
 				452290551FBB18D30024B550 /* AppDelegate.swift in Sources */,
@@ -2673,6 +2698,7 @@
 				445D150E20DA8513002F6747 /* EPContactCell.swift in Sources */,
 				45A9492F1FC4780F003C3A23 /* ReceiveProtocol.swift in Sources */,
 				45A9495D1FC70F2F003C3A23 /* SendAmountViewController.swift in Sources */,
+				8592E02E2105E0040040125B /* MultisigConstants.swift in Sources */,
 				45B5CCA61FDA94360069BD46 /* ConnectionCheck.swift in Sources */,
 				4522361F1FCD6B94004BA490 /* TransactionViewController.swift in Sources */,
 				45AC16282048214C00E75BD6 /* CurrencyTableViewCell.swift in Sources */,
@@ -2706,6 +2732,7 @@
 				FAFCDA881FD7DD7A0056DD64 /* Request+Extension.swift in Sources */,
 				44AAAE1320E258D200A481A4 /* ContactCell.swift in Sources */,
 				444066D0205926D400342046 /* UIApplication+Extension.swift in Sources */,
+				8592E02A2101CCBD0040125B /* WaitingMembersSettingsPresenter.swift in Sources */,
 				444066D4205927B900342046 /* UIActivityViewController+Extension.swift in Sources */,
 				445D150C20DA8513002F6747 /* EPConstants.swift in Sources */,
 				45A9495F1FC70F4A003C3A23 /* SendAmountPresenter.swift in Sources */,
@@ -2796,6 +2823,7 @@
 				85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */,
 				455EA8761FD842610093F69D /* CustomTabBarViewController.swift in Sources */,
 				FA4D43FB1FC6C760003C7117 /* BTCWalletPresenter.swift in Sources */,
+				8592E02320FF9B5D0040125B /* MultisigWallet.swift in Sources */,
 				444066D22059277F00342046 /* UIAlertController+Extension.swift in Sources */,
 				45A9491F1FC2DFC7003C3A23 /* ReceiveStartViewController.swift in Sources */,
 				456F20F2203F149000098405 /* EnterPinViewController.swift in Sources */,
