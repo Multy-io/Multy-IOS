@@ -334,7 +334,7 @@ class SendPresenter: NSObject {
         
         
         
-        addressData = core.createAddress(blockchain:    wallet.blockchainType,
+        addressData = core.createAddress(blockchainType:    wallet.blockchainType,
                                          walletID:      wallet.walletID.uint32Value,
                                          addressID:     wallet.changeAddressIndex,
                                          binaryData:    &binaryData!)

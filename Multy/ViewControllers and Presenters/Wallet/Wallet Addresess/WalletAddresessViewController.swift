@@ -123,7 +123,7 @@ extension WalletAddresessViewController: UITableViewDelegate, UITableViewDataSou
             
             var binaryData = account!.binaryDataString.createBinaryData()!
             
-            let data = DataManager.shared.coreLibManager.createAddress(blockchain: BlockchainType.create(wallet: self.presenter.wallet!),
+            let data = DataManager.shared.coreLibManager.createAddress(blockchainType: BlockchainType.create(wallet: self.presenter.wallet!),
                                                                        walletID: self.presenter.wallet!.walletID.uint32Value,
                                                                        addressID: UInt32(self.presenter.wallet!.addresses.count),
                                                                        binaryData: &binaryData)

@@ -92,7 +92,7 @@ class SendAmountEthPresenter: NSObject {
         
         
         
-        addressData = core.createAddress(blockchain:    transactionDTO.blockchainType!,
+        addressData = core.createAddress(blockchainType:    transactionDTO.blockchainType!,
                                          walletID:      wallet.walletID.uint32Value,
                                          addressID:     wallet.changeAddressIndex,
                                          binaryData:    &binaryData!)

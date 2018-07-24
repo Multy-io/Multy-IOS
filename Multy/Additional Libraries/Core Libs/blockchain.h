@@ -33,7 +33,15 @@ enum Blockchain
     //not available in bip44
     BLOCKCHAIN_BITCOIN_LIGHTNING =  0x9900,
     BLOCKCHAIN_BITSHARES =          0x9902,
-    BLOCKCHAIN_ERC20 =              0x9903
+    BLOCKCHAIN_ERC20 =              0x9903,
+
+//#if MULTY_WITH_GOLOS
+//    BLOCKCHAIN_GOLOS = 0x060105,
+//#endif /* MULTY_WITH_GOLOS */
+
+//#if MULTY_WITH_EOS
+    BLOCKCHAIN_EOS = 0xc2,
+//#endif /* MULTY_WITH_EOS */
 };
 
 // TODO: rename BlockchainType to BlockchainSpec

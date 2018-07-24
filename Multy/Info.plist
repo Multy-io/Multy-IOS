@@ -34,9 +34,9 @@
 	<key>CFBundleVersion</key>
 	<string>49</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>MUL-1801_CreateMultisigAPI</string>
+	<string>CreatingMultiSigWallet</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>eed66743</string>
+	<string>d68c65b7</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_BUILD_1.0.5_53-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
