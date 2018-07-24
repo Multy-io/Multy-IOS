@@ -54,11 +54,12 @@ class TransactionWalletCell: UITableViewCell {
             self.addressLabel.textColor = .black
             self.timeLabel.textColor = blockedTxInfoColor
             self.cryptoAmountLabel.textColor = .black
-        } else if histObj.txStatus.intValue < 0 /*rejected tx*/ {
+        } else if histObj.txStatus.intValue == TxStatus.Rejected.rawValue {
             self.transactionImage.image = #imageLiteral(resourceName: "warninngBig")
             self.addressLabel.textColor = .black
             self.timeLabel.textColor = .red
             self.cryptoAmountLabel.textColor = .black
+            self.timeLabel.text = "Unable to send transaction"
         }
         
         let dateFormatter = Date.defaultGMTDateFormatter()
