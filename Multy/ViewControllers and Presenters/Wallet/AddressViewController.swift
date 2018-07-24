@@ -20,8 +20,6 @@ class AddressViewController: UIViewController, BranchProtocol {
     @IBOutlet weak var seondConstraint: NSLayoutConstraint!
     @IBOutlet weak var thirdConstraint: NSLayoutConstraint!
     @IBOutlet weak var fourthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var addContactConstraint: NSLayoutConstraint!
-    @IBOutlet weak var addContactButton: UIButton!
     
     var wallet: UserWalletRLM? {
         didSet {
@@ -48,11 +46,6 @@ class AddressViewController: UIViewController, BranchProtocol {
         super.viewWillAppear(animated)
         self.makeQRCode()
         self.addressLbl.text = makeStringWithAddress()
-//        if DataManager.shared.isAddressSaved(makeStringWithAddress()) {
-            addContactConstraint.constant = 0
-            addContactButton.isHidden = true
-            addContactButton.isUserInteractionEnabled = false
-//        }
     }
     
     override func viewDidLayoutSubviews() {
