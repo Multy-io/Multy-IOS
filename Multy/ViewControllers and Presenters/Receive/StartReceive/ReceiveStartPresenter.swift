@@ -20,6 +20,9 @@ class ReceiveStartPresenter: NSObject {
     
     var displayedBlockchainsOnly: [BlockchainType]?
     
+    var isForMultisig = false
+    var inviteCode = ""
+    
     //test func
 //    func createWallets() {
 //        for index in 1...10 {
@@ -77,7 +80,21 @@ class ReceiveStartPresenter: NSObject {
                 self.receiveStartVC?.updateUI()
             }
         }
-        
+    }
+    
+    func multisigFunc(inviteCode: String) {
+        isForMultisig = true
+        self.inviteCode = inviteCode
+        displayedBlockchainOnly = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))
+    }
+    
+    func joinRequest() {
+//        DataManager.shared.joinToMultisigWith(wallet: walletsArr[selectedIndex!], inviteCode: inviteCode) { (answer, err) in
+//
+//        }
+        let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+        let waitingVC = storyboard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
+        receiveStartVC?.navigationController?.pushViewController(waitingVC, animated: true)
     }
 }
 

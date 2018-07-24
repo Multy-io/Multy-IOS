@@ -5,5 +5,5 @@
 import Foundation
 
 protocol QrDataProtocol: class {
-    func qrData(string: String)
+    func qrData(string: String, tag: String?)
 }

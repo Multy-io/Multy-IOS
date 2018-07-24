@@ -47,7 +47,7 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
         self.sendStartVC?.performSegue(withIdentifier: "qrCamera", sender: Any.self)
     }
   
-    func qrData(string: String) {
+    func qrData(string: String, tag: String?) {
         transactionDTO.update(from: string)
         sendStartVC?.updateTVAndNextButton(with: transactionDTO.sendAddress!)
     }

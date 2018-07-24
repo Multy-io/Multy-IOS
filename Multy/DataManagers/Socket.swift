@@ -175,6 +175,16 @@ class Socket: NSObject {
     
     // ================================== MULTI SIG TEST =================================================== //
     
+    func sendMsg(params: NSDictionary, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        print("SOCKET Emit message:send with params: \n\(params)")
+        socket.emitWithAck("message:send", with: [params]).timingOut(after: 1) { data in
+            print("answer: \n \(data)")
+            let answer = data.first!
+            let dict = answer as! NSDictionary
+            completion(dict, nil)
+        }
+    }
+    
     func jackstest() { // event with dict params
         let param1: NSDictionary = [
             "type":"join:multisig",  // it's kinda signature method eg: join:multisig.
