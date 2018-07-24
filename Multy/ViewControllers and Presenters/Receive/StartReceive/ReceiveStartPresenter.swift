@@ -18,7 +18,7 @@ class ReceiveStartPresenter: NSObject {
     
     var selectedIndex: Int?
     
-    var displayedBlockchainsOnly: [BlockchainType]?
+    var displayedBlockchainOnly: BlockchainType?
     
     var isForMultisig = false
     var inviteCode = ""
@@ -72,8 +72,8 @@ class ReceiveStartPresenter: NSObject {
                 var walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
                 print("afterVerbose:rawdata: \(walletsArrayFromApi)")
                 
-                if let blockchainTypes = self.displayedBlockchainsOnly {
-                    walletsArray = walletsArray.filter{ blockchainTypes.contains($0.blockchainType) }
+                if let blockchainType = self.displayedBlockchainOnly {
+                    walletsArray = walletsArray.filter{ blockchainType == $0.blockchainType }
                 }
                 
                 self.walletsArr = walletsArray.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })

@@ -116,4 +116,5 @@ extension Constants {
     static let badInviteCodeString = "INVALID INVITE CODE"
     static let inviteCodeNotFoundString = "INVITE CODE NOT FOUND"
     static let deleteMultisigWalletAlertString = "DELETE MULTISIG WALLET WARNING"
+    static let buildUpdateMessage = "YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE"
 }
