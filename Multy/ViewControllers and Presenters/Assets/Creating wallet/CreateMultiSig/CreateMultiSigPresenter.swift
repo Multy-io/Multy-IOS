@@ -71,8 +71,7 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
         let currencyID = choosenWallet!.blockchainType.blockchain.rawValue
         let networkID = choosenWallet!.blockchainType.net_type
         var currentTopIndex = account!.topIndexes.filter("currencyID = \(currencyID) AND networkID == \(networkID)").first
-        let currencyID = choosenWallet!.chain.uint32Value
-        let networkID = choosenWallet!.chainType.uint32Value
+        
 //        var currentTopIndex = account!.topIndexes.filter("currencyID = \(currencyID) AND networkID == \(networkID)").first
         
 //        if currentTopIndex == nil {
