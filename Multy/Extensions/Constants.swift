@@ -46,6 +46,7 @@ struct Constants {
         static let availableBlockchains = [
             BlockchainType.create(currencyID: BLOCKCHAIN_BITCOIN.rawValue, netType: BITCOIN_NET_TYPE_MAINNET.rawValue),
             BlockchainType.create(currencyID: BLOCKCHAIN_BITCOIN.rawValue, netType: BITCOIN_NET_TYPE_TESTNET.rawValue),
+            BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_MAINNET.rawValue)),
             BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_RINKEBY.rawValue)),
         ]
         
@@ -53,7 +54,7 @@ struct Constants {
                                                    BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))]
         
         static let donationBlockchains = [
-            BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_MAINNET.rawValue)),
+//            BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_MAINNET.rawValue)),
 //            BlockchainType.create(currencyID: BLOCKCHAIN_BITCOIN_LIGHTNING.rawValue,netType: 0),
 //            BlockchainType.create(currencyID: BLOCKCHAIN_GOLOS.rawValue,            netType: 0),
             BlockchainType.create(currencyID: BLOCKCHAIN_STEEM.rawValue,            netType: 0),
@@ -116,6 +117,8 @@ let segmentsCountDown : Int  = 8
 let upperSizes : [CGFloat] = [0, 35, 79, 107, 151, 183, 218, 253]
 let downSizes : [CGFloat] = [0, 23, 40, 53, 81, 136, 153, 197, 249]
 
+let nanosecondsInOneSecond = 1000000000.0
+
 let statuses = ["createdTx", "fromSocketTx", "incoming in mempool", "spend in mempool", "incoming in block", "spend in block", "in block confirmed", "rejected block"]
 
 var isNeedToAutorise = false
@@ -168,6 +171,7 @@ let idOfInapps50 = ["io.multy.addingActivity50", "io.multy.addingCharts50", "io.
 
 enum TxStatus : Int {
     case
+        Rejected =                  0,
         MempoolIncoming =           1,
         BlockIncoming =             2,
         MempoolOutcoming =          3,

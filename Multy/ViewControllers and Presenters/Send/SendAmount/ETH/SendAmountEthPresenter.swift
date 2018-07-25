@@ -25,7 +25,7 @@ class SendAmountEthPresenter: NSObject {
             
             
             if transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt != nil {
-                feeAmount = BigInt("21000") * transactionDTO.transaction!.transactionRLM?.sumInCryptoBigInt
+                feeAmount = BigInt("40000") * transactionDTO.transaction!.transactionRLM?.sumInCryptoBigInt
                 feeAmountInFiat = feeAmount * exchangeCourse
             }
             
@@ -151,7 +151,7 @@ class SendAmountEthPresenter: NSObject {
             if message.hasPrefix("BigInt value is not representable as") {
                 message = sendAmountVC!.localize(string: Constants.youEnteredTooSmallAmountString)
             } else if message.hasPrefix("Transaction is trying to spend more than available in inputs") {
-                message = sendAmountVC!.localize(string: Constants.youEnteredTooSmallAmountString)
+                message = sendAmountVC!.localize(string: Constants.youTryingSpendMoreThenHaveString)
             }
             
             let alert = UIAlertController(title: sendAmountVC!.localize(string: Constants.errorString), message: message, preferredStyle: .alert)
@@ -328,7 +328,7 @@ extension CreateTransactionDelegate {
                                                                               balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
             ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
             gasPrice: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
-            gasLimit: "21000")
+            gasLimit: "40000")
         
         rawTransaction = trData.message
         

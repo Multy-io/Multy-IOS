@@ -402,7 +402,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC ∙ Personal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6cq-qs-W93">
-                                                <rect key="frame" x="64" y="315.5" width="91.5" height="21"/>
+                                                <rect key="frame" x="58" y="315.5" width="91.5" height="21"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                                 <color key="textColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -462,20 +462,20 @@
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5aH-rk-09r" userLabel="Wallet Token Image">
-                                                <rect key="frame" x="16" y="335" width="33" height="33"/>
+                                                <rect key="frame" x="6" y="328.5" width="46" height="46"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="33" id="IiY-l9-6OA"/>
-                                                    <constraint firstAttribute="height" constant="33" id="ct1-gc-uLi"/>
+                                                    <constraint firstAttribute="width" constant="46" id="IiY-l9-6OA"/>
+                                                    <constraint firstAttribute="height" constant="46" id="ct1-gc-uLi"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.1234 BTC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CH8-SA-hb6" userLabel="Wallet Crypto Sum Lbl">
-                                                <rect key="frame" x="64" y="341.5" width="76.5" height="20"/>
+                                                <rect key="frame" x="58" y="341.5" width="76.5" height="20"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="14"/>
                                                 <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 233$" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gny-Pb-20j">
-                                                <rect key="frame" x="64" y="369" width="45" height="20"/>
+                                                <rect key="frame" x="58" y="369" width="45" height="20"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                                 <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -497,6 +497,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="CH8-SA-hb6" firstAttribute="leading" secondItem="6cq-qs-W93" secondAttribute="leading" id="0le-u4-c8c"/>
                                             <constraint firstItem="6a8-cd-Cp7" firstAttribute="top" secondItem="0iV-OV-cac" secondAttribute="bottom" constant="14" id="1VZ-6d-zAC"/>
                                             <constraint firstItem="Ann-9P-bqo" firstAttribute="trailing" secondItem="0iV-OV-cac" secondAttribute="trailing" id="1qZ-ex-7Rp"/>
                                             <constraint firstItem="Aws-8s-3F6" firstAttribute="leading" secondItem="d7q-S5-bpY" secondAttribute="leading" id="28l-hR-jD9"/>
@@ -506,7 +507,7 @@
                                             <constraint firstItem="WPa-6H-9ZB" firstAttribute="leading" secondItem="4kw-SE-2fd" secondAttribute="trailing" constant="15" id="5wu-rX-E5k"/>
                                             <constraint firstItem="6cq-qs-W93" firstAttribute="top" secondItem="Aj5-6E-t5v" secondAttribute="bottom" constant="12" id="6aH-Cd-k5q"/>
                                             <constraint firstAttribute="trailing" secondItem="Aj5-6E-t5v" secondAttribute="trailing" id="8bM-Qg-shM"/>
-                                            <constraint firstItem="5aH-rk-09r" firstAttribute="leading" secondItem="WdU-vV-Cb8" secondAttribute="leading" constant="16" id="8mT-XA-Gcu"/>
+                                            <constraint firstItem="5aH-rk-09r" firstAttribute="leading" secondItem="WdU-vV-Cb8" secondAttribute="leading" constant="6" id="8mT-XA-Gcu"/>
                                             <constraint firstAttribute="height" constant="401" id="B3G-iD-VJq"/>
                                             <constraint firstItem="Aj5-6E-t5v" firstAttribute="leading" secondItem="WdU-vV-Cb8" secondAttribute="leading" id="BJz-Mn-AJD"/>
                                             <constraint firstItem="TcM-XW-eXl" firstAttribute="top" secondItem="Gm8-Tf-jrp" secondAttribute="bottom" constant="16" id="CBn-NJ-RGE"/>
@@ -514,10 +515,9 @@
                                             <constraint firstItem="SXI-5J-BlV" firstAttribute="leading" secondItem="WdU-vV-Cb8" secondAttribute="leading" id="D6L-2j-rsR"/>
                                             <constraint firstItem="Ann-9P-bqo" firstAttribute="top" secondItem="TcM-XW-eXl" secondAttribute="top" id="DE8-UW-Vhc"/>
                                             <constraint firstItem="d7q-S5-bpY" firstAttribute="trailing" secondItem="SXI-5J-BlV" secondAttribute="trailing" id="F2c-0v-py0"/>
-                                            <constraint firstItem="CH8-SA-hb6" firstAttribute="leading" secondItem="5aH-rk-09r" secondAttribute="trailing" constant="15" id="Gii-de-aBp"/>
                                             <constraint firstItem="Gm8-Tf-jrp" firstAttribute="centerX" secondItem="WdU-vV-Cb8" secondAttribute="centerX" id="IEJ-Gv-hlg"/>
                                             <constraint firstItem="4kw-SE-2fd" firstAttribute="leading" secondItem="WdU-vV-Cb8" secondAttribute="leading" constant="16" id="IEh-O3-LSy"/>
-                                            <constraint firstItem="6cq-qs-W93" firstAttribute="leading" secondItem="5aH-rk-09r" secondAttribute="trailing" constant="15" id="IcC-g6-CVX"/>
+                                            <constraint firstItem="6cq-qs-W93" firstAttribute="leading" secondItem="5aH-rk-09r" secondAttribute="trailing" constant="6" id="IcC-g6-CVX"/>
                                             <constraint firstItem="fc4-7b-wBs" firstAttribute="centerY" secondItem="SXI-5J-BlV" secondAttribute="centerY" id="J2L-S0-gbd"/>
                                             <constraint firstItem="Ann-9P-bqo" firstAttribute="leading" secondItem="TcM-XW-eXl" secondAttribute="leading" id="Jow-Z1-LD5"/>
                                             <constraint firstItem="Gm8-Tf-jrp" firstAttribute="top" secondItem="WdU-vV-Cb8" secondAttribute="top" constant="18" id="LNq-2g-J2y"/>
@@ -534,7 +534,6 @@
                                             <constraint firstAttribute="trailing" secondItem="AXb-Qw-h0b" secondAttribute="trailing" constant="6" id="bVZ-bx-wNA"/>
                                             <constraint firstItem="0iV-OV-cac" firstAttribute="leading" secondItem="TcM-XW-eXl" secondAttribute="trailing" constant="19.5" id="cOg-Lu-iqC"/>
                                             <constraint firstItem="Aws-8s-3F6" firstAttribute="trailing" secondItem="d7q-S5-bpY" secondAttribute="trailing" id="e5a-WM-nVM"/>
-                                            <constraint firstItem="Gny-Pb-20j" firstAttribute="leading" secondItem="5aH-rk-09r" secondAttribute="trailing" constant="15" id="eKm-f9-5ob"/>
                                             <constraint firstItem="CTc-56-hc2" firstAttribute="leading" secondItem="fc4-7b-wBs" secondAttribute="trailing" constant="4.5" id="fA1-d3-oNR"/>
                                             <constraint firstItem="CH8-SA-hb6" firstAttribute="top" secondItem="6cq-qs-W93" secondAttribute="bottom" constant="5" id="fzU-EG-ila"/>
                                             <constraint firstItem="Aj5-6E-t5v" firstAttribute="top" secondItem="WPa-6H-9ZB" secondAttribute="bottom" constant="12" id="gHw-Tp-xz2"/>
@@ -551,6 +550,7 @@
                                             <constraint firstItem="fc4-7b-wBs" firstAttribute="leading" secondItem="4kw-SE-2fd" secondAttribute="trailing" constant="15" id="tXW-uy-aER"/>
                                             <constraint firstItem="8Fl-G0-iLU" firstAttribute="centerY" secondItem="WPa-6H-9ZB" secondAttribute="centerY" id="ugl-A0-19F"/>
                                             <constraint firstItem="Aws-8s-3F6" firstAttribute="centerY" secondItem="AXb-Qw-h0b" secondAttribute="centerY" id="uih-h1-65d"/>
+                                            <constraint firstItem="Gny-Pb-20j" firstAttribute="leading" secondItem="6cq-qs-W93" secondAttribute="leading" id="vn1-Ky-u7f"/>
                                             <constraint firstItem="CTc-56-hc2" firstAttribute="centerY" secondItem="fc4-7b-wBs" secondAttribute="centerY" id="wak-ja-jd1"/>
                                             <constraint firstItem="AXb-Qw-h0b" firstAttribute="height" secondItem="SXI-5J-BlV" secondAttribute="height" id="zQX-bI-CPh"/>
                                         </constraints>

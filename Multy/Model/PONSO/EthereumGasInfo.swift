@@ -7,5 +7,5 @@ import UIKit
 class EthereumGasInfo: NSObject {
     
     var gasPrice = BigInt("1000000000")
-    var gasLimit = BigInt("21000")
+    var gasLimit = BigInt("40000")
 }

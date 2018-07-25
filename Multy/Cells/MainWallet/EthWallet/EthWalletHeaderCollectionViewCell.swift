@@ -32,7 +32,7 @@ class EthWalletHeaderCollectionViewCell: UICollectionViewCell {
     }
 
     func fillInCell() {
-        self.cryptoAmountLabel.text = wallet?.ethWallet?.allBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+        self.cryptoAmountLabel.text = wallet?.allETHBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
         let blockchain = BlockchainType.create(wallet: wallet!)
         //MARK: temporary code
         self.cryptoNameLabel.text = blockchain.shortName //"\(wallet?.cryptoName ?? "")"
@@ -58,7 +58,7 @@ class EthWalletHeaderCollectionViewCell: UICollectionViewCell {
             lockedPopverWithBorders.layer.masksToBounds = true
             lockedPopverWithBorders.layer.borderWidth = 1.0
             
-            let availableCryptoAmount = wallet!.ethWallet!.availableBalance
+            let availableCryptoAmount = wallet!.availableBalance
             let availableFiatAmount = availableCryptoAmount * wallet!.exchangeCourse
             
             lockedCryptoAmountLabel.text = availableCryptoAmount.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)

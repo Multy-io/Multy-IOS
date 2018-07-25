@@ -54,8 +54,8 @@ class AddressRLM: Object {
             addressRLM.address = addressString as! String
         }
         
-        if let date = addressInfo["lastactiontime"] {
-            addressRLM.lastActionDate = NSDate(timeIntervalSince1970: (date as! Double)) as Date
+        if let date = addressInfo["lastactiontime"] as? TimeInterval {
+            addressRLM.lastActionDate = NSDate(timeIntervalSince1970: date) as Date
         }
         
         if let amount = addressInfo["amount"] {

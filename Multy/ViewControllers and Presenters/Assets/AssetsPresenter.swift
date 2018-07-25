@@ -11,7 +11,7 @@ class AssetsPresenter: NSObject {
     
     var tabBarFrame: CGRect {
         if screenHeight == heightOfX {
-            return account != nil ? CGRect(x: 0, y: screenHeight - 49 + 36, width: screenWidth, height: 49 + 36) : CGRect(x: 0, y: 0, width: 0, height: 0)
+            return account != nil ? CGRect(x: 0, y: screenHeight - 85, width: screenWidth, height: 85) : CGRect(x: 0, y: 0, width: 0, height: 0)
         } else {
             return account != nil ? CGRect(x: 0, y: screenHeight - 49, width: screenWidth, height: 49) : CGRect(x: 0, y: 0, width: 0, height: 0)
         }
@@ -37,6 +37,7 @@ class AssetsPresenter: NSObject {
             if account != nil {
                 NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(self.updateDataSourceAfterDeletingWallet), name: NSNotification.Name("walletDeleted"), object: nil)
                 
                 if !DataManager.shared.socketManager.isStarted {
                     DataManager.shared.socketManager.start()
@@ -51,6 +52,7 @@ class AssetsPresenter: NSObject {
             } else {
                 NotificationCenter.default.removeObserver(self, name: NSNotification.Name("exchageUpdated"), object: nil)
                 NotificationCenter.default.removeObserver(self, name: NSNotification.Name("transactionUpdated"), object: nil)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name("walletDeleted"), object: nil)
                 
                 assetsVC!.tableView.frame.size.height = screenHeight
             }
@@ -84,6 +86,16 @@ class AssetsPresenter: NSObject {
         getWalletVerboseForSockets { [unowned self] (_) in
             self.isSocketInitiateUpdating = false
             self.assetsVC!.handleUpdateWalletAfterSockets()
+        }
+    }
+    
+    @objc func updateDataSourceAfterDeletingWallet(notification: Notification) {
+        let obj = notification.object as! UserWalletRLM
+
+        DataManager.shared.realmManager.deleteWallet(obj) { (account) in
+            DispatchQueue.main.async {
+                self.account = account
+            }
         }
     }
     
@@ -351,6 +363,5 @@ class AssetsPresenter: NSObject {
         }))
         
         assetsVC?.present(alert, animated: true, completion: nil)
-        
     }
 }

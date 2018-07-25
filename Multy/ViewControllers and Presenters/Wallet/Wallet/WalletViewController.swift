@@ -149,6 +149,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         presenter.walletVC = self
         presenter.registerCells()
         addGestureRecognizers()
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -470,12 +471,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
 
     @IBAction func sendAction(_ sender: Any) {
-        if presenter.wallet!.isSyncing.boolValue {
-            presentAlert(with: localize(string: Constants.holdOnString))
-            
-            return
-        }
-        
         if presenter.wallet!.availableAmount.isZero {
             self.presentAlert(with: localize(string: Constants.noFundsString))
             

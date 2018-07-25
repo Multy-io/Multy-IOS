@@ -30,7 +30,6 @@ class ActivityViewController: UIViewController, CancelProtocol, AnalyticsProtoco
         presenter.tabBarFrame = tabBarController?.tabBar.frame
         
         ipadFix()
-        presenter.tabBarFrame = tabBarController?.tabBar.frame
         setupView()
     }
     
