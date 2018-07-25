@@ -122,17 +122,26 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
             }
             DataManager.shared.getServerConfig { (hardVersion, softVersion, err) in
                 self.loader.hide()
+                
+                if hardVersion == nil || softVersion == nil {
+                    self.presentUpdateAlert(idOfAlert: 2)
+                    completion(true)
+                    return
+                }
+                
                 let dictionary = Bundle.main.infoDictionary!
                 let buildVersion = (dictionary["CFBundleVersion"] as! NSString).integerValue
                 
-                //MARK: change > to <
-                if err != nil || buildVersion >= hardVersion! {
+                if buildVersion < hardVersion! {
+                    self.presentUpdateAlert(idOfAlert: 0)
+                    completion(false)
+                } else if buildVersion < softVersion! {
+                    self.presenter.presentSoftUpdate()
                     completion(true)
                 } else if softVersion! > hardVersion! && softVersion! > buildVersion {
                     self.presenter.presentSoftUpdate()
                 } else {
-                    self.presentUpdateAlert()
-                    completion(false)
+                    completion(true)
                 }
             }
         }
@@ -168,7 +177,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
     
     override func viewDidAppear(_ animated: Bool) {
         if self.presenter.isJailed {
-            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
+            self.presentUpdateAlert(idOfAlert: 0)
+//            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
         }
         
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
@@ -334,17 +344,12 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         self.tableView.reloadData()
     }
     
-    func presentWarningAlert(message: String) {
+    func presentUpdateAlert(idOfAlert: Int) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let slpashScreen = storyboard.instantiateViewController(withIdentifier: "splash") as! SplashViewController
-        slpashScreen.isJailAlert = 1
-        self.present(slpashScreen, animated: true, completion: nil)
-    }
-    
-    func presentUpdateAlert() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let slpashScreen = storyboard.instantiateViewController(withIdentifier: "splash") as! SplashViewController
-        slpashScreen.isJailAlert = 0
+        slpashScreen.isJailAlert = idOfAlert
+        slpashScreen.parentVC = self
+        slpashScreen.modalPresentationStyle = .overCurrentContext
         self.present(slpashScreen, animated: true, completion: nil)
     }
     
@@ -366,7 +371,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
     }
     
     func isOnWindow() -> Bool {
-        return self.navigationController!.topViewController!.isKind(of: AssetsViewController.self)
+        return self.navigationController!.topViewController!.isKind(of: AssetsViewController.self) && isVisible()
     }
     
     //    FORCE TOUCH EVENTS
@@ -500,14 +505,13 @@ extension TableViewDelegate : UITableViewDelegate {
                 sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
 //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
                 self.presenter.makeAuth { (answer) in
-//                    self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { (answer, err) in
+                    self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { (answer, err) in
                         self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { (answer, err) in
                             self.presenter.getWalletsVerbose(completion: { (complete) in
                                 
                             })
                         })
-//                    })
-
+                    })
                 }
             } else {
                 if self.presenter.isWalletExist() {

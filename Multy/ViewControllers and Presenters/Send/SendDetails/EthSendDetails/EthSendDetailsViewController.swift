@@ -29,6 +29,13 @@ class EthSendDetailsViewController: UIViewController, AnalyticsProtocol {
         self.registerCells()
         self.presenter.makeCryptoName()
         
+        presenter.feeRate = [
+            "Fast" : 4000000000,
+            "Medium" : 3000000000,
+            "Slow" : 2000000000,
+            "VeryFast" : 5000000000,
+            "VerySlow" : 1000000000,
+        ]
         presenter.requestFee()
         
         presenter.getData()

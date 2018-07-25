@@ -1866,7 +1866,7 @@ scan</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MIf-xQ-WjZ">
-                                        <rect key="frame" x="36" y="223.5" width="303" height="90"/>
+                                        <rect key="frame" x="36" y="215.5" width="303" height="90"/>
                                         <subviews>
                                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="+ Add Note" textAlignment="center" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="b5c-CM-iki">
                                                 <rect key="frame" x="0.0" y="43" width="303" height="47"/>
@@ -1893,10 +1893,10 @@ scan</string>
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iHg-A2-nCQ" userLabel="TopView">
-                                        <rect key="frame" x="16" y="84.5" width="343" height="182"/>
+                                        <rect key="frame" x="16" y="84.5" width="343" height="174"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RI9-ER-ncF">
-                                                <rect key="frame" x="60" y="39" width="223" height="60.5"/>
+                                                <rect key="frame" x="60" y="31" width="223" height="60.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0,0152" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ycp-p1-sYK">
                                                         <rect key="frame" x="0.0" y="0.0" width="139.5" height="60.5"/>
@@ -1916,26 +1916,26 @@ scan</string>
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 174.23 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AkA-WX-ZNe">
-                                                <rect key="frame" x="119.5" y="109.5" width="104" height="22"/>
+                                                <rect key="frame" x="119.5" y="101.5" width="104" height="22"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                                 <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cba-NB-csm">
-                                                <rect key="frame" x="0.0" y="138.5" width="343" height="2"/>
+                                                <rect key="frame" x="0.0" y="130.5" width="343" height="2"/>
                                                 <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="2" id="yI2-re-Hcw"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ed2-gG-ZRs">
-                                                <rect key="frame" x="12" y="152.5" width="17" height="16.5"/>
+                                                <rect key="frame" x="12" y="144.5" width="17" height="16.5"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="j2L-wX-UIu">
-                                                <rect key="frame" x="32" y="152" width="306" height="16.5"/>
+                                                <rect key="frame" x="32" y="144" width="306" height="16.5"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -1964,15 +1964,15 @@ scan</string>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btcIconBig" translatesAutoresizingMaskIntoConstraints="NO" id="M7S-64-Prv">
-                                        <rect key="frame" x="158.5" y="56.5" width="58" height="58"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btcIconBig" translatesAutoresizingMaskIntoConstraints="NO" id="M7S-64-Prv">
+                                        <rect key="frame" x="152" y="41.5" width="71" height="71"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="58" id="kEQ-7s-BTR"/>
-                                            <constraint firstAttribute="height" constant="58" id="pb9-b3-nUS"/>
+                                            <constraint firstAttribute="width" constant="71" id="kEQ-7s-BTR"/>
+                                            <constraint firstAttribute="height" constant="71" id="pb9-b3-nUS"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b8x-RC-TUx">
-                                        <rect key="frame" x="36" y="329" width="303" height="226.5"/>
+                                        <rect key="frame" x="36" y="321" width="303" height="226.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -1981,19 +1981,19 @@ scan</string>
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sending From" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Seu-LQ-0oR">
-                                        <rect key="frame" x="137" y="339" width="103" height="22"/>
+                                        <rect key="frame" x="137" y="331" width="103" height="22"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                                         <color key="textColor" red="0.20392156862745098" green="0.20392156862745098" blue="0.20392156862745098" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC ∙ Personal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y3A-JK-Mp2">
-                                        <rect key="frame" x="132" y="364" width="112" height="23.5"/>
+                                        <rect key="frame" x="132" y="356" width="112" height="23.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
                                         <color key="textColor" red="0.93755775690078735" green="0.55298328399658203" blue="0.010770578868687153" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="ccP-jD-nTp">
-                                        <rect key="frame" x="168" y="390.5" width="40" height="31.5"/>
+                                        <rect key="frame" x="168" y="382.5" width="40" height="31.5"/>
                                         <attributedString key="attributedText">
                                             <fragment>
                                                 <string key="content">address
@@ -2008,38 +2008,38 @@ address</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.1234 BTC / 1 123 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="31h-f9-3fx">
-                                        <rect key="frame" x="110" y="426" width="154.5" height="19.5"/>
+                                        <rect key="frame" x="110" y="418" width="154.5" height="19.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KuO-o0-aFN">
-                                        <rect key="frame" x="36" y="455.5" width="303" height="2"/>
+                                        <rect key="frame" x="36" y="447.5" width="303" height="2"/>
                                         <color key="backgroundColor" red="0.89803921568627454" green="0.8981010913848877" blue="0.89792215824127197" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="nVc-iv-0QU"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fee Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ewh-6y-aEq">
-                                        <rect key="frame" x="156" y="465.5" width="63" height="22"/>
+                                        <rect key="frame" x="156" y="457.5" width="63" height="22"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                                         <color key="textColor" red="0.20392156859999999" green="0.20392156859999999" blue="0.20392156859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fast" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CAx-k6-U4B">
-                                        <rect key="frame" x="171" y="492.5" width="32" height="23.5"/>
+                                        <rect key="frame" x="171" y="484.5" width="32" height="23.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
                                         <color key="textColor" red="0.20392156859999999" green="0.20392156859999999" blue="0.20392156859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.002 BTC / 1.54 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RhC-aH-HrF">
-                                        <rect key="frame" x="116" y="521" width="142" height="19.5"/>
+                                        <rect key="frame" x="116" y="513" width="142" height="19.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="14"/>
                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qPf-RB-QyF">
-                                        <rect key="frame" x="0.0" y="574.5" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="566.5" width="375" height="64"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Slide to Send" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m0G-xr-zmf">
                                                 <rect key="frame" x="132.5" y="19.5" width="110" height="25"/>
@@ -2113,7 +2113,7 @@ address</string>
                                     <constraint firstItem="idk-lO-290" firstAttribute="leading" secondItem="nzU-CV-d25" secondAttribute="leading" constant="16" id="JC1-Dj-fld"/>
                                     <constraint firstItem="31h-f9-3fx" firstAttribute="top" secondItem="ccP-jD-nTp" secondAttribute="bottom" constant="4" id="Lgb-fC-8AZ"/>
                                     <constraint firstItem="b8x-RC-TUx" firstAttribute="leading" secondItem="MIf-xQ-WjZ" secondAttribute="leading" id="OUu-YV-D1V"/>
-                                    <constraint firstItem="RI9-ER-ncF" firstAttribute="top" secondItem="M7S-64-Prv" secondAttribute="bottom" constant="9" id="R4U-ld-eCg"/>
+                                    <constraint firstItem="RI9-ER-ncF" firstAttribute="top" secondItem="M7S-64-Prv" secondAttribute="bottom" constant="3" id="R4U-ld-eCg"/>
                                     <constraint firstItem="y3A-JK-Mp2" firstAttribute="centerX" secondItem="Seu-LQ-0oR" secondAttribute="centerX" id="UtY-Rs-JZB"/>
                                     <constraint firstItem="M7S-64-Prv" firstAttribute="centerX" secondItem="Mk1-tu-7rf" secondAttribute="centerX" id="X35-gJ-Ika"/>
                                     <constraint firstItem="Ewh-6y-aEq" firstAttribute="centerX" secondItem="31h-f9-3fx" secondAttribute="centerX" id="XBv-3k-KEO"/>
@@ -2128,7 +2128,7 @@ address</string>
                                     <constraint firstAttribute="trailing" secondItem="iHg-A2-nCQ" secondAttribute="trailing" constant="16" id="fAO-VJ-3ph"/>
                                     <constraint firstItem="ccP-jD-nTp" firstAttribute="centerX" secondItem="y3A-JK-Mp2" secondAttribute="centerX" id="fGj-X5-9My"/>
                                     <constraint firstItem="Seu-LQ-0oR" firstAttribute="top" secondItem="b8x-RC-TUx" secondAttribute="top" constant="10" id="hl4-N7-44N"/>
-                                    <constraint firstItem="M7S-64-Prv" firstAttribute="top" secondItem="Mk1-tu-7rf" secondAttribute="bottom" constant="20" id="iET-7c-WN5"/>
+                                    <constraint firstItem="M7S-64-Prv" firstAttribute="top" secondItem="Mk1-tu-7rf" secondAttribute="bottom" constant="5" id="iET-7c-WN5"/>
                                     <constraint firstItem="b8x-RC-TUx" firstAttribute="bottom" secondItem="RhC-aH-HrF" secondAttribute="bottom" constant="15" id="iJq-ND-mLq"/>
                                     <constraint firstItem="ccP-jD-nTp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="b8x-RC-TUx" secondAttribute="leading" constant="3" id="lsu-oQ-rle"/>
                                     <constraint firstItem="UF8-xs-M2D" firstAttribute="leading" secondItem="nzU-CV-d25" secondAttribute="leading" id="o1d-S1-abp"/>
@@ -2854,7 +2854,7 @@ address</string>
         <segue reference="Nqh-Rv-oVp"/>
         <segue reference="Y3u-nO-qs1"/>
         <segue reference="EUD-ex-a5v"/>
-        <segue reference="FRo-Sp-aVY"/>
+        <segue reference="N56-qi-Hx5"/>
         <segue reference="jSE-EO-qlC"/>
         <segue reference="GW1-5g-oIp"/>
     </inferredMetricsTieBreakers>
