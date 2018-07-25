@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -30,34 +30,34 @@
                                 <rect key="frame" x="16" y="6" width="210" height="92"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC ∙ Personal" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Cz-e3-hvb">
-                                        <rect key="frame" x="58" y="10.5" width="104.5" height="22"/>
+                                        <rect key="frame" x="54" y="10.5" width="104.5" height="22"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="s8t-EB-2YW">
-                                        <rect key="frame" x="130" y="34.5" width="34" height="25"/>
+                                        <rect key="frame" x="126" y="34.5" width="34" height="25"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 233 $" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9z-dp-Kig">
-                                        <rect key="frame" x="58" y="60.5" width="51" height="21"/>
+                                        <rect key="frame" x="54" y="60.5" width="51" height="21"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1234" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Aqq-Qn-XWQ">
-                                        <rect key="frame" x="58" y="32.5" width="67" height="28"/>
+                                        <rect key="frame" x="54" y="32.5" width="67" height="28"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btcMediumIcon" translatesAutoresizingMaskIntoConstraints="NO" id="f2u-58-p3M">
-                                        <rect key="frame" x="12" y="30" width="33" height="33"/>
+                                        <rect key="frame" x="2" y="23.5" width="46" height="46"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="f2u-58-p3M" secondAttribute="height" multiplier="1:1" id="D4V-5e-v7X"/>
-                                            <constraint firstAttribute="width" constant="33" id="Kii-TG-chN"/>
+                                            <constraint firstAttribute="width" constant="46" id="Kii-TG-chN"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
@@ -69,10 +69,10 @@
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="s8t-EB-2YW" secondAttribute="trailing" constant="5" id="1wV-LZ-PgT"/>
                                     <constraint firstItem="u9z-dp-Kig" firstAttribute="leading" secondItem="Aqq-Qn-XWQ" secondAttribute="leading" id="2zJ-aB-L1p"/>
                                     <constraint firstItem="u9z-dp-Kig" firstAttribute="top" secondItem="Aqq-Qn-XWQ" secondAttribute="bottom" id="D4c-Es-bd4"/>
-                                    <constraint firstItem="1Cz-e3-hvb" firstAttribute="leading" secondItem="f2u-58-p3M" secondAttribute="trailing" constant="13" id="FOz-Ec-eqe"/>
+                                    <constraint firstItem="1Cz-e3-hvb" firstAttribute="leading" secondItem="f2u-58-p3M" secondAttribute="trailing" constant="6" id="FOz-Ec-eqe"/>
                                     <constraint firstItem="f2u-58-p3M" firstAttribute="centerY" secondItem="rKe-IG-8nC" secondAttribute="centerY" id="IGu-rS-PLx"/>
                                     <constraint firstItem="Aqq-Qn-XWQ" firstAttribute="top" secondItem="1Cz-e3-hvb" secondAttribute="bottom" id="IZe-Tw-KCu"/>
-                                    <constraint firstItem="f2u-58-p3M" firstAttribute="leading" secondItem="rKe-IG-8nC" secondAttribute="leading" constant="12" id="MIX-Iu-u1J"/>
+                                    <constraint firstItem="f2u-58-p3M" firstAttribute="leading" secondItem="rKe-IG-8nC" secondAttribute="leading" constant="2" id="MIX-Iu-u1J"/>
                                     <constraint firstItem="Aqq-Qn-XWQ" firstAttribute="leading" secondItem="1Cz-e3-hvb" secondAttribute="leading" id="RbE-kL-VFQ"/>
                                     <constraint firstItem="s8t-EB-2YW" firstAttribute="centerY" secondItem="Aqq-Qn-XWQ" secondAttribute="centerY" id="Rqu-Zw-OwK"/>
                                     <constraint firstItem="s8t-EB-2YW" firstAttribute="leading" secondItem="Aqq-Qn-XWQ" secondAttribute="trailing" constant="5" id="V05-BM-1nR"/>

@@ -32,3 +32,7 @@
 "GO TO SETTINGS" = "Разрешите использование камеры в настройках. (Настройки -> Multy)";
 "YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE" = "Вы можете скачать новую версию в AppStore";
 "CREATE OR IMPORT WALLET" = "Нажмите кнопку, чтобы создать новый кошелек или импортировать существующий.";
+"ENTERED INVALID SUM" = "Введена неверная сумма";
+"YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE" = "Вы можете скачать новую версию в AppStore";
+"TEMPORARY OUT OF SERVICE" = "Временно не работает";
+"SERVER STOP STRING"= "Извините, но Multy временно не работает. Пожалуйста, приходите позже.";

@@ -74,7 +74,7 @@ extension PickerDelegate: UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let size = CGFloat(35.0)
+        let size = CGFloat(46.0)
         let xCoordinate = -size
         let myView = UIView(frame: CGRect(x: xCoordinate, y: 0, width: size, height: size))
         let myImageView = UIImageView(frame: CGRect(x: xCoordinate, y: 0, width: size, height: size))

@@ -269,7 +269,6 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
 
         if editingStyle == .delete {
 
-            //TODO: remove the item from the data model
         }
     }
     

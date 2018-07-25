@@ -61,10 +61,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btcMediumIcon" translatesAutoresizingMaskIntoConstraints="NO" id="bGK-TI-pDK">
-                                        <rect key="frame" x="12" y="29.5" width="33" height="33"/>
+                                        <rect key="frame" x="6" y="23" width="46" height="46"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="bGK-TI-pDK" secondAttribute="height" multiplier="1:1" id="5OI-2C-7ad"/>
-                                            <constraint firstAttribute="width" constant="33" id="Hkl-wf-pZm"/>
+                                            <constraint firstAttribute="width" constant="46" id="Hkl-wf-pZm"/>
+                                            <constraint firstAttribute="height" constant="46" id="I8U-Cl-77I"/>
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pending" translatesAutoresizingMaskIntoConstraints="NO" id="fKf-uC-vtg">
@@ -100,11 +100,11 @@ Wallet is resyncing</string>
                                     <constraint firstItem="Vd1-0D-jGB" firstAttribute="leading" secondItem="fKf-uC-vtg" secondAttribute="trailing" constant="5" id="V7h-S1-k9w"/>
                                     <constraint firstItem="Vd1-0D-jGB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pYm-cg-fCJ" secondAttribute="trailing" constant="12" id="W3D-aX-gib"/>
                                     <constraint firstItem="Vd1-0D-jGB" firstAttribute="leading" secondItem="dSJ-UU-BM0" secondAttribute="trailing" id="XxL-JC-aY5"/>
-                                    <constraint firstItem="pYm-cg-fCJ" firstAttribute="leading" secondItem="bGK-TI-pDK" secondAttribute="trailing" constant="13" id="bue-Yq-uRL"/>
+                                    <constraint firstItem="pYm-cg-fCJ" firstAttribute="leading" secondItem="bGK-TI-pDK" secondAttribute="trailing" constant="6" id="bue-Yq-uRL"/>
                                     <constraint firstItem="wjl-lP-yts" firstAttribute="leading" secondItem="Msb-b9-SS7" secondAttribute="leading" id="g8A-6I-Mq6"/>
                                     <constraint firstItem="d4q-xh-0f4" firstAttribute="leading" secondItem="Msb-b9-SS7" secondAttribute="trailing" constant="5" id="nKg-fV-HCx"/>
                                     <constraint firstItem="fKf-uC-vtg" firstAttribute="centerY" secondItem="srv-bR-zld" secondAttribute="centerY" id="oSt-WE-Qyx"/>
-                                    <constraint firstItem="bGK-TI-pDK" firstAttribute="leading" secondItem="srv-bR-zld" secondAttribute="leading" constant="12" id="wCg-cb-PCE"/>
+                                    <constraint firstItem="bGK-TI-pDK" firstAttribute="leading" secondItem="srv-bR-zld" secondAttribute="leading" constant="6" id="wCg-cb-PCE"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">

@@ -21,6 +21,7 @@ extension Constants {
     static let weHaveUpdateString = "WE HAVE AN UPDATE"
     static let updateMultyString = "UPDATE MULTY"
     static let goToUpdateString = "GO TO UPDATE"
+    static let buildUpdateMessage = "YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE"
     static let warningString = "WARNING"
     static let cancelString = "CANCEL"
     static let errorString = "ERROR"
@@ -116,5 +117,7 @@ extension Constants {
     static let badInviteCodeString = "INVALID INVITE CODE"
     static let inviteCodeNotFoundString = "INVITE CODE NOT FOUND"
     static let deleteMultisigWalletAlertString = "DELETE MULTISIG WALLET WARNING"
-    static let buildUpdateMessage = "YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE"
+    static let leaveMultisigWalletAlertString = "LEAVE MULTISIG WALLET WARNING"
+    static let serverNotWorkTitleString = "TEMPORARY OUT OF SERVICE"
+    static let serverNotWorkingMessageString = "SERVER STOP STRING"
 }
