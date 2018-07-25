@@ -703,7 +703,7 @@ extension CreateTransactionDelegate {
                                                                               balanceAmount: wallet.ethWallet!.balance,
                                                                               ethereumChainID: UInt32(wallet.blockchainType.net_type),
                                                                               gasPrice: feeRate,
-                                                                              gasLimit: "40000")
+                                                                              gasLimit: "21000")
         
         rawTransaction = trData.message
         

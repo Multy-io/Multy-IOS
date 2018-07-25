@@ -25,7 +25,7 @@ class SendAmountEthPresenter: NSObject {
             
             
             if transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt != nil {
-                feeAmount = BigInt("40000") * transactionDTO.transaction!.transactionRLM?.sumInCryptoBigInt
+                feeAmount = BigInt("21000") * transactionDTO.transaction!.transactionRLM?.sumInCryptoBigInt
                 feeAmountInFiat = feeAmount * exchangeCourse
             }
             
@@ -328,7 +328,7 @@ extension CreateTransactionDelegate {
                                                                               balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
             ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
             gasPrice: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
-            gasLimit: "40000")
+            gasLimit: "21000")
         
         rawTransaction = trData.message
         

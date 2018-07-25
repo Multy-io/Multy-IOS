@@ -9,7 +9,7 @@
 
 #include "api.h"
 
-#include "account.h"
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
