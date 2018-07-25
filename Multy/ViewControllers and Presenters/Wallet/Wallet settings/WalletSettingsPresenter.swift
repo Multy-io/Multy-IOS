@@ -31,8 +31,9 @@ class WalletSettingsPresenter: NSObject {
                                                        networkID:   self.wallet!.chainType,
                                                        walletIndex: self.wallet!.walletID,
                                                        completion: { (answer, err) in
-                self.walletSettingsVC?.loader.hide()
-                self.walletSettingsVC?.navigationController?.popToRootViewController(animated: true)
+                                                        NotificationCenter.default.post(name: NSNotification.Name("walletDeleted"), object: self.wallet!)
+                                                        self.walletSettingsVC?.loader.hide()
+                                                        self.walletSettingsVC?.navigationController?.popToRootViewController(animated: true)
             })
         }
     }
