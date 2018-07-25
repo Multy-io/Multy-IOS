@@ -277,9 +277,18 @@ class UserWalletRLM: Object {
         //MARK: temporary only 0-currency
         //MARK: server BUG: WalletIndex and walletindex
         //No data from server
-        let addressString = walletInfo["multisig"] != nil ? wallet.address : nil
+        let multisigString = walletInfo["multisig"] != nil ? wallet.address : nil
         if walletInfo["walletindex"] != nil || walletInfo["WalletIndex"] != nil {
-            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, multisigAddress:addressString)
+            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, multisigAddress:multisigString)
+            
+            if multisigString != nil {
+                let owner = wallet.multisigWallet?.owners.filter { $0.associated == true }.first
+                
+                guard owner != nil else {
+                    return wallet
+                }
+                wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, multisigAddress:nil)
+            }
         }
         
         return wallet
@@ -604,10 +613,6 @@ extension WalletUpdateRLM {
                     
                     if let creator = ownerStruct["creator"] as? Bool {
                         owner.creator = NSNumber(booleanLiteral: creator)
-                    }
-                    
-                    if owner.associated == true {
-                        multisigWallet!.linkedWalletID = owner.walletIndex
                     }
                     
                     owners.append(owner)

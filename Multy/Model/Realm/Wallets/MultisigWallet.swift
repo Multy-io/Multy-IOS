@@ -23,7 +23,7 @@ class MultisigWallet: Object {
     
     @objc dynamic var isDeleted = NSNumber(booleanLiteral: false)
     
-    @objc dynamic var linkedWalletID = NSNumber(value: 0)
+    @objc dynamic var linkedWalletID = String()
     
     var owners = List<MultisigOwnerRLM>()
 }
