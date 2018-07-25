@@ -2242,20 +2242,6 @@ correctly</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vHL-uD-DHH">
                                         <rect key="frame" x="0.0" y="106.5" width="375" height="380"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctg-5q-b08" userLabel="LineView2">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="8Y8-rf-cKd"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rAK-LL-JBB" userLabel="LineView2">
-                                                <rect key="frame" x="0.0" y="379" width="375" height="1"/>
-                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="xAb-bi-xMf"/>
-                                                </constraints>
-                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vka-N2-WxL" userLabel="LineView1">
                                                 <rect key="frame" x="66" y="63" width="309" height="1"/>
                                                 <color key="backgroundColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2323,6 +2309,13 @@ correctly</string>
                                                     <constraint firstAttribute="trailing" secondItem="2Cs-So-yJx" secondAttribute="trailing" constant="16" id="sSc-gz-6m6"/>
                                                     <constraint firstItem="apD-ps-Wne" firstAttribute="leading" secondItem="x4M-9u-Tco" secondAttribute="leading" constant="20" id="vK7-oa-0hJ"/>
                                                     <constraint firstItem="2Cs-So-yJx" firstAttribute="centerY" secondItem="x4M-9u-Tco" secondAttribute="centerY" id="wLC-Ag-7Uo"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctg-5q-b08" userLabel="LineView1">
+                                                <rect key="frame" x="0.0" y="0.5" width="375" height="1"/>
+                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="8Y8-rf-cKd"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FxV-OV-cca">
@@ -2463,23 +2456,23 @@ correctly</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b4Q-oK-RUx">
-                                                <rect key="frame" x="0.0" y="320" width="375" height="60"/>
+                                                <rect key="frame" x="0.0" y="320" width="375" height="58"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leave Feedback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGT-gp-Wpw">
-                                                        <rect key="frame" x="66" y="19" width="119" height="22"/>
+                                                        <rect key="frame" x="66" y="18" width="119" height="22"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                         <color key="textColor" red="0.21176470589999999" green="0.21176470589999999" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settingsFeedback" translatesAutoresizingMaskIntoConstraints="NO" id="BQR-Te-LkR">
-                                                        <rect key="frame" x="20" y="14.5" width="35" height="35"/>
+                                                        <rect key="frame" x="20" y="13.5" width="35" height="35"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="35" id="AXO-Oz-hmj"/>
                                                             <constraint firstAttribute="width" constant="35" id="cyx-Da-ro8"/>
                                                         </constraints>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron" translatesAutoresizingMaskIntoConstraints="NO" id="4IY-ke-zzD">
-                                                        <rect key="frame" x="344" y="22.5" width="15" height="15"/>
+                                                        <rect key="frame" x="344" y="21.5" width="15" height="15"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="15" id="lYf-K9-s50"/>
                                                             <constraint firstAttribute="height" constant="15" id="twv-sJ-m8M"/>
@@ -2494,6 +2487,13 @@ correctly</string>
                                                     <constraint firstItem="BQR-Te-LkR" firstAttribute="leading" secondItem="b4Q-oK-RUx" secondAttribute="leading" constant="20" id="KI6-SZ-jXg"/>
                                                     <constraint firstItem="cGT-gp-Wpw" firstAttribute="centerY" secondItem="b4Q-oK-RUx" secondAttribute="centerY" id="e4u-7M-d7F"/>
                                                     <constraint firstItem="4IY-ke-zzD" firstAttribute="centerY" secondItem="b4Q-oK-RUx" secondAttribute="centerY" id="y9c-Vy-3el"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rAK-LL-JBB" userLabel="LineView2">
+                                                <rect key="frame" x="0.0" y="378.5" width="375" height="1"/>
+                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="xAb-bi-xMf"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WQm-hc-ZY2">
@@ -2552,7 +2552,7 @@ correctly</string>
                                             <constraint firstAttribute="trailing" secondItem="xPn-zs-KFd" secondAttribute="trailing" id="BZ1-rk-Msl"/>
                                             <constraint firstItem="FxV-OV-cca" firstAttribute="top" secondItem="Vka-N2-WxL" secondAttribute="bottom" id="CHZ-5n-3iJ"/>
                                             <constraint firstItem="xPn-zs-KFd" firstAttribute="leading" secondItem="LYv-7w-eWa" secondAttribute="leading" id="ENV-Eb-b6e"/>
-                                            <constraint firstAttribute="bottom" secondItem="b4Q-oK-RUx" secondAttribute="bottom" id="IBo-Db-2MY"/>
+                                            <constraint firstAttribute="bottom" secondItem="b4Q-oK-RUx" secondAttribute="bottom" constant="2" id="IBo-Db-2MY"/>
                                             <constraint firstItem="x4M-9u-Tco" firstAttribute="top" secondItem="vHL-uD-DHH" secondAttribute="top" id="IZO-ED-BpX"/>
                                             <constraint firstAttribute="trailing" secondItem="Vka-N2-WxL" secondAttribute="trailing" id="L8k-Jj-eTu"/>
                                             <constraint firstAttribute="trailing" secondItem="sd1-gT-DhV" secondAttribute="trailing" id="NWE-Zh-N1M"/>
