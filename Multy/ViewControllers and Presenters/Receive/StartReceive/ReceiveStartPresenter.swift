@@ -89,12 +89,15 @@ class ReceiveStartPresenter: NSObject {
     }
     
     func joinRequest() {
-//        DataManager.shared.joinToMultisigWith(wallet: walletsArr[selectedIndex!], inviteCode: inviteCode) { (answer, err) in
-//
-//        }
         let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
         let waitingVC = storyboard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
-        receiveStartVC?.navigationController?.pushViewController(waitingVC, animated: true)
+        DataManager.shared.joinToMultisigWith(wallet: walletsArr[selectedIndex!], inviteCode: inviteCode) { [unowned self] (answer, err) in
+            if err != nil {
+                return
+            } else {
+                self.receiveStartVC?.navigationController?.pushViewController(waitingVC, animated: true)
+            }
+        }
     }
 }
 

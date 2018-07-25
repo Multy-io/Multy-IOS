@@ -606,6 +606,10 @@ extension WalletUpdateRLM {
                         owner.creator = NSNumber(booleanLiteral: creator)
                     }
                     
+                    if owner.associated == true {
+                        multisigWallet!.linkedWalletID = owner.walletIndex
+                    }
+                    
                     owners.append(owner)
                 }
                 

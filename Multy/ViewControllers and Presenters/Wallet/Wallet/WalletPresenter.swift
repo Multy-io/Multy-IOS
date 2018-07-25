@@ -12,8 +12,8 @@ class WalletPresenter: NSObject {
             walletVC?.titleLbl.text = wallet?.name
             updateUI()
             
-            if wallet != nil && wallet!.chain.intValue == 60 && wallet!.chainType.intValue == 4 {
-                var binData = account!.binaryDataString.createBinaryData()!
+//            if wallet != nil && wallet!.chain.intValue == 60 && wallet!.chainType.intValue == 4 {
+//                var binData = account!.binaryDataString.createBinaryData()!
 //                let _ = DataManager.shared.createMultiSigWallet(binaryData: &binData,
 //                                                                wallet: wallet!,
 //                                                                sendAddress: wallet!.address,
@@ -38,7 +38,7 @@ class WalletPresenter: NSObject {
 //                                                       sendAmountString: "10000000000000000",
 //                                                       gasPriceString: "3000000000",
 //                                                       gasLimitString: "25000")
-            }
+//            }
         }
     }
     

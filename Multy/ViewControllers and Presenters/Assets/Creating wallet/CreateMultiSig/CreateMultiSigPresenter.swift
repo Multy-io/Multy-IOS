@@ -9,7 +9,7 @@ private typealias LocalizeDelegate = CreateMultiSigPresenter
 class CreateMultiSigPresenter: NSObject, CountOfProtocol {
     var mainVC: CreateMultiSigViewController?
     var account : AccountRLM?
-    var membersCount = 2
+    var ownersCount = 2
     var signaturesCount = 2
     var walletName: String = ""
     var selectedBlockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue)) {
@@ -29,7 +29,7 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
     
     func passMultiSigInfo(signaturesCount: Int, membersCount: Int) {
         self.signaturesCount = signaturesCount
-        self.membersCount = membersCount
+        self.ownersCount = membersCount
         
         mainVC?.tableView.reloadData()
     }
@@ -68,8 +68,8 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
         var binData : BinaryData = account!.binaryDataString.createBinaryData()!
         
         //MARK: topIndex
-        let currencyID = selectedBlockchainType.blockchain.rawValue
-        let networkID = selectedBlockchainType.net_type
+        let currencyID = choosenWallet!.blockchainType.blockchain.rawValue
+        let networkID = choosenWallet!.blockchainType.net_type
         var currentTopIndex = account!.topIndexes.filter("currencyID = \(currencyID) AND networkID == \(networkID)").first
         
         if currentTopIndex == nil {
@@ -83,22 +83,20 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
         createdWallet.name = cell.walletNameTF.text ?? "Wallet"
-        createdWallet.walletID = NSNumber(value: dict!["walletID"] as! UInt32)
-        createdWallet.addressID = NSNumber(value: dict!["addressID"] as! UInt32)
-        createdWallet.address = dict!["address"] as! String
-        
+
         if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
             let ethWallet = ETHWallet()
             ethWallet.balance = "0"
             ethWallet.nonce = NSNumber(value: 0)
             ethWallet.pendingWeiAmountString = "0"
             createdWallet.ethWallet = ethWallet
-            if createdWallet.blockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue) || createdWallet.blockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue) {
+            if selectedBlockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue) || selectedBlockchainType.net_type == Int(ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue) {
                 // Multisig
                 createdWallet.multisigWallet = MultisigWallet()
                 createdWallet.ethWallet = ethWallet
+                createdWallet.multisigWallet!.chainType = NSNumber(value: selectedBlockchainType.net_type)
                 createdWallet.multisigWallet!.inviteCode = makeInviteCode()
-                createdWallet.multisigWallet!.ownersCount = membersCount
+                createdWallet.multisigWallet!.ownersCount = ownersCount
                 createdWallet.multisigWallet!.signaturesRequiredCount = signaturesCount
                 createdWallet.multisigWallet!.linkedWalletID = choosenWallet!.walletID
             }
@@ -107,16 +105,15 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
         let multisig = [
             "isMultisig": true,
             "signaturesRequired": signaturesCount,
-            "ownersCount": membersCount,
-            "inviteCode": "kek-string"
+            "ownersCount": ownersCount,
+            "inviteCode": createdWallet.multisigWallet!.inviteCode
             ] as [String : Any]
         
         let params = [
             "currencyID"    : currencyID,
             "networkID"     : networkID,
-            "address"       : createdWallet.address,
-            "addressIndex"  : createdWallet.addressID,
-            "walletIndex"   : createdWallet.walletID,
+            "address"       : choosenWallet!.address,
+            "walletIndex"   : choosenWallet!.walletID,
             "walletName"    : createdWallet.name,
             "multisig"      : multisig
             ] as [String : Any]

@@ -1515,6 +1515,7 @@ Members</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="deleteWalletLabel" destination="WXp-Nn-VLr" id="hy4-Gc-11S"/>
                         <outlet property="linkedWalletAddressLabel" destination="lfj-9j-Va0" id="fVI-91-TMZ"/>
                         <outlet property="linkedWalletImageView" destination="8Hh-E8-YWM" id="Kbf-fk-AOx"/>
                         <outlet property="linkedWalletNameLabel" destination="bIi-Ut-L3X" id="P2U-xD-HNe"/>

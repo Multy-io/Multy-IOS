@@ -201,7 +201,10 @@ extension DataManager {
                     //MARK: delete
                     if answer!["wallets"] is NSNull {
                         return
+                    } else if answer!["wallets"] == nil {
+                        return
                     }
+                    
                     let walletsArrayFromApi = answer!["wallets"] as! NSArray
                     //                    let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi)
                     completion(walletsArrayFromApi, nil)
@@ -219,6 +222,23 @@ extension DataManager {
 //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
                 
 //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
+                
+                completion(wallet, nil)
+            } else {
+                completion(nil, error)
+            }
+            
+            print("getOneWalletVerbose:\n\(dict)")
+        }
+    }
+    
+    func getOneMultisigWalletVerbose(inviteCode: String, blockchain: BlockchainType, completion: @escaping (_ answer: UserWalletRLM?,_ error: Error?) -> ()) {
+        apiManager.getOneMultisigWalletVerbose(inviteCode: inviteCode, blockchain: blockchain) { (dict, error) in
+            if dict != nil && dict!["wallet"] != nil && !(dict!["wallet"] is NSNull) {
+                let wallet = UserWalletRLM.initWithInfo(walletInfo: (dict!["wallet"] as! NSArray)[0] as! NSDictionary)
+                //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
+                
+                //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
                 
                 completion(wallet, nil)
             } else {
@@ -285,6 +305,96 @@ extension DataManager {
     func getTransactionInfo(transactionString: String, completion: @escaping (_ answer: HistoryRLM?,_ error: Error?) -> ()) {
         apiManager.getTransactionInfo(transactionString: transactionString) { (answer, error) in
             completion(answer, error)
+        }
+    }
+    
+    func kickFromMultisigWith(wallet: UserWalletRLM, addressToKick: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        let payload: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "address": wallet.address,
+            "addressto": addressToKick
+        ]
+        
+        let params: NSDictionary = [
+            "type": "kik:multisig",
+            "from": "",
+            "to":"",
+            "date": Date().timeIntervalSince1970,
+            "status": 0,
+            "payload": payload
+        ]
+        
+        
+        socketManager.sendMsg(params: params) { (answerDict, err) in
+            completion(answerDict, err)
+        }
+    }
+    
+    func leaveFromMultisigWith(wallet: UserWalletRLM, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        let payload: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "address": wallet.address,
+            ]
+        
+        let params: NSDictionary = [
+            "type": "kik:multisig",
+            "from": "",
+            "to":"",
+            "date": Date().timeIntervalSince1970,
+            "status": 0,
+            "payload": payload
+        ]
+        
+        
+        socketManager.sendMsg(params: params) { (answerDict, err) in
+            completion(answerDict, err)
+        }
+    }
+    
+    func deleteMultisigWith(wallet: UserWalletRLM, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        let payload: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "address": wallet.address,
+            ]
+        
+        let params: NSDictionary = [
+            "type": "kik:multisig",
+            "from": "",
+            "to":"",
+            "date": Date().timeIntervalSince1970,
+            "status": 0,
+            "payload": payload
+        ]
+        
+        
+        socketManager.sendMsg(params: params) { (answerDict, err) in
+            completion(answerDict, err)
+        }
+    }
+    
+    func joinToMultisigWith(wallet: UserWalletRLM, inviteCode: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        let payloadForJoin: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "address": wallet.address,
+            "invitecode": inviteCode,
+            "addresstokik":"", //omitempty
+            "walletindex": wallet.walletID,
+            "currencyid": wallet.chain,
+            "networkid": wallet.chainType
+        ]
+        
+        let paramsForMsgSend: NSDictionary = [
+            "type": "join:multisig",  // it's kinda signature method eg: join:multisig.
+            "from": "",              // not requied
+            "to":"",                // not requied
+            "date": Date().timeIntervalSince1970, // time unix
+            "status": 0,
+            "payload": payloadForJoin
+        ]
+        
+        
+        socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
+            completion(answerDict, err)
         }
     }
 }

@@ -7,6 +7,8 @@ import RealmSwift
 
 class MultisigWallet: Object {
     
+    @objc dynamic var chainType = NSNumber(value: 1)
+    
     @objc dynamic var factoryAddress = String()
     
     @objc dynamic var txOfCreation = String()
