@@ -1,1 +1,7 @@
 "WALLET NAME NOT EMPTY ALERT" = "Имя кошелька не должно быть пустым";
+"DELETE MULTISIG WALLET WARNING" = "Вы действительно хотите удалить кошелек?";
+"WARNING" = "Предупреждение";
+"YES STRING" = "Да";
+"WALLET NAME NOT EMPTY ALERT" = "Имя кошелька не должно быть пустым";
+"UPDATING" = "Обновление...";
+"LEAVE MULTISIG WALLET WARNING" = "Вы действительно хотите покинуть кошелек?";

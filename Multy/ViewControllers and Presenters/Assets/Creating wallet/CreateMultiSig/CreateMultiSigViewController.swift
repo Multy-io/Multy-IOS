@@ -84,7 +84,7 @@ class CreateMultiSigViewController: UIViewController {
         let membersVC = storyboard.instantiateViewController(withIdentifier: "membersCountVC") as! MembersViewController
         membersVC.modalPresentationStyle = .overCurrentContext
         membersVC.countOfDelegate = presenter
-        membersVC.presenter.membersCount = presenter.membersCount
+        membersVC.presenter.membersCount = presenter.ownersCount
         membersVC.presenter.signaturesCount = presenter.signaturesCount
         self.present(membersVC, animated: true, completion: nil)
     }
@@ -193,7 +193,7 @@ extension TableViewDataSource: UITableViewDataSource {
             return nameCell
         case 1:
             let signsCell = self.tableView.dequeueReusableCell(withIdentifier: "signsCell") as! CreateWalletBlockchainTableViewCell
-            signsCell.setLblValue(value: "\(presenter.signaturesCount) of \(presenter.membersCount)")
+            signsCell.setLblValue(value: "\(presenter.signaturesCount) of \(presenter.ownersCount)")
             
             return signsCell
             

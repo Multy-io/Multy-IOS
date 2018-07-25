@@ -14,6 +14,7 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
     @IBOutlet weak var linkedWalletNameLabel: UILabel!
     @IBOutlet weak var linkedWalletAddressLabel: UILabel!
     @IBOutlet weak var signToSendAndTotalMembersLabel: UILabel!
+    @IBOutlet weak var deleteWalletLabel: UILabel!
     
     let presenter = WaitingMembersSettingsPresenter()
     var loader = PreloaderView(frame: HUDFrame, text: "Updating", image: #imageLiteral(resourceName: "walletHuge"))
@@ -37,19 +38,20 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
     }
     
     func updateUI() {
-        self.walletNameTF.text = self.presenter.wallet?.name
+        self.walletNameTF.text = self.presenter.wallet.name
         let linkedWallet = presenter.account.wallets.filter("walletID = \(presenter.wallet.multisigWallet!.linkedWalletID)").first
         self.linkedWalletNameLabel.text = linkedWallet?.name
         self.linkedWalletAddressLabel.text = linkedWallet?.address
         self.linkedWalletImageView.image = UIImage(named: (linkedWallet?.blockchainType.iconString)!)
         signToSendAndTotalMembersLabel.text = " \(presenter.wallet.multisigWallet!.signaturesRequiredCount) of \(presenter.wallet.multisigWallet!.ownersCount)"
+        self.deleteWalletLabel.text = presenter.isCreator ? "Delete" : "Leave"
     }
     
     func chooseAnotherWalletAction() {
         let storyboard = UIStoryboard(name: "Receive", bundle: nil)
         let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
         walletsVC.presenter.isNeedToPop = true
-        walletsVC.presenter.displayedBlockchainOnly = presenter.wallet!.blockchainType
+        walletsVC.presenter.displayedBlockchainOnly = presenter.wallet.blockchainType
         walletsVC.sendWalletDelegate = self
         walletsVC.titleTextKey = ""
         self.navigationController?.pushViewController(walletsVC, animated: true)
@@ -93,26 +95,12 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
     }
     
     @IBAction func deleteAction(_ sender: Any) {
-        if presenter.wallet!.isEmpty {
-            let message = localize(string: Constants.deleteMultisigWalletAlertString)
+        let message = presenter.isCreator ? localize(string: Constants.deleteMultisigWalletAlertString) : localize(string: Constants.leaveMultisigWalletAlertString)
             let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: localize(string: Constants.yesString), style: .cancel, handler: { [unowned self] (action) in
                 self.presenter.delete()
 //                self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(walletDeletedWithChain)\(self.presenter.wallet!.chain)")
             }))
-            alert.addAction(UIAlertAction(title: localize(string: Constants.noString), style: .default, handler: { (action) in
-                alert.dismiss(animated: true, completion: nil)
-//                self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(walletDeleteCancelWithChain)\(self.presenter.wallet!.chain)")
-            }))
-            
-            self.present(alert, animated: true, completion: nil)
-        } else {
-            let message = localize(string: Constants.walletAmountAlertString)
-            let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-//        self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(deleteWithChainTap)\(self.presenter.wallet!.chain)")
     }
 }
 
@@ -134,6 +122,6 @@ extension SendWalletDelegate: SendWalletProtocol {
 
 extension LocalizeDelegate: Localizable {
     var tableName: String {
-        return "Wallets"
+        return "MultiSig"
     }
 }

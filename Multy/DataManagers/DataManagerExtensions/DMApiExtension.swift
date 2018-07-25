@@ -201,7 +201,10 @@ extension DataManager {
                     //MARK: delete
                     if answer!["wallets"] is NSNull || answer!["wallets"] == nil {
                         return
+                    } else if answer!["wallets"] == nil {
+                        return
                     }
+                    
                     let walletsArrayFromApi = answer!["wallets"] as! NSArray
                     //                    let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi)
                     completion(walletsArrayFromApi, nil)
@@ -219,6 +222,23 @@ extension DataManager {
 //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
                 
 //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
+                
+                completion(wallet, nil)
+            } else {
+                completion(nil, error)
+            }
+            
+            print("getOneWalletVerbose:\n\(dict)")
+        }
+    }
+    
+    func getOneMultisigWalletVerbose(inviteCode: String, blockchain: BlockchainType, completion: @escaping (_ answer: UserWalletRLM?,_ error: Error?) -> ()) {
+        apiManager.getOneMultisigWalletVerbose(inviteCode: inviteCode, blockchain: blockchain) { (dict, error) in
+            if dict != nil && dict!["wallet"] != nil && !(dict!["wallet"] is NSNull) {
+                let wallet = UserWalletRLM.initWithInfo(walletInfo: (dict!["wallet"] as! NSArray)[0] as! NSDictionary)
+                //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
+                
+                //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
                 
                 completion(wallet, nil)
             } else {
@@ -287,4 +307,5 @@ extension DataManager {
             completion(answer, error)
         }
     }
+    
 }
