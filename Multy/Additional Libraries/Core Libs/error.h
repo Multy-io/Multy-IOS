@@ -69,6 +69,7 @@ enum ErrorScope
     ERROR_SCOPE_TRANSACTION_SOURCE          = 18,
     ERROR_SCOPE_TRANSACTION_FEE             = 19,
     ERROR_SCOPE_TRANSACTION_PAYLOAD         = 20,
+    ERROR_SCOPE_TRANSACTION_BUILDER         = 32,
 };
 
 #define MULTY_SCOPE_ERROR_BASE(scope) ((scope) << MULTY_ERROR_SCOPE_SHIFT)
@@ -76,7 +77,7 @@ enum ErrorScope
 
 enum ErrorCode
 {
-    // Generic error codes
+    // Generic error codes that could happen in multiple contextes
     ERROR_INVARIANT_FAILED = 0xFF,              // something gone really wrong
     ERROR_OUT_OF_MEMORY = 0xFE,                 //
     ERROR_FEATURE_NOT_SUPPORTED = 0xFD,         // that specific feature is not supported.
@@ -86,6 +87,8 @@ enum ErrorCode
 
     ERROR_INVALID_ARGUMENT,
     ERROR_INVALID_ADDRESS,                      // blockhain account address is invalid
+
+    ERROR_NOT_ALL_REQUIRED_PROPERTIES_SET,
 
     // Scope-specific error codes
 
@@ -102,6 +105,7 @@ enum ErrorCode
     ERROR_BIG_INT_INVALID_STRING,
     ERROR_BIG_INT_TOO_BIG_FOR_INT64,
     ERROR_BIG_INT_TOO_BIG_FOR_UINT64,
+    ERROR_BIG_INT_TOO_BIG_FOR_UINT256,
 
     ERROR_MNEMONIC_SPECIFIC_ERROR_BASE = MULTY_SCOPE_ERROR_BASE(ERROR_SCOPE_MNEMONIC),
     ERROR_MNEMONIC_BAD_ENTROPY,
@@ -119,7 +123,6 @@ enum ErrorCode
 
     // Transaction-level errors, reported by transaction object.
     ERROR_TRANSACTION_SPECIFIC_ERROR_BASE = MULTY_SCOPE_SPECIFIC_ERROR_BASE(ERROR_SCOPE_TRANSACTION),
-    ERROR_TRANSACTION_NOT_ALL_REQUIRED_PROPERTIES_SET,
     ERROR_TRANSACTION_NO_SOURCES,
     ERROR_TRANSACTION_NO_DESTINATIONS,
     ERROR_TRANSACTION_CHANGE_IS_TOO_SMALL_AND_NO_OTHER_DESTINATIONS,
@@ -145,6 +148,8 @@ enum ErrorCode
 
     ERROR_TRANSACTION_PAYLOAD_SPECIFIC_ERROR_BASE = MULTY_SCOPE_ERROR_BASE(ERROR_SCOPE_TRANSACTION_PAYLOAD),
     ERROR_TRANSACTION_PAYLOAD_TO_BIG,
+
+    ERROR_TRANSACTION_BUILDER_SPECIFIC_ERROR_BASE = MULTY_SCOPE_SPECIFIC_ERROR_BASE(ERROR_SCOPE_TRANSACTION_BUILDER),
 };
 
 struct CodeLocation
@@ -169,7 +174,7 @@ struct MultyError
 };
 
 /** Allocates Error object, assumes that message is satic and shouldn't be copied. **/
-MULTY_CORE_API struct MultyError* make_error(
+MULTY_CORE_API struct Error* make_error(
         enum ErrorCode code,
         const char* message,
         struct CodeLocation location);
@@ -181,7 +186,7 @@ MULTY_CORE_API struct MultyError* make_error(
  * @param backtrace - backtrace info, ownership is NOT transferred.
  * @return Error object, must be freed with free_error().
  */
-MULTY_CORE_API struct MultyError* make_error_with_backtrace(
+MULTY_CORE_API struct Error* make_error_with_backtrace(
         enum ErrorCode code,
         const char* message,
         struct CodeLocation location,
@@ -190,7 +195,7 @@ MULTY_CORE_API struct MultyError* make_error_with_backtrace(
 MULTY_CORE_API enum ErrorScope error_get_scope(enum ErrorCode code);
 
 /** Frees Error object, can take nullptr. **/
-MULTY_CORE_API void free_error(struct MultyError* error);
+MULTY_CORE_API void free_error(struct Error* error);
 
 #ifdef __cplusplus
 } /* extern "C" */
