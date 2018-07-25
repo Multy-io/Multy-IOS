@@ -675,17 +675,48 @@ class RealmManager: NSObject {
         }
     }
     
-    func fetchAddressesForWalllet(walletID: NSNumber, completion: @escaping(_ : [String]?) -> ()) {
-        getWallet(walletID: walletID) { (wallet) in
-            if wallet != nil {
-                var addresses = [String]()
-                wallet!.addresses.forEach({ addresses.append($0.address) })
-                completion(addresses)
+    func deleteWallet(_ wallet: UserWalletRLM, completion: @escaping(_ account: AccountRLM?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let primaryKey = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value,
+                                                                             networkID: wallet.chainType.uint32Value,
+                                                                             walletID: wallet.walletID.uint32Value)
+                let account = realm.object(ofType: AccountRLM.self, forPrimaryKey: 1)
+                let walletToDelete = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
+                
+                guard account != nil && walletToDelete != nil else {
+                    completion(nil)
+                    
+                    return
+                }
+                
+                let index = account!.wallets.index(where: { $0.id == walletToDelete!.id })
+                
+                if index != nil {
+                    try! realm.write {
+                        account!.wallets.remove(at: index!)
+                        realm.delete(walletToDelete!)
+                    }
+                }
+                
+                completion(account!)
             } else {
                 completion(nil)
             }
         }
     }
+    
+//    func fetchAddressesForWalllet(walletID: NSNumber, completion: @escaping(_ : [String]?) -> ()) {
+//        getWallet(walletID: walletID) { (wallet) in
+//            if wallet != nil {
+//                var addresses = [String]()
+//                wallet!.addresses.forEach({ addresses.append($0.address) })
+//                completion(addresses)
+//            } else {
+//                completion(nil)
+//            }
+//        }
+//    }
     
     func fetchBTCWallets(isTestNet: Bool, completion: @escaping(_ wallets: [UserWalletRLM]?) -> ()) {
         getRealm { (realmOpt, err) in
