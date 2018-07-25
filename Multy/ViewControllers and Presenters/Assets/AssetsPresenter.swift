@@ -52,6 +52,7 @@ class AssetsPresenter: NSObject {
             } else {
                 NotificationCenter.default.removeObserver(self, name: NSNotification.Name("exchageUpdated"), object: nil)
                 NotificationCenter.default.removeObserver(self, name: NSNotification.Name("transactionUpdated"), object: nil)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name("walletDeleted"), object: nil)
                 
                 assetsVC!.tableView.frame.size.height = screenHeight
             }
