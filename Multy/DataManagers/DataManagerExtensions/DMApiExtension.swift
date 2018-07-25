@@ -199,7 +199,7 @@ extension DataManager {
                     completion(walletsArrayFromApi, nil)
                 } else {
                     //MARK: delete
-                    if answer!["wallets"] is NSNull {
+                    if answer!["wallets"] is NSNull || answer!["wallets"] == nil {
                         return
                     } else if answer!["wallets"] == nil {
                         return

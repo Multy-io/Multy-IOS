@@ -71,19 +71,26 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
         let currencyID = choosenWallet!.blockchainType.blockchain.rawValue
         let networkID = choosenWallet!.blockchainType.net_type
         var currentTopIndex = account!.topIndexes.filter("currencyID = \(currencyID) AND networkID == \(networkID)").first
+        let currencyID = choosenWallet!.chain.uint32Value
+        let networkID = choosenWallet!.chainType.uint32Value
+//        var currentTopIndex = account!.topIndexes.filter("currencyID = \(currencyID) AND networkID == \(networkID)").first
         
-        if currentTopIndex == nil {
+//        if currentTopIndex == nil {
             //            mainVC?.presentAlert(with: "TopIndex error data!")
-            currentTopIndex = TopIndexRLM.createDefaultIndex(currencyID: NSNumber(value: currencyID), networkID: NSNumber(value: networkID), topIndex: NSNumber(value: 0))
-        }
+//            currentTopIndex = TopIndexRLM.createDefaultIndex(currencyID: NSNumber(value: currencyID), networkID: NSNumber(value: networkID), topIndex: NSNumber(value: 0))
+//        }
         
-        let dict = DataManager.shared.createNewWallet(for: &binData, blockchain: selectedBlockchainType, walletID: currentTopIndex!.topIndex.uint32Value)
+//        let dict = DataManager.shared.createNewWallet(for: &binData, blockchain: selectedBlockchainType, walletID: currentTopIndex!.topIndex.uint32Value)
         let cell = mainVC?.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! CreateWalletNameTableViewCell
         
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
         createdWallet.name = cell.walletNameTF.text ?? "Wallet"
 
+//        createdWallet.walletID = NSNumber(value: dict!["walletID"] as! UInt32)
+//        createdWallet.addressID = NSNumber(value: dict!["addressID"] as! UInt32)
+//        createdWallet.address = dict!["address"] as! String
+        
         if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
             let ethWallet = ETHWallet()
             ethWallet.balance = "0"
