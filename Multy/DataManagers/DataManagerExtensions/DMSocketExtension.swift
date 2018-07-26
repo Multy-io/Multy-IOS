@@ -13,7 +13,7 @@ extension DataManager {
         ]
         
         let params: NSDictionary = [
-            "type": "kik:multisig",
+            "type": SocketMessageType.multisigKick,
             "from": "",
             "to":"",
             "date": Date().timeIntervalSince1970,
@@ -34,7 +34,7 @@ extension DataManager {
             ]
         
         let params: NSDictionary = [
-            "type": "kik:multisig",
+            "type": SocketMessageType.multisigLeave,
             "from": "",
             "to":"",
             "date": Date().timeIntervalSince1970,
@@ -55,7 +55,7 @@ extension DataManager {
             ]
         
         let params: NSDictionary = [
-            "type": "kik:multisig",
+            "type": SocketMessageType.multisigDelete,
             "from": "",
             "to":"",
             "date": Date().timeIntervalSince1970,
@@ -81,7 +81,7 @@ extension DataManager {
         ]
         
         let paramsForMsgSend: NSDictionary = [
-            "type": "join:multisig",  // it's kinda signature method eg: join:multisig.
+            "type": SocketMessageType.multisigJoin,  // it's kinda signature method eg: join:multisig.
             "from": "",              // not requied
             "to":"",                // not requied
             "date": Date().timeIntervalSince1970, // time unix
