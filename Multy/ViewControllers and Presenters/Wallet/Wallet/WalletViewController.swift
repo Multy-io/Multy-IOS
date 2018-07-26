@@ -145,21 +145,17 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         presenter.walletVC = self
         presenter.registerCells()
         addGestureRecognizers()
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         presenter.getHistoryAndWallet()
         presenter.updateUI()
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
-        
-        
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
