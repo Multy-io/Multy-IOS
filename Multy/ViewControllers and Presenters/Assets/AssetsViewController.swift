@@ -328,14 +328,24 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
     
     func goToWalletVC(indexPath: IndexPath) {
 //        let walletVC = presenter.getWalletViewController(indexPath: indexPath)
-        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
-        let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
-        
         let wallet = presenter.wallets?[indexPath.row - 2]
-        walletVC.presenter.account = presenter.account
-        walletVC.presenter.wallet = wallet
         
-        self.navigationController?.pushViewController(walletVC, animated: true)
+        var vc : UIViewController?
+        if wallet!.multisigWallet != nil && wallet!.multisigWallet?.deployStatus.intValue != DeployStatus.deployed.rawValue {
+            let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+            vc  = storyboard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
+            (vc as! WaitingMembersViewController).presenter.wallet = wallet!
+            (vc as! WaitingMembersViewController).presenter.account = presenter.account
+        } else {
+            let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+            vc = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
+            (vc as! WalletViewController).presenter.account = presenter.account
+            (vc as! WalletViewController).presenter.wallet = wallet
+        }
+        
+        if vc != nil {
+            self.navigationController?.pushViewController(vc!, animated: true)
+        }
     }
     
     func updateUI() {

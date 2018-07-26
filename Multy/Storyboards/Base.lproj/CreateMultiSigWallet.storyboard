@@ -822,7 +822,7 @@ Members</string>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Bwo-cS-qlV">
                                                 <rect key="frame" x="39.5" y="42" width="71.5" height="67"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users joined " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f2W-zb-3lg">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users joined " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="f2W-zb-3lg">
                                                         <rect key="frame" x="0.0" y="0.0" width="71.5" height="16.5"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -839,8 +839,10 @@ Members</string>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Bwo-cS-qlV" secondAttribute="trailing" constant="15" id="6rK-VI-rGH"/>
                                             <constraint firstAttribute="bottom" secondItem="mtE-fg-Ar8" secondAttribute="bottom" id="8Ub-zC-OD9"/>
                                             <constraint firstItem="mtE-fg-Ar8" firstAttribute="leading" secondItem="8Nf-gf-5GL" secondAttribute="leading" id="9QE-IJ-bDw"/>
+                                            <constraint firstItem="Bwo-cS-qlV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8Nf-gf-5GL" secondAttribute="leading" constant="15" id="Im3-hO-z1w"/>
                                             <constraint firstAttribute="trailing" secondItem="mtE-fg-Ar8" secondAttribute="trailing" id="Tm6-kA-CaG"/>
                                             <constraint firstAttribute="width" constant="150" id="Yl1-ad-uec"/>
                                             <constraint firstAttribute="width" secondItem="8Nf-gf-5GL" secondAttribute="height" multiplier="1:1" id="Zig-EV-kqO"/>
