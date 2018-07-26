@@ -39,10 +39,13 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
     
     func updateUI() {
         self.walletNameTF.text = self.presenter.wallet.name
-        let linkedWallet = presenter.account.wallets.filter("walletID = \(presenter.wallet.multisigWallet!.linkedWalletID)").first
-        self.linkedWalletNameLabel.text = linkedWallet?.name
-        self.linkedWalletAddressLabel.text = linkedWallet?.address
-        self.linkedWalletImageView.image = UIImage(named: (linkedWallet?.blockchainType.iconString)!)
+        let linkedWallet = presenter.account.wallets.filter {$0.id == self.presenter.wallet.multisigWallet!.linkedWalletID}.first
+        if linkedWallet != nil {
+            self.linkedWalletNameLabel.text = linkedWallet!.name
+            self.linkedWalletAddressLabel.text = linkedWallet!.address
+            self.linkedWalletImageView.image = UIImage(named: linkedWallet!.blockchainType.iconString)
+        }
+        
         signToSendAndTotalMembersLabel.text = " \(presenter.wallet.multisigWallet!.signaturesRequiredCount) of \(presenter.wallet.multisigWallet!.ownersCount)"
         self.deleteWalletLabel.text = presenter.isCreator ? "Delete" : "Leave"
     }
