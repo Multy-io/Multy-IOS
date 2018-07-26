@@ -93,6 +93,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         let tapOnFrom = UITapGestureRecognizer(target: self, action: #selector(tapOnFromAddress))
         walletFromAddressLbl.isUserInteractionEnabled = true
         walletFromAddressLbl.addGestureRecognizer(tapOnFrom)
+        
+        self.scrollView.isScrollEnabled = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -118,6 +120,10 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        updateBottomConstraints()
+    }
+    
+    func updateBottomConstraints() {
         scrollContentHeightConstraint.constant = contentHeight()
         self.view.layoutIfNeeded()
     }
@@ -234,7 +240,10 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             if presenter.histObj.isWaitingConfirmation.boolValue {
                 result += doubleSliderHolderView.frame.size.height
             }
+        } else if presenter.isDonationExist {
+            result = result + 300
         }
+        
         return result
     }
     
@@ -288,12 +297,16 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                     if donatOutPutObj == nil {
                         return
                     }
+                    
+                    presenter.isDonationExist = true
                     let btcDonation = (donatOutPutObj?.amount as! UInt64).btcValue
                     self.donationView.isHidden = false
                     self.constraintDonationHeight.constant = makeDonationConstraint()
                     self.donationCryptoSum.text = btcDonation.fixedFraction(digits: 8)
                     self.donationCryptoName.text = " BTC"
                     self.donationFiatSumAndName.text = "\((btcDonation * presenter.histObj.fiatCourseExchange).fixedFraction(digits: 2)) USD"
+                    
+                    updateBottomConstraints()
                 }
             }
         case BLOCKCHAIN_ETHEREUM:

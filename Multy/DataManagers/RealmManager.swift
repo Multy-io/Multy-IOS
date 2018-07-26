@@ -674,7 +674,7 @@ extension WalletManager {
                 let primaryKey = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value,
                                                                              networkID: wallet.chainType.uint32Value,
                                                                              walletID: wallet.walletID.uint32Value,
-                                                                             multisigAddress: nil)
+                                                                             inviteCode: nil)
                 let account = realm.object(ofType: AccountRLM.self, forPrimaryKey: 1)
                 let walletToDelete = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
                 
