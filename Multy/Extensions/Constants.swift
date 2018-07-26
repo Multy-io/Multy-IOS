@@ -209,4 +209,4 @@ let nonLocalURL = "http://88.198.47.112:7778/"
 let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"
 let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 
-let inviteCodeCount = 56
+let inviteCodeCount = 45

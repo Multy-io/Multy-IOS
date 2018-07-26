@@ -21,6 +21,7 @@ class TransactionPresenter: NSObject {
     
     var blockchain: Blockchain?
     var selectedAddress: String?
+    var isDonationExist = false
     
     func blockedAmount(for transaction: HistoryRLM) -> UInt64 {
         var sum = UInt64(0)

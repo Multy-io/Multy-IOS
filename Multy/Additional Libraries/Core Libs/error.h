@@ -174,7 +174,7 @@ struct MultyError
 };
 
 /** Allocates Error object, assumes that message is satic and shouldn't be copied. **/
-MULTY_CORE_API struct Error* make_error(
+MULTY_CORE_API struct MultyError* make_error(
         enum ErrorCode code,
         const char* message,
         struct CodeLocation location);
@@ -186,7 +186,7 @@ MULTY_CORE_API struct Error* make_error(
  * @param backtrace - backtrace info, ownership is NOT transferred.
  * @return Error object, must be freed with free_error().
  */
-MULTY_CORE_API struct Error* make_error_with_backtrace(
+MULTY_CORE_API struct MultyError* make_error_with_backtrace(
         enum ErrorCode code,
         const char* message,
         struct CodeLocation location,
@@ -195,7 +195,7 @@ MULTY_CORE_API struct Error* make_error_with_backtrace(
 MULTY_CORE_API enum ErrorScope error_get_scope(enum ErrorCode code);
 
 /** Frees Error object, can take nullptr. **/
-MULTY_CORE_API void free_error(struct Error* error);
+MULTY_CORE_API void free_error(struct MultyError* error);
 
 #ifdef __cplusplus
 } /* extern "C" */
