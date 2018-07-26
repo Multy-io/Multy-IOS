@@ -1575,7 +1575,7 @@ and develop new application functionality</string>
                                     <constraint firstAttribute="width" constant="123" id="VDA-x3-BS4"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No internet connection" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eXV-cf-GXL">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No internet connection" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eXV-cf-GXL">
                                 <rect key="frame" x="49.5" y="315.5" width="276" height="36"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="26"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1597,9 +1597,11 @@ correctly</string>
                             <constraint firstItem="tdq-0K-Sb2" firstAttribute="leading" secondItem="qNv-C3-uhH" secondAttribute="leading" id="0af-Tf-3S4"/>
                             <constraint firstItem="312-E7-Xe2" firstAttribute="top" secondItem="eXV-cf-GXL" secondAttribute="bottom" constant="41" id="19G-Bk-FhF"/>
                             <constraint firstAttribute="trailing" secondItem="tdq-0K-Sb2" secondAttribute="trailing" id="8el-4e-zje"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="eXV-cf-GXL" secondAttribute="trailing" constant="16" id="AQG-rf-GZM"/>
                             <constraint firstItem="7Cv-dM-kj0" firstAttribute="top" secondItem="tdq-0K-Sb2" secondAttribute="bottom" id="Gx7-nc-o3V"/>
                             <constraint firstItem="312-E7-Xe2" firstAttribute="leading" secondItem="qNv-C3-uhH" secondAttribute="leading" constant="21" id="IfC-LF-p4P"/>
                             <constraint firstAttribute="trailing" secondItem="312-E7-Xe2" secondAttribute="trailing" constant="21" id="Nle-00-FuM"/>
+                            <constraint firstItem="eXV-cf-GXL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qNv-C3-uhH" secondAttribute="leading" constant="16" id="fIH-xY-fHr"/>
                             <constraint firstItem="eXV-cf-GXL" firstAttribute="centerX" secondItem="qNv-C3-uhH" secondAttribute="centerX" id="gnX-iI-VMn"/>
                             <constraint firstItem="4xv-6L-vmO" firstAttribute="centerX" secondItem="qNv-C3-uhH" secondAttribute="centerX" id="h5b-s0-bLC"/>
                             <constraint firstItem="eXV-cf-GXL" firstAttribute="top" secondItem="4xv-6L-vmO" secondAttribute="bottom" constant="49" id="iFH-FP-t58"/>
