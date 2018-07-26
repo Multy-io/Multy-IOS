@@ -6,11 +6,11 @@ import Foundation
 
 enum DeployStatus : Int {
     case
-    Created =           1,
-    Ready =             2,
-    Pending =          3,
-    Rejected =            4,
-    Deployed =    5
+    created =           1,
+    ready =             2,
+    pending =          3,
+    rejected =            4,
+    deployed =    5
 }
 
 
