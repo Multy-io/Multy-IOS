@@ -77,6 +77,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         updateUI()
         
         presenter.viewControllerViewWillAppear()
