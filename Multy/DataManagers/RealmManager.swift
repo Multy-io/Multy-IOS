@@ -571,7 +571,7 @@ extension WalletManager {
     func getWallet(walletID: NSNumber, completion: @escaping(_ wallet: UserWalletRLM?) -> ()) {
         getRealm { (realmOpt, error) in
             if let realm = realmOpt {
-                let primaryKey = DataManager.shared.generateWalletPrimaryKey(currencyID: 0, networkID: 0, walletID: walletID.uint32Value, multisigAddress: nil)
+                let primaryKey = DataManager.shared.generateWalletPrimaryKey(currencyID: 0, networkID: 0, walletID: walletID.uint32Value, inviteCode: nil)
                 let wallet = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
                 
                 completion(wallet)

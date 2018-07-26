@@ -277,17 +277,17 @@ class UserWalletRLM: Object {
         //MARK: temporary only 0-currency
         //MARK: server BUG: WalletIndex and walletindex
         //No data from server
-        let multisigString = walletInfo["multisig"] != nil ? wallet.address : nil
+        let inviteCode = wallet.multisigWallet?.inviteCode
         if walletInfo["walletindex"] != nil || walletInfo["WalletIndex"] != nil {
-            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, multisigAddress:multisigString)
+            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, inviteCode:inviteCode)
             
-            if multisigString != nil {
+            if inviteCode != nil {
                 let owner = wallet.multisigWallet?.owners.filter { $0.associated == true }.first
                 
                 guard owner != nil else {
                     return wallet
                 }
-                wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, multisigAddress:nil)
+                wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, inviteCode:nil)
             }
         }
         

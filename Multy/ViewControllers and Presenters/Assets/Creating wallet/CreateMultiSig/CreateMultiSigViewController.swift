@@ -118,11 +118,6 @@ class CreateMultiSigViewController: UIViewController {
             let cell = blockchainCell == nil ? self.tableView.dequeueReusableCell(withIdentifier: "blockchainCell") as! CreateWalletBlockchainTableViewCell : blockchainCell!
             cell.blockchainLabel.text = presenter.selectedBlockchainType.combinedName
             
-            if presenter.selectedBlockchainType.isMainnet == false {
-                let blockchain = cell.blockchainLabel.text! + " Testnet"
-                cell.blockchainLabel.text! = blockchain
-            }
-            
             if blockchainCell == nil {
                 tableView.reloadRows(at: [[0, 2]], with: .none)
             }
@@ -199,7 +194,8 @@ extension TableViewDataSource: UITableViewDataSource {
             
         case 2:
             let blockchainCell = self.tableView.dequeueReusableCell(withIdentifier: "blockchainCell") as! CreateWalletBlockchainTableViewCell
-            let blockchainString = presenter.selectedBlockchainType.combinedName
+            var blockchainString = presenter.selectedBlockchainType.combinedName
+            
             blockchainCell.setLblValue(value: blockchainString)
             
             return blockchainCell

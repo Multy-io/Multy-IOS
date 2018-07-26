@@ -105,7 +105,11 @@ extension BlockchainType {
     }
     
     var combinedName: String {
-        return fullName + " ∙ " + shortName
+        var result = fullName + " ∙ " + shortName
+        if !isMainnet {
+            result += " Testnet"
+        }
+        return result
     }
     
     var qrBlockchainString : String {
