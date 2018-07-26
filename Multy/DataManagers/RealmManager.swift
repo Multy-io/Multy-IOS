@@ -511,7 +511,7 @@ extension WalletManager {
                     let newWallets = List<UserWalletRLM>()
                     
                     for wallet in arrOfWallets {
-                        let modifiedWallet = accWallets.filter("walletID = \(wallet.walletID) AND chain = \(wallet.chain) AND chainType = \(wallet.chainType)").first
+                        let modifiedWallet = accWallets.filter {$0.id == wallet.id}.first
                         
                         try! realm.write {
                             if modifiedWallet != nil {
