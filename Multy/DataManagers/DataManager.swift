@@ -117,16 +117,16 @@ class DataManager: NSObject {
         }
     }
     
-    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: UInt32, multisigAddress: String?) -> String {
+    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: UInt32, inviteCode: String?) -> String {
         let currencyString = String(currencyID).sha3(.sha256)
         let walletString = String(walletID).sha3(.sha256)
         let networkString = String(networkID).sha3(.sha256)
-        let multisigAddressString = multisigAddress?.sha3(.sha256)
+        let inviteCodeString = inviteCode?.sha3(.sha256)
         
         var resultString = "\(currencyString)" + "\(walletString) +\(networkString)"
         
-        if multisigAddressString != nil {
-            resultString += multisigAddressString!
+        if inviteCodeString != nil {
+            resultString += inviteCodeString!
         }
         
         return resultString.sha3(.sha256)
