@@ -8,8 +8,8 @@ enum DeployStatus : Int {
     case
     Created =           1,
     Ready =             2,
-    Rejected =          3,
-    Pending =            4,
+    Pending =          3,
+    Rejected =            4,
     Deployed =    5
 }
 
