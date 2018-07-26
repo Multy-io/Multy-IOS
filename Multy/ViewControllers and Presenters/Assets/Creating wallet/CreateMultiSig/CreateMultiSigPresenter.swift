@@ -144,6 +144,7 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
         let uuid = UUID().uuidString
         let deviceName = UIDevice.current.name
         let sha3String = (uuid + deviceName).sha3(.keccak224)
+        
         return String(sha3String.prefix(inviteCodeCount))
     }
 }
