@@ -180,7 +180,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
             self.presentUpdateAlert(idOfAlert: 0)
 //            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
         }
-        
+        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
@@ -191,7 +191,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
+        
         
         if !self.isFirstLaunch || !self.isInternetAvailable {
             self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
