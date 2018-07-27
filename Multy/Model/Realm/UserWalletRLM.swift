@@ -658,6 +658,10 @@ extension WalletUpdateRLM {
                         owner.creator = NSNumber(booleanLiteral: creator)
                     }
                     
+                    if owner.creator as! Bool && owner.associated as! Bool {
+                        multisigWallet!.amICreator = true
+                    }
+                    
                     owners.append(owner)
                 }
                 
