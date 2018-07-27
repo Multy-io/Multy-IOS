@@ -12,7 +12,6 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var backgroundView: UIView!
-    @IBOutlet weak var backRing: UICircularProgressRing!
     @IBOutlet weak var progressRing: UICircularProgressRing!
     @IBOutlet weak var membersInfoHolderView: UIView!
     @IBOutlet weak var membersInfoHolderViewHeightConstraint: NSLayoutConstraint!
@@ -84,20 +83,17 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func initialConfig() {
-        backRing.ringStyle = .dashed
-        backRing.outerRingColor = .white
-        backRing.outerRingWidth = 1
-        backRing.outerCapStyle = .round
-        backRing.fullCircle = true
-        
         progressRing.shouldShowValueText = false
-        progressRing.ringStyle = .ontop
+        progressRing.ringStyle = .dashed
         progressRing.outerRingColor = .white
-        progressRing.outerRingWidth = 3
+        progressRing.innerRingColor = .white
+        progressRing.outerRingWidth = 1
         progressRing.outerCapStyle = .round
-        progressRing.fullCircle = false
+        progressRing.fullCircle = true
+        progressRing.minValue = 0
+        progressRing.maxValue = 360
         progressRing.startAngle = -90
-        
+
         membersTableView.contentInset = UIEdgeInsetsMake(0, 0, invitationCodeButton.frame.size.height, 0)
     }
     
@@ -112,8 +108,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         let joinedCount = presenter.wallet.multisigWallet!.owners.count
         let totalCount = presenter.wallet.multisigWallet!.ownersCount
         joinedMembersLabel.text = "\(joinedCount) / \(totalCount)"
-        progressRing.endAngle = -90 + (CGFloat(joinedCount) / CGFloat(totalCount) * 360)
-        
+        progressRing.value = CGFloat(joinedCount) / CGFloat(totalCount) * 360
         
         if (joinedCount == totalCount) {
             stateImageView.image = UIImage(named: "readyToStart")
@@ -139,6 +134,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
             UIColor(ciColor: CIColor(red: 21.0 / 255.0, green: 126.0 / 255.0, blue: 252.0 / 255.0))],
                                                            gradientOrientation: .topRightBottomLeft)
         
+        membersTableView.reloadData()
         contentView.layoutIfNeeded()
     }
     
@@ -254,7 +250,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         } else {
             let owner = presenter.wallet.multisigWallet!.owners[indexPath.item]
             let memberImage = PictureConstructor().createPicture(diameter: 34, seed: owner.address)
-            cell.fillWithMember(address: owner.address, image: memberImage!, isCurrentUser: owner.creator.boolValue)
+            cell.fillWithMember(address: owner.address, image: memberImage!, isCurrentUser: owner.associated.boolValue)
         }
         cell.hideSeparator = indexPath.item == (presenter.wallet.multisigWallet!.ownersCount - 1)
         

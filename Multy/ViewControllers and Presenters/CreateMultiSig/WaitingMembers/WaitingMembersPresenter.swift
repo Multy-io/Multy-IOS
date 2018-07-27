@@ -15,8 +15,8 @@ class WaitingMembersPresenter: NSObject {
     
     func viewControllerViewDidLoad() {
 //        inviteCode = makeInviteCode()
-        updateWallet()
         viewController?.openShareInviteVC()
+        updateWallet()
     }
 
     func kickOwnerWithIndex(index: Int) {
@@ -39,8 +39,11 @@ class WaitingMembersPresenter: NSObject {
     }
     
     fileprivate func updateWallet() {
-        DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: wallet.blockchainType) { [unowned self] (answer, error) in
-            self.viewController?.updateUI()
+        DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: wallet.blockchainType) { [unowned self] (wallet, error) in
+            if wallet != nil {
+                self.wallet = wallet!
+                self.viewController?.updateUI()
+            }
         }
     }
 }

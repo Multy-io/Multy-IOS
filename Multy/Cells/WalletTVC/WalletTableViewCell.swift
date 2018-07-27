@@ -62,7 +62,7 @@ class WalletTableViewCell: UITableViewCell {
     }
     
     func fillInCell() {
-        let blockchainType = BlockchainType.create(wallet: wallet!)
+        let blockchainType = BlockchainType.createAssociated(wallet: wallet!)
         tokenImage.image = UIImage(named: blockchainType.iconString)
         walletNameLbl.text = self.wallet!.name
         cryptoNameLbl.text = blockchainType.shortName
