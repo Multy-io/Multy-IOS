@@ -130,7 +130,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
             qrCodeImageView.isHidden = false
         }
         
-        if presenter.wallet.multisigWallet!.isIamCreator {
+        if presenter.wallet.multisigWallet!.amICreator {
             invitationHolderView.isHidden = false
             invitationHolderView.isUserInteractionEnabled = true
             invitationCodeBackgroundView.applyOrUpdateGradient(withColours: [
@@ -223,7 +223,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func openShareInviteVC() {
-        if presenter.wallet.multisigWallet!.isIamCreator {
+        if presenter.wallet.multisigWallet!.amICreator {
             let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
             let inviteCodeVC = storyBoard.instantiateViewController(withIdentifier: "inviteCodeVC") as! InviteCodeViewController
             inviteCodeVC.presenter.inviteCode = presenter.wallet.multisigWallet!.inviteCode

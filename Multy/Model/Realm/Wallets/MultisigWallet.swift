@@ -27,5 +27,5 @@ class MultisigWallet: Object {
     
     var owners = List<MultisigOwnerRLM>()
 
-    @objc dynamic var isIamCreator = Bool()
+    @objc dynamic var amICreator = Bool()
 }

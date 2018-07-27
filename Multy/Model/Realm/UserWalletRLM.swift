@@ -659,7 +659,7 @@ extension WalletUpdateRLM {
                     }
                     
                     if owner.creator as! Bool && owner.associated as! Bool {
-                        multisigWallet!.isIamCreator = true
+                        multisigWallet!.amICreator = true
                     }
                     
                     owners.append(owner)
