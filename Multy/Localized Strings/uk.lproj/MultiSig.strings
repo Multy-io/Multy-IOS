@@ -5,3 +5,4 @@
 "WALLET NAME NOT EMPTY ALERT" = "Ім'я гаманця не повинно бути порожнім";
 "UPDATING" = "Оновлення...";
 "LEAVE MULTISIG WALLET WARNING" = "Ви впевнені, що хочете покинути гаманець?";
+"NO STRING" = "Ні";

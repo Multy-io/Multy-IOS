@@ -74,7 +74,7 @@ extension BlockchainType {
             case ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue:
                 iconString = "ethMSMediumIcon"
             case ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue:
-                iconString = "ethMSMediumIconGrey"
+                iconString = "ethMSTestnet"
             default:
                 iconString = ""
             }

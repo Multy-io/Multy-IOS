@@ -12,7 +12,7 @@ class WaitingMembersSettingsPresenter: NSObject {
     var isCreator : Bool {
         get {
             let creator = wallet.multisigWallet?.owners.filter {$0.creator == true}.first
-            return account.userID == creator?.address
+            return creator!.associated.boolValue
         }
     }
     
