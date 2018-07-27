@@ -8,7 +8,7 @@ extension DataManager {
     func kickFromMultisigWith(wallet: UserWalletRLM, addressToKick: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
         let payload: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
-            "address": DataManager.shared.multisigFactory(for: BlockchainType.create(wallet: wallet)) ?? "",
+            "address": wallet.multisigWallet!.linkedWalletAddress,
             "addresstokick": addressToKick,
             "invitecode": wallet.multisigWallet!.inviteCode
         ]
@@ -29,9 +29,10 @@ extension DataManager {
     }
     
     func leaveFromMultisigWith(wallet: UserWalletRLM, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        
         let payload: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
-            "address": DataManager.shared.multisigFactory(for: BlockchainType.create(wallet: wallet)) ?? "",
+            "address": wallet.multisigWallet!.linkedWalletAddress,
             "invitecode": wallet.multisigWallet!.inviteCode
             ]
         
@@ -53,7 +54,7 @@ extension DataManager {
     func deleteMultisigWith(wallet: UserWalletRLM, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
         let payload: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
-            "address": DataManager.shared.multisigFactory(for: BlockchainType.create(wallet: wallet)) ?? "",
+            "address": wallet.multisigWallet!.linkedWalletAddress,
             "invitecode": wallet.multisigWallet!.inviteCode
             ]
         

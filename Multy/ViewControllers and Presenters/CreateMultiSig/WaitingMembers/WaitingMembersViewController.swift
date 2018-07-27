@@ -275,7 +275,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 
         if editingStyle == .delete {
-
+            presenter.kickOwnerWithIndex(index: indexPath.item)
         }
     }
     
