@@ -76,7 +76,7 @@ class ReceiveStartPresenter: NSObject {
                 if let blockchainType = self.displayedBlockchainOnly {
                     walletsArray = walletsArray.filter{ blockchainType == $0.blockchainType }
                     if self.isForMultisig {
-                        walletsArray = walletsArray.filter{ $0.isMultiSig == false }
+                        walletsArray = walletsArray.filter{ $0.multisigWallet == nil }
                     }
                 }
                 
