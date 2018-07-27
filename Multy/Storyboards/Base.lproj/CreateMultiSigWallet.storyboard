@@ -785,39 +785,10 @@ Members</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Nf-gf-5GL" userLabel="View - Users Counter Holder">
                                         <rect key="frame" x="112" y="69" width="150" height="150"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mtE-fg-Ar8" userLabel="Back Ring" customClass="UICircularProgressRing" customModule="UICircularProgressRing">
+                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BzM-xN-GZV" customClass="UICircularProgressRing" customModule="UICircularProgressRing">
                                                 <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
-                                                <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BzM-xN-GZV" customClass="UICircularProgressRing" customModule="UICircularProgressRing">
-                                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </view>
-                                                </subviews>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="BzM-xN-GZV" secondAttribute="trailing" id="9Z6-IO-kDz"/>
-                                                    <constraint firstItem="BzM-xN-GZV" firstAttribute="top" secondItem="mtE-fg-Ar8" secondAttribute="top" id="MUH-Zm-l4A"/>
-                                                    <constraint firstAttribute="bottom" secondItem="BzM-xN-GZV" secondAttribute="bottom" id="jaS-Oj-81c"/>
-                                                    <constraint firstItem="BzM-xN-GZV" firstAttribute="leading" secondItem="mtE-fg-Ar8" secondAttribute="leading" id="svh-Dd-bNb"/>
-                                                </constraints>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="fullCircle" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="startAngle">
-                                                        <real key="value" value="270"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="endAngle">
-                                                        <real key="value" value="540"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showsValueKnob" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="shouldShowValueText" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="rightToLeft" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="outerRingWidth">
-                                                        <real key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="outerRingColor">
-                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Bwo-cS-qlV">
                                                 <rect key="frame" x="39.5" y="42" width="71.5" height="67"/>
@@ -840,15 +811,11 @@ Members</string>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Bwo-cS-qlV" secondAttribute="trailing" constant="15" id="6rK-VI-rGH"/>
-                                            <constraint firstAttribute="bottom" secondItem="mtE-fg-Ar8" secondAttribute="bottom" id="8Ub-zC-OD9"/>
-                                            <constraint firstItem="mtE-fg-Ar8" firstAttribute="leading" secondItem="8Nf-gf-5GL" secondAttribute="leading" id="9QE-IJ-bDw"/>
                                             <constraint firstItem="Bwo-cS-qlV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8Nf-gf-5GL" secondAttribute="leading" constant="15" id="Im3-hO-z1w"/>
-                                            <constraint firstAttribute="trailing" secondItem="mtE-fg-Ar8" secondAttribute="trailing" id="Tm6-kA-CaG"/>
                                             <constraint firstAttribute="width" constant="150" id="Yl1-ad-uec"/>
                                             <constraint firstAttribute="width" secondItem="8Nf-gf-5GL" secondAttribute="height" multiplier="1:1" id="Zig-EV-kqO"/>
                                             <constraint firstItem="Bwo-cS-qlV" firstAttribute="centerY" secondItem="8Nf-gf-5GL" secondAttribute="centerY" id="nkK-wx-FKt"/>
                                             <constraint firstItem="Bwo-cS-qlV" firstAttribute="centerX" secondItem="8Nf-gf-5GL" secondAttribute="centerX" id="qDg-MV-hdv"/>
-                                            <constraint firstItem="mtE-fg-Ar8" firstAttribute="top" secondItem="8Nf-gf-5GL" secondAttribute="top" id="r9V-Fp-tU9"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pBy-0A-2E6" userLabel="View - Users Info Holder">
@@ -1064,7 +1031,6 @@ Members</string>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backRing" destination="mtE-fg-Ar8" id="T1P-Ak-X2a"/>
                         <outlet property="backgroundView" destination="jVv-7H-yr9" id="KIk-Bp-3Z5"/>
                         <outlet property="contentView" destination="1Gg-mF-wQl" id="P8V-8O-sVd"/>
                         <outlet property="headerView" destination="WjK-BC-Ypu" id="iaT-WV-wZt"/>

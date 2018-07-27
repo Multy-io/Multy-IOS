@@ -611,6 +611,12 @@ extension WalletUpdateRLM {
         if let multisig = infoDict["multisig"] as? NSDictionary {
             multisigWallet = MultisigWallet()
             
+            if chainType.intValue == ETHEREUM_CHAIN_ID_MAINNET.rawValue {
+                multisigWallet!.chainType = NSNumber(value: ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue)
+            } else {
+                multisigWallet!.chainType = NSNumber(value: ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue)
+            }
+            
             if let ownersCount = multisig["ownersCount"] as? Int {
                 multisigWallet!.ownersCount = ownersCount
             }
