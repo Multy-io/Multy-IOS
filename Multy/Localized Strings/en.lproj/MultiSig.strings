@@ -5,3 +5,4 @@
 "WALLET NAME NOT EMPTY ALERT" = "Wallet name should be non empty";
 "UPDATING" = "Updating...";
 "LEAVE MULTISIG WALLET WARNING" = "Do you really want to leave this wallet?";
+"NO STRING" = "No";

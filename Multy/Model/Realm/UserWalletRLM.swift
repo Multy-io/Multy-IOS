@@ -662,6 +662,10 @@ extension WalletUpdateRLM {
                         multisigWallet!.amICreator = true
                     }
                     
+                    if owner.associated as! Bool {
+                        multisigWallet!.linkedWalletAddress = owner.address
+                    }
+                    
                     owners.append(owner)
                 }
                 

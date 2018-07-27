@@ -8,15 +8,16 @@ extension DataManager {
     func kickFromMultisigWith(wallet: UserWalletRLM, addressToKick: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
         let payload: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
-            "address": wallet.address,
-            "addressto": addressToKick
+            "address": wallet.multisigWallet!.linkedWalletAddress,
+            "addresstokick": addressToKick,
+            "invitecode": wallet.multisigWallet!.inviteCode
         ]
         
         let params: NSDictionary = [
-            "type": SocketMessageType.multisigKick,
+            "type": SocketMessageType.multisigKick.rawValue,
             "from": "",
             "to":"",
-            "date": Date().timeIntervalSince1970,
+            "date": UInt64(Date().timeIntervalSince1970),
             "status": 0,
             "payload": payload
         ]
@@ -28,16 +29,18 @@ extension DataManager {
     }
     
     func leaveFromMultisigWith(wallet: UserWalletRLM, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        
         let payload: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
-            "address": wallet.address,
+            "address": wallet.multisigWallet!.linkedWalletAddress,
+            "invitecode": wallet.multisigWallet!.inviteCode
             ]
         
         let params: NSDictionary = [
-            "type": SocketMessageType.multisigLeave,
+            "type": SocketMessageType.multisigLeave.rawValue,
             "from": "",
             "to":"",
-            "date": Date().timeIntervalSince1970,
+            "date": UInt64(Date().timeIntervalSince1970),
             "status": 0,
             "payload": payload
         ]
@@ -51,14 +54,15 @@ extension DataManager {
     func deleteMultisigWith(wallet: UserWalletRLM, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
         let payload: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
-            "address": wallet.address,
+            "address": wallet.multisigWallet!.linkedWalletAddress,
+            "invitecode": wallet.multisigWallet!.inviteCode
             ]
         
         let params: NSDictionary = [
-            "type": SocketMessageType.multisigDelete,
+            "type": SocketMessageType.multisigDelete.rawValue,
             "from": "",
             "to":"",
-            "date": Date().timeIntervalSince1970,
+            "date": UInt64(Date().timeIntervalSince1970),
             "status": 0,
             "payload": payload
         ]

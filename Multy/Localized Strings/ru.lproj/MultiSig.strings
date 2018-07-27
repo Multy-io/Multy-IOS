@@ -5,3 +5,4 @@
 "WALLET NAME NOT EMPTY ALERT" = "Имя кошелька не должно быть пустым";
 "UPDATING" = "Обновление...";
 "LEAVE MULTISIG WALLET WARNING" = "Вы действительно хотите покинуть кошелек?";
+"NO STRING" = "Нет";

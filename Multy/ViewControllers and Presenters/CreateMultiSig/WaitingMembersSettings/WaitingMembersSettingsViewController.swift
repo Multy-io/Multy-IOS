@@ -104,6 +104,11 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
                 self.presenter.delete()
 //                self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(walletDeletedWithChain)\(self.presenter.wallet!.chain)")
             }))
+        alert.addAction(UIAlertAction(title: localize(string: Constants.noString), style: .default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            //self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(walletDeleteCancelWithChain)\(self.presenter.wallet!.chain)")
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
