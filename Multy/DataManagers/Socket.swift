@@ -180,6 +180,9 @@ class Socket: NSObject {
         socket.emitWithAck("message:send", with: [params]).timingOut(after: 1) { data in
             print("answer: \n \(data)")
             let answer = data.first!
+            if answer is String {
+                completion(nil, nil) // FIX IT: completion(nil, error)
+            }
             let dict = answer as! NSDictionary
             completion(dict, nil)
         }

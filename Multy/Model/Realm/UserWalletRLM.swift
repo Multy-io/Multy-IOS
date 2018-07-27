@@ -175,6 +175,10 @@ class UserWalletRLM: Object {
         return blockchainType.blockchain  == BLOCKCHAIN_BITCOIN
     }
     
+    var isMultiSig: Bool {
+        return multisigWallet != nil
+    }
+    
     @objc dynamic var fiatName = String()
     @objc dynamic var fiatSymbol = String()
     
@@ -606,6 +610,12 @@ extension WalletUpdateRLM {
     func updateMultiSigWallet(from infoDict: NSDictionary) {
         if let multisig = infoDict["multisig"] as? NSDictionary {
             multisigWallet = MultisigWallet()
+            
+            if chainType.intValue == ETHEREUM_CHAIN_ID_MAINNET.rawValue {
+                multisigWallet!.chainType = NSNumber(value: ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue)
+            } else {
+                multisigWallet!.chainType = NSNumber(value: ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue)
+            }
             
             if let ownersCount = multisig["ownersCount"] as? Int {
                 multisigWallet!.ownersCount = ownersCount

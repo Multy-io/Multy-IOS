@@ -36,4 +36,5 @@
 "YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE" = "You can download new version in the AppStore";
 "TEMPORARY OUT OF SERVICE" = "Temporary out of service";
 "SERVER STOP STRING"= "We are sorry, but Multy is temporary out of service. Please come back later.";
+"MS IS FULL" = "Can't join multisig wallet: no free slots available";
 

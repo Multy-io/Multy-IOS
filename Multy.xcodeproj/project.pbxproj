@@ -84,7 +84,7 @@
 		44DFEF9F206A51AF0068769C /* UInt64+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */; };
 		44E0245C20F7AB1F00F822D6 /* MultiSigWalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */; };
 		44EFBE5B20923EAC0081EE3A /* Blockchain+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44EFBE5A20923EAC0081EE3A /* Blockchain+Extension.swift */; };
-		44FB26C0205A6D5600F208EB /* ChooseBlockchainProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FB26BF205A6D5600F208EB /* ChooseBlockchainProtocol.swift */; };
+		44FB26C0205A6D5600F208EB /* BlockchainTransferProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FB26BF205A6D5600F208EB /* BlockchainTransferProtocol.swift */; };
 		4506F1741FD9A2E700D575BA /* WalletSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */; };
 		4506F1761FD9A30700D575BA /* WalletSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506F1751FD9A30700D575BA /* WalletSettingsViewController.swift */; };
 		45090AE01FE95E7700019D00 /* BackupSeedPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45090ADF1FE95E7700019D00 /* BackupSeedPhraseView.swift */; };
@@ -545,7 +545,7 @@
 		44FA86BE2035A75A00263C72 /* key.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = key.h; sourceTree = "<group>"; };
 		44FA86BF2035A76400263C72 /* big_int.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = big_int.h; sourceTree = "<group>"; };
 		44FA86C02035A77100263C72 /* sha3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sha3.h; sourceTree = "<group>"; };
-		44FB26BF205A6D5600F208EB /* ChooseBlockchainProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseBlockchainProtocol.swift; sourceTree = "<group>"; };
+		44FB26BF205A6D5600F208EB /* BlockchainTransferProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainTransferProtocol.swift; sourceTree = "<group>"; };
 		4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsPresenter.swift; sourceTree = "<group>"; };
 		4506F1751FD9A30700D575BA /* WalletSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsViewController.swift; sourceTree = "<group>"; };
 		45090ADF1FE95E7700019D00 /* BackupSeedPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupSeedPhraseView.swift; sourceTree = "<group>"; };
@@ -1444,7 +1444,7 @@
 				45C738C220358D56005AB761 /* AnalyticsProtocol.swift */,
 				4585BD2A20496E14004542AE /* CreateWalletProtocol.swift */,
 				4585BD3C2049C0DD004542AE /* DonationProtocol.swift */,
-				44FB26BF205A6D5600F208EB /* ChooseBlockchainProtocol.swift */,
+				44FB26BF205A6D5600F208EB /* BlockchainTransferProtocol.swift */,
 				45F098E720BC2877004DA1F7 /* AddressTransferProtocol.swift */,
 				445B12E520BD819000FD0D33 /* Localizable.swift */,
 				44768AA620D0015600FA9C28 /* ContactProtocol.swift */,
@@ -2654,7 +2654,7 @@
 				445D150D20DA8513002F6747 /* EPContactsPicker.swift in Sources */,
 				45E148A8204553AF006BD4D1 /* DonationAlertViewController.swift in Sources */,
 				455CDCEF1FC833A500EA5ACE /* SendingAnimationViewController.swift in Sources */,
-				44FB26C0205A6D5600F208EB /* ChooseBlockchainProtocol.swift in Sources */,
+				44FB26C0205A6D5600F208EB /* BlockchainTransferProtocol.swift in Sources */,
 				4540B23820F4FB5D00F28C77 /* JoinMultiSigViewController.swift in Sources */,
 				45D7890B20ECF776001AB402 /* MembersViewController.swift in Sources */,
 				45F42C841FDC081400210B1F /* IsJailbroken.swift in Sources */,

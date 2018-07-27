@@ -4,6 +4,6 @@
 
 import UIKit
 
-protocol ChooseBlockchainProtocol: class {
+protocol BlockchainTransferProtocol: class {
     func setBlockchain(blockchain: BlockchainType)
 }

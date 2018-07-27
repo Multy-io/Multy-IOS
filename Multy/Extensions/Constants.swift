@@ -180,6 +180,15 @@ enum TxStatus : Int {
         BlockConfirmedOutcoming =   6
 }
 
+enum SocketMessageType : Int {
+    case
+        multisigJoin =              1,
+        multisigLeave =             2,
+        multisigDelete =            3,
+        multisigKick =              4,
+        multisigCheck =             5
+}
+
 let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for available donation
 let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 
@@ -190,6 +199,10 @@ let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 let shortURL = "api.multy.io"
 let apiUrl = "https://\(shortURL)/"
 let socketUrl = "wss://\(shortURL)/"
+
+//let shortURL = "test.multy.io"
+//let apiUrl = "http://\(shortURL)/"
+//let socketUrl = "ws://\(shortURL)/"
 
 //stage
 //let shortURL = "148.251.42.107/"

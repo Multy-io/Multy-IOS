@@ -43,6 +43,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
     var isGradientOn = false
     
     var qrDelegate: QrDataProtocol?
+    var blockchainTransferDelegate: BlockchainTransferProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -208,7 +209,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
     func pasteInTextView(string: String) {
         textView.text = string.replacingOccurrences(of: " ", with: "")
         placeHolderLbl.isHidden = true
-        presenter.jointoWalletWith(inviteCode: textView.text)
+        presenter.validate(inviteCode: textView.text)
     }
 }
 
@@ -226,14 +227,14 @@ extension TextViewDelegate: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
             textView.resignFirstResponder()
-            presenter.jointoWalletWith(inviteCode: textView.text)
+            presenter.validate(inviteCode: textView.text)
             return false
         }
         
         if text.count >= inviteCodeCount {
             pasteInTextView(string: text)
             dismissKeyboard()
-            presenter.jointoWalletWith(inviteCode: textView.text)
+            presenter.validate(inviteCode: textView.text)
             return false
         }
         
@@ -246,7 +247,7 @@ extension TextViewDelegate: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         if textView.text.count == inviteCodeCount {
-            presenter.jointoWalletWith(inviteCode: textView.text)
+            presenter.validate(inviteCode: textView.text)
             dismissKeyboard()
         }
     }

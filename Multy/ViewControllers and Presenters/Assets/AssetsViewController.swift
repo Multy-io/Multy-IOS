@@ -19,7 +19,7 @@ private typealias CreateWalletDelegate = AssetsViewController
 private typealias LocalizeDelegate = AssetsViewController
 private typealias PushTxDelegate = AssetsViewController
 
-class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol {
+class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol, BlockchainTransferProtocol {
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
@@ -53,6 +53,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
 
     var stringIdForInApp = ""
     var stringIdForInAppBig = ""
+    var blockchainForTansfer: BlockchainType?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -408,6 +409,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
             let storyboard = UIStoryboard(name: "Receive", bundle: nil)
             let chooseWalletVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
             chooseWalletVC.presenter.multisigFunc(inviteCode: string)
+            chooseWalletVC.presenter.displayedBlockchainOnly = blockchainForTansfer
             chooseWalletVC.presenter.isNeedToPop = true
             navigationController?.pushViewController(chooseWalletVC, animated: true)
         } else {
@@ -443,6 +445,10 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
     }
     // -------------
     
+    
+    func setBlockchain(blockchain: BlockchainType) {
+        blockchainForTansfer = blockchain
+    }
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
@@ -458,6 +464,7 @@ extension CreateWalletDelegate: CreateWalletProtocol {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let joinVC = storyboard.instantiateViewController(withIdentifier: "joinMultiSig") as! JoinMultiSigViewController
             joinVC.qrDelegate = self
+            joinVC.blockchainTransferDelegate = self
             navigationController?.pushViewController(joinVC, animated: true)
         }
     }

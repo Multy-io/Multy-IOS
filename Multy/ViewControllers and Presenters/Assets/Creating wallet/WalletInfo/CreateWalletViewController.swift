@@ -122,7 +122,7 @@ class CreateWalletViewController: UIViewController, AnalyticsProtocol {
     }
 }
 
-extension ChooseBlockchainDelegate: ChooseBlockchainProtocol {
+extension ChooseBlockchainDelegate: BlockchainTransferProtocol {
     func setBlockchain(blockchain: BlockchainType) {
         presenter.selectedBlockchainType = blockchain
         updateBlockchainCell(blockchainCell: nil)    }

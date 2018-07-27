@@ -123,6 +123,12 @@ extension BlockchainType {
         return BlockchainType.create(currencyID: wallet.chain.uint32Value, netType: wallet.chainType.uint32Value)
     }
     
+    // This method relates to representation layer
+    static func createAssociated(wallet: UserWalletRLM) -> BlockchainType {
+        let netType = wallet.multisigWallet != nil ? wallet.multisigWallet!.chainType.uint32Value : wallet.chainType.uint32Value
+        return BlockchainType.create(currencyID: wallet.chain.uint32Value, netType: netType)
+    }
+    
     static func create(currencyID: UInt32, netType: UInt32) -> BlockchainType {
         return BlockchainType.init(blockchain: Blockchain.init(currencyID), net_type: Int(netType))
     }
