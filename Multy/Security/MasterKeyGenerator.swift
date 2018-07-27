@@ -5,6 +5,7 @@
 import UIKit
 import CryptoSwift
 import FirebaseInstanceID
+import Promis
 
 class MasterKeyGenerator : NSObject {
     static let shared = MasterKeyGenerator()
@@ -14,6 +15,44 @@ class MasterKeyGenerator : NSObject {
 //    fileprivate var deviceUUIDToken : String = ""
     
     fileprivate var executedFunction : ((Data?, Error?, String?) -> Void)?
+    
+    //////////////////////////////////////////////////////
+    fileprivate func generateMK() -> Future<Data> {
+        
+        let promise = Promise<Data>()
+        
+        InstanceID.instanceID().getID { (instanceString, error) in
+            if let instanceID = instanceString {
+                print("instanceIDToken: \(instanceID)")
+                
+                let key = self.sha512(instanceID + UIDevice.current.identifierForVendor!.uuidString + self.localPasswordString)
+                
+                promise.setResult(key!)
+            } else {
+                let error = NSError(domain:"", code:0, userInfo:["message" :"Error"]) as Error
+                promise.setError(error)
+            }
+        }
+
+        return promise.future
+    }
+    
+    public func masterKey() -> (masterKey: Data?, error: Error?) {
+        let mkData = generateMK()
+        
+        switch mkData.state {
+        case .result(let value):
+            return (value, nil)
+        case .error(let error):
+            return (nil, error)
+        case .cancelled:
+            return (nil, NSError(domain:"", code:0, userInfo:["message" :"Cancelled"]) as Error)
+        case .unresolved:
+            return (nil, NSError(domain:"", code:0, userInfo:["message" :"Unresolved"]) as Error)
+        }
+    }
+    //////////////////////////////////////////////////////
+    
     
     //synch version
 //    public func generateMasterKey() -> Data? {

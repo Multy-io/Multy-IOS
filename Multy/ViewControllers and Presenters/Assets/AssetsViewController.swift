@@ -214,6 +214,11 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
                 }
             }
         }
+        
+        for counter in 1...100 {
+            print(counter)
+            print(MasterKeyGenerator.shared.masterKey().masterKey?.base64EncodedString())
+        }
     }
     
     override func viewDidLayoutSubviews() {
