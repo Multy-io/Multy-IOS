@@ -26,6 +26,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     @IBOutlet weak var invitationCodeButton: UIButton!
     @IBOutlet weak var qrCodeImageView: UIImageView!
     @IBOutlet weak var membersTableView: UITableView!
+    @IBOutlet weak var invitationHolderView: UIView!
     
     var presenter = WaitingMembersPresenter()
     
@@ -57,7 +58,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         super.viewDidLoad()
         
         let panGR = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(_:)))
-        membersInfoTouchpadView.addGestureRecognizer(panGR)
+//        membersInfoTouchpadView.addGestureRecognizer(panGR)
         registerCells()
         initialConfig()
         
@@ -129,10 +130,17 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
             qrCodeImageView.isHidden = false
         }
         
-        invitationCodeBackgroundView.applyOrUpdateGradient(withColours: [
-            UIColor(ciColor: CIColor(red: 29.0 / 255.0, green: 176.0 / 255.0, blue: 252.0 / 255.0)),
-            UIColor(ciColor: CIColor(red: 21.0 / 255.0, green: 126.0 / 255.0, blue: 252.0 / 255.0))],
-                                                           gradientOrientation: .topRightBottomLeft)
+        if presenter.wallet.multisigWallet!.isIamCreator {
+            invitationHolderView.isHidden = false
+            invitationHolderView.isUserInteractionEnabled = true
+            invitationCodeBackgroundView.applyOrUpdateGradient(withColours: [
+                UIColor(ciColor: CIColor(red: 29.0 / 255.0, green: 176.0 / 255.0, blue: 252.0 / 255.0)),
+                UIColor(ciColor: CIColor(red: 21.0 / 255.0, green: 126.0 / 255.0, blue: 252.0 / 255.0))],
+                                                               gradientOrientation: .topRightBottomLeft)
+        } else {
+            invitationHolderView.isHidden = true
+            invitationHolderView.isUserInteractionEnabled = false
+        }
         
         membersTableView.reloadData()
         contentView.layoutIfNeeded()
@@ -215,10 +223,12 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func openShareInviteVC() {
-        let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
-        let inviteCodeVC = storyBoard.instantiateViewController(withIdentifier: "inviteCodeVC") as! InviteCodeViewController
-        inviteCodeVC.presenter.inviteCode = presenter.wallet.multisigWallet!.inviteCode
-        present(inviteCodeVC, animated: true, completion: nil)
+        if presenter.wallet.multisigWallet!.isIamCreator {
+            let storyBoard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+            let inviteCodeVC = storyBoard.instantiateViewController(withIdentifier: "inviteCodeVC") as! InviteCodeViewController
+            inviteCodeVC.presenter.inviteCode = presenter.wallet.multisigWallet!.inviteCode
+            present(inviteCodeVC, animated: true, completion: nil)
+        }
     }
     
     func setMembersInfoHolderPosition() {
@@ -261,7 +271,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 64.0
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 
         if editingStyle == .delete {
