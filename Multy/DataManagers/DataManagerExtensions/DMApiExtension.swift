@@ -9,7 +9,7 @@ import Alamofire
 extension DataManager {
     
     func getServerConfig(completion: @escaping(_ hardVersion: Int?,_ softVersion: Int?,_ error: Error?) -> ()) {
-        apiManager.getServerConfig { (answerDict, err) in
+        apiManager.getServerConfig { [unowned self] (answerDict, err) in
             switch err {
             case nil:
                 var apiVersion: NSString?
@@ -64,6 +64,10 @@ extension DataManager {
                     
                     self.btcMainNetDonationAddress = donateFeatureAndAddressDict[donationWithTransaction]!
                     userDefaults.set(encodedData, forKey: Constants.UserDefaults.btcDonationAddressesKey)
+                }
+                
+                if let multisigFactoriesInfo = answerDict!["multisigfactory"] as? Dictionary<String,  String> {
+                    self.saveMultisigFactories(multisigFactoriesInfo)
                 }
                 
                 userDefaults.synchronize()
