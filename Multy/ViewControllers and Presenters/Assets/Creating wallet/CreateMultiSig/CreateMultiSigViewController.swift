@@ -242,7 +242,7 @@ extension TextFieldDelegate: UITextFieldDelegate {
     }
 }
 
-extension ChooseBlockchainDelegate: ChooseBlockchainProtocol {
+extension ChooseBlockchainDelegate: BlockchainTransferProtocol {
     func setBlockchain(blockchain: BlockchainType) {
         presenter.selectedBlockchainType = blockchain
         updateBlockchainCell(blockchainCell: nil)    }

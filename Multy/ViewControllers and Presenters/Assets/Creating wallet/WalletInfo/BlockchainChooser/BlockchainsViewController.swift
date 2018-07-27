@@ -21,7 +21,7 @@ class BlockchainsViewController: UIViewController {
     var stringInAppId = ""
     var stringInAppIdBig = ""
     
-    weak var delegate: ChooseBlockchainProtocol?
+    weak var delegate: BlockchainTransferProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
