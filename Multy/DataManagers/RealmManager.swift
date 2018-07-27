@@ -520,6 +520,7 @@ extension WalletManager {
                                 modifiedWallet!.isTherePendingTx =  wallet.isTherePendingTx
                                 modifiedWallet!.btcWallet =         wallet.btcWallet
                                 modifiedWallet!.ethWallet =         wallet.ethWallet
+                                modifiedWallet!.multisigWallet =    wallet.multisigWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
 
