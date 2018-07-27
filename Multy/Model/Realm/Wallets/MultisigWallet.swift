@@ -26,4 +26,6 @@ class MultisigWallet: Object {
     @objc dynamic var linkedWalletID = String()
     
     var owners = List<MultisigOwnerRLM>()
+
+    @objc dynamic var amICreator = Bool()
 }

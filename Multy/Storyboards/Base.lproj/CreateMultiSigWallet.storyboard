@@ -1036,6 +1036,7 @@ Members</string>
                         <outlet property="headerView" destination="WjK-BC-Ypu" id="iaT-WV-wZt"/>
                         <outlet property="invitationCodeBackgroundView" destination="Tp4-5K-jIV" id="dNx-5f-Nak"/>
                         <outlet property="invitationCodeButton" destination="HuL-7P-xQq" id="0P3-HD-WCe"/>
+                        <outlet property="invitationHolderView" destination="RaK-yw-arg" id="Vzz-Kk-b0R"/>
                         <outlet property="joinedMembersLabel" destination="v6L-sn-crM" id="Nfc-mk-fwz"/>
                         <outlet property="membersCounterHolderView" destination="8Nf-gf-5GL" id="nmM-56-Bd4"/>
                         <outlet property="membersInfoHolderView" destination="pBy-0A-2E6" id="KPp-oj-vIM"/>
@@ -1390,16 +1391,38 @@ Members</string>
                                                     <action selector="deleteAction:" destination="39W-4y-Unq" eventType="touchUpInside" id="Fet-YE-mjG"/>
                                                 </connections>
                                             </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="geT-Bz-hIG">
+                                                <rect key="frame" x="0.0" y="63" width="375" height="1"/>
+                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40459118150000001" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="0.5" id="Ody-Ov-J9I"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="TU5-S1-zQB"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Avj-K2-DYx">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40459118150000001" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="Af6-l6-7sI"/>
+                                                    <constraint firstAttribute="height" constant="0.5" id="if0-Pi-1Nq"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="ATn-Jq-7Tg" firstAttribute="top" secondItem="hY1-lm-TqC" secondAttribute="top" id="3gS-CN-dD0"/>
+                                            <constraint firstItem="geT-Bz-hIG" firstAttribute="leading" secondItem="hY1-lm-TqC" secondAttribute="leading" id="5tt-Yi-T1W"/>
                                             <constraint firstAttribute="height" constant="64" id="8tJ-Mq-C40"/>
                                             <constraint firstAttribute="trailing" secondItem="ATn-Jq-7Tg" secondAttribute="trailing" id="FUy-l3-QDz"/>
+                                            <constraint firstAttribute="bottom" secondItem="geT-Bz-hIG" secondAttribute="bottom" id="Fs4-Ns-q3M"/>
                                             <constraint firstItem="WXp-Nn-VLr" firstAttribute="centerY" secondItem="hY1-lm-TqC" secondAttribute="centerY" id="J2W-oa-H7O"/>
                                             <constraint firstItem="ATn-Jq-7Tg" firstAttribute="leading" secondItem="hY1-lm-TqC" secondAttribute="leading" id="QDd-KV-gLE"/>
+                                            <constraint firstItem="Avj-K2-DYx" firstAttribute="top" secondItem="hY1-lm-TqC" secondAttribute="top" id="ZFs-Zo-gdC"/>
+                                            <constraint firstItem="Avj-K2-DYx" firstAttribute="leading" secondItem="hY1-lm-TqC" secondAttribute="leading" id="fBw-P1-YZC"/>
+                                            <constraint firstAttribute="trailing" secondItem="Avj-K2-DYx" secondAttribute="trailing" id="gM1-po-TuJ"/>
                                             <constraint firstAttribute="bottom" secondItem="ATn-Jq-7Tg" secondAttribute="bottom" id="i8T-nF-nD1"/>
                                             <constraint firstItem="WXp-Nn-VLr" firstAttribute="centerX" secondItem="hY1-lm-TqC" secondAttribute="centerX" id="qOO-9R-DeW"/>
+                                            <constraint firstAttribute="trailing" secondItem="geT-Bz-hIG" secondAttribute="trailing" id="y23-uI-2ky"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJT-vf-F2a">
