@@ -2,6 +2,8 @@
 //Licensed under Multy.io license.
 //See LICENSE for details
 
+private typealias MultisigManager = DataManager
+
 extension DataManager {
 //    func isDeviceJailbroken() -> Bool {
 //        return coreLibManager.isDeviceJailbroken()
@@ -123,28 +125,38 @@ extension DataManager {
                                                            gasLimit: gasLimitString)
     }
     
+    func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
+        return coreLibManager.privateKeyString(blockchain: blockchain, walletID: walletID, addressID: addressID, binaryData: &binaryData)
+    }
+}
+
+extension MultisigManager {
     func createMultiSigWallet(binaryData: inout BinaryData,
                               wallet: UserWalletRLM,
                               sendAddress: String,
                               creationPriceString: String,
                               gasPriceString: String,
                               gasLimitString: String,
-                              factoryAddress: String,
                               owners: String,
                               confirmationsCount: UInt32) -> (message: String, isTransactionCorrect: Bool) {
         let blockchainType = BlockchainType.create(wallet: wallet)
         let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
+        let factoryAddress = multisigFactory(for: blockchainType)
+        
+        if factoryAddress == nil || factoryAddress!.isEmpty {
+            return ("Missed factory address", false)
+        }
         
         let multiSigWalletCreationInfo = coreLibManager.createMutiSigWallet(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                sendAddress: sendAddress,
-                                                                creationPriceString: creationPriceString,
-                                                                factoryAddress: factoryAddress,
-                                                                owners: owners,
-                                                                confirmationsCount: confirmationsCount,
-                                                                nonce: wallet.ethWallet!.nonce.intValue,
-                                                                balanceAmountString: wallet.availableAmount.stringValue,
-                                                                gasPriceString: gasPriceString,
-                                                                gasLimitString: gasLimitString)
+                                                                            sendAddress: sendAddress,
+                                                                            creationPriceString: creationPriceString,
+                                                                            factoryAddress: factoryAddress!,
+                                                                            owners: owners,
+                                                                            confirmationsCount: confirmationsCount,
+                                                                            nonce: wallet.ethWallet!.nonce.intValue,
+                                                                            balanceAmountString: wallet.availableAmount.stringValue,
+                                                                            gasPriceString: gasPriceString,
+                                                                            gasLimitString: gasLimitString)
         
         return multiSigWalletCreationInfo
     }
@@ -163,15 +175,36 @@ extension DataManager {
                                                                      sendFromAddress: sendFromAddress,
                                                                      sendAmountString: sendAmountString,
                                                                      sendToAddress: wallet.address, //sendToAddress,
-                                                                     nonce: wallet.ethWallet!.nonce.intValue,
-                                                                     balanceAmountString: wallet.availableAmount.stringValue,
-                                                                     gasPriceString: gasPriceString,
-                                                                     gasLimitString: gasLimitString)
+            nonce: wallet.ethWallet!.nonce.intValue,
+            balanceAmountString: wallet.availableAmount.stringValue,
+            gasPriceString: gasPriceString,
+            gasLimitString: gasLimitString)
         
         return multiSigTxCreationInfo
     }
     
-    func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
-        return coreLibManager.privateKeyString(blockchain: blockchain, walletID: walletID, addressID: addressID, binaryData: &binaryData)
+    func confirmMultiSigTx(binaryData: inout BinaryData,
+                           wallet: UserWalletRLM,
+                           balanceAmountString: String,
+                           sendFromAddress: String,
+                           nonce: Int,
+                           nonceMultiSigTx: Int,
+                           gasPriceString: String,
+                           gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
+        let blockchainType = BlockchainType.create(wallet: wallet)
+        let addressData = coreLibManager.createAddress(blockchainType: blockchainType,
+                                                       walletID: wallet.walletID.uint32Value,
+                                                       addressID: wallet.addressID.uint32Value,
+                                                       binaryData: &binaryData)
+        
+        let multiSigTxConfirmInfo = coreLibManager.confirmMultiSigTx(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                                     sendFromAddress: sendFromAddress,
+                                                                     nonce: nonce,
+                                                                     nonceMultiSigTx: nonceMultiSigTx,
+                                                                     balanceAmountString: balanceAmountString,
+                                                                     gasPriceString: gasPriceString,
+                                                                     gasLimitString: gasLimitString)
+        
+        return multiSigTxConfirmInfo
     }
 }

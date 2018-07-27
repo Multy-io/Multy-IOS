@@ -15,6 +15,7 @@ class MasterKeyGenerator : NSObject {
     
     fileprivate var executedFunction : ((Data?, Error?, String?) -> Void)?
     
+    
     //synch version
 //    public func generateMasterKey() -> Data? {
 //        generateGGInstanceID()
