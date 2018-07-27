@@ -22,6 +22,7 @@ class ReceiveStartPresenter: NSObject {
     
     var isForMultisig = false
     var inviteCode = ""
+    var blockchainForSort: BlockchainType?
     
     //test func
 //    func createWallets() {
@@ -74,6 +75,9 @@ class ReceiveStartPresenter: NSObject {
                 
                 if let blockchainType = self.displayedBlockchainOnly {
                     walletsArray = walletsArray.filter{ blockchainType == $0.blockchainType }
+                    if self.isForMultisig {
+                        walletsArray = walletsArray.filter{ $0.isMultiSig == false }
+                    }
                 }
                 
                 self.walletsArr = walletsArray.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })

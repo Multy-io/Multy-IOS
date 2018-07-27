@@ -74,17 +74,17 @@ extension DataManager {
             "userid": DataManager.shared.apiManager.userID,
             "address": wallet.address,
             "invitecode": inviteCode,
-            "addresstokik":"", //omitempty
+            "addresstokick":"", //omitempty
             "walletindex": wallet.walletID,
             "currencyid": wallet.chain,
             "networkid": wallet.chainType
         ]
         
         let paramsForMsgSend: NSDictionary = [
-            "type": SocketMessageType.multisigJoin,  // it's kinda signature method eg: join:multisig.
+            "type": SocketMessageType.multisigJoin.rawValue,  // it's kinda signature method eg: join:multisig.
             "from": "",              // not requied
             "to":"",                // not requied
-            "date": Date().timeIntervalSince1970, // time unix
+            "date": UInt64(Date().timeIntervalSince1970), // time unix
             "status": 0,
             "payload": payloadForJoin
         ]
@@ -92,6 +92,32 @@ extension DataManager {
         
         socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
             completion(answerDict, err)
+        }
+    }
+    
+    func validateInviteCode(code: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        let payloadForValidate: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "invitecode": code
+        ]
+        
+        let paramsForMsgSend: NSDictionary = [
+            "type": SocketMessageType.multisigCheck.rawValue,  // it's kinda signature method eg: join:multisig.
+            "from": "",              // not requied
+            "to":"",                // not requied
+            "date": UInt64(Date().timeIntervalSince1970), // time unix
+            "status": 0,
+            "payload": payloadForValidate
+        ]
+        
+        
+        socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
+            if err != nil {
+                completion(nil, err)
+                return
+            }
+            let payloadDict = answerDict!["payload"] as! NSDictionary
+            completion(payloadDict, nil)
         }
     }
 }

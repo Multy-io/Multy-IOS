@@ -175,6 +175,10 @@ class UserWalletRLM: Object {
         return blockchainType.blockchain  == BLOCKCHAIN_BITCOIN
     }
     
+    var isMultiSig: Bool {
+        return multisigWallet != nil
+    }
+    
     @objc dynamic var fiatName = String()
     @objc dynamic var fiatSymbol = String()
     
