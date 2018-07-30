@@ -56,6 +56,9 @@ class WalletChooseViewController: UIViewController, AnalyticsProtocol {
             let detailsVC = segue.destination as! EthSendDetailsViewController
             presenter.transactionDTO.choosenWallet = presenter.filteredWalletArray[presenter.selectedIndex!]
             detailsVC.presenter.transactionDTO = presenter.transactionDTO
+        } else if segue.identifier == "sendEthVC" {
+            let sendVC = segue.destination as! SendAmountEthViewController
+            sendVC.presenter.transactionDTO = presenter.transactionDTO
         }
     }
     
