@@ -55,4 +55,16 @@ class WaitingMembersPresenter: NSObject {
             }
         }
     }
+    
+    func payForMultiSig() {
+        var binData = account!.binaryDataString.createBinaryData()!
+//        DataManager.shared.createMultiSigWallet(binaryData: &binData,
+//                                                wallet: wallet,
+//                                                sendAddress: <#T##String#>,
+//                                                creationPriceString: "0",
+//                                                gasPriceString: ,
+//                                                gasLimitString: <#T##String#>,
+//                                                owners: <#T##String#>,
+//                                                confirmationsCount: <#T##UInt32#>)
+    }
 }

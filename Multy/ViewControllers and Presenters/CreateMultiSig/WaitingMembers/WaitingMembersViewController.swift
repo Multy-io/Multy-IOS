@@ -182,6 +182,10 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         }
     }
     
+    func payForMultiSig() {
+        presenter.payForMultiSig()
+    }
+    
     func setTableHolderPosition() {
         var tableHolderViewHeight = self.tableHolderViewHeight
         if tableHolderViewHeight < tablesHolderBottomEdge {
@@ -259,7 +263,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         if presenter.bottomButtonStatus == .inviteCode {
             openShareInviteVC()
         } else {
-            
+            payForMultiSig()
         }
     }
     
