@@ -7,6 +7,7 @@ import UICircularProgressRing
 import Hash2Pics
 
 private typealias LocalizeDelegate = WaitingMembersViewController
+private typealias ScrollViewDelegate = WaitingMembersViewController
 
 class WaitingMembersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -30,22 +31,34 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     
     var presenter = WaitingMembersPresenter()
     
-    var membersInfoHolderViewHeight : CGFloat = 0 {
+    var tablesHolderTopEdge: CGFloat {
+        return contentHeight - (headerView.frame.origin.y + headerView.frame.size.height)
+    }
+    
+    var tablesHolderBottomEdge: CGFloat = 0 {
         didSet {
-            updateMembersCounterOpacity()
-            membersTableView.isUserInteractionEnabled = membersInfoHolderViewHeight == topEdge ? true : false
-            membersInfoTouchpadView.isUserInteractionEnabled = membersInfoHolderViewHeight == topEdge ? false : true
-            membersInfoHolderViewHeightConstraint.constant = membersInfoHolderViewHeight
-            contentView.layoutIfNeeded()
+            if oldValue != tablesHolderBottomEdge {
+                tableHolderViewHeight = tablesHolderBottomEdge
+            }
         }
     }
     
-    var lastPosition : CGPoint?
+    var tablesHolderFlipEdge: CGFloat {
+        return contentHeight - (tablesHolderTopEdge - tablesHolderBottomEdge) / 2
+    }
     
-    var initialMembersInfoHolderHeight : CGFloat = 0 {
+    var contentHeight : CGFloat {
+        return self.contentView.frame.size.height
+    }
+    
+    var tableHolderViewHeight : CGFloat = 0 {
         didSet {
-            if oldValue != initialMembersInfoHolderHeight {
-                membersInfoHolderViewHeight = initialMembersInfoHolderHeight
+            if oldValue != tableHolderViewHeight {
+                
+                
+                membersInfoHolderViewHeightConstraint.constant = tableHolderViewHeight
+                updateMembersCounterOpacity()
+                self.view.layoutIfNeeded()
             }
         }
     }
@@ -57,8 +70,6 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let panGR = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(_:)))
-//        membersInfoTouchpadView.addGestureRecognizer(panGR)
         registerCells()
         initialConfig()
         
@@ -69,7 +80,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        initialMembersInfoHolderHeight = contentView.frame.size.height - (membersCounterHolderView.frame.origin.y + membersCounterHolderView.frame.size.height + 40)
+        tablesHolderBottomEdge = contentHeight - (membersCounterHolderView.frame.origin.y + membersCounterHolderView.frame.size.height + 40)
         
         presenter.viewControllerViewDidLayoutSubviews()
     }
@@ -150,79 +161,16 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func updateMembersCounterOpacity() {
-        let rangeRaw = topEdge - initialMembersInfoHolderHeight
-        var value = membersInfoHolderViewHeight
-        if value < initialMembersInfoHolderHeight {
-            value = initialMembersInfoHolderHeight
+        let rangeRaw = topEdge - tableHolderViewHeight
+        var value = tableHolderViewHeight
+        if value < tablesHolderBottomEdge {
+            value = tablesHolderBottomEdge
         }
-        if value > topEdge {
-            value = topEdge
+        if value > tablesHolderTopEdge {
+            value = tablesHolderTopEdge
         }
         
-        membersCounterHolderView.alpha = 1 - (value - initialMembersInfoHolderHeight) / rangeRaw
-    }
-    
-    @objc private func handlePan(_ sender: UIPanGestureRecognizer? = nil) {
-        switch sender!.state {
-        case .began:
-            lastPosition = sender!.location(in: contentView)
-            break
-        case .changed:
-            var membersInfoHolderViewHeight = self.membersInfoHolderViewHeight
-            let position = sender!.location(in: contentView)
-            let translationRaw = position.y - lastPosition!.y
-            if translationRaw > 0 {
-                membersInfoHolderViewHeight -= (membersInfoHolderViewHeight - translationRaw) < initialMembersInfoHolderHeight ? translationRaw / 2 : translationRaw
-            } else {
-                membersInfoHolderViewHeight -= translationRaw
-                
-                if membersInfoHolderViewHeight > topEdge {
-                    membersInfoHolderViewHeight = topEdge
-                }
-            }
-            
-            self.membersInfoHolderViewHeight = membersInfoHolderViewHeight
-            
-            lastPosition = position
-            break
-            
-        case .ended, .cancelled, .failed:
-            var membersInfoHolderViewHeight = self.membersInfoHolderViewHeight
-            let velocity = sender!.velocity(in: contentView)
-            
-            var animationDuration : TimeInterval = 0
-            if abs(velocity.y) > 600.0 {
-                animationDuration = 0.30
-                
-                if velocity.y < 0 {
-                    membersInfoHolderViewHeight = topEdge
-                } else {
-                    membersInfoHolderViewHeight = initialMembersInfoHolderHeight
-                }
-            } else {
-                animationDuration = 0.2
-                
-                if membersInfoHolderViewHeight < initialMembersInfoHolderHeight {
-                    membersInfoHolderViewHeight = initialMembersInfoHolderHeight
-                } else {
-                    if (contentView.frame.size.height - initialMembersInfoHolderHeight) / 2 > contentView.frame.size.height - membersInfoHolderViewHeight {
-                        membersInfoHolderViewHeight = topEdge
-                    } else {
-                        membersInfoHolderViewHeight = initialMembersInfoHolderHeight
-                    }
-                }
-            }
-            
-            UIView.animate(withDuration: animationDuration) {
-                self.membersInfoHolderViewHeight = membersInfoHolderViewHeight
-            }
-            
-            lastPosition = nil
-            break
-            
-        default:
-            break
-        }
+        membersCounterHolderView.alpha = 1 - (value - tablesHolderBottomEdge) / rangeRaw
     }
     
     func openShareInviteVC() {
@@ -234,21 +182,31 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         }
     }
     
-    func setMembersInfoHolderPosition() {
-        var membersInfoHolderViewHeight = self.membersInfoHolderViewHeight
-        if membersInfoHolderViewHeight < initialMembersInfoHolderHeight {
-            membersInfoHolderViewHeight = initialMembersInfoHolderHeight
+    func setTableHolderPosition() {
+        var tableHolderViewHeight = self.tableHolderViewHeight
+        if tableHolderViewHeight < tablesHolderBottomEdge {
+            tableHolderViewHeight = tablesHolderBottomEdge
         } else {
-            if (contentView.frame.size.height - initialMembersInfoHolderHeight) / 2 > contentView.frame.size.height - membersInfoHolderViewHeight {
-                membersInfoHolderViewHeight = topEdge
+            if tableHolderViewHeight > tablesHolderFlipEdge {
+                tableHolderViewHeight = tablesHolderTopEdge
             } else {
-                membersInfoHolderViewHeight = initialMembersInfoHolderHeight
+                tableHolderViewHeight = tablesHolderBottomEdge
             }
         }
         
         UIView.animate(withDuration: 0.3) {
-            self.membersInfoHolderViewHeight = membersInfoHolderViewHeight
+            self.tableHolderViewHeight = tableHolderViewHeight
         }
+    }
+    
+    func updateWalletsAfterDragging() {
+        setTableHolderPosition()
+    }
+    
+    func setInitialTableHolderPosition() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.tableHolderViewHeight = self.tablesHolderBottomEdge
+        })
     }
     
     //MARK: UITableViewDataSource
@@ -270,6 +228,12 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         return cell
     }
     
+    @IBAction func titleAction(_ sender: Any) {
+        if tableHolderViewHeight == tablesHolderTopEdge {
+            setInitialTableHolderPosition()
+        }
+    }
+    
     //MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 64.0
@@ -280,33 +244,6 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         if editingStyle == .delete {
             presenter.kickOwnerWithIndex(index: indexPath.item)
         }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        var membersInfoHolderViewHeight = self.membersInfoHolderViewHeight
-        if scrollView.contentOffset.y < 0 {
-            membersInfoHolderViewHeight += scrollView.contentOffset.y
-            
-            self.membersInfoHolderViewHeight = membersInfoHolderViewHeight
-        } else {
-            if membersInfoHolderViewHeight != topEdge {
-                membersInfoHolderViewHeight += scrollView.contentOffset.y
-                if membersInfoHolderViewHeight > topEdge {
-                    membersInfoHolderViewHeight = topEdge
-                }
-                
-                self.membersInfoHolderViewHeight = membersInfoHolderViewHeight
-            }
-        }
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        setMembersInfoHolderPosition()
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        setMembersInfoHolderPosition()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -328,6 +265,49 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     
     @IBAction func backAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
+    }
+}
+    
+extension ScrollViewDelegate: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        var tableHolderViewHeight = self.tableHolderViewHeight
+        
+        if tableHolderViewHeight < tablesHolderTopEdge {
+            if tableHolderViewHeight < tablesHolderBottomEdge {
+                if scrollView.contentOffset.y < 0 {
+                    tableHolderViewHeight += scrollView.contentOffset.y / 3
+                } else {
+                    tableHolderViewHeight += scrollView.contentOffset.y
+                }
+            } else {
+                tableHolderViewHeight += scrollView.contentOffset.y
+                tableHolderViewHeight = tableHolderViewHeight > tablesHolderTopEdge ? tablesHolderTopEdge : tableHolderViewHeight
+            }
+            
+            if !scrollView.isDecelerating || scrollView.contentOffset.y > 0 {
+                scrollView.setContentOffset(CGPoint.zero, animated: false)
+            }
+        } else {
+            if scrollView.contentOffset.y < 0 {
+                tableHolderViewHeight += scrollView.contentOffset.y
+            }
+        }
+        
+        self.tableHolderViewHeight = tableHolderViewHeight
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if tableHolderViewHeight < tablesHolderBottomEdge - 40 {
+            updateWalletsAfterDragging()
+        } else {
+            if !scrollView.isDecelerating {
+                setTableHolderPosition()
+            }
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        setTableHolderPosition()
     }
 }
 
