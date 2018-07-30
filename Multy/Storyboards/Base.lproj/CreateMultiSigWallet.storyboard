@@ -831,7 +831,7 @@ Members</string>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounce" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <tableView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fu4-dS-IAS">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fu4-dS-IAS">
                                                 <rect key="frame" x="0.0" y="25" width="375" height="378"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <prototypes>
@@ -935,6 +935,12 @@ Members</string>
                                                     <segue destination="39W-4y-Unq" kind="show" identifier="waitingMembersSettings" id="3aB-q9-bG0"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uuV-Of-YqF">
+                                                <rect key="frame" x="60" y="0.0" width="245" height="44"/>
+                                                <connections>
+                                                    <action selector="titleAction:" destination="KZk-ol-dp7" eventType="touchUpInside" id="SSP-e1-rKD"/>
+                                                </connections>
+                                            </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings" translatesAutoresizingMaskIntoConstraints="NO" id="UhF-j4-ucb">
                                                 <rect key="frame" x="334" y="12" width="25" height="20"/>
                                                 <constraints>
@@ -947,16 +953,20 @@ Members</string>
                                         <constraints>
                                             <constraint firstItem="Oaf-Iu-9Qc" firstAttribute="leading" secondItem="WjK-BC-Ypu" secondAttribute="leading" id="0Be-nK-sP4"/>
                                             <constraint firstItem="HKq-lo-zv7" firstAttribute="leading" secondItem="WjK-BC-Ypu" secondAttribute="leading" constant="9" id="7MR-KL-exq"/>
+                                            <constraint firstItem="uuV-Of-YqF" firstAttribute="top" secondItem="WjK-BC-Ypu" secondAttribute="top" id="7Oe-lA-ksi"/>
+                                            <constraint firstItem="9nO-b1-Zdd" firstAttribute="leading" secondItem="uuV-Of-YqF" secondAttribute="trailing" id="Cq3-5G-4Kr"/>
                                             <constraint firstItem="HKq-lo-zv7" firstAttribute="centerY" secondItem="WjK-BC-Ypu" secondAttribute="centerY" id="Gzb-xc-srS"/>
                                             <constraint firstItem="Pkd-FX-jEw" firstAttribute="centerX" secondItem="WjK-BC-Ypu" secondAttribute="centerX" id="HIW-ZR-Fqx"/>
                                             <constraint firstAttribute="height" constant="44" id="LFs-Bd-F5B"/>
                                             <constraint firstAttribute="bottom" secondItem="Pkd-FX-jEw" secondAttribute="bottom" constant="2.5" id="MgE-oA-6yX"/>
+                                            <constraint firstAttribute="bottom" secondItem="uuV-Of-YqF" secondAttribute="bottom" id="N76-FN-198"/>
                                             <constraint firstAttribute="bottom" secondItem="9nO-b1-Zdd" secondAttribute="bottom" id="YVE-6l-ERO"/>
                                             <constraint firstItem="UhF-j4-ucb" firstAttribute="centerY" secondItem="9nO-b1-Zdd" secondAttribute="centerY" id="Zcb-wC-gNA"/>
                                             <constraint firstItem="Pkd-FX-jEw" firstAttribute="centerY" secondItem="HKq-lo-zv7" secondAttribute="centerY" id="dB1-uF-8oa"/>
                                             <constraint firstItem="Oaf-Iu-9Qc" firstAttribute="top" secondItem="WjK-BC-Ypu" secondAttribute="top" id="dPO-7V-7b5"/>
                                             <constraint firstItem="9nO-b1-Zdd" firstAttribute="top" secondItem="WjK-BC-Ypu" secondAttribute="top" id="lfa-uT-Og5"/>
                                             <constraint firstAttribute="trailing" secondItem="UhF-j4-ucb" secondAttribute="trailing" constant="16" id="mmF-Ga-Mly"/>
+                                            <constraint firstItem="uuV-Of-YqF" firstAttribute="leading" secondItem="Oaf-Iu-9Qc" secondAttribute="trailing" id="rwb-KQ-qVd"/>
                                             <constraint firstAttribute="trailing" secondItem="9nO-b1-Zdd" secondAttribute="trailing" id="sGJ-VC-tSq"/>
                                             <constraint firstAttribute="bottom" secondItem="Oaf-Iu-9Qc" secondAttribute="bottom" id="uqu-b3-AO7"/>
                                         </constraints>
@@ -1052,7 +1062,7 @@ Members</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rju-q2-XrO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2854" y="3695"/>
+            <point key="canvasLocation" x="-2855.1999999999998" y="3694.9025487256376"/>
         </scene>
         <!--Waiting Members Settings View Controller-->
         <scene sceneID="ulX-dz-fk9">
