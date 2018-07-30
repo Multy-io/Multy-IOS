@@ -34,11 +34,11 @@
 	<key>CFBundleVersion</key>
 	<string>59</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>ETH_MAIN_NET</string>
+	<string>EOS</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>2c7fd7bb</string>
+	<string>5064cfb6</string>
 	<key>GIT_TAG_NAME</key>
-	<string>RELEASE_BUILD_1.0.5_53-dirty</string>
+	<string>RELEASE_1.1.1-58_ETH-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

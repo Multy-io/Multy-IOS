@@ -84,6 +84,16 @@ extension BlockchainType {
             iconString = "chainBts"
         case BLOCKCHAIN_ERC20:
             iconString = "chainErc20"
+        case BLOCKCHAIN_EOS:
+            switch UInt32(self.net_type) {
+            case 0:
+                iconString = "eosMainMediumIcon"
+            case 1:
+                iconString = "eosTestMediumIcon"
+            default:
+                iconString = ""
+            }
+            
         default:
             iconString = ""
         }
