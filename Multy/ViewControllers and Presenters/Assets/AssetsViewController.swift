@@ -423,9 +423,16 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
-    func goToCreateWallet() {
-        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
-        self.performSegue(withIdentifier: Constants.Storyboard.createWalletVCSegueID, sender: Any.self)
+    func goToCreateWallet(tag: String?) {
+        if tag == nil { //create
+            (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+            self.performSegue(withIdentifier: Constants.Storyboard.createWalletVCSegueID, sender: Any.self)
+        } else if tag == "import" {
+            (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let importVC = storyboard.instantiateViewController(withIdentifier: "importVC")
+            navigationController?.pushViewController(importVC, animated: true)
+        }
     }
 }
 

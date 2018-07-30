@@ -5,5 +5,5 @@
 import Foundation
 
 protocol CreateWalletProtocol: class {
-    func goToCreateWallet()
+    func goToCreateWallet(tag: String?)
 }
