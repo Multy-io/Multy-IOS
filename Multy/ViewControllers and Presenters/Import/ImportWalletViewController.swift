@@ -31,7 +31,10 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
     }
     
     func doneAction() {
-        
+        let text = textView.text
+        if text?.isEmpty == false {
+            let blockchain 
+            make_account(<#T##blockchain: BlockchainType##BlockchainType#>, <#T##account_type: UInt32##UInt32#>, <#T##serialized_private_key: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>, <#T##new_account: UnsafeMutablePointer<OpaquePointer?>!##UnsafeMutablePointer<OpaquePointer?>!#>)
+        }
     }
-    
 }
