@@ -30,13 +30,18 @@ class CreatingWalletActionsViewController: UIViewController, CancelProtocol, Ana
     @IBAction func createAction(_ sender: Any) {
         ((cancelDelegate! as! AssetsViewController).tabBarController! as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         self.dismiss(animated: true) {
-            self.createProtocol?.goToCreateWallet()
+            self.createProtocol?.goToCreateWallet(tag: nil)
         }       
     }
     
     @IBAction func importWalletAction(_ sender: Any) {
-        unowned let weakSelf =  self
-        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.importWallet50")
+//        unowned let weakSelf =  self
+//        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.importWallet50")
+        ((cancelDelegate! as! AssetsViewController).tabBarController! as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
+        self.dismiss(animated: true) {
+            self.createProtocol?.goToCreateWallet(tag: "import")
+        }
+        
         logAnalytics()
     }
     
