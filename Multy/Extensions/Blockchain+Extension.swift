@@ -11,6 +11,8 @@ extension Blockchain {
             return BLOCKCHAIN_BITCOIN
         case Constants.BlockchainString.ethereumKey:
             return BLOCKCHAIN_ETHEREUM
+        case Constants.BlockchainString.eosKey:
+            return BLOCKCHAIN_EOS
         default:
             return BLOCKCHAIN_BITCOIN
         }
@@ -23,6 +25,7 @@ extension Blockchain {
                 return Constants.BigIntSwift.oneBTCInSatoshiKey
             case BLOCKCHAIN_ETHEREUM:
                 return Constants.BigIntSwift.oneETHInWeiKey
+
             default:
                 return BigInt("0")
             }
@@ -68,6 +71,9 @@ extension Blockchain {
             shortName = "BTS"
         case BLOCKCHAIN_ERC20:
             shortName = "ERC20"
+        case BLOCKCHAIN_EOS:
+            shortName = "EOS"
+            
         default:
             shortName = ""
         }
@@ -101,6 +107,9 @@ extension Blockchain {
             fullName = "BitShares"
         case BLOCKCHAIN_ERC20:
             fullName = "ERC20 Tokens"
+        case BLOCKCHAIN_EOS:
+            fullName = "EOS"
+            
         default:
             fullName = ""
         }
@@ -135,6 +144,8 @@ extension Blockchain {
             fullName = ""
         case BLOCKCHAIN_ERC20:
             fullName = ""
+        case BLOCKCHAIN_EOS:
+            fullName = Constants.BlockchainString.eosKey
         default:
             fullName = ""
         }
@@ -168,6 +179,9 @@ extension Blockchain {
             maxLenght = 0
         case BLOCKCHAIN_ERC20:
             maxLenght = 0
+        case BLOCKCHAIN_EOS:
+            maxLenght = 13
+            
         default:
             maxLenght = 0
         }
@@ -201,6 +215,9 @@ extension Blockchain {
             maxLenght = 0
         case BLOCKCHAIN_ERC20:
             maxLenght = 0
+        case BLOCKCHAIN_EOS:
+            maxLenght = 4
+            
         default:
             maxLenght = 0
         }

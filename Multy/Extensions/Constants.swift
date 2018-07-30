@@ -74,6 +74,7 @@ struct Constants {
     struct BlockchainString {
         static let bitcoinKey = "bitcoin"
         static let ethereumKey = "ethereum"
+        static let eosKey = "eos"
     }
     
     struct CustomFee {
