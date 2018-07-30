@@ -820,6 +820,7 @@ scan</string>
                         <segue destination="Tfc-aA-5T8" kind="show" identifier="qrCamera" id="FRo-Sp-aVY"/>
                         <segue destination="Can-YJ-fx8" kind="show" identifier="sendBTCDetailsVC" id="EUD-ex-a5v"/>
                         <segue destination="bre-UG-ufg" kind="show" identifier="sendETHDetailsVC" id="Y3u-nO-qs1"/>
+                        <segue destination="jJt-Ap-KXa" kind="show" identifier="sendEthVC" id="NIh-Uj-h6b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uor-oM-Mbh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1189,6 +1190,7 @@ scan</string>
                         <outlet property="tableView" destination="JAJ-uD-tG4" id="3Xg-4G-SMh"/>
                         <segue destination="Can-YJ-fx8" kind="show" identifier="sendBTCDetailsVC" id="RTX-aa-bzX"/>
                         <segue destination="bre-UG-ufg" kind="show" identifier="sendETHDetailsVC" id="TSe-kF-31L"/>
+                        <segue destination="jJt-Ap-KXa" kind="show" identifier="sendEthVC" id="x6S-9Y-yOo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q7b-f1-wOH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2851,10 +2853,10 @@ address</string>
         <image name="swap" width="25" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Nqh-Rv-oVp"/>
-        <segue reference="Y3u-nO-qs1"/>
-        <segue reference="EUD-ex-a5v"/>
-        <segue reference="N56-qi-Hx5"/>
+        <segue reference="x6S-9Y-yOo"/>
+        <segue reference="TSe-kF-31L"/>
+        <segue reference="RTX-aa-bzX"/>
+        <segue reference="FRo-Sp-aVY"/>
         <segue reference="jSE-EO-qlC"/>
         <segue reference="GW1-5g-oIp"/>
     </inferredMetricsTieBreakers>
