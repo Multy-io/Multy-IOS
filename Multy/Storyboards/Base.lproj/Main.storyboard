@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14295.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wmS-tA-24k">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wmS-tA-24k">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14270.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -827,7 +830,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Und-P0-72N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2796" y="2435.5322338830588"/>
+            <point key="canvasLocation" x="-2815" y="2436"/>
         </scene>
         <!--Donation Send View Controller-->
         <scene sceneID="fdY-lQ-60C">
@@ -1572,7 +1575,7 @@ and develop new application functionality</string>
                                     <constraint firstAttribute="width" constant="123" id="VDA-x3-BS4"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No internet connection" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eXV-cf-GXL">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No internet connection" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eXV-cf-GXL">
                                 <rect key="frame" x="49.5" y="315.5" width="276" height="36"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="26"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1594,9 +1597,11 @@ correctly</string>
                             <constraint firstItem="tdq-0K-Sb2" firstAttribute="leading" secondItem="qNv-C3-uhH" secondAttribute="leading" id="0af-Tf-3S4"/>
                             <constraint firstItem="312-E7-Xe2" firstAttribute="top" secondItem="eXV-cf-GXL" secondAttribute="bottom" constant="41" id="19G-Bk-FhF"/>
                             <constraint firstAttribute="trailing" secondItem="tdq-0K-Sb2" secondAttribute="trailing" id="8el-4e-zje"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="eXV-cf-GXL" secondAttribute="trailing" constant="16" id="AQG-rf-GZM"/>
                             <constraint firstItem="7Cv-dM-kj0" firstAttribute="top" secondItem="tdq-0K-Sb2" secondAttribute="bottom" id="Gx7-nc-o3V"/>
                             <constraint firstItem="312-E7-Xe2" firstAttribute="leading" secondItem="qNv-C3-uhH" secondAttribute="leading" constant="21" id="IfC-LF-p4P"/>
                             <constraint firstAttribute="trailing" secondItem="312-E7-Xe2" secondAttribute="trailing" constant="21" id="Nle-00-FuM"/>
+                            <constraint firstItem="eXV-cf-GXL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qNv-C3-uhH" secondAttribute="leading" constant="16" id="fIH-xY-fHr"/>
                             <constraint firstItem="eXV-cf-GXL" firstAttribute="centerX" secondItem="qNv-C3-uhH" secondAttribute="centerX" id="gnX-iI-VMn"/>
                             <constraint firstItem="4xv-6L-vmO" firstAttribute="centerX" secondItem="qNv-C3-uhH" secondAttribute="centerX" id="h5b-s0-bLC"/>
                             <constraint firstItem="eXV-cf-GXL" firstAttribute="top" secondItem="4xv-6L-vmO" secondAttribute="bottom" constant="49" id="iFH-FP-t58"/>
@@ -2234,25 +2239,11 @@ correctly</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BOe-fA-coW">
-                                <rect key="frame" x="0.0" y="64" width="375" height="817"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="787"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vHL-uD-DHH">
                                         <rect key="frame" x="0.0" y="106.5" width="375" height="380"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctg-5q-b08" userLabel="LineView2">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="8Y8-rf-cKd"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rAK-LL-JBB" userLabel="LineView2">
-                                                <rect key="frame" x="0.0" y="379" width="375" height="1"/>
-                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="xAb-bi-xMf"/>
-                                                </constraints>
-                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vka-N2-WxL" userLabel="LineView1">
                                                 <rect key="frame" x="66" y="63" width="309" height="1"/>
                                                 <color key="backgroundColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2320,6 +2311,13 @@ correctly</string>
                                                     <constraint firstAttribute="trailing" secondItem="2Cs-So-yJx" secondAttribute="trailing" constant="16" id="sSc-gz-6m6"/>
                                                     <constraint firstItem="apD-ps-Wne" firstAttribute="leading" secondItem="x4M-9u-Tco" secondAttribute="leading" constant="20" id="vK7-oa-0hJ"/>
                                                     <constraint firstItem="2Cs-So-yJx" firstAttribute="centerY" secondItem="x4M-9u-Tco" secondAttribute="centerY" id="wLC-Ag-7Uo"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctg-5q-b08" userLabel="LineView1">
+                                                <rect key="frame" x="0.0" y="0.5" width="375" height="1"/>
+                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="8Y8-rf-cKd"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FxV-OV-cca">
@@ -2460,23 +2458,23 @@ correctly</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b4Q-oK-RUx">
-                                                <rect key="frame" x="0.0" y="320" width="375" height="60"/>
+                                                <rect key="frame" x="0.0" y="320" width="375" height="58"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leave Feedback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGT-gp-Wpw">
-                                                        <rect key="frame" x="66" y="19" width="119" height="22"/>
+                                                        <rect key="frame" x="66" y="18" width="119" height="22"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                         <color key="textColor" red="0.21176470589999999" green="0.21176470589999999" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settingsFeedback" translatesAutoresizingMaskIntoConstraints="NO" id="BQR-Te-LkR">
-                                                        <rect key="frame" x="20" y="14.5" width="35" height="35"/>
+                                                        <rect key="frame" x="20" y="13.5" width="35" height="35"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="35" id="AXO-Oz-hmj"/>
                                                             <constraint firstAttribute="width" constant="35" id="cyx-Da-ro8"/>
                                                         </constraints>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron" translatesAutoresizingMaskIntoConstraints="NO" id="4IY-ke-zzD">
-                                                        <rect key="frame" x="344" y="22.5" width="15" height="15"/>
+                                                        <rect key="frame" x="344" y="21.5" width="15" height="15"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="15" id="lYf-K9-s50"/>
                                                             <constraint firstAttribute="height" constant="15" id="twv-sJ-m8M"/>
@@ -2491,6 +2489,13 @@ correctly</string>
                                                     <constraint firstItem="BQR-Te-LkR" firstAttribute="leading" secondItem="b4Q-oK-RUx" secondAttribute="leading" constant="20" id="KI6-SZ-jXg"/>
                                                     <constraint firstItem="cGT-gp-Wpw" firstAttribute="centerY" secondItem="b4Q-oK-RUx" secondAttribute="centerY" id="e4u-7M-d7F"/>
                                                     <constraint firstItem="4IY-ke-zzD" firstAttribute="centerY" secondItem="b4Q-oK-RUx" secondAttribute="centerY" id="y9c-Vy-3el"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rAK-LL-JBB" userLabel="LineView2">
+                                                <rect key="frame" x="0.0" y="378.5" width="375" height="1"/>
+                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="xAb-bi-xMf"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WQm-hc-ZY2">
@@ -2549,7 +2554,7 @@ correctly</string>
                                             <constraint firstAttribute="trailing" secondItem="xPn-zs-KFd" secondAttribute="trailing" id="BZ1-rk-Msl"/>
                                             <constraint firstItem="FxV-OV-cca" firstAttribute="top" secondItem="Vka-N2-WxL" secondAttribute="bottom" id="CHZ-5n-3iJ"/>
                                             <constraint firstItem="xPn-zs-KFd" firstAttribute="leading" secondItem="LYv-7w-eWa" secondAttribute="leading" id="ENV-Eb-b6e"/>
-                                            <constraint firstAttribute="bottom" secondItem="b4Q-oK-RUx" secondAttribute="bottom" id="IBo-Db-2MY"/>
+                                            <constraint firstAttribute="bottom" secondItem="b4Q-oK-RUx" secondAttribute="bottom" constant="2" id="IBo-Db-2MY"/>
                                             <constraint firstItem="x4M-9u-Tco" firstAttribute="top" secondItem="vHL-uD-DHH" secondAttribute="top" id="IZO-ED-BpX"/>
                                             <constraint firstAttribute="trailing" secondItem="Vka-N2-WxL" secondAttribute="trailing" id="L8k-Jj-eTu"/>
                                             <constraint firstAttribute="trailing" secondItem="sd1-gT-DhV" secondAttribute="trailing" id="NWE-Zh-N1M"/>
@@ -2735,7 +2740,7 @@ correctly</string>
                         </subviews>
                         <color key="backgroundColor" red="0.97641962766647339" green="0.97650605440139771" blue="0.97634750604629517" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="WU9-9d-Ces" firstAttribute="top" secondItem="BOe-fA-coW" secondAttribute="bottom" constant="-30" id="MHV-a2-0aN"/>
+                            <constraint firstItem="WU9-9d-Ces" firstAttribute="top" secondItem="BOe-fA-coW" secondAttribute="bottom" id="MHV-a2-0aN"/>
                             <constraint firstAttribute="trailing" secondItem="BOe-fA-coW" secondAttribute="trailing" id="kRO-qo-1NE"/>
                             <constraint firstItem="BOe-fA-coW" firstAttribute="top" secondItem="ydE-vw-AGj" secondAttribute="bottom" id="mQU-cp-bzS"/>
                             <constraint firstItem="BOe-fA-coW" firstAttribute="leading" secondItem="oAY-1d-N0f" secondAttribute="leading" id="uEY-rx-fTp"/>

@@ -35,8 +35,8 @@ extension DataManager {
                 }
                 
                 if answerDict!["servertime"] != nil {
-                    let timestamp = answerDict!["servertime"]
-                    serverTime = NSDate(timeIntervalSince1970: timestamp as! TimeInterval)
+                    let timestamp = answerDict!["servertime"] as! TimeInterval
+                    serverTime = NSDate(timeIntervalSince1970: timestamp)
                     
                     userDefaults.set(serverTime, forKey: Constants.UserDefaults.serverTimeKey)
                 }

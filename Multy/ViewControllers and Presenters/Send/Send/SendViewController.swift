@@ -370,7 +370,8 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                 selectedRequestAmountLabel.isHidden = false
                 selectedRequestAddressLabel.isHidden = false
                 let blockchainType = BlockchainType.create(currencyID: UInt32(selectedRequest.currencyID), netType: 0)
-                selectedRequestAmountLabel.text = "\(selectedRequest.sendAmount) \(blockchainType.shortName)"
+                let fiatAmount = selectedRequest.sendAmount.doubleValue * DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
+                selectedRequestAmountLabel.text = "\(selectedRequest.sendAmount) \(blockchainType.shortName)  / \(fiatAmount.fixedFraction(digits: 2)) USD"
                 selectedRequestAddressLabel.text = selectedRequest.sendAddress
                 presenter.changeNameLabelVisibility(false)
             }
@@ -412,7 +413,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         let sumInCrypto = "\(presenter.transaction!.sendAmount!.fixedFraction(digits: 8)) \(blockchainType.shortName)"
         let sumInFiat = "\((presenter.transaction!.sendAmount! * exchangeCourse).fixedFraction(digits: 2)) $"
         
-        let txTokenImageSide : CGFloat = 40
+        let txTokenImageSide : CGFloat = 46
         txTokenImageView = UIImageView(frame: CGRect(x: (walletsClonesHolderView.center.x - txTokenImageSide/2), y: (walletsClonesHolderView.frame.origin.y + walletsClonesHolderView.frame.size.height - txTokenImageSide), width: txTokenImageSide, height: txTokenImageSide))
         txTokenImageView!.image = UIImage(named: blockchainType.iconString)
         txTokenImageView!.alpha = 0

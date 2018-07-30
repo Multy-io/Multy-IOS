@@ -79,7 +79,7 @@ class CustomTabBarViewController: RAMAnimatedTabBarController, UITabBarControlle
     }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        print(item)
+//        print(item)
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
