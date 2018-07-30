@@ -58,7 +58,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         super.viewDidLoad()
         
         let panGR = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(_:)))
-//        membersInfoTouchpadView.addGestureRecognizer(panGR)
+        membersInfoTouchpadView.addGestureRecognizer(panGR)
         registerCells()
         initialConfig()
         
@@ -320,7 +320,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     @IBAction func backAction(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
 }
 

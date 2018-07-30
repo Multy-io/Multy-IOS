@@ -25,7 +25,7 @@ class WaitingMembersSettingsPresenter: NSObject {
                                                 chainType: self.wallet.chainType,
                                                 walletID: self.wallet.walletID,
                                                 newName: self.presentedVC!.walletNameTF.text!.trimmingCharacters(in: .whitespaces)) { (dict, error) in
-                                                    print(dict)
+                                                    print(dict!)
                                                     self.presentedVC?.loader.hide()
                                                     self.presentedVC!.navigationController?.popViewController(animated: true)
             }
@@ -33,12 +33,6 @@ class WaitingMembersSettingsPresenter: NSObject {
     }
     
     func delete() {
-        if wallet == nil {
-            print("\nWrong wallet data: wallet == nil\n")
-            
-            return
-        }
-        
         presentedVC?.loader.show(customTitle: presentedVC!.localize(string: Constants.deletingString))
         
         if isCreator {
@@ -46,6 +40,7 @@ class WaitingMembersSettingsPresenter: NSObject {
                 if error != nil {
                     return
                 } else {
+                    self.deleteFromDB()
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
                 }
             }
@@ -54,13 +49,17 @@ class WaitingMembersSettingsPresenter: NSObject {
                 if error != nil {
                     return
                 } else {
+                    self.deleteFromDB()
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
                 }
             }
         }
     }
     
-    func leave() {
-        
+    func deleteFromDB() {
+        DataManager.shared.realmManager.deleteWallet(wallet) { (acc) in
+            
+        }
     }
+    
 }
