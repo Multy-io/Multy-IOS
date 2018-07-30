@@ -5,6 +5,13 @@
 import Foundation
 import UIKit
 
+enum BottomButtonStatus: Int {
+    case
+        hidden =            1,
+        inviteCode =        2,
+        paymentRequired =   3
+}
+
 class WaitingMembersPresenter: NSObject {
     var viewController : WaitingMembersViewController?
     
@@ -13,9 +20,11 @@ class WaitingMembersPresenter: NSObject {
     
     var createWalletPrice = 0.001
     
+    var bottomButtonStatus = BottomButtonStatus.hidden
+    
     func viewControllerViewDidLoad() {
 //        inviteCode = makeInviteCode()
-        viewController?.openShareInviteVC()
+//        viewController?.openShareInviteVC()
         updateWallet()
     }
 
