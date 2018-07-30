@@ -158,8 +158,8 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
     
     @IBAction func backAction(_ sender: Any) {
         self.presenter.cancelAction()
-    }
     
+    }
     @IBAction func nextAction(_ sender: Any) {
         if self.presenter.transactionDTO.choosenWallet == nil {
             self.performSegue(withIdentifier: "chooseWalletVC", sender: sender)
@@ -222,6 +222,9 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
         case "sendETHDetailsVC"?:
             let sendDetailsVC = segue.destination as! EthSendDetailsViewController
             sendDetailsVC.presenter.transactionDTO = presenter.transactionDTO
+        case "sendEthVC"?:
+            let sendVC = segue.destination as! SendAmountEthViewController
+            sendVC.presenter.transactionDTO = presenter.transactionDTO
         default:
             break
         }

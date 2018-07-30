@@ -83,6 +83,8 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
             return "sendBTCDetailsVC"
         case BLOCKCHAIN_ETHEREUM:
             return "sendETHDetailsVC"
+        case BLOCKCHAIN_EOS:
+            return "sendEthVC"
         default:
             return ""
         }
