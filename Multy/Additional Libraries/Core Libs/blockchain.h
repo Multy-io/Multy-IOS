@@ -29,6 +29,7 @@ enum Blockchain
     BLOCKCHAIN_STEEM =              0x87,
     BLOCKCHAIN_BITCOIN_CASH =       0x99,
     BLOCKCHAIN_GOLOS =              0x060105,
+    BLOCKCHAIN_EOS =                194,
     
     //not available in bip44
     BLOCKCHAIN_BITCOIN_LIGHTNING =  0x9900,
