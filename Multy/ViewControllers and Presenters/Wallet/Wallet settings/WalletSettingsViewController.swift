@@ -76,6 +76,7 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
         popTip.textColor = .white
         popTip.font = UIFont(name: "AvenirNext-Medium", size: 12)!
         popTip.bubbleColor = #colorLiteral(red: 0.01176470588, green: 0.4980392157, blue: 1, alpha: 1)
+        popTip.entranceAnimation = .none
         popTip.dismissHandler = {_ in
             self.tipView.isHidden = true
         }
