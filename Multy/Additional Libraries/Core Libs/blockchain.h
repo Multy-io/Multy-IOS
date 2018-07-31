@@ -7,7 +7,7 @@
 #ifndef MULTY_CORE_BLOCKCHAIN_H
 #define MULTY_CORE_BLOCKCHAIN_H
 
-#include "multy_core/api.h"
+#include "api.h"
 
 #include <stddef.h>
 
