@@ -234,8 +234,8 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         var result = false
-        if indexPath.item < presenter.wallet.multisigWallet!.owners.count {
-            if presenter.wallet.multisigWallet!.amICreator {
+        if presenter.wallet.multisigWallet!.amICreator {
+            if indexPath.item < presenter.wallet.multisigWallet!.owners.count {
                 let owner = presenter.wallet.multisigWallet!.owners[indexPath.item]
                 result = owner.associated.boolValue ? false : true
             }
