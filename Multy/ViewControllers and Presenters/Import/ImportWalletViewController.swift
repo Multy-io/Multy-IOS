@@ -51,13 +51,28 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
                     
                     switch responce {
                     case .success(let value):
-                        print(value)
+                        self.getEOSAcc(by: value["publicKey"]!)
                         break;
                     case .failure(let error):
                         print(error)
                         break;
                     }
                 }
+            }
+        }
+    }
+    
+    func getEOSAcc(by key: String) {
+        DataManager.shared.apiManager.getEOSAccount(by: key) { (responce) in
+            switch responce {
+            case .success(let value):
+                print(key)
+                print(value)
+                
+                break;
+            case .failure(let error):
+                print(error)
+                break;
             }
         }
     }
