@@ -13,6 +13,13 @@ private typealias LocalizeDelegate = CoreLibManager
 class CoreLibManager: NSObject {
     static let shared = CoreLibManager()
     
+    fileprivate func allocateUnsafeMutableObject<T>() -> UnsafeMutablePointer<T?> {
+        let pointer = UnsafeMutablePointer<T?>.allocate(capacity: 1)
+        pointer.pointee = nil
+        
+        return pointer
+    }
+    
     func mnemonicAllWords() -> Array<String> {
         let mnemonicArrayPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
         defer { mnemonicArrayPointer.deallocate() }
@@ -271,32 +278,33 @@ class CoreLibManager: NSObject {
     }
     
     /*
-        result dictionary looks like
+        Result.failure - error from CL
+        Result.success - dictionary like
      
         [
             "privateKey": "5KJdX2hHqfgJhSf2TJjdgbYg4b4JLCRkKoyF2DSn2Dj5mvink7J",
             "publicKey": "EOS6WkssWjMkfrfMUZhKvzoEbEHfRRnm6k7trvrMZsefkF6ZAKdGK"
         ]
     */
-    func createPublicInfo(binaryData: inout BinaryData, blockchain: BlockchainType, privateKey: String) -> Dictionary<String, Any>? {
+    func createPublicInfo(binaryData: inout BinaryData, blockchain: BlockchainType, privateKey: String) -> Result<Dictionary<String, String>, String> {
         let binaryDataPointer = UnsafeMutablePointer(mutating: &binaryData)
         let privateKeyPointer = privateKey.UTF8CStringPointer
-        var walletDict = Dictionary<String, Any>()
+        var walletDict = Dictionary<String, String>()
         
         //HD Account
-        let newAccountPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let newAccountPointer: UnsafeMutablePointer<OpaquePointer?> = allocateUnsafeMutableObject()
         
         //New address
-        let newAddressPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        let newAddressStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
+        let newAddressPointer: UnsafeMutablePointer<OpaquePointer?> = allocateUnsafeMutableObject()
+        let newAddressStringPointer: UnsafeMutablePointer<UnsafePointer<Int8>?> = allocateUnsafeMutableObject()
         
         //Private
-        let addressPrivateKeyPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        let privateKeyStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
+        let addressPrivateKeyPointer: UnsafeMutablePointer<OpaquePointer?> = allocateUnsafeMutableObject()
+        let privateKeyStringPointer: UnsafeMutablePointer<UnsafePointer<Int8>?> = allocateUnsafeMutableObject()
         
         //Public
-        let addressPublicKeyPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-        let publicKeyStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
+        let addressPublicKeyPointer: UnsafeMutablePointer<OpaquePointer?> = allocateUnsafeMutableObject()
+        let publicKeyStringPointer: UnsafeMutablePointer<UnsafePointer<Int8>?> = allocateUnsafeMutableObject()
         
         //placed here since we have multiple returns
         defer {
@@ -323,9 +331,9 @@ class CoreLibManager: NSObject {
         let ma = make_account(blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, privateKeyPointer, newAccountPointer)
         
         if ma != nil {
-            _ = errorString(from: ma, mask: "make_account")
+            let error = errorString(from: ma, mask: "make_account")
             
-            return nil
+            return Result.failure(error!)
         }
         
         
@@ -343,20 +351,24 @@ class CoreLibManager: NSObject {
         var publicKeyString : String?
         
         if ktsPRIV != nil {
-            return nil
+            let error = errorString(from: ktsPRIV, mask: "key_to_string:KEY_TYPE_PRIVATE")
+            
+            return Result.failure(error!)
         } else {
             privateKeyString = String(cString: privateKeyStringPointer.pointee!)
             walletDict["privateKey"] = privateKeyString
         }
         
         if ktsPUBL != nil {
-            return nil
+            let error = errorString(from: ktsPUBL, mask: "key_to_string:KEY_TYPE_PUBLIC")
+            
+            return Result.failure(error!)
         } else {
             publicKeyString = String(cString: publicKeyStringPointer.pointee!)
             walletDict["publicKey"] = publicKeyString
         }
         
-        return walletDict
+        return Result.success(walletDict)
     }
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
