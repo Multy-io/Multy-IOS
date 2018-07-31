@@ -4,8 +4,8 @@
 
 import UIKit
 
-typealias TableViewDataSource = EOSAccountsViewController
-typealias TableViewDelegate = EOSAccountsViewController
+private typealias TableViewDataSource = EOSAccountsViewController
+private typealias TableViewDelegate = EOSAccountsViewController
 
 class EOSAccountsViewController: UIViewController {
     let presenter = EOSAccountsPresenter()
