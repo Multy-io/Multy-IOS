@@ -1390,7 +1390,7 @@ Try again in:</string>
                                 <rect key="frame" x="0.0" y="72" width="375" height="595"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FBA-aH-Ofg">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="476"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="531"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="dataSource" destination="NST-mr-ghe" id="UXN-a5-AmL"/>
@@ -1398,18 +1398,10 @@ Try again in:</string>
                                         </connections>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O5p-4N-LBJ">
-                                        <rect key="frame" x="0.0" y="484" width="375" height="111"/>
+                                        <rect key="frame" x="0.0" y="539" width="375" height="56"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="WARNING" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQF-t1-c51">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.92156862745098034" green="0.082352941176470587" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOc-cI-SLc">
-                                                <rect key="frame" x="0.0" y="56" width="375" height="55"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOc-cI-SLc">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
                                                 <state key="normal" title="OK"/>
                                                 <connections>
@@ -1419,7 +1411,11 @@ Try again in:</string>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="111" id="nxX-mL-AWS"/>
+                                            <constraint firstAttribute="bottom" secondItem="bOc-cI-SLc" secondAttribute="bottom" id="6EK-Z6-td8"/>
+                                            <constraint firstItem="bOc-cI-SLc" firstAttribute="leading" secondItem="O5p-4N-LBJ" secondAttribute="leading" id="Jfo-Aa-Xn9"/>
+                                            <constraint firstAttribute="trailing" secondItem="bOc-cI-SLc" secondAttribute="trailing" id="cBw-3O-LgZ"/>
+                                            <constraint firstItem="bOc-cI-SLc" firstAttribute="top" secondItem="O5p-4N-LBJ" secondAttribute="top" id="n0o-z7-cMy"/>
+                                            <constraint firstAttribute="height" constant="56" id="nxX-mL-AWS"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -1448,7 +1444,6 @@ Try again in:</string>
                     </view>
                     <connections>
                         <outlet property="accountsTableView" destination="FBA-aH-Ofg" id="zx7-JX-lS8"/>
-                        <outlet property="warningLabel" destination="kQF-t1-c51" id="cRc-Im-FWl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6p4-qg-EOe" userLabel="First Responder" sceneMemberID="firstResponder"/>
