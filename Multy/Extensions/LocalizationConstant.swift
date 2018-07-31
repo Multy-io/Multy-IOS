@@ -111,4 +111,8 @@ extension Constants {
     static let holdOnString = "HOLD ON"
     static let serverNotWorkTitleString = "TEMPORARY OUT OF SERVICE"
     static let serverNotWorkingMessageString = "SERVER STOP STRING"
+    static let eosRAMHelpTitleString = "EOS RAM HELP TITLE STRING"
+    static let eosRAMHelpMessageString = "EOS RAM HELP MESSAGE STRING"
+    static let eosCPUHelpMessageString = "EOS CPU HELP MESSAGE STRING"
+    static let eosNETHelpMessageString = "EOS NET HELP MESSAGE STRING"
 }

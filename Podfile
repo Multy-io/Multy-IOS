@@ -29,6 +29,7 @@ target 'Multy' do
   pod 'UPCarouselFlowLayout'
   pod 'SwiftyContacts'
   pod 'Hash2Pics'
+  pod 'AMPopTip'
   
   target 'MultyTests' do
       inherit! :search_paths
