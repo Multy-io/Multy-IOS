@@ -13,6 +13,7 @@
 #import "bitcoin.h"
 #import "blockchain.h"
 #import "common.h"
+#import "eos.h"
 #import "error.h"
 #import "ethereum.h"
 #import "golos.h"

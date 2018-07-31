@@ -513,6 +513,7 @@
 		44DFEFA2206A64ED0068769C /* bitcoin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bitcoin.h; sourceTree = "<group>"; };
 		44DFEFA3206A64ED0068769C /* ethereum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ethereum.h; sourceTree = "<group>"; };
 		44DFEFA4206A64ED0068769C /* golos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = golos.h; sourceTree = "<group>"; };
+		44EF92AC210F6BBB005BE39C /* EOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EOS.h; sourceTree = "<group>"; };
 		44EFBE5A20923EAC0081EE3A /* Blockchain+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blockchain+Extension.swift"; sourceTree = "<group>"; };
 		44FA86BE2035A75A00263C72 /* key.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = key.h; sourceTree = "<group>"; };
 		44FA86BF2035A76400263C72 /* big_int.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = big_int.h; sourceTree = "<group>"; };
@@ -1925,6 +1926,7 @@
 				44DFEFA2206A64ED0068769C /* bitcoin.h */,
 				44DFEFA1206A64ED0068769C /* blockchain.h */,
 				FA74061C1FCC14C4003C538C /* common.h */,
+				44EF92AC210F6BBB005BE39C /* EOS.h */,
 				FA869D081FD5AD9700C815C3 /* error.h */,
 				44DFEFA3206A64ED0068769C /* ethereum.h */,
 				44DFEFA4206A64ED0068769C /* golos.h */,
