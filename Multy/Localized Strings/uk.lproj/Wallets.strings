@@ -30,3 +30,6 @@
 "NO FUNDS" = "У вас немає доступних засобів";
 "ADD TO CONTACTS" = "Додати в контакт";
 "HOLD ON" = "Зачекайте. Синхронізація гаманця.";
+"EOS RAM HELP MESSAGE STRING" = "";
+"EOS CPU HELP MESSAGE STRING" = "";
+"EOS NET HELP MESSAGE STRING" = "";
