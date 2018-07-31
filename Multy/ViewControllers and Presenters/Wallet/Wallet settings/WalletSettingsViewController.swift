@@ -3,13 +3,28 @@
 //See LICENSE for details
 
 import UIKit
+import AMPopTip
 
 private typealias LocalizeDelegate = WalletSettingsViewController
 
 class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var walletNameTF: UITextField!
+    @IBOutlet weak var eosRAMLabel: UILabel!
+    @IBOutlet weak var eosCPULabel: UILabel!
+    @IBOutlet weak var eosNETLabel: UILabel!
+    @IBOutlet weak var eosParametersHolderView: UIView!
+    @IBOutlet weak var tipView: UIView!
+    @IBOutlet weak var eosParametersHolderViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var eosRAMHelpImageView: UIImageView!
+    
+    @IBOutlet weak var eosCPUHelpImageView: UIImageView!
+    
+    @IBOutlet weak var eosNETHelpImageView: UIImageView!
+    
+    @IBOutlet weak var eosParametersHolderViewTopConstraint: NSLayoutConstraint!
     let presenter = WalletSettingsPresenter()
     
 //    let progressHUD = ProgressHUD(text: "Deleting Wallet...")
@@ -29,6 +44,11 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
         sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(presenter.wallet!.chain)", eventName: "\(screenWalletSettingsWithChain)\(presenter.wallet!.chain)")
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        view.layoutIfNeeded()
+    }
+    
     @IBAction func cancelAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
         sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(presenter.wallet!.chain)", eventName: "\(closeWithChainTap)\(presenter.wallet!.chain)")
@@ -36,6 +56,32 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     
     func updateUI() {
         self.walletNameTF.text = self.presenter.wallet?.name
+        let blockchainType = BlockchainType.create(wallet: presenter.wallet!)
+        if blockchainType.blockchain == BLOCKCHAIN_EOS {
+            eosParametersHolderView.isHidden = false
+            eosParametersHolderViewTopConstraint.constant = 20
+            //FIXME: set valid values
+            eosCPULabel.text = String(100)
+            eosRAMLabel.text = String(100)
+            eosNETLabel.text = String(100)
+        } else {
+            eosParametersHolderView.isHidden = true
+            eosParametersHolderViewTopConstraint.constant = -219
+        }
+        view.layoutIfNeeded()
+    }
+    
+    func showPopTip(_ text: String, fromView: UIView) {
+        let popTip = PopTip()
+        popTip.textColor = .white
+        popTip.font = UIFont(name: "AvenirNext-Medium", size: 12)!
+        popTip.bubbleColor = #colorLiteral(red: 0.01176470588, green: 0.4980392157, blue: 1, alpha: 1)
+        popTip.dismissHandler = {_ in
+            self.tipView.isHidden = true
+        }
+        tipView.isHidden = false
+        let frame = fromView.convert(fromView.bounds, to: tipView)
+        popTip.show(text: text, direction: .left, maxWidth: 250, in: tipView, from: frame)
     }
     
     @IBAction func deleteAction(_ sender: Any) {
@@ -97,6 +143,35 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let currencyVC = storyboard.instantiateViewController(withIdentifier: "currencyVC")
         self.navigationController?.pushViewController(currencyVC, animated: true)
+    }
+    
+    @IBAction func eosRAMHelpAction(_ sender: Any) {
+        let text = localize(string: Constants.eosRAMHelpMessageString)
+        showPopTip(text, fromView: eosRAMHelpImageView)
+        
+//        let message = localize(string: Constants.eosRAMHelpMessageString)
+//        let alert = UIAlertController(title: localize(string: Constants.eosRAMHelpTitleString), message: message, preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: localize(string: Constants.yesString), style: .cancel, handler: { [unowned self] (action) in
+//            self.loader.show(customTitle: self.localize(string: Constants.deletingString))
+//            self.presenter.delete()
+//            self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(walletDeletedWithChain)\(self.presenter.wallet!.chain)")
+//        }))
+//        alert.addAction(UIAlertAction(title: localize(string: Constants.noString), style: .default, handler: { (action) in
+//            alert.dismiss(animated: true, completion: nil)
+//            self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(walletDeleteCancelWithChain)\(self.presenter.wallet!.chain)")
+//        }))
+//
+//        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func eosCPUHelpAction(_ sender: Any) {
+        let text = localize(string: Constants.eosCPUHelpMessageString)
+        showPopTip(text, fromView: eosCPUHelpImageView)
+    }
+    
+    @IBAction func eosNETHelpAction(_ sender: Any) {
+        let text = localize(string: Constants.eosNETHelpMessageString)
+        showPopTip(text, fromView: eosNETHelpImageView)
     }
 }
 

@@ -112,6 +112,28 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
+    func getEOSAccount(by key: String, completion: @escaping(Result<Array<String>, String>) -> ()) {
+        let info: Parameters = ["public_key" : key]
+        
+        requestManager.request("\(apiUrl)api/v1/account/get_by_key", method: .post, parameters: info, encoding: JSONEncoding.default, headers: nil).debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if let dict = response.result.value as? Dictionary<String, Any> {
+                    if let array = dict["account_names"] as? Array<String> {
+                        completion(Result.success(array))
+                    } else {
+                        completion(Result.failure("Wrong data"))
+                    }
+                } else {
+                    completion(Result.failure("Wrong data"))
+                }
+            case .failure(_):
+                completion(Result.failure("Failure"))
+                break
+            }
+        }
+    }
+    
     func auth(with parameters: Parameters, completion: @escaping (_ answer: NSDictionary?,_ error: Error?) -> ()) {
         
         let header: HTTPHeaders = [
