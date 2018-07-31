@@ -1181,6 +1181,7 @@
 			children = (
 				457B8BA7210F5AC300DC75FD /* ImportWalletViewController.swift */,
 				457B8BA9210F6BBC00DC75FD /* ImportWalletPresenter.swift */,
+				8592E02F210F6C190040125B /* EOSAccountViewController */,
 			);
 			path = Import;
 			sourceTree = "<group>";
@@ -1882,7 +1883,6 @@
 		FA4D43E81FC5C305003C7117 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
-				8592E02F210F6C190040125B /* EOSAccountViewController */,
 				4563173E20D2A975004D29C6 /* Wallet */,
 				4443978F2062643400C9F4BF /* BTCWallet */,
 				45D4D16A205C1DC7008B1F0B /* EthWallet */,
@@ -3258,7 +3258,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.eos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3299,7 +3299,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.eos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";

@@ -16,14 +16,19 @@ class EOSAccountsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter.viewController = self
-        presenter.presentedViewDidLoad()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         presenter.presentedViewWillAppear()
+    }
+    
+    func setupUI() {
+        presenter.viewController = self
+        presenter.presentedViewDidLoad()
+        registerCells()
     }
     
     fileprivate func registerCells() {
@@ -37,19 +42,23 @@ class EOSAccountsViewController: UIViewController {
     }
     
     @IBAction func cancelAction(_ sender: Any) {
-        
+        navigationController?.popToRootViewController(animated: true)
     }
 }
 
 extension TableViewDataSource: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return presenter.namesArr.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "EOSAccountReuseID") as! EOSAccountTableViewCell
+        let cell = accountsTableView.dequeueReusableCell(withIdentifier: "EOSAccountReuseID") as! EOSAccountTableViewCell
         //FIXME: For test only
-        cell.fill(name: "name")
+        cell.fill(name: presenter.namesArr[indexPath.row])
         
         return cell
     }
