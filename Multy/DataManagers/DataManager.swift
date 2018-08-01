@@ -113,6 +113,8 @@ class DataManager: NSObject {
             return self.currencyExchange.btcToUSD
         case BLOCKCHAIN_ETHEREUM:
             return self.currencyExchange.ethToUSD
+        case BLOCKCHAIN_EOS:
+            return self.currencyExchange.eosToUSD
         default: return 1.0
         }
     }

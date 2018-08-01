@@ -30,7 +30,7 @@ class ExchangeStocksPresenter: NSObject {
         
         let bitfinexStock = ExchangeStockObj()
         bitfinexStock.name = "Bitfinex"
-        self.arr.append(bitfinexStock)
+        self.availableArr.append(bitfinexStock)
         
         let bittrexStock = ExchangeStockObj()
         bittrexStock.name = "Bittrex"
@@ -54,6 +54,6 @@ class ExchangeStocksPresenter: NSObject {
         
         let poloniexStock = ExchangeStockObj()
         poloniexStock.name = "Poloniex"
-        self.availableArr.append(poloniexStock)
+        self.arr.append(poloniexStock)
     }
 }
