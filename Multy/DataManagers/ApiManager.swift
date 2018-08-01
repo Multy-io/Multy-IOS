@@ -113,13 +113,14 @@ class ApiManager: NSObject, RequestRetrier {
     }
     
     func getEOSAccount(by key: String, completion: @escaping(Result<Array<String>, String>) -> ()) {
-        let info: Parameters = ["public_key" : key]
+        let curId = BLOCKCHAIN_EOS.rawValue
+        let netId = EOS_NET_TYPE_TESTNET.rawValue
         
-        requestManager.request("\(apiUrl)api/v1/account/get_by_key", method: .post, parameters: info, encoding: JSONEncoding.default, headers: nil).debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/account/\(curId)/\(netId)/key/\(key)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if let dict = response.result.value as? Dictionary<String, Any> {
-                    if let array = dict["account_names"] as? Array<String> {
+                    if let array = dict["addresses"] as? Array<String> {
                         completion(Result.success(array))
                     } else {
                         completion(Result.failure("Wrong data"))
