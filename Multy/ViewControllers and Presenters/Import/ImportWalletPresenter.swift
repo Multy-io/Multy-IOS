@@ -7,14 +7,17 @@ import UIKit
 class ImportWalletPresenter: NSObject {
     
     var imoprtVC: ImportWalletViewController?
+    var account: AccountRLM?
+    let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_MAINNET.rawValue))
     
     func makePublicKeyAndGetAccNamesBy(privateKey: String) {
         let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_TESTNET.rawValue))
-        DataManager.shared.getAccount { (account, error) in
+        DataManager.shared.getAccount { [unowned self] (account, error) in
             if error == nil {
+                self.account = account
                 var binData = account!.binaryDataString.createBinaryData()!
                 
-                let responce = DataManager.shared.coreLibManager.createPublicInfo(binaryData: &binData, blockchain: blockchainType, privateKey: privateKey)
+                let responce = DataManager.shared.coreLibManager.createPublicInfo(binaryData: &binData, blockchainType: blockchainType, privateKey: privateKey)
                 
                 switch responce {
                 case .success(let value):
@@ -47,6 +50,7 @@ class ImportWalletPresenter: NSObject {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let accsVC = storyboard.instantiateViewController(withIdentifier: "accsVC") as! EOSAccountsViewController
         accsVC.presenter.namesArr = names
+        accsVC.presenter.account = account
         imoprtVC?.navigationController?.pushViewController(accsVC, animated: true)
     }
 }

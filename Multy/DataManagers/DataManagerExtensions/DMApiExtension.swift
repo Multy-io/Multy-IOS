@@ -189,7 +189,7 @@ extension DataManager {
                 
                 if (answer?["code"] as? NSNumber)?.intValue == 200 {
                     print("getWalletsVerbose:\n \(answer ?? ["":""])")
-                    if answer!["wallets"] is NSNull {
+                    if answer!["wallets"] is NSNull || answer!["wallets"] == nil {
                         completion(NSArray(), nil)
                         
                         return

@@ -34,18 +34,16 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
     }
     
     func doneAction() {
-        if textView.text.isEmpty == true {
+        if textView.text.isEmpty {
             return 
         }
         
         presenter.makePublicKeyAndGetAccNamesBy(privateKey: textView.text!)
     }
-    
+
     func presentWrongDataAlert() {
         let alert = UIAlertController(title: "Error", message: "Wrong private key", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-    
-    
 }
