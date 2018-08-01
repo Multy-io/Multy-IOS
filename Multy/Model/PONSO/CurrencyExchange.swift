@@ -16,6 +16,7 @@ class CurrencyExchange: NSObject {
 
     var btcToUSD: Double = 1.0
     var ethToUSD: Double = 1.0
+    var eosToUSD: Double = 1.0
     
     func update(exchangeDict: NSDictionary) {
         NotificationCenter.default.post(name: NSNotification.Name("exchageUpdated"), object: nil)
@@ -26,10 +27,15 @@ class CurrencyExchange: NSObject {
         if let ethUsd = exchangeDict["eth_usd"] as? Double {
             ethToUSD = ethUsd
         }
+        
+        if let eosUsd = exchangeDict["eos_usd"] as? Double {
+            eosToUSD = eosUsd
+        }
     }
     
     func update(currencyExchangeRLM: CurrencyExchangeRLM) {
         btcToUSD = currencyExchangeRLM.btcToUSD
         ethToUSD = currencyExchangeRLM.ethToUSD
+        eosToUSD = currencyExchangeRLM.ethToUSD
     }
 }

@@ -10,14 +10,17 @@ class CurrencyExchangeRLM: Object {
     @objc dynamic var id: NSNumber = 1
     @objc dynamic var btcToUSD: Double = 1.0
     @objc dynamic var ethToUSD: Double = 1.0
+    @objc dynamic var eosToUSD: Double = 1.0
     
     func createCurrencyExchange(currencyExchange: CurrencyExchange) {
 //        let curEchange = CurrencyExchangeRLM()
         self.btcToUSD = currencyExchange.btcToUSD
         self.ethToUSD = currencyExchange.ethToUSD
+        self.eosToUSD = currencyExchange.eosToUSD
     }
     
     override class func primaryKey() -> String? {
         return "id"
     }
 }
+
