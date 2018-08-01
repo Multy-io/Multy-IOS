@@ -8,12 +8,15 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var textView: UITextView!
     
+    let presenter = ImportWalletPresenter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
     func setupUI() {
+        presenter.imoprtVC = self
         hideKeyboardWhenTappedAround()
         textView.becomeFirstResponder()
     }
@@ -31,49 +34,18 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
     }
     
     func doneAction() {
-//        let text = textView.text
-//        if text?.isEmpty == false {
-//
-//
-//
-//        }
-        
-        let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_TESTNET.rawValue))
-        
-        let pks = ["5KJdX2hHqfgJhSf2TJjdgbYg4b4JLCRkKoyF2DSn2Dj5mvink7J", "5Jte92DsHfdQJigfZCk4tGPA1evbfN38zniftNHqcFyg9mLxbJp", "5JanB6wZj4k8wNqExKQ2aSCPdEVRHMgmDiwx2Veu5ffa4pHyvMT", "5Jy2y2AaqnH6RMEZbs5dz1ap2ZXroXWqkEZ9iYTABFK6y946p8i", "5KNcnmwteGFjSysLEGYx9Uq1GNWGNMvYgQTk8x2eDCPnBVYhjvq", "5KNcnmwteGFjSysLEGYx9Uq1GNWGNMvYgQTk8x2eDCPnBVYhjv1"]
-        
-        DataManager.shared.getAccount { (account, error) in
-            if error == nil {
-                var binData = account!.binaryDataString.createBinaryData()!
-                
-                for key in pks {
-                    let responce = DataManager.shared.coreLibManager.createPublicInfo(binaryData: &binData, blockchain: blockchainType, privateKey: key)
-                    
-                    switch responce {
-                    case .success(let value):
-                        self.getEOSAcc(by: value["publicKey"]!)
-                        break;
-                    case .failure(let error):
-                        print(error)
-                        break;
-                    }
-                }
-            }
+        if textView.text.isEmpty == true {
+            return 
         }
+        
+        presenter.makePublicKeyAndGetAccNamesBy(privateKey: textView.text!)
     }
     
-    func getEOSAcc(by key: String) {
-        DataManager.shared.apiManager.getEOSAccount(by: key) { (responce) in
-            switch responce {
-            case .success(let value):
-                print(key)
-                print(value)
-                
-                break;
-            case .failure(let error):
-                print(error)
-                break;
-            }
-        }
+    func presentWrongDataAlert() {
+        let alert = UIAlertController(title: "Error", message: "Wrong private key", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
+    
+    
 }

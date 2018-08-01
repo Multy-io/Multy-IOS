@@ -458,6 +458,5 @@ class ApiManager: NSObject, RequestRetrier {
             }
         }
     }
-    
 }
 
