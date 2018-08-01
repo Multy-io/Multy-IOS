@@ -21,11 +21,12 @@ class WaitingMembersPresenter: NSObject {
 
     func kickOwnerWithIndex(index: Int) {
         let owner = wallet.multisigWallet!.owners[index]
-        DataManager.shared.kickFromMultisigWith(wallet: wallet, addressToKick: owner.address) { [unowned self] (answer, error) in
-            if error != nil {
-                return
-            } else {
+        DataManager.shared.kickFromMultisigWith(wallet: wallet, addressToKick: owner.address) { [unowned self] result in
+            switch result {
+            case .success(_):
                 self.updateWallet()
+            case .failure(let error):
+                self.viewController?.presentAlert(with: error)
             }
         }
     }

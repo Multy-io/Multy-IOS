@@ -42,19 +42,26 @@ class WaitingMembersSettingsPresenter: NSObject {
         presentedVC?.loader.show(customTitle: presentedVC!.localize(string: Constants.deletingString))
         
         if isCreator {
-            DataManager.shared.deleteMultisigWith(wallet: wallet) { [unowned self] (answer, error) in
-                if error != nil {
-                    return
-                } else {
+            DataManager.shared.deleteMultisigWith(wallet: wallet) { [unowned self] result in
+                
+                switch result {
+                    
+                case .success( _):
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
+                case .failure(let error):
+                    print(error)
+                    self.presentedVC?.presentAlert(with: error)
                 }
             }
         } else {
-            DataManager.shared.leaveFromMultisigWith(wallet: wallet) { [unowned self] (answer, error) in
-                if error != nil {
-                    return
-                } else {
+            DataManager.shared.leaveFromMultisigWith(wallet: wallet) { [unowned self] result in
+                switch result {
+                
+                case .success( _):
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
+                case .failure(let error):
+                    print(error)
+                    self.presentedVC?.presentAlert(with: error)
                 }
             }
         }
