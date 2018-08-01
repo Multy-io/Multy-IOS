@@ -1346,7 +1346,7 @@ Try again in:</string>
         <!--Accounts View Controller-->
         <scene sceneID="CzZ-wL-cXU">
             <objects>
-                <viewController id="NST-mr-ghe" customClass="EOSAccountsViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="accsVC" id="NST-mr-ghe" customClass="EOSAccountsViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="697-zp-1cr"/>
                         <viewControllerLayoutGuide type="bottom" id="2Kr-Dh-RjO"/>
@@ -1363,7 +1363,7 @@ Try again in:</string>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="75" id="clF-YR-7lM"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1387,10 +1387,10 @@ Try again in:</string>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cj4-IZ-dwG">
-                                <rect key="frame" x="0.0" y="72" width="375" height="595"/>
+                                <rect key="frame" x="0.0" y="104" width="375" height="563"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FBA-aH-Ofg">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="476"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="431"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="dataSource" destination="NST-mr-ghe" id="UXN-a5-AmL"/>
@@ -1398,28 +1398,48 @@ Try again in:</string>
                                         </connections>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O5p-4N-LBJ">
-                                        <rect key="frame" x="0.0" y="484" width="375" height="111"/>
+                                        <rect key="frame" x="0.0" y="439" width="375" height="124"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="WARNING" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQF-t1-c51">
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="WARNING" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQF-t1-c51">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.92156862745098034" green="0.082352941176470587" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOc-cI-SLc">
-                                                <rect key="frame" x="0.0" y="56" width="375" height="55"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                                                <state key="normal" title="OK"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pUM-dy-XFY">
+                                                <rect key="frame" x="16" y="40" width="343" height="64"/>
+                                                <color key="backgroundColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="64" id="nUv-pw-UMK"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
+                                                <state key="normal" title="Create Same Wallets">
+                                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="okAction:" destination="NST-mr-ghe" eventType="touchUpInside" id="XUd-dl-pdn"/>
+                                                    <action selector="okAction:" destination="NST-mr-ghe" eventType="touchUpInside" id="iuh-v2-ROg"/>
                                                 </connections>
                                             </button>
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtz-vM-X8Z">
+                                                <rect key="frame" x="16" y="0.0" width="36" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="111" id="nxX-mL-AWS"/>
+                                            <constraint firstAttribute="trailing" secondItem="pUM-dy-XFY" secondAttribute="trailing" constant="16" id="5ef-eG-e2o"/>
+                                            <constraint firstItem="pUM-dy-XFY" firstAttribute="leading" secondItem="O5p-4N-LBJ" secondAttribute="leading" constant="16" id="TBp-2B-NSw"/>
+                                            <constraint firstAttribute="bottom" secondItem="pUM-dy-XFY" secondAttribute="bottom" constant="20" id="XeO-ja-jc8"/>
+                                            <constraint firstAttribute="height" constant="124" id="nxX-mL-AWS"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -1434,16 +1454,35 @@ Try again in:</string>
                                     <constraint firstAttribute="trailing" secondItem="FBA-aH-Ofg" secondAttribute="trailing" id="zxf-pK-B5P"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We found next accounts:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9L-bo-oas">
+                                <rect key="frame" x="16" y="72" width="159" height="24"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
+                                <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sH4-gJ-yDh">
+                                <rect key="frame" x="0.0" y="64" width="375" height="0.5"/>
+                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.5" id="MNf-It-PBd"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="sH4-gJ-yDh" secondAttribute="trailing" id="7nS-DT-mHa"/>
                             <constraint firstItem="2Kr-Dh-RjO" firstAttribute="top" secondItem="Cj4-IZ-dwG" secondAttribute="bottom" id="CUt-uI-wFf"/>
-                            <constraint firstItem="Cj4-IZ-dwG" firstAttribute="top" secondItem="w9I-o4-ufl" secondAttribute="bottom" constant="8" id="D9l-Gf-ASu"/>
+                            <constraint firstItem="Cj4-IZ-dwG" firstAttribute="top" secondItem="u9L-bo-oas" secondAttribute="bottom" constant="8" id="Cdt-RB-JzC"/>
+                            <constraint firstItem="Cj4-IZ-dwG" firstAttribute="top" secondItem="w9I-o4-ufl" secondAttribute="bottom" constant="40" id="D9l-Gf-ASu"/>
                             <constraint firstItem="Cj4-IZ-dwG" firstAttribute="leading" secondItem="zYk-jK-LFd" secondAttribute="leading" id="IwU-N2-U9f"/>
                             <constraint firstAttribute="trailing" secondItem="Cj4-IZ-dwG" secondAttribute="trailing" id="LmV-6i-sSl"/>
+                            <constraint firstItem="u9L-bo-oas" firstAttribute="top" secondItem="sH4-gJ-yDh" secondAttribute="bottom" constant="8" id="YeR-WI-URW"/>
                             <constraint firstItem="w9I-o4-ufl" firstAttribute="top" secondItem="697-zp-1cr" secondAttribute="bottom" id="ZmN-3f-Ueo"/>
+                            <constraint firstItem="u9L-bo-oas" firstAttribute="leading" secondItem="zYk-jK-LFd" secondAttribute="leading" constant="16" id="aTO-N0-5K3"/>
+                            <constraint firstItem="sH4-gJ-yDh" firstAttribute="leading" secondItem="zYk-jK-LFd" secondAttribute="leading" id="gNt-ge-Bhy"/>
                             <constraint firstAttribute="trailing" secondItem="w9I-o4-ufl" secondAttribute="trailing" id="gYV-qa-0FH"/>
                             <constraint firstItem="w9I-o4-ufl" firstAttribute="leading" secondItem="zYk-jK-LFd" secondAttribute="leading" id="oQV-X8-xge"/>
+                            <constraint firstItem="sH4-gJ-yDh" firstAttribute="top" secondItem="w9I-o4-ufl" secondAttribute="bottom" id="uws-9n-WMl"/>
                         </constraints>
                     </view>
                     <connections>

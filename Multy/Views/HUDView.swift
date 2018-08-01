@@ -57,7 +57,7 @@ class HUDView: UIVisualEffectView {
             vibrancyView.frame = self.bounds
             
             let spinerSize: CGFloat = 40
-            spiner.frame = CGRect(x: 52, y: 35 , width: spinerSize, height: spinerSize)
+            spiner.frame = CGRect(x: 52, y: 30 , width: spinerSize, height: spinerSize)
             
             imageView.frame = CGRect(x: 52, y: 30, width: 40, height: 40)
             imageView.image = image
