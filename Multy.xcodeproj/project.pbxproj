@@ -137,6 +137,7 @@
 		4575F0D82081FE01002616DD /* WebTextPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4575F0D72081FE01002616DD /* WebTextPageViewController.swift */; };
 		4575F0DA2081FE1A002616DD /* WebTextPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4575F0D92081FE1A002616DD /* WebTextPagePresenter.swift */; };
 		457B8BA8210F5AC300DC75FD /* ImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B8BA7210F5AC300DC75FD /* ImportWalletViewController.swift */; };
+		457B8BAA210F6BBC00DC75FD /* ImportWalletPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B8BA9210F6BBC00DC75FD /* ImportWalletPresenter.swift */; };
 		4583AC921FBC7122001991AA /* PortfolioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4583AC901FBC7122001991AA /* PortfolioTableViewCell.swift */; };
 		4583AC931FBC7122001991AA /* PortfolioTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4583AC911FBC7122001991AA /* PortfolioTableViewCell.xib */; };
 		4583AC981FBC8596001991AA /* PortfolioCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4583AC961FBC8596001991AA /* PortfolioCollectionViewCell.swift */; };
@@ -577,6 +578,7 @@
 		4575F0D72081FE01002616DD /* WebTextPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebTextPageViewController.swift; sourceTree = "<group>"; };
 		4575F0D92081FE1A002616DD /* WebTextPagePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebTextPagePresenter.swift; sourceTree = "<group>"; };
 		457B8BA7210F5AC300DC75FD /* ImportWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletViewController.swift; sourceTree = "<group>"; };
+		457B8BA9210F6BBC00DC75FD /* ImportWalletPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletPresenter.swift; sourceTree = "<group>"; };
 		4583AC901FBC7122001991AA /* PortfolioTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioTableViewCell.swift; sourceTree = "<group>"; };
 		4583AC911FBC7122001991AA /* PortfolioTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortfolioTableViewCell.xib; sourceTree = "<group>"; };
 		4583AC961FBC8596001991AA /* PortfolioCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1178,6 +1180,8 @@
 			isa = PBXGroup;
 			children = (
 				457B8BA7210F5AC300DC75FD /* ImportWalletViewController.swift */,
+				457B8BA9210F6BBC00DC75FD /* ImportWalletPresenter.swift */,
+				8592E02F210F6C190040125B /* EOSAccountViewController */,
 			);
 			path = Import;
 			sourceTree = "<group>";
@@ -1879,7 +1883,6 @@
 		FA4D43E81FC5C305003C7117 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
-				8592E02F210F6C190040125B /* EOSAccountViewController */,
 				4563173E20D2A975004D29C6 /* Wallet */,
 				4443978F2062643400C9F4BF /* BTCWallet */,
 				45D4D16A205C1DC7008B1F0B /* EthWallet */,
@@ -2684,6 +2687,7 @@
 				FA4D43D91FC5772E003C7117 /* DMCoreLibExtension.swift in Sources */,
 				45D4D16E205C1DC7008B1F0B /* EthWalletPresenter.swift in Sources */,
 				4583AC981FBC8596001991AA /* PortfolioCollectionViewCell.swift in Sources */,
+				457B8BAA210F6BBC00DC75FD /* ImportWalletPresenter.swift in Sources */,
 				45E215D81FD147950078945A /* TransactionRLM.swift in Sources */,
 				45A949481FC5C55C003C3A23 /* WalletChoosePresenter.swift in Sources */,
 				4583AC9F1FBC991E001991AA /* NewWalletTableViewCell.swift in Sources */,

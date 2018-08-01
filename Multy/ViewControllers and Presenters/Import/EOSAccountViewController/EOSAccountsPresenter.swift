@@ -5,6 +5,11 @@
 import Foundation
 
 class EOSAccountsPresenter: NSObject {
+    
+    
+    var namesArr = [String]()
+    
+    
     var viewController : EOSAccountsViewController?
     
     func presentedViewDidLoad() {
