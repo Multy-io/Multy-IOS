@@ -286,7 +286,7 @@ class CoreLibManager: NSObject {
             "publicKey": "EOS6WkssWjMkfrfMUZhKvzoEbEHfRRnm6k7trvrMZsefkF6ZAKdGK"
         ]
     */
-    func createPublicInfo(binaryData: inout BinaryData, blockchain: BlockchainType, privateKey: String) -> Result<Dictionary<String, String>, String> {
+    func createPublicInfo(binaryData: inout BinaryData, blockchainType: BlockchainType, privateKey: String) -> Result<Dictionary<String, String>, String> {
         let binaryDataPointer = UnsafeMutablePointer(mutating: &binaryData)
         let privateKeyPointer = privateKey.UTF8CStringPointer
         var walletDict = Dictionary<String, String>()
@@ -328,7 +328,7 @@ class CoreLibManager: NSObject {
             publicKeyStringPointer.deallocate()
         }
         
-        let ma = make_account(blockchain, ACCOUNT_TYPE_DEFAULT.rawValue, privateKeyPointer, newAccountPointer)
+        let ma = make_account(blockchainType, ACCOUNT_TYPE_DEFAULT.rawValue, privateKeyPointer, newAccountPointer)
         
         if ma != nil {
             let error = errorString(from: ma, mask: "make_account")

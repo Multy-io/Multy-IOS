@@ -7,6 +7,8 @@ import UIKit
 class ImportWalletViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var textView: UITextView!
+    var account: AccountRLM?
+    let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_MAINNET.rawValue))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,27 +33,22 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
     }
     
     func doneAction() {
-//        let text = textView.text
-//        if text?.isEmpty == false {
-//
-//
-//
-//        }
-        
-        let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_TESTNET.rawValue))
-        
-        let pks = ["5KJdX2hHqfgJhSf2TJjdgbYg4b4JLCRkKoyF2DSn2Dj5mvink7J", "5Jte92DsHfdQJigfZCk4tGPA1evbfN38zniftNHqcFyg9mLxbJp", "5JanB6wZj4k8wNqExKQ2aSCPdEVRHMgmDiwx2Veu5ffa4pHyvMT", "5Jy2y2AaqnH6RMEZbs5dz1ap2ZXroXWqkEZ9iYTABFK6y946p8i", "5KNcnmwteGFjSysLEGYx9Uq1GNWGNMvYgQTk8x2eDCPnBVYhjvq", "5KNcnmwteGFjSysLEGYx9Uq1GNWGNMvYgQTk8x2eDCPnBVYhjv1"]
-        
-        DataManager.shared.getAccount { (account, error) in
-            if error == nil {
-                var binData = account!.binaryDataString.createBinaryData()!
-                
-                for key in pks {
-                    let responce = DataManager.shared.coreLibManager.createPublicInfo(binaryData: &binData, blockchain: blockchainType, privateKey: key)
+        let text = textView.text
+        if let key = text, key.isEmpty == false {
+            DataManager.shared.getAccount { [unowned self] (account, error) in
+                if error == nil {
+                    self.account = account
+                    
+                    var binData = account!.binaryDataString.createBinaryData()!
+                    
+                    let responce = DataManager.shared.coreLibManager.createPublicInfo(binaryData: &binData, blockchainType: self.blockchainType, privateKey: key)
                     
                     switch responce {
                     case .success(let value):
-                        self.getEOSAcc(by: value["publicKey"]!)
+                        DispatchQueue.main.async {
+                            self.getEOSAcc(by: value["publicKey"]!)
+                        }
+                        
                         break;
                     case .failure(let error):
                         print(error)
@@ -63,16 +60,41 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
     }
     
     func getEOSAcc(by key: String) {
-        DataManager.shared.apiManager.getEOSAccount(by: key) { (responce) in
+        DataManager.shared.apiManager.getEOSAccount(by: key) { [unowned self] (responce) in
             switch responce {
             case .success(let value):
                 print(key)
                 print(value)
                 
+                let topIndex = self.account!.topIndex(for: self.blockchainType)
+                
+                for index in 0..<value.count {
+                    self.createEOSWallet(address: value[index], walletIndex: topIndex + UInt32(index))
+                }
+                
                 break;
             case .failure(let error):
                 print(error)
                 break;
+            }
+        }
+    }
+    
+    func createEOSWallet(address: String, walletIndex: UInt32) {
+        let params = [
+            "currencyID"    : blockchainType.blockchain.rawValue,
+            "networkID"     : blockchainType.net_type,
+            "address"       : address,
+            "addressIndex"  : 0,
+            "walletIndex"   : walletIndex,
+            "walletName"    : address
+            ] as [String : Any]
+        
+        DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
+            if error == nil {
+                
+            } else {
+//                self.mainVC?.presentAlert(with: self.localize(string: Constants.errorWhileCreatingWalletString))
             }
         }
     }
