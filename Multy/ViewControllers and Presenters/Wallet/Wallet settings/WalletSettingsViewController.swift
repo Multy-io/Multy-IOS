@@ -74,8 +74,10 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     func showPopTip(_ text: String, fromView: UIView) {
         let popTip = PopTip()
         popTip.textColor = .white
-        popTip.font = UIFont(name: "AvenirNext-Medium", size: 12)!
+        popTip.font = UIFont(name: "AvenirNext-Medium", size: 14)!
         popTip.bubbleColor = #colorLiteral(red: 0.01176470588, green: 0.4980392157, blue: 1, alpha: 1)
+        popTip.cornerRadius = 15
+        popTip.entranceAnimation = .none
         popTip.dismissHandler = {_ in
             self.tipView.isHidden = true
         }

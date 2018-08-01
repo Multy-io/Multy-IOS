@@ -10,7 +10,6 @@ private typealias TableViewDelegate = EOSAccountsViewController
 class EOSAccountsViewController: UIViewController {
     let presenter = EOSAccountsPresenter()
     
-    @IBOutlet weak var warningLabel: UILabel!
     @IBOutlet weak var accountsTableView: UITableView!
     
     override func viewDidLoad() {
