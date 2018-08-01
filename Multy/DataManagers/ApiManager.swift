@@ -458,28 +458,5 @@ class ApiManager: NSObject, RequestRetrier {
             }
         }
     }
-    
-    
-    func getAvailableWalletsBy(publicKey: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
-        let header: HTTPHeaders = [
-            "Authorization" : "Bearer \(self.token)"
-        ]
-        
-        let params: Parameters = [
-            "key": publicKey
-        ]
-        // FIX IT: url + params
-        requestManager.request("\(apiUrl)api/v1/", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
-            switch response.result {
-            case .success(_):
-                if response.result.value != nil {
-                    completion((response.result.value as! NSDictionary), nil)
-                }
-            case .failure(_):
-                completion(nil, response.result.error)
-                break
-            }
-        }
-    }
 }
 
