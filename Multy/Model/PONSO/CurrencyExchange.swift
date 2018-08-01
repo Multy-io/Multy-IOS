@@ -36,6 +36,6 @@ class CurrencyExchange: NSObject {
     func update(currencyExchangeRLM: CurrencyExchangeRLM) {
         btcToUSD = currencyExchangeRLM.btcToUSD
         ethToUSD = currencyExchangeRLM.ethToUSD
-        eosToUSD = currencyExchangeRLM.ethToUSD
+        eosToUSD = currencyExchangeRLM.eosToUSD
     }
 }
