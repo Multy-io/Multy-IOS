@@ -1487,7 +1487,6 @@ Try again in:</string>
                     </view>
                     <connections>
                         <outlet property="accountsTableView" destination="FBA-aH-Ofg" id="zx7-JX-lS8"/>
-                        <outlet property="warningLabel" destination="kQF-t1-c51" id="cRc-Im-FWl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6p4-qg-EOe" userLabel="First Responder" sceneMemberID="firstResponder"/>

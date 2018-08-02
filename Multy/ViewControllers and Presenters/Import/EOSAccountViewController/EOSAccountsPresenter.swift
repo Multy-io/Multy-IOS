@@ -8,7 +8,7 @@ class EOSAccountsPresenter: NSObject {
     
     var account: AccountRLM?
     var namesArr = [String]()
-    let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_MAINNET.rawValue))
+    let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_TESTNET.rawValue))
     
     var mainVC : EOSAccountsViewController?
     
