@@ -54,7 +54,7 @@ class UserWalletRLM: Object {
             case BLOCKCHAIN_ETHEREUM:
                 return allETHBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
             case BLOCKCHAIN_EOS:
-                return eosWallet!.balance
+                return eosWallet!.eosBalance.cryptoValueString(for: BLOCKCHAIN_EOS)
             default:
                 return ""
             }
@@ -630,7 +630,7 @@ extension WalletUpdateRLM {
     func updateEOSWallet(from infoDict: NSDictionary) {
         if let balance = infoDict["balance"] as? String {
             eosWallet = EOSWallet()
-            ethWallet!.balance = balance
+            eosWallet!.balance = balance
         }
         
         if let pendingBalance = infoDict["pendingbalance"] as? String {

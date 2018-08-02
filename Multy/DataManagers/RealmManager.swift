@@ -434,6 +434,7 @@ class RealmManager: NSObject {
                                 modifiedWallet!.isTherePendingTx =  wallet.isTherePendingTx
                                 modifiedWallet!.btcWallet =         wallet.btcWallet
                                 modifiedWallet!.ethWallet =         wallet.ethWallet
+                                modifiedWallet!.eosWallet =         wallet.eosWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
 
