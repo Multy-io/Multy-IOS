@@ -180,7 +180,7 @@ extension Blockchain {
         case BLOCKCHAIN_ERC20:
             maxLenght = 0
         case BLOCKCHAIN_EOS:
-            maxLenght = 13
+            maxLenght = 15
             
         default:
             maxLenght = 0

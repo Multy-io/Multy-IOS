@@ -538,4 +538,16 @@ extension CreateTransactionDelegate {
             return false
         }
     }
+    
+    func countAfterDotFor(blockchainType: Blockchain) -> Int {
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            return 8
+        case BLOCKCHAIN_ETHEREUM:
+            return 8
+        case BLOCKCHAIN_EOS:
+            return 4
+        default: return 8
+        }
+    }
 }
