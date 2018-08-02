@@ -357,7 +357,7 @@ class UserWalletRLM: Object {
         case BLOCKCHAIN_ETHEREUM:
             return availableETHBalance > (Constants.BigIntSwift.oneETHInWeiKey * amount.stringWithDot.doubleValue)
         case BLOCKCHAIN_EOS:
-            return availableEOSBalance > (Constants.BigIntSwift.oneEOSInUnitsKey * amount.stringWithDot.doubleValue)
+            return availableEOSBalance >= (Constants.BigIntSwift.oneEOSInUnitsKey * amount.stringWithDot.doubleValue)
         default:
             return true
         }
