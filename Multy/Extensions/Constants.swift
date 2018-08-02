@@ -69,6 +69,9 @@ struct Constants {
         
         static let oneBTCInSatoshiKey = BigInt("100000000") // 1 BTC = 10^8 Satoshi
         static let oneCentiBitcoinInSatoshiKey = BigInt("1000000") // 10^{-2} BTC
+        
+        static let oneEOSInUnitsKey = BigInt("10000") // 1 EOS = 10^4 Units
+        static let oneCentiEOSInUnitsKey = BigInt("100") // 10^{-2} EOS
     }
     
     struct BlockchainString {

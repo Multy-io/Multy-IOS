@@ -237,7 +237,7 @@ class SendPresenter: NSObject {
                 print("afterVerbose:rawdata: \(walletsArrayFromApi)")
                 DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
                     self.account = acc
-                    self.walletsArr = acc!.wallets.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
+                    self.walletsArr = acc!.wallets.sorted(by: { $0.availableAmount > $1.availableAmount })
                     self.isSocketInitiateUpdating = false
                 })
             }
