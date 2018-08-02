@@ -1407,15 +1407,6 @@ Try again in:</string>
                                                 <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOc-cI-SLc">
-                                                <rect key="frame" x="0.0" y="56" width="375" height="55"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                                <state key="normal" title="OK"/>
-                                                <connections>
-                                                    <action selector="okAction:" destination="NST-mr-ghe" eventType="touchUpInside" id="XUd-dl-pdn"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pUM-dy-XFY">
                                                 <rect key="frame" x="16" y="40" width="343" height="64"/>
                                                 <color key="backgroundColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1431,6 +1422,9 @@ Try again in:</string>
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="okAction:" destination="NST-mr-ghe" eventType="touchUpInside" id="iuh-v2-ROg"/>
+                                                </connections>
                                             </button>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtz-vM-X8Z">
                                                 <rect key="frame" x="16" y="0.0" width="36" height="20"/>
@@ -1493,7 +1487,6 @@ Try again in:</string>
                     </view>
                     <connections>
                         <outlet property="accountsTableView" destination="FBA-aH-Ofg" id="zx7-JX-lS8"/>
-                        <outlet property="warningLabel" destination="kQF-t1-c51" id="cRc-Im-FWl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6p4-qg-EOe" userLabel="First Responder" sceneMemberID="firstResponder"/>

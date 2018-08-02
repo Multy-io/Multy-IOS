@@ -58,7 +58,7 @@ class EthWalletHeaderCollectionViewCell: UICollectionViewCell {
             lockedPopverWithBorders.layer.masksToBounds = true
             lockedPopverWithBorders.layer.borderWidth = 1.0
             
-            let availableCryptoAmount = wallet!.availableBalance
+            let availableCryptoAmount = wallet!.availableETHBalance
             let availableFiatAmount = availableCryptoAmount * wallet!.exchangeCourse
             
             lockedCryptoAmountLabel.text = availableCryptoAmount.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)

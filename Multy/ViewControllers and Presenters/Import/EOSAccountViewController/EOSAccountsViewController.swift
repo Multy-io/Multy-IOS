@@ -10,7 +10,6 @@ private typealias TableViewDelegate = EOSAccountsViewController
 class EOSAccountsViewController: UIViewController {
     let presenter = EOSAccountsPresenter()
     
-    @IBOutlet weak var warningLabel: UILabel!
     @IBOutlet weak var accountsTableView: UITableView!
     
     override func viewDidLoad() {
@@ -26,7 +25,7 @@ class EOSAccountsViewController: UIViewController {
     }
     
     func setupUI() {
-        presenter.viewController = self
+        presenter.mainVC = self
         presenter.presentedViewDidLoad()
         registerCells()
     }
@@ -38,7 +37,7 @@ class EOSAccountsViewController: UIViewController {
     
     //MARK: Actions
     @IBAction func okAction(_ sender: Any) {
-        
+        presenter.createWallets()
     }
     
     @IBAction func cancelAction(_ sender: Any) {

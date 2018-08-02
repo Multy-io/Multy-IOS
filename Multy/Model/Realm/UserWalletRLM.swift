@@ -7,6 +7,7 @@ import RealmSwift
 
 private typealias WalletUpdateRLM = UserWalletRLM
 private typealias ETHWalletRLM = UserWalletRLM
+private typealias EOSWalletRLM = UserWalletRLM
 
 class UserWalletRLM: Object {
     @objc dynamic var id = String()    //
@@ -31,6 +32,8 @@ class UserWalletRLM: Object {
                 return UInt32(addresses.count)
             case BLOCKCHAIN_ETHEREUM:
                 return 0
+            case BLOCKCHAIN_EOS:
+                return 0
             default:
                 return 0
             }
@@ -50,6 +53,8 @@ class UserWalletRLM: Object {
                 return sumInCrypto.fixedFraction(digits: 8)
             case BLOCKCHAIN_ETHEREUM:
                 return allETHBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+            case BLOCKCHAIN_EOS:
+                return eosWallet!.balance
             default:
                 return ""
             }
@@ -58,20 +63,31 @@ class UserWalletRLM: Object {
     
     var sumInFiatString: String {
         get {
-            if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
+            switch blockchainType.blockchain {
+            case BLOCKCHAIN_BITCOIN:
                 return sumInFiat.fixedFraction(digits: 2)
-            } else {
+            case BLOCKCHAIN_ETHEREUM:
                 return (allETHBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
+            case BLOCKCHAIN_EOS:
+                return (eosWallet!.eosBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_EOS)
+            default:
+                return ""
             }
+            
         }
     }
     
     var sumInFiat: Double {
         get {
-            if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
+            switch blockchainType.blockchain {
+            case BLOCKCHAIN_BITCOIN:
                 return sumInCrypto * exchangeCourse
-            } else {
+            case BLOCKCHAIN_ETHEREUM:
                 return Double((allETHBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM).replacingOccurrences(of: ",", with: "."))!
+            case BLOCKCHAIN_EOS:
+                return Double((eosWallet!.eosBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_EOS).replacingOccurrences(of: ",", with: "."))!
+            default:
+                return 0
             }
         }
     }
@@ -89,7 +105,10 @@ class UserWalletRLM: Object {
             case BLOCKCHAIN_BITCOIN:
                 return BigInt(sumInCryptoString.convertToSatoshiAmountString()) - blockedAmount
             case BLOCKCHAIN_ETHEREUM:
-                return availableBalance
+                return availableETHBalance
+            case BLOCKCHAIN_EOS:
+                return availableEOSBalance
+                
             default:
                 return BigInt("0")
             }
@@ -163,11 +182,7 @@ class UserWalletRLM: Object {
     
     var availableSumInCrypto: Double {
         get {
-            if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
-                return availableAmount.cryptoValueString(for: BLOCKCHAIN_BITCOIN).stringWithDot.doubleValue
-            } else {
-                return 0
-            }
+            return availableAmount.cryptoValueString(for: blockchain).stringWithDot.doubleValue
         }
     }
     
@@ -186,7 +201,8 @@ class UserWalletRLM: Object {
     
     @objc dynamic var ethWallet: ETHWallet?
     @objc dynamic var btcWallet: BTCWallet?
-        
+    @objc dynamic var eosWallet: EOSWallet?
+    
     var exchangeCourse: Double {
         get {
             return DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
@@ -326,7 +342,9 @@ class UserWalletRLM: Object {
         case BLOCKCHAIN_BITCOIN:
             return availableAmount > Int64(0)
         case BLOCKCHAIN_ETHEREUM:
-            return isThereAvailableBalance
+            return isThereAvailableETHBalance
+        case BLOCKCHAIN_ETHEREUM:
+            return isThereAvailableEOSBalance
         default:
             return true
         }
@@ -337,7 +355,9 @@ class UserWalletRLM: Object {
         case BLOCKCHAIN_BITCOIN:
             return amount.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_BITCOIN) < Constants.BigIntSwift.oneBTCInSatoshiKey * sumInCrypto
         case BLOCKCHAIN_ETHEREUM:
-            return availableBalance > (Constants.BigIntSwift.oneETHInWeiKey * amount.stringWithDot.doubleValue)
+            return availableETHBalance > (Constants.BigIntSwift.oneETHInWeiKey * amount.stringWithDot.doubleValue)
+        case BLOCKCHAIN_EOS:
+            return availableEOSBalance >= (Constants.BigIntSwift.oneEOSInUnitsKey * amount.stringWithDot.doubleValue)
         default:
             return true
         }
@@ -466,6 +486,8 @@ class UserWalletRLM: Object {
             return addressesWithSpendableOutputs().joined(separator: "\n")
         case BLOCKCHAIN_ETHEREUM:
             return address
+        case BLOCKCHAIN_EOS:
+            return address
         default:
             return ""
         }
@@ -513,13 +535,13 @@ class UserWalletRLM: Object {
 }
 
 extension ETHWalletRLM {
-    var isThereAvailableBalance: Bool {
+    var isThereAvailableETHBalance: Bool {
         get {
             if ethWallet == nil {
                 return false
             }
             
-            return availableBalance > Int64(0)
+            return availableETHBalance > Int64(0)
         }
     }
     
@@ -533,13 +555,36 @@ extension ETHWalletRLM {
         }
     }
     
-    var availableBalance: BigInt {
+    var availableETHBalance: BigInt {
         get {
             if ethWallet == nil {
+
                 return BigInt.zero()
             }
             
             return isTherePendingTx.boolValue ? (ethWallet!.ethBalance < ethWallet!.pendingBalance ? ethWallet!.ethBalance : BigInt.zero()) : ethWallet!.ethBalance
+        }
+    }
+}
+
+extension EOSWalletRLM {
+    var isThereAvailableEOSBalance: Bool {
+        get {
+            if eosWallet == nil {
+                return false
+            }
+            
+            return availableEOSBalance > Int64(0)
+        }
+    }
+    
+    var availableEOSBalance: BigInt {
+        get {
+            if eosWallet == nil {
+                return BigInt.zero()
+            }
+            
+            return eosWallet!.eosBalance
         }
     }
 }
@@ -551,6 +596,8 @@ extension WalletUpdateRLM {
             break
         case BLOCKCHAIN_ETHEREUM.rawValue:
             updateETHWallet(from: infoDict)
+        case BLOCKCHAIN_EOS.rawValue:
+            updateEOSWallet(from: infoDict)
         default:
             break
         }
@@ -575,6 +622,21 @@ extension WalletUpdateRLM {
             ethWallet!.pendingWeiAmountString = pendingBalance
             
             if ethWallet!.pendingWeiAmountString != "0" {
+                isTherePendingTx = NSNumber(booleanLiteral: true)
+            }
+        }
+    }
+    
+    func updateEOSWallet(from infoDict: NSDictionary) {
+        if let balance = infoDict["balance"] as? String {
+            eosWallet = EOSWallet()
+            ethWallet!.balance = balance
+        }
+        
+        if let pendingBalance = infoDict["pendingbalance"] as? String {
+            eosWallet!.pendingUnitsAmountString = pendingBalance
+            
+            if eosWallet!.pendingUnitsAmountString != "0" {
                 isTherePendingTx = NSNumber(booleanLiteral: true)
             }
         }

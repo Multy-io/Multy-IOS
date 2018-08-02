@@ -38,6 +38,15 @@ class AccountRLM: Object {
         return seedPhrase == ""
     }
 
+    func topIndex(for blockchainType: BlockchainType) -> UInt32 {
+        let currentTopIndex = topIndexes.filter("currencyID = \(blockchainType.blockchain.rawValue) AND networkID == \(blockchainType.net_type)").first
+        
+        if currentTopIndex == nil {
+            return 0
+        }
+        
+        return currentTopIndex!.topIndex.uint32Value
+    }
     
     override class func primaryKey() -> String? {
         return "id"

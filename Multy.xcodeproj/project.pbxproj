@@ -260,6 +260,7 @@
 		8592E033210F6C370040125B /* EOSAccountsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E032210F6C370040125B /* EOSAccountsPresenter.swift */; };
 		8592E036211051230040125B /* EOSAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E035211051230040125B /* EOSAccountTableViewCell.swift */; };
 		8592E038211051360040125B /* EOSAccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8592E037211051360040125B /* EOSAccountTableViewCell.xib */; };
+		8592E03A211309F20040125B /* EOSWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E039211309F20040125B /* EOSWallet.swift */; };
 		859C7B1220F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7B1120F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift */; };
 		859C7B1420F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B1320F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib */; };
 		85DE62DD20AB002000423D89 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DC20AB002000423D89 /* SendViewController.swift */; };
@@ -703,6 +704,7 @@
 		8592E032210F6C370040125B /* EOSAccountsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EOSAccountsPresenter.swift; sourceTree = "<group>"; };
 		8592E035211051230040125B /* EOSAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EOSAccountTableViewCell.swift; sourceTree = "<group>"; };
 		8592E037211051360040125B /* EOSAccountTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EOSAccountTableViewCell.xib; sourceTree = "<group>"; };
+		8592E039211309F20040125B /* EOSWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EOSWallet.swift; sourceTree = "<group>"; };
 		859C7B1120F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationStatusCollectionViewCell.swift; sourceTree = "<group>"; };
 		859C7B1320F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmationStatusCollectionViewCell.xib; sourceTree = "<group>"; };
 		85DE62DC20AB002000423D89 /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
@@ -889,6 +891,7 @@
 			children = (
 				44BCBDB420601AD0001611A5 /* BTCWallet.swift */,
 				44BCBDB620601AE3001611A5 /* ETHWallet.swift */,
+				8592E039211309F20040125B /* EOSWallet.swift */,
 			);
 			path = Wallets;
 			sourceTree = "<group>";
@@ -2494,6 +2497,7 @@
 				45C738C320358D56005AB761 /* AnalyticsProtocol.swift in Sources */,
 				4575694B1FBDEDE300FDEE20 /* BackupFinishViewController.swift in Sources */,
 				FA8C8783200E65E900F8D5D9 /* Date+Extension.swift in Sources */,
+				8592E03A211309F20040125B /* EOSWallet.swift in Sources */,
 				FA4D43EC1FC5CEE0003C7117 /* BTCWalletHeaderTableViewCell.swift in Sources */,
 				45E7A8A620065455005D2D6E /* StockExchanges.swift in Sources */,
 				FA58DF661FDC403E00C45303 /* WrongSeedPhraseViewController.swift in Sources */,
