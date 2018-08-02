@@ -104,6 +104,8 @@ class SendAmountEthPresenter: NSObject {
             return estimateBTCTransactionAndValidation()
         case BLOCKCHAIN_ETHEREUM:
             return estimateETHTransactionAndValidation()
+        case BLOCKCHAIN_EOS:
+            return estimateEOSTransactionAndValidation()
         default:
             return false
         }
@@ -333,6 +335,31 @@ extension CreateTransactionDelegate {
         rawTransaction = trData.message
         
         return trData.isTransactionCorrect
+    }
+    
+    func estimateEOSTransactionAndValidation() -> Bool {
+        
+//        let info = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: <#T##BlockchainType#>, privateKey: <#T##String#>)
+//
+//
+//        DataManager.shared.coreLibManager.createPublicInfo(binaryData: &<#T##BinaryData#>, blockchainType: <#T##BlockchainType#>, privateKey: <#T##String#>)
+//
+//        let trData = DataManager.shared.coreLibManager.createEOSTransaction(addressPointer: <#T##UnsafeMutablePointer<OpaquePointer?>#>,
+//                                                                            sendAddress: <#T##String#>,
+//                                                                            balanceAmount: <#T##String#>,
+//                                                                            destinationAddress: <#T##String#>,
+//                                                                            sendAmountString: <#T##String#>,
+//                                                                            blockNumber: <#T##UInt32#>,
+//                                                                            refBlockPrefix: <#T##String#>,
+//                                                                            expirationDate: <#T##String#>)
+//
+//        switch trData {
+//        case .su:
+//            <#code#>
+//        default:
+//            <#code#>
+//        }
+        return true
     }
     
     func finalSum() -> BigInt {

@@ -213,7 +213,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
                     self.view.isUserInteractionEnabled = true
                 }
             }
-        }        
+        }
     }
     
     override func viewDidLayoutSubviews() {
