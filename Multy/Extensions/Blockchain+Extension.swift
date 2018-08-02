@@ -39,6 +39,8 @@ extension Blockchain {
                 return Constants.BigIntSwift.oneCentiBitcoinInSatoshiKey
             case BLOCKCHAIN_ETHEREUM:
                 return Constants.BigIntSwift.oneHundredFinneyKey
+            case BLOCKCHAIN_EOS:
+                return Constants.BigIntSwift.oneCentiEOSInUnitsKey
             default:
                 return BigInt("0")
             }
