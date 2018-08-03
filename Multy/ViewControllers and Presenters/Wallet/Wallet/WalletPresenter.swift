@@ -10,6 +10,14 @@ class WalletPresenter: NSObject {
     var wallet : UserWalletRLM? {
         didSet {
             walletVC?.titleLbl.text = wallet?.name
+            
+            if wallet!.blockchain == BLOCKCHAIN_EOS {
+                if wallet!.eosPrivateKey.isEmpty == false {
+                    eosPrivate = wallet!.eosPrivateKey
+                    eosPublic = wallet!.eosPublicKey
+                }
+            }
+            
             updateUI()
         }
     }
@@ -38,6 +46,8 @@ class WalletPresenter: NSObject {
     }
     
     var isSocketInitiateUpdating = false
+    var eosPrivate: String?
+    var eosPublic: String?
     
     func updateUI() {
         if walletVC == nil {
