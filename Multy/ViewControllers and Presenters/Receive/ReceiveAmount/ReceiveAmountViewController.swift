@@ -172,7 +172,7 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
             if (self.amountTF.text?.contains(","))! && string != "" {
                 let strAfterDot: [String?] = (self.amountTF.text?.components(separatedBy: ","))!
                 if self.isCrypto {
-                    if strAfterDot[1]?.count == 8 {
+                    if strAfterDot[1]?.count == presenter.wallet?.blockchain.maxVisibleAfterDot {
                         return false
                     } else {
                         self.sumLbl.text = self.amountTF.text! + string
