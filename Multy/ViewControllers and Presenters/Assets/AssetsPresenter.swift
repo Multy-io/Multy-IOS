@@ -45,6 +45,8 @@ class AssetsPresenter: NSObject {
                 
                 wallets = account?.wallets.sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
                 
+                wallets = wallets?.filter("chain != 194 OR eosPrivateKey != \"\"")
+                
                 assetsVC!.tableView.frame.size.height = screenHeight - assetsVC!.tabBarController!.tabBar.frame.height
                 
                 self.assetsVC?.view.isUserInteractionEnabled = true
