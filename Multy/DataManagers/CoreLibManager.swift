@@ -8,6 +8,7 @@ import RealmSwift
 private typealias TestCoreLibManager = CoreLibManager
 private typealias BigIntCoreLibManager = CoreLibManager
 private typealias EthereumCoreLibManager = CoreLibManager
+private typealias EOSCoreLibManager = CoreLibManager
 private typealias LocalizeDelegate = CoreLibManager
 
 class CoreLibManager: NSObject {
@@ -286,10 +287,9 @@ class CoreLibManager: NSObject {
             "publicKey": "EOS6WkssWjMkfrfMUZhKvzoEbEHfRRnm6k7trvrMZsefkF6ZAKdGK"
         ]
     */
-    func createPublicInfo(binaryData: inout BinaryData, blockchainType: BlockchainType, privateKey: String) -> Result<Dictionary<String, String>, String> {
-        let binaryDataPointer = UnsafeMutablePointer(mutating: &binaryData)
+    func createPublicInfo(blockchainType: BlockchainType, privateKey: String) -> Result<Dictionary<String, Any>, String> {
         let privateKeyPointer = privateKey.UTF8CStringPointer
-        var walletDict = Dictionary<String, String>()
+        var walletDict = Dictionary<String, Any>()
         
         //HD Account
         let newAccountPointer: UnsafeMutablePointer<OpaquePointer?> = allocateUnsafeMutableObject()
@@ -308,7 +308,7 @@ class CoreLibManager: NSObject {
         
         //placed here since we have multiple returns
         defer {
-            free_account(newAccountPointer.pointee)
+//            free_account(newAccountPointer.pointee)
             
             free_key(addressPrivateKeyPointer.pointee)
             free_string(privateKeyStringPointer.pointee)
@@ -316,7 +316,7 @@ class CoreLibManager: NSObject {
             free_key(addressPublicKeyPointer.pointee)
             free_string(publicKeyStringPointer.pointee)
             
-            newAccountPointer.deallocate()
+//            newAccountPointer.deallocate()
             
             newAddressPointer.deallocate()
             newAddressStringPointer.deallocate()
@@ -367,6 +367,8 @@ class CoreLibManager: NSObject {
             publicKeyString = String(cString: publicKeyStringPointer.pointee!)
             walletDict["publicKey"] = publicKeyString
         }
+        
+        walletDict["pointer"] = newAccountPointer
         
         return Result.success(walletDict)
     }
@@ -1084,6 +1086,86 @@ extension EthereumCoreLibManager {
         print("end transaction: \(str)")
         
         return (str, true)
+    }
+}
+
+extension EOSCoreLibManager {
+    func createEOSTransaction(addressPointer: UnsafeMutablePointer<OpaquePointer?>,
+                              sendAddress: String,
+                              balanceAmount: String,
+                              destinationAddress: String,
+                              sendAmountString: String,
+                              blockNumber: UInt32,
+                              refBlockPrefix: String,
+                              expirationDate: String) -> Result<String, String> {
+        
+        //create transaction
+        let transactionPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        
+        let mt = make_transaction(addressPointer.pointee, transactionPointer)
+        defer { free_transaction(transactionPointer.pointee) }
+        if mt != nil {
+            let error = errorString(from: mt!, mask: "make_transaction")
+            
+            return Result.failure(error!)
+        }
+        
+        //properties
+        let accountProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let tgp = transaction_get_properties(transactionPointer.pointee!, accountProperties)
+        
+        setIntValue(key: "block_num", value: blockNumber, pointer: accountProperties.pointee!)
+        setAmountValue(key: "ref_block_prefix", value: refBlockPrefix, pointer: accountProperties.pointee!)
+        setStringValue(key: "expiration", value: expirationDate, pointer: accountProperties.pointee!)
+        
+        //balance
+        let transactionSource = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let tas = transaction_add_source(transactionPointer.pointee, transactionSource)
+        setAmountValue(key: "amount", value: balanceAmount, pointer: transactionSource.pointee!)
+        setStringValue(key: "address", value: sendAddress, pointer: transactionSource.pointee!)
+        
+        //destination
+        let transactionDestination = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let tas2 = transaction_add_destination(transactionPointer.pointee, transactionDestination)
+        setAmountValue(key: "amount", value: sendAmountString, pointer: transactionDestination.pointee!)
+        setStringValue(key: "address", value: destinationAddress, pointer: transactionDestination.pointee!)
+        
+        //final
+//        let serializedTransaction = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
+        let serializedEncodedTransaction = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
+//        let tSer = transaction_serialize(transactionPointer.pointee, serializedTransaction)
+        let tse = transaction_serialize_encoded(transactionPointer.pointee, serializedEncodedTransaction)
+        
+//        if tSer != nil {
+//            let pointer = UnsafeMutablePointer<MultyError>(tSer)
+//            let errrString = String(cString: pointer!.pointee.message)
+//
+//            print("tSer: \(errrString))")
+//
+//            defer { pointer?.deallocate() }
+//
+//            return Result.failure(errrString)
+//        }
+        
+        if tse != nil {
+            let pointer = UnsafeMutablePointer<MultyError>(tse)
+            let errrString = String(cString: pointer!.pointee.message)
+            
+            print("tSer: \(errrString))")
+            
+            defer { pointer?.deallocate() }
+            
+            return Result.failure(errrString)
+        }
+        
+//        let data = serializedTransaction.pointee!.pointee.convertToData()
+//        let str = data.hexEncodedString()
+        
+        let txString = String(cString: serializedEncodedTransaction.pointee!)
+        
+        print("end transaction: \(txString)")
+        
+        return Result.success(txString)
     }
 }
 

@@ -15,9 +15,8 @@ class ImportWalletPresenter: NSObject {
         DataManager.shared.getAccount { [unowned self] (account, error) in
             if error == nil {
                 self.account = account
-                var binData = account!.binaryDataString.createBinaryData()!
                 
-                let responce = DataManager.shared.coreLibManager.createPublicInfo(binaryData: &binData, blockchainType: blockchainType, privateKey: privateKey)
+                let responce = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privateKey)
                 
                 switch responce {
                 case .success(let value):

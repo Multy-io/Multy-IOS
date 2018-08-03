@@ -2,6 +2,8 @@
 //Licensed under Multy.io license.
 //See LICENSE for details
 
+import Alamofire
+
 extension DataManager {
 //    func isDeviceJailbroken() -> Bool {
 //        return coreLibManager.isDeviceJailbroken()
@@ -121,6 +123,58 @@ extension DataManager {
                                                            ethereumChainID: UInt32(4), //RINKEBY
                                                            gasPrice: gasPriceString,
                                                            gasLimit: gasLimitString)
+    }
+    
+    func createEOSTx() {
+        let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_TESTNET.rawValue))
+        let info = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: "5HtmfbRYPmJuxyLwKsi7WSG3L6MkXWLxxvbUxuDjGqoFJst256E")
+        var pointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        
+        switch info {
+        case .success(let value):
+            pointer = value["pointer"] as! UnsafeMutablePointer<OpaquePointer?>
+            
+            let trData = DataManager.shared.coreLibManager.createEOSTransaction(addressPointer: pointer,
+                                                                                sendAddress: "alprokopchuk",
+                                                                                balanceAmount: "300000000",
+                                                                                destinationAddress: "alexanderpro",
+                                                                                sendAmountString: "100000000",
+                                                                                blockNumber: UInt32(7894018),
+                                                                                refBlockPrefix: "1309505414",
+                                                                                expirationDate: "2018-08-02T13:44:49Z")
+            
+            switch trData {
+            case .success(let value):
+                sendTx(value)
+                print(value)
+            case .failure(let error):
+                print(error)
+            }
+        case .failure(let error):
+            print(error)
+        }
+    }
+    
+    func sendTx(_ tx: String) {
+        let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_TESTNET.rawValue))
+        
+        let newAddressParams = [
+            "walletindex"   : 0,
+            "address"       : "alprokopchuk",
+            "addressindex"  : 0,
+            "transaction"   : tx,
+            "ishd"          : false
+            ] as [String : Any]
+
+        let params: Parameters = [
+            "currencyid": blockchainType.blockchain.rawValue,
+            "networkid" : blockchainType.net_type,
+            "payload"   : newAddressParams
+            ] as [String : Any]
+        
+        DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
+            
+        }
     }
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
