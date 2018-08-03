@@ -20,7 +20,7 @@ class ImportWalletPresenter: NSObject {
                 
                 switch responce {
                 case .success(let value):
-                    self.getEOSAcc(by: value["publicKey"]!, privateKey: privateKey)
+                    self.getEOSAcc(by: value["publicKey"]! as! String, privateKey: privateKey)
                     break;
                 case .failure(let error):
                     print(error)
