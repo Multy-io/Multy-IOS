@@ -317,7 +317,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func setupAddressBtns() {
-        if presenter.wallet!.blockchain == BLOCKCHAIN_ETHEREUM {
+        if presenter.wallet!.blockchain == BLOCKCHAIN_ETHEREUM || presenter.wallet!.blockchain == BLOCKCHAIN_EOS {
             addressButtonsStackView.removeArrangedSubview(showAddressesBtn)
             showAddressesBtn.isHidden = true
         }
