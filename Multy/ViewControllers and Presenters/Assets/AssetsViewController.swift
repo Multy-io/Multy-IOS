@@ -18,6 +18,7 @@ private typealias CancelDelegate = AssetsViewController
 private typealias CreateWalletDelegate = AssetsViewController
 private typealias LocalizeDelegate = AssetsViewController
 private typealias PushTxDelegate = AssetsViewController
+private typealias EOSNewWalletDelegate = AssetsViewController
 
 class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol {
     @IBOutlet weak var statusView: UIView!
@@ -430,7 +431,8 @@ extension CreateWalletDelegate: CreateWalletProtocol {
         } else if tag == "import" {
             (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let importVC = storyboard.instantiateViewController(withIdentifier: "importVC")
+            let importVC = storyboard.instantiateViewController(withIdentifier: "importVC") as! ImportWalletViewController
+            importVC.delegate = self
             navigationController?.pushViewController(importVC, animated: true)
         }
     }
@@ -808,6 +810,12 @@ extension PushTxDelegate {
                 self.navigationController?.pushViewController(transactionVC, animated: false)
             })
         }
+    }
+}
+
+extension EOSNewWalletDelegate: EOSNewWalletProtocol {
+    func passNewEOSWalletData(_ wallets: [UserWalletRLM]) {
+        presenter.eosNewWallets = wallets
     }
 }
 

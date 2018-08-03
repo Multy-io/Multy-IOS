@@ -9,6 +9,7 @@ private typealias TableViewDelegate = EOSAccountsViewController
 
 class EOSAccountsViewController: UIViewController {
     let presenter = EOSAccountsPresenter()
+    var delegate: EOSNewWalletProtocol?
     
     @IBOutlet weak var accountsTableView: UITableView!
     

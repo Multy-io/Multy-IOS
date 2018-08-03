@@ -81,6 +81,9 @@ class SendAmountEthPresenter: NSObject {
     var binaryData : BinaryData?
     var addressData : Dictionary<String, Any>?
     
+    //EOS
+    var eosChainInfo: EOSChainInfo?
+    
     func getData() {
         self.createPreliminaryData()
     }
@@ -90,12 +93,21 @@ class SendAmountEthPresenter: NSObject {
         let wallet = transactionDTO.choosenWallet!
         binaryData = account!.binaryDataString.createBinaryData()!
         
-        
-        
-        addressData = core.createAddress(blockchain:    transactionDTO.blockchainType!,
-                                         walletID:      wallet.walletID.uint32Value,
-                                         addressID:     wallet.changeAddressIndex,
-                                         binaryData:    &binaryData!)
+        if blockchain != BLOCKCHAIN_EOS {
+            addressData = core.createAddress(blockchain:    transactionDTO.blockchainType!,
+                                             walletID:      wallet.walletID.uint32Value,
+                                             addressID:     wallet.changeAddressIndex,
+                                             binaryData:    &binaryData!)
+        } else {
+            DataManager.shared.apiManager.getEosChainInfo(blockChainType: BlockchainType.create(wallet: transactionDTO.choosenWallet!)) { (result) in
+                switch result {
+                case .success(let value):
+                    self.eosChainInfo = value
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
     
     func estimateTransactionAndValidation() -> Bool {
@@ -179,6 +191,8 @@ class SendAmountEthPresenter: NSObject {
             setBTCMaxAllowed()
         case BLOCKCHAIN_ETHEREUM:
             setETHMaxAllowed()
+        case BLOCKCHAIN_EOS:
+            setEOSMaxAllowed()
         default:
             return
         }
@@ -338,28 +352,41 @@ extension CreateTransactionDelegate {
     }
     
     func estimateEOSTransactionAndValidation() -> Bool {
+        let blockchainType = transactionDTO.blockchainType!
+        let privatekey = transactionDTO.choosenWallet!.eosPrivateKey
+        let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
+        let pointer: UnsafeMutablePointer<OpaquePointer?>?
         
-//        let info = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: <#T##BlockchainType#>, privateKey: <#T##String#>)
-//
-//
-//        DataManager.shared.coreLibManager.createPublicInfo(binaryData: &<#T##BinaryData#>, blockchainType: <#T##BlockchainType#>, privateKey: <#T##String#>)
-//
-//        let trData = DataManager.shared.coreLibManager.createEOSTransaction(addressPointer: <#T##UnsafeMutablePointer<OpaquePointer?>#>,
-//                                                                            sendAddress: <#T##String#>,
-//                                                                            balanceAmount: <#T##String#>,
-//                                                                            destinationAddress: <#T##String#>,
-//                                                                            sendAmountString: <#T##String#>,
-//                                                                            blockNumber: <#T##UInt32#>,
-//                                                                            refBlockPrefix: <#T##String#>,
-//                                                                            expirationDate: <#T##String#>)
-//
-//        switch trData {
-//        case .su:
-//            <#code#>
-//        default:
-//            <#code#>
-//        }
-        return true
+        switch walletInfo {
+        case .success(let value):
+            pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
+        case .failure(let error):
+            print(error)
+            
+            return false
+        }
+        
+        if eosChainInfo == nil {
+            return false
+        }
+
+        let trData = DataManager.shared.coreLibManager.createEOSTransaction(addressPointer: pointer!,
+                                                                            sendAddress: transactionDTO.choosenWallet!.address,
+                                                                            balanceAmount: transactionDTO.choosenWallet!.eosWallet!.balance,
+                                                                            destinationAddress: transactionDTO.sendAddress!,
+                                                                            sendAmountString: sumInCrypto.stringValue,
+                                                                            blockNumber: eosChainInfo!.blockNumber,
+                                                                            refBlockPrefix: eosChainInfo!.refBlockPrefix,
+                                                                            expirationDate: eosChainInfo!.expirationDateString)
+        
+        switch trData {
+        case .success(let value):
+            rawTransaction = value
+            return true
+        case .failure(let error):
+            rawTransaction = error
+            return false
+        }
     }
     
     func finalSum() -> BigInt {
@@ -494,6 +521,16 @@ extension CreateTransactionDelegate {
             } else {
                 maxAllowedToSpend = availableSumInFiat
             }
+        }
+        sendAmountVC?.spendableSumAndCurrencyLbl.text = maxAllowedToSpend.cryptoValueString(for: blockchain)
+    }
+    
+    func setEOSMaxAllowed() {
+        switch isCrypto {
+        case true:
+            maxAllowedToSpend = availableSumInCrypto
+        case false:
+            maxAllowedToSpend = availableSumInFiat
         }
         sendAmountVC?.spendableSumAndCurrencyLbl.text = maxAllowedToSpend.cryptoValueString(for: blockchain)
     }

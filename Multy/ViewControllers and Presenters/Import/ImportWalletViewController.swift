@@ -7,6 +7,7 @@ import UIKit
 class ImportWalletViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var textView: UITextView!
+    var delegate: EOSNewWalletProtocol?
     
     let presenter = ImportWalletPresenter()
     

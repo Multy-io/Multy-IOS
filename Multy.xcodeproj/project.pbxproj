@@ -12,6 +12,7 @@
 		44089D15205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */; };
 		4409E40120DD047900ADBE42 /* LocalizationConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4409E40020DD047900ADBE42 /* LocalizationConstant.swift */; };
 		440AD8D22020D1220015AEF1 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */; };
+		441203D721145749006127DD /* EOSNewWalletProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441203D621145749006127DD /* EOSNewWalletProtocol.swift */; };
 		4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4430569D20C1627600E5415A /* TransactionPendingCell.xib */; };
 		4436123020B56F000095F3C6 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436122F20B56F000095F3C6 /* UITableView+Extension.swift */; };
 		444066D0205926D400342046 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444066CF205926D400342046 /* UIApplication+Extension.swift */; };
@@ -357,6 +358,7 @@
 		44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletBlockchainTableViewCell.swift; sourceTree = "<group>"; };
 		4409E40020DD047900ADBE42 /* LocalizationConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstant.swift; sourceTree = "<group>"; };
 		440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
+		441203D621145749006127DD /* EOSNewWalletProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EOSNewWalletProtocol.swift; sourceTree = "<group>"; };
 		4430569C20C1627600E5415A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TransactionPendingCell.xib; sourceTree = "<group>"; };
 		4430569F20C1627C00E5415A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransactionPendingCell.strings; sourceTree = "<group>"; };
 		443056A120C1627E00E5415A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/TransactionPendingCell.strings; sourceTree = "<group>"; };
@@ -1397,6 +1399,7 @@
 				44768AA820D02AC900FA9C28 /* BranchProtocol.swift */,
 				44AAAE1820E4E0D000A481A4 /* NewContactAddressProtocol.swift */,
 				4400A53B20EE1B86004CD7AB /* ChooseContactsAddressProtocol.swift */,
+				441203D621145749006127DD /* EOSNewWalletProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -2623,6 +2626,7 @@
 				FAFCDA881FD7DD7A0056DD64 /* Request+Extension.swift in Sources */,
 				44AAAE1320E258D200A481A4 /* ContactCell.swift in Sources */,
 				444066D0205926D400342046 /* UIApplication+Extension.swift in Sources */,
+				441203D721145749006127DD /* EOSNewWalletProtocol.swift in Sources */,
 				444066D4205927B900342046 /* UIActivityViewController+Extension.swift in Sources */,
 				8592E036211051230040125B /* EOSAccountTableViewCell.swift in Sources */,
 				445D150C20DA8513002F6747 /* EPConstants.swift in Sources */,
@@ -3274,7 +3278,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.eos;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3315,7 +3319,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.eos;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";

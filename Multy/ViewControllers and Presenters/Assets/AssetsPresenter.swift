@@ -24,6 +24,8 @@ class AssetsPresenter: NSObject {
     
     var contentOffset = CGPoint.zero
     
+    var eosNewWallets: [UserWalletRLM]?
+
     var account : AccountRLM? {
         didSet {
             backupActivity()
@@ -198,7 +200,8 @@ class AssetsPresenter: NSObject {
             if err != nil {
                 return
             } else {
-                let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
+                var walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
+                walletsArr = self.modifyEOSWallets(walletsArr)
                 print("afterVerbose:rawdata: \(walletsArrayFromApi)")
                 DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
                     self.account = acc
@@ -363,5 +366,31 @@ class AssetsPresenter: NSObject {
         }))
         
         assetsVC?.present(alert, animated: true, completion: nil)
+    }
+    
+    func modifyEOSWallets(_ array: List<UserWalletRLM>) -> List<UserWalletRLM> {
+        var newWallets = List<UserWalletRLM>()
+        
+        if eosNewWallets != nil {
+            newWallets = array
+            for wallet in eosNewWallets! {
+                let eosWallet = newWallets.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_EOS }.first
+                
+                if eosWallet != nil {
+//                    let index = newWallets.index(of: eosWallet!)!
+                    
+                    eosWallet!.eosPublicKey = wallet.eosPublicKey
+                    eosWallet!.eosPrivateKey = wallet.eosPrivateKey
+                    
+//                    newWallets.replace(index: index, object: eosWallet!)
+                }
+            }
+            
+            eosNewWallets = nil
+            
+            return newWallets
+        } else {
+            return array
+        }
     }
 }
