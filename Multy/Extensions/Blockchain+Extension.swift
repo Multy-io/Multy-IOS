@@ -182,7 +182,7 @@ extension Blockchain {
         case BLOCKCHAIN_ERC20:
             maxLenght = 0
         case BLOCKCHAIN_EOS:
-            maxLenght = 13
+            maxLenght = 15
             
         default:
             maxLenght = 0
@@ -225,5 +225,18 @@ extension Blockchain {
         }
         
         return maxLenght
+    }
+    
+    var maxVisibleAfterDot: Int {
+        switch self {
+        case BLOCKCHAIN_BITCOIN:
+            return 8
+        case BLOCKCHAIN_ETHEREUM:
+            return 8
+        case BLOCKCHAIN_EOS:
+            return 4
+        default:
+            return 0
+        }
     }
 }

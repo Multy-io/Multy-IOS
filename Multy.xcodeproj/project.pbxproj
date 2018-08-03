@@ -980,6 +980,7 @@
 				FA4D43E21FC590CC003C7117 /* Model */,
 				4522905B1FBB18D30024B550 /* Assets.xcassets */,
 				FA86A74E1FC2C806002826EC /* Multy-Bridging-Header.h */,
+				457EC1472113124500C6BF35 /* Legacy */,
 			);
 			path = Multy;
 			sourceTree = "<group>";
@@ -1187,6 +1188,14 @@
 				8592E02F210F6C190040125B /* EOSAccountViewController */,
 			);
 			path = Import;
+			sourceTree = "<group>";
+		};
+		457EC1472113124500C6BF35 /* Legacy */ = {
+			isa = PBXGroup;
+			children = (
+				458C8B032072509900B8D71B /* BTC */,
+			);
+			path = Legacy;
 			sourceTree = "<group>";
 		};
 		4583AC8D1FBC70D6001991AA /* WalletTVC */ = {
@@ -1466,7 +1475,6 @@
 		45A9495B1FC70EFB003C3A23 /* SendAmount */ = {
 			isa = PBXGroup;
 			children = (
-				458C8B032072509900B8D71B /* BTC */,
 				458C8B04207250A900B8D71B /* ETH */,
 			);
 			path = SendAmount;
@@ -3262,7 +3270,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.eos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3303,7 +3311,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.eos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";
