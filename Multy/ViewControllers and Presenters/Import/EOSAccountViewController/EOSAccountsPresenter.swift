@@ -14,6 +14,7 @@ class EOSAccountsPresenter: NSObject {
     
     var privateKey: String?
     var publicKey: String?
+    var wallets = [UserWalletRLM]()
     
     func presentedViewDidLoad() {
     }
@@ -23,14 +24,13 @@ class EOSAccountsPresenter: NSObject {
     
     func createWallets() {
         let topIndex = account!.topIndex(for: blockchainType)
+        
         for index in 0..<namesArr.count {
-            createEOSWallet(address: namesArr[index], walletIndex: UInt32(index) + topIndex)
+            createEOSWallet(address: namesArr[index], walletIndex: UInt32(index) + topIndex, isFinish: (index == namesArr.count - 1))
         }
-        
-        
     }
     
-    func createEOSWallet(address: String, walletIndex: UInt32) {
+    func createEOSWallet(address: String, walletIndex: UInt32, isFinish: Bool) {
         let params = [
             "currencyID"    : blockchainType.blockchain.rawValue,
             "networkID"     : blockchainType.net_type,
@@ -42,22 +42,27 @@ class EOSAccountsPresenter: NSObject {
         
         DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
             if error == nil {
-               self.createWalletInDB(params: params as NSDictionary, privateKey: self.privateKey!, publicKey: self.publicKey!)
+                self.createWalletInDB(params: params as NSDictionary, privateKey: self.privateKey!, publicKey: self.publicKey!)
+                
+                if isFinish {
+                    self.mainVC?.delegate?.passNewEOSWalletData(self.wallets)
+                    
+                    self.mainVC?.cancelAction(AnyClass.self)
+                }
             } else {
-                //                self.mainVC?.presentAlert(with: self.localize(string: Constants.errorWhileCreatingWalletString))
+                //error
             }
         }
     }
     
     func createWalletInDB(params: NSDictionary, privateKey: String, publicKey: String) {
-        let walletInfo: NSDictionary = [
-            "eosPrivateKey" : privateKey,
-            "eosPublicKey" : publicKey,
-            "currencyid" : params["currencyID"] as! NSNumber,
-            "networkid" : params["networkID"] as! NSNumber,
-            "walletIndex" : params["walletIndex"] as! NSNumber
-        ]
+        let wallet = UserWalletRLM()
         
-        self.mainVC?.cancelAction(AnyClass.self)
+        wallet.eosPublicKey = publicKey
+        wallet.eosPrivateKey = privateKey
+        wallet.name = params["walletName"] as! String
+        wallet.address = params["address"] as! String
+        
+        wallets.append(wallet)
     }
 }

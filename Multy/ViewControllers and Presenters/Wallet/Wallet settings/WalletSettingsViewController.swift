@@ -57,17 +57,19 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     func updateUI() {
         self.walletNameTF.text = self.presenter.wallet?.name
         let blockchainType = BlockchainType.create(wallet: presenter.wallet!)
-        if blockchainType.blockchain == BLOCKCHAIN_EOS {
-            eosParametersHolderView.isHidden = false
-            eosParametersHolderViewTopConstraint.constant = 20
-            //FIXME: set valid values
-            eosCPULabel.text = String(100)
-            eosRAMLabel.text = String(100)
-            eosNETLabel.text = String(100)
-        } else {
-            eosParametersHolderView.isHidden = true
-            eosParametersHolderViewTopConstraint.constant = -219
-        }
+        eosParametersHolderView.isHidden = true
+        eosParametersHolderViewTopConstraint.constant = -219
+//        if blockchainType.blockchain == BLOCKCHAIN_EOS {
+//            eosParametersHolderView.isHidden = false
+//            eosParametersHolderViewTopConstraint.constant = 20
+//            //FIXME: set valid values
+//            eosCPULabel.text = String(100)
+//            eosRAMLabel.text = String(100)
+//            eosNETLabel.text = String(100)
+//        } else {
+//            eosParametersHolderView.isHidden = true
+//            eosParametersHolderViewTopConstraint.constant = -219
+//        }
         view.layoutIfNeeded()
     }
     
