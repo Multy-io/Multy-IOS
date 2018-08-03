@@ -459,5 +459,32 @@ class ApiManager: NSObject, RequestRetrier {
             }
         }
     }
+    
+    func getEosChainInfo(blockChainType: BlockchainType, completion: @escaping(Result<EOSChainInfo, String>) -> ()) {
+        let header: HTTPHeaders = [
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        let currencyId = blockChainType.blockchain.rawValue
+        let networdId = blockChainType.net_type
+        
+        
+        requestManager.request("\(apiUrl)api/v1/chain/\(currencyId)/\(networdId)/info", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    let answer = response.result.value as! NSDictionary
+                    let stateDict = answer["state"] as! NSDictionary
+                    let refBlockPrefixString = (stateDict["refBlockPrefix"] as! NSNumber).stringValue
+                    let chainInfo = EOSChainInfo(expirationDateString: stateDict["chainTime"] as! String, refBlockPrefix: refBlockPrefixString, blockNumber: stateDict["blockNumber"] as! UInt32)
+                    completion(Result.success(chainInfo))
+                }
+                break
+            case .failure(_):
+                completion(Result.failure("Failed to get eos chain info"))
+                break
+            }
+        }
+        
+    }
 }
 
