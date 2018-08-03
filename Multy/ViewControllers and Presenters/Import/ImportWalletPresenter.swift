@@ -21,7 +21,7 @@ class ImportWalletPresenter: NSObject {
                 
                 switch responce {
                 case .success(let value):
-                    self.getEOSAcc(by: value["publicKey"]!)
+                    self.getEOSAcc(by: value["publicKey"]!, privateKey: privateKey)
                     break;
                 case .failure(let error):
                     print(error)
@@ -31,12 +31,12 @@ class ImportWalletPresenter: NSObject {
         }
     }
     
-    func getEOSAcc(by privateKey: String) {
-        DataManager.shared.apiManager.getEOSAccount(by: privateKey) { (responce) in
+    func getEOSAcc(by publicKey: String, privateKey: String) {
+        DataManager.shared.apiManager.getEOSAccount(by: publicKey) { (responce) in
             switch responce {
             case .success(let value):
                 print(value)
-                self.goNext(names: value)
+                self.goNext(names: value, publicKey: publicKey, privateKey: privateKey)
                 break;
             case .failure(let error):
                 print(error)
@@ -46,11 +46,13 @@ class ImportWalletPresenter: NSObject {
         }
     }
     
-    func goNext(names: [String]) {
+    func goNext(names: [String], publicKey: String, privateKey: String) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let accsVC = storyboard.instantiateViewController(withIdentifier: "accsVC") as! EOSAccountsViewController
         accsVC.presenter.namesArr = names
         accsVC.presenter.account = account
+        accsVC.presenter.publicKey = publicKey
+        accsVC.presenter.privateKey = privateKey
         imoprtVC?.navigationController?.pushViewController(accsVC, animated: true)
     }
 }

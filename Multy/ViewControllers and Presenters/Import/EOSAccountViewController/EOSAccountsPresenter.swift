@@ -12,6 +12,9 @@ class EOSAccountsPresenter: NSObject {
     
     var mainVC : EOSAccountsViewController?
     
+    var privateKey: String?
+    var publicKey: String?
+    
     func presentedViewDidLoad() {
     }
     
@@ -24,7 +27,7 @@ class EOSAccountsPresenter: NSObject {
             createEOSWallet(address: namesArr[index], walletIndex: UInt32(index) + topIndex)
         }
         
-        mainVC?.cancelAction(AnyClass.self)
+        
     }
     
     func createEOSWallet(address: String, walletIndex: UInt32) {
@@ -39,10 +42,22 @@ class EOSAccountsPresenter: NSObject {
         
         DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
             if error == nil {
-                
+               self.createWalletInDB(params: params as NSDictionary, privateKey: self.privateKey!, publicKey: self.publicKey!)
             } else {
                 //                self.mainVC?.presentAlert(with: self.localize(string: Constants.errorWhileCreatingWalletString))
             }
         }
+    }
+    
+    func createWalletInDB(params: NSDictionary, privateKey: String, publicKey: String) {
+        let walletInfo: NSDictionary = [
+            "eosPrivateKey" : privateKey,
+            "eosPublicKey" : publicKey,
+            "currencyid" : params["currencyID"] as! NSNumber,
+            "networkid" : params["networkID"] as! NSNumber,
+            "walletIndex" : params["walletIndex"] as! NSNumber
+        ]
+        
+        self.mainVC?.cancelAction(AnyClass.self)
     }
 }

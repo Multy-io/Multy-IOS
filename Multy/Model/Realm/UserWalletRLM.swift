@@ -25,6 +25,9 @@ class UserWalletRLM: Object {
     @objc dynamic var lastActivityTimestamp = NSNumber(value: 0)
     @objc dynamic var isSyncing = NSNumber(booleanLiteral: false)
     
+    @objc dynamic var eosPrivateKey = String()   //temp
+    @objc dynamic var eosPublicKey = String()   // temp
+    
     var changeAddressIndex: UInt32 {
         get {
             switch blockchainType.blockchain {
@@ -68,7 +71,7 @@ class UserWalletRLM: Object {
                 return sumInFiat.fixedFraction(digits: 2)
             case BLOCKCHAIN_ETHEREUM:
                 return (allETHBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
-            case BLOCKCHAIN_EOS:
+            case BLOCKCHAIN_EOS: 
                 return (eosWallet!.eosBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_EOS)
             default:
                 return ""
@@ -272,6 +275,14 @@ class UserWalletRLM: Object {
         
         if let isSyncing = walletInfo["issyncing"] as? Bool {
             wallet.isSyncing = NSNumber(booleanLiteral: isSyncing)
+        }
+        
+        if let eosPrivateKey = walletInfo["eosPrivateKey"] {
+            wallet.eosPrivateKey = eosPrivateKey as! String
+        }
+        
+        if let eosPublicKey = walletInfo["eosPublicKey"] {
+            wallet.eosPublicKey = eosPublicKey as! String
         }
         
         //parse addition info for each chain
