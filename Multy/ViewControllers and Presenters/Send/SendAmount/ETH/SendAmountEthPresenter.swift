@@ -81,6 +81,9 @@ class SendAmountEthPresenter: NSObject {
     var binaryData : BinaryData?
     var addressData : Dictionary<String, Any>?
     
+    //EOS
+    var eosChainInfo: EOSChainInfo?
+    
     func getData() {
         self.createPreliminaryData()
     }
@@ -90,11 +93,20 @@ class SendAmountEthPresenter: NSObject {
         let wallet = transactionDTO.choosenWallet!
         binaryData = account!.binaryDataString.createBinaryData()!
         
-        if transactionDTO.blockchainType!.blockchain != BLOCKCHAIN_EOS {
+        if blockchain != BLOCKCHAIN_EOS {
             addressData = core.createAddress(blockchain:    transactionDTO.blockchainType!,
                                              walletID:      wallet.walletID.uint32Value,
                                              addressID:     wallet.changeAddressIndex,
                                              binaryData:    &binaryData!)
+        } else {
+            DataManager.shared.apiManager.getEosChainInfo(blockChainType: BlockchainType.create(wallet: transactionDTO.choosenWallet!)) { (result) in
+                switch result {
+                case .success(let value):
+                    self.eosChainInfo = value
+                case .failure(let error):
+                    print(error)
+                }
+            }
         }
     }
     
@@ -179,6 +191,8 @@ class SendAmountEthPresenter: NSObject {
             setBTCMaxAllowed()
         case BLOCKCHAIN_ETHEREUM:
             setETHMaxAllowed()
+        case BLOCKCHAIN_EOS:
+            setEOSMaxAllowed()
         default:
             return
         }
@@ -351,23 +365,28 @@ extension CreateTransactionDelegate {
             
             return false
         }
+        
+        if eosChainInfo == nil {
+            return false
+        }
 
         let trData = DataManager.shared.coreLibManager.createEOSTransaction(addressPointer: pointer!,
                                                                             sendAddress: transactionDTO.choosenWallet!.address,
                                                                             balanceAmount: transactionDTO.choosenWallet!.eosWallet!.balance,
                                                                             destinationAddress: transactionDTO.sendAddress!,
-                                                                            sendAmountString: sendAmount.stringValue,
-                                                                            blockNumber: <#T##UInt32#>,
-                                                                            refBlockPrefix: <#T##String#>,
-                                                                            expirationDate: <#T##String#>)
-
+                                                                            sendAmountString: sumInCrypto.stringValue,
+                                                                            blockNumber: eosChainInfo!.blockNumber,
+                                                                            refBlockPrefix: eosChainInfo!.refBlockPrefix,
+                                                                            expirationDate: eosChainInfo!.expirationDateString)
+        
         switch trData {
-        case .su:
-            <#code#>
-        default:
-            <#code#>
+        case .success(let value):
+            rawTransaction = value
+            return true
+        case .failure(let error):
+            rawTransaction = error
+            return false
         }
-        return true
     }
     
     func finalSum() -> BigInt {
@@ -502,6 +521,16 @@ extension CreateTransactionDelegate {
             } else {
                 maxAllowedToSpend = availableSumInFiat
             }
+        }
+        sendAmountVC?.spendableSumAndCurrencyLbl.text = maxAllowedToSpend.cryptoValueString(for: blockchain)
+    }
+    
+    func setEOSMaxAllowed() {
+        switch isCrypto {
+        case true:
+            maxAllowedToSpend = availableSumInCrypto
+        case false:
+            maxAllowedToSpend = availableSumInFiat
         }
         sendAmountVC?.spendableSumAndCurrencyLbl.text = maxAllowedToSpend.cryptoValueString(for: blockchain)
     }
