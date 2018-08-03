@@ -18,6 +18,18 @@ class WaitingMembersPresenter: NSObject {
         viewController?.openShareInviteVC()
         updateWallet()
     }
+    
+    func viewControllerViewWillAppear() {
+        //        inviteCode = makeInviteCode()
+        viewController?.openShareInviteVC()
+        updateWallet()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWallet), name: NSNotification.Name("msJoin"), object: nil)
+    }
+    
+    func viewControllerViewWillDisappear() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msJoin"), object: nil)
+    }
 
     func kickOwnerWithIndex(index: Int) {
         let owner = wallet.multisigWallet!.owners[index]
@@ -31,15 +43,11 @@ class WaitingMembersPresenter: NSObject {
         }
     }
     
-    func viewControllerViewWillAppear() {
-        
-    }
-    
     func viewControllerViewDidLayoutSubviews() {
         
     }
-    
-    fileprivate func updateWallet() {
+        
+    @objc fileprivate func updateWallet() {
         DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: wallet.blockchainType) { [unowned self] (wallet, error) in
             if wallet != nil {
                 self.wallet = wallet!
