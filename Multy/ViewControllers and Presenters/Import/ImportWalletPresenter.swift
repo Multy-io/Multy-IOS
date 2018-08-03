@@ -52,6 +52,8 @@ class ImportWalletPresenter: NSObject {
         accsVC.presenter.account = account
         accsVC.presenter.publicKey = publicKey
         accsVC.presenter.privateKey = privateKey
+        accsVC.delegate = imoprtVC?.delegate
+        
         imoprtVC?.navigationController?.pushViewController(accsVC, animated: true)
     }
 }

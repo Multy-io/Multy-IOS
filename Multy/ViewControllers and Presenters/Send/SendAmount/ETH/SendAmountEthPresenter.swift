@@ -90,12 +90,12 @@ class SendAmountEthPresenter: NSObject {
         let wallet = transactionDTO.choosenWallet!
         binaryData = account!.binaryDataString.createBinaryData()!
         
-        
-        
-        addressData = core.createAddress(blockchain:    transactionDTO.blockchainType!,
-                                         walletID:      wallet.walletID.uint32Value,
-                                         addressID:     wallet.changeAddressIndex,
-                                         binaryData:    &binaryData!)
+        if transactionDTO.blockchainType!.blockchain != BLOCKCHAIN_EOS {
+            addressData = core.createAddress(blockchain:    transactionDTO.blockchainType!,
+                                             walletID:      wallet.walletID.uint32Value,
+                                             addressID:     wallet.changeAddressIndex,
+                                             binaryData:    &binaryData!)
+        }
     }
     
     func estimateTransactionAndValidation() -> Bool {
@@ -338,27 +338,35 @@ extension CreateTransactionDelegate {
     }
     
     func estimateEOSTransactionAndValidation() -> Bool {
+        let blockchainType = transactionDTO.blockchainType!
+        let privatekey = transactionDTO.choosenWallet!.eosPrivateKey
+        let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
+        let pointer: UnsafeMutablePointer<OpaquePointer?>?
         
-//        let info = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: <#T##BlockchainType#>, privateKey: <#T##String#>)
-//
-//
-//        DataManager.shared.coreLibManager.createPublicInfo(binaryData: &<#T##BinaryData#>, blockchainType: <#T##BlockchainType#>, privateKey: <#T##String#>)
-//
-//        let trData = DataManager.shared.coreLibManager.createEOSTransaction(addressPointer: <#T##UnsafeMutablePointer<OpaquePointer?>#>,
-//                                                                            sendAddress: <#T##String#>,
-//                                                                            balanceAmount: <#T##String#>,
-//                                                                            destinationAddress: <#T##String#>,
-//                                                                            sendAmountString: <#T##String#>,
-//                                                                            blockNumber: <#T##UInt32#>,
-//                                                                            refBlockPrefix: <#T##String#>,
-//                                                                            expirationDate: <#T##String#>)
-//
-//        switch trData {
-//        case .su:
-//            <#code#>
-//        default:
-//            <#code#>
-//        }
+        switch walletInfo {
+        case .success(let value):
+            pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
+        case .failure(let error):
+            print(error)
+            
+            return false
+        }
+
+        let trData = DataManager.shared.coreLibManager.createEOSTransaction(addressPointer: pointer!,
+                                                                            sendAddress: transactionDTO.choosenWallet!.address,
+                                                                            balanceAmount: transactionDTO.choosenWallet!.eosWallet!.balance,
+                                                                            destinationAddress: transactionDTO.sendAddress!,
+                                                                            sendAmountString: sendAmount.stringValue,
+                                                                            blockNumber: <#T##UInt32#>,
+                                                                            refBlockPrefix: <#T##String#>,
+                                                                            expirationDate: <#T##String#>)
+
+        switch trData {
+        case .su:
+            <#code#>
+        default:
+            <#code#>
+        }
         return true
     }
     
