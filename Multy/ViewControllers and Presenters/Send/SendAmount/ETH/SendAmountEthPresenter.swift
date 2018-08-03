@@ -268,6 +268,8 @@ class SendAmountEthPresenter: NSObject {
             makeBTCMaxSumWithFeeAndDonate()
         case BLOCKCHAIN_ETHEREUM:
             makeETHMaxSumWithFeeAndDonate()
+        case BLOCKCHAIN_EOS:
+            makeEOSMaxSumWithFeeAndDonate()
         default:
             return
         }
@@ -395,6 +397,8 @@ extension CreateTransactionDelegate {
             return finalBTCSum()
         case BLOCKCHAIN_ETHEREUM:
             return finalETHSum()
+        case BLOCKCHAIN_EOS:
+            return finalEOSSum()
         default:
             return BigInt("0")
         }
@@ -466,6 +470,25 @@ extension CreateTransactionDelegate {
             if sendAmountVC!.commissionSwitch.isOn {
                 sumInNextBtn = sumInNextBtn + fiatAmount
             }
+            
+            if sumInNextBtn > availableSumInFiat {
+                sumInNextBtn = availableSumInFiat
+            }
+        }
+        
+        return sumInNextBtn
+    }
+    
+    func finalEOSSum() -> BigInt {
+        switch isCrypto {
+        case true:
+            sumInNextBtn = sumInCrypto
+            
+            if sumInNextBtn > availableSumInCrypto {
+                sumInNextBtn = availableSumInCrypto
+            }
+        case false:
+            sumInNextBtn = sumInFiat
             
             if sumInNextBtn > availableSumInFiat {
                 sumInNextBtn = availableSumInFiat
@@ -566,12 +589,22 @@ extension CreateTransactionDelegate {
         }
     }
     
+    func makeEOSMaxSumWithFeeAndDonate() {
+        if isCrypto {
+            cryptoMaxSumWithFeeAndDonate = availableSumInCrypto
+        } else {
+            cryptoMaxSumWithFeeAndDonate = availableSumInFiat
+        }
+    }
+    
     func currentCryptoFeeAmountString() -> String {
         switch blockchain {
         case BLOCKCHAIN_BITCOIN:
             return rawTransactionBigIntEstimation.cryptoValueString(for: BLOCKCHAIN_BITCOIN)
         case BLOCKCHAIN_ETHEREUM:
             return feeAmount.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+        case BLOCKCHAIN_EOS:
+            return "0"
         default:
             return ""
         }
@@ -597,6 +630,8 @@ extension CreateTransactionDelegate {
         case BLOCKCHAIN_BITCOIN:
             return sumInCrypto != Int64(0) && transactionDTO.transaction!.donationDTO != nil && sendAmountVC!.amountTF.text!.isEmpty == false && convertBTCStringToSatoshi(sum: sendAmountVC!.amountTF.text!) != 0
         case BLOCKCHAIN_ETHEREUM:
+            return sumInCrypto != Int64(0) && sendAmountVC!.amountTF.text!.isEmpty == false
+        case BLOCKCHAIN_EOS:
             return sumInCrypto != Int64(0) && sendAmountVC!.amountTF.text!.isEmpty == false
         default:
             return false
