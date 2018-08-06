@@ -15,6 +15,7 @@ class EOSAccountsPresenter: NSObject {
     var privateKey: String?
     var publicKey: String?
     var wallets = [UserWalletRLM]()
+    var existingEOSPrivateKeys = [String]()
     
     func presentedViewDidLoad() {
     }

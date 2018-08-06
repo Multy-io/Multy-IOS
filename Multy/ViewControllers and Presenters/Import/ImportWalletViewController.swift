@@ -39,6 +39,18 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
             return 
         }
         
+        let key = textView.text!
+        
+        if presenter.existingEOSPrivateKeys.contains(key) {
+            let alert = UIAlertController(title: "Error", message: "You entered existing private key", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (_) in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            present(alert, animated: true, completion: nil)
+            
+            return 
+        }
+        
         presenter.makePublicKeyAndGetAccNamesBy(privateKey: textView.text!)
     }
 

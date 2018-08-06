@@ -353,6 +353,7 @@ class SendPresenter: NSObject {
     var addressData : Dictionary<String, Any>?
     var binaryData : BinaryData?
     var account = DataManager.shared.realmManager.account
+    var eosChainInfo: EOSChainInfo?
     
     func createPreliminaryData() {
         let account = DataManager.shared.realmManager.account
@@ -360,12 +361,21 @@ class SendPresenter: NSObject {
         let wallet = filteredWalletArray[selectedWalletIndex!]
         binaryData = account!.binaryDataString.createBinaryData()!
         
-        
-        
-        addressData = core.createAddress(blockchain:    wallet.blockchainType,
-                                         walletID:      wallet.walletID.uint32Value,
-                                         addressID:     wallet.changeAddressIndex,
-                                         binaryData:    &binaryData!)
+        if wallet.blockchain != BLOCKCHAIN_EOS {
+            addressData = core.createAddress(blockchain:    wallet.blockchainType,
+                                             walletID:      wallet.walletID.uint32Value,
+                                             addressID:     wallet.changeAddressIndex,
+                                             binaryData:    &binaryData!)
+        } else {
+            DataManager.shared.apiManager.getEosChainInfo(blockChainType: wallet.blockchainType) { [unowned self] (result) in
+                switch result {
+                case .success(let value):
+                    self.eosChainInfo = value
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
     
     func prepareSending() {
@@ -458,6 +468,8 @@ class SendPresenter: NSObject {
                     completion(self.createBTCTransaction())
                 case BLOCKCHAIN_ETHEREUM:
                     completion(self.createETHTransaction())
+                case BLOCKCHAIN_EOS:
+                    completion(self.createEOSTransaction())
                 default:
                     completion(false)
                 }
@@ -708,6 +720,59 @@ extension CreateTransactionDelegate {
         rawTransaction = trData.message
         
         return trData.isTransactionCorrect
+    }
+    
+    func createEOSTransaction() -> Bool {
+        guard eosChainInfo != nil else {
+            return false
+        }
+        
+        guard let requestIndex = selectedActiveRequestIndex, let walletIndex = selectedWalletIndex else {
+            return false
+        }
+        
+        let request = activeRequestsArr[requestIndex]
+        let wallet = filteredWalletArray[walletIndex]
+        
+        let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(in: wallet.blockchainType.blockchain).stringValue
+        
+        let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: wallet.blockchainType, privateKey: wallet.eosPrivateKey)
+        let pointer: UnsafeMutablePointer<OpaquePointer?>?
+        
+        switch walletInfo {
+        case .success(let value):
+            pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
+        case .failure(let error):
+            print(error)
+            
+            return false
+        }
+        
+        var addressDict = Dictionary<String, Any>()
+        addressDict["currencyID"] = wallet.chain
+        addressDict["walletIndex"] = wallet.walletID
+        addressDict["addressIndex"] = 0
+        addressDict["addressPointer"] = pointer
+        addressDict["address"] = wallet.address
+        self.addressData = addressDict
+        
+        let trData = DataManager.shared.coreLibManager.createEOSTransaction(addressPointer: pointer!,
+                                                                            sendAddress: wallet.address,
+                                                                            balanceAmount: wallet.eosWallet!.balance,
+                                                                            destinationAddress: request.sendAddress,
+                                                                            sendAmountString: sendAmount,
+                                                                            blockNumber: eosChainInfo!.blockNumber,
+                                                                            refBlockPrefix: eosChainInfo!.refBlockPrefix,
+                                                                            expirationDate: eosChainInfo!.expirationDateString)
+        
+        switch trData {
+        case .success(let value):
+            rawTransaction = value
+            
+            return true
+        case .failure(_):
+            return false
+        }
     }
 }
 
