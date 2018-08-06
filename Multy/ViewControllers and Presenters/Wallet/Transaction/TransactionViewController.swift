@@ -319,6 +319,20 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.transctionSumLbl.text = "-" + BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
                 self.sumInFiatLbl.text = "-" + fiatAmountInWei.fiatValueString(for: BLOCKCHAIN_ETHEREUM) + " USD"
             }
+        case BLOCKCHAIN_EOS:
+            self.transactionCurencyLbl.text = "EOS"     // check currencyID
+            self.walletFromAddressLbl.text = presenter.histObj.addressesArray.first
+            self.walletToAddressLbl.text = presenter.histObj.addressesArray.last
+            
+            if isIncoming {
+                let fiatAmountInWei = BigInt(presenter.histObj.txOutAmountString) * presenter.histObj.fiatCourseExchange
+                self.transctionSumLbl.text = "+" + BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_EOS)
+                self.sumInFiatLbl.text = "+" + fiatAmountInWei.fiatValueString(for: BLOCKCHAIN_EOS) + " USD"
+            } else {
+                let fiatAmountInWei = BigInt(presenter.histObj.txOutAmountString) * presenter.histObj.fiatCourseExchange
+                self.transctionSumLbl.text = "-" + BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_EOS)
+                self.sumInFiatLbl.text = "-" + fiatAmountInWei.fiatValueString(for: BLOCKCHAIN_EOS) + " USD"
+            }
         default: break
         }
         
