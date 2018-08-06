@@ -25,6 +25,7 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
     @IBOutlet weak var scrollView: UIScrollView!  //
     @IBOutlet weak var swapBtn: UIButton!         // ipad
     
+    @IBOutlet weak var comissionStackView: UIStackView!
     @IBOutlet weak var constraintNextBtnBottom: NSLayoutConstraint!
     @IBOutlet weak var constratintNextBtnHeight: NSLayoutConstraint!
     @IBOutlet weak var constraintForTitletoBtn: NSLayoutConstraint!
@@ -48,6 +49,9 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
         presenter.setMaxAllowed()
         presenter.makeMaxSumWithFeeAndDonate()
         setSumInNextBtn()
+        if presenter.blockchain == BLOCKCHAIN_EOS {
+            comissionStackView.isHidden = true
+        }
         
         if (self.amountTF.text?.isEmpty)! {
             amountTF.text = "0"

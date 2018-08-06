@@ -707,7 +707,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blockchain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u64-Q0-7bi">
                                                             <rect key="frame" x="20" y="10" width="60.5" height="17"/>
                                                             <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
-                                                            <color key="textColor" red="0.53671032190000001" green="0.63738411660000005" blue="0.77729958300000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="textColor" red="0.53725490196078429" green="0.63921568627450975" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bitcoin ∙ BTC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aVq-ZB-lDs">
@@ -3057,13 +3057,13 @@ correctly</string>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your private key:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TVR-xc-14m">
-                                <rect key="frame" x="16" y="73" width="156" height="21"/>
+                                <rect key="frame" x="16" y="73" width="155.5" height="20.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                                 <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6sz-t0-OZL">
-                                <rect key="frame" x="16" y="104" width="343" height="64"/>
+                                <rect key="frame" x="16" y="103.5" width="343" height="64"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="0iH-Az-1am">
                                         <rect key="frame" x="10" y="10" width="323" height="44"/>
@@ -3089,6 +3089,17 @@ correctly</string>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="B3j-AE-3H1">
+                                <rect key="frame" x="31" y="181.5" width="312" height="29"/>
+                                <segments>
+                                    <segment title="Mainnet"/>
+                                    <segment title="Testnet"/>
+                                </segments>
+                                <color key="tintColor" red="0.53725490196078429" green="0.63921568627450975" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="blockchainTypeValueChanged:" destination="o6F-Y2-vqc" eventType="valueChanged" id="Ynj-Zd-miG"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.93333333333333335" green="0.94901960784313721" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -3102,19 +3113,24 @@ correctly</string>
                             <constraint firstItem="fqh-59-cGQ" firstAttribute="centerY" secondItem="LiS-Hb-MpA" secondAttribute="centerY" id="Xs3-iZ-tJi"/>
                             <constraint firstAttribute="trailing" secondItem="qsr-y8-PW6" secondAttribute="trailing" id="ZLu-g6-TbL"/>
                             <constraint firstItem="TVR-xc-14m" firstAttribute="leading" secondItem="dZ7-SK-wvH" secondAttribute="leading" constant="16" id="dFg-cb-kHb"/>
+                            <constraint firstItem="B3j-AE-3H1" firstAttribute="top" secondItem="6sz-t0-OZL" secondAttribute="bottom" constant="14" id="fuu-31-xpa"/>
+                            <constraint firstItem="B3j-AE-3H1" firstAttribute="leading" secondItem="6sz-t0-OZL" secondAttribute="leading" constant="15" id="hcN-8M-0tc"/>
                             <constraint firstItem="qsr-y8-PW6" firstAttribute="leading" secondItem="dZ7-SK-wvH" secondAttribute="leading" id="krQ-0e-Vih"/>
                             <constraint firstItem="fqh-59-cGQ" firstAttribute="leading" secondItem="dZ7-SK-wvH" secondAttribute="leading" constant="16" id="n4D-6h-s2L"/>
                             <constraint firstItem="6sz-t0-OZL" firstAttribute="leading" secondItem="dZ7-SK-wvH" secondAttribute="leading" constant="16" id="oCG-2U-Hor"/>
                             <constraint firstAttribute="trailing" secondItem="6sz-t0-OZL" secondAttribute="trailing" constant="16" id="smf-cO-eFv"/>
+                            <constraint firstItem="B3j-AE-3H1" firstAttribute="centerX" secondItem="6sz-t0-OZL" secondAttribute="centerX" id="unf-pX-xl9"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="blockchainTypeSegmentedControl" destination="B3j-AE-3H1" id="OI9-55-jiI"/>
+                        <outlet property="privateKeyHolderView" destination="6sz-t0-OZL" id="WiD-KG-Dt8"/>
                         <outlet property="textView" destination="0iH-Az-1am" id="yC5-pt-xKE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BUm-jU-cg2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4498" y="3238"/>
+            <point key="canvasLocation" x="-4498.3999999999996" y="3237.9310344827591"/>
         </scene>
         <!--Creating Wallet Actions View Controller-->
         <scene sceneID="0lk-Wv-F8l">
