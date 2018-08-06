@@ -433,6 +433,7 @@ extension CreateWalletDelegate: CreateWalletProtocol {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let importVC = storyboard.instantiateViewController(withIdentifier: "importVC") as! ImportWalletViewController
             importVC.delegate = self
+            importVC.presenter.existingEOSPrivateKeys = presenter.eosPrivateKeys
             navigationController?.pushViewController(importVC, animated: true)
         }
     }

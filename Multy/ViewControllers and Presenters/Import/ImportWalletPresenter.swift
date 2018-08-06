@@ -8,7 +8,22 @@ class ImportWalletPresenter: NSObject {
     
     var imoprtVC: ImportWalletViewController?
     var account: AccountRLM?
-    let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_MAINNET.rawValue))
+
+    var existingEOSPrivateKeys = [String]()
+    var blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_MAINNET.rawValue))
+
+    var netType = EOS_NET_TYPE_MAINNET {
+        didSet {
+            blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(netType.rawValue))
+            imoprtVC?.updateNetType()
+        }
+    }
+    
+    override init() {
+        super.init()
+        
+        netType = EOS_NET_TYPE_MAINNET
+    }
     
     func makePublicKeyAndGetAccNamesBy(privateKey: String) {
         let blockchainType = BlockchainType.init(blockchain: BLOCKCHAIN_EOS, net_type: Int(EOS_NET_TYPE_TESTNET.rawValue))
@@ -52,6 +67,7 @@ class ImportWalletPresenter: NSObject {
         accsVC.presenter.account = account
         accsVC.presenter.publicKey = publicKey
         accsVC.presenter.privateKey = privateKey
+        accsVC.presenter.existingEOSPrivateKeys = existingEOSPrivateKeys
         accsVC.delegate = imoprtVC?.delegate
         
         imoprtVC?.navigationController?.pushViewController(accsVC, animated: true)

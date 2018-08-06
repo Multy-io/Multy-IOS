@@ -203,7 +203,7 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
     
     
     func setupShadow() {
-        let myColor = #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.3)
+        let myColor = #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.3) 
         topView.setShadow(with: myColor)
         botView.setShadow(with: myColor)
     }

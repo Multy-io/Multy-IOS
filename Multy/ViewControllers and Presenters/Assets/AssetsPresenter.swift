@@ -25,6 +25,8 @@ class AssetsPresenter: NSObject {
     var contentOffset = CGPoint.zero
     
     var eosNewWallets: [UserWalletRLM]?
+    
+    var eosPrivateKeys = [String]()
 
     var account : AccountRLM? {
         didSet {
@@ -67,7 +69,13 @@ class AssetsPresenter: NSObject {
         }
     }
     
-    var wallets: Results<UserWalletRLM>?
+    var wallets: Results<UserWalletRLM>? {
+        didSet {
+            if wallets?.count != 0 {
+                self.eosPrivateKeys = wallets!.filter{ $0.blockchain == BLOCKCHAIN_EOS && $0.eosPrivateKey.isEmpty == false }.map{ $0.eosPrivateKey }
+            }
+        }
+    }
     
     @objc func updateExchange() {
         if !self.assetsVC!.isVisible() {
