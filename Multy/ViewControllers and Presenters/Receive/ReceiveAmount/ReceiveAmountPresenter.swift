@@ -16,6 +16,8 @@ class ReceiveAmountPresenter: NSObject {
             return 21000000.0 // 21 mln
         case BLOCKCHAIN_ETHEREUM:
             return 100000000.0 // 100 mln
+        case BLOCKCHAIN_EOS:
+            return 1000000000.0 // 100 mln
         default:
             return 1.0
         }
