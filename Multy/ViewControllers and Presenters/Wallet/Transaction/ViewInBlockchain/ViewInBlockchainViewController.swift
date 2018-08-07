@@ -34,6 +34,9 @@ class ViewInBlockchainViewController: UIViewController, UIWebViewDelegate {
         case BLOCKCHAIN_ETHEREUM:
             let subUrl = presenter.blockchainType!.net_type == 1 ? "" : "rinkeby."
             url = "https://\(subUrl)etherscan.io/tx/\(presenter.txHash ?? "")"
+        case BLOCKCHAIN_EOS:
+            let subUrl = presenter.blockchainType!.net_type == 1 ? "" : "rinkeby."
+            url = "https://eostracker.io/transactions/fae61956e0f251830ee903abcad192de5880c785a90df6c5312b2eb80d84c6d4)"
         default: break
         }
         

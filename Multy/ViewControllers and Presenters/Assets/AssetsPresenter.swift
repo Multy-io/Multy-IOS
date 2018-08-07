@@ -49,6 +49,8 @@ class AssetsPresenter: NSObject {
                 
                 wallets = account?.wallets.sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
                 
+                wallets = wallets?.filter("chain != 194 OR eosPrivateKey != \"\"")
+                
                 assetsVC!.tableView.frame.size.height = screenHeight - assetsVC!.tabBarController!.tabBar.frame.height
                 
                 self.assetsVC?.view.isUserInteractionEnabled = true
@@ -69,7 +71,7 @@ class AssetsPresenter: NSObject {
     
     var wallets: Results<UserWalletRLM>? {
         didSet {
-            if wallets?.count != 0 {
+            if wallets != nil && wallets?.count != 0 {
                 self.eosPrivateKeys = wallets!.filter{ $0.blockchain == BLOCKCHAIN_EOS && $0.eosPrivateKey.isEmpty == false }.map{ $0.eosPrivateKey }
             }
         }

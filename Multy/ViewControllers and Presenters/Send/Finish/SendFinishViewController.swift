@@ -88,7 +88,7 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
         bottom.setShadow(with: shadowColor)
         cryptoImage.image = UIImage(named: presenter.transactionDTO.blockchainType!.iconString)
         
-        cryptoSumLbl.text = presenter.sumInCryptoString
+        cryptoSumLbl.text = presenter.sumInCryptoString + " "
         cryptoNamelbl.text = presenter.cryptoName
         fiatSumAndCurrancyLbl.text = "\(presenter.sumInFiatString) \(presenter.fiatName)"
         addressLbl.text = presenter.transactionDTO.sendAddress

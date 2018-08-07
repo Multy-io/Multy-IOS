@@ -12,6 +12,7 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
     var delegate: EOSNewWalletProtocol?
     
     let presenter = ImportWalletPresenter()
+    
     @IBOutlet weak var blockchainTypeSegmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
@@ -81,5 +82,10 @@ class ImportWalletViewController: UIViewController, UITextViewDelegate {
         }
         
         presenter.netType = netType
+    }
+    
+    @IBAction func getAccountsAction(_ sender: Any) {
+        textView.resignFirstResponder()
+        doneAction()
     }
 }

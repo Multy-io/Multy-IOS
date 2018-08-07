@@ -106,6 +106,12 @@ class TransactionWalletCell: UITableViewCell {
             } else {
                 address = histObj.addressesArray.last!
             }
+        case BLOCKCHAIN_EOS:
+            if histObj.isIncoming() {
+                address = histObj.addressesArray.first!
+            } else {
+                address = histObj.addressesArray.last!
+            }
         default:
             return
         }
@@ -126,9 +132,20 @@ class TransactionWalletCell: UITableViewCell {
             fillBitcoinCell()
         case BLOCKCHAIN_ETHEREUM:
             fillEthereumCell()
+        case BLOCKCHAIN_EOS:
+            fillEOSCell()
         default:
             return
         }
+    }
+    
+    func fillEOSCell() {
+        let eosAmountString = BigInt(histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_EOS)
+        let labelsCryproText = eosAmountString + " " + wallet.cryptoName
+        self.cryptoAmountLabel.text = labelsCryproText
+        
+        let fiatAmountString = (BigInt(histObj.txOutAmountString) * histObj.fiatCourseExchange).fiatValueString(for: BLOCKCHAIN_EOS)
+        fiatAmountLabel.text = fiatAmountString + " " + wallet.fiatName
     }
     
     func fillEthereumCell() {

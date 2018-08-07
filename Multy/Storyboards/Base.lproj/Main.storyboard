@@ -3095,11 +3095,30 @@ correctly</string>
                                     <segment title="Mainnet"/>
                                     <segment title="Testnet"/>
                                 </segments>
-                                <color key="tintColor" red="0.53725490196078429" green="0.63921568627450975" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.0" green="0.48627450980392156" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="blockchainTypeValueChanged:" destination="o6F-Y2-vqc" eventType="valueChanged" id="Ynj-Zd-miG"/>
                                 </connections>
                             </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FTa-wI-qP9">
+                                <rect key="frame" x="16" y="229.5" width="343" height="64"/>
+                                <color key="backgroundColor" red="0.0" green="0.48627450980392156" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="g0F-5a-uNf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
+                                <state key="normal" title="Get accounts">
+                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="15"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="getAccountsAction:" destination="o6F-Y2-vqc" eventType="touchUpInside" id="t34-XD-eTB"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.93333333333333335" green="0.94901960784313721" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -3107,6 +3126,7 @@ correctly</string>
                             <constraint firstItem="LiS-Hb-MpA" firstAttribute="centerX" secondItem="dZ7-SK-wvH" secondAttribute="centerX" id="7Yg-EX-OAB"/>
                             <constraint firstItem="qsr-y8-PW6" firstAttribute="top" secondItem="KVW-Bv-8xe" secondAttribute="bottom" id="9hg-uz-WBS"/>
                             <constraint firstItem="LiS-Hb-MpA" firstAttribute="top" secondItem="Usi-yd-Wue" secondAttribute="bottom" constant="10" id="FHw-mr-e1Z"/>
+                            <constraint firstAttribute="trailing" secondItem="FTa-wI-qP9" secondAttribute="trailing" constant="16" id="Fdz-St-0eX"/>
                             <constraint firstItem="TVR-xc-14m" firstAttribute="top" secondItem="qsr-y8-PW6" secondAttribute="bottom" constant="10" id="L7Y-8s-an0"/>
                             <constraint firstItem="qsr-y8-PW6" firstAttribute="top" secondItem="LiS-Hb-MpA" secondAttribute="bottom" constant="10" id="R8I-FH-pEV"/>
                             <constraint firstItem="KVW-Bv-8xe" firstAttribute="leading" secondItem="dZ7-SK-wvH" secondAttribute="leading" id="UEt-ac-Dpf"/>
@@ -3117,9 +3137,11 @@ correctly</string>
                             <constraint firstItem="B3j-AE-3H1" firstAttribute="leading" secondItem="6sz-t0-OZL" secondAttribute="leading" constant="15" id="hcN-8M-0tc"/>
                             <constraint firstItem="qsr-y8-PW6" firstAttribute="leading" secondItem="dZ7-SK-wvH" secondAttribute="leading" id="krQ-0e-Vih"/>
                             <constraint firstItem="fqh-59-cGQ" firstAttribute="leading" secondItem="dZ7-SK-wvH" secondAttribute="leading" constant="16" id="n4D-6h-s2L"/>
+                            <constraint firstItem="FTa-wI-qP9" firstAttribute="leading" secondItem="dZ7-SK-wvH" secondAttribute="leading" constant="16" id="nfb-xt-lrh"/>
                             <constraint firstItem="6sz-t0-OZL" firstAttribute="leading" secondItem="dZ7-SK-wvH" secondAttribute="leading" constant="16" id="oCG-2U-Hor"/>
                             <constraint firstAttribute="trailing" secondItem="6sz-t0-OZL" secondAttribute="trailing" constant="16" id="smf-cO-eFv"/>
                             <constraint firstItem="B3j-AE-3H1" firstAttribute="centerX" secondItem="6sz-t0-OZL" secondAttribute="centerX" id="unf-pX-xl9"/>
+                            <constraint firstItem="FTa-wI-qP9" firstAttribute="top" secondItem="B3j-AE-3H1" secondAttribute="bottom" constant="20" id="w0z-XH-eC4"/>
                         </constraints>
                     </view>
                     <connections>
