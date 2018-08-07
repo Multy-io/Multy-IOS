@@ -3115,6 +3115,9 @@ correctly</string>
                                         <integer key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="getAccountsAction:" destination="o6F-Y2-vqc" eventType="touchUpInside" id="t34-XD-eTB"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.93333333333333335" green="0.94901960784313721" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
