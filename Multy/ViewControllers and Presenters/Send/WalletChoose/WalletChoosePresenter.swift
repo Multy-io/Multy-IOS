@@ -45,10 +45,10 @@ class WalletChoosePresenter: NSObject {
         walletChoooseVC?.emptyDataSourceLabel.isHidden = (filteredWalletArray.count != 0)
     }
     
-    func presentAlert(message : String?) {
+    func presentAlert(message : String?, blockchain: Blockchain) {
         var alertMessage = String()
         if message == nil {
-            alertMessage = walletChoooseVC!.localize(string: Constants.notEnoughAmountString) +  " \(transactionDTO.sendAmountString ?? "0,0") \(transactionDTO.blockchain!.fullName)"
+            alertMessage = walletChoooseVC!.localize(string: Constants.notEnoughAmountString) +  " \(transactionDTO.sendAmountString ?? "0,0") \(blockchain.shortName)"
         } else {
             alertMessage = message!
         }

@@ -192,6 +192,8 @@ class Socket: NSObject {
             let answer = data.first!
             if answer is String {
                 completion(nil, nil) // FIX IT: completion(nil, error)
+                
+                return
             }
             let dict = answer as! NSDictionary
             completion(dict, nil)
