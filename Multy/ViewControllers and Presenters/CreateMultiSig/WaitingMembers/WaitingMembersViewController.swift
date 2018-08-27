@@ -63,10 +63,6 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         }
     }
     
-    var topEdge : CGFloat {
-        return contentView.frame.size.height - (headerView.frame.origin.y + headerView.frame.size.height)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -161,7 +157,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func updateMembersCounterOpacity() {
-        let rangeRaw = topEdge - tableHolderViewHeight
+        let rangeRaw = tablesHolderTopEdge - tablesHolderBottomEdge
         var value = tableHolderViewHeight
         if value < tablesHolderBottomEdge {
             value = tablesHolderBottomEdge
@@ -243,6 +239,18 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         return 64.0
     }
 
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        var result = false
+        if presenter.wallet.multisigWallet!.amICreator {
+            if indexPath.item < presenter.wallet.multisigWallet!.owners.count {
+                let owner = presenter.wallet.multisigWallet!.owners[indexPath.item]
+                result = owner.associated.boolValue ? false : true
+            }
+        }
+        
+        return result    
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 
         if editingStyle == .delete {
