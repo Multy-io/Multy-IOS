@@ -689,6 +689,18 @@ extension WalletManager {
                 
                 if index != nil {
                     try! realm.write {
+                        if walletToDelete?.btcWallet != nil {
+                            realm.delete(walletToDelete!.btcWallet!)
+                        }
+                        
+                        if walletToDelete?.ethWallet != nil {
+                            realm.delete(walletToDelete!.ethWallet!)
+                        }
+                        
+                        if walletToDelete?.multisigWallet != nil {
+                            realm.delete(walletToDelete!.multisigWallet!)
+                        }
+                        
                         account!.wallets.remove(at: index!)
                         realm.delete(walletToDelete!)
                     }
