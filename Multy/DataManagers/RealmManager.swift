@@ -672,12 +672,8 @@ extension WalletManager {
         //FIXME: only for non-multisig wallets
         getRealm { (realmOpt, error) in
             if let realm = realmOpt {
-                let primaryKey = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value,
-                                                                             networkID: wallet.chainType.uint32Value,
-                                                                             walletID: wallet.walletID.uint32Value,
-                                                                             inviteCode: nil)
                 let account = realm.object(ofType: AccountRLM.self, forPrimaryKey: 1)
-                let walletToDelete = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
+                let walletToDelete = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: wallet.id)
                 
                 guard account != nil && walletToDelete != nil else {
                     completion(nil)
@@ -685,19 +681,19 @@ extension WalletManager {
                     return
                 }
                 
-                let index = account!.wallets.index(where: { $0.id == walletToDelete!.id })
+                let index = account!.wallets.index(where: { $0.id == walletToDelete?.id })
                 
                 if index != nil {
                     try! realm.write {
-                        if walletToDelete?.btcWallet != nil {
+                        if walletToDelete!.btcWallet != nil {
                             realm.delete(walletToDelete!.btcWallet!)
                         }
                         
-                        if walletToDelete?.ethWallet != nil {
+                        if walletToDelete!.ethWallet != nil {
                             realm.delete(walletToDelete!.ethWallet!)
                         }
                         
-                        if walletToDelete?.multisigWallet != nil {
+                        if walletToDelete!.multisigWallet != nil {
                             realm.delete(walletToDelete!.multisigWallet!)
                         }
                         
