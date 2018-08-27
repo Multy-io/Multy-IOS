@@ -66,8 +66,8 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let panGR = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(_:)))
-        membersInfoTouchpadView.addGestureRecognizer(panGR)
+//        let panGR = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(_:)))
+//        membersInfoTouchpadView.addGestureRecognizer(panGR)
         registerCells()
         initialConfig()
         

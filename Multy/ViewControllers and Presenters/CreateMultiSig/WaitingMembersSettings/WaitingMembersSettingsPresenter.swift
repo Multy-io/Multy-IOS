@@ -40,7 +40,7 @@ class WaitingMembersSettingsPresenter: NSObject {
                 if error != nil {
                     return
                 } else {
-                    self.deleteFromDB()
+                    self.deleteWalletFromDB()
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
                 }
             }
@@ -49,14 +49,14 @@ class WaitingMembersSettingsPresenter: NSObject {
                 if error != nil {
                     return
                 } else {
-                    self.deleteFromDB()
+                    self.deleteWalletFromDB()
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
                 }
             }
         }
     }
     
-    func deleteFromDB() {
+    func deleteWalletFromDB() {
         DataManager.shared.realmManager.deleteWallet(wallet) { (acc) in
             
         }
