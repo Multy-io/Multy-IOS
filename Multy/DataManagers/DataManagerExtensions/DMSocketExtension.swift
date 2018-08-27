@@ -5,7 +5,7 @@
 import Foundation
 
 extension DataManager {
-    func kickFromMultisigWith(wallet: UserWalletRLM, addressToKick: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+    func kickFromMultisigWith(wallet: UserWalletRLM, addressToKick: String, completion: @escaping(Result<Bool, String>) -> ()) {
         let payload: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
             "address": wallet.multisigWallet!.linkedWalletAddress,
@@ -24,11 +24,16 @@ extension DataManager {
         
         
         socketManager.sendMsg(params: params) { (answerDict, err) in
-            completion(answerDict, err)
+            if err != nil {
+                //FIXME: error handling
+                completion(Result.failure("wrong data"))
+            } else {
+                completion(Result.success(true))
+            }
         }
     }
     
-    func leaveFromMultisigWith(wallet: UserWalletRLM, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+    func leaveFromMultisigWith(wallet: UserWalletRLM, completion: @escaping(Result<Bool, String>) -> ()) {
         
         let payload: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
@@ -47,11 +52,16 @@ extension DataManager {
         
         
         socketManager.sendMsg(params: params) { (answerDict, err) in
-            completion(answerDict, err)
+            if err != nil {
+                //FIXME: error handling
+                completion(Result.failure("wrong data"))
+            } else {
+                completion(Result.success(true))
+            }
         }
     }
     
-    func deleteMultisigWith(wallet: UserWalletRLM, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+    func deleteMultisigWith(wallet: UserWalletRLM, completion: @escaping(Result<Bool, String>) -> ()) {
         let payload: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
             "address": wallet.multisigWallet!.linkedWalletAddress,
@@ -69,11 +79,16 @@ extension DataManager {
         
         
         socketManager.sendMsg(params: params) { (answerDict, err) in
-            completion(answerDict, err)
+            if err != nil {
+                //FIXME: error handling
+                completion(Result.failure("wrong data"))
+            } else {
+                completion(Result.success(true))
+            }
         }
     }
     
-    func joinToMultisigWith(wallet: UserWalletRLM, inviteCode: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+    func joinToMultisigWith(wallet: UserWalletRLM, inviteCode: String, completion: @escaping(Result<Bool, String>) -> ()) {
         let payloadForJoin: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
             "address": wallet.address,
@@ -93,13 +108,21 @@ extension DataManager {
             "payload": payloadForJoin
         ]
         
-        
         socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
-            completion(answerDict, err)
+            
+            if err != nil {
+                
+                print("Join to MultiSig error: \(err!)")
+                //FIXME: error handling
+                completion(Result.failure("wrong data"))
+            } else {
+                print("Join to MultiSig answer: \(answerDict!)")
+                completion(Result.success(true))
+            }
         }
     }
     
-    func validateInviteCode(code: String, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+    func validateInviteCode(code: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
         let payloadForValidate: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
             "invitecode": code
@@ -117,11 +140,12 @@ extension DataManager {
         
         socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
             if err != nil {
-                completion(nil, err)
-                return
+                //FIXME: error handling
+                completion(Result.failure("wrong data"))
+            } else {
+                let payloadDict = answerDict!["payload"] as! NSDictionary
+                completion(Result.success(payloadDict))
             }
-            let payloadDict = answerDict!["payload"] as! NSDictionary
-            completion(payloadDict, nil)
         }
     }
 }

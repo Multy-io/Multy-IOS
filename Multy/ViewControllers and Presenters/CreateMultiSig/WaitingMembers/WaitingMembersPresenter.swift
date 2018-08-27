@@ -27,27 +27,44 @@ class WaitingMembersPresenter: NSObject {
 //        viewController?.openShareInviteVC()
         updateWallet()
     }
+    
+    func viewControllerViewWillAppear() {
+        //        inviteCode = makeInviteCode()
+   //     viewController?.openShareInviteVC()
+        updateWallet()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWallet), name: NSNotification.Name("msMembersUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification), name: NSNotification.Name("msWalletDeleted"), object: nil)
+    }
+    
+    func viewControllerViewWillDisappear() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msMembersUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletDeleted"), object: nil)
+    }
 
     func kickOwnerWithIndex(index: Int) {
         let owner = wallet.multisigWallet!.owners[index]
-        DataManager.shared.kickFromMultisigWith(wallet: wallet, addressToKick: owner.address) { [unowned self] (answer, error) in
-            if error != nil {
-                return
-            } else {
+        DataManager.shared.kickFromMultisigWith(wallet: wallet, addressToKick: owner.address) { [unowned self] result in
+            switch result {
+            case .success(_):
                 self.updateWallet()
+            case .failure(let error):
+                self.viewController?.presentAlert(with: error)
             }
         }
-    }
-    
-    func viewControllerViewWillAppear() {
-        
     }
     
     func viewControllerViewDidLayoutSubviews() {
         
     }
     
-    fileprivate func updateWallet() {
+    @objc fileprivate func handleWalletDeletedNotification() {
+        if !(wallet.multisigWallet?.amICreator)! {
+            self.viewController?.navigationController?.popToRootViewController(animated: true)
+        }
+    }
+        
+    @objc fileprivate func updateWallet() {
         DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: wallet.blockchainType) { [unowned self] (wallet, error) in
             if wallet != nil {
                 self.wallet = wallet!

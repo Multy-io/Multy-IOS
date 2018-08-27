@@ -92,6 +92,12 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         presenter.viewControllerViewWillAppear()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        
+    }
+    
     func initialConfig() {
         progressRing.shouldShowValueText = false
         progressRing.ringStyle = .dashed

@@ -6,6 +6,8 @@ import UIKit
 import SocketIO
 import AVFoundation
 
+private typealias MessageHandler = Socket
+
 class Socket: NSObject {
     static let shared = Socket()
     
@@ -35,6 +37,7 @@ class Socket: NSObject {
             
             self.manager = SocketManager(socketURL: URL(string: socketUrl)!, config: [.log(false), .compress, .forceWebsockets(true), .reconnectAttempts(3), .forcePolling(false), .extraHeaders(header), .secure(false)])
             self.socket = self.manager.defaultSocket
+            //SocketIOClient(manager: self.manager, nsp: "")
             
             self.socket.on(clientEvent: .connect) {data, ack in
                 print("socket connected")
@@ -75,6 +78,13 @@ class Socket: NSObject {
                 ack.with("Got your currentAmount", "dude")
             }
             
+            self.socket.on("message:recieve:\(account!.userID)") {data, ack in
+                guard let firstData = data.first as? [AnyHashable : Any] else {
+                    return
+                }
+                
+                self.handleMessage(firstData)
+            }
             
             self.socket.connect()
         }
@@ -188,41 +198,6 @@ class Socket: NSObject {
         }
     }
     
-    func jackstest() { // event with dict params
-        let param1: NSDictionary = [
-            "type":"join:multisig",  // it's kinda signature method eg: join:multisig.
-            "from":"multy",
-            "to":"ur userid",
-            "date":1531820490, // time unix
-            "status":0,
-            "payload":"string"
-        ]
-        
-        let payload2: NSDictionary = [
-            "userid":DataManager.shared.apiManager.userID,
-            "address":"0xe51777adb0aa5facc5fe9ee9e56d30ee4984c266",
-            "invitecode":"kek-string1",
-            "addresstokik":"", //omitempty
-            "walletindex":0,
-            "currencyid":60,
-            "networkid":1
-        ]
-        
-        let param2: NSDictionary = [
-            "type":"join:multisig",  // it's kinda signature method eg: join:multisig.
-            "from":"",              // not requied
-            "to":"",                // not requied
-            "date":1531840490, // time unix
-            "status":0,
-            "payload":payload2
-        ]
-        
-        
-        
-        socket.emitWithAck("message:send", with: [param2]).timingOut(after: 1) { data in
-            print(data)
-        }
-    }
     
     
 //    func txSend(params : [String: Any]) {
@@ -243,5 +218,39 @@ class Socket: NSObject {
 //    }
 }
 
-
+extension MessageHandler {
+    private func handleMessage(_ data: [AnyHashable : Any]) {
+        let msgType : Int = data["type"] as! Int
+        
+        switch msgType {
+        
+        case SocketMessageType.multisigJoin.rawValue:
+            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
+            break
+            
+        case SocketMessageType.multisigLeave.rawValue:
+            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
+            break
+            
+        case SocketMessageType.multisigDelete.rawValue:
+            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
+            break
+            
+        case SocketMessageType.multisigKick.rawValue:
+            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
+            break
+            
+        default:
+            break
+        }
+    }
+    
+    private func handleMSMembersUpdatedMessage(_ data: [AnyHashable : Any]) {
+        NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: nil)
+    }
+    
+    private func handleMSWalletDeletedMessage(_ data: [AnyHashable : Any]) {
+        NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: nil)
+    }
+}
 

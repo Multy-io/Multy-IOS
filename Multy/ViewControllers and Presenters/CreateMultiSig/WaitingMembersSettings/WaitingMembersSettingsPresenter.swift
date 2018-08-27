@@ -25,7 +25,7 @@ class WaitingMembersSettingsPresenter: NSObject {
                                                 chainType: self.wallet.chainType,
                                                 walletID: self.wallet.walletID,
                                                 newName: self.presentedVC!.walletNameTF.text!.trimmingCharacters(in: .whitespaces)) { (dict, error) in
-                                                    print(dict!)
+                                                    print(dict)
                                                     self.presentedVC?.loader.hide()
                                                     self.presentedVC!.navigationController?.popViewController(animated: true)
             }
@@ -33,33 +33,41 @@ class WaitingMembersSettingsPresenter: NSObject {
     }
     
     func delete() {
+        if wallet == nil {
+            print("\nWrong wallet data: wallet == nil\n")
+            
+            return
+        }
+        
         presentedVC?.loader.show(customTitle: presentedVC!.localize(string: Constants.deletingString))
         
         if isCreator {
-            DataManager.shared.deleteMultisigWith(wallet: wallet) { [unowned self] (answer, error) in
-                if error != nil {
-                    return
-                } else {
-                    self.deleteWalletFromDB()
+            DataManager.shared.deleteMultisigWith(wallet: wallet) { [unowned self] result in
+                
+                switch result {
+                    
+                case .success( _):
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
+                case .failure(let error):
+                    print(error)
+                    self.presentedVC?.presentAlert(with: error)
                 }
             }
         } else {
-            DataManager.shared.leaveFromMultisigWith(wallet: wallet) { [unowned self] (answer, error) in
-                if error != nil {
-                    return
-                } else {
-                    self.deleteWalletFromDB()
+            DataManager.shared.leaveFromMultisigWith(wallet: wallet) { [unowned self] result in
+                switch result {
+                
+                case .success( _):
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
+                case .failure(let error):
+                    print(error)
+                    self.presentedVC?.presentAlert(with: error)
                 }
             }
         }
     }
     
-    func deleteWalletFromDB() {
-        DataManager.shared.realmManager.deleteWallet(wallet) { (acc) in
-            
-        }
+    func leave() {
+        
     }
-    
 }
