@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.5</string>
+	<string>1.1.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -32,11 +32,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>49</string>
+	<string>59</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>CreatingMultiSigWallet</string>
+	<string>CREATING_MS_WALLET</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>ab3cdfd7</string>
+	<string>7a458fb8</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_BUILD_1.0.5_53-dirty</string>
 	<key>LSRequiresIPhoneOS</key>

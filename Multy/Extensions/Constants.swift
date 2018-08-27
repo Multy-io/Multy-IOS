@@ -194,6 +194,15 @@ enum Result<Value, Error: StringProtocol> {
     case failure(Error)
 }
 
+enum MultiSigWalletStatus: Int {
+    case
+        multisigStatusWaitingForJoin =  1,
+        multisigStatusAllJoined =       2,
+        multisigStatusDeployPending =   3,
+        multisigStatusRejected =        4,
+        multisigStatusDeployed =        5
+}
+
 let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for available donation
 let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 

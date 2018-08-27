@@ -66,6 +66,8 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        let panGR = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(_:)))
+//        membersInfoTouchpadView.addGestureRecognizer(panGR)
         registerCells()
         initialConfig()
         
@@ -124,7 +126,8 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         joinedMembersLabel.text = "\(joinedCount) / \(totalCount)"
         progressRing.value = CGFloat(joinedCount) / CGFloat(totalCount) * 360
         
-        if (joinedCount == totalCount) {
+        if joinedCount == totalCount {
+            presenter.bottomButtonStatus = .paymentRequired
             stateImageView.image = UIImage(named: "readyToStart")
             stateLabel.text = localize(string: Constants.readyToStartString)
             stateLabel.textColor = #colorLiteral(red: 0.8117647059, green: 1, blue: 0.8666666667, alpha: 1)
@@ -132,6 +135,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
             backgroundView.backgroundColor = #colorLiteral(red: 0.3725490196, green: 0.8, blue: 0.4901960784, alpha: 1)
             qrCodeImageView.isHidden = true
         } else {
+            presenter.bottomButtonStatus = .inviteCode
             stateImageView.image = UIImage(named: "pendingSmallClock")
             stateLabel.text = localize(string: Constants.waitingAllMembersString)
             stateLabel.textColor = #colorLiteral(red: 0.5921568627, green: 0.8078431373, blue: 1, alpha: 1)
@@ -151,6 +155,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
                 UIColor(ciColor: CIColor(red: 21.0 / 255.0, green: 126.0 / 255.0, blue: 252.0 / 255.0))],
                                                                gradientOrientation: .topRightBottomLeft)
         } else {
+            presenter.bottomButtonStatus = .hidden
             invitationHolderView.isHidden = true
             invitationHolderView.isUserInteractionEnabled = false
         }
@@ -179,6 +184,10 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
             inviteCodeVC.presenter.inviteCode = presenter.wallet.multisigWallet!.inviteCode
             present(inviteCodeVC, animated: true, completion: nil)
         }
+    }
+    
+    func payForMultiSig() {
+        presenter.payForMultiSig()
     }
     
     func setTableHolderPosition() {
@@ -266,12 +275,16 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     //MARK: Actions
-    @IBAction func invitationCodeAction(_ sender: Any) {
-        openShareInviteVC()
+    @IBAction func bottomButtonAction(_ sender: Any) {
+        if presenter.bottomButtonStatus == .inviteCode {
+            openShareInviteVC()
+        } else {
+            payForMultiSig()
+        }
     }
     
     @IBAction func backAction(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
 }
     
