@@ -108,12 +108,15 @@ extension DataManager {
             "payload": payloadForJoin
         ]
         
-        
         socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
+            
             if err != nil {
+                
+                print("Join to MultiSig error: \(err!)")
                 //FIXME: error handling
                 completion(Result.failure("wrong data"))
             } else {
+                print("Join to MultiSig answer: \(answerDict!)")
                 completion(Result.success(true))
             }
         }

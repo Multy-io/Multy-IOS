@@ -225,19 +225,19 @@ extension MessageHandler {
         switch msgType {
         
         case SocketMessageType.multisigJoin.rawValue:
-            
+            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
             break
             
         case SocketMessageType.multisigLeave.rawValue:
-            
+            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
             break
             
         case SocketMessageType.multisigDelete.rawValue:
-            
+            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
             break
             
         case SocketMessageType.multisigKick.rawValue:
-            
+            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
             break
             
         default:
@@ -245,20 +245,12 @@ extension MessageHandler {
         }
     }
     
-    private func handleMSJoinMessage(_ data: [AnyHashable : Any]) {
-        NotificationCenter.default.post(name: NSNotification.Name("msJoin"), object: nil, userInfo: nil)
+    private func handleMSMembersUpdatedMessage(_ data: [AnyHashable : Any]) {
+        NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: nil)
     }
     
-    private func handleMSLeaveMessage(_ data: [AnyHashable : Any]) {
-        
-    }
-    
-    private func handleMSDeleteMessage(_ data: [AnyHashable : Any]) {
-        
-    }
-    
-    private func handleMSKickMessage(_ data: [AnyHashable : Any]) {
-        
+    private func handleMSWalletDeletedMessage(_ data: [AnyHashable : Any]) {
+        NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: nil)
     }
 }
 

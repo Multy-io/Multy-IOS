@@ -21,14 +21,16 @@ class WaitingMembersPresenter: NSObject {
     
     func viewControllerViewWillAppear() {
         //        inviteCode = makeInviteCode()
-        viewController?.openShareInviteVC()
+   //     viewController?.openShareInviteVC()
         updateWallet()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWallet), name: NSNotification.Name("msJoin"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWallet), name: NSNotification.Name("msMembersUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification), name: NSNotification.Name("msWalletDeleted"), object: nil)
     }
     
     func viewControllerViewWillDisappear() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msJoin"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msMembersUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletDeleted"), object: nil)
     }
 
     func kickOwnerWithIndex(index: Int) {
@@ -45,6 +47,12 @@ class WaitingMembersPresenter: NSObject {
     
     func viewControllerViewDidLayoutSubviews() {
         
+    }
+    
+    @objc fileprivate func handleWalletDeletedNotification() {
+        if !(wallet.multisigWallet?.amICreator)! {
+            self.viewController?.navigationController?.popToRootViewController(animated: true)
+        }
     }
         
     @objc fileprivate func updateWallet() {
