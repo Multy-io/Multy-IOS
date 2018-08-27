@@ -189,6 +189,11 @@ enum SocketMessageType : Int {
         multisigCheck =             5
 }
 
+enum Result<Value, Error: StringProtocol> {
+    case success(Value)
+    case failure(Error)
+}
+
 enum MultiSigWalletStatus: Int {
     case
         multisigStatusWaitingForJoin =  1,
@@ -208,10 +213,6 @@ let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 let shortURL = "test.multy.io"
 let apiUrl = "http://\(shortURL)/"
 let socketUrl = "ws://\(shortURL)/"
-
-//let shortURL = "test.multy.io"
-//let apiUrl = "http://\(shortURL)/"
-//let socketUrl = "ws://\(shortURL)/"
 
 //stage
 //let shortURL = "148.251.42.107/"

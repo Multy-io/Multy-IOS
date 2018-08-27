@@ -15,6 +15,7 @@ class DataManager: NSObject {
     let apiManager = ApiManager.shared
     let realmManager = RealmManager.shared
     let socketManager = Socket.shared
+    
     let coreLibManager = CoreLibManager.shared
     
     var seedWordsArray = [String]()
