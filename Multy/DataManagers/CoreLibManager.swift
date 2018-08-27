@@ -696,7 +696,6 @@ class CoreLibManager: NSObject {
         
         defer {
             free_error(pointer)
-            pointer.deallocate()
         }
         
         let errorString = String(cString: pointer.pointee.message)
