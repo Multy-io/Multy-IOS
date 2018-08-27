@@ -985,7 +985,7 @@ Members</string>
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="invitationCodeAction:" destination="KZk-ol-dp7" eventType="touchUpInside" id="8eA-nY-7gW"/>
+                                                    <action selector="bottomButtonAction:" destination="KZk-ol-dp7" eventType="touchUpInside" id="8eA-nY-7gW"/>
                                                 </connections>
                                             </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icons8QrCode" translatesAutoresizingMaskIntoConstraints="NO" id="1yW-HP-iRg" userLabel="Image View - QRCode">
