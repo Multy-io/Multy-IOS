@@ -195,6 +195,7 @@ class Socket: NSObject {
                 
                 return
             }
+            
             let dict = answer as! NSDictionary
             completion(dict, nil)
         }
