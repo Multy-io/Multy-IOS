@@ -13,9 +13,15 @@ To conrtibute please check **Build instruction**
 $git clone https://github.com/Appscrunch/Multy-IOS.git
 ```
 
-2. Install and Update pods using ``` Terminal ``` from local repository <br />
+2. Install pods using ``` Terminal ```  <br />
 ```
 sudo gem install cocoapods
+```
+   Than update it from project repository <br />
+   ps. navigate to project repository in ``` Terminal ```
+   print ```cd``` than drag&drop project repository to the ``` Terminal ```
+   
+```
 pod update
 ```
 
