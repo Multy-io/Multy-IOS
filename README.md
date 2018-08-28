@@ -13,16 +13,16 @@ To conrtibute please check **Build instruction**
 $git clone https://github.com/Appscrunch/Multy-IOS.git
 ```
 
-2. Install and Update pods from local repository<br />
+2. Install and Update pods using ``` Terminal ``` from local repository <br />
 ```
 sudo gem install cocoapods
 pod update
 ```
 
-3. If problem with "ButtonProgressBar"<br />
+3. If you have problem with "ButtonProgressBar" on building process<br />
   You can use auto-fix<br />
   Or add ``` @objc ``` in begin of bug line
 
-4. Change  "Bundle" and "Team"<br />
+4. Please change  "Bundle" and "Team" in ```Multy Project Settings```<br />
   If you want to join our team please contact to ``` @vadimicus ```  in Telegram
 
