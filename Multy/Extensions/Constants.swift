@@ -186,7 +186,9 @@ enum SocketMessageType : Int {
         multisigLeave =             2,
         multisigDelete =            3,
         multisigKick =              4,
-        multisigCheck =             5
+        multisigCheck =             5,
+        multisigConfirm =           6,
+        multisigDecline =           7
 }
 
 enum Result<Value, Error: StringProtocol> {
