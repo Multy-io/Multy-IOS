@@ -999,7 +999,6 @@ extension EthereumCoreLibManager {
 
 extension MultiSigCoreLibManager {
     func createMutiSigWallet(addressPointer: UnsafeMutablePointer<OpaquePointer?>,
-                             sendAddress: String,
                              creationPriceString: String,
                              factoryAddress: String,
                              owners: String,

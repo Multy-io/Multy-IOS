@@ -695,9 +695,7 @@ extension WalletManager {
                         
                         
                         if walletToDelete!.multisigWallet != nil {
-                            walletToDelete?.multisigWallet?.owners.forEach {
-                                realm.delete($0)
-                            }
+                            walletToDelete?.multisigWallet?.owners.forEach { realm.delete($0) }
                             
                             realm.delete(walletToDelete!.multisigWallet!)
                         }

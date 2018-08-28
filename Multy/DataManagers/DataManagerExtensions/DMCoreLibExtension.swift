@@ -133,7 +133,6 @@ extension DataManager {
 extension MultisigManager {
     func createMultiSigWallet(binaryData: inout BinaryData,
                               wallet: UserWalletRLM,
-                              sendAddress: String,
                               creationPriceString: String,
                               gasPriceString: String,
                               gasLimitString: String,
@@ -148,7 +147,6 @@ extension MultisigManager {
         }
         
         let multiSigWalletCreationInfo = coreLibManager.createMutiSigWallet(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                            sendAddress: sendAddress,
                                                                             creationPriceString: creationPriceString,
                                                                             factoryAddress: factoryAddress!,
                                                                             owners: owners,

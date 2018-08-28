@@ -75,13 +75,20 @@ class WaitingMembersPresenter: NSObject {
     
     func payForMultiSig() {
         var binData = account!.binaryDataString.createBinaryData()!
-//        DataManager.shared.createMultiSigWallet(binaryData: &binData,
-//                                                wallet: wallet,
-//                                                sendAddress: <#T##String#>,
-//                                                creationPriceString: "0",
-//                                                gasPriceString: ,
-//                                                gasLimitString: <#T##String#>,
-//                                                owners: <#T##String#>,
-//                                                confirmationsCount: <#T##UInt32#>)
+        let ownersString = createOwnersString()
+        
+        let result = DataManager.shared.createMultiSigWallet(binaryData: &binData,
+                                                             wallet: wallet,
+                                                             creationPriceString: "1000000000000000",
+                                                             gasPriceString: "1500000",
+                                                             gasLimitString: "1000000000",
+                                                             owners: ownersString,
+                                                             confirmationsCount: UInt32(wallet.multisigWallet!.signaturesRequiredCount))
+    }
+    
+    func createOwnersString() -> String {
+        let ownersString = wallet.multisigWallet!.owners.map { $0.address }.joined(separator: ", ")
+        
+        return "[\(ownersString)]"
     }
 }
