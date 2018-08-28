@@ -27,7 +27,7 @@ sudo gem install cocoapods
 pod update
 ```
 
-3. Please change  "Bundle" and "Team" in ```Multy Project Settings```<br />
+3. Please change  ```Bundle Identifier``` and ```Team``` in ```Multy Project Settings```<br />
    If you want to join our team please contact to ``` @vadimicus ```  in Telegram
 
 4. Try to build the project on device(simulator not suported)
