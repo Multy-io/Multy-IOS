@@ -43,10 +43,9 @@ class WaitingMembersSettingsPresenter: NSObject {
         
         if isCreator {
             DataManager.shared.deleteMultisigWith(wallet: wallet) { [unowned self] result in
-                
                 switch result {
-                    
                 case .success( _):
+                    self.deleteWalletFromDB()
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
                 case .failure(let error):
                     print(error)
@@ -58,6 +57,7 @@ class WaitingMembersSettingsPresenter: NSObject {
                 switch result {
                 
                 case .success( _):
+                    self.deleteWalletFromDB()
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
                 case .failure(let error):
                     print(error)
@@ -67,7 +67,9 @@ class WaitingMembersSettingsPresenter: NSObject {
         }
     }
     
-    func leave() {
-        
+    func deleteWalletFromDB() {
+        DataManager.shared.realmManager.deleteWallet(wallet) { (acc) in
+            
+        }
     }
 }
