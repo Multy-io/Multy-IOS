@@ -18,8 +18,10 @@ $git clone https://github.com/Appscrunch/Multy-IOS.git
 sudo gem install cocoapods
 ```
    Than update it from project repository <br />
-   ps. navigate to project repository in ``` Terminal ```
-   print ```cd``` than drag&drop project repository to the ``` Terminal ```
+   
+   
+   ps. navigate to project in ```Finder```<br />
+   print ```cd``` in the ```Terminal``` and than drag&drop project repository to the ``` Terminal ```
    
 ```
 pod update
