@@ -20,7 +20,7 @@ sudo gem install cocoapods
    Than update it from project repository <br />
    
    
-   ps. navigate to project in ```Finder```<br />
+   ps. navigate to project Repository in ```Finder```<br />
    print ```cd``` in the ```Terminal``` and than drag&drop project repository to the ``` Terminal ```
    
 ```
