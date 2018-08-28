@@ -32,6 +32,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var constraintNoteFiatSum: NSLayoutConstraint! // set 20 if note == ""
     @IBOutlet weak var blockchainInfoView: UIView!
     @IBOutlet weak var transactionInfoHolderView: UIView!
+    @IBOutlet weak var spiner: UIActivityIndicatorView!
     
     @IBOutlet weak var donationView: UIView!
     @IBOutlet weak var donationCryptoSum: UILabel!
@@ -495,14 +496,14 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
         //FIXME: stub
         print("Slide to Send")
         showNoBalanceView()
+        presenter.confirmMultisigTx()
     }
     
     func didSlideToDecline(_ sender: DoubleSlideViewController) {
         //FIXME: stub
         print("Slide to Decline")
+        presenter.declineMultisigTx()
     }
-    
-    
 }
 
 extension LocalizeDelegate: Localizable {

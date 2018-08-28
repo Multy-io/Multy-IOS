@@ -594,6 +594,10 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <constraint firstAttribute="height" constant="40" id="nXt-Yj-FQx"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="eRj-jO-xrd">
+                                <rect key="frame" x="169" y="482" width="37" height="37"/>
+                                <color key="color" red="0.01176470588" green="0.49803921569999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.37111347913742065" green="0.80185776948928833" blue="0.49193811416625977" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -611,6 +615,8 @@ By donating you help us to bring blockchain technology one step closer to ordina
                             <constraint firstItem="2bc-PL-C8n" firstAttribute="leading" secondItem="CHj-pJ-c9i" secondAttribute="leading" id="fgT-hJ-mkS"/>
                             <constraint firstItem="uag-1j-c6H" firstAttribute="leading" secondItem="CHj-pJ-c9i" secondAttribute="leading" id="gPh-bw-FQD"/>
                             <constraint firstAttribute="trailing" secondItem="Czg-lZ-KFq" secondAttribute="trailing" id="gry-cg-RuV"/>
+                            <constraint firstItem="eRj-jO-xrd" firstAttribute="centerX" secondItem="CHj-pJ-c9i" secondAttribute="centerX" id="lhh-qY-Z5l"/>
+                            <constraint firstItem="eRj-jO-xrd" firstAttribute="centerY" secondItem="CHj-pJ-c9i" secondAttribute="centerY" id="qjM-M1-xAd"/>
                             <constraint firstAttribute="trailing" secondItem="uag-1j-c6H" secondAttribute="trailing" id="svH-CN-SAN"/>
                             <constraint firstAttribute="trailing" secondItem="5Bc-EX-g8p" secondAttribute="trailing" id="wtG-t6-IWm"/>
                         </constraints>
@@ -644,6 +650,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <outlet property="personNameLbl" destination="Dgq-hX-nSS" id="GVJ-NF-6qn"/>
                         <outlet property="scrollContentHeightConstraint" destination="wdQ-fy-1jp" id="hpq-58-mBT"/>
                         <outlet property="scrollView" destination="2bc-PL-C8n" id="mKe-nl-g81"/>
+                        <outlet property="spiner" destination="eRj-jO-xrd" id="aVZ-Es-EQR"/>
                         <outlet property="sumInFiatLbl" destination="Qh1-1f-JrE" id="Fht-Ii-JZf"/>
                         <outlet property="titleLbl" destination="I4U-wc-DLI" id="eUe-tY-tg2"/>
                         <outlet property="transactionCurencyLbl" destination="aX4-lc-W97" id="Jat-G0-cRC"/>

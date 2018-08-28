@@ -36,6 +36,41 @@ class TransactionPresenter: NSObject {
         
         return sum
     }
+    
+    func confirmMultisigTx() {
+        transctionVC?.spiner.startAnimating()
+        DataManager.shared.confirmMultiSigTx(wallet: wallet, histObj: histObj) {[unowned self] result in
+            self.transctionVC?.spiner.stopAnimating()
+            switch result {
+            case .success( _):
+                self.updateTx()
+            case .failure(let error):
+                print(error)
+                self.transctionVC?.presentAlert(with: error)
+            }
+        }
+    }
+    
+    func declineMultisigTx() {
+        transctionVC?.spiner.startAnimating()
+        DataManager.shared.declineMultiSigTx(wallet: wallet, histObj: histObj) {[unowned self] result in
+            self.transctionVC?.spiner.stopAnimating()
+            switch result {
+            case .success( _):
+                self.updateTx()
+            case .failure(let error):
+                print(error)
+                self.transctionVC?.presentAlert(with: error)
+            }
+        }
+    }
+    
+    func updateTx() {
+        let blockchainType = BlockchainType.create(wallet: wallet)
+        DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: blockchainType) { (wallet, error) in
+            // FIXME: invoke updating transaction history and then update UI
+        }
+    }
 }
 
 
