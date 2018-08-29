@@ -172,7 +172,7 @@ class UserWalletRLM: Object {
     }
     
     var shouldCreateNewAddressAfterTransaction: Bool {
-        return blockchainType.blockchain  == BLOCKCHAIN_BITCOIN
+        return blockchainType.blockchain == BLOCKCHAIN_BITCOIN
     }
     
     var isMultiSig: Bool {

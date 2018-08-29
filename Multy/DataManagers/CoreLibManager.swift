@@ -1074,13 +1074,13 @@ extension MultiSigCoreLibManager {
         let tSer = transaction_serialize(transactionPointer.pointee, serializedTransaction)
         
         if tSer != nil {
-            let errrString = errorString(from: tSer, mask: "transactionSrialize")
+            let errrString = errorString(from: tSer, mask: "transactionSerialize")
             
             return (errrString!, false)
         }
         
         let data = serializedTransaction.pointee!.pointee.convertToData()
-        let str = data.hexEncodedString()
+        let str = "0x" + data.hexEncodedString()
         
         print("end transaction: \(str)")
         
@@ -1167,7 +1167,7 @@ extension MultiSigCoreLibManager {
         }
         
         let data = serializedTransaction.pointee!.pointee.convertToData()
-        let str = data.hexEncodedString()
+        let str = "0x" + data.hexEncodedString()
         
         print("end transaction: \(str)")
         
@@ -1253,7 +1253,7 @@ extension MultiSigCoreLibManager {
         }
         
         let data = serializedTransaction.pointee!.pointee.convertToData()
-        let str = data.hexEncodedString()
+        let str = "0x" + data.hexEncodedString()
         
         print("end transaction: \(str)")
         
