@@ -93,7 +93,7 @@ class WaitingMembersPresenter: NSObject {
                                                              wallet: linkedWallet,
                                                              creationPriceString: "0",// "100000000000000000",//0.1 ETH
                                                              gasPriceString: "1000000000",
-                                                             gasLimitString: "1500000",
+                                                             gasLimitString: "5000000",
                                                              owners: ownersString,
                                                              confirmationsCount: UInt32(wallet.multisigWallet!.signaturesRequiredCount))
         
