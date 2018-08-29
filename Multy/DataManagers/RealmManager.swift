@@ -524,19 +524,6 @@ extension WalletManager {
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
 
-                                for (index,address) in wallet.addresses.enumerated() {
-//                                    modifiedWallet!.addresses[index].spendableOutput.removeAll()
-//                                    for out in address.spendableOutput {
-//                                        modifiedWallet!.addresses[index].spendableOutput.append(out)
-//                                    }
-                                }
-                                
-//                                for address in wallet.addresses {
-//
-//                                    for output in address.spendableOutput {
-//                                        modifiedWallet!.addresses.last!.spendableOutput.append(output)
-//                                    }
-//                                }
                                 newWallets.append(modifiedWallet!)
                             } else {
                                 newWallets.append(wallet)
@@ -545,12 +532,11 @@ extension WalletManager {
                     }
                     
                     try! realm.write {
-                        acc!.wallets.removeAll()
+                        self!.deleteNotUsedMSWalletFromDB(realm: realm, newWallets: newWallets)
                         for wallet in newWallets {
                             acc!.wallets.append(wallet)
                             
                             self!.deleteAddressesAndSpendableInfo(acc!.wallets.last!.addresses, from: realm)
-                            //                            self!.renewCustomWallets(in: acc!.wallets.last!, from: wallet, for: realm)
                             
                             acc!.wallets.last!.addresses.removeAll()
                             
@@ -567,6 +553,16 @@ extension WalletManager {
                 }
             }
         }
+    }
+    
+    func deleteNotUsedMSWalletFromDB(realm: Realm, newWallets: List<UserWalletRLM>) {
+        for wallet in newWallets {
+            let walletFromDB = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: wallet.id)
+            if walletFromDB != nil && account!.wallets.contains(walletFromDB!) == false {
+                deleteWallet(wallet, realm: realm)
+            }
+        }
+        account!.wallets.removeAll()
     }
     
     func getWallet(walletID: NSNumber, completion: @escaping(_ wallet: UserWalletRLM?) -> ()) {
@@ -710,6 +706,28 @@ extension WalletManager {
                 completion(nil)
             }
         }
+    }
+    
+    
+    func deleteWallet(_ wallet: UserWalletRLM, realm: Realm) {
+        //FIXME: only for non-multisig wallets
+        let walletToDelete = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: wallet.id)
+        
+        if walletToDelete!.btcWallet != nil {
+            realm.delete(walletToDelete!.btcWallet!)
+        }
+        
+        if walletToDelete!.ethWallet != nil {
+            realm.delete(walletToDelete!.ethWallet!)
+        }
+        
+        if walletToDelete!.multisigWallet != nil {
+            walletToDelete?.multisigWallet?.owners.forEach { realm.delete($0) }
+            
+            realm.delete(walletToDelete!.multisigWallet!)
+        }
+        
+        realm.delete(walletToDelete!)
     }
     
 //    func fetchAddressesForWalllet(walletID: NSNumber, completion: @escaping(_ : [String]?) -> ()) {
