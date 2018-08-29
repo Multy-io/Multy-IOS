@@ -148,4 +148,64 @@ extension DataManager {
             }
         }
     }
+    
+    func confirmMultiSigTx(wallet: UserWalletRLM, histObj: HistoryRLM, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        let payloadForConfirm: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "address": wallet.multisigWallet!.linkedWalletAddress,
+            "invitecode": wallet.multisigWallet!.inviteCode
+            /* FIXME:
+             ... */
+        ]
+        
+        let paramsForMsgSend: NSDictionary = [
+            "type": SocketMessageType.multisigDecline.rawValue,
+            "from": "",              // not requied
+            "to":"",                // not requied
+            "date": UInt64(Date().timeIntervalSince1970), // time unix
+            "status": 0,
+            "payload": payloadForConfirm
+        ]
+        
+        
+        socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
+            if err != nil {
+                //FIXME: error handling
+                completion(Result.failure("wrong data"))
+            } else {
+                let payloadDict = answerDict!["payload"] as! NSDictionary
+                completion(Result.success(payloadDict))
+            }
+        }
+    }
+    
+    func declineMultiSigTx(wallet: UserWalletRLM, histObj: HistoryRLM, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        let payloadForDecline: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "address": wallet.multisigWallet!.linkedWalletAddress,
+            "invitecode": wallet.multisigWallet!.inviteCode
+            /* FIXME:
+             ... */
+        ]
+        
+        let paramsForMsgSend: NSDictionary = [
+            "type": SocketMessageType.multisigDecline.rawValue,
+            "from": "",              // not requied
+            "to":"",                // not requied
+            "date": UInt64(Date().timeIntervalSince1970), // time unix
+            "status": 0,
+            "payload": payloadForDecline
+        ]
+        
+        
+        socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
+            if err != nil {
+                //FIXME: error handling
+                completion(Result.failure("wrong data"))
+            } else {
+                let payloadDict = answerDict!["payload"] as! NSDictionary
+                completion(Result.success(payloadDict))
+            }
+        }
+    }
 }

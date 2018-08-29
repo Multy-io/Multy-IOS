@@ -219,7 +219,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     
     //MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(presenter.wallet.multisigWallet!.ownersCount)
+        return presenter.wallet.multisigWallet!.ownersCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
