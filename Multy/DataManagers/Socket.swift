@@ -249,11 +249,27 @@ extension MessageHandler {
     }
     
     private func handleMSMembersUpdatedMessage(_ data: [AnyHashable : Any]) {
-        NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: nil)
+        let inviteCode = data["inviteCode"] as? String
+        let owners = data["owners"] as?  [NSDictionary]
+        guard inviteCode != nil && owners != nil else {
+            return
+        }
+        var ownersIDs = [] as [String]
+        owners!.forEach { (owner) in
+            ownersIDs.append(owner["userid"] as! String)
+        }
+        
+        NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: ["inviteCode" : inviteCode!,
+                                                                                                               "ownersIDs"  : ownersIDs])
     }
     
     private func handleMSWalletDeletedMessage(_ data: [AnyHashable : Any]) {
-        NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: nil)
+        let inviteCode = data["inviteCode"] as? String
+        guard inviteCode != nil else {
+            return
+        }
+        
+        NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: ["inviteCode" : inviteCode!])
     }
 }
 

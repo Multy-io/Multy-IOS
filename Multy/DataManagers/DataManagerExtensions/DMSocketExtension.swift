@@ -110,7 +110,7 @@ extension DataManager {
         
         socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
             
-            if err != nil {
+            if answerDict == nil {
                 
                 print("Join to MultiSig error: \(err!)")
                 //FIXME: error handling

@@ -33,8 +33,8 @@ class WaitingMembersPresenter: NSObject {
    //     viewController?.openShareInviteVC()
         updateWallet()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWallet), name: NSNotification.Name("msMembersUpdated"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification), name: NSNotification.Name("msWalletDeleted"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("msWalletDeleted"), object: nil)
     }
     
     func viewControllerViewWillDisappear() {
@@ -58,17 +58,45 @@ class WaitingMembersPresenter: NSObject {
         
     }
     
-    @objc fileprivate func handleWalletDeletedNotification() {
-        if !(wallet.multisigWallet?.amICreator)! {
-            self.viewController?.navigationController?.popToRootViewController(animated: true)
+    @objc fileprivate func handleWalletDeletedNotification(notification : Notification) {
+        let inviteCode = notification.userInfo!["inviteCode"] as! String
+        if inviteCode == wallet.multisigWallet?.inviteCode {
+            DispatchQueue.main.async {
+                if !(self.wallet.multisigWallet?.amICreator)! {
+                    self.viewController?.navigationController?.popToRootViewController(animated: true)
+                }
+            }
+        }
+    }
+    
+    @objc fileprivate func handleMembersUpdatedNotification(notification : Notification) {
+        let inviteCode = notification.userInfo!["inviteCode"] as! String
+        if inviteCode == wallet.multisigWallet?.inviteCode {
+            DispatchQueue.main.async {
+                self.updateWallet()
+            }
         }
     }
         
-    @objc fileprivate func updateWallet() {
+    fileprivate func updateWallet() {
         DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: wallet.blockchainType) { [unowned self] (wallet, error) in
-            if wallet != nil {
-                self.wallet = wallet!
-                self.viewController?.updateUI()
+            DispatchQueue.main.async {
+                if wallet != nil {
+                    var isOwner = false
+                    for owner in wallet!.multisigWallet!.owners {
+                        if owner.associated.boolValue == true {
+                            isOwner = true
+                            break
+                        }
+                    }
+                    
+                    if isOwner {
+                        self.wallet = wallet!
+                        self.viewController?.updateUI()
+                    } else {
+                        self.viewController?.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
             }
         }
     }
