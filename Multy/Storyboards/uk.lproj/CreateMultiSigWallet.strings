@@ -75,3 +75,18 @@
 
 "H8Q-1D-9u6.text" = "Ваш прив'язаний гаманець буде використовуватись для плати за MultiSig транзакції";
 
+
+"bhy-se-Mba.text" = "Скасувати";
+"ulJ-3N-WKA.text" = "Налаштування";
+"Fk6-hI-FE9.text" = "Рятувати";
+"oy7-Rt-QMg.text" = "Загальні";
+"IRh-75-ZkM.text" = "Ім'я гаманця";
+"9mA-8A-uZY.text" = "Валюта оцінки";
+"S8p-ye-WQV.text" = "Підписів для відправки і загальна кількість учасників";
+"18f-jg-TVs.text" = "Ви не можете змінити кількість підписів, необхідних для відправлення грошей після створення multisig гаманця.";
+"mzT-WW-AfW.text" = "ПОВ'ЯЗАНИЙ ГАМАНЕЦЬ";
+"cmq-45-AON.text" = "Ваш пов'язаний гаманець буде використовуватися для оплати транзакцій multisig гаманця";
+"WXp-Nn-VLr.text" = "Видалити";
+//"lJT-vf-F2a.text" = "Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions.";
+
+
