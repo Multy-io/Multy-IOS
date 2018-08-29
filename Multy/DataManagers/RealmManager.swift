@@ -578,6 +578,22 @@ extension WalletManager {
         }
     }
     
+    func getWallet(primaryKey: String, completion: @escaping(_ result: Result<UserWalletRLM, String>) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let wallet = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
+                
+                if wallet == nil {
+                    completion(Result.failure("Wallet is missing"))
+                } else {
+                    completion(Result.success(wallet!))
+                }
+            } else {
+                completion(Result.failure("Cannot get realm"))
+            }
+        }
+    }
+    
     func spendableOutput(addresses: List<AddressRLM>) -> [SpendableOutputRLM] {
         let ouputs = List<SpendableOutputRLM>()
         
@@ -596,17 +612,17 @@ extension WalletManager {
         return results
     }
     
-    func fetchAddressesForWalllet(walletID: NSNumber, completion: @escaping(_ : [String]?) -> ()) {
-        getWallet(walletID: walletID) { (wallet) in
-            if wallet != nil {
-                var addresses = [String]()
-                wallet!.addresses.forEach({ addresses.append($0.address) })
-                completion(addresses)
-            } else {
-                completion(nil)
-            }
-        }
-    }
+//    func fetchAddressesForWalllet(walletID: NSNumber, completion: @escaping(_ : [String]?) -> ()) {
+//        getWallet(walletID: walletID) { (wallet) in
+//            if wallet != nil {
+//                var addresses = [String]()
+//                wallet!.addresses.forEach({ addresses.append($0.address) })
+//                completion(addresses)
+//            } else {
+//                completion(nil)
+//            }
+//        }
+//    }
     
     func fetchBTCWallets(isTestNet: Bool, completion: @escaping(_ wallets: [UserWalletRLM]?) -> ()) {
         getRealm { (realmOpt, err) in
