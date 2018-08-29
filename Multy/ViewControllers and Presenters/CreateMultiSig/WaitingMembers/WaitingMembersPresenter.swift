@@ -74,16 +74,52 @@ class WaitingMembersPresenter: NSObject {
     }
     
     func payForMultiSig() {
+        DataManager.shared.getWallet(primaryKey: wallet.multisigWallet!.linkedWalletID) { [unowned self] in
+            switch $0 {
+            case .success(let wallet):
+                self.createAndSendMSTransaction(linkedWallet: wallet)
+                break;
+            case .failure(let errorString):
+                print(errorString)
+                break;
+            }
+        }
+    }
+    
+    func createAndSendMSTransaction(linkedWallet: UserWalletRLM) {
         var binData = account!.binaryDataString.createBinaryData()!
         let ownersString = createOwnersString()
-        
         let result = DataManager.shared.createMultiSigWallet(binaryData: &binData,
-                                                             wallet: wallet,
-                                                             creationPriceString: "1000000000000000",
-                                                             gasPriceString: "1500000",
-                                                             gasLimitString: "1000000000",
+                                                             wallet: linkedWallet,
+                                                             creationPriceString: "0",// "100000000000000000",//0.1 ETH
+                                                             gasPriceString: "1000000000",
+                                                             gasLimitString: "1500000",
                                                              owners: ownersString,
                                                              confirmationsCount: UInt32(wallet.multisigWallet!.signaturesRequiredCount))
+        
+        if result.isTransactionCorrect {
+            let newAddressParams = [
+                "walletindex"   : linkedWallet.walletID.intValue,
+                "address"       : "",
+                "addressindex"  : linkedWallet.addresses.count,
+                "transaction"   : result.message,
+                "ishd"          : NSNumber(booleanLiteral: false)
+                ] as [String : Any]
+            
+            let params = [
+                "currencyid": linkedWallet.chain,
+                "networkid" : linkedWallet.chainType,
+                "payload"   : newAddressParams
+                ] as [String : Any]
+            
+            DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
+                print("---------\(dict)")
+                
+                
+            }
+        } else {
+            
+        }
     }
     
     func createOwnersString() -> String {
