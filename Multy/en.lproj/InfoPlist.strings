@@ -1,0 +1,11 @@
+//Copyright 2017 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
+
+"NSBluetoothPeripheralUsageDescription" = "We use that to find other Multy";
+
+"NSCameraUsageDescription" = "Multy needs to scan payment request QR code.";
+
+"NSContactsUsageDescription" = "Multy needs contacts to send transaction among your friends";
+
+"NSFaceIDUsageDescription" = "Needs to authorize user";
