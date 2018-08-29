@@ -29,7 +29,7 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
         self.swipeToBack()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
-        self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+//        self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         self.titleLbl.text = titleTextKey.count > 0 ? localize(string: titleTextKey):""
         
         self.presenter.receiveStartVC = self
