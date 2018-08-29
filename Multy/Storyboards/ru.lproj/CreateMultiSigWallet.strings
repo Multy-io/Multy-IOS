@@ -74,3 +74,17 @@
 "kNf-MA-qmP.text" = "Выберите кошелек";
 
 "H8Q-1D-9u6.text" = "Ваш привязанный кошелек будет использоваться для платы за MultiSig транзакции";
+
+
+"bhy-se-Mba.text" = "Закрыть";
+"ulJ-3N-WKA.text" = "Настройки кошелька";
+"Fk6-hI-FE9.text" = "Сохранить";
+"oy7-Rt-QMg.text" = "ОБЩИЕ";
+"IRh-75-ZkM.text" = "Имя Кошелька";
+"9mA-8A-uZY.text" = "Валюта обмена";
+"S8p-ye-WQV.text" = "Требуемое число подписей и совладельцев";
+"18f-jg-TVs.text" = "Вы не можете изменить количество подписей, необходимых для отправки денег после создания multisig кошелька.";
+"mzT-WW-AfW.text" = "Привязанный кошелек";
+"cmq-45-AON.text" = "Ваш связанный кошелек будет использоваться для оплаты транзакций multisig Кошелька";
+"WXp-Nn-VLr.text" = "Удалить";
+//"lJT-vf-F2a.text" = "Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions.";

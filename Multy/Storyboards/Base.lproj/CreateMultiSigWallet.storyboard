@@ -1343,13 +1343,17 @@ Members</string>
                                                 <rect key="frame" x="56" y="19" width="280" height="28"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIi-Ut-L3X">
-                                                        <rect key="frame" x="0.0" y="0.0" width="4" height="13"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="4" height="8"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wu9-X0-pV1">
+                                                        <rect key="frame" x="0.0" y="10" width="240" height="8"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lfj-9j-Va0" userLabel="Linked Wallet Address Label">
-                                                        <rect key="frame" x="0.0" y="15" width="30.5" height="13"/>
+                                                        <rect key="frame" x="0.0" y="20" width="30.5" height="8"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
