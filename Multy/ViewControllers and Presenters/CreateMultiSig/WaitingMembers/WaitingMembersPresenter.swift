@@ -72,6 +72,11 @@ class WaitingMembersPresenter: NSObject {
     @objc fileprivate func handleMembersUpdatedNotification(notification : Notification) {
         let inviteCode = notification.userInfo!["inviteCode"] as! String
         if inviteCode == wallet.multisigWallet?.inviteCode {
+            if notification.userInfo!["kickedAddress"] != nil && wallet.multisigWallet?.linkedWalletAddress == notification.userInfo!["kickedAddress"] as! String {
+                self.viewController?.navigationController?.popToRootViewController(animated: true)
+                return
+            }
+            
             DispatchQueue.main.async {
                 self.updateWallet()
             }
@@ -82,20 +87,8 @@ class WaitingMembersPresenter: NSObject {
         DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: wallet.blockchainType) { [unowned self] (wallet, error) in
             DispatchQueue.main.async {
                 if wallet != nil {
-                    var isOwner = false
-                    for owner in wallet!.multisigWallet!.owners {
-                        if owner.associated.boolValue == true {
-                            isOwner = true
-                            break
-                        }
-                    }
-                    
-                    if isOwner {
-                        self.wallet = wallet!
-                        self.viewController?.updateUI()
-                    } else {
-                        self.viewController?.navigationController?.popToRootViewController(animated: true)
-                    }
+                    self.wallet = wallet!
+                    self.viewController?.updateUI()
                 }
             }
         }

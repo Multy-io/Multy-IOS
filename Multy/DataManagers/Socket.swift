@@ -228,48 +228,44 @@ extension MessageHandler {
         switch msgType {
         
         case SocketMessageType.multisigJoin.rawValue:
-            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
+            let payload = data["payload"] as! [AnyHashable : Any]
+            let inviteCode = payload["inviteCode"] as! String
+            let userInfo = ["inviteCode" : inviteCode]
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
             break
             
         case SocketMessageType.multisigLeave.rawValue:
-            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
+            let payload = data["payload"] as! [AnyHashable : Any]
+            let inviteCode = payload["inviteCode"] as! String
+            let userInfo = ["inviteCode" : inviteCode]
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
             break
             
         case SocketMessageType.multisigDelete.rawValue:
-            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
+            NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: ["inviteCode" : data["payload"] as! String])
             break
             
         case SocketMessageType.multisigKick.rawValue:
-            self.handleMSMembersUpdatedMessage(data["payload"] as! [AnyHashable : Any])
+            let payload = data["payload"] as! [AnyHashable : Any]
+            let multisig = payload["multisig"] as? [AnyHashable : Any]
+            
+            guard multisig != nil else {
+                return
+            }
+            let inviteCode = multisig!["inviteCode"] as! String
+            var userInfo = ["inviteCode" : inviteCode]
+            if let kickedAddress = payload["kickedAddress"] as? String {
+                userInfo["kickedAddress"] = kickedAddress
+            }
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
             break
             
         default:
             break
         }
-    }
-    
-    private func handleMSMembersUpdatedMessage(_ data: [AnyHashable : Any]) {
-        let inviteCode = data["inviteCode"] as? String
-        let owners = data["owners"] as?  [NSDictionary]
-        guard inviteCode != nil && owners != nil else {
-            return
-        }
-        var ownersIDs = [] as [String]
-        owners!.forEach { (owner) in
-            ownersIDs.append(owner["userid"] as! String)
-        }
-        
-        NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: ["inviteCode" : inviteCode!,
-                                                                                                               "ownersIDs"  : ownersIDs])
-    }
-    
-    private func handleMSWalletDeletedMessage(_ data: [AnyHashable : Any]) {
-        let inviteCode = data["inviteCode"] as? String
-        guard inviteCode != nil else {
-            return
-        }
-        
-        NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: ["inviteCode" : inviteCode!])
     }
 }
 
