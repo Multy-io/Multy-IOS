@@ -25,7 +25,8 @@ class SendAmountEthPresenter: NSObject {
             
             
             if transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt != nil {
-                feeAmount = BigInt("40000") * transactionDTO.transaction!.transactionRLM?.sumInCryptoBigInt
+                let limit = transactionDTO.choosenWallet!.isMultiSig ? "400000" : "40000"
+                feeAmount = BigInt(limit) * transactionDTO.transaction!.transactionRLM!.sumInCryptoBigInt
                 feeAmountInFiat = feeAmount * exchangeCourse
             }
             
@@ -80,6 +81,7 @@ class SendAmountEthPresenter: NSObject {
     //for creating transaction
     var binaryData : BinaryData?
     var addressData : Dictionary<String, Any>?
+    var linkedWallet: UserWalletRLM?
     
     func getData() {
         self.createPreliminaryData()
@@ -96,6 +98,19 @@ class SendAmountEthPresenter: NSObject {
                                          walletID:      wallet.walletID.uint32Value,
                                          addressID:     wallet.changeAddressIndex,
                                          binaryData:    &binaryData!)
+        
+        if transactionDTO.choosenWallet!.isMultiSig {
+            DataManager.shared.getWallet(primaryKey: transactionDTO.choosenWallet!.multisigWallet!.linkedWalletID) { [unowned self] in
+                switch $0 {
+                case .success(let wallet):
+                    self.linkedWallet = wallet
+                    break;
+                case .failure(let errorString):
+                    print(errorString)
+                    break;
+                }
+            }
+        }
     }
     
     func estimateTransactionAndValidation() -> Bool {
@@ -321,18 +336,39 @@ extension CreateTransactionDelegate {
             sendAmount = sumInCrypto - feeAmount
         }
         
-        let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                              sendAddress: transactionDTO.sendAddress!,
-                                                                              sendAmountString: sendAmount.stringValue,
-                                                                              nonce: transactionDTO.choosenWallet!.ethWallet!.nonce.intValue,
-                                                                              balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
-            ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
-            gasPrice: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
-            gasLimit: "40000")
-        
-        rawTransaction = trData.message
-        
-        return trData.isTransactionCorrect
+        if transactionDTO.choosenWallet!.isMultiSig {
+            if linkedWallet == nil {
+                rawTransaction = "Error"
+                
+                return false
+            }
+            
+            let trData = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
+                                                             wallet: linkedWallet!,
+                                                             sendFromAddress: transactionDTO.choosenWallet!.address,
+                                                             sendAmountString: sendAmount.stringValue,
+                                                             sendToAddress: transactionDTO.sendAddress!,
+                                                             gasPriceString: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
+                                                             gasLimitString: "400000")
+            
+            rawTransaction = trData.message
+            
+            return trData.isTransactionCorrect
+        } else {
+            let trData = DataManager.shared.coreLibManager.createEtherTransaction(
+                addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                sendAddress: transactionDTO.sendAddress!,
+                sendAmountString: sendAmount.stringValue,
+                nonce: transactionDTO.choosenWallet!.ethWallet!.nonce.intValue,
+                balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
+                ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
+                gasPrice: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
+                gasLimit: "40000")
+            
+            rawTransaction = trData.message
+            
+            return trData.isTransactionCorrect
+        }
     }
     
     func finalSum() -> BigInt {
