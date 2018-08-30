@@ -88,9 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                 if code != nil && code != "" {
                     isNeedToAutorise = true
                 }
-                
-                // for debug and development only
-                Branch.getInstance().setDebug()
                 Branch.getInstance().initSession(launchOptions: launchOptions) { [weak self] (params, error) in
                     if error == nil {
                         let dictFormLink = params! as NSDictionary
