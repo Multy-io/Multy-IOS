@@ -179,6 +179,35 @@ class UserWalletRLM: Object {
         return multisigWallet != nil
     }
     
+    func confirmationStatusForTransaction(transaction : HistoryRLM) -> ConfirmationStatus {
+        var result = ConfirmationStatus.waiting
+        if isMultiSig && transaction.isMultisigTx {
+            let currentOwner = multisigWallet?.owners.filter {$0.associated == true}.first
+            guard currentOwner != nil else {
+                return result
+            }
+            
+            let transactionOwner = transaction.owners.filter {$0.address == currentOwner!.address}.first
+            if transactionOwner != nil {
+                if (transactionOwner?.viewed.boolValue)! {
+                    switch transactionOwner?.confirmationStatus.intValue {
+                        
+                    case 0:
+                        result = .viewed
+                    case 1:
+                        result = .confirmed
+                    case 2:
+                        result = .declined
+                        
+                    default:
+                        break
+                    }
+                }
+            }
+        }
+        return result
+    }
+    
     @objc dynamic var fiatName = String()
     @objc dynamic var fiatSymbol = String()
     

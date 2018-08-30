@@ -269,6 +269,7 @@
 		85741D8520B45E8B0093933B /* circle_grow.json in Resources */ = {isa = PBXBuildFile; fileRef = 85741D8420B45E8A0093933B /* circle_grow.json */; };
 		85741D8720B555DB0093933B /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85741D8620B555DB0093933B /* BLEManager.swift */; };
 		85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85741D8820B55A650093933B /* CoreBluetooth.framework */; };
+		8590835C2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8590835B2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift */; };
 		8592E02320FF9B5D0040125B /* MultisigWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02220FF9B5D0040125B /* MultisigWallet.swift */; };
 		8592E02521008D860040125B /* MultisigOwnerRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02421008D860040125B /* MultisigOwnerRLM.swift */; };
 		8592E02A2101CCBD0040125B /* WaitingMembersSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */; };
@@ -738,6 +739,7 @@
 		85741D8420B45E8A0093933B /* circle_grow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = circle_grow.json; sourceTree = "<group>"; };
 		85741D8620B555DB0093933B /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
 		85741D8820B55A650093933B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		8590835B2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigTransactionOwnerRLM.swift; sourceTree = "<group>"; };
 		8592E02220FF9B5D0040125B /* MultisigWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigWallet.swift; sourceTree = "<group>"; };
 		8592E02421008D860040125B /* MultisigOwnerRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigOwnerRLM.swift; sourceTree = "<group>"; };
 		8592E0292101CCBD0040125B /* WaitingMembersSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersSettingsPresenter.swift; sourceTree = "<group>"; };
@@ -1983,6 +1985,7 @@
 				FA88358F1FD854EC007694A2 /* AddressRLM.swift */,
 				FA8835911FD856F4007694A2 /* UserWalletRLM.swift */,
 				8592E02421008D860040125B /* MultisigOwnerRLM.swift */,
+				8590835B2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift */,
 				458FD4C61FE3C2CB001C25BA /* SpendableOutputRLM.swift */,
 				FA0B618C1FEBC1DD00ED0CE6 /* RecentAddressesRLM.swift */,
 				FAB0E6A920189AE300EB53E2 /* StockExchangeRateRLM.swift */,
@@ -2639,6 +2642,7 @@
 				45D2D6DF203463FC00751ED4 /* AnalyticsConstants.swift in Sources */,
 				45AC162E20484F0A00E75BD6 /* BlockchainsViewController.swift in Sources */,
 				45A9494D1FC5D972003C3A23 /* SendDetailsViewController.swift in Sources */,
+				8590835C2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift in Sources */,
 				4540945B203352CC00603DB5 /* PinCodeViewController.swift in Sources */,
 				45A9494F1FC6BDF3003C3A23 /* SendDetailsPresenter.swift in Sources */,
 				44C06FCB203D9021008CBA9D /* LoggingPrint.swift in Sources */,
