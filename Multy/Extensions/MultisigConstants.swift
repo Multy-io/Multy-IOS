@@ -4,6 +4,14 @@
 
 import Foundation
 
+enum ConfirmationStatus : Int {
+    case
+    confirmed = 1,
+    declined = 2,
+    waiting = 3,
+    viewed = 4
+}
+
 enum DeployStatus : Int {
     case
     created =           1,
@@ -12,5 +20,8 @@ enum DeployStatus : Int {
     rejected =            4,
     deployed =    5
 }
+
+
+
 
 
