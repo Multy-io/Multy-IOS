@@ -21,6 +21,7 @@ class WaitingMembersPresenter: NSObject {
     var createWalletPrice = 0.001
     
     var bottomButtonStatus = BottomButtonStatus.hidden
+    let createdMultiSigWallet = UserWalletRLM()
     
     func viewControllerViewDidLoad() {
 //        inviteCode = makeInviteCode()
@@ -133,10 +134,23 @@ class WaitingMembersPresenter: NSObject {
                 "payload"   : newAddressParams
                 ] as [String : Any]
             
-            DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
+            guard viewController!.presentNoInternetScreen() else {
+                
+                return
+            }
+            
+            DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
                 print("---------\(dict)")
                 
-                
+                if let code = dict?["code"] as? Int, code == 200 {
+                    self.viewController?.openNewlyCreatedWallet()
+                } else {
+                    if error != nil {
+                        self.viewController?.presentAlert(with: error?.localizedDescription)
+                    } else {
+                        self.viewController?.presentAlert(with: self.viewController?.localize(string: Constants.somethingWentWrongString))
+                    }
+                }
             }
         } else {
             

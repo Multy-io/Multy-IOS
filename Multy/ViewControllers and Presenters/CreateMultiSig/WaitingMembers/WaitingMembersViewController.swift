@@ -127,12 +127,35 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         progressRing.value = CGFloat(joinedCount) / CGFloat(totalCount) * 360
         
         if joinedCount == totalCount {
-            presenter.bottomButtonStatus = .paymentRequired
-            stateImageView.image = UIImage(named: "readyToStart")
-            stateLabel.text = localize(string: Constants.readyToStartString)
+            if presenter.wallet.multisigWallet!.deployStatus.intValue == DeployStatus.pending.rawValue {
+                presenter.bottomButtonStatus = .hidden
+                stateImageView.image = UIImage(named: "pendingSmallClock")
+                stateLabel.text = localize(string: Constants.pendingString)
+            } else if presenter.wallet.multisigWallet!.deployStatus.intValue == DeployStatus.rejected.rawValue {
+                //FIXME: add code
+                presenter.bottomButtonStatus = .hidden
+                stateImageView.image = UIImage(named: "pendingSmallClock")
+                stateLabel.text = localize(string: Constants.pendingString)
+            } else if presenter.wallet.multisigWallet!.deployStatus.intValue == DeployStatus.ready.rawValue {
+                presenter.bottomButtonStatus = .paymentRequired
+                stateImageView.image = UIImage(named: "readyToStart")
+                stateLabel.text = localize(string: Constants.readyToStartString)
+            } else {
+                //FIXME: add code
+                presenter.bottomButtonStatus = .hidden
+                stateImageView.image = UIImage(named: "pendingSmallClock")
+                stateLabel.text = localize(string: Constants.pendingString)
+            }
+            
             stateLabel.textColor = #colorLiteral(red: 0.8117647059, green: 1, blue: 0.8666666667, alpha: 1)
-            invitationCodeButton.setTitle("\(Constants.startForString) \(presenter.createWalletPrice) BTC", for: .normal)
-            backgroundView.backgroundColor = #colorLiteral(red: 0.3725490196, green: 0.8, blue: 0.4901960784, alpha: 1)
+            
+            //FIXME: price
+            invitationCodeButton.setTitle("\(Constants.startForString) \(presenter.createWalletPrice) ETH", for: .normal)
+//            backgroundView.backgroundColor = #colorLiteral(red: 0.3725490196, green: 0.8, blue: 0.4901960784, alpha: 1)
+            backgroundView.applyOrUpdateGradient(withColours: [
+                UIColor(ciColor: CIColor(red: 95.0 / 255.0, green: 204.0 / 255.0, blue: 125.0 / 255.0)),
+                UIColor(ciColor: CIColor(red: 95.0 / 255.0, green: 204.0 / 255.0, blue: 125.0 / 255.0))],
+                                                               gradientOrientation: .topRightBottomLeft)
             qrCodeImageView.isHidden = true
         } else {
             presenter.bottomButtonStatus = .inviteCode
@@ -272,6 +295,15 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
             waitingMembersSettingsVC.presenter.wallet = presenter.wallet
             waitingMembersSettingsVC.presenter.account = presenter.account!
         }
+    }
+    
+    func openNewlyCreatedWallet() {
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
+        walletVC.presenter.wallet = presenter.wallet
+        walletVC.presenter.account = presenter.account
+        
+        navigationController?.pushViewController(walletVC, animated: true)
     }
     
     //MARK: Actions
