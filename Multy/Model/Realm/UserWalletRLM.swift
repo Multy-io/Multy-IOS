@@ -189,20 +189,7 @@ class UserWalletRLM: Object {
             
             let transactionOwner = transaction.owners.filter {$0.address == currentOwner!.address}.first
             if transactionOwner != nil {
-                if (transactionOwner?.viewed.boolValue)! {
-                    switch transactionOwner?.confirmationStatus.intValue {
-                        
-                    case 0:
-                        result = .viewed
-                    case 1:
-                        result = .confirmed
-                    case 2:
-                        result = .declined
-                        
-                    default:
-                        break
-                    }
-                }
+                result = ConfirmationStatus(rawValue: transactionOwner!.confirmationStatus.intValue)!
             }
         }
         return result
