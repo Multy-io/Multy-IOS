@@ -9,6 +9,7 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Unknown constraint types" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1144,12 +1145,12 @@ Members</string>
                                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Personal" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0Ht-Zp-Skf">
+                                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Personal" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0Ht-Zp-Skf">
                                                         <rect key="frame" x="20" y="31" width="330" height="22"/>
                                                         <accessibility key="accessibilityConfiguration">
                                                             <accessibilityTraits key="traits" keyboardKey="YES"/>
                                                         </accessibility>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                                         <connections>
@@ -1299,7 +1300,7 @@ Members</string>
                                         <rect key="frame" x="0.0" y="366" width="375" height="64"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="weI-2R-rpA">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="-1" width="375" height="1"/>
                                                 <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40459118150000001" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="3wH-8f-0wG"/>
@@ -1321,12 +1322,6 @@ Members</string>
                                                     <constraint firstAttribute="width" constant="15" id="Lq7-lr-8wU"/>
                                                 </constraints>
                                             </imageView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEM-KL-47U">
-                                                <rect key="frame" x="0.0" y="1" width="375" height="63"/>
-                                                <connections>
-                                                    <action selector="selectLinkedWalletAction:" destination="39W-4y-Unq" eventType="touchUpInside" id="MBX-XW-iTg"/>
-                                                </connections>
-                                            </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Hh-E8-YWM">
                                                 <rect key="frame" x="10" y="9.5" width="46" height="46"/>
                                                 <constraints>
@@ -1351,22 +1346,19 @@ Members</string>
                                         <constraints>
                                             <constraint firstItem="oH6-zK-EcE" firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" id="7sT-AA-YVq"/>
                                             <constraint firstItem="weI-2R-rpA" firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" id="DuP-CP-rTq"/>
+                                            <constraint firstItem="8Hh-E8-YWM" firstAttribute="centerY" secondItem="aDm-ib-b1T" secondAttribute="centerY" id="Eae-CS-wyD"/>
                                             <constraint firstAttribute="height" constant="64" id="GA1-yT-1zx"/>
                                             <constraint firstAttribute="trailing" secondItem="oH6-zK-EcE" secondAttribute="trailing" id="N81-yL-704"/>
-                                            <constraint firstItem="qEM-KL-47U" firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" id="OgY-jX-4jY"/>
-                                            <constraint firstItem="weI-2R-rpA" firstAttribute="top" secondItem="aDm-ib-b1T" secondAttribute="top" id="PiG-Nd-bar"/>
-                                            <constraint firstAttribute="trailing" secondItem="qEM-KL-47U" secondAttribute="trailing" id="TCu-RN-trn"/>
+                                            <constraint firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" id="OgY-jX-4jY"/>
                                             <constraint firstItem="bIi-Ut-L3X" firstAttribute="top" secondItem="8Hh-E8-YWM" secondAttribute="top" constant="5" id="U2h-Jp-Lch"/>
                                             <constraint firstItem="lfj-9j-Va0" firstAttribute="leading" secondItem="bIi-Ut-L3X" secondAttribute="leading" id="WAY-Sa-sTe"/>
                                             <constraint firstAttribute="trailing" secondItem="weI-2R-rpA" secondAttribute="trailing" id="bsc-Vy-BA7"/>
                                             <constraint firstItem="lfj-9j-Va0" firstAttribute="top" secondItem="bIi-Ut-L3X" secondAttribute="bottom" id="bsu-kY-tUP"/>
                                             <constraint firstItem="bIi-Ut-L3X" firstAttribute="leading" secondItem="8Hh-E8-YWM" secondAttribute="trailing" constant="10" id="cfG-R8-Y9f"/>
-                                            <constraint firstItem="8Hh-E8-YWM" firstAttribute="centerY" secondItem="qEM-KL-47U" secondAttribute="centerY" id="csN-nP-sxJ"/>
                                             <constraint firstItem="iFk-zw-fbW" firstAttribute="leading" secondItem="lfj-9j-Va0" secondAttribute="trailing" constant="10" id="g08-OJ-B5h"/>
-                                            <constraint firstAttribute="bottom" secondItem="qEM-KL-47U" secondAttribute="bottom" id="gS5-st-Gta"/>
                                             <constraint firstAttribute="trailing" secondItem="iFk-zw-fbW" secondAttribute="trailing" constant="16" id="hFH-9e-Ica"/>
                                             <constraint firstItem="iFk-zw-fbW" firstAttribute="centerY" secondItem="aDm-ib-b1T" secondAttribute="centerY" id="m7C-8G-pMw"/>
-                                            <constraint firstItem="qEM-KL-47U" firstAttribute="top" secondItem="weI-2R-rpA" secondAttribute="bottom" id="na8-Wr-x48"/>
+                                            <constraint firstAttribute="top" secondItem="weI-2R-rpA" secondAttribute="bottom" id="na8-Wr-x48"/>
                                             <constraint firstAttribute="bottom" secondItem="oH6-zK-EcE" secondAttribute="bottom" id="qGw-me-tU9"/>
                                             <constraint firstItem="8Hh-E8-YWM" firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" constant="10" id="sFe-Hw-Jaf"/>
                                         </constraints>
@@ -1426,7 +1418,7 @@ Members</string>
                                             <constraint firstAttribute="trailing" secondItem="geT-Bz-hIG" secondAttribute="trailing" id="y23-uI-2ky"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJT-vf-F2a">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJT-vf-F2a">
                                         <rect key="frame" x="16" y="575" width="343" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="vEC-Zs-hO3"/>
