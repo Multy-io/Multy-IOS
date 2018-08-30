@@ -55,6 +55,7 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
         let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
         walletsVC.presenter.isNeedToPop = true
         walletsVC.presenter.displayedBlockchainOnly = presenter.wallet.blockchainType
+        walletsVC.presenter.isForMultisig = true
         walletsVC.sendWalletDelegate = self
         walletsVC.titleTextKey = ""
         self.navigationController?.pushViewController(walletsVC, animated: true)
@@ -124,7 +125,9 @@ extension WaitingMembersSettingsTextFieldDelegate: UITextFieldDelegate {
 
 extension SendWalletDelegate: SendWalletProtocol {
     func sendWallet(wallet: UserWalletRLM) {
-        presenter.wallet = wallet
+        presenter.wallet.multisigWallet?.linkedWalletID = wallet.id
+        presenter.wallet.multisigWallet?.linkedWalletAddress = wallet.address
+        updateUI()
     }
 }
 

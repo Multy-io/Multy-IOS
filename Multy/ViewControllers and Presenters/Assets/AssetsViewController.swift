@@ -186,6 +186,9 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msMembersUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletDeleted"), object: nil)
+        
         super.viewWillDisappear(animated)
     }
     
@@ -214,6 +217,21 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                     self.view.isUserInteractionEnabled = true
                 }
             }
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("msWalletDeleted"), object: nil)
+    }
+    
+    @objc fileprivate func handleWalletDeletedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleMembersUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
     
@@ -295,6 +313,14 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         let stroryboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
         let vc = stroryboard.instantiateViewController(withIdentifier: "seedAbout")
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc fileprivate func handleWalletDeletedNotification() {
+         self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
+    }
+    
+    @objc fileprivate func updateWallets() {
+        self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
     }
     
     //MARK: Setup functions
