@@ -244,7 +244,8 @@ extension MessageHandler {
             break
             
         case SocketMessageType.multisigDelete.rawValue:
-            NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: ["inviteCode" : data["payload"] as! String])
+            let inviteCode = data["payload"] as! String
+            NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: ["inviteCode" : inviteCode])
             break
             
         case SocketMessageType.multisigKick.rawValue:
