@@ -169,14 +169,14 @@ extension MultisigManager {
         let blockchainType = BlockchainType.create(wallet: wallet)
         let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
         
-        let multiSigTxCreationInfo = coreLibManager.createMultiSigTx(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                     sendFromAddress: sendFromAddress,
-                                                                     sendAmountString: sendAmountString,
-                                                                     sendToAddress: wallet.address, //sendToAddress,
-            nonce: wallet.ethWallet!.nonce.intValue,
-            balanceAmountString: wallet.availableAmount.stringValue,
-            gasPriceString: gasPriceString,
-            gasLimitString: gasLimitString)
+        let multiSigTxCreationInfo = coreLibManager.createMultiSigTx(addressPointer:    addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                                     sendFromAddress:   sendFromAddress,
+                                                                     sendAmountString:  sendAmountString,
+                                                                     sendToAddress:     sendToAddress,
+                                                                     nonce:             wallet.ethWallet!.nonce.intValue,
+                                                                     balanceAmountString: wallet.availableAmount.stringValue,
+                                                                     gasPriceString:    gasPriceString,
+                                                                     gasLimitString:    gasLimitString)
         
         return multiSigTxCreationInfo
     }
