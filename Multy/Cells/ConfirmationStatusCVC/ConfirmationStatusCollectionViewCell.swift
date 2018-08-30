@@ -5,13 +5,6 @@
 import UIKit
 import Hash2Pics
 
-enum ConfirmationStatus {
-    case confirmed
-    case declined
-    case waiting
-    case viewed
-}
-
 class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var memberPictureImageView: UIImageView!
     @IBOutlet weak var statusImageView: UIImageView!

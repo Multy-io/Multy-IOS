@@ -39,8 +39,18 @@ class HistoryRLM: Object {
     var walletInput = List<UserWalletRLM>()
     var walletOutput = List<UserWalletRLM>()
     
-    @objc dynamic var isMultisigTx = NSNumber(booleanLiteral: false)
-    @objc dynamic var isWaitingConfirmation = NSNumber(booleanLiteral: false)
+    @objc dynamic var nonce = NSNumber(value: 0)
+    @objc dynamic var input = String()
+    @objc dynamic var contractAddress = String()
+    @objc dynamic var methodInvoked = String()
+    @objc dynamic var invocationStatus = NSNumber(booleanLiteral: false)
+    var owners = List<MultisigTransactionOwnerRLM>()
+    
+    var isMultisigTx : Bool {
+        get {
+            return contractAddress.count > 0
+        }
+    }
     
     override static func ignoredProperties() -> [String] {
         return ["addressesArray"]
@@ -177,6 +187,31 @@ class HistoryRLM: Object {
         
         if let destinationAddress = historyDict["to"] as? String {
             hist.addressesArray.append(destinationAddress)
+        }
+        
+        if let nonce = historyDict["nonce"] as? Int {
+            hist.nonce = NSNumber(value: nonce)
+        }
+        
+        if let input = historyDict["input"] as? String {
+            hist.input = input
+        }
+        
+        //Multisig part
+        if let contractAddress = historyDict["contract"] as? String {
+            hist.contractAddress = contractAddress
+        }
+        
+        if let methodInvoked = historyDict["methodinvoked"] as? String {
+            hist.methodInvoked = methodInvoked
+        }
+        
+        if let invocationStatus = historyDict["invocationstatus"] as? Bool {
+            hist.invocationStatus = NSNumber(booleanLiteral: invocationStatus)
+        }
+        
+        if let owners = historyDict["owners"] as? [NSDictionary] {
+            hist.owners = MultisigTransactionOwnerRLM.initWithArray(txOwnersArray: owners)
         }
         
         return hist

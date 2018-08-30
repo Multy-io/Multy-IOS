@@ -66,6 +66,17 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     
     var isMultisig = false 
     
+    var isDecided : Bool {
+        get {
+            var result = false
+            let confirmationStatus = presenter.wallet.confirmationStatusForTransaction(transaction: presenter.histObj)
+            if confirmationStatus == ConfirmationStatus.confirmed || confirmationStatus == ConfirmationStatus.declined {
+                result = true
+            }
+            return result
+        }
+    }
+    
     var state = 0
     
     var doubleSliderVC : DoubleSlideViewController!
@@ -207,7 +218,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func checkStatus() {
-        if isMultisig && presenter.histObj.isWaitingConfirmation.boolValue {
+        if isMultisig && presenter.wallet.confirmationStatusForTransaction(transaction: presenter.histObj) == ConfirmationStatus.waiting {
             // Multisig transaction waiting confirmation
             self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
             self.titleLbl.text = "Transaction details"
@@ -229,7 +240,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func checkMultisig() {
-        isMultisig = presenter.histObj.isMultisigTx.boolValue
+        isMultisig = presenter.histObj.isMultisigTx
         confirmationDetailsHolderView.isHidden = !isMultisig
         doubleSliderHolderView.isHidden = !isMultisig
     }
@@ -240,7 +251,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
             result = result + confirmaitionDetailsHeightConstraint.constant + 16
             
-            if presenter.histObj.isWaitingConfirmation.boolValue {
+            if !isDecided {
                 result += doubleSliderHolderView.frame.size.height
             }
         } else if presenter.isDonationExist {
@@ -256,7 +267,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         dateFormatter.dateFormat = "HH:mm, d MMMM yyyy"
         let cryptoSumInBTC = UInt64(truncating: presenter.histObj.txOutAmount).btcValue
         
-        if isMultisig && presenter.histObj.isWaitingConfirmation.boolValue {
+        if isMultisig && !isDecided {
             self.dateLbl.text = "Waiting for confirmations..."
             
             self.blockchainInfoView.isHidden = true
