@@ -121,4 +121,5 @@ extension Constants {
     static let leaveMultisigWalletAlertString = "LEAVE MULTISIG WALLET WARNING"
     static let serverNotWorkTitleString = "TEMPORARY OUT OF SERVICE"
     static let serverNotWorkingMessageString = "SERVER STOP STRING"
+    static let pendingString = "PENDING"
 }

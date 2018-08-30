@@ -8,5 +8,7 @@
 
 "READY TO START" = "Готов Начать...";
 "WAITING ALL MEMBERS" = "Ожидание всех участников...";
-"START FOR" = "Почати за";
+"PENDING" = "В ожидании...";
+"START FOR" = "Начать за";
 "INVITATION CODE" = "Код приглашения";
+"SOMETHING WENT WRONG" = "Что-то пошло не так";
