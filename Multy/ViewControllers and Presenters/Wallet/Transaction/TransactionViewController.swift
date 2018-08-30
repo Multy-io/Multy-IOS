@@ -96,6 +96,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         walletFromAddressLbl.addGestureRecognizer(tapOnFrom)
         
         self.scrollView.isScrollEnabled = true
+        
+        presenter.createPreliminaryData()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -23,6 +23,10 @@ class TransactionPresenter: NSObject {
     var selectedAddress: String?
     var isDonationExist = false
     
+    var binaryData : BinaryData?
+    var addressData : Dictionary<String, Any>?
+    var linkedWallet: UserWalletRLM?
+    
     func blockedAmount(for transaction: HistoryRLM) -> UInt64 {
         var sum = UInt64(0)
         
@@ -37,8 +41,47 @@ class TransactionPresenter: NSObject {
         return sum
     }
     
+    func createPreliminaryData() {
+        let core = DataManager.shared.coreLibManager
+        DataManager.shared.getAccount { [unowned self] (account, error) in
+            if account != nil {
+                self.binaryData = account!.binaryDataString.createBinaryData()!
+                
+                
+                
+                self.addressData = core.createAddress(blockchainType:   self.wallet.blockchainType,
+                                                      walletID:         self.wallet.walletID.uint32Value,
+                                                      addressID:        self.wallet.changeAddressIndex,
+                                                      binaryData:      &self.binaryData!)
+                
+                if self.wallet.isMultiSig {
+                    DataManager.shared.getWallet(primaryKey: self.wallet.multisigWallet!.linkedWalletID) { [unowned self] in
+                        switch $0 {
+                        case .success(let wallet):
+                            self.linkedWallet = wallet
+                            break;
+                        case .failure(let errorString):
+                            print(errorString)
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func confirmMultisigTx() {
         transctionVC?.spiner.startAnimating()
+        
+//        let trData = DataManager.shared.confirmMultiSigTx(binaryData: &<#T##BinaryData#>,
+//                                                          wallet: <#T##UserWalletRLM#>,
+//                                                          balanceAmountString: <#T##String#>,
+//                                                          sendFromAddress: <#T##String#>,
+//                                                          nonce: <#T##Int#>,
+//                                                          nonceMultiSigTx: <#T##Int#>,
+//                                                          gasPriceString: <#T##String#>,
+//                                                          gasLimitString: <#T##String#>)
+        
         DataManager.shared.confirmMultiSigTx(wallet: wallet, histObj: histObj) {[unowned self] result in
             self.transctionVC?.spiner.stopAnimating()
             switch result {
