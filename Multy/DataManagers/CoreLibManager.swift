@@ -1206,8 +1206,8 @@ extension MultiSigCoreLibManager {
             return ("error:transactionBuilderProperties", false)
         }
         
-        setAmountValue(key: "balance", value: balanceAmountString, pointer: transactionBuilderProperties.pointee!)
-        setStringValue(key: "wallet_address", value: sendFromAddress, pointer: transactionBuilderProperties.pointee!)
+        setAmountValue(key: "balance", value: balanceAmountString, pointer: transactionBuilderProperties.pointee!)//linked wallet's balance
+        setStringValue(key: "wallet_address", value: sendFromAddress, pointer: transactionBuilderProperties.pointee!)//SC address
         setStringValue(key: "action", value: "confirm", pointer: transactionBuilderProperties.pointee!)
         setAmountValue(key: "request_id", value: "\(nonceMultiSigTx)", pointer: transactionBuilderProperties.pointee!)
         
