@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import RealmSwift
 
 class WalletPresenter: NSObject {
 
@@ -119,20 +120,34 @@ class WalletPresenter: NSObject {
     }
     
     func getHistory() {
-        DataManager.shared.getTransactionHistory(currencyID: self.wallet!.chain, networkID: self.wallet!.chainType, walletID: self.wallet!.walletID) { [unowned self] (histList, err) in
-            self.walletVC?.spiner.stopAnimating()
-            self.walletVC?.isCanUpdate = true
-            if err == nil && histList != nil {
-                self.transactionDataSource = histList!.sorted(by: {
-                    let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.blockTime : $0.mempoolTime
-                    let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.blockTime : $1.mempoolTime
-                    
-                    return firstDate > secondDate
-                })
-                self.isSocketInitiateUpdating = false
-                
-                self.updateHeader()
+        if wallet!.isMultiSig {
+            DataManager.shared.getMultisigTransactionHistory(currencyID: wallet!.chain,
+                                                             networkID: wallet!.chainType,
+                                                             address: wallet!.address) { [unowned self] (historyArray, error) in
+                                                                self.updateTable(historyArray: historyArray, error: error)
             }
+        } else {
+            DataManager.shared.getTransactionHistory(currencyID: wallet!.chain,
+                                                     networkID: wallet!.chainType,
+                                                     walletID: self.wallet!.walletID) { [unowned self] (historyArray, error) in
+                                                        self.updateTable(historyArray: historyArray, error: error)
+            }
+        }
+    }
+    
+    func updateTable(historyArray: List<HistoryRLM>?, error: Error?) {
+        self.walletVC?.spiner.stopAnimating()
+        self.walletVC?.isCanUpdate = true
+        if error == nil && historyArray != nil {
+            self.transactionDataSource = historyArray!.sorted(by: {
+                let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.blockTime : $0.mempoolTime
+                let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.blockTime : $1.mempoolTime
+                
+                return firstDate > secondDate
+            })
+            self.isSocketInitiateUpdating = false
+            
+            self.updateHeader()
         }
     }
 }
