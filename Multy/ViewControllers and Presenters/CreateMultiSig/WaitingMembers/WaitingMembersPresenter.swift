@@ -22,6 +22,7 @@ class WaitingMembersPresenter: NSObject {
     
     var bottomButtonStatus = BottomButtonStatus.hidden
     let createdMultiSigWallet = UserWalletRLM()
+    var estimationInfo: NSDictionary?
     
     func viewControllerViewDidLoad() {
 //        inviteCode = makeInviteCode()
@@ -95,6 +96,20 @@ class WaitingMembersPresenter: NSObject {
         }
     }
     
+    func getEstimationInfo(completion: @escaping(_ result: Result<NSDictionary, String>) -> ()) {
+        DataManager.shared.estimation(for: "price") { [unowned self] in
+            switch $0 {
+            case .success(let value):
+                self.estimationInfo = value
+                break
+            case .failure(let error):
+                print(error)
+            }
+            
+            completion($0)
+        }
+    }
+    
     func payForMultiSig() {
         DataManager.shared.getWallet(primaryKey: wallet.multisigWallet!.linkedWalletID) { [unowned self] in
             switch $0 {
@@ -113,7 +128,7 @@ class WaitingMembersPresenter: NSObject {
         let ownersString = createOwnersString()
         let result = DataManager.shared.createMultiSigWallet(binaryData: &binData,
                                                              wallet: linkedWallet,
-                                                             creationPriceString: "0",// "100000000000000000",//0.1 ETH
+                                                             creationPriceString: "0",// "\(estimationInfo["deployMultisig"] as! NSNumber)"
                                                              gasPriceString: "1000000000",
                                                              gasLimitString: "5000000",
                                                              owners: ownersString,

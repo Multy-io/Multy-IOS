@@ -1067,7 +1067,7 @@ Members</string>
         <!--Waiting Members Settings View Controller-->
         <scene sceneID="ulX-dz-fk9">
             <objects>
-                <viewController id="39W-4y-Unq" customClass="WaitingMembersSettingsViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="multisigSettingsID" id="39W-4y-Unq" customClass="WaitingMembersSettingsViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="unZ-Gn-aid"/>
                         <viewControllerLayoutGuide type="bottom" id="K4r-z6-kyK"/>
