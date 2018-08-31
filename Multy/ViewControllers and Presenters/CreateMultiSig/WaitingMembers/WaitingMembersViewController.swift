@@ -150,7 +150,6 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
             stateLabel.textColor = #colorLiteral(red: 0.8117647059, green: 1, blue: 0.8666666667, alpha: 1)
             
             //FIXME: price
-            invitationCodeButton.setTitle("\(Constants.startForString) \(presenter.createWalletPrice) ETH", for: .normal)
 //            backgroundView.backgroundColor = #colorLiteral(red: 0.3725490196, green: 0.8, blue: 0.4901960784, alpha: 1)
             backgroundView.applyOrUpdateGradient(withColours: [
                 UIColor(ciColor: CIColor(red: 95.0 / 255.0, green: 204.0 / 255.0, blue: 125.0 / 255.0)),
@@ -177,12 +176,34 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
                 UIColor(ciColor: CIColor(red: 29.0 / 255.0, green: 176.0 / 255.0, blue: 252.0 / 255.0)),
                 UIColor(ciColor: CIColor(red: 21.0 / 255.0, green: 126.0 / 255.0, blue: 252.0 / 255.0))],
                                                                gradientOrientation: .topRightBottomLeft)
+            
+            if presenter.wallet.multisigWallet!.deployStatus.intValue == DeployStatus.ready.rawValue {
+                presenter.getEstimationInfo { [unowned self] in
+                    switch $0 {
+                    case .success(_):
+                        let priceInWei = self.presenter.estimationInfo!["priceOfCreation"] as! NSNumber
+                        let priceString = BigInt("\(priceInWei)").cryptoValueString(for: self.presenter.wallet.blockchain)
+                        self.invitationCodeButton.setTitle("\(Constants.startForString) \(priceString) ETH", for: .normal)
+                        break
+                    case .failure(_):
+                        break
+                    }
+                    
+                    self.changeUI()
+                }
+            } else {
+                changeUI()
+            }
         } else {
             presenter.bottomButtonStatus = .hidden
             invitationHolderView.isHidden = true
             invitationHolderView.isUserInteractionEnabled = false
+            
+            changeUI()
         }
-        
+    }
+    
+    func changeUI() {
         membersTableView.reloadData()
         contentView.layoutIfNeeded()
     }
