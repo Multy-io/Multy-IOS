@@ -9,6 +9,7 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Unknown constraint types" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -443,50 +444,46 @@
                                                 </connections>
                                             </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nEo-4N-9he">
-                                                <rect key="frame" x="20" y="18.5" width="28" height="28"/>
+                                                <rect key="frame" x="10" y="9.5" width="46" height="46"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="28" id="HrM-K2-vpL"/>
+                                                    <constraint firstAttribute="height" constant="46" id="HrM-K2-vpL"/>
                                                     <constraint firstAttribute="width" secondItem="nEo-4N-9he" secondAttribute="height" multiplier="1:1" id="LQc-5k-XFn"/>
                                                 </constraints>
                                             </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="6lB-5T-yOh">
-                                                <rect key="frame" x="56" y="19" width="280" height="28"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6l-4Z-Gl8">
-                                                        <rect key="frame" x="0.0" y="0.0" width="4" height="13"/>
-                                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HSB-9S-gur" userLabel="Linked Wallet Address Label">
-                                                        <rect key="frame" x="0.0" y="15" width="30.5" height="13"/>
-                                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                                                        <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HSB-9S-gur" userLabel="Linked Wallet Address Label">
+                                                <rect key="frame" x="66" y="36.5" width="268" height="16.5"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                                <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6l-4Z-Gl8">
+                                                <rect key="frame" x="66" y="14.5" width="45" height="22"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="wva-mT-XhB" secondAttribute="trailing" id="1HD-Ec-nKh"/>
                                             <constraint firstAttribute="trailing" secondItem="cn8-TF-6KF" secondAttribute="trailing" id="4ca-uf-EoN"/>
-                                            <constraint firstItem="6lB-5T-yOh" firstAttribute="top" secondItem="nEo-4N-9he" secondAttribute="top" id="8hA-GA-4XW"/>
                                             <constraint firstAttribute="trailing" secondItem="QNb-LV-4KA" secondAttribute="trailing" id="9EX-CN-WMz"/>
-                                            <constraint firstItem="6lB-5T-yOh" firstAttribute="bottom" secondItem="nEo-4N-9he" secondAttribute="bottom" id="BMc-cZ-Ph4"/>
                                             <constraint firstItem="wva-mT-XhB" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" id="CzL-l2-uqC"/>
                                             <constraint firstAttribute="bottom" secondItem="wva-mT-XhB" secondAttribute="bottom" id="IhX-fA-Idn"/>
                                             <constraint firstAttribute="bottom" secondItem="cn8-TF-6KF" secondAttribute="bottom" id="StA-jF-a5Z"/>
                                             <constraint firstItem="wva-mT-XhB" firstAttribute="top" secondItem="QNb-LV-4KA" secondAttribute="bottom" id="T6Q-Pq-SvX"/>
                                             <constraint firstAttribute="trailing" secondItem="XGX-Rj-7NI" secondAttribute="trailing" constant="16" id="VFr-Jz-kvl"/>
-                                            <constraint firstItem="6lB-5T-yOh" firstAttribute="leading" secondItem="nEo-4N-9he" secondAttribute="trailing" constant="8" id="YLY-eZ-gg4"/>
+                                            <constraint firstItem="HSB-9S-gur" firstAttribute="top" secondItem="n6l-4Z-Gl8" secondAttribute="bottom" id="Yc1-bp-Xpv"/>
                                             <constraint firstItem="cn8-TF-6KF" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" id="ZCc-Cx-ck5"/>
-                                            <constraint firstItem="nEo-4N-9he" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" constant="20" id="c26-fa-f9T"/>
+                                            <constraint firstItem="n6l-4Z-Gl8" firstAttribute="top" secondItem="nEo-4N-9he" secondAttribute="top" constant="5" id="bhc-Ie-Acq"/>
+                                            <constraint firstItem="nEo-4N-9he" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" constant="10" id="c26-fa-f9T"/>
                                             <constraint firstItem="nEo-4N-9he" firstAttribute="centerY" secondItem="wva-mT-XhB" secondAttribute="centerY" id="eTA-ks-Hbf"/>
+                                            <constraint firstItem="n6l-4Z-Gl8" firstAttribute="leading" secondItem="nEo-4N-9he" secondAttribute="trailing" constant="10" id="fc6-aL-Jra"/>
                                             <constraint firstItem="QNb-LV-4KA" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" id="j38-r5-bSh"/>
-                                            <constraint firstItem="XGX-Rj-7NI" firstAttribute="leading" secondItem="6lB-5T-yOh" secondAttribute="trailing" constant="8" id="jeP-HC-Vhz"/>
+                                            <constraint firstItem="HSB-9S-gur" firstAttribute="leading" secondItem="n6l-4Z-Gl8" secondAttribute="leading" id="jiN-Wl-MTc"/>
                                             <constraint firstItem="XGX-Rj-7NI" firstAttribute="centerY" secondItem="mGm-SD-4OZ" secondAttribute="centerY" id="osE-bC-VSc"/>
                                             <constraint firstItem="kNf-MA-qmP" firstAttribute="leading" secondItem="mGm-SD-4OZ" secondAttribute="leading" constant="20" id="pDX-yK-yAB"/>
+                                            <constraint firstItem="XGX-Rj-7NI" firstAttribute="leading" secondItem="HSB-9S-gur" secondAttribute="trailing" constant="10" id="rb2-L4-s48"/>
                                             <constraint firstAttribute="height" constant="64" id="stm-rZ-NBi"/>
                                             <constraint firstItem="kNf-MA-qmP" firstAttribute="centerY" secondItem="mGm-SD-4OZ" secondAttribute="centerY" id="tQM-Zb-W7P"/>
                                             <constraint firstItem="QNb-LV-4KA" firstAttribute="top" secondItem="mGm-SD-4OZ" secondAttribute="top" id="zeA-Oo-qV7"/>
@@ -552,7 +549,6 @@
                         <outlet property="linkedWalletAddressLabel" destination="HSB-9S-gur" id="nDE-hN-bcs"/>
                         <outlet property="linkedWalletImageView" destination="nEo-4N-9he" id="XlH-pF-pnI"/>
                         <outlet property="linkedWalletNameLabel" destination="n6l-4Z-Gl8" id="UWM-k8-jQN"/>
-                        <outlet property="linkedWalletStackView" destination="6lB-5T-yOh" id="ukx-s3-acK"/>
                         <outlet property="selectWalletLabel" destination="kNf-MA-qmP" id="fir-wY-lNh"/>
                         <outlet property="tableView" destination="Ccs-AU-i8v" id="VSy-QV-ccW"/>
                     </connections>
@@ -1304,7 +1300,7 @@ Members</string>
                                         <rect key="frame" x="0.0" y="366" width="375" height="64"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="weI-2R-rpA">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="-1" width="375" height="1"/>
                                                 <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.40459118150000001" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="3wH-8f-0wG"/>
@@ -1327,60 +1323,44 @@ Members</string>
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Hh-E8-YWM">
-                                                <rect key="frame" x="20" y="18.5" width="28" height="28"/>
+                                                <rect key="frame" x="10" y="9.5" width="46" height="46"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="28" id="K44-SH-2n4"/>
+                                                    <constraint firstAttribute="height" constant="46" id="K44-SH-2n4"/>
                                                     <constraint firstAttribute="width" secondItem="8Hh-E8-YWM" secondAttribute="height" multiplier="1:1" id="iHY-WU-xWv"/>
                                                 </constraints>
                                             </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="eqO-Wk-kXC">
-                                                <rect key="frame" x="56" y="12.5" width="280" height="40"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIi-Ut-L3X">
-                                                        <rect key="frame" x="0.0" y="0.0" width="4" height="19"/>
-                                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lfj-9j-Va0" userLabel="Linked Wallet Address Label">
-                                                        <rect key="frame" x="0.0" y="21" width="30.5" height="19"/>
-                                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                                                        <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="bIi-Ut-L3X" firstAttribute="height" secondItem="lfj-9j-Va0" secondAttribute="height" id="7A2-AE-Spm"/>
-                                                </constraints>
-                                            </stackView>
-                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEM-KL-47U">
-                                                <rect key="frame" x="0.0" y="1" width="375" height="63"/>
-                                                <connections>
-                                                    <action selector="selectLinkedWalletAction:" destination="39W-4y-Unq" eventType="touchUpInside" id="MBX-XW-iTg"/>
-                                                </connections>
-                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIi-Ut-L3X">
+                                                <rect key="frame" x="66" y="14.5" width="45" height="22"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfj-9j-Va0" userLabel="Linked Wallet Address Label">
+                                                <rect key="frame" x="66" y="36.5" width="268" height="16.5"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                                <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="eqO-Wk-kXC" firstAttribute="leading" secondItem="8Hh-E8-YWM" secondAttribute="trailing" constant="8" id="5w7-ia-pT7"/>
                                             <constraint firstItem="oH6-zK-EcE" firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" id="7sT-AA-YVq"/>
-                                            <constraint firstItem="iFk-zw-fbW" firstAttribute="leading" secondItem="eqO-Wk-kXC" secondAttribute="trailing" constant="8" id="86K-Vk-6VW"/>
-                                            <constraint firstItem="eqO-Wk-kXC" firstAttribute="bottom" secondItem="8Hh-E8-YWM" secondAttribute="bottom" constant="6" id="8Pg-FC-ELd"/>
-                                            <constraint firstItem="eqO-Wk-kXC" firstAttribute="top" secondItem="8Hh-E8-YWM" secondAttribute="top" constant="-6" id="DkY-Oe-HqQ"/>
                                             <constraint firstItem="weI-2R-rpA" firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" id="DuP-CP-rTq"/>
+                                            <constraint firstItem="8Hh-E8-YWM" firstAttribute="centerY" secondItem="aDm-ib-b1T" secondAttribute="centerY" id="Eae-CS-wyD"/>
                                             <constraint firstAttribute="height" constant="64" id="GA1-yT-1zx"/>
                                             <constraint firstAttribute="trailing" secondItem="oH6-zK-EcE" secondAttribute="trailing" id="N81-yL-704"/>
-                                            <constraint firstItem="qEM-KL-47U" firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" id="OgY-jX-4jY"/>
-                                            <constraint firstItem="weI-2R-rpA" firstAttribute="top" secondItem="aDm-ib-b1T" secondAttribute="top" id="PiG-Nd-bar"/>
-                                            <constraint firstAttribute="trailing" secondItem="qEM-KL-47U" secondAttribute="trailing" id="TCu-RN-trn"/>
+                                            <constraint firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" id="OgY-jX-4jY"/>
+                                            <constraint firstItem="bIi-Ut-L3X" firstAttribute="top" secondItem="8Hh-E8-YWM" secondAttribute="top" constant="5" id="U2h-Jp-Lch"/>
+                                            <constraint firstItem="lfj-9j-Va0" firstAttribute="leading" secondItem="bIi-Ut-L3X" secondAttribute="leading" id="WAY-Sa-sTe"/>
                                             <constraint firstAttribute="trailing" secondItem="weI-2R-rpA" secondAttribute="trailing" id="bsc-Vy-BA7"/>
-                                            <constraint firstItem="8Hh-E8-YWM" firstAttribute="centerY" secondItem="qEM-KL-47U" secondAttribute="centerY" id="csN-nP-sxJ"/>
-                                            <constraint firstAttribute="bottom" secondItem="qEM-KL-47U" secondAttribute="bottom" id="gS5-st-Gta"/>
+                                            <constraint firstItem="lfj-9j-Va0" firstAttribute="top" secondItem="bIi-Ut-L3X" secondAttribute="bottom" id="bsu-kY-tUP"/>
+                                            <constraint firstItem="bIi-Ut-L3X" firstAttribute="leading" secondItem="8Hh-E8-YWM" secondAttribute="trailing" constant="10" id="cfG-R8-Y9f"/>
+                                            <constraint firstItem="iFk-zw-fbW" firstAttribute="leading" secondItem="lfj-9j-Va0" secondAttribute="trailing" constant="10" id="g08-OJ-B5h"/>
                                             <constraint firstAttribute="trailing" secondItem="iFk-zw-fbW" secondAttribute="trailing" constant="16" id="hFH-9e-Ica"/>
                                             <constraint firstItem="iFk-zw-fbW" firstAttribute="centerY" secondItem="aDm-ib-b1T" secondAttribute="centerY" id="m7C-8G-pMw"/>
-                                            <constraint firstItem="qEM-KL-47U" firstAttribute="top" secondItem="weI-2R-rpA" secondAttribute="bottom" id="na8-Wr-x48"/>
+                                            <constraint firstAttribute="top" secondItem="weI-2R-rpA" secondAttribute="bottom" id="na8-Wr-x48"/>
                                             <constraint firstAttribute="bottom" secondItem="oH6-zK-EcE" secondAttribute="bottom" id="qGw-me-tU9"/>
-                                            <constraint firstItem="8Hh-E8-YWM" firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" constant="20" id="sFe-Hw-Jaf"/>
+                                            <constraint firstItem="8Hh-E8-YWM" firstAttribute="leading" secondItem="aDm-ib-b1T" secondAttribute="leading" constant="10" id="sFe-Hw-Jaf"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your linked wallet will be used to pay for multisig wallet transactions " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cmq-45-AON">
@@ -1438,7 +1418,7 @@ Members</string>
                                             <constraint firstAttribute="trailing" secondItem="geT-Bz-hIG" secondAttribute="trailing" id="y23-uI-2ky"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJT-vf-F2a">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJT-vf-F2a">
                                         <rect key="frame" x="16" y="575" width="343" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="vEC-Zs-hO3"/>

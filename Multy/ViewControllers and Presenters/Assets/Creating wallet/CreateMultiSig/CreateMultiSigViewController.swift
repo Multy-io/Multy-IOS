@@ -21,7 +21,6 @@ class CreateMultiSigViewController: UIViewController {
     @IBOutlet weak var selectWalletLabel: UILabel!
     @IBOutlet weak var linkedWalletNameLabel: UILabel!
     @IBOutlet weak var linkedWalletImageView: UIImageView!
-    @IBOutlet weak var linkedWalletStackView: UIStackView!
     @IBOutlet weak var linkedWalletAddressLabel: UILabel!
     
     let presenter = CreateMultiSigPresenter()
@@ -46,12 +45,14 @@ class CreateMultiSigViewController: UIViewController {
         
         if let linkedWallet = presenter.choosenWallet {
             selectWalletLabel.isHidden = true
-            linkedWalletStackView.isHidden = false
+            linkedWalletNameLabel.isHidden = false
+            linkedWalletAddressLabel.isHidden = false
             linkedWalletImageView.image = UIImage(named: linkedWallet.blockchainType.iconString)
             linkedWalletNameLabel.text = linkedWallet.name
             linkedWalletAddressLabel.text = linkedWallet.address
         } else {
-            linkedWalletStackView.isHidden = true
+            linkedWalletNameLabel.isHidden = true
+            linkedWalletAddressLabel.isHidden = true
             selectWalletLabel.isHidden = false
             linkedWalletImageView.image = nil
         }

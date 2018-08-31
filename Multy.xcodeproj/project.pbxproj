@@ -168,6 +168,7 @@
 		459A0B3420F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A0B3220F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift */; };
 		459A0B3520F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459A0B3320F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib */; };
 		459D482E1FE280ED0044740F /* CustomFeeRateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459D482D1FE280ED0044740F /* CustomFeeRateProtocol.swift */; };
+		459D82342136DBCF00BE479B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 459D82362136DBCF00BE479B /* InfoPlist.strings */; };
 		45A87832205FC73C0071D6F1 /* EthSendDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A87831205FC73C0071D6F1 /* EthSendDetailsViewController.swift */; };
 		45A87834205FC9E80071D6F1 /* EthSendDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A87833205FC9E80071D6F1 /* EthSendDetailsPresenter.swift */; };
 		45A9491F1FC2DFC7003C3A23 /* ReceiveStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A9491E1FC2DFC7003C3A23 /* ReceiveStartViewController.swift */; };
@@ -633,6 +634,9 @@
 		459A0B3220F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSigPendingTableViewCell.swift; sourceTree = "<group>"; };
 		459A0B3320F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSigPendingTableViewCell.xib; sourceTree = "<group>"; };
 		459D482D1FE280ED0044740F /* CustomFeeRateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeeRateProtocol.swift; sourceTree = "<group>"; };
+		459D82352136DBCF00BE479B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		459D82372136DBD300BE479B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		459D82382136DBD500BE479B /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		45A87831205FC73C0071D6F1 /* EthSendDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthSendDetailsViewController.swift; sourceTree = "<group>"; };
 		45A87833205FC9E80071D6F1 /* EthSendDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthSendDetailsPresenter.swift; sourceTree = "<group>"; };
 		45A9491E1FC2DFC7003C3A23 /* ReceiveStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveStartViewController.swift; sourceTree = "<group>"; };
@@ -1010,6 +1014,7 @@
 				4526F8DD2015383D00D2E491 /* Multy.entitlements */,
 				452290541FBB18D30024B550 /* AppDelegate.swift */,
 				452290601FBB18D30024B550 /* Info.plist */,
+				459D82362136DBCF00BE479B /* InfoPlist.strings */,
 				45EBB6A7200D312700F81322 /* GoogleService-Info.plist */,
 				45B9CB021FBB4AEB00AA2A31 /* Storyboards */,
 				45B9CB031FBB4B2300AA2A31 /* ViewControllers and Presenters */,
@@ -2277,6 +2282,7 @@
 				4522905C1FBB18D30024B550 /* Assets.xcassets in Resources */,
 				859C7B1420F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib in Resources */,
 				FA4D43FF1FC6D058003C7117 /* TransactionWalletCell.xib in Resources */,
+				459D82342136DBCF00BE479B /* InfoPlist.strings in Resources */,
 				445B129420BC1CE700FD0D33 /* TransactionFeeTableViewCell.xib in Resources */,
 				45ECDBD7203D9E77009FD339 /* LICENSE in Resources */,
 				445B127920BC1BD900FD0D33 /* Send.storyboard in Resources */,
@@ -3191,6 +3197,16 @@
 				445B12BF20BC21AE00FD0D33 /* en */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		459D82362136DBCF00BE479B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				459D82352136DBCF00BE479B /* en */,
+				459D82372136DBD300BE479B /* ru */,
+				459D82382136DBD500BE479B /* uk */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */ = {

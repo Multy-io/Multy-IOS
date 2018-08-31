@@ -32,8 +32,11 @@ class WalletSettingsPresenter: NSObject {
                                                        walletIndex: self.wallet!.walletID,
                                                        completion: { (answer, err) in
                                                         NotificationCenter.default.post(name: NSNotification.Name("walletDeleted"), object: self.wallet!)
-                                                        self.walletSettingsVC?.loader.hide()
-                                                        self.walletSettingsVC?.navigationController?.popToRootViewController(animated: true)
+                                                        RealmManager.shared.deleteWallet(self.wallet!, completion: { (acc) in
+                                                            self.walletSettingsVC?.loader.hide()
+                                                            self.walletSettingsVC?.navigationController?.popToRootViewController(animated: true)
+                                                        })
+                                                        
             })
         }
     }
