@@ -552,6 +552,27 @@ class UserWalletRLM: Object {
 //        self.fiatName = "USD"
 //        self.fiatSymbol = "$"
 //    }
+    
+    func isAddressBelongsToWallet(_ address: String) -> Bool {
+        var result = false
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            let matchingAddresses = addresses.filter {$0.address == address}
+            if matchingAddresses.count > 0 {
+                result = true
+            }
+            break
+            
+        case BLOCKCHAIN_ETHEREUM:
+            result = self.address == address
+            break
+            
+        default:
+            break
+        }
+        
+        return result
+    }
 }
 
 extension ETHWalletRLM {

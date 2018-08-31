@@ -158,7 +158,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets(notification:)), name: NSNotification.Name("transactionUpdated"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -360,7 +360,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
-    @objc func updateWalletAfterSockets() {
+    @objc func updateWalletAfterSockets(notification : NSNotification) {
         if presenter.isSocketInitiateUpdating {
             return
         }
@@ -369,8 +369,15 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             return
         }
         
-        presenter.isSocketInitiateUpdating = true
-        presenter.getHistoryAndWallet()
+        let msg = notification.userInfo?["NotificationMsg"] as? [AnyHashable : Any]
+        guard msg != nil, let address = msg!["address"] as? String else {
+            return
+        }
+        
+        if (presenter.wallet?.isAddressBelongsToWallet(address))! {
+            presenter.isSocketInitiateUpdating = true
+            presenter.getHistoryAndWallet()
+        }
     }
     
     func makeTableInset() -> UIEdgeInsets {
