@@ -139,7 +139,7 @@ extension DataManager {
         
         
         socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
-            if err != nil {
+            if err != nil || answerDict == nil {
                 //FIXME: error handling
                 completion(Result.failure("wrong data"))
             } else {

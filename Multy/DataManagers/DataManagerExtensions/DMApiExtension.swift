@@ -340,4 +340,7 @@ extension DataManager {
         }
     }
     
+    func estimation(for mustisigAddress: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        apiManager.estimation(for: mustisigAddress) { completion($0) }
+    }
 }

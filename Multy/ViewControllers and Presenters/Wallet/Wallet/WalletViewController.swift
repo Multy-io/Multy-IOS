@@ -498,7 +498,16 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     @IBAction func settingssAction(_ sender: Any) {
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(settingsWithChainTap)\(presenter.wallet!.chain)")
-        self.performSegue(withIdentifier: "settingsVC", sender: sender)
+        
+        if presenter.wallet!.isMultiSig {
+            let settingsVC = viewControllerFrom("Wallet", "msWalletSettings") as! MSWalletSettingsViewController
+            settingsVC.presenter.wallet = presenter.wallet!
+//            settingsVC.presenter.account = presenter.account!
+
+            navigationController?.pushViewController(settingsVC, animated: true)
+        } else {
+            self.performSegue(withIdentifier: "settingsVC", sender: sender)
+        }
     }
     
     @IBAction func showAddressAction(_ sender: Any) {

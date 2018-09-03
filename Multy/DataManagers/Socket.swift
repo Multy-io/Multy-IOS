@@ -191,7 +191,8 @@ class Socket: NSObject {
             print("answer: \n \(data)")
             let answer = data.first!
             if answer is String {
-                completion(nil, nil) // FIX IT: completion(nil, error)
+                let err = NSError(domain: "", code: 555, userInfo: ["Error": "No Ack"]) as Error
+                completion(nil, err) // FIX IT: completion(nil, error)
                 
                 return
             }

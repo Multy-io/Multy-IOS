@@ -234,7 +234,7 @@ extension TextViewDelegate: UITextViewDelegate {
         if text.count >= inviteCodeCount {
             pasteInTextView(string: text)
             dismissKeyboard()
-            presenter.validate(inviteCode: textView.text)
+//            presenter.validate(inviteCode: textView.text)
             return false
         }
         

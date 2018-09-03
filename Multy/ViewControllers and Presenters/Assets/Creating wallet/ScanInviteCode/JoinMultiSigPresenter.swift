@@ -7,14 +7,18 @@ import UIKit
 class JoinMultiSigPresenter: NSObject {
 
     var mainVC: JoinMultiSigViewController?
+    var isCanValidate = true
     
     func validate(inviteCode: String) {
-        // fix it: set !=
+        if isCanValidate == false {
+            return
+        }
+        
         if inviteCode.count < inviteCodeCount {
             mainVC!.presentAlert(with: mainVC?.localize(string: Constants.badInviteCodeString))
             return
         }
-        
+        isCanValidate = false // for send request once
         DataManager.shared.validateInviteCode(code: inviteCode) { result in
             switch result {
             case .success(let value):
@@ -32,9 +36,9 @@ class JoinMultiSigPresenter: NSObject {
                     self.mainVC!.captureSession?.startRunning()
                     self.mainVC!.presentAlert(with: self.mainVC?.localize(string: Constants.msIsFull))
                 }
-               
             case .failure(let error):
                 self.mainVC?.presentAlert(with: error)
+                self.isCanValidate = true
             }
         }
     }
