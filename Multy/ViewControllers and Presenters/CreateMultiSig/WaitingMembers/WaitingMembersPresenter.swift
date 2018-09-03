@@ -123,14 +123,24 @@ class WaitingMembersPresenter: NSObject {
         }
     }
     
+    func getEstimation(for operation: String) -> String {
+        let value = self.estimationInfo?[operation] as? NSNumber
+        
+        let operationPrice = (operation == "priceOfCreation") ? "\(100_000_000_000_000_000)" : "\(5_000_000)"
+        
+        return value == nil ? operationPrice : "\(value!)"
+    }
+    
     func createAndSendMSTransaction(linkedWallet: UserWalletRLM) {
         var binData = account!.binaryDataString.createBinaryData()!
         let ownersString = createOwnersString()
+        let gasLimitForDeployMS = getEstimation(for: "deployMultisig")
+        
         let result = DataManager.shared.createMultiSigWallet(binaryData: &binData,
                                                              wallet: linkedWallet,
                                                              creationPriceString: "0",// "\(estimationInfo["deployMultisig"] as! NSNumber)"
                                                              gasPriceString: "1000000000",
-                                                             gasLimitString: "5000000",
+                                                             gasLimitString: gasLimitForDeployMS,
                                                              owners: ownersString,
                                                              confirmationsCount: UInt32(wallet.multisigWallet!.signaturesRequiredCount))
         
@@ -158,7 +168,8 @@ class WaitingMembersPresenter: NSObject {
                 print("---------\(dict)")
                 
                 if let code = dict?["code"] as? Int, code == 200 {
-                    self.viewController?.openNewlyCreatedWallet()
+//                    self.viewController?.openNewlyCreatedWallet()
+                        self.updateWallet()
                 } else {
                     if error != nil {
                         self.viewController?.presentAlert(with: error?.localizedDescription)
@@ -168,7 +179,8 @@ class WaitingMembersPresenter: NSObject {
                 }
             }
         } else {
-            
+            //FIXME: localize
+            viewController!.presentAlert(with: result.message)
         }
     }
     
