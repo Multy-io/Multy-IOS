@@ -6,10 +6,10 @@ import Foundation
 
 enum ConfirmationStatus : Int {
     case
-    waiting = 1,
-    viewed = 2,
-    confirmed = 3,
-    declined = 4
+    waiting = 0,
+    viewed = 1,
+    confirmed = 2,
+    declined = 3
 }
 
 enum DeployStatus : Int {

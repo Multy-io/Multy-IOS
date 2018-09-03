@@ -187,7 +187,7 @@ enum SocketMessageType : Int {
         multisigDelete =            3,
         multisigKick =              4,
         multisigCheck =             5,
-        multisigConfirm =           6,
+        multisigView =              6,
         multisigDecline =           7
 }
 
