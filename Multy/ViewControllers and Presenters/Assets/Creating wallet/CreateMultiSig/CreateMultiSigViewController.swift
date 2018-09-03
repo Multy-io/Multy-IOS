@@ -158,6 +158,7 @@ class CreateMultiSigViewController: UIViewController {
         walletsVC.sendWalletDelegate = self
         walletsVC.presenter.isForMultisig = true
         walletsVC.titleTextKey = ""
+        walletsVC.whereFrom = self
         self.navigationController?.pushViewController(walletsVC, animated: true)
 //        sendAnalyticsEvent(screenName: "\(screenReceiveSummaryWithChain)\(presenter.wallet!.chain)", eventName: changeWalletTap)
     }

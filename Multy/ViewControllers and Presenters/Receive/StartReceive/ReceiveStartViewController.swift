@@ -11,6 +11,7 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var addWallet: UIButton!
     
     let presenter = ReceiveStartPresenter()
     
@@ -44,6 +45,9 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (self.tabBarController as! CustomTabBarViewController).menuButton.isHidden = true
+        if whereFrom != nil && whereFrom?.className == CreateMultiSigViewController.className {
+            addWallet.isHidden = false
+        }
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
 //            self.deselectCell()
 //        })
@@ -65,7 +69,13 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
         }
         sendAnalyticsEvent(screenName: screenReceive, eventName: closeTap)
     }
-
+    
+    @IBAction func addWalletAction(_ sender: Any) {
+        presenter.blockUI()
+        presenter.createFirstWallets(blockchianType: presenter.displayedBlockchainOnly!) { (answer, err) in
+            self.presenter.getWallets()
+        }
+    }
 //    Deselecting
 //    
 //    func deselectCell() {
@@ -74,6 +84,16 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
 //            walletCell.clearBorderAndArrow()
 //        }
 //    }
+    
+    func checkWhereFromForNil() -> Bool {
+        if whereFrom == nil {
+            return false
+        } else if whereFrom?.className != CreateMultiSigViewController.className {
+            return true
+        }
+        
+        return whereFrom == nil
+    }
     
 }
 
@@ -102,7 +122,7 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
         }
         
         if self.presenter.isNeedToPop == true {
-            if self.whereFrom != nil && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
+            if checkWhereFromForNil() && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
                 let message = localize(string: Constants.cannotChooseEmptyWalletString)
                 let alert = UIAlertController(title: localize(string: Constants.sorryString), message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

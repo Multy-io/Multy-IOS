@@ -103,6 +103,8 @@
 		45310D0F2063B9F500105532 /* EthereumGasInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45310D0E2063B9F500105532 /* EthereumGasInfo.swift */; };
 		45344AC420E6587B0039DF30 /* CreateMultiSigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45344AC320E6587B0039DF30 /* CreateMultiSigViewController.swift */; };
 		45344AC620E6589B0039DF30 /* CreateMultiSigPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */; };
+		4535116A213973A300E1F559 /* MSWalletSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45351169213973A300E1F559 /* MSWalletSettingsViewController.swift */; };
+		4535116C213973B800E1F559 /* MSWalletSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4535116B213973B800E1F559 /* MSWalletSettingsPresenter.swift */; };
 		4538BDCC2099E69900573426 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4538BDCB2099E69900573426 /* StoreKit.framework */; };
 		4540944A2031EEFD00603DB5 /* SecuritySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454094492031EEFD00603DB5 /* SecuritySettingsViewController.swift */; };
 		4540944C2031EF1600603DB5 /* SecuritySettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4540944B2031EF1600603DB5 /* SecuritySettingsPresenter.swift */; };
@@ -569,6 +571,8 @@
 		45310D0E2063B9F500105532 /* EthereumGasInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumGasInfo.swift; sourceTree = "<group>"; };
 		45344AC320E6587B0039DF30 /* CreateMultiSigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMultiSigViewController.swift; sourceTree = "<group>"; };
 		45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMultiSigPresenter.swift; sourceTree = "<group>"; };
+		45351169213973A300E1F559 /* MSWalletSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSWalletSettingsViewController.swift; sourceTree = "<group>"; };
+		4535116B213973B800E1F559 /* MSWalletSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSWalletSettingsPresenter.swift; sourceTree = "<group>"; };
 		4538BDCB2099E69900573426 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		454094492031EEFD00603DB5 /* SecuritySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsViewController.swift; sourceTree = "<group>"; };
 		4540944B2031EF1600603DB5 /* SecuritySettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsPresenter.swift; sourceTree = "<group>"; };
@@ -948,6 +952,7 @@
 		4506F1721FD9A2B700D575BA /* Wallet settings */ = {
 			isa = PBXGroup;
 			children = (
+				453511682139733E00E1F559 /* MS Wallet Settings */,
 				451ED78D207CBC2000542F00 /* Key VC */,
 				4506F1751FD9A30700D575BA /* WalletSettingsViewController.swift */,
 				4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */,
@@ -1042,6 +1047,15 @@
 				45BCB3C520EE4315009369D1 /* InviteCodeVC */,
 			);
 			path = CreateMultiSig;
+			sourceTree = "<group>";
+		};
+		453511682139733E00E1F559 /* MS Wallet Settings */ = {
+			isa = PBXGroup;
+			children = (
+				45351169213973A300E1F559 /* MSWalletSettingsViewController.swift */,
+				4535116B213973B800E1F559 /* MSWalletSettingsPresenter.swift */,
+			);
+			path = "MS Wallet Settings";
 			sourceTree = "<group>";
 		};
 		454094482031EED500603DB5 /* Security */ = {
@@ -2645,6 +2659,7 @@
 				8590835C2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift in Sources */,
 				4540945B203352CC00603DB5 /* PinCodeViewController.swift in Sources */,
 				45A9494F1FC6BDF3003C3A23 /* SendDetailsPresenter.swift in Sources */,
+				4535116C213973B800E1F559 /* MSWalletSettingsPresenter.swift in Sources */,
 				44C06FCB203D9021008CBA9D /* LoggingPrint.swift in Sources */,
 				44AAAE1920E4E0D000A481A4 /* NewContactAddressProtocol.swift in Sources */,
 				45A949351FC5992A003C3A23 /* SearchAddressTableViewCell.swift in Sources */,
@@ -2816,6 +2831,7 @@
 				FADC004A1FC3238D00182E45 /* RealmManager.swift in Sources */,
 				45E148AA204553C8006BD4D1 /* DonationAlertPrsenter.swift in Sources */,
 				440AD8D22020D1220015AEF1 /* Dictionary+Extension.swift in Sources */,
+				4535116A213973A300E1F559 /* MSWalletSettingsViewController.swift in Sources */,
 				45409456203348DD00603DB5 /* EntranceSettingsPresenter.swift in Sources */,
 				44DCC201205A9D34001080FB /* TopIndexRLM.swift in Sources */,
 				45A9493A1FC59E51003C3A23 /* RecentAddressTableViewCell.swift in Sources */,
