@@ -45,7 +45,7 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (self.tabBarController as! CustomTabBarViewController).menuButton.isHidden = true
-        if whereFrom != nil && whereFrom?.className == CreateMultiSigViewController.className {
+        if whereFrom != nil && whereFrom?.className == CreateMultiSigViewController.className || whereFrom?.className == AssetsViewController.className {
             addWallet.isHidden = false
         }
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -89,12 +89,13 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
         if whereFrom == nil {
             return false
         } else if whereFrom?.className != CreateMultiSigViewController.className {
-            return true
+            return false
+        } else if whereFrom?.className != AssetsViewController.className {
+            return false
         }
         
         return whereFrom == nil
     }
-    
 }
 
 extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource {

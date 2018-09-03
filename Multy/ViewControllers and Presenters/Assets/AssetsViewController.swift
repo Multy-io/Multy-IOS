@@ -432,6 +432,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
             chooseWalletVC.presenter.multisigFunc(inviteCode: string)
             chooseWalletVC.presenter.displayedBlockchainOnly = blockchainForTansfer
             chooseWalletVC.presenter.isNeedToPop = true
+            chooseWalletVC.whereFrom = self
             navigationController?.pushViewController(chooseWalletVC, animated: true)
         } else {
             let storyboard = UIStoryboard(name: "Send", bundle: nil)
