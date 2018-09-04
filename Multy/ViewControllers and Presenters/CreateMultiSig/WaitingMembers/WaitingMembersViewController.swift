@@ -156,6 +156,8 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
                 UIColor(ciColor: CIColor(red: 95.0 / 255.0, green: 204.0 / 255.0, blue: 125.0 / 255.0))],
                                                                gradientOrientation: .topRightBottomLeft)
             qrCodeImageView.isHidden = true
+            
+            
         } else {
             presenter.bottomButtonStatus = .inviteCode
             stateImageView.image = UIImage(named: "pendingSmallClock")
@@ -201,6 +203,8 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
             
             changeUI()
         }
+        
+        invitationHolderView.isHidden = (presenter.bottomButtonStatus == .hidden)
     }
     
     func changeUI() {
