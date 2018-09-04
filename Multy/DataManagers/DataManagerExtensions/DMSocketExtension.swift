@@ -186,7 +186,7 @@ extension DataManager {
             "walletindex": wallet.walletID,
             "currencyid" : wallet.chain.intValue,
             "networkid"  : wallet.multisigWallet!.chainType.intValue,
-            "txid": histObj.txId
+            "txid": histObj.txHash
         ]
         
         let paramsForMsgSend: NSDictionary = [
@@ -221,7 +221,7 @@ extension DataManager {
             "walletindex": wallet.walletID,
             "currencyid" : wallet.chain.intValue,
             "networkid"  : wallet.multisigWallet!.chainType.intValue,
-            "txid": histObj.txId
+            "txid": histObj.txHash
         ]
         
         let paramsForMsgSend: NSDictionary = [
@@ -232,7 +232,6 @@ extension DataManager {
             "status": 0,
             "payload": payloadForDecline
         ]
-        
         
         socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
             if err != nil {
