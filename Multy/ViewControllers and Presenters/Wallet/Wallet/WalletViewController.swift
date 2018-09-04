@@ -615,9 +615,15 @@ extension TableViewDataSource: UITableViewDataSource {
         
         if tableView == transactionsTable {
             // MULTI SIG CELL
-//            let multiSigCell = tableView.dequeueReusableCell(withIdentifier: "multiSigPendingCell") as! MultiSigPendingTableViewCell
-//            return multiSigCell
-
+            if indexPath.row < countOfHistObjs && presenter.transactionDataSource[indexPath.row].multisig != nil {
+                let multiSigCell = tableView.dequeueReusableCell(withIdentifier: "multiSigPendingCell") as! MultiSigPendingTableViewCell
+                multiSigCell.selectionStyle = .none
+                multiSigCell.histObj = presenter.transactionDataSource[indexPath.row]
+                multiSigCell.wallet = presenter.wallet
+                multiSigCell.fillCell()
+                
+                return multiSigCell
+            }
             if indexPath.row < countOfHistObjs && presenter.isTherePendingMoney(for: indexPath) {
                 let pendingTrasactionCell = tableView.dequeueReusableCell(withIdentifier: "TransactionPendingCellID") as! TransactionPendingCell
                 pendingTrasactionCell.selectionStyle = .none

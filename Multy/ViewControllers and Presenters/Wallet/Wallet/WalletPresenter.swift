@@ -80,11 +80,35 @@ class WalletPresenter: NSObject {
     }
     
     func makeHeightForTableCells(indexPath: IndexPath) -> CGFloat {
-        if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
-            return 135
-        } else {
-            return 70
+        switch wallet?.isMultiSig {
+        case true:
+            if indexPath.row < transactionDataSource.count && transactionDataSource[indexPath.row].multisig != nil {
+                return 172          //fixit: check for lockingmoney
+            } else {
+                return 70
+            }
+        case false:
+            if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
+                return 135
+            } else {
+                return 70
+            }
+        default: return 70
         }
+        
+//        if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
+//            if transactionDataSource[indexPath.row].isMultisigTx.boolValue {
+//                return 172 //fixit: check for lockingmoney
+//            } else {
+//                return 135
+//            }
+//        } else {
+//            if indexPath.row < transactionDataSource.count && transactionDataSource[indexPath.row].isMultisigTx.boolValue {
+//                return 172 //fixit: check for lockingmoney
+//            } else {
+//                return 70
+//            }
+//        }
         //FOR MULTISIG TRANSACTIONS
         //            if indexPath.row == 0 {
         //                return 172            //cell with locked and info view

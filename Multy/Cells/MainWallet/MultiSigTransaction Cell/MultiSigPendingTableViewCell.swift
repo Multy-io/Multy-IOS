@@ -39,6 +39,9 @@ class MultiSigPendingTableViewCell: UITableViewCell {
     @IBOutlet weak var watchViewWidthConstraint: NSLayoutConstraint!
     
     
+    var wallet : UserWalletRLM?
+    var histObj = HistoryRLM()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -46,6 +49,13 @@ class MultiSigPendingTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+    
+    public func fillCell() {
+        fillAddressAndName()
+        fillEthereumCell()
+        
+        makeConfirmationView()
     }
     
     func setupCell() {
@@ -70,5 +80,79 @@ class MultiSigPendingTableViewCell: UITableViewCell {
         separatorView.isHidden = true
         
         heightOfBigViewConstraint.constant = 46
+    }
+    
+    func fillAddressAndName() {
+//        var savedAddresses = DataManager.shared.savedAddresses
+        var address = String()
+        
+        address = histObj.addressesArray.last!
+        
+//        if let name = savedAddresses[address] {
+//            nameLabel.text = name
+//        } else {
+//            nameLabel.text = ""
+//        }
+        addressLbl.text = address
+    }
+    
+    func fillEthereumCell() {
+        if histObj.multisig?.confirmed == false {
+            //check for your or not your confirmation
+            transactionImg.image = #imageLiteral(resourceName: "arrowWaiting")
+            additionalInfoLbl.text = "Waiting for confirmations..." //or waiting your confirmation
+            additionalInfoLbl.textColor = #colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1) // else red
+        } else { //if confirmed {
+            transactionImg.image = #imageLiteral(resourceName: "arrowSended")
+        }
+        
+        let cryptoAmountString = BigInt(histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+        let fiatAmountString = (BigInt(histObj.txOutAmountString) * histObj.fiatCourseExchange).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
+        if cryptoAmountString != "" {  // if empty need to hide view
+            lockedCryptoLbl.text = cryptoAmountString + " " + wallet!.cryptoName
+            lockedFiatLbl.text = fiatAmountString + " " + wallet!.fiatName
+        } else {
+            heightOfBigViewConstraint.constant = 48
+        }
+        
+        cryptoSumLbl.text = cryptoAmountString
+        fiatSumLbl.text = fiatAmountString
+    }
+    
+    func makeConfirmationView() {
+        let countOfOwners = histObj.multisig?.owners.count
+        var countOfConfirmations = 0
+        var countOfDecline = 0
+        var countOfSeen = 0
+        
+        for owner in histObj.multisig!.owners {
+            if owner.confirmationStatus.intValue == MultisigOwnerTxStatus.msOwnerStatusConfirmed.rawValue {
+                countOfConfirmations += 1
+            } else if owner.confirmationStatus.intValue == MultisigOwnerTxStatus.msOwnerStatusSeen.rawValue {
+                countOfSeen += 1
+            } else if owner.confirmationStatus.intValue == MultisigOwnerTxStatus.msOwnerStatusDeclined.rawValue {
+                countOfDecline += 1
+            }
+        }
+        
+        infoLbl.text = "\(countOfConfirmations)" + "of " + "\(countOfOwners!)" + " confirmations"//localize it
+        
+        if countOfConfirmations > 0 {
+            successApproveCountLbl.text = "\(countOfConfirmations)"
+        }
+        
+        if countOfDecline > 0 {
+            declineApproveCountLbl.text = "\(countOfDecline)"
+        } else {
+            declineViewWidthConstraint.constant = 0
+            declineView.isHidden = true
+        }
+        
+        if countOfSeen > 0 {
+            watchApproveCountLbl.text = "\(countOfSeen)"
+        } else {
+            watchViewWidthConstraint.constant = 0
+            watchView.isHidden = true
+        }
     }
 }
