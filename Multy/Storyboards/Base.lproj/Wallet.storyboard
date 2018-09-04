@@ -60,7 +60,7 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bc-PL-C8n">
-                                <rect key="frame" x="0.0" y="72" width="375" height="928"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="864"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Vb-Wr-Uh3" userLabel="View - Content">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="928"/>
@@ -601,11 +601,11 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         </subviews>
                         <color key="backgroundColor" red="0.37111347913742065" green="0.80185776948928833" blue="0.49193811416625977" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="uag-1j-c6H" firstAttribute="top" secondItem="2bc-PL-C8n" secondAttribute="bottom" id="2L7-a9-P1q"/>
                             <constraint firstAttribute="trailing" secondItem="nvH-xQ-NcT" secondAttribute="trailing" id="9NH-mv-bdB"/>
                             <constraint firstItem="2bc-PL-C8n" firstAttribute="top" secondItem="Czg-lZ-KFq" secondAttribute="bottom" constant="8" id="Cam-OF-0aj"/>
                             <constraint firstItem="Czg-lZ-KFq" firstAttribute="top" secondItem="ZB8-eH-QIS" secondAttribute="bottom" id="DKP-Ol-FxL"/>
                             <constraint firstAttribute="trailing" secondItem="2bc-PL-C8n" secondAttribute="trailing" id="In8-DT-3WW"/>
-                            <constraint firstItem="SKe-xc-jl5" firstAttribute="top" secondItem="2bc-PL-C8n" secondAttribute="bottom" id="RzC-Hg-BRr"/>
                             <constraint firstItem="5Bc-EX-g8p" firstAttribute="leading" secondItem="CHj-pJ-c9i" secondAttribute="leading" id="SkJ-hh-R7J"/>
                             <constraint firstItem="Czg-lZ-KFq" firstAttribute="leading" secondItem="CHj-pJ-c9i" secondAttribute="leading" id="T5N-pF-AiZ"/>
                             <constraint firstItem="nvH-xQ-NcT" firstAttribute="leading" secondItem="CHj-pJ-c9i" secondAttribute="leading" id="TNz-5e-gUS"/>
@@ -643,6 +643,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <outlet property="donationFiatSumAndName" destination="Nai-av-9HA" id="KAz-Ta-5Tg"/>
                         <outlet property="donationView" destination="Ssb-nB-rPb" id="MFB-oK-tmB"/>
                         <outlet property="doubleSliderHolderView" destination="uag-1j-c6H" id="Wny-nn-P7f"/>
+                        <outlet property="doubleSliderHolderViewHeight" destination="JbD-Jy-c9A" id="qH7-bu-iVF"/>
                         <outlet property="noBalanceAddress" destination="Z0I-j3-snI" id="0K1-xj-j2i"/>
                         <outlet property="noBalanceErrorHolderView" destination="nvH-xQ-NcT" id="xmZ-4p-Mq0"/>
                         <outlet property="noteLbl" destination="Rbf-Dw-blV" id="Wd6-hm-ELT"/>

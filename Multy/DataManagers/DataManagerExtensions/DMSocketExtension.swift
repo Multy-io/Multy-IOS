@@ -179,13 +179,14 @@ extension DataManager {
         }
     }
     
-    func declineMultiSigTx(wallet: UserWalletRLM, histObj: HistoryRLM, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+    func declineMultiSigTx(wallet: UserWalletRLM, histObj: HistoryRLM, completion: @escaping(Result<String, String>) -> ()) {
         let payloadForDecline: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
             "address": wallet.multisigWallet!.linkedWalletAddress,
-            "invitecode": wallet.multisigWallet!.inviteCode
-            /* FIXME:
-             ... */
+            "walletindex": wallet.walletID,
+            "currencyid" : wallet.chain.intValue,
+            "networkid"  : wallet.multisigWallet!.chainType.intValue,
+            "txid": histObj.txId
         ]
         
         let paramsForMsgSend: NSDictionary = [
@@ -203,8 +204,47 @@ extension DataManager {
                 //FIXME: error handling
                 completion(Result.failure("wrong data"))
             } else {
-                let payloadDict = answerDict!["payload"] as! NSDictionary
-                completion(Result.success(payloadDict))
+                let payloadDict = answerDict!["payload"] as! String
+                if payloadDict == "declined" {
+                    completion(Result.success(payloadDict))
+                } else {
+                    completion(Result.failure("wrong data"))
+                }
+            }
+        }
+    }
+    
+    func viewMultiSigTx(wallet: UserWalletRLM, histObj: HistoryRLM, completion: @escaping(Result<String, String>) -> ()) {
+        let payloadForDecline: NSDictionary = [
+            "userid": DataManager.shared.apiManager.userID,
+            "address": wallet.multisigWallet!.linkedWalletAddress,
+            "walletindex": wallet.walletID,
+            "currencyid" : wallet.chain.intValue,
+            "networkid"  : wallet.multisigWallet!.chainType.intValue,
+            "txid": histObj.txId
+        ]
+        
+        let paramsForMsgSend: NSDictionary = [
+            "type": SocketMessageType.multisigView.rawValue,
+            "from": "",              // not requied
+            "to":"",                // not requied
+            "date": UInt64(Date().timeIntervalSince1970), // time unix
+            "status": 0,
+            "payload": payloadForDecline
+        ]
+        
+        
+        socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
+            if err != nil {
+                //FIXME: error handling
+                completion(Result.failure("wrong data"))
+            } else {
+                let payloadDict = answerDict!["payload"] as! String
+                if payloadDict == "viewed" {
+                    completion(Result.success(payloadDict))
+                } else {
+                    completion(Result.failure("wrong data"))
+                }
             }
         }
     }

@@ -41,6 +41,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var constraintDonationHeight: NSLayoutConstraint!
     @IBOutlet weak var blockchainInfoViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollContentHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var doubleSliderHolderViewHeight: NSLayoutConstraint!
     
     
     // MultiSig outlets
@@ -109,6 +110,10 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         self.scrollView.isScrollEnabled = true
         
         presenter.createPreliminaryData()
+        
+        if isMultisig && !presenter.isMultisigTxViewed {
+            presenter.viewMultisigTx()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -240,7 +245,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func checkMultisig() {
-        isMultisig = presenter.histObj.isMultisigTx
+        isMultisig = presenter.histObj.isMultisigTx.boolValue
         confirmationDetailsHolderView.isHidden = !isMultisig
         doubleSliderHolderView.isHidden = !isMultisig
     }
@@ -267,11 +272,20 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         dateFormatter.dateFormat = "HH:mm, d MMMM yyyy"
         let cryptoSumInBTC = UInt64(truncating: presenter.histObj.txOutAmount).btcValue
         
-        if isMultisig && !isDecided {
+        if isMultisig {
+            //FIXME: add switch for multisig tx statuses
             self.dateLbl.text = "Waiting for confirmations..."
             
             self.blockchainInfoView.isHidden = true
             self.blockchainInfoViewHeightConstraint.constant = 8
+            
+            if isDecided {
+                doubleSliderHolderView.isHidden = true
+                doubleSliderHolderViewHeight.constant = 0
+            } else {
+                doubleSliderHolderView.isHidden = false
+                doubleSliderHolderViewHeight.constant = 64
+            }
         } else {
             if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
                 presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue {
@@ -470,30 +484,27 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
     
     //MARK: UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return presenter.histObj.owners.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ConfirmationStatusCVCReuseId", for: indexPath) as! ConfirmationStatusCollectionViewCell
-        switch indexPath.item {
-        case 0:
-            cell.fill(address: "1KaNqVt2aUPY5Yyh6XiM6gn2KqC8zbGE63", status: .confirmed, memberName: "Zigmund", date: Date(timeIntervalSinceNow: -360))
-            break
+        let currentOwner = presenter.wallet.currentTransactionOwner(transaction: presenter.histObj)
+        if currentOwner != nil {
+            let owner = presenter.histObj.owners[indexPath.item]
+            let confirmationStatus = ConfirmationStatus(rawValue: owner.confirmationStatus.intValue)!
+            var date : Date?
+            switch confirmationStatus {
+            case .waiting:
+                break
+            case .viewed:
+                date = Date(timeIntervalSince1970: owner.viewTime.doubleValue)
+            case .confirmed, .declined:
+                date = Date(timeIntervalSince1970: owner.confirmationTime.doubleValue)
+            }
             
-        case 1:
-            cell.fill(address: "1LAjEP52mMaJWSRC6g5wdF8wwNFbzCkiRo", status: .waiting, memberName: "Alfredo", date: nil)
-            break
-            
-        case 2:
-            cell.fill(address: "13buGNTTQ6dGyAMXJofBRNTgCQPccApMLz", status: .declined, memberName: nil, date: Date(timeIntervalSinceNow: -360))
-            break
-            
-        case 3:
-            cell.fill(address: "1DYvmjLcMHuVWHwePyrW6DAAcKwMBbW9j1", status: .viewed, memberName: nil, date: Date(timeIntervalSinceNow: -360))
-            break
-            
-        default:
-            break
+            let name = currentOwner!.address == owner.address ? "You" : nil
+            cell.fill(address: owner.address, status: confirmationStatus, memberName: name, date: date)
         }
         
         return cell

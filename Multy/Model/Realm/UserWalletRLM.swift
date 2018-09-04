@@ -179,9 +179,11 @@ class UserWalletRLM: Object {
         return multisigWallet != nil
     }
     
+    
+    
     func confirmationStatusForTransaction(transaction : HistoryRLM) -> ConfirmationStatus {
         var result = ConfirmationStatus.waiting
-        if isMultiSig && transaction.isMultisigTx {
+        if isMultiSig && transaction.isMultisigTx.boolValue {
             let currentOwner = multisigWallet?.owners.filter {$0.associated == true}.first
             guard currentOwner != nil else {
                 return result
@@ -192,6 +194,20 @@ class UserWalletRLM: Object {
                 result = ConfirmationStatus(rawValue: transactionOwner!.confirmationStatus.intValue)!
             }
         }
+        return result
+    }
+    
+    func currentTransactionOwner(transaction : HistoryRLM) -> MultisigTransactionOwnerRLM? {
+        var result : MultisigTransactionOwnerRLM?
+        if isMultiSig && transaction.isMultisigTx.boolValue {
+            let currentOwner = multisigWallet?.owners.filter {$0.associated == true}.first
+            guard currentOwner != nil else {
+                return nil
+            }
+            
+            result = transaction.owners.filter {$0.address == currentOwner!.address}.first
+        }
+        
         return result
     }
     
@@ -552,6 +568,27 @@ class UserWalletRLM: Object {
 //        self.fiatName = "USD"
 //        self.fiatSymbol = "$"
 //    }
+    
+    func isAddressBelongsToWallet(_ address: String) -> Bool {
+        var result = false
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            let matchingAddresses = addresses.filter {$0.address == address}
+            if matchingAddresses.count > 0 {
+                result = true
+            }
+            break
+            
+        case BLOCKCHAIN_ETHEREUM:
+            result = self.address == address
+            break
+            
+        default:
+            break
+        }
+        
+        return result
+    }
 }
 
 extension ETHWalletRLM {

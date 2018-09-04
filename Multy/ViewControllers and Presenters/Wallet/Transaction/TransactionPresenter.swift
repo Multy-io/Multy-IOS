@@ -27,6 +27,20 @@ class TransactionPresenter: NSObject {
     var addressData : Dictionary<String, Any>?
     var linkedWallet: UserWalletRLM?
     
+    var isMultisigTxViewed : Bool {
+        get {
+            var result = false
+            if histObj.isMultisigTx.boolValue {
+                let confirmationStatus = wallet.confirmationStatusForTransaction(transaction: histObj)
+                if confirmationStatus != .waiting {
+                    result = true
+                }
+            }
+            
+            return result
+        }
+    }
+    
     func blockedAmount(for transaction: HistoryRLM) -> UInt64 {
         var sum = UInt64(0)
         
@@ -104,6 +118,17 @@ class TransactionPresenter: NSObject {
             case .failure(let error):
                 print(error)
                 self.transctionVC?.presentAlert(with: error)
+            }
+        }
+    }
+    
+    func viewMultisigTx() {
+        DataManager.shared.viewMultiSigTx(wallet: wallet, histObj: histObj) {[unowned self] result in
+            switch result {
+            case .success( _):
+                self.updateTx()
+            case .failure(let error):
+                print(error)
             }
         }
     }
