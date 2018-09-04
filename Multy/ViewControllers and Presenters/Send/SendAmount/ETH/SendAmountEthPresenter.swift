@@ -82,6 +82,12 @@ class SendAmountEthPresenter: NSObject {
     var binaryData : BinaryData?
     var addressData : Dictionary<String, Any>?
     var linkedWallet: UserWalletRLM?
+    var estimationInfo: NSDictionary?
+    
+    func getEstimation(for operation: String) -> String {
+        let value = self.estimationInfo?[operation] as? NSNumber
+        return value == nil ? "\(400_000)" : "\(value!)"
+    }
     
     func getData() {
         self.createPreliminaryData()
@@ -100,6 +106,22 @@ class SendAmountEthPresenter: NSObject {
                                          binaryData:    &binaryData!)
         
         if transactionDTO.choosenWallet!.isMultiSig {
+            DataManager.shared.estimation(for: wallet.address) { [unowned self] in
+                switch $0 {
+                case .success(let value):
+                    self.estimationInfo = value
+                    
+                    let limit = self.getEstimation(for: "submitTransaction")
+                    self.feeAmount = BigInt(limit) * self.transactionDTO.transaction!.transactionRLM!.sumInCryptoBigInt
+                    self.feeAmountInFiat = self.feeAmount * self.exchangeCourse
+                    
+                    break
+                case .failure(let error):
+                    print(error)
+                    break
+                }
+            }
+            
             DataManager.shared.getWallet(primaryKey: transactionDTO.choosenWallet!.multisigWallet!.linkedWalletID) { [unowned self] in
                 switch $0 {
                 case .success(let wallet):

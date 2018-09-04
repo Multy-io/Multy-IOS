@@ -121,6 +121,12 @@ class WalletPresenter: NSObject {
     
     func getHistory() {
         if wallet!.isMultiSig {
+            if wallet!.address.isEmpty {
+                self.updateTable(historyArray: List<HistoryRLM>(), error: nil)
+                
+                return
+            }
+            
             DataManager.shared.getMultisigTransactionHistory(currencyID: wallet!.chain,
                                                              networkID: wallet!.chainType,
                                                              address: wallet!.address) { [unowned self] (historyArray, error) in
