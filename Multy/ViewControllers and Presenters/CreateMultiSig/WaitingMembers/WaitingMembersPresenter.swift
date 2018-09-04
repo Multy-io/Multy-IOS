@@ -169,7 +169,8 @@ class WaitingMembersPresenter: NSObject {
                 
                 if let code = dict?["code"] as? Int, code == 200 {
 //                    self.viewController?.openNewlyCreatedWallet()
-                        self.updateWallet()
+                    self.viewController?.presentAlert(with: self.viewController?.localize(string: Constants.pendingMultisigAlertString))
+                    self.updateWallet()
                 } else {
                     if error != nil {
                         self.viewController?.presentAlert(with: error?.localizedDescription)
