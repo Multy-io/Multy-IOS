@@ -30,7 +30,7 @@ class TransactionPresenter: NSObject {
     var isMultisigTxViewed : Bool {
         get {
             var result = false
-            if histObj.isMultisigTx.boolValue {
+            if histObj.multisig != nil {
                 let confirmationStatus = wallet.confirmationStatusForTransaction(transaction: histObj)
                 if confirmationStatus != .waiting {
                     result = true

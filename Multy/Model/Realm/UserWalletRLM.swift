@@ -183,13 +183,13 @@ class UserWalletRLM: Object {
     
     func confirmationStatusForTransaction(transaction : HistoryRLM) -> ConfirmationStatus {
         var result = ConfirmationStatus.waiting
-        if isMultiSig && transaction.isMultisigTx.boolValue {
+        if isMultiSig && transaction.multisig != nil {
             let currentOwner = multisigWallet?.owners.filter {$0.associated == true}.first
             guard currentOwner != nil else {
                 return result
             }
             
-            let transactionOwner = transaction.owners.filter {$0.address == currentOwner!.address}.first
+            let transactionOwner = transaction.multisig!.owners.filter {$0.address == currentOwner!.address}.first
             if transactionOwner != nil {
                 result = ConfirmationStatus(rawValue: transactionOwner!.confirmationStatus.intValue)!
             }
@@ -199,13 +199,13 @@ class UserWalletRLM: Object {
     
     func currentTransactionOwner(transaction : HistoryRLM) -> MultisigTransactionOwnerRLM? {
         var result : MultisigTransactionOwnerRLM?
-        if isMultiSig && transaction.isMultisigTx.boolValue {
+        if isMultiSig && transaction.multisig != nil {
             let currentOwner = multisigWallet?.owners.filter {$0.associated == true}.first
             guard currentOwner != nil else {
                 return nil
             }
             
-            result = transaction.owners.filter {$0.address == currentOwner!.address}.first
+            result = transaction.multisig!.owners.filter {$0.address == currentOwner!.address}.first
         }
         
         return result

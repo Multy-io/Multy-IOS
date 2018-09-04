@@ -245,7 +245,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func checkMultisig() {
-        isMultisig = presenter.histObj.isMultisigTx.boolValue
+        isMultisig = presenter.histObj.multisig != nil
         confirmationDetailsHolderView.isHidden = !isMultisig
         doubleSliderHolderView.isHidden = !isMultisig
     }
@@ -484,14 +484,18 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
     
     //MARK: UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter.histObj.owners.count
+        var result = 0
+        if isMultisig {
+            result = presenter.histObj.multisig!.owners.count
+        }
+        return result
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ConfirmationStatusCVCReuseId", for: indexPath) as! ConfirmationStatusCollectionViewCell
         let currentOwner = presenter.wallet.currentTransactionOwner(transaction: presenter.histObj)
         if currentOwner != nil {
-            let owner = presenter.histObj.owners[indexPath.item]
+            let owner = presenter.histObj.multisig!.owners[indexPath.item]
             let confirmationStatus = ConfirmationStatus(rawValue: owner.confirmationStatus.intValue)!
             var date : Date?
             switch confirmationStatus {
