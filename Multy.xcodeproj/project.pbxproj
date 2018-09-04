@@ -271,6 +271,7 @@
 		85741D8520B45E8B0093933B /* circle_grow.json in Resources */ = {isa = PBXBuildFile; fileRef = 85741D8420B45E8A0093933B /* circle_grow.json */; };
 		85741D8720B555DB0093933B /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85741D8620B555DB0093933B /* BLEManager.swift */; };
 		85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85741D8820B55A650093933B /* CoreBluetooth.framework */; };
+		857C02AF213E80F300A0DEC5 /* MultisigTransactionRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C02AE213E80F300A0DEC5 /* MultisigTransactionRLM.swift */; };
 		8590835C2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8590835B2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift */; };
 		8592E02320FF9B5D0040125B /* MultisigWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02220FF9B5D0040125B /* MultisigWallet.swift */; };
 		8592E02521008D860040125B /* MultisigOwnerRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02421008D860040125B /* MultisigOwnerRLM.swift */; };
@@ -743,6 +744,7 @@
 		85741D8420B45E8A0093933B /* circle_grow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = circle_grow.json; sourceTree = "<group>"; };
 		85741D8620B555DB0093933B /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
 		85741D8820B55A650093933B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		857C02AE213E80F300A0DEC5 /* MultisigTransactionRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigTransactionRLM.swift; sourceTree = "<group>"; };
 		8590835B2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigTransactionOwnerRLM.swift; sourceTree = "<group>"; };
 		8592E02220FF9B5D0040125B /* MultisigWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigWallet.swift; sourceTree = "<group>"; };
 		8592E02421008D860040125B /* MultisigOwnerRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigOwnerRLM.swift; sourceTree = "<group>"; };
@@ -2000,6 +2002,7 @@
 				FA8835911FD856F4007694A2 /* UserWalletRLM.swift */,
 				8592E02421008D860040125B /* MultisigOwnerRLM.swift */,
 				8590835B2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift */,
+				857C02AE213E80F300A0DEC5 /* MultisigTransactionRLM.swift */,
 				458FD4C61FE3C2CB001C25BA /* SpendableOutputRLM.swift */,
 				FA0B618C1FEBC1DD00ED0CE6 /* RecentAddressesRLM.swift */,
 				FAB0E6A920189AE300EB53E2 /* StockExchangeRateRLM.swift */,
@@ -2774,6 +2777,7 @@
 				FA4D43FE1FC6D058003C7117 /* TransactionWalletCell.swift in Sources */,
 				4436123020B56F000095F3C6 /* UITableView+Extension.swift in Sources */,
 				45B0B0E81FEBEEB3005BB1C0 /* ActivityPresenter.swift in Sources */,
+				857C02AF213E80F300A0DEC5 /* MultisigTransactionRLM.swift in Sources */,
 				4585BD322049A925004542AE /* ExchangeStocksViewController.swift in Sources */,
 				4540944A2031EEFD00603DB5 /* SecuritySettingsViewController.swift in Sources */,
 				45F6340C202388DF00C17A7C /* ViewInBlockchainViewController.swift in Sources */,
