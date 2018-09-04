@@ -95,7 +95,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        
+        presenter.viewControllerViewWillDisappear()
     }
     
     func initialConfig() {
