@@ -122,4 +122,5 @@ extension Constants {
     static let serverNotWorkTitleString = "TEMPORARY OUT OF SERVICE"
     static let serverNotWorkingMessageString = "SERVER STOP STRING"
     static let pendingString = "PENDING"
+    static let pendingMultisigAlertString = "PLEASE WAIT MULTISIG CONFIRMATION"
 }
