@@ -297,6 +297,21 @@ extension MessageHandler {
         case SocketMessageType.multisigTxPaymentRequest:
             break
         case SocketMessageType.multisigTxIncoming:
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["To"] as? String
+            
+            guard address != nil else {
+                return
+            }
+            
+            let userInfo = ["address" : address!]
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msWalletUpdated"), object: nil, userInfo: userInfo)
             break
         case SocketMessageType.multisigTxConfirm:
             break

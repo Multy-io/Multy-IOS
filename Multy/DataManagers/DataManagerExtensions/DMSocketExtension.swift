@@ -185,7 +185,7 @@ extension DataManager {
             "address": wallet.multisigWallet!.linkedWalletAddress,
             "walletindex": wallet.walletID,
             "currencyid" : wallet.chain.intValue,
-            "networkid"  : wallet.multisigWallet!.chainType.intValue,
+            "networkid"  : wallet.chainType.intValue,
             "txid": histObj.txHash
         ]
         
@@ -220,14 +220,14 @@ extension DataManager {
             "address": wallet.multisigWallet!.linkedWalletAddress,
             "walletindex": wallet.walletID,
             "currencyid" : wallet.chain.intValue,
-            "networkid"  : wallet.multisigWallet!.chainType.intValue,
+            "networkid"  : wallet.chainType.intValue,
             "txid": histObj.txHash
         ]
         
         let paramsForMsgSend: NSDictionary = [
             "type": SocketMessageType.multisigView.rawValue,
             "from": "",              // not requied
-            "to":"",                // not requied
+            "to":"",                 // not requied
             "date": UInt64(Date().timeIntervalSince1970), // time unix
             "status": 0,
             "payload": payloadForDecline
