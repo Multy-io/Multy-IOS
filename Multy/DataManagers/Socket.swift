@@ -284,8 +284,9 @@ extension MessageHandler {
             }
             
             let inviteCode = payload!["inviteCode"] as? String
+            let statusCode = payload!["deployStatus"] as? Int
             
-            guard inviteCode != nil, inviteCode!.isEmpty == false else {
+            guard inviteCode != nil, inviteCode!.isEmpty == false, statusCode != nil, statusCode == DeployStatus.deployed.rawValue else {
                 return
             }
             
@@ -304,4 +305,3 @@ extension MessageHandler {
         }
     }
 }
-
