@@ -39,6 +39,9 @@ class MultiSigPendingTableViewCell: UITableViewCell {
     @IBOutlet weak var watchViewWidthConstraint: NSLayoutConstraint!
     
     
+    var wallet : UserWalletRLM?
+    var histObj = HistoryRLM()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -46,6 +49,11 @@ class MultiSigPendingTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+    
+    public func fillCell() {
+        fillAddressAndName()
+        fillEthereumCell()
     }
     
     func setupCell() {
@@ -70,5 +78,33 @@ class MultiSigPendingTableViewCell: UITableViewCell {
         separatorView.isHidden = true
         
         heightOfBigViewConstraint.constant = 46
+    }
+    
+    func fillAddressAndName() {
+//        var savedAddresses = DataManager.shared.savedAddresses
+        var address = String()
+        
+        address = histObj.addressesArray.last!
+        
+//        if let name = savedAddresses[address] {
+//            nameLabel.text = name
+//        } else {
+//            nameLabel.text = ""
+//        }
+        addressLbl.text = address
+    }
+    
+    func fillEthereumCell() {
+        let cryptoAmountString = BigInt(histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+        let fiatAmountString = (BigInt(histObj.txOutAmountString) * histObj.fiatCourseExchange).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
+        if cryptoAmountString != "" {  // if empty need to hide view
+            lockedCryptoLbl.text = cryptoAmountString + " " + wallet!.cryptoName
+            lockedFiatLbl.text = fiatAmountString + " " + wallet!.fiatName
+        } else {
+            heightOfBigViewConstraint.constant = 48
+        }
+        
+        cryptoSumLbl.text = cryptoAmountString
+        fiatSumLbl.text = fiatAmountString
     }
 }
