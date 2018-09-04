@@ -83,6 +83,8 @@ class Socket: NSObject {
                     return
                 }
                 
+                print("message:recieve:\n\(firstData)")
+                
                 self.handleMessage(firstData)
             }
             
@@ -225,10 +227,14 @@ class Socket: NSObject {
 extension MessageHandler {
     private func handleMessage(_ data: [AnyHashable : Any]) {
         let msgType : Int = data["type"] as! Int
+        let messageType = SocketMessageType(rawValue: msgType)
         
-        switch msgType {
+        guard messageType != nil else {
+            return
+        }
         
-        case SocketMessageType.multisigJoin.rawValue:
+        switch SocketMessageType(rawValue: msgType)!  {
+        case SocketMessageType.multisigJoin:
             let payload = data["payload"] as! [AnyHashable : Any]
             let inviteCode = payload["inviteCode"] as! String
             let userInfo = ["inviteCode" : inviteCode]
@@ -236,7 +242,7 @@ extension MessageHandler {
             NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
             break
             
-        case SocketMessageType.multisigLeave.rawValue:
+        case SocketMessageType.multisigLeave:
             let payload = data["payload"] as! [AnyHashable : Any]
             let inviteCode = payload["inviteCode"] as! String
             let userInfo = ["inviteCode" : inviteCode]
@@ -244,12 +250,12 @@ extension MessageHandler {
             NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
             break
             
-        case SocketMessageType.multisigDelete.rawValue:
+        case SocketMessageType.multisigDelete:
             let inviteCode = data["payload"] as! String
             NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: ["inviteCode" : inviteCode])
             break
             
-        case SocketMessageType.multisigKick.rawValue:
+        case SocketMessageType.multisigKick:
             let payload = data["payload"] as! [AnyHashable : Any]
             let multisig = payload["multisig"] as? [AnyHashable : Any]
             
@@ -264,10 +270,38 @@ extension MessageHandler {
             
             NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
             break
+        case SocketMessageType.multisigCheck:
+            break
+        case SocketMessageType.multisigView:
+            break
+        case SocketMessageType.multisigDecline:
+            break
+        case SocketMessageType.multisigWalletDeploy:
+            let payload = data["payload"] as? [AnyHashable : Any]
             
-        default:
+            guard payload != nil else {
+                return
+            }
+            
+            let inviteCode = payload!["inviteCode"] as? String
+            let statusCode = payload!["deployStatus"] as? Int
+            
+            guard inviteCode != nil, inviteCode!.isEmpty == false, statusCode != nil, statusCode == DeployStatus.deployed.rawValue else {
+                return
+            }
+            
+            let userInfo = ["inviteCode" : inviteCode!]
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msWalletUpdated"), object: nil, userInfo: userInfo)
+            break
+        case SocketMessageType.multisigTxPaymentRequest:
+            break
+        case SocketMessageType.multisigTxIncoming:
+            break
+        case SocketMessageType.multisigTxConfirm:
+            break
+        case SocketMessageType.multisigTxRevoke:
             break
         }
     }
 }
-

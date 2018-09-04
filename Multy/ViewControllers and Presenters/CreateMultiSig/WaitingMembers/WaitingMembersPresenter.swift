@@ -37,11 +37,13 @@ class WaitingMembersPresenter: NSObject {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("msWalletDeleted"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletUpdatedNotification(notification:)), name: NSNotification.Name("msWalletUpdated"), object: nil)
     }
     
     func viewControllerViewWillDisappear() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msMembersUpdated"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletDeleted"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletUpdated"), object: nil)
     }
 
     func kickOwnerWithIndex(index: Int) {
@@ -76,6 +78,21 @@ class WaitingMembersPresenter: NSObject {
         if inviteCode == wallet.multisigWallet?.inviteCode {
             if notification.userInfo!["kickedAddress"] != nil && wallet.multisigWallet?.linkedWalletAddress == notification.userInfo!["kickedAddress"] as! String {
                 self.viewController?.navigationController?.popToRootViewController(animated: true)
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.updateWallet()
+            }
+        }
+    }
+    
+    @objc fileprivate func handleWalletUpdatedNotification(notification : Notification) {
+        let inviteCode = notification.userInfo!["inviteCode"] as! String
+        if inviteCode == wallet.multisigWallet!.inviteCode {
+            if inviteCode == wallet.multisigWallet!.inviteCode {
+                viewController!.openNewlyCreatedWallet()
+                
                 return
             }
             
@@ -136,9 +153,15 @@ class WaitingMembersPresenter: NSObject {
         let ownersString = createOwnersString()
         let gasLimitForDeployMS = getEstimation(for: "deployMultisig")
         
+        guard estimationInfo != nil else {
+            self.viewController?.presentAlert(with: self.viewController?.localize(string: Constants.somethingWentWrongString))
+            
+            return
+        }
+        
         let result = DataManager.shared.createMultiSigWallet(binaryData: &binData,
                                                              wallet: linkedWallet,
-                                                             creationPriceString: "0",// "\(estimationInfo["deployMultisig"] as! NSNumber)"
+                                                             creationPriceString: "\(estimationInfo!["priceOfCreation"] as! NSNumber)",
                                                              gasPriceString: "1000000000",
                                                              gasLimitString: gasLimitForDeployMS,
                                                              owners: ownersString,
@@ -168,8 +191,8 @@ class WaitingMembersPresenter: NSObject {
                 print("---------\(dict)")
                 
                 if let code = dict?["code"] as? Int, code == 200 {
-//                    self.viewController?.openNewlyCreatedWallet()
-                    self.viewController?.presentAlert(with: self.viewController?.localize(string: Constants.pendingMultisigAlertString))
+                    self.viewController?.presentAlert(withTitle: self.viewController?.localize(string: Constants.warningString),
+                                                      andMessage: self.viewController?.localize(string: Constants.pendingMultisigAlertString))
                     self.updateWallet()
                 } else {
                     if error != nil {
