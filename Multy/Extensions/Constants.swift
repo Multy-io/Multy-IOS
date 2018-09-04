@@ -205,6 +205,14 @@ enum MultiSigWalletStatus: Int {
         multisigStatusDeployed =        5
 }
 
+enum MultisigOwnerTxStatus: Int {
+    case
+    msOwnerStatusWaiting   = 0,
+    msOwnerStatusSeen      = 1,
+    msOwnerStatusConfirmed = 2,
+    msOwnerStatusDeclined  = 3
+}
+
 let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for available donation
 let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 
