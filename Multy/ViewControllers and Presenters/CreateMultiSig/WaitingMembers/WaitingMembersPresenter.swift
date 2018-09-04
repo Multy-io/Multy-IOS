@@ -153,9 +153,15 @@ class WaitingMembersPresenter: NSObject {
         let ownersString = createOwnersString()
         let gasLimitForDeployMS = getEstimation(for: "deployMultisig")
         
+        guard estimationInfo != nil else {
+            self.viewController?.presentAlert(with: self.viewController?.localize(string: Constants.somethingWentWrongString))
+            
+            return
+        }
+        
         let result = DataManager.shared.createMultiSigWallet(binaryData: &binData,
                                                              wallet: linkedWallet,
-                                                             creationPriceString: "0",// "\(estimationInfo["priceOfCreation"] as! NSNumber)"
+                                                             creationPriceString: "\(estimationInfo!["priceOfCreation"] as! NSNumber)",
                                                              gasPriceString: "1000000000",
                                                              gasLimitString: gasLimitForDeployMS,
                                                              owners: ownersString,
