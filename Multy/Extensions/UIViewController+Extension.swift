@@ -23,12 +23,17 @@ private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, origin
 
 extension Localizable where Self: UIViewController, Self: Localizable {
 
-    func presentAlert(with message: String?) {
-        let alert = UIAlertController(title: localize(string: Constants.errorString), message: message, preferredStyle: .alert)
+    func presentAlert(with message: String?) {        
+        presentAlert(withTitle: localize(string: Constants.errorString), andMessage: message)
+    }
+    
+    func presentAlert(withTitle title: String?, andMessage message: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         
         self.present(alert, animated: true, completion: nil)
     }
+
     
     func makePurchaseFor(productId: String) {
         let loader = PreloaderView(frame: HUDFrame, text: localize(string: Constants.loadingString), image: #imageLiteral(resourceName: "walletHuge"))
