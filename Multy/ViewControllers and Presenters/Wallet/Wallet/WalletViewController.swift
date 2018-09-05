@@ -384,10 +384,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         guard address != nil else {
             return
         }
-        
-
-        
-        if (presenter.wallet?.isAddressBelongsToWallet(address!))! {
+                
+        if presenter.wallet!.isAddressBelongsToWallet(address!) {
             presenter.isSocketInitiateUpdating = true
             presenter.getHistoryAndWallet()
         }
