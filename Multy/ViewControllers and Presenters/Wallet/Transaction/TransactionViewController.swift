@@ -95,7 +95,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         self.checkStatus()
         self.constraintDonationHeight.constant = 0
         self.donationView.isHidden = true
-        self.updateUI()
         self.sendAnalyticOnStrart()
         
         
@@ -125,6 +124,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             doubleSliderVC = sendStoryboard.instantiateViewController(withIdentifier: "doubleSlideView") as! DoubleSlideViewController
             doubleSliderVC.delegate = self
             add(doubleSliderVC, to: doubleSliderHolderView)
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
         }
     }
     
@@ -132,6 +133,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillDisappear(animated)
         
         if isMultisig {
+            NotificationCenter.default.removeObserver(self)
             doubleSliderVC.remove()
         }
     }
@@ -255,7 +257,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             self.titleLbl.textColor = .white
             backImageView.image = UIImage(named: "backWhite")
         }
-        
+        self.updateUI()
     }
     
     func checkMultisig() {
@@ -385,6 +387,31 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         }
         
         self.view.layoutIfNeeded()
+    }
+    
+    @objc func updateMultisigWalletAfterSockets(notification : NSNotification) {
+       
+        if !isVisible() {
+            return
+        }
+        
+        let tx = notification.userInfo?["transaction"] as? NSDictionary
+        let payload = tx?["payload"] as? [AnyHashable : Any]
+        guard payload != nil else {
+            return
+        }
+        
+        let address = payload!["To"] as? String
+        
+        guard address != nil else {
+            return
+        }
+        
+        if (presenter.wallet.isAddressBelongsToWallet(address!)) {
+            let updatedTx = HistoryRLM.initWithInfo(historyDict: tx!)
+            presenter.histObj = updatedTx
+            checkStatus()
+        }
     }
     
     func makeDonationConstraint() -> CGFloat {

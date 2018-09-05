@@ -159,7 +159,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
         if presenter.wallet!.isMultiSig {
-            NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msWalletUpdated"), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets(notification:)), name: NSNotification.Name("transactionUpdated"), object: nil)
         }
@@ -373,10 +373,19 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             return
         }
         
-        let address = notification.userInfo?["address"] as? String
+        let tx = notification.userInfo?["transaction"] as? [AnyHashable : Any]
+        let payload = tx?["payload"] as? [AnyHashable : Any]
+        guard payload != nil else {
+            return
+        }
+        
+        let address = payload!["To"] as? String
+        
         guard address != nil else {
             return
         }
+        
+
         
         if (presenter.wallet?.isAddressBelongsToWallet(address!))! {
             presenter.isSocketInitiateUpdating = true
