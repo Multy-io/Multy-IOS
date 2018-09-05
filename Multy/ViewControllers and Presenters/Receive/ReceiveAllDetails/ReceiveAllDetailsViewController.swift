@@ -253,7 +253,7 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
         self.walletNameLbl.text = self.presenter.wallet?.name
         
         //FIXME: BLOCKCHAIN
-        let blockchain = BlockchainType.create(wallet: presenter.wallet!)
+        let blockchain = BlockchainType.createAssociated(wallet: presenter.wallet!)
 
 //        self.walletCryptoSumBtn.setTitle("\((self.presenter.wallet?.sumInCryptoString) ?? "") \(blockchain.shortName /*self.presenter.wallet?.cryptoName ?? ""*/)", for: .normal)
         //FIXME:  Check this
