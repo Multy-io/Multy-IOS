@@ -295,13 +295,23 @@ extension MessageHandler {
             NotificationCenter.default.post(name: NSNotification.Name("msWalletUpdated"), object: nil, userInfo: userInfo)
             break
         case SocketMessageType.multisigTxPaymentRequest:
+            handlePaymentRequestMessage(data)
             break
         case SocketMessageType.multisigTxIncoming:
+            handlePaymentRequestMessage(data)
             break
         case SocketMessageType.multisigTxConfirm:
+            handlePaymentRequestMessage(data)
             break
         case SocketMessageType.multisigTxRevoke:
+            handlePaymentRequestMessage(data)
             break
         }
+    }
+    
+    private func handlePaymentRequestMessage(_ data : [AnyHashable : Any]) {
+        let userInfo = ["transaction" : data]
+        
+        NotificationCenter.default.post(name: NSNotification.Name("msTransactionUpdated"), object: nil, userInfo: userInfo)
     }
 }
