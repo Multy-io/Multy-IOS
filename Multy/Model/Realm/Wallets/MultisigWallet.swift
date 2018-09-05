@@ -30,4 +30,8 @@ class MultisigWallet: Object {
     var owners = List<MultisigOwnerRLM>()
 
     @objc dynamic var amICreator = Bool()
+    
+    var isDeployed: Bool {
+        return deployStatus.intValue == DeployStatus.deployed.rawValue
+    }
 }
