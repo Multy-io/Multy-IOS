@@ -373,13 +373,11 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             return
         }
         
-        let tx = notification.userInfo?["transaction"] as? [AnyHashable : Any]
-        let payload = tx?["payload"] as? [AnyHashable : Any]
-        guard payload != nil else {
+        guard notification.userInfo != nil else {
             return
         }
         
-        let address = payload!["To"] as? String
+        let address = notification.userInfo!["To"] as? String
         
         guard address != nil else {
             return

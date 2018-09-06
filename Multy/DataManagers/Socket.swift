@@ -310,7 +310,7 @@ extension MessageHandler {
     }
     
     private func handlePaymentRequestMessage(_ data : [AnyHashable : Any]) {
-        let userInfo = ["transaction" : data]
+        let userInfo = data["payload"] as? [AnyHashable : Any]
         
         NotificationCenter.default.post(name: NSNotification.Name("msTransactionUpdated"), object: nil, userInfo: userInfo)
     }
