@@ -81,25 +81,25 @@ class TransactionPresenter: NSObject {
                 DataManager.shared.estimation(for: "price") { [unowned self] in
                     switch $0 {
                     case .success(let value):
-                        let gasPrice = value["confirmTransaction"] as? NSNumber
-                        guard gasPrice != nil else {
+                        let gasLimit = value["confirmTransaction"] as? NSNumber
+                        guard gasLimit != nil else {
                             return
                         }
                         
                         let trData = DataManager.shared.confirmMultiSigTx(binaryData: &self.binaryData!,
                                                                           wallet: linkedWallet,
                                                                           balanceAmountString: linkedWallet.availableAmount.stringValue,
-                                                                          sendFromAddress: linkedWallet.address,
+                                                                          sendFromAddress: self.wallet.address,
                                                                           nonce: linkedWallet.ethWallet!.nonce.intValue,
                                                                           nonceMultiSigTx: self.histObj.nonce.intValue,
                                                                           gasPriceString: "\(1_000_000_000)",
-                            gasLimitString: gasPrice!.stringValue)
+                                                                          gasLimitString: gasLimit!.stringValue)
                         
                         let newAddressParams = [
                             "walletindex"   : linkedWallet.walletID.intValue,
                             "address"       : "",
                             "addressindex"  : linkedWallet.addresses.count,
-                            "transaction"   : trData.0,
+                            "transaction"   : trData.message,
                             "ishd"          : NSNumber(booleanLiteral: false)
                             ] as [String : Any]
                         
