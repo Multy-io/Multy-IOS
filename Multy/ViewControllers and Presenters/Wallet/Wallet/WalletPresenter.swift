@@ -82,8 +82,13 @@ class WalletPresenter: NSObject {
     func makeHeightForTableCells(indexPath: IndexPath) -> CGFloat {
         switch wallet?.isMultiSig {
         case true:
-            if indexPath.row < transactionDataSource.count && transactionDataSource[indexPath.row].multisig != nil {
-                return 172          //fixit: check for lockingmoney
+            if indexPath.row < transactionDataSource.count && transactionDataSource[indexPath.row].multisig != nil {   //46
+                if wallet!.isRejected(tx: transactionDataSource[indexPath.row]) {
+                    return 126
+                } else {
+//                    return 172          //fixit: check for lockingmoney
+                    return 126 
+                }
             } else {
                 return 70
             }

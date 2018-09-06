@@ -21,6 +21,7 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
     @IBOutlet weak var maxLbl: UILabel!
     @IBOutlet weak var btnSumLbl: UILabel!
     @IBOutlet weak var commissionSwitch: UISwitch!
+    @IBOutlet weak var commissionStack: UIStackView!
     
     @IBOutlet weak var scrollView: UIScrollView!  //
     @IBOutlet weak var swapBtn: UIButton!         // ipad
@@ -72,11 +73,18 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
         NotificationCenter.default.addObserver(self, selector: #selector(self.showKeyboard), name: NSNotification.Name(rawValue: "showKeyboard"), object: nil)
         self.amountTF.resignFirstResponder()
         self.amountTF.becomeFirstResponder()
+        multiSigSetup()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    func multiSigSetup() {
+        if presenter.transactionDTO.choosenWallet!.isMultiSig {
+            commissionStack.isHidden = true
+        }
     }
     
     @IBAction func backAction(_ sender: Any) {
