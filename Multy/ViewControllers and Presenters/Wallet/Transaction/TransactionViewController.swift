@@ -579,7 +579,6 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
     func didSlideToSend(_ sender: DoubleSlideViewController) {
         //FIXME: stub
         print("Slide to Send")
-        showNoBalanceView()
         presenter.confirmMultisigTx()
     }
     
