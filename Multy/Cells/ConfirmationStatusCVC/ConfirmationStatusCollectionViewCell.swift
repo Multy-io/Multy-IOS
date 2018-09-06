@@ -74,7 +74,7 @@ class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
             
         case .declined:
             statusString = "Declined"
-            statusColor = UIColor(red: 95.0 / 255.0, green: 204.0 / 255.0, blue: 125.0 / 255.0, alpha: 1.0)
+            statusColor = UIColor(red: 238 / 255.0, green: 12.0 / 255.0, blue: 53.0 / 255.0, alpha: 1.0)
             statusFont = UIFont(name: "AvenirNext-Medium", size: 12.0)!
             break
             
