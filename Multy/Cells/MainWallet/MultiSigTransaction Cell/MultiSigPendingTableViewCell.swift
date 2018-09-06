@@ -97,11 +97,20 @@ class MultiSigPendingTableViewCell: UITableViewCell {
     }
     
     func fillEthereumCell() {
-        if histObj.multisig?.confirmed == false {
+        showOnlyInfo()
+        if wallet!.isRejected(tx: histObj) {
+            transactionImg.image = #imageLiteral(resourceName: "arrowDeclined")
+            additionalInfoLbl.text = "Rejected"
+        } else if histObj.multisig?.confirmed == false {
             //check for your or not your confirmation
             transactionImg.image = #imageLiteral(resourceName: "arrowWaiting")
-            additionalInfoLbl.text = "Waiting for confirmations..." //or waiting your confirmation
-            additionalInfoLbl.textColor = #colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1) // else red
+            if histObj.multisig!.isNeedOnlyYourConfirmation(walletAddress: wallet!.address) {
+                additionalInfoLbl.text = "Waiting your confirmation..."
+                additionalInfoLbl.textColor = #colorLiteral(red: 0.9215686275, green: 0.07843137255, blue: 0.231372549, alpha: 1)
+            } else {
+                additionalInfoLbl.text = "Waiting for confirmations..."
+                additionalInfoLbl.textColor = #colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1)
+            }
         } else { //if confirmed {
             transactionImg.image = #imageLiteral(resourceName: "arrowSended")
         }
@@ -135,7 +144,7 @@ class MultiSigPendingTableViewCell: UITableViewCell {
             }
         }
         
-        infoLbl.text = "\(countOfConfirmations)" + "of " + "\(countOfOwners!)" + " confirmations"//localize it
+        infoLbl.text = "\(countOfConfirmations)" + " of " + "\(countOfOwners!)" + " confirmations"//localize it
         
         if countOfConfirmations > 0 {
             successApproveCountLbl.text = "\(countOfConfirmations)"
