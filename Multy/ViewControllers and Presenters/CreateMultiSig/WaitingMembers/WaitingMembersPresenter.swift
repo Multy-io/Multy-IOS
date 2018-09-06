@@ -22,7 +22,14 @@ class WaitingMembersPresenter: NSObject {
     
     var bottomButtonStatus = BottomButtonStatus.hidden
     let createdMultiSigWallet = UserWalletRLM()
-    var estimationInfo: NSDictionary?
+    var estimationInfo: NSDictionary? {
+        didSet {
+            if estimationInfo != nil {
+                feeAmount = BigInt("\(1_000_000_000)") * BigInt(getEstimation(for: "deployMultisig"))
+            }
+        }
+    }
+    var feeAmount = BigInt("\(1_000_000_000)") * BigInt("\(5_000_000)")
     
     func viewControllerViewDidLoad() {
 //        inviteCode = makeInviteCode()
