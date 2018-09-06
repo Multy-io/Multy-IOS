@@ -211,6 +211,18 @@ class UserWalletRLM: Object {
         return result
     }
     
+    func isRejected(tx: HistoryRLM) -> Bool {
+        guard tx.multisig != nil else {
+            return false
+        }
+        let declinedCount = tx.multisig!.owners.reduce(0) {
+            $0 + ($1.confirmationStatus.intValue == MultisigOwnerTxStatus.msOwnerStatusDeclined.rawValue ? 1 : 0)
+        }
+//        let declinedCount = tx.multisig!.owners.filter { $0.confirmationStatus.intValue == MultisigOwnerTxStatus.msOwnerStatusDeclined.rawValue }.count
+        
+        return declinedCount + multisigWallet!.signaturesRequiredCount > multisigWallet!.ownersCount
+    }
+    
     @objc dynamic var fiatName = String()
     @objc dynamic var fiatSymbol = String()
     

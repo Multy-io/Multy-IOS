@@ -48,4 +48,13 @@ class MultisigTransactionRLM: Object {
         
         return result
     }
+    
+    func isNeedOnlyYourConfirmation(walletAddress: String) -> Bool {
+        for owner in owners {
+            if owner.address == walletAddress && owner.confirmationTx.isEmpty && owner.confirmationStatus.intValue != MultisigOwnerTxStatus.msOwnerStatusDeclined.rawValue {
+                return true
+            }
+        }
+        return false
+    }
 }
