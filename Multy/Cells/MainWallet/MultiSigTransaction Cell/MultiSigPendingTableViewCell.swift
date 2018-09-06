@@ -35,8 +35,8 @@ class MultiSigPendingTableViewCell: UITableViewCell {
     @IBOutlet weak var watchApproveCountLbl: UILabel!
     
     @IBOutlet weak var successViewWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var declineViewWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var watchViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var declineViewWidthConstraint: NSLayoutConstraint! // normal is 46
+    @IBOutlet weak var watchViewWidthConstraint: NSLayoutConstraint!   // normal is 46
     
     
     var wallet : UserWalletRLM?
@@ -143,6 +143,8 @@ class MultiSigPendingTableViewCell: UITableViewCell {
         
         if countOfDecline > 0 {
             declineApproveCountLbl.text = "\(countOfDecline)"
+            declineViewWidthConstraint.constant = 46
+            declineView.isHidden = false
         } else {
             declineViewWidthConstraint.constant = 0
             declineView.isHidden = true
@@ -150,6 +152,8 @@ class MultiSigPendingTableViewCell: UITableViewCell {
         
         if countOfSeen > 0 {
             watchApproveCountLbl.text = "\(countOfSeen)"
+            watchViewWidthConstraint.constant = 46
+            watchView.isHidden = false
         } else {
             watchViewWidthConstraint.constant = 0
             watchView.isHidden = true
