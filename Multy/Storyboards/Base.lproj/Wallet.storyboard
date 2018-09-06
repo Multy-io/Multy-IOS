@@ -3391,7 +3391,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m5e-fD-A3P">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m5e-fD-A3P">
                                         <rect key="frame" x="0.0" y="705.5" width="375" height="64"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6aq-vB-uI5">
@@ -3435,7 +3435,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <constraint firstAttribute="trailing" secondItem="CGo-Ty-4ko" secondAttribute="trailing" id="zHq-MG-E4V"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7CA-wG-gWj">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7CA-wG-gWj">
                                         <rect key="frame" x="16" y="785.5" width="343" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="Dgh-Ui-Ubk"/>
