@@ -357,14 +357,14 @@ extension CreateTransactionDelegate {
         } else {
             sendAmount = sumInCrypto - feeAmount
         }
-        
+
         if transactionDTO.choosenWallet!.isMultiSig {
             if linkedWallet == nil {
                 rawTransaction = "Error"
-                
+
                 return false
             }
-            
+
             let trData = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
                                                              wallet: linkedWallet!,
                                                              sendFromAddress: transactionDTO.choosenWallet!.address,
@@ -372,9 +372,9 @@ extension CreateTransactionDelegate {
                                                              sendToAddress: transactionDTO.sendAddress!,
                                                              gasPriceString: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
                                                              gasLimitString: "400000")
-            
+
             rawTransaction = trData.message
-            
+
             return trData.isTransactionCorrect
         } else {
             let trData = DataManager.shared.coreLibManager.createEtherTransaction(
@@ -386,9 +386,9 @@ extension CreateTransactionDelegate {
                 ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
                 gasPrice: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
                 gasLimit: "40000")
-            
+
             rawTransaction = trData.message
-            
+
             return trData.isTransactionCorrect
         }
     }

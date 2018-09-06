@@ -67,19 +67,6 @@ class TransactionPresenter: NSObject {
                                                       walletID:         self.wallet.walletID.uint32Value,
                                                       addressID:        self.wallet.changeAddressIndex,
                                                       binaryData:      &self.binaryData!)
-                
-                if self.wallet.isMultiSig {
-                    DataManager.shared.getWallet(primaryKey: self.wallet.multisigWallet!.linkedWalletID) { [unowned self] in
-                        switch $0 {
-                        case .success(let wallet):
-                            self.linkedWallet = wallet
-                            break;
-                        case .failure(let errorString):
-                            print(errorString)
-                            break;
-                        }
-                    }
-                }
             }
         }
     }
@@ -87,23 +74,65 @@ class TransactionPresenter: NSObject {
     func confirmMultisigTx() {
         transctionVC?.spiner.startAnimating()
         
-//        let trData = DataManager.shared.confirmMultiSigTx(binaryData: &<#T##BinaryData#>,
-//                                                          wallet: <#T##UserWalletRLM#>,
-//                                                          balanceAmountString: <#T##String#>,
-//                                                          sendFromAddress: <#T##String#>,
-//                                                          nonce: <#T##Int#>,
-//                                                          nonceMultiSigTx: <#T##Int#>,
-//                                                          gasPriceString: <#T##String#>,
-//                                                          gasLimitString: <#T##String#>)
-        
-        DataManager.shared.confirmMultiSigTx(wallet: wallet, histObj: histObj) {[unowned self] result in
-            self.transctionVC?.spiner.stopAnimating()
-            switch result {
-            case .success( _):
-                self.updateTx()
-            case .failure(let error):
-                print(error)
-                self.transctionVC?.presentAlert(with: error)
+        DataManager.shared.getWallet(primaryKey: wallet.multisigWallet!.linkedWalletID) { [unowned self] in
+            switch $0 {
+            case .success(let wallet):
+                let linkedWallet = wallet
+                DataManager.shared.estimation(for: "price") { [unowned self] in
+                    switch $0 {
+                    case .success(let value):
+                        let gasLimit = value["confirmTransaction"] as? NSNumber
+                        guard gasLimit != nil else {
+                            return
+                        }
+                        
+                        let trData = DataManager.shared.confirmMultiSigTx(binaryData: &self.binaryData!,
+                                                                          wallet: linkedWallet,
+                                                                          balanceAmountString: linkedWallet.availableAmount.stringValue,
+                                                                          sendFromAddress: self.wallet.address,
+                                                                          nonce: linkedWallet.ethWallet!.nonce.intValue,
+                                                                          nonceMultiSigTx: self.histObj.nonce.intValue,
+                                                                          gasPriceString: "\(1_000_000_000)",
+                                                                          gasLimitString: gasLimit!.stringValue)
+                        
+                        let newAddressParams = [
+                            "walletindex"   : linkedWallet.walletID.intValue,
+                            "address"       : "",
+                            "addressindex"  : linkedWallet.addresses.count,
+                            "transaction"   : trData.message,
+                            "ishd"          : NSNumber(booleanLiteral: false)
+                            ] as [String : Any]
+                        
+                        let params = [
+                            "currencyid": linkedWallet.chain,
+                            "payload"   : newAddressParams
+                            ] as [String : Any]
+                        
+                        DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
+                            print("---------\(dict)")
+                            
+                            if error != nil {
+                                print("sendHDTransaction Error: \(error)")
+                                
+                                return
+                            }
+                            
+                            if dict!["code"] as! Int == 200 {
+                                self.transctionVC?.navigationController?.popViewController(animated: true)
+                            } else {
+                                print(error)
+                            }
+                        }
+                        
+                        break
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+                break;
+            case .failure(let errorString):
+                print(errorString)
+                break;
             }
         }
     }
@@ -114,7 +143,7 @@ class TransactionPresenter: NSObject {
             self.transctionVC?.spiner.stopAnimating()
             switch result {
             case .success( _):
-                self.updateTx()
+                self.transctionVC?.navigationController?.popViewController(animated: true)
             case .failure(let error):
                 print(error)
                 self.transctionVC?.presentAlert(with: error)
@@ -126,17 +155,10 @@ class TransactionPresenter: NSObject {
         DataManager.shared.viewMultiSigTx(wallet: wallet, histObj: histObj) {[unowned self] result in
             switch result {
             case .success( _):
-                self.updateTx()
+                break
             case .failure(let error):
                 print(error)
             }
-        }
-    }
-    
-    func updateTx() {
-        let blockchainType = BlockchainType.create(wallet: wallet)
-        DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: blockchainType) { (wallet, error) in
-            // FIXME: invoke updating transaction history and then update UI
         }
     }
 }

@@ -184,7 +184,8 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
                     switch $0 {
                     case .success(_):
                         let priceInWei = self.presenter.estimationInfo!["priceOfCreation"] as! NSNumber
-                        let priceString = BigInt("\(priceInWei)").cryptoValueString(for: self.presenter.wallet.blockchain)
+                        let totalPrice = BigInt("\(priceInWei)") + self.presenter.feeAmount
+                        let priceString = totalPrice.cryptoValueString(for: self.presenter.wallet.blockchain)
                         self.invitationCodeButton.setTitle("\(Constants.startForString) \(priceString) ETH", for: .normal)
                         break
                     case .failure(_):
