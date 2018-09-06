@@ -12,6 +12,7 @@ class MultisigTransactionRLM: Object {
     @objc dynamic var contractAddress = String()
     @objc dynamic var methodInvoked = String()
     @objc dynamic var invocationStatus = NSNumber(booleanLiteral: false)
+    @objc dynamic var index = NSNumber(value: 0)
     var owners = List<MultisigTransactionOwnerRLM>()
     
     public class func initWithInfo(multisigTxDict: NSDictionary) -> MultisigTransactionRLM {
@@ -27,6 +28,10 @@ class MultisigTransactionRLM: Object {
         
         if let input = multisigTxDict["input"] as? String {
             result.input = input
+        }
+        
+        if let index = multisigTxDict["index"] as? NSNumber {
+            result.index = index
         }
         
         //Multisig part

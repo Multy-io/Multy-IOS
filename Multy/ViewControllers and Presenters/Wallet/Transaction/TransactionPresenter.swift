@@ -91,7 +91,7 @@ class TransactionPresenter: NSObject {
                                                                           balanceAmountString: linkedWallet.availableAmount.stringValue,
                                                                           sendFromAddress: self.wallet.address,
                                                                           nonce: linkedWallet.ethWallet!.nonce.intValue,
-                                                                          nonceMultiSigTx: self.histObj.nonce.intValue,
+                                                                          nonceMultiSigTx: self.histObj.multisig!.index.intValue,
                                                                           gasPriceString: "\(1_000_000_000)",
                                                                           gasLimitString: gasLimit!.stringValue)
                         
@@ -105,6 +105,7 @@ class TransactionPresenter: NSObject {
                         
                         let params = [
                             "currencyid": linkedWallet.chain,
+                            "networkid" : linkedWallet.chainType,
                             "payload"   : newAddressParams
                             ] as [String : Any]
                         
