@@ -26,3 +26,4 @@
 "NO FUNDS" = "You have no available funds";
 "ADD TO CONTACTS" = "Add to Contacts";
 "HOLD ON" = "Hold on. Wallet is resyncing.";
+"ERROR WHILE SENDING TX" = "Error while sending transaction. Please, try again!";
