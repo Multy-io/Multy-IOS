@@ -158,7 +158,11 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets(notification:)), name: NSNotification.Name("transactionUpdated"), object: nil)
+        if presenter.wallet!.isMultiSig {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets(notification:)), name: NSNotification.Name("transactionUpdated"), object: nil)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -357,6 +361,33 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         } else {
             self.pendingSectionView.isHidden = !isNeedToShow
             self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func updateMultisigWalletAfterSockets(notification : NSNotification) {
+        if presenter.isSocketInitiateUpdating {
+            return
+        }
+        
+        if !isVisible() {
+            return
+        }
+        
+        let tx = notification.userInfo?["transaction"] as? [AnyHashable : Any]
+        let payload = tx?["payload"] as? [AnyHashable : Any]
+        guard payload != nil else {
+            return
+        }
+        
+        let address = payload!["To"] as? String
+        
+        guard address != nil else {
+            return
+        }
+                
+        if presenter.wallet!.isAddressBelongsToWallet(address!) {
+            presenter.isSocketInitiateUpdating = true
+            presenter.getHistoryAndWallet()
         }
     }
     

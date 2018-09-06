@@ -70,7 +70,11 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
         blockWirelessActivityUpdating = false
         startWirelessReceiverActivity()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didUpdateTransaction(notification:)), name: Notification.Name("transactionUpdated"), object: nil)
+        if wallet!.isMultiSig {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.updateMSTransaction(notification:)), name: Notification.Name("msTransactionUpdated"), object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.didUpdateTransaction(notification:)), name: Notification.Name("transactionUpdated"), object: nil)
+        }
     }
     
     func viewDidAppear() {
@@ -93,6 +97,7 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
         blockWirelessActivityUpdating = true
         
         NotificationCenter.default.removeObserver(self, name: Notification.Name("transactionUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("msTransactionUpdated"), object: nil)
     }
     
     func cancelViewController() {
@@ -240,6 +245,34 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     @objc private func didChangedBluetoothReachability(notification: Notification) {
         DispatchQueue.main.async {
             self.handleBluetoothReachability()
+        }
+    }
+    
+    @objc private func updateMSTransaction(notification: Notification) {
+        DispatchQueue.main.async { [unowned self] in
+            let userInfo = notification.userInfo
+            let tx = notification.userInfo?["transaction"] as? NSDictionary
+            
+            if tx != nil {
+                let payloadInfo = tx!["payload"] as? [AnyHashable : Any]
+                
+                guard let txStatus = tx!["type"] as? Int,
+                    txStatus == SocketMessageType.multisigTxPaymentRequest.rawValue,
+                    let addressTo = payloadInfo?["To"] as? String,
+                    let addressFrom = payloadInfo?["From"] as? String else {
+                        return
+                }
+                
+                guard let amount = payloadInfo?["Amount"] as? String else {
+                        return
+                }
+                
+                let amountString = self.convertAddressDataToString(amount, 60, 1)
+                if addressTo == self.walletAddress {
+                    self.receiveAllDetailsVC?.presentDidReceivePaymentAlert(address: addressFrom, amount: amountString)
+                    self.receiveAllDetailsVC?.sendAnalyticsEvent(screenName: KFReceiveScreen, eventName: KFTransactionReceived)
+                }
+            }
         }
     }
     

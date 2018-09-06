@@ -95,7 +95,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         self.checkStatus()
         self.constraintDonationHeight.constant = 0
         self.donationView.isHidden = true
-        self.updateUI()
         self.sendAnalyticOnStrart()
         
         
@@ -125,6 +124,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             doubleSliderVC = sendStoryboard.instantiateViewController(withIdentifier: "doubleSlideView") as! DoubleSlideViewController
             doubleSliderVC.delegate = self
             add(doubleSliderVC, to: doubleSliderHolderView)
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
         }
     }
     
@@ -132,6 +133,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillDisappear(animated)
         
         if isMultisig {
+            NotificationCenter.default.removeObserver(self)
             doubleSliderVC.remove()
         }
     }
@@ -223,12 +225,26 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func checkStatus() {
-        if isMultisig && presenter.wallet.confirmationStatusForTransaction(transaction: presenter.histObj) == ConfirmationStatus.waiting {
-            // Multisig transaction waiting confirmation
-            self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
-            self.titleLbl.text = "Transaction details"
-            self.titleLbl.textColor = .black
-            self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
+        if isMultisig && presenter.histObj.multisig != nil  {
+            if presenter.histObj.multisig!.confirmed.boolValue {
+                if isIncoming {  // RECEIVE
+                    self.makeBackColor(color: self.presenter.receiveBackColor)
+                    self.titleLbl.text = localize(string: Constants.transactionInfoString)
+                } else {                        // SEND
+                    self.makeBackColor(color: self.presenter.sendBackColor)
+                    self.titleLbl.text = localize(string: Constants.transactionInfoString)
+                    self.transactionImg.image = #imageLiteral(resourceName: "sendBigIcon")
+                }
+                self.titleLbl.textColor = .white
+                backImageView.image = UIImage(named: "backWhite")
+            } else {
+                // Multisig transaction waiting confirmation
+                self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
+                self.titleLbl.text = "Transaction details"
+                self.titleLbl.textColor = .black
+                self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
+            }
+            
         } else {
             if isIncoming {  // RECEIVE
                 self.makeBackColor(color: self.presenter.receiveBackColor)
@@ -241,7 +257,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             self.titleLbl.textColor = .white
             backImageView.image = UIImage(named: "backWhite")
         }
-        
+        self.updateUI()
     }
     
     func checkMultisig() {
@@ -273,18 +289,33 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         let cryptoSumInBTC = UInt64(truncating: presenter.histObj.txOutAmount).btcValue
         
         if isMultisig {
-            //FIXME: add switch for multisig tx statuses
-            self.dateLbl.text = "Waiting for confirmations..."
-            
-            self.blockchainInfoView.isHidden = true
-            self.blockchainInfoViewHeightConstraint.constant = 8
-            
-            if isDecided {
+            if presenter.histObj.multisig!.confirmed.boolValue {
+                if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
+                    presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue {
+                    self.dateLbl.text = dateFormatter.string(from: presenter.histObj.mempoolTime)
+                } else {
+                    self.dateLbl.text = dateFormatter.string(from: presenter.histObj.blockTime)
+                }
+                
+                self.blockchainInfoView.isHidden = false
+                self.blockchainInfoViewHeightConstraint.constant = 104
+                self.numberOfConfirmationLbl.text = makeConfirmationText()
+                
                 doubleSliderHolderView.isHidden = true
                 doubleSliderHolderViewHeight.constant = 0
             } else {
-                doubleSliderHolderView.isHidden = false
-                doubleSliderHolderViewHeight.constant = 64
+                self.dateLbl.text = "Waiting for confirmations..."
+                
+                self.blockchainInfoView.isHidden = true
+                self.blockchainInfoViewHeightConstraint.constant = 8
+                
+                if isDecided {
+                    doubleSliderHolderView.isHidden = true
+                    doubleSliderHolderViewHeight.constant = 0
+                } else {
+                    doubleSliderHolderView.isHidden = false
+                    doubleSliderHolderViewHeight.constant = 64
+                }
             }
         } else {
             if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
@@ -356,6 +387,31 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         }
         
         self.view.layoutIfNeeded()
+    }
+    
+    @objc func updateMultisigWalletAfterSockets(notification : NSNotification) {
+       
+        if !isVisible() {
+            return
+        }
+        
+        let tx = notification.userInfo?["transaction"] as? NSDictionary
+        let payload = tx?["payload"] as? [AnyHashable : Any]
+        guard payload != nil else {
+            return
+        }
+        
+        let address = payload!["To"] as? String
+        
+        guard address != nil else {
+            return
+        }
+        
+        if (presenter.wallet.isAddressBelongsToWallet(address!)) {
+            let updatedTx = HistoryRLM.initWithInfo(historyDict: tx!)
+            presenter.histObj = updatedTx
+            checkStatus()
+        }
     }
     
     func makeDonationConstraint() -> CGFloat {
