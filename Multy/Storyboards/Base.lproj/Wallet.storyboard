@@ -631,7 +631,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <outlet property="blockchainInfoView" destination="QBH-br-19A" id="olq-4r-HcX"/>
                         <outlet property="blockchainInfoViewHeightConstraint" destination="NhY-vg-hei" id="iPL-TM-smW"/>
                         <outlet property="confirmaitionDetailsHeightConstraint" destination="TFE-Do-qDS" id="Ubq-jk-02o"/>
-                        <outlet property="confirmationAmount" destination="Sud-yY-0yw" id="vEb-4d-cvk"/>
+                        <outlet property="confirmationAmountLbl" destination="Sud-yY-0yw" id="LZa-I2-Zoe"/>
                         <outlet property="confirmationDetailsHolderView" destination="WCU-ts-kWp" id="Im4-Ow-gc0"/>
                         <outlet property="confirmationMembersCollectionView" destination="uV4-Dm-hqS" id="esi-82-6fQ"/>
                         <outlet property="constraintDonationHeight" destination="0og-eb-YdS" id="NR2-Zr-NNJ"/>
