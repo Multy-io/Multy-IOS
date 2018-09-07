@@ -41,6 +41,8 @@ class TransactionPresenter: NSObject {
         }
     }
     
+    var priceForConfirm = "\(1_000_000_000)"
+    
     func blockedAmount(for transaction: HistoryRLM) -> UInt64 {
         var sum = UInt64(0)
         
@@ -92,7 +94,7 @@ class TransactionPresenter: NSObject {
                                                                           sendFromAddress: self.wallet.address,
                                                                           nonce: linkedWallet.ethWallet!.nonce.intValue,
                                                                           nonceMultiSigTx: self.histObj.multisig!.index.intValue,
-                                                                          gasPriceString: "\(1_000_000_000)",
+                                                                          gasPriceString: self.priceForConfirm,
                                                                           gasLimitString: gasLimit!.stringValue)
                         
                         let newAddressParams = [
@@ -111,10 +113,12 @@ class TransactionPresenter: NSObject {
                         
                         DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
                             print("---------\(dict)")
+                            self.transctionVC?.spiner.stopAnimating()
                             
                             if error != nil {
                                 print("sendHDTransaction Error: \(error)")
-                                
+                                self.transctionVC?.spiner.stopAnimating()
+                                self.transctionVC?.presentTransactionErrorAlert()
                                 return
                             }
                             
@@ -127,11 +131,15 @@ class TransactionPresenter: NSObject {
                         
                         break
                     case .failure(let error):
+                        self.transctionVC?.spiner.stopAnimating()
+                        self.transctionVC?.presentTransactionErrorAlert()
                         print(error)
                     }
                 }
                 break;
             case .failure(let errorString):
+                self.transctionVC?.spiner.stopAnimating()
+                self.transctionVC?.presentTransactionErrorAlert()
                 print(errorString)
                 break;
             }
@@ -146,10 +154,24 @@ class TransactionPresenter: NSObject {
             case .success( _):
                 self.transctionVC?.navigationController?.popViewController(animated: true)
             case .failure(let error):
-                print(error)
                 self.transctionVC?.presentAlert(with: error)
+                self.transctionVC?.doubleSliderVC.updateToInitialState()
             }
         }
+    }
+    
+    func requestFee() {
+        DataManager.shared.getFeeRate(currencyID: wallet.chain.uint32Value,
+                                      networkID: wallet.chainType.uint32Value,
+                                      completion: { (dict, error) in
+                                        if dict != nil {
+                                            if let medium = dict?["Medium"] as? UInt64 {
+                                                self.priceForConfirm = "\(medium)"
+                                            }
+                                        } else {
+                                            print("Did failed getting feeRate")
+                                        }
+        })
     }
     
     func viewMultisigTx() {
@@ -162,6 +184,23 @@ class TransactionPresenter: NSObject {
             }
         }
     }
+    
+    func updateTx() {
+        DataManager.shared.getMultisigTransactionHistory(currencyID: wallet.chain,
+                                                         networkID: wallet.chainType,
+                                                         address: wallet.address) { [unowned self] (historyArray, error) in
+                                                            DispatchQueue.main.async { [unowned self] in
+                                                                if historyArray != nil && historyArray!.count > 0 {
+                                                                    let hist = historyArray!.filter {$0.txHash == self.histObj.txHash}.first
+                                                                    guard hist != nil else {
+                                                                        return
+                                                                    }
+                                                                    
+                                                                    self.histObj = hist!
+                                                                    self.transctionVC?.checkStatus()
+                                                                }
+                                                            }
+        }
+    }
 }
-
 

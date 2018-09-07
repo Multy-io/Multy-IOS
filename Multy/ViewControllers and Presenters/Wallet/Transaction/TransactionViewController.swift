@@ -109,6 +109,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         self.scrollView.isScrollEnabled = true
         
         presenter.createPreliminaryData()
+        presenter.requestFee()
         
         if isMultisig && !presenter.isMultisigTxViewed {
             presenter.viewMultisigTx()
@@ -317,6 +318,13 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                     doubleSliderHolderViewHeight.constant = 64
                 }
             }
+            
+            let confirmedCount = presenter.histObj.multisig?.owners.filter {$0.confirmationStatus.intValue == ConfirmationStatus.confirmed.rawValue}.count
+            let ownersCount = presenter.histObj.multisig?.owners.count
+            if confirmedCount != nil && ownersCount != nil {
+                confirmationAmount.text = "\(confirmedCount!) of \(ownersCount!)"
+            }
+            
         } else {
             if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
                 presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue {
@@ -385,32 +393,28 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             }
         default: break
         }
-        
+        self.confirmationMembersCollectionView.reloadData()
         self.view.layoutIfNeeded()
     }
     
     @objc func updateMultisigWalletAfterSockets(notification : NSNotification) {
-       
+        
         if !isVisible() {
             return
         }
         
-        let tx = notification.userInfo?["transaction"] as? NSDictionary
-        let payload = tx?["payload"] as? [AnyHashable : Any]
-        guard payload != nil else {
+        guard notification.userInfo != nil else {
             return
         }
         
-        let address = payload!["To"] as? String
+        let address = notification.userInfo!["To"] as? String
         
         guard address != nil else {
             return
         }
         
-        if (presenter.wallet.isAddressBelongsToWallet(address!)) {
-            let updatedTx = HistoryRLM.initWithInfo(historyDict: tx!)
-            presenter.histObj = updatedTx
-            checkStatus()
+        if presenter.wallet.isAddressBelongsToWallet(address!) {
+            presenter.updateTx()
         }
     }
     
@@ -462,6 +466,15 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    func presentTransactionErrorAlert() {
+        let message = localize(string: Constants.errorSendingTxString)
+        let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
+            self.doubleSliderVC.updateToInitialState()
+        }))
+        
+        present(alert, animated: true, completion: nil)
+    }
     
     func showNoBalanceView() {
         noBalanceErrorHolderView.isHidden = false
