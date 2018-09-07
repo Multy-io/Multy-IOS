@@ -152,28 +152,25 @@ class TransactionPresenter: NSObject {
     }
     
     func requestFee() {
-        DataManager.shared.getFeeRate(currencyID: wallet.chain.uint32Value,
-                                      networkID: wallet.chainType.uint32Value,
-                                      completion: { (dict, error) in
-                                        if dict != nil {
-                                            if let medium = dict?["Medium"] as? UInt64 {
-                                                self.priceForConfirm = "\(medium)"
-                                            }
-                                        } else {
-                                            print("Did failed getting feeRate")
-                                        }
-        })
-    }
-    
-    func getEstimation() {
         DataManager.shared.estimation(for: "price") { [unowned self] in
             switch $0 {
             case .success(let value):
                 self.gasLimitForConfirm = value["confirmTransaction"] as? NSNumber
-                self.transctionVC?.checkStatus()
+                DataManager.shared.getFeeRate(currencyID: self.wallet.chain.uint32Value,
+                                              networkID: self.wallet.chainType.uint32Value,
+                                              completion: { [unowned self] (dict, error) in
+                                                if dict != nil {
+                                                    if let medium = dict?["Medium"] as? UInt64 {
+                                                        self.priceForConfirm = "\(medium)"
+                                                    }
+                                                    self.transctionVC?.checkStatus()
+                                                } else {
+                                                    print("Did failed getting feeRate")
+                                                }
+                })
+                
                 break
             case .failure(let error):
-                
                 print(error)
             }
         }

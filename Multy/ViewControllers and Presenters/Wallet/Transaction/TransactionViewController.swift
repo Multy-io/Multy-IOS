@@ -112,7 +112,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         
         if isMultisig  {
             presenter.requestFee()
-            presenter.getEstimation()
             
             if !presenter.isMultisigTxViewed {
                 presenter.viewMultisigTx()
@@ -255,7 +254,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                     DataManager.shared.getWallet(primaryKey: presenter.wallet.multisigWallet!.linkedWalletID) { [unowned self] in
                         switch $0 {
                         case .success(let wallet):
-                            if wallet.availableAmount < gasLimit {
+                            if wallet.availableAmount < gasLimit * BigInt(self.presenter.priceForConfirm) {
                                 self.showNoBalanceView()
                             }
                             break
@@ -291,15 +290,20 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     
     func contentHeight() -> CGFloat {
         var result = transactionInfoHolderView.frame.origin.y + transactionInfoHolderView.frame.size.height + 16
-        if isMultisig {
-            confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
-            result = result + confirmaitionDetailsHeightConstraint.constant + 16
-            
-            if !isDecided {
-                result += doubleSliderHolderView.frame.size.height
+        if !isIncoming {
+            if isMultisig {
+                confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
+                result = result + confirmaitionDetailsHeightConstraint.constant + 16
+                
+                if !isDecided {
+                    result += doubleSliderHolderView.frame.size.height
+                }
+                
+            } else if presenter.isDonationExist {
+                result = result + 300
             }
-        } else if presenter.isDonationExist {
-            result = result + 300
+        } else {
+            result += doubleSliderHolderView.frame.size.height
         }
         
         return result
@@ -332,12 +336,17 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.blockchainInfoView.isHidden = true
                 self.blockchainInfoViewHeightConstraint.constant = 8
                 
-                if isDecided {
+                if !isIncoming {
+                    if isDecided {
+                        doubleSliderHolderView.isHidden = true
+                        doubleSliderHolderViewHeight.constant = 0
+                    } else {
+                        doubleSliderHolderView.isHidden = false
+                        doubleSliderHolderViewHeight.constant = 64
+                    }
+                } else {
                     doubleSliderHolderView.isHidden = true
                     doubleSliderHolderViewHeight.constant = 0
-                } else {
-                    doubleSliderHolderView.isHidden = false
-                    doubleSliderHolderViewHeight.constant = 64
                 }
             }
             
@@ -358,6 +367,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             self.blockchainInfoView.isHidden = false
             self.blockchainInfoViewHeightConstraint.constant = 104
             self.numberOfConfirmationLbl.text = makeConfirmationText()
+            doubleSliderHolderView.isHidden = true
+            doubleSliderHolderViewHeight.constant = 0
         }
         
         self.noteLbl.text = "" // NOTE FROM HIST OBJ
