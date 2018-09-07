@@ -94,7 +94,7 @@ class TransactionPresenter: NSObject {
                                                                           sendFromAddress: self.wallet.address,
                                                                           nonce: linkedWallet.ethWallet!.nonce.intValue,
                                                                           nonceMultiSigTx: self.histObj.nonce.intValue,
-                                                                          gasPriceString: "\(1_000_000_000)",
+                                                                          gasPriceString: self.priceForConfirm,
                                                                           gasLimitString: gasLimit!.stringValue)
                         
                         let newAddressParams = [
