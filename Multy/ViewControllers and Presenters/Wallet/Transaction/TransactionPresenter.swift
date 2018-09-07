@@ -42,6 +42,7 @@ class TransactionPresenter: NSObject {
     }
     
     var priceForConfirm = "\(1_000_000_000)"
+    var gasLimitForConfirm : NSNumber?
     
     func blockedAmount(for transaction: HistoryRLM) -> UInt64 {
         var sum = UInt64(0)
@@ -73,6 +74,8 @@ class TransactionPresenter: NSObject {
         }
     }
     
+    
+    
     func confirmMultisigTx() {
         transctionVC?.spiner.startAnimating()
         
@@ -80,59 +83,47 @@ class TransactionPresenter: NSObject {
             switch $0 {
             case .success(let wallet):
                 let linkedWallet = wallet
-                DataManager.shared.estimation(for: "price") { [unowned self] in
-                    switch $0 {
-                    case .success(let value):
-                        let gasLimit = value["confirmTransaction"] as? NSNumber
-                        guard gasLimit != nil else {
-                            return
-                        }
-                        
-                        let trData = DataManager.shared.confirmMultiSigTx(binaryData: &self.binaryData!,
-                                                                          wallet: linkedWallet,
-                                                                          balanceAmountString: linkedWallet.availableAmount.stringValue,
-                                                                          sendFromAddress: self.wallet.address,
-                                                                          nonce: linkedWallet.ethWallet!.nonce.intValue,
-                                                                          nonceMultiSigTx: self.histObj.nonce.intValue,
-                                                                          gasPriceString: self.priceForConfirm,
-                                                                          gasLimitString: gasLimit!.stringValue)
-                        
-                        let newAddressParams = [
-                            "walletindex"   : linkedWallet.walletID.intValue,
-                            "address"       : "",
-                            "addressindex"  : linkedWallet.addresses.count,
-                            "transaction"   : trData.message,
-                            "ishd"          : NSNumber(booleanLiteral: false)
-                            ] as [String : Any]
-                        
-                        let params = [
-                            "currencyid": linkedWallet.chain,
-                            "networkid" : linkedWallet.chainType,
-                            "payload"   : newAddressParams
-                            ] as [String : Any]
-                        
-                        DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
-                            print("---------\(dict)")
-                            self.transctionVC?.spiner.stopAnimating()
-                            
-                            if error != nil {
-                                print("sendHDTransaction Error: \(error)")
-                                self.transctionVC?.spiner.stopAnimating()
-                                self.transctionVC?.presentTransactionErrorAlert()
-                                return
-                            }
-                            
-                            if dict!["code"] as! Int == 200 {
-                                self.transctionVC?.navigationController?.popViewController(animated: true)
-                            } else {
-                                print(error)
-                            }
-                        }
-                        
-                        break
-                    case .failure(let error):
+                guard self.gasLimitForConfirm != nil else {
+                    return
+                }
+                
+                let trData = DataManager.shared.confirmMultiSigTx(binaryData: &self.binaryData!,
+                                                                  wallet: linkedWallet,
+                                                                  balanceAmountString: linkedWallet.availableAmount.stringValue,
+                                                                  sendFromAddress: self.wallet.address,
+                                                                  nonce: linkedWallet.ethWallet!.nonce.intValue,
+                                                                  nonceMultiSigTx: self.histObj.nonce.intValue,
+                                                                  gasPriceString: self.priceForConfirm,
+                                                                  gasLimitString: self.gasLimitForConfirm!.stringValue)
+                
+                let newAddressParams = [
+                    "walletindex"   : linkedWallet.walletID.intValue,
+                    "address"       : "",
+                    "addressindex"  : linkedWallet.addresses.count,
+                    "transaction"   : trData.message,
+                    "ishd"          : NSNumber(booleanLiteral: false)
+                    ] as [String : Any]
+                
+                let params = [
+                    "currencyid": linkedWallet.chain,
+                    "networkid" : linkedWallet.chainType,
+                    "payload"   : newAddressParams
+                    ] as [String : Any]
+                
+                DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
+                    print("---------\(dict)")
+                    self.transctionVC?.spiner.stopAnimating()
+                    
+                    if error != nil {
+                        print("sendHDTransaction Error: \(error)")
                         self.transctionVC?.spiner.stopAnimating()
                         self.transctionVC?.presentTransactionErrorAlert()
+                        return
+                    }
+                    
+                    if dict!["code"] as! Int == 200 {
+                        self.transctionVC?.navigationController?.popViewController(animated: true)
+                    } else {
                         print(error)
                     }
                 }
@@ -172,6 +163,20 @@ class TransactionPresenter: NSObject {
                                             print("Did failed getting feeRate")
                                         }
         })
+    }
+    
+    func getEstimation() {
+        DataManager.shared.estimation(for: "price") { [unowned self] in
+            switch $0 {
+            case .success(let value):
+                self.gasLimitForConfirm = value["confirmTransaction"] as? NSNumber
+                self.transctionVC?.checkStatus()
+                break
+            case .failure(let error):
+                
+                print(error)
+            }
+        }
     }
     
     func viewMultisigTx() {

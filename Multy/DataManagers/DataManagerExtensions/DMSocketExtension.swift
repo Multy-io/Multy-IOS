@@ -185,7 +185,7 @@ extension DataManager {
     }
     
     func viewMultiSigTx(wallet: UserWalletRLM, histObj: HistoryRLM, completion: @escaping(Result<String, String>) -> ()) {
-        let payloadForDecline: NSDictionary = [
+        let payloadForView: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
             "address": wallet.multisigWallet!.linkedWalletAddress,
             "walletindex": wallet.walletID,
@@ -200,7 +200,7 @@ extension DataManager {
             "to":"",                 // not requied
             "date": UInt64(Date().timeIntervalSince1970), // time unix
             "status": 0,
-            "payload": payloadForDecline
+            "payload": payloadForView
         ]
         
         socketManager.sendMsg(params: paramsForMsgSend) { (answerDict, err) in
