@@ -188,6 +188,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msMembersUpdated"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletDeleted"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msTransactionUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletUpdated"), object: nil)
         
         super.viewWillDisappear(animated)
     }
@@ -221,6 +223,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("msWalletDeleted"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleMsTransactionUpdatedNotification(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletUpdatedNotification(notification:)), name: NSNotification.Name("msWalletUpdated"), object: nil)
     }
     
     @objc fileprivate func handleWalletDeletedNotification(notification : Notification) {
@@ -230,6 +234,18 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     @objc fileprivate func handleMembersUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleMsTransactionUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleWalletUpdatedNotification(notification : Notification) {
         DispatchQueue.main.async {
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }

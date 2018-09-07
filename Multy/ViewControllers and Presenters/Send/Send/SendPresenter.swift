@@ -396,6 +396,8 @@ class SendPresenter: NSObject {
                     break
                 }
             }
+        } else {
+            completion(true)
         }
     }
     

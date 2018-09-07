@@ -109,10 +109,14 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         self.scrollView.isScrollEnabled = true
         
         presenter.createPreliminaryData()
-        presenter.requestFee()
         
-        if isMultisig && !presenter.isMultisigTxViewed {
-            presenter.viewMultisigTx()
+        if isMultisig  {
+            presenter.requestFee()
+            
+            if !presenter.isMultisigTxViewed {
+                presenter.viewMultisigTx()
+            }
+            
         }
     }
     
@@ -244,6 +248,23 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.titleLbl.text = "Transaction details"
                 self.titleLbl.textColor = .black
                 self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
+                
+                if presenter.gasLimitForConfirm != nil {
+                    let confirmFee = BigInt(self.presenter.gasLimitForConfirm!.stringValue) * BigInt(self.presenter.priceForConfirm)
+                    DataManager.shared.getWallet(primaryKey: presenter.wallet.multisigWallet!.linkedWalletID) { [unowned self] in
+                        switch $0 {
+                        case .success(let wallet):
+                            if wallet.availableAmount < confirmFee  {
+                                self.showNoBalanceView()
+                            }
+                            break
+                           
+                        case .failure(let errorString):
+                            break;
+                        }
+                    }
+                            
+                }
             }
             
         } else {
@@ -269,15 +290,20 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     
     func contentHeight() -> CGFloat {
         var result = transactionInfoHolderView.frame.origin.y + transactionInfoHolderView.frame.size.height + 16
-        if isMultisig {
-            confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
-            result = result + confirmaitionDetailsHeightConstraint.constant + 16
-            
-            if !isDecided {
-                result += doubleSliderHolderView.frame.size.height
+        if !isIncoming {
+            if isMultisig {
+                confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
+                result = result + confirmaitionDetailsHeightConstraint.constant + 16
+                
+                if !isDecided {
+                    result += doubleSliderHolderView.frame.size.height
+                }
+                
+            } else if presenter.isDonationExist {
+                result = result + 300
             }
-        } else if presenter.isDonationExist {
-            result = result + 300
+        } else {
+            result += doubleSliderHolderView.frame.size.height
         }
         
         return result
@@ -310,12 +336,17 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.blockchainInfoView.isHidden = true
                 self.blockchainInfoViewHeightConstraint.constant = 8
                 
-                if isDecided {
+                if !isIncoming {
+                    if isDecided {
+                        doubleSliderHolderView.isHidden = true
+                        doubleSliderHolderViewHeight.constant = 0
+                    } else {
+                        doubleSliderHolderView.isHidden = false
+                        doubleSliderHolderViewHeight.constant = 64
+                    }
+                } else {
                     doubleSliderHolderView.isHidden = true
                     doubleSliderHolderViewHeight.constant = 0
-                } else {
-                    doubleSliderHolderView.isHidden = false
-                    doubleSliderHolderViewHeight.constant = 64
                 }
             }
             
@@ -336,6 +367,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             self.blockchainInfoView.isHidden = false
             self.blockchainInfoViewHeightConstraint.constant = 104
             self.numberOfConfirmationLbl.text = makeConfirmationText()
+            doubleSliderHolderView.isHidden = true
+            doubleSliderHolderViewHeight.constant = 0
         }
         
         self.noteLbl.text = "" // NOTE FROM HIST OBJ
@@ -485,7 +518,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         UIView.animate(withDuration: 0.5, animations: {
             self.copiedView.frame.origin.y = screenHeight - 40
         }) { (isEnd) in
-            Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.hideView), userInfo: nil, repeats: false)
+            Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.hideView), userInfo: nil, repeats: false)
         }
         
     }
