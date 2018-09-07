@@ -469,7 +469,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         let message = localize(string: Constants.errorSendingTxString)
         let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
-            
+            self.doubleSliderVC.updateToInitialState()
         }))
         
         present(alert, animated: true, completion: nil)
