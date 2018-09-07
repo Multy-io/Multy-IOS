@@ -42,6 +42,7 @@ class TransactionPresenter: NSObject {
     }
     
     var priceForConfirm = "\(1_000_000_000)"
+    var gasLimitForConfirm : NSNumber?
     
     func blockedAmount(for transaction: HistoryRLM) -> UInt64 {
         var sum = UInt64(0)
@@ -73,6 +74,8 @@ class TransactionPresenter: NSObject {
         }
     }
     
+    
+    
     func confirmMultisigTx() {
         transctionVC?.spiner.startAnimating()
         
@@ -80,6 +83,7 @@ class TransactionPresenter: NSObject {
             switch $0 {
             case .success(let wallet):
                 let linkedWallet = wallet
+
                 DataManager.shared.estimation(for: "price") { [unowned self] in
                     switch $0 {
                     case .success(let value):
@@ -93,7 +97,7 @@ class TransactionPresenter: NSObject {
                                                                           balanceAmountString: linkedWallet.availableAmount.stringValue,
                                                                           sendFromAddress: self.wallet.address,
                                                                           nonce: linkedWallet.ethWallet!.nonce.intValue,
-                                                                          nonceMultiSigTx: self.histObj.nonce.intValue,
+                                                                          nonceMultiSigTx: self.histObj.multisig!.index.intValue,
                                                                           gasPriceString: self.priceForConfirm,
                                                                           gasLimitString: gasLimit!.stringValue)
                         
@@ -133,7 +137,7 @@ class TransactionPresenter: NSObject {
                     case .failure(let error):
                         self.transctionVC?.spiner.stopAnimating()
                         self.transctionVC?.presentTransactionErrorAlert()
-                        print(error)
+                        return
                     }
                 }
                 break;
@@ -161,17 +165,28 @@ class TransactionPresenter: NSObject {
     }
     
     func requestFee() {
-        DataManager.shared.getFeeRate(currencyID: wallet.chain.uint32Value,
-                                      networkID: wallet.chainType.uint32Value,
-                                      completion: { (dict, error) in
-                                        if dict != nil {
-                                            if let medium = dict?["Medium"] as? UInt64 {
-                                                self.priceForConfirm = "\(medium)"
-                                            }
-                                        } else {
-                                            print("Did failed getting feeRate")
-                                        }
-        })
+        DataManager.shared.estimation(for: "price") { [unowned self] in
+            switch $0 {
+            case .success(let value):
+                self.gasLimitForConfirm = value["confirmTransaction"] as? NSNumber
+                DataManager.shared.getFeeRate(currencyID: self.wallet.chain.uint32Value,
+                                              networkID: self.wallet.chainType.uint32Value,
+                                              completion: { [unowned self] (dict, error) in
+                                                if dict != nil {
+                                                    if let medium = dict?["Medium"] as? UInt64 {
+                                                        self.priceForConfirm = "\(medium)"
+                                                    }
+                                                    self.transctionVC?.checkStatus()
+                                                } else {
+                                                    print("Did failed getting feeRate")
+                                                }
+                })
+                
+                break
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     func viewMultisigTx() {
