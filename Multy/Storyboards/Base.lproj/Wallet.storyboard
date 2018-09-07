@@ -1760,8 +1760,8 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WL5-im-xgD">
                                                 <rect key="frame" x="0.0" y="211" width="375" height="62"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="glm-B6-kLP">
-                                                        <rect key="frame" x="54" y="0.0" width="267.5" height="16.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="glm-B6-kLP">
+                                                        <rect key="frame" x="16.5" y="0.0" width="342.5" height="16.5"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                                         <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -1813,7 +1813,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="glm-B6-kLP" secondAttribute="trailing" constant="16" id="D2B-au-s0g"/>
+                                                    <constraint firstAttribute="trailing" secondItem="glm-B6-kLP" secondAttribute="trailing" constant="16" id="D2B-au-s0g"/>
                                                     <constraint firstItem="ISH-Gm-oNb" firstAttribute="top" secondItem="glm-B6-kLP" secondAttribute="bottom" constant="12" id="MoB-VR-IdQ"/>
                                                     <constraint firstItem="ISH-Gm-oNb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WL5-im-xgD" secondAttribute="leading" constant="16" id="T9b-8F-ou0"/>
                                                     <constraint firstItem="glm-B6-kLP" firstAttribute="top" secondItem="WL5-im-xgD" secondAttribute="top" id="UbA-FD-XdB"/>
@@ -1821,7 +1821,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                     <constraint firstItem="glm-B6-kLP" firstAttribute="centerX" secondItem="WL5-im-xgD" secondAttribute="centerX" id="iiO-gF-OJl"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ISH-Gm-oNb" secondAttribute="trailing" constant="16" id="k8y-tz-kJd"/>
                                                     <constraint firstAttribute="height" constant="62" id="kJn-Tr-A7H"/>
-                                                    <constraint firstItem="glm-B6-kLP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WL5-im-xgD" secondAttribute="leading" constant="16" id="n9l-hD-3pa"/>
+                                                    <constraint firstItem="glm-B6-kLP" firstAttribute="leading" secondItem="WL5-im-xgD" secondAttribute="leading" constant="16" id="n9l-hD-3pa"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
