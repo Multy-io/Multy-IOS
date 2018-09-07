@@ -360,6 +360,11 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         var vc : UIViewController?
         if wallet!.multisigWallet != nil && wallet!.multisigWallet?.deployStatus.intValue != DeployStatus.deployed.rawValue {
             let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+            if wallet!.multisigWallet?.deployStatus.intValue == DeployStatus.pending.rawValue {
+                presentAlert(with: "Wallet is not deployed yet. Please wait.")
+                
+                return
+            }
             vc  = storyboard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
             (vc as! WaitingMembersViewController).presenter.wallet = wallet!
             (vc as! WaitingMembersViewController).presenter.account = presenter.account

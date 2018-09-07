@@ -173,7 +173,6 @@ class WaitingMembersPresenter: NSObject {
                                                              gasLimitString: gasLimitForDeployMS,
                                                              owners: ownersString,
                                                              confirmationsCount: UInt32(wallet.multisigWallet!.signaturesRequiredCount))
-        
         if result.isTransactionCorrect {
             let newAddressParams = [
                 "walletindex"   : linkedWallet.walletID.intValue,
@@ -182,15 +181,15 @@ class WaitingMembersPresenter: NSObject {
                 "transaction"   : result.message,
                 "ishd"          : NSNumber(booleanLiteral: false)
                 ] as [String : Any]
-            
+
             let params = [
                 "currencyid": linkedWallet.chain,
                 "networkid" : linkedWallet.chainType,
                 "payload"   : newAddressParams
                 ] as [String : Any]
-            
+
             guard viewController!.presentNoInternetScreen() else {
-                
+
                 return
             }
             
@@ -198,9 +197,9 @@ class WaitingMembersPresenter: NSObject {
                 print("---------\(dict)")
                 
                 if let code = dict?["code"] as? Int, code == 200 {
+                    self.closeVC()
                     self.viewController?.presentAlert(withTitle: self.viewController?.localize(string: Constants.warningString),
                                                       andMessage: self.viewController?.localize(string: Constants.pendingMultisigAlertString))
-                    self.updateWallet()
                 } else {
                     if error != nil {
                         self.viewController?.presentAlert(with: error?.localizedDescription)
@@ -213,6 +212,10 @@ class WaitingMembersPresenter: NSObject {
             //FIXME: localize
             viewController!.presentAlert(with: result.message)
         }
+    }
+    
+    func closeVC() {
+        viewController?.navigationController?.popViewController(animated: true)
     }
     
     func createOwnersString() -> String {
