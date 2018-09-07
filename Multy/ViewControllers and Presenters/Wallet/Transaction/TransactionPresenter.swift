@@ -154,8 +154,8 @@ class TransactionPresenter: NSObject {
             case .success( _):
                 self.transctionVC?.navigationController?.popViewController(animated: true)
             case .failure(let error):
-                print(error)
                 self.transctionVC?.presentAlert(with: error)
+                self.transctionVC?.doubleSliderVC.updateToInitialState()
             }
         }
     }

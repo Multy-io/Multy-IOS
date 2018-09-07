@@ -121,6 +121,11 @@ class DoubleSlideViewController: UIViewController {
         }
     }
     
+    func updateToInitialState() {
+        isAnimateEnded = false
+        slideToStart()
+    }
+    
     func slideToStart() {
         UIView.animate(withDuration: 0.3) {
             self.acceptSlideView.frame.origin.x = self.startSlideX
