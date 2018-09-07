@@ -230,6 +230,10 @@ extension UIViewController {
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
+    func disableSwipeToBack() {
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+    
     func isVCVisible() -> Bool {
         return isViewLoaded && view.window != nil
     }
