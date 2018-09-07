@@ -109,10 +109,15 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         self.scrollView.isScrollEnabled = true
         
         presenter.createPreliminaryData()
-        presenter.requestFee()
         
-        if isMultisig && !presenter.isMultisigTxViewed {
-            presenter.viewMultisigTx()
+        if isMultisig  {
+            presenter.requestFee()
+            presenter.getEstimation()
+            
+            if !presenter.isMultisigTxViewed {
+                presenter.viewMultisigTx()
+            }
+            
         }
     }
     
@@ -244,6 +249,23 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.titleLbl.text = "Transaction details"
                 self.titleLbl.textColor = .black
                 self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
+                
+                if presenter.gasLimitForConfirm != nil {
+                    let gasLimit = BigInt(self.presenter.gasLimitForConfirm!.stringValue)
+                    DataManager.shared.getWallet(primaryKey: presenter.wallet.multisigWallet!.linkedWalletID) { [unowned self] in
+                        switch $0 {
+                        case .success(let wallet):
+                            if wallet.availableAmount < gasLimit {
+                                self.showNoBalanceView()
+                            }
+                            break
+                           
+                        case .failure(let errorString):
+                            break;
+                        }
+                    }
+                            
+                }
             }
             
         } else {
@@ -485,7 +507,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         UIView.animate(withDuration: 0.5, animations: {
             self.copiedView.frame.origin.y = screenHeight - 40
         }) { (isEnd) in
-            Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.hideView), userInfo: nil, repeats: false)
+            Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.hideView), userInfo: nil, repeats: false)
         }
         
     }
