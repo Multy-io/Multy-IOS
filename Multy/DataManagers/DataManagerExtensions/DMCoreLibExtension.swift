@@ -43,6 +43,10 @@ extension DataManager {
         return coreLibManager.createWallet(from: &binaryData,blockchain: blockchain, walletID: walletID)
     }
     
+    func importWalletBy(privateKey: String, blockchain: BlockchainType, walletID: UInt32) -> Dictionary<String, Any>? {
+        return coreLibManager.importWallet(blockchain: blockchain, walletID: walletID, privateKey: privateKey)
+    }
+    
     func isAddressValid(address: String, for wallet: UserWalletRLM) -> (isValid: Bool, message: String?) {
         return coreLibManager.isAddressValid(address: address, for: wallet)
     }
