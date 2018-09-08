@@ -71,10 +71,10 @@ class WalletTableViewCell: UITableViewCell {
         cryptoSumLbl.text = wallet?.sumInCryptoString
 
         if wallet != nil {
-            if wallet!.isTherePendingTx.boolValue {
+            if wallet!.isTherePendingTx.boolValue || (wallet!.isMultiSig && wallet!.multisigWallet!.deployStatus.intValue == DeployStatus.pending.rawValue) {
                 statusImage.image = UIImage(named: "pending")
                 statusImage.isHidden = false
-            } else if wallet!.isSyncing.boolValue {
+            } else if wallet!.isSyncing.boolValue { 
                 statusImage.image = UIImage(named: "resyncing")
                 statusImage.isHidden = false
             } else {

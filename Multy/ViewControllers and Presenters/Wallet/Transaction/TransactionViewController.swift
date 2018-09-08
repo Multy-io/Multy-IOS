@@ -46,7 +46,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     
     // MultiSig outlets
     @IBOutlet weak var confirmationDetailsHolderView: UIView!
-    @IBOutlet weak var confirmationAmount: UILabel!
+    @IBOutlet weak var confirmationAmountLbl: UILabel!
     @IBOutlet weak var confirmationMembersCollectionView: UICollectionView!
     @IBOutlet weak var confirmaitionDetailsHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var doubleSliderHolderView: UIView!
@@ -84,7 +84,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
         self.presenter.transctionVC = self
         configureCollectionViews()
         self.tabBarController?.tabBar.isHidden = true
@@ -125,12 +124,15 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         
         if isMultisig {
+            disableSwipeToBack()
             let sendStoryboard = UIStoryboard(name: "Send", bundle: nil)
             doubleSliderVC = sendStoryboard.instantiateViewController(withIdentifier: "doubleSlideView") as! DoubleSlideViewController
             doubleSliderVC.delegate = self
             add(doubleSliderVC, to: doubleSliderHolderView)
             
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
+        } else {
+            swipeToBack()
         }
     }
     
@@ -350,12 +352,9 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 }
             }
             
-            let confirmedCount = presenter.histObj.multisig?.owners.filter {$0.confirmationStatus.intValue == ConfirmationStatus.confirmed.rawValue}.count
-            let ownersCount = presenter.histObj.multisig?.owners.count
-            if confirmedCount != nil && ownersCount != nil {
-                confirmationAmount.text = "\(confirmedCount!) of \(ownersCount!)"
-            }
-            
+            let requiedSignsCount = presenter.wallet.multisigWallet?.signaturesRequiredCount
+            let confirmationsCount = presenter.histObj.multisig?.confirmationsCount()
+            confirmationAmountLbl.text = "\(confirmationsCount!) of \(requiedSignsCount!)"
         } else {
             if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
                 presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue {

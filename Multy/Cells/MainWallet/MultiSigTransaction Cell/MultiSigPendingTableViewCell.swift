@@ -148,6 +148,11 @@ class MultiSigPendingTableViewCell: UITableViewCell {
         
         if countOfConfirmations > 0 {
             successApproveCountLbl.text = "\(countOfConfirmations)"
+            successViewWidthConstraint.constant = 46
+            successView.isHidden = false
+        } else {
+            successViewWidthConstraint.constant = 0
+            successView.isHidden = true
         }
         
         if countOfDecline > 0 {

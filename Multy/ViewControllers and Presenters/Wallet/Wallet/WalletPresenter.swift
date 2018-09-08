@@ -90,7 +90,11 @@ class WalletPresenter: NSObject {
                     return 126 
                 }
             } else {
-                return 70
+                if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
+                    return 135
+                } else {
+                    return 70
+                }
             }
         case false:
             if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
