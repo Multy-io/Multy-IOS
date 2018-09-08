@@ -195,7 +195,7 @@ class ApiManager: NSObject, RequestRetrier {
                 print("api/v1/wallet: \(response.result.value)")
                 if response.result.value != nil {
                     if ((response.result.value! as! NSDictionary) ["code"] != nil) {
-                        completion(NSDictionary(), nil)
+                        completion(response.result.value as! NSDictionary, nil)
                     } else {
                         completion(nil, nil)
                     }
