@@ -161,6 +161,12 @@ extension DataManager {
         }
     }
     
+    func importWallet(params: Parameters, completion: @escaping (_ answer: NSDictionary?,_ error: Error?) -> ()) {
+        apiManager.importWallet(params) { (responceDict, error) in
+            completion(responceDict, error)
+        }
+    }
+    
     func addWallet(params: Parameters, completion: @escaping (_ answer: NSDictionary?,_ error: Error?) -> ()) {
         apiManager.addWallet(params) { (responceDict, error) in
             completion(responceDict, error)

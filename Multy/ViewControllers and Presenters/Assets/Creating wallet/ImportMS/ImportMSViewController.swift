@@ -29,7 +29,9 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func importAction(_ sender: Any) {
-        
+        presenter.importMSWallet { (success) in
+            
+        }
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
