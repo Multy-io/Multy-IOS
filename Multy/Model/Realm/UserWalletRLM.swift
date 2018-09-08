@@ -299,7 +299,7 @@ class UserWalletRLM: Object {
         }
         
         if let walletID = walletInfo["walletindex"]  {
-            wallet.walletID = NSNumber(value: walletID as! UInt32)
+            wallet.walletID = NSNumber(value: walletID as! Int32)
         }
         
         if let walletName = walletInfo["walletname"] {
