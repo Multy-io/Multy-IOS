@@ -165,6 +165,7 @@
 		4585BD422049CF3D004542AE /* ActivityWebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585BD412049CF3D004542AE /* ActivityWebViewPresenter.swift */; };
 		4585C9632143D690000364F0 /* ImportMSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585C9622143D690000364F0 /* ImportMSViewController.swift */; };
 		4585C9652143D6A7000364F0 /* ImportMSPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585C9642143D6A7000364F0 /* ImportMSPresenter.swift */; };
+		4585C96721444698000364F0 /* SendArrayOfWallets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585C96621444698000364F0 /* SendArrayOfWallets.swift */; };
 		458C8B0220724B2D00B8D71B /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458C8B0120724B2D00B8D71B /* UIScrollView+Extension.swift */; };
 		458C8B062072516900B8D71B /* SendAmountEthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458C8B052072516900B8D71B /* SendAmountEthViewController.swift */; };
 		458C8B082072518000B8D71B /* SendAmountEthPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458C8B072072518000B8D71B /* SendAmountEthPresenter.swift */; };
@@ -636,6 +637,7 @@
 		4585BD412049CF3D004542AE /* ActivityWebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWebViewPresenter.swift; sourceTree = "<group>"; };
 		4585C9622143D690000364F0 /* ImportMSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportMSViewController.swift; sourceTree = "<group>"; };
 		4585C9642143D6A7000364F0 /* ImportMSPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportMSPresenter.swift; sourceTree = "<group>"; };
+		4585C96621444698000364F0 /* SendArrayOfWallets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendArrayOfWallets.swift; sourceTree = "<group>"; };
 		458C8B0120724B2D00B8D71B /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
 		458C8B052072516900B8D71B /* SendAmountEthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAmountEthViewController.swift; sourceTree = "<group>"; };
 		458C8B072072518000B8D71B /* SendAmountEthPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAmountEthPresenter.swift; sourceTree = "<group>"; };
@@ -1488,6 +1490,7 @@
 				45D7890E20ED1F48001AB402 /* CountOfProtocol.swift */,
 				44AAAE1820E4E0D000A481A4 /* NewContactAddressProtocol.swift */,
 				4400A53B20EE1B86004CD7AB /* ChooseContactsAddressProtocol.swift */,
+				4585C96621444698000364F0 /* SendArrayOfWallets.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -2685,6 +2688,7 @@
 				85DE62DD20AB002000423D89 /* SendViewController.swift in Sources */,
 				451B98631FD947A400DC64A5 /* FastOperationsPresenter.swift in Sources */,
 				45DCF9CD1FE139C9005A9896 /* WalletAddressTableViewCell.swift in Sources */,
+				4585C96721444698000364F0 /* SendArrayOfWallets.swift in Sources */,
 				452236211FCD6BA7004BA490 /* TransactionPresenter.swift in Sources */,
 				44768AA920D02AC900FA9C28 /* BranchProtocol.swift in Sources */,
 				44C06FC9203D832B008CBA9D /* Array+Extension.swift in Sources */,

@@ -10,6 +10,7 @@ class ImportMSPresenter: NSObject {
     var account : AccountRLM?
     var selectedBlockchainType = BlockchainType.create(currencyID: 60, netType: 4)
     let createdWallet = UserWalletRLM()
+    var preWallets = [UserWalletRLM]()
     //
     func makeAuth(completion: @escaping (_ answer: String) -> ()) {
         if self.account != nil {
@@ -29,19 +30,24 @@ class ImportMSPresenter: NSObject {
         }
     }
     
-    func importMSWallet(completion: @escaping (_ dict: Dictionary<String, Any>?) -> ()) {
+    func importMSWallet(address: String, completion: @escaping (_ dict: Dictionary<String, Any>?) -> ()) {
         if account == nil {
             //            print("-------------ERROR: Account nil")
             //            return
             self.makeAuth(completion: { (answer) in
-                self.importMS()
+                self.importMSWallet(address: address, completion: { (dict) in
+                    completion(dict)
+                })
+                
             })
         } else {
-            self.importMS()
+            self.importMSWallet(address: address, completion: { (dict) in
+                completion(dict)
+            })
         }
     }
     
-    func importMS() {
+    func importMSwith(address: String, publicKey: String, completion: @escaping (_ dict: NSDictionary) -> ()) {
         var binData : BinaryData = account!.binaryDataString.createBinaryData()!
         
         //MARK: topIndex
@@ -58,7 +64,7 @@ class ImportMSPresenter: NSObject {
         
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
-        createdWallet.name = "imp"
+        createdWallet.name = "Imported"
         createdWallet.walletID = NSNumber(value: dict!["walletID"] as! UInt32)
         createdWallet.addressID = NSNumber(value: dict!["addressID"] as! UInt32)
         createdWallet.address = "0x54f46318d8f83c28b719ccf01ab4628e1e8f65fa"//dict!["address"] as! String
@@ -82,10 +88,24 @@ class ImportMSPresenter: NSObject {
         
         DataManager.shared.importWallet(params: params) { [unowned self] (dict, error) in
             if error == nil {
+                self.createImportedWalletInDB(params: params as NSDictionary, privateKey: self.importVC!.privateKeyTextView.text!, publicKey: publicKey)
+                print(dict!)
+                completion(dict!)
                 print("success")
             } else {
                 print("fail")
             }
         }
+    }
+    
+    func createImportedWalletInDB(params: NSDictionary, privateKey: String, publicKey: String) {
+        let wallet = UserWalletRLM()
+        
+        wallet.importedPublicKey = publicKey
+        wallet.importedPrivateKey = privateKey
+        wallet.name = params["walletName"] as! String
+        wallet.address = params["address"] as! String
+        
+        preWallets.append(wallet)
     }
 }

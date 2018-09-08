@@ -64,6 +64,7 @@ class AssetsPresenter: NSObject {
     }
     
     var wallets: Results<UserWalletRLM>?
+    var importedWalletsInDB: [UserWalletRLM]?
     
     @objc func updateExchange() {
         if !self.assetsVC!.isVisible() {
@@ -198,7 +199,8 @@ class AssetsPresenter: NSObject {
             if err != nil {
                 return
             } else {
-                let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
+                var walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
+                walletsArr = self.modifyImportedWallets(walletsArr)
                 print("afterVerbose:rawdata: \(walletsArrayFromApi)")
                 DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
                     self.account = acc
@@ -363,5 +365,32 @@ class AssetsPresenter: NSObject {
         }))
         
         assetsVC?.present(alert, animated: true, completion: nil)
+    }
+    
+    func modifyImportedWallets(_ array: List<UserWalletRLM>) -> List<UserWalletRLM> {
+        var newWallets = List<UserWalletRLM>()
+        
+        if importedWalletsInDB != nil {
+            newWallets = array
+            for wallet in importedWalletsInDB! {
+                let ethWallet = newWallets.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM }.first
+                
+                if ethWallet != nil {
+                    //                    let index = newWallets.index(of: eosWallet!)!
+                    
+                    ethWallet!.importedPublicKey = wallet.importedPublicKey
+                    ethWallet!.importedPrivateKey = wallet.importedPrivateKey
+                    
+                    //                    newWallets.replace(index: index, object: eosWallet!)
+                }
+            }
+            
+            importedWalletsInDB = nil
+            
+            return newWallets
+        } else {
+            return array
+        }
+
     }
 }
