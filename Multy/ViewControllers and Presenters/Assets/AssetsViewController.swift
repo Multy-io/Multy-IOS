@@ -512,6 +512,7 @@ extension CreateWalletDelegate: CreateWalletProtocol {
         } else if tag == "importMS" {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let importMS = storyboard.instantiateViewController(withIdentifier: "importMS") as! ImportMSViewController
+            importMS.presenter.account = presenter.account
             navigationController?.pushViewController(importMS, animated: true)
         }
     }

@@ -6,6 +6,8 @@ import UIKit
 
 class ImportMSViewController: UIViewController, UITextViewDelegate {
     
+    @IBOutlet weak var netTypeSwitch: UISwitch!
+    @IBOutlet weak var netTypeLbl: UILabel!
     @IBOutlet weak var privateKeyTextView: UITextView!
     @IBOutlet weak var msAddressTextView: UITextView!
     @IBOutlet weak var keyPlaceholder: UILabel!
@@ -13,6 +15,7 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
     
     
     let presenter = ImportMSPresenter()
+    var netType = 1 //main test
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,10 +32,26 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func importAction(_ sender: Any) {
-        presenter.importMSWallet { (success) in
-            
+        let dict = DataManager.shared.importWalletBy(privateKey: privateKeyTextView.text!, blockchain: BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: netType), walletID: 0)
+        if ((dict as NSDictionary?) != nil) {
+            let generatedAddress = dict!["address"] as! String
+            presenter.importMSwith(address: generatedAddress) { (answer) in
+                let answerCode = answer["code"] as! Int
+                if answerCode == 200 {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
         }
     }
+    
+    @IBAction func changeNetTypeAction(_ sender: Any) {
+        if netTypeSwitch.isOn {
+            netType = 1
+        } else {
+            netType = 4
+        }
+    }
+    
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView == privateKeyTextView {

@@ -29,19 +29,24 @@ class ImportMSPresenter: NSObject {
         }
     }
     
-    func importMSWallet(completion: @escaping (_ dict: Dictionary<String, Any>?) -> ()) {
+    func importMSWallet(address: String, completion: @escaping (_ dict: Dictionary<String, Any>?) -> ()) {
         if account == nil {
             //            print("-------------ERROR: Account nil")
             //            return
             self.makeAuth(completion: { (answer) in
-                self.importMS()
+                self.importMSWallet(address: address, completion: { (dict) in
+                    completion(dict)
+                })
+                
             })
         } else {
-            self.importMS()
+            self.importMSWallet(address: address, completion: { (dict) in
+                completion(dict)
+            })
         }
     }
     
-    func importMS() {
+    func importMSwith(address: String, completion: @escaping (_ dict: NSDictionary) -> ()) {
         var binData : BinaryData = account!.binaryDataString.createBinaryData()!
         
         //MARK: topIndex
@@ -82,6 +87,7 @@ class ImportMSPresenter: NSObject {
         
         DataManager.shared.importWallet(params: params) { [unowned self] (dict, error) in
             if error == nil {
+                completion(dict!)
                 print("success")
             } else {
                 print("fail")
