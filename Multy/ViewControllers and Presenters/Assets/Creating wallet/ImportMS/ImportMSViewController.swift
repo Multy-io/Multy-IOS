@@ -16,7 +16,8 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
     
     let presenter = ImportMSPresenter()
     var netType = 1 //main test
-
+    var sendWalletsDelegate: SendArrayOfWallets?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.importVC = self
@@ -35,11 +36,10 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
         let dict = DataManager.shared.importWalletBy(privateKey: privateKeyTextView.text!, blockchain: BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: netType), walletID: 0)
         if ((dict as NSDictionary?) != nil) {
             let generatedAddress = dict!["address"] as! String
-            presenter.importMSwith(address: generatedAddress) { (answer) in
-                let answerCode = answer["code"] as! Int
-                if answerCode == 200 {
-                    self.navigationController?.popViewController(animated: true)
-                }
+            let generatedPublic = dict!["publicKey"] as! String
+            presenter.importMSwith(address: generatedAddress, publicKey: generatedPublic) { (answer) in
+                self.sendWalletsDelegate?.sendArrOfWallets(arrOfWallets: self.presenter.preWallets)
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }

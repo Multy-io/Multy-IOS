@@ -18,6 +18,7 @@ private typealias CancelDelegate = AssetsViewController
 private typealias CreateWalletDelegate = AssetsViewController
 private typealias LocalizeDelegate = AssetsViewController
 private typealias PushTxDelegate = AssetsViewController
+private typealias SendWalletsDelegate = AssetsViewController
 
 class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol, BlockchainTransferProtocol {
     @IBOutlet weak var statusView: UIView!
@@ -513,6 +514,7 @@ extension CreateWalletDelegate: CreateWalletProtocol {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let importMS = storyboard.instantiateViewController(withIdentifier: "importMS") as! ImportMSViewController
             importMS.presenter.account = presenter.account
+            importMS.sendWalletsDelegate = self
             navigationController?.pushViewController(importMS, animated: true)
         }
     }
@@ -896,6 +898,12 @@ extension PushTxDelegate {
                 self.navigationController?.pushViewController(transactionVC, animated: false)
             })
         }
+    }
+}
+
+extension SendWalletsDelegate: SendArrayOfWallets {
+    func sendArrOfWallets(arrOfWallets: [UserWalletRLM]) {
+        presenter.importedWalletsInDB = arrOfWallets
     }
 }
 
