@@ -30,7 +30,7 @@ class MultisigTransactionRLM: Object {
             result.input = input
         }
         
-        if let index = multisigTxDict["index"] as? NSNumber {
+        if let index = multisigTxDict["requestid"] as? NSNumber {
             result.index = index
         }
         

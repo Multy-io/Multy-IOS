@@ -514,13 +514,13 @@ extension CreateTransactionDelegate {
     func setETHMaxAllowed() {
         switch isCrypto {
         case true:
-            if sendAmountVC!.commissionSwitch.isOn {
+            if sendAmountVC!.commissionSwitch.isOn && transactionDTO.choosenWallet?.isMultiSig == false {
                 maxAllowedToSpend = availableSumInCrypto - feeAmount
             } else {
                 maxAllowedToSpend = availableSumInCrypto
             }
         case false:
-            if sendAmountVC!.commissionSwitch.isOn {
+            if sendAmountVC!.commissionSwitch.isOn && transactionDTO.choosenWallet?.isMultiSig == false {
                 maxAllowedToSpend = availableSumInFiat - feeAmountInFiat
             } else {
                 maxAllowedToSpend = availableSumInFiat
