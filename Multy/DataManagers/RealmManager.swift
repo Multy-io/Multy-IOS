@@ -17,7 +17,7 @@ class RealmManager: NSObject {
     static let shared = RealmManager()
     
     private var realm : Realm? = nil
-    let schemaVersion : UInt64 = 28
+    let schemaVersion : UInt64 = 29
     
     var account: AccountRLM?
     var config: Realm.Configuration?
@@ -126,6 +126,9 @@ class RealmManager: NSObject {
                                                     }
                                                     if oldSchemaVersion <= 28 {
                                                         self.migrateFrom27To28(with: migration)
+                                                    }
+                                                    if oldSchemaVersion <= 29 {
+                                                        self.migrateFrom28To29(with: migration)
                                                     }
             })
             
@@ -1022,6 +1025,13 @@ extension RealmMigrationManager {
     func migrateFrom27To28(with migration: Migration) {
         migration.enumerateObjects(ofType: MultisigTransactionRLM.className()) { (_, newTx) in
             newTx?["index"] = NSNumber(value: 0)
+        }
+    }
+    
+    func migrateFrom28To29(with migration: Migration) {
+        migration.enumerateObjects(ofType: UserWalletRLM.className()) { (_, wallet) in
+            wallet?["importedPrivateKey"] = String()
+            wallet?["importedPublicKey"] = String()
         }
     }
 }
