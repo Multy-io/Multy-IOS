@@ -250,13 +250,13 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
             }
         }
         
-        if (string != "," && string != ".") && self.presenter.maxAllowedToSpend < (self.topSumLbl.text! + string).convertCryptoAmountStringToMinimalUnits(in: presenter.blockchain)  {
-            if string != "" {
-                self.presentWarning(message: localize(string: Constants.moreThenYouHaveString))
-                
-                return false
-            }
-        }
+//        if (string != "," && string != ".") && self.presenter.maxAllowedToSpend < (self.topSumLbl.text! + string).convertCryptoAmountStringToMinimalUnits(in: presenter.blockchain)  {
+//            if string != "" {
+//                self.presentWarning(message: localize(string: Constants.moreThenYouHaveString))
+//                
+//                return false
+//            }
+//        }
         guard let text = textField.text else { return true }
         let newLength = text.count + string.count - range.length
         

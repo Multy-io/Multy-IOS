@@ -503,11 +503,11 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
 
     @IBAction func sendAction(_ sender: Any) {
-        if presenter.wallet!.availableAmount.isZero {
-            self.presentAlert(with: localize(string: Constants.noFundsString))
-            
-            return
-        }
+//        if presenter.wallet!.availableAmount.isZero {
+//            self.presentAlert(with: localize(string: Constants.noFundsString))
+//            
+//            return
+//        }
         
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
