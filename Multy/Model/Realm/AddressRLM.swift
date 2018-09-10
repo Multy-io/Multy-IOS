@@ -39,7 +39,7 @@ class AddressRLM: Object {
         let addressRLM = AddressRLM()
         
         if let addressID = addressInfo["addressindex"]  {
-            addressRLM.addressID = NSNumber(value: addressID as! UInt32)
+            addressRLM.addressID = NSNumber(value: addressID as! Int32)
         }
         
 //        if let currencyID = addressInfo["currencyID"]  {

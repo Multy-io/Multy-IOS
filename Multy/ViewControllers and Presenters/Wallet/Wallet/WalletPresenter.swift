@@ -11,9 +11,18 @@ class WalletPresenter: NSObject {
     var wallet : UserWalletRLM? {
         didSet {
             walletVC?.titleLbl.text = wallet?.name
+            
+            if wallet?.importedPrivateKey.isEmpty == false {
+                importedPrivateKey = wallet!.importedPrivateKey
+                importedPublicKey = wallet!.importedPublicKey
+            }
+            
             updateUI()
         }
     }
+    
+    var importedPublicKey: String?
+    var importedPrivateKey: String?
     
     var account : AccountRLM?
     

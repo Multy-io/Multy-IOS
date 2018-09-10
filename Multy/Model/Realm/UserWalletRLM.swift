@@ -24,6 +24,9 @@ class UserWalletRLM: Object {
     @objc dynamic var lastActivityTimestamp = NSNumber(value: 0)
     @objc dynamic var isSyncing = NSNumber(booleanLiteral: false)
     
+    @objc dynamic var importedPrivateKey = String()
+    @objc dynamic var importedPublicKey = String()
+    
     var changeAddressIndex: UInt32 {
         get {
             switch blockchainType.blockchain {
@@ -285,6 +288,14 @@ class UserWalletRLM: Object {
         wallet.ethWallet = ETHWallet()
         wallet.btcWallet = BTCWallet()
         
+        if let privateKey = walletInfo["importedPrivateKey"] {
+            wallet.importedPrivateKey = privateKey as! String
+        }
+        
+        if let publicKey = walletInfo["importedPublicKey"] {
+            wallet.importedPublicKey = publicKey as! String
+        }
+        
         if let chain = walletInfo["currencyid"]  {
             wallet.chain = NSNumber(value: chain as! UInt32)
         }
@@ -299,7 +310,7 @@ class UserWalletRLM: Object {
         }
         
         if let walletID = walletInfo["walletindex"]  {
-            wallet.walletID = NSNumber(value: walletID as! UInt32)
+            wallet.walletID = NSNumber(value: walletID as! Int32)
         }
         
         if let walletName = walletInfo["walletname"] {
