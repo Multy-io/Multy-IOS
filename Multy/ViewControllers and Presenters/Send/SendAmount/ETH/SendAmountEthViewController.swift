@@ -325,7 +325,7 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
             sendFinishVC.presenter.isCrypto = presenter.isCrypto
             
             presenter.transactionDTO.sendAmountString = presenter.sumInCrypto.cryptoValueString(for: presenter.blockchain)
-            presenter.transactionDTO.transaction?.newChangeAddress = presenter.addressData!["address"] as? String
+      //      presenter.transactionDTO.transaction?.newChangeAddress = presenter.addressData!["address"] as? String
             presenter.transactionDTO.transaction?.rawTransaction = presenter.rawTransaction
             presenter.transactionDTO.transaction?.transactionRLM = presenter.transactionObj
             presenter.transactionDTO.transaction?.endSumBigInt = presenter.getNextBtnSum()

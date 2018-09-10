@@ -512,6 +512,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
         sendStartVC.presenter.transactionDTO.choosenWallet = self.presenter.wallet
+        if presenter.importedPrivateKey != nil && presenter.importedPublicKey != nil {
+            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPrivateKey = presenter.importedPrivateKey!
+            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPublicKey = presenter.importedPublicKey!
+        }
         sendStartVC.presenter.isFromWallet = true
         self.navigationController?.pushViewController(sendStartVC, animated: true)
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(sendWithChainTap)\(presenter.wallet!.chain)")
