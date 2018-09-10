@@ -397,7 +397,7 @@ extension CreateTransactionDelegate {
                                                                                   sendAddress: transactionDTO.sendAddress!,
                                                                                   sendAmountString: sendAmount.stringValue,
                                                                                   nonce: transactionDTO.choosenWallet!.ethWallet!.nonce.intValue,
-                                                                                  balanceAmount: "\(90000000000000000)",
+                                                                                  balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
                 ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
                 gasPrice: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
                 gasLimit: "21000")
