@@ -215,7 +215,7 @@ class WaitingMembersPresenter: NSObject {
     }
     
     func closeVC() {
-        viewController?.navigationController?.popViewController(animated: true)
+        viewController?.navigationController?.popToRootViewController(animated: true)
     }
     
     func createOwnersString() -> String {

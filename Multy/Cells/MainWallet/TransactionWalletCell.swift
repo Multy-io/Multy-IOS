@@ -43,14 +43,14 @@ class TransactionWalletCell: UITableViewCell {
         } else if histObj.txStatus.intValue == TxStatus.BlockIncoming.rawValue ||
             histObj.txStatus.intValue == TxStatus.BlockConfirmedIncoming.rawValue {
             let blockedTxInfoColor = UIColor(redInt: 135, greenInt: 161, blueInt: 197, alpha: 0.4)
-            self.transactionImage.image = #imageLiteral(resourceName: "recieve")
+            self.transactionImage.image = #imageLiteral(resourceName: "arrowReceived")
             self.addressLabel.textColor = .black
             self.timeLabel.textColor = blockedTxInfoColor
             self.cryptoAmountLabel.textColor = .black
         } else if histObj.txStatus.intValue == TxStatus.BlockOutcoming.rawValue ||
             histObj.txStatus.intValue == TxStatus.BlockConfirmedOutcoming.rawValue {
             let blockedTxInfoColor = UIColor(redInt: 135, greenInt: 161, blueInt: 197, alpha: 0.4)
-            self.transactionImage.image = #imageLiteral(resourceName: "send")
+            self.transactionImage.image = #imageLiteral(resourceName: "arrowSended")
             self.addressLabel.textColor = .black
             self.timeLabel.textColor = blockedTxInfoColor
             self.cryptoAmountLabel.textColor = .black
@@ -179,7 +179,7 @@ class TransactionWalletCell: UITableViewCell {
     }
     
     func changeTopConstraint(_ isThereName: Bool) {
-        self.topConstraint.constant = isThereName ? 35 : 20
+        self.topConstraint.constant = isThereName ? 34 : 19
     }
 }
 

@@ -59,7 +59,6 @@ class ReceiveStartPresenter: NSObject {
     func getWallets() {
 //        DataManager.shared.getAccount { (acc, err) in
 //            if err == nil {
-//                // MARK: check this
 //                self.walletsArr = acc!.wallets.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
 //                self.receiveStartVC?.updateUI()
 //            }
@@ -89,6 +88,7 @@ class ReceiveStartPresenter: NSObject {
     }
     
     func multisigFunc(inviteCode: String) {
+        receiveStartVC?.titleLbl.text = receiveStartVC?.localize(string: Constants.joinWithString)
         isForMultisig = true
         self.inviteCode = inviteCode
         displayedBlockchainOnly = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))
