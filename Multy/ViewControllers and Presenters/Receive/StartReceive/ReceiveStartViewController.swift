@@ -17,23 +17,20 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     
     weak var sendWalletDelegate: SendWalletProtocol?
     
-    var titleTextKey = Constants.receiveString
-    
     var whereFrom: UIViewController?
     
     let loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.presenter.receiveStartVC = self
         view.addSubview(loader)
         self.swipeToBack()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
 //        self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        self.titleLbl.text = titleTextKey.count > 0 ? localize(string: titleTextKey):""
+        self.titleLbl.text = presenter.titleTextKey.count > 0 ? localize(string: presenter.titleTextKey):""
         
-        self.presenter.receiveStartVC = self
         self.registerCells()
 //        self.presenter.createWallets()
         if presenter.walletsArr.count == 0 {

@@ -5,6 +5,8 @@
 import UIKit
 import RealmSwift
 
+private typealias LocalizeDelegate = ReceiveStartPresenter
+
 class ReceiveStartPresenter: NSObject {
     
     var receiveStartVC: ReceiveStartViewController?
@@ -23,6 +25,8 @@ class ReceiveStartPresenter: NSObject {
     var isForMultisig = false
     var inviteCode = ""
     var blockchainForSort: BlockchainType?
+    
+    var titleTextKey = Constants.receiveString
     
     //test func
 //    func createWallets() {
@@ -88,7 +92,7 @@ class ReceiveStartPresenter: NSObject {
     }
     
     func multisigFunc(inviteCode: String) {
-        receiveStartVC?.titleLbl.text = receiveStartVC?.localize(string: Constants.joinWithString)
+        titleTextKey = localize(string: Constants.joinWithString)
         isForMultisig = true
         self.inviteCode = inviteCode
         displayedBlockchainOnly = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))
@@ -162,6 +166,12 @@ class ReceiveStartPresenter: NSObject {
                 completion(nil, nil)
             }
         }
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Receives"
     }
 }
 
