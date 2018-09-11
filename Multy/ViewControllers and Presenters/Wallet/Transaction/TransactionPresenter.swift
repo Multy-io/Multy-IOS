@@ -63,13 +63,6 @@ class TransactionPresenter: NSObject {
         DataManager.shared.getAccount { [unowned self] (account, error) in
             if account != nil {
                 self.binaryData = account!.binaryDataString.createBinaryData()!
-                
-                
-                
-                self.addressData = core.createAddress(blockchainType:   self.wallet.blockchainType,
-                                                      walletID:         self.wallet.walletID.uint32Value,
-                                                      addressID:        self.wallet.changeAddressIndex,
-                                                      binaryData:      &self.binaryData!)
             }
         }
     }

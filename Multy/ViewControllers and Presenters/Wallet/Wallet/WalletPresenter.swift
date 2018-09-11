@@ -151,6 +151,14 @@ class WalletPresenter: NSObject {
                                                             
                                                             self.getHistory()
             }
+        } else if wallet!.isImported {
+            DataManager.shared.getOneImportedWalletVerbose(walletAddress: wallet!.address, blockchain: BlockchainType.create(wallet: wallet!)) { [unowned self] (wallet, error) in
+                if wallet != nil {
+                    self.wallet = wallet
+                }
+                
+                self.getHistory()
+            }
         } else {
             DataManager.shared.getOneWalletVerbose(walletID: wallet!.walletID, blockchain: BlockchainType.create(wallet: wallet!)) { [unowned self] (wallet, error) in
                 if wallet != nil {
@@ -171,6 +179,12 @@ class WalletPresenter: NSObject {
             }
             
             DataManager.shared.getMultisigTransactionHistory(currencyID: wallet!.chain,
+                                                             networkID: wallet!.chainType,
+                                                             address: wallet!.address) { [unowned self] (historyArray, error) in
+                                                                self.updateTable(historyArray: historyArray, error: error)
+            }
+        } else if wallet!.isImported {
+            DataManager.shared.getImportedWalletTransactionHistory(currencyID: wallet!.chain,
                                                              networkID: wallet!.chainType,
                                                              address: wallet!.address) { [unowned self] (historyArray, error) in
                                                                 self.updateTable(historyArray: historyArray, error: error)

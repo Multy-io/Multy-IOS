@@ -366,7 +366,7 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func getOneImportedWalletVerbose(inviteCode: String, blockchain: BlockchainType, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
+    func getOneImportedWalletVerbose(address: String, blockchain: BlockchainType, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
         
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -374,7 +374,7 @@ class ApiManager: NSObject, RequestRetrier {
         ]
         
         //MARK: add chain ID
-        requestManager.request("\(apiUrl)api/v1/wallet/\(inviteCode)/verbose/\(blockchain.blockchain.rawValue)/\(blockchain.net_type)/\(2)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallet/\(address)/verbose/\(blockchain.blockchain.rawValue)/\(blockchain.net_type)/\(2)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
@@ -472,6 +472,24 @@ class ApiManager: NSObject, RequestRetrier {
         ]
         
         requestManager.request("\(apiUrl)api/v1/wallets/transactions/\(currencyID)/\(networkID)/\(address)/\(1)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    completion((response.result.value as! NSDictionary), nil)
+                }
+            case .failure(_):
+                completion(nil, response.result.error)
+                break
+            }
+        }
+    }
+    
+    func getImportedWalletTransactionHistory(currencyID: NSNumber, networkID: NSNumber, address: String, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
+        let header: HTTPHeaders = [
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/wallets/transactions/\(currencyID)/\(networkID)/\(address)/\(2)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {

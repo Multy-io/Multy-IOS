@@ -861,7 +861,7 @@ extension PushTxDelegate {
     
     func openTx(_ info: [AnyHashable: Any]) {
         if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
-            let walletID = NSNumber(value: Int(walletIDString)!)
+            let walletID = NSNumber(value: Int32(walletIDString)!)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.getTxAndPresent(with: txID, currencyID, networkID, walletID)
