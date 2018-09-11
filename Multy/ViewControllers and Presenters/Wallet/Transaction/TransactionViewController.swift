@@ -270,16 +270,23 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             }
             
         } else {
-            if isIncoming {  // RECEIVE
+            self.titleLbl.text = localize(string: Constants.transactionInfoString)
+            let txStatus = presenter.histObj.txStatus.intValue
+            if txStatus == TxStatus.MempoolIncoming.rawValue || txStatus == TxStatus.BlockIncoming.rawValue || txStatus == TxStatus.BlockConfirmedIncoming.rawValue {  // RECEIVE
                 self.makeBackColor(color: self.presenter.receiveBackColor)
-                self.titleLbl.text = localize(string: Constants.transactionInfoString)
-            } else {                        // SEND
+                self.titleLbl.textColor = .white
+                backImageView.image = UIImage(named: "backWhite")
+            } else if txStatus == TxStatus.MempoolOutcoming.rawValue || txStatus == TxStatus.BlockOutcoming.rawValue || txStatus == TxStatus.BlockConfirmedOutcoming.rawValue {                        // SEND
                 self.makeBackColor(color: self.presenter.sendBackColor)
-                self.titleLbl.text = localize(string: Constants.transactionInfoString)
                 self.transactionImg.image = #imageLiteral(resourceName: "sendBigIcon")
+                self.titleLbl.textColor = .white
+                backImageView.image = UIImage(named: "backWhite")
+            } else {
+                self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
+                self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
+                self.titleLbl.textColor = #colorLiteral(red: 0.3176470588, green: 0.4078431373, blue: 0.4549019608, alpha: 1)
+                backImageView.image = UIImage(named: "backGrey")
             }
-            self.titleLbl.textColor = .white
-            backImageView.image = UIImage(named: "backWhite")
         }
         self.updateUI()
     }
