@@ -57,7 +57,7 @@ class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
         walletsVC.presenter.displayedBlockchainOnly = presenter.wallet.blockchainType
         walletsVC.presenter.isForMultisig = true
         walletsVC.sendWalletDelegate = self
-        walletsVC.titleTextKey = ""
+        walletsVC.presenter.titleTextKey = ""
         self.navigationController?.pushViewController(walletsVC, animated: true)
         //        sendAnalyticsEvent(screenName: "\(screenReceiveSummaryWithChain)\(presenter.wallet!.chain)", eventName: changeWalletTap)
     }

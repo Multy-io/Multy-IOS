@@ -271,15 +271,22 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func getFeeRate(currencyID: UInt32, networkID: UInt32, completion: @escaping (_ answer: NSDictionary?,_ error: Error?) -> ()) {
+    func getFeeRate(currencyID: UInt32, networkID: UInt32, ethAddress: String?, completion: @escaping (_ answer: NSDictionary?,_ error: Error?) -> ()) {
         
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
             "Authorization" : "Bearer \(self.token)"
         ]
         
+        var url = ""
+        if ethAddress != nil {
+            url = "\(apiUrl)api/v1/transaction/feerate/\(currencyID)/\(networkID)/\(ethAddress!)"
+        } else {
+            url = "\(apiUrl)api/v1/transaction/feerate/\(currencyID)/\(networkID)"
+        }
+        
         //MARK: USD
-        requestManager.request("\(apiUrl)api/v1/transaction/feerate/\(currencyID)/\(networkID)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {

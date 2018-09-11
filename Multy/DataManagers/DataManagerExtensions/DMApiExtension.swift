@@ -179,12 +179,13 @@ extension DataManager {
         }
     }
     
-    func getFeeRate(currencyID: UInt32, networkID: UInt32, completion: @escaping (_ feeRateDict: NSDictionary?,_ error: Error?) -> ()) {
-        apiManager.getFeeRate(currencyID: currencyID, networkID: networkID) { (answer, error) in
+    func getFeeRate(currencyID: UInt32, networkID: UInt32, ethAddress: String?, completion: @escaping (_ feeRateDict: NSDictionary?,_ error: Error?) -> ()) {
+        apiManager.getFeeRate(currencyID: currencyID, networkID: networkID, ethAddress: ethAddress) { (answer, error) in
             if error != nil || (answer!["code"] as! NSNumber).intValue != 200  {
                 completion(nil, error)
             } else {
-                completion(answer!["speeds"] as? NSDictionary, nil)
+//                completion(answer!["speeds"] as? NSDictionary, nil)
+                completion(answer, nil)
             }
         }
     }

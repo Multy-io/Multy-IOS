@@ -171,9 +171,11 @@ class TransactionPresenter: NSObject {
                 self.gasLimitForConfirm = value["confirmTransaction"] as? NSNumber
                 DataManager.shared.getFeeRate(currencyID: self.wallet.chain.uint32Value,
                                               networkID: self.wallet.chainType.uint32Value,
+                                              ethAddress: nil,
                                               completion: { [unowned self] (dict, error) in
                                                 if dict != nil {
-                                                    if let medium = dict?["Medium"] as? UInt64 {
+                                                    let feeDict = dict!["speeds"] as? NSDictionary
+                                                    if let medium = feeDict?["Medium"] as? UInt64 {
                                                         self.priceForConfirm = "\(medium)"
                                                     }
                                                     self.transctionVC?.checkStatus()

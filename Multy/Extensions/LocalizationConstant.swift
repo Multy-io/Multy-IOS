@@ -123,4 +123,5 @@ extension Constants {
     static let serverNotWorkingMessageString = "SERVER STOP STRING"
     static let pendingString = "PENDING"
     static let pendingMultisigAlertString = "PLEASE WAIT MULTISIG CONFIRMATION"
+    static let joinWithString = "JOIN WITH"
 }

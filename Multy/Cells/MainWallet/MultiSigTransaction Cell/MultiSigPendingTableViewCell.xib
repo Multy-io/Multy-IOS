@@ -62,7 +62,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Onh-xk-48B">
-                        <rect key="frame" x="292" y="33" width="67" height="20.5"/>
+                        <rect key="frame" x="292" y="31" width="67" height="20.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="280.78" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0r-2J-1Mi">
                                 <rect key="frame" x="0.0" y="0.0" width="38" height="20.5"/>
@@ -282,11 +282,11 @@
                     <constraint firstAttribute="trailing" secondItem="3na-3B-eAi" secondAttribute="trailing" constant="16" id="MpF-Nl-Lsc"/>
                     <constraint firstItem="5b0-kN-73f" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="O0P-Cn-x1O"/>
                     <constraint firstAttribute="bottom" secondItem="QKE-ez-c9y" secondAttribute="bottom" constant="17.5" id="hE2-gU-TMG"/>
-                    <constraint firstItem="Onh-xk-48B" firstAttribute="top" secondItem="zYj-ID-lyR" secondAttribute="bottom" id="hOU-Hp-74t"/>
                     <constraint firstItem="5b0-kN-73f" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="hmN-vL-ADI"/>
                     <constraint firstItem="eqK-gp-NzE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="iwn-7o-U3L"/>
                     <constraint firstItem="2B8-XF-5T4" firstAttribute="leading" secondItem="eqK-gp-NzE" secondAttribute="leading" id="jG7-mS-iGc"/>
                     <constraint firstAttribute="trailing" secondItem="Xjc-sj-yhV" secondAttribute="trailing" id="lFo-zl-kjB"/>
+                    <constraint firstItem="Onh-xk-48B" firstAttribute="centerY" secondItem="2B8-XF-5T4" secondAttribute="centerY" id="lee-FN-TAd"/>
                     <constraint firstItem="Onh-xk-48B" firstAttribute="trailing" secondItem="kjS-6D-eKt" secondAttribute="trailing" id="oPP-bg-Tej"/>
                     <constraint firstItem="v0r-2J-1Mi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2B8-XF-5T4" secondAttribute="trailing" constant="20" id="rMh-bU-cF4"/>
                     <constraint firstItem="3na-3B-eAi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="uZx-Aa-vr7"/>
@@ -308,6 +308,7 @@
                 <outlet property="fiatNameLbl" destination="OXi-h2-9xR" id="Gag-Qi-ZYx"/>
                 <outlet property="fiatSumLbl" destination="v0r-2J-1Mi" id="gSw-us-pMr"/>
                 <outlet property="heightOfBigViewConstraint" destination="vhT-Kt-KWd" id="XdD-yr-8YU"/>
+                <outlet property="infoBlockView" destination="QKE-ez-c9y" id="SCz-Hm-wb7"/>
                 <outlet property="infoHeightConstraint" destination="KwL-I2-XSA" id="DHb-la-z3d"/>
                 <outlet property="infoLbl" destination="m2w-8S-22W" id="0UR-Cz-Sly"/>
                 <outlet property="infoView" destination="5hz-kO-Mah" id="xKX-iu-mSN"/>
@@ -315,6 +316,7 @@
                 <outlet property="lockedFiatLbl" destination="rhz-F0-vbQ" id="FMm-Wt-SaI"/>
                 <outlet property="lockedView" destination="bMM-nq-L6c" id="uoT-IH-fso"/>
                 <outlet property="separatorView" destination="gba-fe-92N" id="aj9-1X-Usq"/>
+                <outlet property="spaceBetweenTimeConstraint" destination="vZu-U7-qLQ" id="0qy-eN-1cg"/>
                 <outlet property="successApproveCountLbl" destination="K0n-k0-beB" id="VcL-ri-OS5"/>
                 <outlet property="successView" destination="GAL-VA-kab" id="kEm-IL-2MH"/>
                 <outlet property="successViewWidthConstraint" destination="6Rf-k3-rPE" id="J94-DN-H5b"/>

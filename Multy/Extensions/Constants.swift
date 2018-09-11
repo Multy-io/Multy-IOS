@@ -177,7 +177,8 @@ enum TxStatus : Int {
         MempoolOutcoming =          3,
         BlockOutcoming =            4,
         BlockConfirmedIncoming =    5,
-        BlockConfirmedOutcoming =   6
+        BlockConfirmedOutcoming =   6,
+        BlockMethodInvocationFail = 7
 }
 
 enum SocketMessageType : Int {

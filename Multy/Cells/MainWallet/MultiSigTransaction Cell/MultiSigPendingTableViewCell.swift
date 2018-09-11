@@ -16,7 +16,9 @@ class MultiSigPendingTableViewCell: UITableViewCell {
     @IBOutlet weak var fiatSumLbl: UILabel!
     @IBOutlet weak var fiatNameLbl: UILabel!
     @IBOutlet weak var additionalInfoLbl: UILabel!
+    @IBOutlet weak var spaceBetweenTimeConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var infoBlockView: UIView!
     @IBOutlet weak var heightOfBigViewConstraint: NSLayoutConstraint! //normal is 94
     @IBOutlet weak var lockedView: UIView!
     @IBOutlet weak var lockedCryptoLbl: UILabel! //with name at the end
@@ -78,8 +80,12 @@ class MultiSigPendingTableViewCell: UITableViewCell {
     func showOnlyInfo() {
         lockedView.isHidden = true
         separatorView.isHidden = true
-        
         heightOfBigViewConstraint.constant = 46
+    }
+    
+    func infoBlock(isNeedToHide: Bool) {
+        infoBlockView.isHidden = isNeedToHide
+        spaceBetweenTimeConstraint.constant = isNeedToHide ? 3 : 0
     }
     
     func fillAddressAndName() {
@@ -98,6 +104,7 @@ class MultiSigPendingTableViewCell: UITableViewCell {
     
     func fillEthereumCell() {
         showOnlyInfo()
+        infoBlock(isNeedToHide: histObj.multisig!.confirmed.boolValue)
         if wallet!.isRejected(tx: histObj) {
             transactionImg.image = #imageLiteral(resourceName: "arrowDeclined")
             additionalInfoLbl.text = "Rejected"
@@ -111,8 +118,10 @@ class MultiSigPendingTableViewCell: UITableViewCell {
                 additionalInfoLbl.text = "Waiting for confirmations..."
                 additionalInfoLbl.textColor = #colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1)
             }
-        } else { //if confirmed {
+        } else if histObj.multisig?.confirmed == true {
+            let dateFormatter = Date.defaultGMTDateFormatter()
             transactionImg.image = #imageLiteral(resourceName: "arrowSended")
+            additionalInfoLbl.text = dateFormatter.string(from: histObj.blockTime)
         }
         
         let cryptoAmountString = BigInt(histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)

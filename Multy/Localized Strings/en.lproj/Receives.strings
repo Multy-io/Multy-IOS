@@ -16,3 +16,4 @@
 "CANNOT CHOOSE EMPTY WALLET" = "You can not choose empty wallet. Please select wallet with some amount";
 "ENTER NON-ZERO AMOUNT" = "Please, enter non-zero amount!";
 "YOU CANT ENTER SUM" = "You can`t enter sum more than chain have";
+"JOIN WITH" = "Join With";
