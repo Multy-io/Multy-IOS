@@ -141,59 +141,19 @@ class WalletPresenter: NSObject {
             return
         }
         
-        if wallet!.isMultiSig {
-            let blockchainType = BlockchainType.create(wallet: wallet!)
-            DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet!.multisigWallet!.inviteCode,
-                                                           blockchain: blockchainType) { [unowned self] (wallet, error) in
-                                                            if wallet != nil {
-                                                                self.wallet = wallet
-                                                            }
-                                                            
-                                                            self.getHistory()
+        DataManager.shared.getOneWalletVerbose(wallet: wallet!) { (updatedWallet, error) in
+            if updatedWallet != nil {
+                self.wallet = updatedWallet
             }
-        } else if wallet!.isImported {
-            DataManager.shared.getOneImportedWalletVerbose(walletAddress: wallet!.address, blockchain: BlockchainType.create(wallet: wallet!)) { [unowned self] (wallet, error) in
-                if wallet != nil {
-                    self.wallet = wallet
-                }
-                
-                self.getHistory()
-            }
-        } else {
-            DataManager.shared.getOneWalletVerbose(walletID: wallet!.walletID, blockchain: BlockchainType.create(wallet: wallet!)) { [unowned self] (wallet, error) in
-                if wallet != nil {
-                    self.wallet = wallet
-                }
-                
-                self.getHistory()
-            }
+            
+            self.getHistory()
         }
     }
     
     func getHistory() {
-        if wallet!.isMultiSig {
-            if wallet!.address.isEmpty {
-                self.updateTable(historyArray: List<HistoryRLM>(), error: nil)
-                
-                return
-            }
-            
-            DataManager.shared.getMultisigTransactionHistory(currencyID: wallet!.chain,
-                                                             networkID: wallet!.chainType,
-                                                             address: wallet!.address) { [unowned self] (historyArray, error) in
-                                                                self.updateTable(historyArray: historyArray, error: error)
-            }
-        } else if wallet!.isImported {
-            DataManager.shared.getImportedWalletTransactionHistory(currencyID: wallet!.chain,
-                                                             networkID: wallet!.chainType,
-                                                             address: wallet!.address) { [unowned self] (historyArray, error) in
-                                                                self.updateTable(historyArray: historyArray, error: error)
-            }
-        } else {
-            DataManager.shared.getTransactionHistory(currencyID: wallet!.chain,
-                                                     networkID: wallet!.chainType,
-                                                     walletID: self.wallet!.walletID) { [unowned self] (historyArray, error) in
-                                                        self.updateTable(historyArray: historyArray, error: error)
+        DataManager.shared.getTransactionHistory(wallet: wallet!) { [unowned self] (historyArray, error) in
+            DispatchQueue.main.async { [unowned self] in
+                self.updateTable(historyArray: historyArray, error: error)
             }
         }
     }

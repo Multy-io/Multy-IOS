@@ -196,20 +196,18 @@ class TransactionPresenter: NSObject {
     }
     
     func updateTx() {
-        DataManager.shared.getMultisigTransactionHistory(currencyID: wallet.chain,
-                                                         networkID: wallet.chainType,
-                                                         address: wallet.address) { [unowned self] (historyArray, error) in
-                                                            DispatchQueue.main.async { [unowned self] in
-                                                                if historyArray != nil && historyArray!.count > 0 {
-                                                                    let hist = historyArray!.filter {$0.txHash == self.histObj.txHash}.first
-                                                                    guard hist != nil else {
-                                                                        return
-                                                                    }
-                                                                    
-                                                                    self.histObj = hist!
-                                                                    self.transctionVC?.checkStatus()
-                                                                }
-                                                            }
+        DataManager.shared.getTransactionHistory(wallet: wallet) { [unowned self] (historyArray, error) in
+            DispatchQueue.main.async { [unowned self] in
+                if historyArray != nil && historyArray!.count > 0 {
+                    let hist = historyArray!.filter {$0.txHash == self.histObj.txHash}.first
+                    guard hist != nil else {
+                        return
+                    }
+                    
+                    self.histObj = hist!
+                    self.transctionVC?.checkStatus()
+                }
+            }
         }
     }
 }

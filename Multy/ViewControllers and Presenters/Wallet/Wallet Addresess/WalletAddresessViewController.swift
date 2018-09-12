@@ -135,8 +135,7 @@ extension WalletAddresessViewController: UITableViewDelegate, UITableViewDataSou
             params["currencyID"] = self.presenter.wallet!.chain
             
             DataManager.shared.addAddress(params: params) { (dict, error) in
-                DataManager.shared.getOneWalletVerbose(walletID: self.presenter.wallet!.walletID,
-                                                       blockchain: BlockchainType.create(wallet: self.presenter.wallet!), completion: { (wallet, error) in
+                DataManager.shared.getOneWalletVerbose(wallet: self.presenter.wallet!, completion: { (wallet, error) in
                                                         self.presenter.wallet = wallet
                                                         self.tableView.reloadData()
                 })

@@ -324,7 +324,7 @@ class ApiManager: NSObject, RequestRetrier {
         })
     }
     
-    func getOneWalletVerbose(walletID: NSNumber, blockchain: BlockchainType, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
+    func getOneCreatedWalletVerbose(walletID: NSNumber, blockchain: BlockchainType, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
         
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -448,7 +448,7 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func getTransactionHistory(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
+    func getCreatedWalletTransactionHistory(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
         let header: HTTPHeaders = [
             "Authorization" : "Bearer \(self.token)"
         ]
@@ -466,7 +466,7 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func getMultisigTransactionHistory(currencyID: NSNumber, networkID: NSNumber, address: String, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
+    func getMultisigWalletTransactionHistory(currencyID: NSNumber, networkID: NSNumber, address: String, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
         let header: HTTPHeaders = [
             "Authorization" : "Bearer \(self.token)"
         ]
