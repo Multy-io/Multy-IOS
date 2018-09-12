@@ -323,7 +323,7 @@ extension DataManager {
                     }
                     if answer!["history"] as? NSArray != nil {
                         let historyArr = answer!["history"] as! NSArray
-                        print("getTransactionHistory:\n\(historyArr)")
+                        print("getMultisigTransactionHistory:\n\(historyArr)")
                         let initializedArr = HistoryRLM.initWithArray(historyArr: historyArr)
                         
                         //                        self.realmManager.saveHistoryForWallet(historyArr: initializedArr, completion: { (histList) in
@@ -351,7 +351,7 @@ extension DataManager {
                     }
                     if answer!["history"] as? NSArray != nil {
                         let historyArr = answer!["history"] as! NSArray
-                        print("getTransactionHistory:\n\(historyArr)")
+                        print("getImportedTransactionHistory:\n\(historyArr)")
                         let initializedArr = HistoryRLM.initWithArray(historyArr: historyArr)
                         
                         //                        self.realmManager.saveHistoryForWallet(historyArr: initializedArr, completion: { (histList) in
