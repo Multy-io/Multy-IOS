@@ -349,7 +349,7 @@ class UserWalletRLM: Object {
                 guard owner != nil else {
                     return wallet
                 }
-                wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.int32Value, inviteCode:nil)
+                wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: owner!.walletIndex.int32Value, inviteCode:nil)
             }
         }
         

@@ -100,7 +100,7 @@ class DataManager: NSObject {
         let networkString = String(networkID).sha3(.sha256)
         let inviteCodeString = inviteCode?.sha3(.sha256)
         
-        var resultString = "\(currencyString)" + "\(walletString) +\(networkString)"
+        var resultString = "\(currencyString)" + "\(walletString)" + "\(networkString)"
         
         if inviteCodeString != nil {
             resultString += inviteCodeString!

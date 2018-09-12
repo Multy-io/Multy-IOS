@@ -143,14 +143,30 @@ extension MultisigManager {
                               owners: String,
                               confirmationsCount: UInt32) -> (message: String, isTransactionCorrect: Bool) {
         let blockchainType = BlockchainType.create(wallet: wallet)
-        let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
+        var pointer : UnsafeMutablePointer<OpaquePointer?>?
+        if wallet.isImported {
+            let blockchainType = wallet.blockchainType
+            let privatekey = wallet.importedPrivateKey
+            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
+            switch walletInfo {
+            case .success(let value):
+                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
+            case .failure(let error):
+                print(error)
+                
+                return (error, false)
+            }
+        } else {
+            let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
+            pointer = addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
+        }
         let factoryAddress = multisigFactory(for: blockchainType)
         
         if factoryAddress == nil || factoryAddress!.isEmpty {
             return ("Missed factory address", false)
         }
         
-        let multiSigWalletCreationInfo = coreLibManager.createMutiSigWallet(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+        let multiSigWalletCreationInfo = coreLibManager.createMutiSigWallet(addressPointer: pointer!,
                                                                             creationPriceString: creationPriceString,
                                                                             factoryAddress: factoryAddress!,
                                                                             owners: owners,
