@@ -110,7 +110,7 @@ class WaitingMembersPresenter: NSObject {
     }
         
     fileprivate func updateWallet() {
-        DataManager.shared.getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: wallet.blockchainType) { [unowned self] (wallet, error) in
+        DataManager.shared.getOneWalletVerbose(wallet: wallet) { [unowned self] (wallet, error) in
             DispatchQueue.main.async {
                 if wallet != nil {
                     self.wallet = wallet!

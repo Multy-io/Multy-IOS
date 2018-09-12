@@ -182,7 +182,9 @@ class UserWalletRLM: Object {
         return multisigWallet != nil
     }
     
-    
+    var isImported: Bool {
+        return walletID.int32Value < 0
+    }
     
     func confirmationStatusForTransaction(transaction : HistoryRLM) -> ConfirmationStatus {
         var result = ConfirmationStatus.waiting
@@ -306,7 +308,7 @@ class UserWalletRLM: Object {
         
         //MARK: to be deleted
         if let walletID = walletInfo["WalletIndex"]  {
-            wallet.walletID = NSNumber(value: walletID as! UInt32)
+            wallet.walletID = NSNumber(value: walletID as! Int32)
         }
         
         if let walletID = walletInfo["walletindex"]  {
@@ -339,7 +341,7 @@ class UserWalletRLM: Object {
         //No data from server
         let inviteCode = wallet.multisigWallet?.inviteCode
         if walletInfo["walletindex"] != nil || walletInfo["WalletIndex"] != nil {
-            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, inviteCode:inviteCode)
+            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.int32Value, inviteCode:inviteCode)
             
             if inviteCode != nil {
                 let owner = wallet.multisigWallet?.owners.filter { $0.associated == true }.first
@@ -347,7 +349,7 @@ class UserWalletRLM: Object {
                 guard owner != nil else {
                     return wallet
                 }
-                wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value, inviteCode:nil)
+                wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.int32Value, inviteCode:nil)
             }
         }
         

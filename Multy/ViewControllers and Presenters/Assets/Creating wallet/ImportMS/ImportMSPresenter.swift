@@ -60,14 +60,13 @@ class ImportMSPresenter: NSObject {
             currentTopIndex = TopIndexRLM.createDefaultIndex(currencyID: NSNumber(value: currencyID), networkID: NSNumber(value: networkID), topIndex: NSNumber(value: 0))
         }
         
-        let dict = DataManager.shared.createNewWallet(for: &binData, blockchain: selectedBlockchainType, walletID: currentTopIndex!.topIndex.uint32Value)
         
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
         createdWallet.name = "Imported"
-        createdWallet.walletID = NSNumber(value: dict!["walletID"] as! UInt32)
-        createdWallet.addressID = NSNumber(value: dict!["addressID"] as! UInt32)
-        createdWallet.address = "0x54f46318d8f83c28b719ccf01ab4628e1e8f65fa"//dict!["address"] as! String
+//        createdWallet.walletID = NSNumber(value: dict!["walletID"] as! UInt32)
+//        createdWallet.addressID = NSNumber(value: dict!["addressID"] as! UInt32)
+        createdWallet.address = address
         
         if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
             createdWallet.ethWallet = ETHWallet()

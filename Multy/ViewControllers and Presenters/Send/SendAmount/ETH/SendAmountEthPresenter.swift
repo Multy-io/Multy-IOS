@@ -97,7 +97,7 @@ class SendAmountEthPresenter: NSObject {
         let wallet = transactionDTO.choosenWallet!
         binaryData = account!.binaryDataString.createBinaryData()!
         
-        if wallet.importedPrivateKey.isEmpty  {
+        if !wallet.isImported  {
             addressData = core.createAddress(blockchainType:    transactionDTO.blockchainType!,
                                              walletID:      wallet.walletID.uint32Value,
                                              addressID:     wallet.changeAddressIndex,

@@ -251,7 +251,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.titleLbl.textColor = .black
                 self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
                 
-                if presenter.gasLimitForConfirm != nil {
+                if presenter.gasLimitForConfirm != nil && !isDecided {
                     let confirmFee = BigInt(self.presenter.gasLimitForConfirm!.stringValue) * BigInt(self.presenter.priceForConfirm)
                     DataManager.shared.getWallet(primaryKey: presenter.wallet.multisigWallet!.linkedWalletID) { [unowned self] in
                         switch $0 {
