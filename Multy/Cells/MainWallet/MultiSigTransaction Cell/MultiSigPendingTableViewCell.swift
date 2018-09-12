@@ -111,9 +111,10 @@ class MultiSigPendingTableViewCell: UITableViewCell {
         } else if histObj.multisig?.confirmed == false {
             //check for your or not your confirmation
             transactionImg.image = #imageLiteral(resourceName: "arrowWaiting")
-            if histObj.multisig!.isNeedOnlyYourConfirmation(walletAddress: wallet!.address) {
-                additionalInfoLbl.text = "Waiting your confirmation..."
-                additionalInfoLbl.textColor = #colorLiteral(red: 0.9215686275, green: 0.07843137255, blue: 0.231372549, alpha: 1)
+            if wallet!.multisigWallet!.signaturesRequiredCount == histObj.multisig!.confirmationsCount() {
+//            if histObj.multisig!.isNeedOnlyYourConfirmation(walletAddress: wallet!.address) {
+                additionalInfoLbl.text = "Sending..."
+//                additionalInfoLbl.textColor = #colorLiteral(red: 0.9215686275, green: 0.07843137255, blue: 0.231372549, alpha: 1)
             } else {
                 additionalInfoLbl.text = "Waiting for confirmations..."
                 additionalInfoLbl.textColor = #colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1)

@@ -84,6 +84,7 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
     func multiSigSetup() {
         if presenter.transactionDTO.choosenWallet!.isMultiSig {
             commissionStack.isHidden = true
+            commissionSwitch.isOn = false
         }
     }
     
