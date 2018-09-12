@@ -226,8 +226,18 @@ extension DataManager {
         }
     }
     
-    func getOneWalletVerbose(walletID: NSNumber, blockchain: BlockchainType, completion: @escaping (_ answer: UserWalletRLM?,_ error: Error?) -> ()) {
-        apiManager.getOneWalletVerbose(walletID: walletID, blockchain: blockchain) { (dict, error) in
+    func getOneWalletVerbose(wallet: UserWalletRLM, completion: @escaping (_ answer: UserWalletRLM?,_ error: Error?) -> ()) {
+        if wallet.isImported {
+            getOneImportedWalletVerbose(walletAddress: wallet.address, blockchain: wallet.blockchainType, completion: completion)
+        } else if wallet.isMultiSig {
+            getOneMultisigWalletVerbose(inviteCode: wallet.multisigWallet!.inviteCode, blockchain: wallet.blockchainType, completion: completion)
+        } else {
+            getOneCreatedWalletVerbose(walletID: wallet.walletID, blockchain: wallet.blockchainType, completion: completion)
+        }
+    }
+    
+    private func getOneCreatedWalletVerbose(walletID: NSNumber, blockchain: BlockchainType, completion: @escaping (_ answer: UserWalletRLM?,_ error: Error?) -> ()) {
+        apiManager.getOneCreatedWalletVerbose(walletID: walletID, blockchain: blockchain) { (dict, error) in
             if dict != nil && dict!["wallet"] != nil && !(dict!["wallet"] is NSNull) {
                 let wallet = UserWalletRLM.initWithInfo(walletInfo: (dict!["wallet"] as! NSArray)[0] as! NSDictionary)
 //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
@@ -243,7 +253,7 @@ extension DataManager {
         }
     }
     
-    func getOneMultisigWalletVerbose(inviteCode: String, blockchain: BlockchainType, completion: @escaping (_ answer: UserWalletRLM?,_ error: Error?) -> ()) {
+    private func getOneMultisigWalletVerbose(inviteCode: String, blockchain: BlockchainType, completion: @escaping (_ answer: UserWalletRLM?,_ error: Error?) -> ()) {
         apiManager.getOneMultisigWalletVerbose(inviteCode: inviteCode, blockchain: blockchain) { (dict, error) in
             if dict != nil && dict!["wallet"] != nil && !(dict!["wallet"] is NSNull) {
                 let wallet = UserWalletRLM.initWithInfo(walletInfo: (dict!["wallet"] as! NSArray)[0] as! NSDictionary)
@@ -256,7 +266,24 @@ extension DataManager {
                 completion(nil, error)
             }
             
-            print("getOneWalletVerbose:\n\(dict)")
+            print("getOneMultisigWalletVerbose:\n\(dict)")
+        }
+    }
+    
+    private func getOneImportedWalletVerbose(walletAddress: String, blockchain: BlockchainType, completion: @escaping (_ answer: UserWalletRLM?,_ error: Error?) -> ()) {
+        apiManager.getOneImportedWalletVerbose(address: walletAddress, blockchain: blockchain) { (dict, error) in
+            if dict != nil && dict!["wallet"] != nil && !(dict!["wallet"] is NSNull) {
+                let wallet = UserWalletRLM.initWithInfo(walletInfo: (dict!["wallet"] as! NSArray)[0] as! NSDictionary)
+                //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
+                
+                //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
+                
+                completion(wallet, nil)
+            } else {
+                completion(nil, error)
+            }
+            
+            print("getOneImportedWalletVerbose:\n\(dict)")
         }
     }
     
@@ -266,8 +293,18 @@ extension DataManager {
         }
     }
     
-    func getTransactionHistory(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(_ historyArr: List<HistoryRLM>?,_ error: Error?) ->()) {
-        apiManager.getTransactionHistory(currencyID: currencyID, networkID: networkID, walletID: walletID) { (answer, err) in
+    func getTransactionHistory(wallet: UserWalletRLM, completion: @escaping(_ historyArr: List<HistoryRLM>?,_ error: Error?) ->()) {
+        if wallet.isImported {
+            getImportedWalletTransactionHistory(currencyID: wallet.chain, networkID: wallet.chainType, address: wallet.address, completion: completion)
+        } else if wallet.isMultiSig {
+            getMultisigWalletTransactionHistory(currencyID: wallet.chain, networkID: wallet.chainType, address: wallet.address, completion: completion)
+        } else {
+            getCreatedWalletTransactionHistory(currencyID: wallet.chain, networkID: wallet.chainType, walletID: wallet.walletID, completion: completion)
+        }
+    }
+    
+    private func getCreatedWalletTransactionHistory(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(_ historyArr: List<HistoryRLM>?,_ error: Error?) ->()) {
+        apiManager.getCreatedWalletTransactionHistory(currencyID: currencyID, networkID: networkID, walletID: walletID) { (answer, err) in
             switch err {
             case nil:
                 if answer!["code"] as! Int == 200 {
@@ -294,8 +331,8 @@ extension DataManager {
         }
     }
     
-    func getMultisigTransactionHistory(currencyID: NSNumber, networkID: NSNumber, address: String, completion: @escaping(_ historyArr: List<HistoryRLM>?,_ error: Error?) ->()) {
-        apiManager.getMultisigTransactionHistory(currencyID: currencyID, networkID: networkID, address: address) { (answer, err) in
+    private func getMultisigWalletTransactionHistory(currencyID: NSNumber, networkID: NSNumber, address: String, completion: @escaping(_ historyArr: List<HistoryRLM>?,_ error: Error?) ->()) {
+        apiManager.getMultisigWalletTransactionHistory(currencyID: currencyID, networkID: networkID, address: address) { (answer, err) in
             switch err {
             case nil:
                 if answer!["code"] as! Int == 200 {
@@ -306,7 +343,35 @@ extension DataManager {
                     }
                     if answer!["history"] as? NSArray != nil {
                         let historyArr = answer!["history"] as! NSArray
-                        print("getTransactionHistory:\n\(historyArr)")
+                        print("getMultisigTransactionHistory:\n\(historyArr)")
+                        let initializedArr = HistoryRLM.initWithArray(historyArr: historyArr)
+                        
+                        //                        self.realmManager.saveHistoryForWallet(historyArr: initializedArr, completion: { (histList) in
+                        //                        })
+                        
+                        completion(initializedArr, nil)
+                    }
+                }
+            default:
+                completion(nil, err)
+                break
+            }
+        }
+    }
+    
+    private func getImportedWalletTransactionHistory(currencyID: NSNumber, networkID: NSNumber, address: String, completion: @escaping(_ historyArr: List<HistoryRLM>?,_ error: Error?) ->()) {
+        apiManager.getImportedWalletTransactionHistory(currencyID: currencyID, networkID: networkID, address: address) { (answer, err) in
+            switch err {
+            case nil:
+                if answer!["code"] as! Int == 200 {
+                    if answer!["history"] is NSNull || (answer!["history"] as? NSArray)?.count == 0 {
+                        //history empty
+                        completion(nil, nil)
+                        return
+                    }
+                    if answer!["history"] as? NSArray != nil {
+                        let historyArr = answer!["history"] as! NSArray
+                        print("getImportedTransactionHistory:\n\(historyArr)")
                         let initializedArr = HistoryRLM.initWithArray(historyArr: historyArr)
                         
                         //                        self.realmManager.saveHistoryForWallet(historyArr: initializedArr, completion: { (histList) in

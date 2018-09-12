@@ -94,7 +94,7 @@ class DataManager: NSObject {
         }
     }
     
-    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: UInt32, inviteCode: String?) -> String {
+    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: Int32, inviteCode: String?) -> String {
         let currencyString = String(currencyID).sha3(.sha256)
         let walletString = String(walletID).sha3(.sha256)
         let networkString = String(networkID).sha3(.sha256)
