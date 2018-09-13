@@ -19,13 +19,20 @@ class TransactionPresenter: NSObject {
         }
     }
     
+    
     var blockchain: Blockchain?
     var selectedAddress: String?
     var isDonationExist = false
     
     var binaryData : BinaryData?
     var addressData : Dictionary<String, Any>?
-    var linkedWallet: UserWalletRLM?
+    var linkedWallet: UserWalletRLM? {
+        didSet {
+            if oldValue != linkedWallet {
+                transctionVC?.checkStatus()
+            }
+        }
+    }
     
     var isMultisigTxViewed : Bool {
         get {
@@ -67,7 +74,17 @@ class TransactionPresenter: NSObject {
         }
     }
     
-    
+    func getLinkedWallet() {
+        DataManager.shared.getWallet(primaryKey: wallet.multisigWallet!.linkedWalletID) { [unowned self] in
+            switch $0 {
+            case .success(let wallet):
+                self.linkedWallet = wallet
+                break
+            case .failure(let errorString):
+                break;
+            }
+        }
+    }
     
     func confirmMultisigTx() {
         transctionVC?.spiner.startAnimating()
