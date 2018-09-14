@@ -290,6 +290,7 @@ class ApiManager: NSObject, RequestRetrier {
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
+                    print("FeeRates Answer: \n\n \(response.result.value)")
                     completion((response.result.value as! NSDictionary), nil)
                 }
             case .failure(_):

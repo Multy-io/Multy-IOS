@@ -25,7 +25,8 @@ class SendAmountEthPresenter: NSObject {
             
             
             if transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt != nil {
-                feeAmount = BigInt("21000") * transactionDTO.transaction!.transactionRLM?.sumInCryptoBigInt
+                let limit = transactionDTO.choosenWallet!.isMultiSig ? "400000" : "40000"
+                feeAmount = BigInt(limit) * transactionDTO.transaction!.transactionRLM!.sumInCryptoBigInt
                 feeAmountInFiat = feeAmount * exchangeCourse
             }
             
@@ -355,7 +356,11 @@ extension CreateTransactionDelegate {
         if sendAmountVC!.commissionSwitch.isOn {
             sendAmount = sumInCrypto
         } else {
-            sendAmount = sumInCrypto - feeAmount
+            if transactionDTO.choosenWallet!.isMultiSig {
+                sendAmount = sumInCrypto
+            } else {
+                sendAmount = sumInCrypto - feeAmount
+            }
         }
         let pointer: UnsafeMutablePointer<OpaquePointer?>?
         if !transactionDTO.choosenWallet!.importedPrivateKey.isEmpty {

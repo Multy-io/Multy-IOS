@@ -92,7 +92,7 @@ class ReceiveStartPresenter: NSObject {
     }
     
     func multisigFunc(inviteCode: String) {
-        titleTextKey = localize(string: Constants.joinWithString)
+        titleTextKey = Constants.joinWithString
         isForMultisig = true
         self.inviteCode = inviteCode
         displayedBlockchainOnly = BlockchainType.init(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))
