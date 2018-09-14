@@ -154,7 +154,7 @@ class MultiSigPendingTableViewCell: UITableViewCell {
             }
         }
         
-        infoLbl.text = "\(countOfConfirmations)" + " of " + "\(countOfOwners!)" + " confirmations"//localize it
+        infoLbl.text = "\(countOfConfirmations)" + " of " + "\(wallet!.multisigWallet!.signaturesRequiredCount)" + " confirmations"//localize it
         
         if countOfConfirmations > 0 {
             successApproveCountLbl.text = "\(countOfConfirmations)"

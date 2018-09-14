@@ -356,7 +356,11 @@ extension CreateTransactionDelegate {
         if sendAmountVC!.commissionSwitch.isOn {
             sendAmount = sumInCrypto
         } else {
-            sendAmount = sumInCrypto - feeAmount
+            if transactionDTO.choosenWallet!.isMultiSig {
+                sendAmount = sumInCrypto
+            } else {
+                sendAmount = sumInCrypto - feeAmount
+            }
         }
         let pointer: UnsafeMutablePointer<OpaquePointer?>?
         if !transactionDTO.choosenWallet!.importedPrivateKey.isEmpty {
