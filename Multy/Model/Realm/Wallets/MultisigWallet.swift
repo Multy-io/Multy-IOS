@@ -34,4 +34,11 @@ class MultisigWallet: Object {
     var isDeployed: Bool {
         return deployStatus.intValue == DeployStatus.deployed.rawValue
     }
+    
+    var currentOwner : MultisigOwnerRLM? {
+        get {
+            return owners.filter{$0.associated.boolValue == true}.first
+        }
+    }
+    
 }
