@@ -12,6 +12,9 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var addWallet: UIButton!
+    @IBOutlet weak var emptyWalletsView: UIView!
+    @IBOutlet weak var blockchainTypeLbl: UILabel!
+    
     
     let presenter = ReceiveStartPresenter()
     
@@ -35,6 +38,9 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
 //        self.presenter.createWallets()
         if presenter.walletsArr.count == 0 {
             self.presenter.getWallets()
+        }
+        if presenter.blockchainForSort != nil {
+            blockchainTypeLbl.text = "\(presenter.blockchainForSort!.fullName) \(presenter.blockchainForSort!.isMainnet ? "MainNet" : "TestNet")"
         }
         sendAnalyticsEvent(screenName: screenReceive, eventName: screenReceive)
     }
@@ -146,6 +152,11 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func updateUI() {
+        if presenter.isForMultisig && presenter.walletsArr.isEmpty {
+            emptyWalletsView.isHidden = false
+        } else {
+            emptyWalletsView.isHidden = true
+        }
         self.tableView.reloadData()
     }
     
