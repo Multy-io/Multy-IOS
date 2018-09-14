@@ -287,6 +287,38 @@ let forceSendTransction         = "Force_Send_Transaction"
 let forceMagicSend              = "Force_Magic_Send"
 let forceReceive                = "Force_Receive"
 
+//MULTISIG All Events
+//
+//Creation MS Screen
+let createMSScreen              = "Screen_Create_Ms"
+let numberOfOwnersSignaturesTap = "Button_Number_Of_Owners&Signatures"
+let anotherBlockchainTap        = "Button_Another_Blockchain"
+let linkedWalletTap             = "Button_Linked_Wallet"
+let createWithTap               = "Button_Create_With_" //add signs and owners count
+let creatingCancelingCancelTap  = "Creating_Canceling_By_Cancel"
+
+//Waiting members
+let screenWaitingMembers        = "Screen_Waiting_Members"
+let inviteCodeTap               = "Button_Invite_Code"
+let payToStartTap               = "Button_Pay_To_Start"
+
+//Waiting members settings
+let screenWaitingSettigns       = "Screen_Waiting_Members_Settings"
+let creatingCancelingDeleteTap  = "Creating_Canceling_By_Delete"
+let leaveTap                    = "Button_Leave"
+
+//Join to MS
+let screenJoinToMs              = "Screen_Join_To_MS"
+let inviteQrDetected            = "Invite_Qr_Code_Detected"
+let pasteQr                     = "Paste_Invite_Qr_Code"
+let validationInviteQr          = "Invite_Qr_Code_Validation_"//status success/fail
+
+//Tx Info Screen Update
+let confirmAction               = "Confirm_Action"
+let declineAction               = "Decline_Action"
+let copyTap                     = "Button_Copy"
+//let receiveTap                  = "Button_Receive"
+let exchangeTap                 = "Button_exchange"
 
 //featues code
 let donationWithTransaction     = 20000

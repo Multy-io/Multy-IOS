@@ -9,7 +9,7 @@ import Hash2Pics
 private typealias LocalizeDelegate = WaitingMembersViewController
 private typealias ScrollViewDelegate = WaitingMembersViewController
 
-class WaitingMembersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WaitingMembersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AnalyticsProtocol {
     
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var backgroundView: UIView!
@@ -73,6 +73,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         
         presenter.viewController = self
         presenter.viewControllerViewDidLoad()
+        sendAnalyticsEvent(screenName: screenWaitingMembers, eventName: screenWaitingMembers)
     }
     
     override func viewDidLayoutSubviews() {
@@ -336,8 +337,10 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
     @IBAction func bottomButtonAction(_ sender: Any) {
         if presenter.bottomButtonStatus == .inviteCode {
             openShareInviteVC()
+            sendAnalyticsEvent(screenName: screenWaitingMembers, eventName: inviteCodeTap)
         } else {
             payForMultiSig()
+            sendAnalyticsEvent(screenName: screenWaitingMembers, eventName: payToStartTap)
         }
     }
     

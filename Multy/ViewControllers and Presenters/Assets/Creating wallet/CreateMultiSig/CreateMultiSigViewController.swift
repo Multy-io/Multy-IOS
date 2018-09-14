@@ -12,7 +12,7 @@ private typealias LocalizeDelegate = CreateMultiSigViewController
 private typealias SendWalletDelegate = CreateMultiSigViewController
 private typealias ChooseBlockchainDelegate = CreateMultiSigViewController
 
-class CreateMultiSigViewController: UIViewController {
+class CreateMultiSigViewController: UIViewController, AnalyticsProtocol {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var createBtn: ZFRippleButton!
@@ -35,6 +35,7 @@ class CreateMultiSigViewController: UIViewController {
         loader.show(customTitle: localize(string: Constants.creatingWalletString))
         self.view.addSubview(loader)
         loader.hide()
+        sendAnalyticsEvent(screenName: createMSScreen, eventName: createMSScreen)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -143,6 +144,7 @@ class CreateMultiSigViewController: UIViewController {
         }
         
         loader.show(customTitle: localize(string: Constants.creatingWalletString))
+        sendAnalyticsEvent(screenName: createMSScreen, eventName: createWithTap + "\(presenter.ownersCount) of \(presenter.signaturesCount)")
         presenter.createNewWallet { (dict) in
             print(dict!)
         }
@@ -165,6 +167,7 @@ class CreateMultiSigViewController: UIViewController {
     
     @IBAction func selectLinkedWalletAction(_ sender: Any) {
         chooseAnotherWalletAction()
+        sendAnalyticsEvent(screenName: createMSScreen, eventName: linkedWalletTap)
     }
 }
 
@@ -218,8 +221,10 @@ extension TableViewDelegate: UITableViewDelegate {
         let selectedRow = indexPath.row
         if selectedRow == 1 {
             openMembersVC()
+            sendAnalyticsEvent(screenName: createMSScreen, eventName: numberOfOwnersSignaturesTap)
         } else if selectedRow == 2 {
             chooseBlockchain()
+            sendAnalyticsEvent(screenName: createMSScreen, eventName: anotherBlockchainTap)
         }
     }
 }
@@ -248,7 +253,8 @@ extension TextFieldDelegate: UITextFieldDelegate {
 extension ChooseBlockchainDelegate: BlockchainTransferProtocol {
     func setBlockchain(blockchain: BlockchainType) {
         presenter.selectedBlockchainType = blockchain
-        updateBlockchainCell(blockchainCell: nil)    }
+        updateBlockchainCell(blockchainCell: nil)
+    }
 }
 
 extension LocalizeDelegate: Localizable {
