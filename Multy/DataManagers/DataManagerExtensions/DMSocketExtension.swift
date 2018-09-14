@@ -150,10 +150,13 @@ extension DataManager {
     }
     
     func declineMultiSigTx(wallet: UserWalletRLM, histObj: HistoryRLM, completion: @escaping(Result<String, String>) -> ()) {
+        let owner = wallet.multisigWallet?.currentOwner
+        
         let payloadForDecline: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
             "address": wallet.multisigWallet!.linkedWalletAddress,
-            "walletindex": wallet.walletID,
+            "invitecode": wallet.multisigWallet!.inviteCode,
+            "walletindex": owner!.walletIndex,
             "currencyid" : wallet.chain.intValue,
             "networkid"  : wallet.chainType.intValue,
             "txid": histObj.txHash
@@ -185,10 +188,13 @@ extension DataManager {
     }
     
     func viewMultiSigTx(wallet: UserWalletRLM, histObj: HistoryRLM, completion: @escaping(Result<String, String>) -> ()) {
+        let owner = wallet.multisigWallet?.currentOwner
+        
         let payloadForView: NSDictionary = [
             "userid": DataManager.shared.apiManager.userID,
             "address": wallet.multisigWallet!.linkedWalletAddress,
-            "walletindex": wallet.walletID,
+            "invitecode": wallet.multisigWallet!.inviteCode,
+            "walletindex": owner!.walletIndex,
             "currencyid" : wallet.chain.intValue,
             "networkid"  : wallet.chainType.intValue,
             "txid": histObj.txHash
