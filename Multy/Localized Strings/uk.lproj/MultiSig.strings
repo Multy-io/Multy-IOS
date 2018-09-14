@@ -7,3 +7,5 @@
 "LEAVE MULTISIG WALLET WARNING" = "Ви впевнені, що хочете покинути гаманець?";
 "NO STRING" = "Ні";
 "DELETING" = "Видалення...";
+"DELETE" = "Видалити";
+"LEAVE" = "Покинути";

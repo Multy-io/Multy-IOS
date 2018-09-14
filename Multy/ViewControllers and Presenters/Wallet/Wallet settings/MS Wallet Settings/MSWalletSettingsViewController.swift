@@ -40,6 +40,15 @@ class MSWalletSettingsViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func chooseCurrencyAction(_ sender: Any) {
+        self.goToCurrency()
+    }
+    
+    func goToCurrency() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let currencyVC = storyboard.instantiateViewController(withIdentifier: "currencyVC")
+        self.navigationController?.pushViewController(currencyVC, animated: true)
+    }
 }
 
 

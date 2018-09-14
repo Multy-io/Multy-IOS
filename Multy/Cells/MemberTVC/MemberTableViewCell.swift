@@ -8,6 +8,8 @@
 
 import UIKit
 
+private typealias LocalizeDelegate = MemberTableViewCell
+
 class MemberTableViewCell: UITableViewCell {
     @IBOutlet weak var memberImageView: UIImageView!
     @IBOutlet weak var infoStackView: UIStackView!
@@ -41,7 +43,7 @@ class MemberTableViewCell: UITableViewCell {
     }
     
     func fillWaitingMember() {
-        memberAddressLabel.text = "Waiting for member..."
+        memberAddressLabel.text = localize(string: Constants.waitingMemberString) 
         memberAddressLabel.textColor = #colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1)
         memberImageView.image = UIImage(named: "waitingMember")
         if infoStackView.arrangedSubviews.contains(userIndicatorLabel) {
@@ -52,3 +54,10 @@ class MemberTableViewCell: UITableViewCell {
         hideSeparator = false
     }
 }
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "CreateMultiSig"
+    }
+}
+

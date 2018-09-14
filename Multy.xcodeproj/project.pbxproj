@@ -275,6 +275,7 @@
 		85741D8720B555DB0093933B /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85741D8620B555DB0093933B /* BLEManager.swift */; };
 		85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85741D8820B55A650093933B /* CoreBluetooth.framework */; };
 		857C02AF213E80F300A0DEC5 /* MultisigTransactionRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C02AE213E80F300A0DEC5 /* MultisigTransactionRLM.swift */; };
+		8580A08C214BDF4A002A15D7 /* MemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8580A08E214BDF4A002A15D7 /* MemberTableViewCell.xib */; };
 		8590835C2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8590835B2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift */; };
 		8592E02320FF9B5D0040125B /* MultisigWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02220FF9B5D0040125B /* MultisigWallet.swift */; };
 		8592E02521008D860040125B /* MultisigOwnerRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8592E02421008D860040125B /* MultisigOwnerRLM.swift */; };
@@ -284,7 +285,6 @@
 		859C7AFC20ECF3C8002EA215 /* WaitingMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */; };
 		859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */; };
 		859C7B0120EE2CEC002EA215 /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */; };
-		859C7B0320EE2CFF002EA215 /* MemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */; };
 		859C7B0620EE66F0002EA215 /* CreateMultiSig.strings in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */; };
 		859C7B1220F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C7B1120F4D3BF002EA215 /* ConfirmationStatusCollectionViewCell.swift */; };
 		859C7B1420F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B1320F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib */; };
@@ -751,6 +751,10 @@
 		85741D8620B555DB0093933B /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
 		85741D8820B55A650093933B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		857C02AE213E80F300A0DEC5 /* MultisigTransactionRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigTransactionRLM.swift; sourceTree = "<group>"; };
+		8580A08D214BDF4A002A15D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MemberTableViewCell.xib; sourceTree = "<group>"; };
+		8580A090214BDF81002A15D7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MemberTableViewCell.strings; sourceTree = "<group>"; };
+		8580A092214BDF82002A15D7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MemberTableViewCell.strings; sourceTree = "<group>"; };
+		8580A094214BDF8B002A15D7 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/MemberTableViewCell.strings; sourceTree = "<group>"; };
 		8590835B2138144300B8FE17 /* MultisigTransactionOwnerRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigTransactionOwnerRLM.swift; sourceTree = "<group>"; };
 		8592E02220FF9B5D0040125B /* MultisigWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigWallet.swift; sourceTree = "<group>"; };
 		8592E02421008D860040125B /* MultisigOwnerRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisigOwnerRLM.swift; sourceTree = "<group>"; };
@@ -760,7 +764,6 @@
 		859C7AFB20ECF3C8002EA215 /* WaitingMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersViewController.swift; sourceTree = "<group>"; };
 		859C7AFD20ECF3D8002EA215 /* WaitingMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMembersPresenter.swift; sourceTree = "<group>"; };
 		859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
-		859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemberTableViewCell.xib; sourceTree = "<group>"; };
 		859C7B0720EE66F0002EA215 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CreateMultiSig.strings; sourceTree = "<group>"; };
 		859C7B0920EE66F6002EA215 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/CreateMultiSig.strings; sourceTree = "<group>"; };
 		859C7B0A20EE66F9002EA215 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/CreateMultiSig.strings; sourceTree = "<group>"; };
@@ -1910,7 +1913,7 @@
 			isa = PBXGroup;
 			children = (
 				859C7B0020EE2CEC002EA215 /* MemberTableViewCell.swift */,
-				859C7B0220EE2CFF002EA215 /* MemberTableViewCell.xib */,
+				8580A08E214BDF4A002A15D7 /* MemberTableViewCell.xib */,
 			);
 			path = MemberTVC;
 			sourceTree = "<group>";
@@ -2335,7 +2338,7 @@
 				445B12E020BD78D000FD0D33 /* CurrencyChooser.strings in Resources */,
 				45EBB6A8200D312700F81322 /* GoogleService-Info.plist in Resources */,
 				45AC16292048214C00E75BD6 /* CurrencyTableViewCell.xib in Resources */,
-				859C7B0320EE2CFF002EA215 /* MemberTableViewCell.xib in Resources */,
+				8580A08C214BDF4A002A15D7 /* MemberTableViewCell.xib in Resources */,
 				4453507B20D14E21004F8DAE /* Localizable.strings in Resources */,
 				4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */,
 				85DE62E920AC1CE100423D89 /* ActiveRequestCollectionViewCell.xib in Resources */,
@@ -3247,6 +3250,17 @@
 				459D82382136DBD500BE479B /* uk */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		8580A08E214BDF4A002A15D7 /* MemberTableViewCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8580A08D214BDF4A002A15D7 /* Base */,
+				8580A090214BDF81002A15D7 /* en */,
+				8580A092214BDF82002A15D7 /* ru */,
+				8580A094214BDF8B002A15D7 /* uk */,
+			);
+			name = MemberTableViewCell.xib;
 			sourceTree = "<group>";
 		};
 		859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */ = {
