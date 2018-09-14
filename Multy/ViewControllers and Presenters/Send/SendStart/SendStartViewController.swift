@@ -341,10 +341,31 @@ extension TextViewDelegate: UITextViewDelegate {
         return true
     }
     
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        let copiedAddress = presenter.copiedAddress()
+        if copiedAddress != nil {
+            let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
+            
+            let pasteButton = UIBarButtonItem(title: copiedAddress!, style: .plain, target: self, action: #selector(self.handlePasteFromClipboard(_:)))
+            pasteButton.setTitleTextAttributes([NSAttributedStringKey.font : UIFont(name: "AvenirNext-DemiBold", size: 14.0)!], for: .normal)
+            pasteButton.setTitleTextAttributes([NSAttributedStringKey.font : UIFont(name: "AvenirNext-DemiBold", size: 14.0)!], for: .highlighted)
+            
+            toolbar.items = [pasteButton]
+            addressTV.inputAccessoryView = toolbar
+        }
+        
+        return true
+    }
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             placeholderLabel.isHidden = !placeholderLabel.isHidden
         }
+    }
+    
+    @objc fileprivate func handlePasteFromClipboard(_ button: UIBarButtonItem) {
+        addressTV.text = button.title
+        addressTV.resignFirstResponder()
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {

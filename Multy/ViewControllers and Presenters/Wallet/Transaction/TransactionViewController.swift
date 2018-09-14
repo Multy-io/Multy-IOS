@@ -41,8 +41,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var constraintDonationHeight: NSLayoutConstraint!
     @IBOutlet weak var blockchainInfoViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollContentHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var doubleSliderHolderViewHeight: NSLayoutConstraint!
-    
+    @IBOutlet weak var actionsHolderViewHeight: NSLayoutConstraint!
     
     // MultiSig outlets
     @IBOutlet weak var confirmationDetailsHolderView: UIView!
@@ -63,7 +62,20 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     var fiatSum = 1255.23
     var fiatName = "USD"
     
-    var isIncoming = true
+    enum TxAction : Int {
+        case
+            noAction =     0,
+            confirmation = 1,
+            deposit =      2
+    }
+    
+    var txAction = TxAction.noAction {
+        didSet {
+            if oldValue != txAction {
+                updateUI()
+            }
+        }
+    }
     
     var isMultisig = false 
     
@@ -88,9 +100,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         configureCollectionViews()
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        self.isIncoming = presenter.histObj.isIncoming()
         self.checkMultisig()
-        self.checkHeightForScrollAvailability()
         self.checkStatus()
         self.constraintDonationHeight.constant = 0
         self.donationView.isHidden = true
@@ -111,11 +121,11 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         
         if isMultisig  {
             presenter.requestFee()
+            presenter.getLinkedWallet()
             
             if !presenter.isMultisigTxViewed {
                 presenter.viewMultisigTx()
             }
-            
         }
     }
     
@@ -149,6 +159,11 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLayoutSubviews()
         
         updateBottomConstraints()
+    }
+    
+    func updateConstraints() {
+        updateBottomConstraints()
+        self.view.layoutIfNeeded()
     }
     
     func updateBottomConstraints() {
@@ -225,58 +240,33 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func checkHeightForScrollAvailability() {
-//        if screenHeight >= 667 {
-//            self.scrollView.isScrollEnabled = false
-//        }
-    }
-    
     func checkStatus() {
-        if isMultisig && presenter.histObj.multisig != nil  {
-            if presenter.histObj.multisig!.confirmed.boolValue {
-                if isIncoming {  // RECEIVE
-                    self.makeBackColor(color: self.presenter.receiveBackColor)
-                    self.titleLbl.text = localize(string: Constants.transactionInfoString)
-                } else {                        // SEND
-                    self.makeBackColor(color: self.presenter.sendBackColor)
-                    self.titleLbl.text = localize(string: Constants.transactionInfoString)
-                    self.transactionImg.image = #imageLiteral(resourceName: "sendBigIcon")
-                }
-                self.titleLbl.textColor = .white
-                backImageView.image = UIImage(named: "backWhite")
-            } else {
-                // Multisig transaction waiting confirmation
-                self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
-                self.titleLbl.text = "Transaction details"
-                self.titleLbl.textColor = .black
-                self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
-                
-                if presenter.gasLimitForConfirm != nil && !isDecided {
-                    let confirmFee = BigInt(self.presenter.gasLimitForConfirm!.stringValue) * BigInt(self.presenter.priceForConfirm)
-                    DataManager.shared.getWallet(primaryKey: presenter.wallet.multisigWallet!.linkedWalletID) { [unowned self] in
-                        switch $0 {
-                        case .success(let wallet):
-                            if wallet.availableAmount < confirmFee  {
-                                self.showNoBalanceView()
-                            }
-                            break
-                           
-                        case .failure(let errorString):
-                            break;
-                        }
-                    }
-                            
-                }
-            }
+        self.titleLbl.text = localize(string: Constants.transactionInfoString)
+        if isMultisig && presenter.histObj.multisig != nil && !isDecided {
+            // Multisig transaction waiting confirmation
+            txAction = .confirmation
+            self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
+            self.titleLbl.textColor = .black
+            self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
             
+            if presenter.gasLimitForConfirm != nil {
+                let confirmFee = BigInt(self.presenter.gasLimitForConfirm!.stringValue) * BigInt(self.presenter.priceForConfirm)
+                if presenter.linkedWallet != nil {
+                    if presenter.linkedWallet!.availableAmount < confirmFee  {
+                        self.txAction = .deposit
+                    } else {
+                        self .updateUI()
+                    }
+                }
+                
+            }
         } else {
-            self.titleLbl.text = localize(string: Constants.transactionInfoString)
-            let txStatus = presenter.histObj.txStatus.intValue
-            if txStatus == TxStatus.MempoolIncoming.rawValue || txStatus == TxStatus.BlockIncoming.rawValue || txStatus == TxStatus.BlockConfirmedIncoming.rawValue {  // RECEIVE
+            txAction = .noAction
+            if presenter.histObj.isIncoming() {  // RECEIVE
                 self.makeBackColor(color: self.presenter.receiveBackColor)
                 self.titleLbl.textColor = .white
                 backImageView.image = UIImage(named: "backWhite")
-            } else if txStatus == TxStatus.MempoolOutcoming.rawValue || txStatus == TxStatus.BlockOutcoming.rawValue || txStatus == TxStatus.BlockConfirmedOutcoming.rawValue {                        // SEND
+            } else if presenter.histObj.isOutcoming() {                        // SEND
                 self.makeBackColor(color: self.presenter.sendBackColor)
                 self.transactionImg.image = #imageLiteral(resourceName: "sendBigIcon")
                 self.titleLbl.textColor = .white
@@ -291,33 +281,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         self.updateUI()
     }
     
-    func checkMultisig() {
-        isMultisig = presenter.histObj.multisig != nil
-        confirmationDetailsHolderView.isHidden = !isMultisig
-        doubleSliderHolderView.isHidden = !isMultisig
-    }
-    
-    func contentHeight() -> CGFloat {
-        var result = transactionInfoHolderView.frame.origin.y + transactionInfoHolderView.frame.size.height + 16
-        if !isIncoming {
-            if isMultisig {
-                confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
-                result = result + confirmaitionDetailsHeightConstraint.constant + 16
-                
-                if !isDecided {
-                    result += doubleSliderHolderView.frame.size.height
-                }
-                
-            } else if presenter.isDonationExist {
-                result = result + 300
-            }
-        } else {
-            result += doubleSliderHolderView.frame.size.height
-        }
-        
-        return result
-    }
-    
     func updateUI() {
         //        BTC
         let dateFormatter = DateFormatter()
@@ -325,9 +288,9 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         let cryptoSumInBTC = UInt64(truncating: presenter.histObj.txOutAmount).btcValue
         
         if isMultisig {
-            if presenter.histObj.multisig!.confirmed.boolValue {
+            if isDecided {
                 if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
-                    presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue {
+                    presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue || presenter.histObj.txStatus.intValue == TxStatus.Rejected.rawValue || presenter.histObj.txStatus.intValue == TxStatus.BlockMethodInvocationFail.rawValue {
                     self.dateLbl.text = dateFormatter.string(from: presenter.histObj.mempoolTime)
                 } else {
                     self.dateLbl.text = dateFormatter.string(from: presenter.histObj.blockTime)
@@ -336,26 +299,14 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.blockchainInfoView.isHidden = false
                 self.blockchainInfoViewHeightConstraint.constant = 104
                 self.numberOfConfirmationLbl.text = makeConfirmationText()
-                
-                doubleSliderHolderView.isHidden = true
-                doubleSliderHolderViewHeight.constant = 0
             } else {
                 self.dateLbl.text = "Waiting for confirmations..."
                 
                 self.blockchainInfoView.isHidden = true
                 self.blockchainInfoViewHeightConstraint.constant = 8
                 
-                if !isIncoming {
-                    if isDecided {
-                        doubleSliderHolderView.isHidden = true
-                        doubleSliderHolderViewHeight.constant = 0
-                    } else {
-                        doubleSliderHolderView.isHidden = false
-                        doubleSliderHolderViewHeight.constant = 64
-                    }
-                } else {
-                    doubleSliderHolderView.isHidden = true
-                    doubleSliderHolderViewHeight.constant = 0
+                if presenter.linkedWallet != nil {
+                    noBalanceAddress.text = presenter.linkedWallet!.address
                 }
             }
             
@@ -373,8 +324,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             self.blockchainInfoView.isHidden = false
             self.blockchainInfoViewHeightConstraint.constant = 104
             self.numberOfConfirmationLbl.text = makeConfirmationText()
-            doubleSliderHolderView.isHidden = true
-            doubleSliderHolderViewHeight.constant = 0
         }
         
         self.noteLbl.text = "" // NOTE FROM HIST OBJ
@@ -390,10 +339,10 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             let arrOfOutputsAddresses = presenter.histObj.txOutputs.map{ $0.address }.joined(separator: "\n")
             self.walletToAddressLbl.text = arrOfOutputsAddresses
             
-            if isIncoming {
+            if presenter.histObj.isIncoming() {
                 self.transctionSumLbl.text = "+\(cryptoSumInBTC.fixedFraction(digits: 8))"
                 self.sumInFiatLbl.text = "+\((cryptoSumInBTC * presenter.histObj.fiatCourseExchange).fixedFraction(digits: 2)) USD"
-            } else {
+            } else if presenter.histObj.isOutcoming() {
                 let outgoingAmount = presenter.wallet.outgoingAmount(for: presenter.histObj).btcValue
                 self.transctionSumLbl.text = "-\(outgoingAmount.fixedFraction(digits: 8))"
                 self.sumInFiatLbl.text = "-\((outgoingAmount * presenter.histObj.fiatCourseExchange).fixedFraction(digits: 2)) USD"
@@ -414,6 +363,10 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                     
                     updateBottomConstraints()
                 }
+            } else {
+                let outgoingAmount = presenter.wallet.outgoingAmount(for: presenter.histObj).btcValue
+                self.transctionSumLbl.text = "\(outgoingAmount.fixedFraction(digits: 8))"
+                self.sumInFiatLbl.text = "\((outgoingAmount * presenter.histObj.fiatCourseExchange).fixedFraction(digits: 2)) USD"
             }
         case BLOCKCHAIN_ETHEREUM:
             self.transactionCurencyLbl.text = "ETH"     // check currencyID
@@ -421,19 +374,66 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             self.walletToAddressLbl.text = presenter.histObj.addressesArray.last
             
             
-            if isIncoming {
+            if presenter.histObj.isIncoming() {
                 let fiatAmountInWei = BigInt(presenter.histObj.txOutAmountString) * presenter.histObj.fiatCourseExchange
                 self.transctionSumLbl.text = "+" + BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
                 self.sumInFiatLbl.text = "+" + fiatAmountInWei.fiatValueString(for: BLOCKCHAIN_ETHEREUM) + " USD"
-            } else {
+            } else if presenter.histObj.isOutcoming() {
                 let fiatAmountInWei = BigInt(presenter.histObj.txOutAmountString) * presenter.histObj.fiatCourseExchange
                 self.transctionSumLbl.text = "-" + BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
                 self.sumInFiatLbl.text = "-" + fiatAmountInWei.fiatValueString(for: BLOCKCHAIN_ETHEREUM) + " USD"
+            } else {
+                let fiatAmountInWei = BigInt(presenter.histObj.txOutAmountString) * presenter.histObj.fiatCourseExchange
+                self.transctionSumLbl.text = BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+                self.sumInFiatLbl.text = fiatAmountInWei.fiatValueString(for: BLOCKCHAIN_ETHEREUM) + " USD"
             }
         default: break
         }
+        
+        switch txAction {
+        case .noAction:
+            actionsHolderViewHeight.constant = 0
+            doubleSliderHolderView.isHidden = true
+            noBalanceErrorHolderView.isHidden = true
+            break
+            
+        case .confirmation:
+            actionsHolderViewHeight.constant = 64
+            doubleSliderHolderView.isHidden = false
+            noBalanceErrorHolderView.isHidden = true
+            break
+            
+        case .deposit:
+            actionsHolderViewHeight.constant = 187
+            doubleSliderHolderView.isHidden = true
+            noBalanceErrorHolderView.isHidden = false
+            break
+        }
+        
         self.confirmationMembersCollectionView.reloadData()
-        self.view.layoutIfNeeded()
+        
+        updateConstraints()
+    }
+    
+    func checkMultisig() {
+        isMultisig = presenter.histObj.multisig != nil
+        confirmationDetailsHolderView.isHidden = !isMultisig
+        doubleSliderHolderView.isHidden = !isMultisig
+    }
+    
+    func contentHeight() -> CGFloat {
+        var result = transactionInfoHolderView.frame.origin.y + transactionInfoHolderView.frame.size.height + 16
+        if !presenter.histObj.isIncoming() {
+            if isMultisig {
+                confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
+                result = result + confirmaitionDetailsHeightConstraint.constant + 16
+
+            } else if presenter.isDonationExist {
+                result = result + 300
+            }
+        }
+        
+        return result
     }
     
     @objc func updateMultisigWalletAfterSockets(notification : NSNotification) {
@@ -515,10 +515,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         present(alert, animated: true, completion: nil)
     }
     
-    func showNoBalanceView() {
-        noBalanceErrorHolderView.isHidden = false
-    }
-    
     @IBAction func copyNoBalanceAddressAction(_ sender: Any) {
         UIPasteboard.general.string = noBalanceAddress.text
         UIView.animate(withDuration: 0.5, animations: {
@@ -536,11 +532,13 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func receiveToNoBalanceAddressAction(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Receive", bundle: nil)
-        let receiveDetailsVC = storyboard.instantiateViewController(withIdentifier: "receiveDetails") as! ReceiveAllDetailsViewController
-        receiveDetailsVC.presenter.wallet = self.presenter.wallet
-        self.navigationController?.pushViewController(receiveDetailsVC, animated: true)
-        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet.chain)", eventName: "\(receiveWithChainTap)\(presenter.wallet.chain)")
+        if presenter.linkedWallet != nil {
+            let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+            let receiveDetailsVC = storyboard.instantiateViewController(withIdentifier: "receiveDetails") as! ReceiveAllDetailsViewController
+            receiveDetailsVC.presenter.wallet = presenter.linkedWallet!
+            self.navigationController?.pushViewController(receiveDetailsVC, animated: true)
+            sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet.chain)", eventName: "\(receiveWithChainTap)\(presenter.wallet.chain)")
+        }
     }
     
     @IBAction func exchangeAction(_ sender: Any) {
@@ -574,7 +572,7 @@ extension AnalyticsDelegate: AnalyticsProtocol {
         if self.presenter.blockedAmount(for: presenter.histObj) > 0 {
             state = 0
         } else {
-            if isIncoming {
+            if presenter.histObj.isIncoming() {
                 state = -1
             } else {
                 state = 1
@@ -629,13 +627,11 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
     
     //MARK: Slider actions
     func didSlideToSend(_ sender: DoubleSlideViewController) {
-        //FIXME: stub
         print("Slide to Send")
         presenter.confirmMultisigTx()
     }
     
     func didSlideToDecline(_ sender: DoubleSlideViewController) {
-        //FIXME: stub
         print("Slide to Decline")
         presenter.declineMultisigTx()
     }
