@@ -391,6 +391,7 @@ extension CreateTransactionDelegate {
                                                              sendFromAddress: transactionDTO.choosenWallet!.address,
                                                              sendAmountString: sendAmount.stringValue,
                                                              sendToAddress: transactionDTO.sendAddress!,
+                                                             msWalletBalance: transactionDTO.choosenWallet!.availableAmount.stringValue,
                                                              gasPriceString: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
                                                              gasLimitString: "400000")
             

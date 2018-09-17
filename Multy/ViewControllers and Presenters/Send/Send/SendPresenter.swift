@@ -747,6 +747,7 @@ extension CreateTransactionDelegate {
                                                              sendFromAddress: wallet.address,
                                                              sendAmountString: sendAmount,
                                                              sendToAddress: request.sendAddress,
+                                                             msWalletBalance: wallet.availableAmount.stringValue,
                                                              gasPriceString: priceForSubmit,
                                                              gasLimitString: submitEstimation)
             
