@@ -9,6 +9,8 @@ private typealias LocalizeDelegate = WalletSettingsViewController
 class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     
     @IBOutlet weak var walletNameTF: UITextField!
+    @IBOutlet weak var resyncBlockView: UIView!
+    @IBOutlet weak var resyncBlockHeightConstraint: NSLayoutConstraint!
     
     let presenter = WalletSettingsPresenter()
     
@@ -34,8 +36,17 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
         sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(presenter.wallet!.chain)", eventName: "\(closeWithChainTap)\(presenter.wallet!.chain)")
     }
     
+    @IBAction func resyncAction(_ sender: Any) {
+        presenter.resync()
+    }
+    
     func updateUI() {
         self.walletNameTF.text = self.presenter.wallet?.name
+        if presenter.wallet!.isImported {
+            resyncBlockHeightConstraint.constant = 0
+            resyncBlockView.isHidden = true
+            view.layoutIfNeeded()
+        }
     }
     
     @IBAction func deleteAction(_ sender: Any) {
