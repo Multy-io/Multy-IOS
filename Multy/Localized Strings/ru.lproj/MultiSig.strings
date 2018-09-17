@@ -7,3 +7,15 @@
 "LEAVE MULTISIG WALLET WARNING" = "Вы действительно хотите покинуть кошелек?";
 "NO STRING" = "Нет";
 "DELETING" = "Удаление...";
+"DELETE" = "Удалить";
+"LEAVE" = "Выйти";
+"REJECTED" = "Отклоненная";
+"SENDING" = "Отправка...";
+"WAITING CONFIRMATIONS" = "Ожидание подтверждений...";
+"OF" = "из";
+"CONFIRMATIONS" = "подтверждений";
+"CONFIRMED" = "Подтверждено";
+"DECLINED" = "Отклонено";
+"VIEWED" = "Просмотрено";
+"SLIDE TO CONFIRM" = "Слайд для подтверждения";
+"SLIDE TO DECLINE" = "Слайд для отклонения";

@@ -184,6 +184,7 @@ extension MultisigManager {
                           sendFromAddress: String,
                           sendAmountString: String,
                           sendToAddress: String,
+                          msWalletBalance: String,
                           gasPriceString: String,
                           gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
         let blockchainType = BlockchainType.create(wallet: wallet)
@@ -194,7 +195,7 @@ extension MultisigManager {
                                                                      sendAmountString:  sendAmountString,
                                                                      sendToAddress:     sendToAddress,
                                                                      nonce:             wallet.ethWallet!.nonce.intValue,
-                                                                     balanceAmountString: wallet.availableAmount.stringValue,
+                                                                     balanceAmountString: msWalletBalance,
                                                                      gasPriceString:    gasPriceString,
                                                                      gasLimitString:    gasLimitString)
         

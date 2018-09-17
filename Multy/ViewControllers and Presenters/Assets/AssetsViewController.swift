@@ -191,10 +191,11 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletDeleted"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msTransactionUpdated"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("exchageUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("transactionUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("walletDeleted"), object: nil)
         
         super.viewWillDisappear(animated)
-//        tableView.scrollToTop()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -226,7 +227,9 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         
         refreshControl.beginRefreshing()
         refreshControl.endRefreshing()
-        
+    
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleExchangeUpdatedNotifiction(notification:)), name: NSNotification.Name("exchageUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleTransactionUpdatedNotification(notification :)), name: NSNotification.Name("transactionUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("msWalletDeleted"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMsTransactionUpdatedNotification(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
@@ -254,6 +257,18 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     @objc fileprivate func handleWalletUpdatedNotification(notification : Notification) {
         DispatchQueue.main.async {
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleExchangeUpdatedNotifiction(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateExchange()
+        }
+    }
+    
+    @objc fileprivate func handleTransactionUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletAfterSockets()
         }
     }
     
@@ -383,7 +398,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         if wallet!.multisigWallet != nil && wallet!.multisigWallet?.deployStatus.intValue != DeployStatus.deployed.rawValue {
             let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
             if wallet!.multisigWallet?.deployStatus.intValue == DeployStatus.pending.rawValue {
-                presentAlert(with: "Wallet is not deployed yet. Please wait.")
+                presentAlert(withTitle: localize(string: Constants.warningString),
+                             andMessage: localize(string: Constants.pendingMultisigAlertString))
                 
                 return
             }

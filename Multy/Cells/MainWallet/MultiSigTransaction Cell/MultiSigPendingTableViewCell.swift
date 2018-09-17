@@ -7,6 +7,8 @@
 
 import UIKit
 
+private typealias LocalizeDelegate = MultiSigPendingTableViewCell
+
 class MultiSigPendingTableViewCell: UITableViewCell {
 
     @IBOutlet weak var transactionImg: UIImageView!
@@ -107,16 +109,16 @@ class MultiSigPendingTableViewCell: UITableViewCell {
         infoBlock(isNeedToHide: histObj.multisig!.confirmed.boolValue)
         if wallet!.isRejected(tx: histObj) {
             transactionImg.image = #imageLiteral(resourceName: "arrowDeclined")
-            additionalInfoLbl.text = "Rejected"
+            additionalInfoLbl.text = localize(string: Constants.rejectedString)
         } else if histObj.multisig?.confirmed == false {
             //check for your or not your confirmation
             transactionImg.image = #imageLiteral(resourceName: "arrowWaiting")
             if wallet!.multisigWallet!.signaturesRequiredCount == histObj.multisig!.confirmationsCount() {
 //            if histObj.multisig!.isNeedOnlyYourConfirmation(walletAddress: wallet!.address) {
-                additionalInfoLbl.text = "Sending..."
+                additionalInfoLbl.text = localize(string: Constants.sendingString)
 //                additionalInfoLbl.textColor = #colorLiteral(red: 0.9215686275, green: 0.07843137255, blue: 0.231372549, alpha: 1)
             } else {
-                additionalInfoLbl.text = "Waiting for confirmations..."
+                additionalInfoLbl.text = localize(string: Constants.waitingConfirmationsString)
                 additionalInfoLbl.textColor = #colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1)
             }
         } else if histObj.multisig?.confirmed == true {
@@ -154,7 +156,7 @@ class MultiSigPendingTableViewCell: UITableViewCell {
             }
         }
         
-        infoLbl.text = "\(countOfConfirmations)" + " of " + "\(wallet!.multisigWallet!.signaturesRequiredCount)" + " confirmations"//localize it
+        infoLbl.text = "\(countOfConfirmations)" + " " + localize(string: Constants.ofString) + " " + "\(wallet!.multisigWallet!.signaturesRequiredCount)" + " " + localize(string: Constants.confirmationsString)
         
         if countOfConfirmations > 0 {
             successApproveCountLbl.text = "\(countOfConfirmations)"
@@ -184,3 +186,10 @@ class MultiSigPendingTableViewCell: UITableViewCell {
         }
     }
 }
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "MultiSig"
+    }
+}
+

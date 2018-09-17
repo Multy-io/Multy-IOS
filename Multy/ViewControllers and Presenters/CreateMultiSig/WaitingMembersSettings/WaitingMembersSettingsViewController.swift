@@ -47,7 +47,7 @@ class WaitingMembersSettingsViewController: UIViewController, AnalyticsProtocol 
         }
         
         signToSendAndTotalMembersLabel.text = " \(presenter.wallet.multisigWallet!.signaturesRequiredCount) of \(presenter.wallet.multisigWallet!.ownersCount)"
-        self.deleteWalletLabel.text = presenter.isCreator ? "Delete" : "Leave"
+        self.deleteWalletLabel.text = presenter.isCreator ? localize(string: Constants.deleteString) : localize(string: Constants.leaveString)
     }
     
     func chooseAnotherWalletAction() {

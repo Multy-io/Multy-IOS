@@ -347,8 +347,8 @@ extension TextViewDelegate: UITextViewDelegate {
             let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
             
             let pasteButton = UIBarButtonItem(title: copiedAddress!, style: .plain, target: self, action: #selector(self.handlePasteFromClipboard(_:)))
-            pasteButton.setTitleTextAttributes([NSAttributedStringKey.font : UIFont(name: "AvenirNext-DemiBold", size: 14.0)!], for: .normal)
-            pasteButton.setTitleTextAttributes([NSAttributedStringKey.font : UIFont(name: "AvenirNext-DemiBold", size: 14.0)!], for: .highlighted)
+            pasteButton.setTitleTextAttributes([NSAttributedStringKey.font : UIFont(name: "AvenirNext-Regular", size: 14.0)!], for: .normal)
+            pasteButton.setTitleTextAttributes([NSAttributedStringKey.font : UIFont(name: "AvenirNext-Regular", size: 14.0)!], for: .highlighted)
             
             toolbar.items = [pasteButton]
             addressTV.inputAccessoryView = toolbar
@@ -363,13 +363,17 @@ extension TextViewDelegate: UITextViewDelegate {
         }
     }
     
-    @objc fileprivate func handlePasteFromClipboard(_ button: UIBarButtonItem) {
-        addressTV.text = button.title
-        addressTV.resignFirstResponder()
-    }
-    
     func textViewDidEndEditing(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
+    }
+    
+    @objc fileprivate func handlePasteFromClipboard(_ button: UIBarButtonItem) {
+        addressTV.text = button.title
+        
+        if !checkTVisEmpty() {
+            modifyNextButtonMode()
+        }
+        addressTV.resignFirstResponder()
     }
 }
 

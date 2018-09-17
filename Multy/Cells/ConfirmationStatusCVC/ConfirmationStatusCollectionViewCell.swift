@@ -5,6 +5,8 @@
 import UIKit
 import Hash2Pics
 
+private typealias LocalizeDelegate = ConfirmationStatusCollectionViewCell
+
 class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var memberPictureImageView: UIImageView!
     @IBOutlet weak var statusImageView: UIImageView!
@@ -67,19 +69,19 @@ class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
         var statusFont = UIFont()
         switch status {
         case .confirmed:
-            statusString = "Confirmed"
+            statusString = localize(string: Constants.confirmedString)
             statusColor = UIColor(red: 95.0 / 255.0, green: 204.0 / 255.0, blue: 125.0 / 255.0, alpha: 1.0)
             statusFont = UIFont(name: "AvenirNext-Medium", size: 12.0)!
             break
             
         case .declined:
-            statusString = "Declined"
+            statusString = localize(string: Constants.declinedString)
             statusColor = UIColor(red: 238 / 255.0, green: 12.0 / 255.0, blue: 53.0 / 255.0, alpha: 1.0)
             statusFont = UIFont(name: "AvenirNext-Medium", size: 12.0)!
             break
             
         case .viewed:
-            statusString = "Viewed"
+            statusString = localize(string: Constants.viewedString)
             statusColor = UIColor(red: 132.0 / 255.0, green: 160.0 / 255.0, blue: 199.0 / 255.0, alpha: 1.0)
             statusFont = UIFont(name: "AvenirNext-Regular", size: 12.0)!
             break
@@ -124,5 +126,11 @@ class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
         }
         
         return result
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "MultiSig"
     }
 }
