@@ -22,6 +22,7 @@ class JoinMultiSigPresenter: NSObject {
         DataManager.shared.validateInviteCode(code: inviteCode) { result in
             switch result {
             case .success(let value):
+                self.mainVC?.sendAnalyticsEvent(screenName: screenJoinToMs, eventName: validationInviteQr + "Success")
                 let isExists = value["exists"] as! Int
                 
                 if isExists != 0 {
@@ -37,6 +38,7 @@ class JoinMultiSigPresenter: NSObject {
                     self.mainVC!.presentAlert(with: self.mainVC?.localize(string: Constants.msIsFull))
                 }
             case .failure(let error):
+                self.mainVC?.sendAnalyticsEvent(screenName: screenJoinToMs, eventName: validationInviteQr + "Fail")
                 self.mainVC?.presentAlert(with: error)
                 self.isCanValidate = true
             }

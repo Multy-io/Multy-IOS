@@ -46,6 +46,8 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
     var imageArr = [#imageLiteral(resourceName: "slideToSend1"),#imageLiteral(resourceName: "slideToSend2"),#imageLiteral(resourceName: "slideToSend3")]
     var timer: Timer?
     
+    let loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
+    
     var startSlideX: CGFloat = 0.0
     var finishSlideX: CGFloat = screenWidth - 33
     var isAnimateEnded = false
@@ -280,21 +282,23 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
         
         DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
             print("---------\(dict)")
-            
+
             if error != nil {
                 self.presentAlert()
                 print("sendHDTransaction Error: \(error)")
                 self.slideToStart()
                 self.view.isUserInteractionEnabled = true
+                self.presenter.makeNewTx()
                 self.sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: transactionErrorFromServer)
                 return
             }
-            
+
             if dict!["code"] as! Int == 200 {
                 self.performSegue(withIdentifier: "sendingAnimationVC", sender: sender)
             } else {
                 self.sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: transactionErrorFromServer)
                 self.presentAlert()
+                self.presenter.makeNewTx()
             }
         }
     }

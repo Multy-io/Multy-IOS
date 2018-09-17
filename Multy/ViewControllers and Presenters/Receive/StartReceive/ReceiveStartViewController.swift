@@ -39,8 +39,8 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
         if presenter.walletsArr.count == 0 {
             self.presenter.getWallets()
         }
-        if presenter.blockchainForSort != nil {
-            blockchainTypeLbl.text = "\(presenter.blockchainForSort!.fullName) \(presenter.blockchainForSort!.isMainnet ? "MainNet" : "TestNet")"
+        if presenter.displayedBlockchainOnly != nil {
+            blockchainTypeLbl.text = "\(presenter.displayedBlockchainOnly!.fullName) \(presenter.displayedBlockchainOnly!.isMainnet ? "MainNet" : "TestNet")"
         }
         sendAnalyticsEvent(screenName: screenReceive, eventName: screenReceive)
     }
