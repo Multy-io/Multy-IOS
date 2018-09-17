@@ -126,4 +126,13 @@ extension Constants {
     static let joinWithString = "JOIN WITH"
     static let leaveString = "LEAVE"
     static let waitingMemberString = "WAITING MEMBER"
+    static let rejectedString = "REJECTED"
+    static let waitingConfirmationsString = "WAITING CONFIRMATIONS"
+    static let ofString = "OF"
+    static let youString = "YOU"
+    static let confirmedString = "CONFIRMED"
+    static let declinedString = "DECLINED"
+    static let viewedString = "VIEWED"
+    static let slideToConfirmString = "SLIDE TO CONFIRM"
+    static let slideToDeclineString = "SLIDE TO DECLINE"
 }

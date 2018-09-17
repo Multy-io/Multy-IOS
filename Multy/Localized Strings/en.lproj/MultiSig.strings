@@ -9,3 +9,13 @@
 "DELETING" = "Deleting...";
 "DELETE" = "Delete";
 "LEAVE" = "Leave";
+"REJECTED" = "Rejected";
+"SENDING" = "Sending...";
+"WAITING CONFIRMATIONS" = "Waiting for confirmations...";
+"OF" = "of";
+"CONFIRMATIONS" = "confirmations";
+"CONFIRMED" = "Confirmed";
+"DECLINED" = "Declined";
+"VIEWED" = "Viewed";
+"SLIDE TO CONFIRM" = "Slide to confirm";
+"SLIDE TO DECLINE" = "Slide to decline";
