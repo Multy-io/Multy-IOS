@@ -8,7 +8,7 @@ private typealias LocalizeDelegate = WaitingMembersSettingsViewController
 private typealias WaitingMembersSettingsTextFieldDelegate = WaitingMembersSettingsViewController
 private typealias SendWalletDelegate = WaitingMembersSettingsViewController
 
-class WaitingMembersSettingsViewController: UIViewController,AnalyticsProtocol {
+class WaitingMembersSettingsViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var linkedWalletImageView: UIImageView!
     @IBOutlet weak var walletNameTF: UITextField!
     @IBOutlet weak var linkedWalletNameLabel: UILabel!

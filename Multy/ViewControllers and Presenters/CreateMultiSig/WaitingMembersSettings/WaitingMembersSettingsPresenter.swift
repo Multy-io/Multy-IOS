@@ -45,6 +45,7 @@ class WaitingMembersSettingsPresenter: NSObject {
             DataManager.shared.deleteMultisigWith(wallet: wallet) { [unowned self] result in
                 switch result {
                 case .success( _):
+                    self.presentedVC?.sendAnalyticsEvent(screenName: screenWaitingSettigns, eventName: creatingCancelingDeleteTap)
                     self.deleteWalletFromDB()
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
                 case .failure(let error):
@@ -55,8 +56,8 @@ class WaitingMembersSettingsPresenter: NSObject {
         } else {
             DataManager.shared.leaveFromMultisigWith(wallet: wallet) { [unowned self] result in
                 switch result {
-                
                 case .success( _):
+                    self.presentedVC?.sendAnalyticsEvent(screenName: screenWaitingSettigns, eventName: leaveTap)
                     self.deleteWalletFromDB()
                     self.presentedVC?.navigationController?.popToRootViewController(animated: true)
                 case .failure(let error):

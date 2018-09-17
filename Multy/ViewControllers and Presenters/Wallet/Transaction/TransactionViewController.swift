@@ -522,7 +522,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         }) { (isEnd) in
             Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.hideView), userInfo: nil, repeats: false)
         }
-        
+        sendAnalyticsEvent(screenName: screenTransactionWithChain, eventName: copyTap)
     }
     
     @objc func hideView() {
@@ -628,11 +628,13 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
     //MARK: Slider actions
     func didSlideToSend(_ sender: DoubleSlideViewController) {
         print("Slide to Send")
+        sendAnalyticsEvent(screenName: screenTransactionWithChain, eventName: confirmAction)
         presenter.confirmMultisigTx()
     }
     
     func didSlideToDecline(_ sender: DoubleSlideViewController) {
         print("Slide to Decline")
+        sendAnalyticsEvent(screenName: screenTransactionWithChain, eventName: declineAction)
         presenter.declineMultisigTx()
     }
 }

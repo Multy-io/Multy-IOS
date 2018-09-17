@@ -9,7 +9,7 @@ private typealias LocalizeDelegate = JoinMultiSigViewController
 private typealias TextViewDelegate = JoinMultiSigViewController
 
 
-class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, AnalyticsProtocol {
 
     @IBOutlet weak var bottomGradientView: UIView!
     @IBOutlet weak var topGradientView: UIView!
@@ -50,6 +50,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         presenter.mainVC = self
         hideKeyboardWhenTappedAround()
         
+        sendAnalyticsEvent(screenName: screenJoinToMs, eventName: screenJoinToMs)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
                                                name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
@@ -193,6 +194,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
             guard let readableObject = metatdataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
             if stringValue.contains("invite code:") {
+                sendAnalyticsEvent(screenName: screenJoinToMs, eventName: inviteQrDetected)
                 let array = stringValue.components(separatedBy: CharacterSet(charactersIn: ":"))
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 pasteInTextView(string: array[1])
@@ -247,6 +249,7 @@ extension TextViewDelegate: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         if textView.text.count == inviteCodeCount {
+            sendAnalyticsEvent(screenName: screenJoinToMs, eventName: pasteQr)
             presenter.validate(inviteCode: textView.text)
             dismissKeyboard()
         }
