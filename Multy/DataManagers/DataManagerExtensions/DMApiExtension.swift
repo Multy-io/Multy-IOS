@@ -415,4 +415,8 @@ extension DataManager {
     func estimation(for mustisigAddress: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
         apiManager.estimation(for: mustisigAddress) { completion($0) }
     }
+    
+    func resyncWallet(currencyID: NSNumber, chainType: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        apiManager.resyncWallet(currencyID: currencyID, chainType: chainType, walletID: walletID, completion: completion)
+    }
 }

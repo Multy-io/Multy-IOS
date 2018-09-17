@@ -56,4 +56,18 @@ class WalletSettingsPresenter: NSObject {
             }
         }
     }
+    
+    func resync() {
+        DataManager.shared.resyncWallet(currencyID: wallet!.chain, chainType: wallet!.chainType, walletID: wallet!.walletID) { [unowned self] in
+            switch $0 {
+            case .success( _):
+                self.walletSettingsVC?.navigationController?.popToRootViewController(animated: true)
+                break
+                
+            case .failure(let error):
+                self.walletSettingsVC?.presentAlert(with: error)
+                break
+            }
+        }
+    }
 }
