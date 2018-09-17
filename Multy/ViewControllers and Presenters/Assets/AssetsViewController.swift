@@ -193,6 +193,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletUpdated"), object: nil)
         
         super.viewWillDisappear(animated)
+//        tableView.scrollToTop()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -221,6 +223,9 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                 }
             }
         }
+        
+        refreshControl.beginRefreshing()
+        refreshControl.endRefreshing()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("msWalletDeleted"), object: nil)
@@ -618,7 +623,8 @@ extension TableViewDelegate : UITableViewDelegate {
                 return 220
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
-                    return 340
+//                    return 340
+                    return 290
                 } else {
                     return 340 + Constants.AssetsScreen.backupAssetsOffset
                 }
