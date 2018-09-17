@@ -19,7 +19,7 @@
 "CONFIRMATIONS" = "Confirmations";
 "RECENT ADDRESSES" = "Recent Addresses";
 "LOADING" = "Loading";
-"UNABLE SEND" = "Не вдається відправити транзакцію";
+"UNABLE SEND" = "Unable to send";
 "UPDATING" = "Updating...";
 "DELETING" = "Deleting...";
 "GETTING WALLET" = "Getting Wallets...";
@@ -29,3 +29,5 @@
 "ERROR WHILE SENDING TX" = "Error while sending transaction. Please, try again!";
 "YOU" = "You";
 "OF" = "of";
+"SORRY" = "Sorry";
+"LOW AMOUNT" = "Commission for sending transaction is more than your available amount";

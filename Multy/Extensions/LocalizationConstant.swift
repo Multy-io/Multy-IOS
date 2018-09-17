@@ -135,4 +135,5 @@ extension Constants {
     static let viewedString = "VIEWED"
     static let slideToConfirmString = "SLIDE TO CONFIRM"
     static let slideToDeclineString = "SLIDE TO DECLINE"
+    static let lowAmountString = "LOW AMOUNT"
 }
