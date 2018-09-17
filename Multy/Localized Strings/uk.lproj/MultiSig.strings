@@ -7,3 +7,15 @@
 "LEAVE MULTISIG WALLET WARNING" = "Ви впевнені, що хочете покинути гаманець?";
 "NO STRING" = "Ні";
 "DELETING" = "Видалення...";
+"DELETE" = "Видалити";
+"LEAVE" = "Покинути";
+"REJECTED" = "Відхилена";
+"SENDING" = "Відправка...";
+"WAITING CONFIRMATIONS" = "Очікування підтверджень...";
+"OF" = "із";
+"CONFIRMATIONS" = "підтверджень";
+"CONFIRMED" = "Підтверджено";
+"DECLINED" = "Відхилено";
+"VIEWED" = "Переглянуто";
+"SLIDE TO CONFIRM" = "Слайд для підтвердження";
+"SLIDE TO DECLINE" = "Слайд для відхилення";

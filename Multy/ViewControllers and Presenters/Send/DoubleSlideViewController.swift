@@ -4,6 +4,8 @@
 
 import UIKit
 
+private typealias LocalizeDelegate = DoubleSlideViewController
+
 protocol DoubleSliderDelegate: class {
     func didSlideToSend(_ sender: DoubleSlideViewController)
     func didSlideToDecline(_ sender: DoubleSlideViewController)
@@ -49,7 +51,7 @@ class DoubleSlideViewController: UIViewController {
         acceptSlideView.isUserInteractionEnabled = !isForAccept
         acceptSlideView.alpha = isForAccept ? 0.2 : 1.0
         slideTextLbl.fadeTransition(0.4)
-        slideTextLbl.text = isForAccept ? "Slide to Decline" : "Slide to Send"
+        slideTextLbl.text = isForAccept ? localize(string: Constants.slideToDeclineString) : localize(string: Constants.slideToConfirmString) 
         declineSlideView.alpha = isForAccept ? 1.0 : 0.2
         declineSlideView.isUserInteractionEnabled = isForAccept
         forAccept = !isForAccept
@@ -150,9 +152,14 @@ class DoubleSlideViewController: UIViewController {
         UIView.animate(withDuration: 0.3, animations: {
             self.isAnimateEnded = true
             self.declineSlideView.frame.origin.x = -self.declineSlideView.frame.size.width
-            
         }) { succeeded in
             self.delegate?.didSlideToDecline(self)
         }
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "MultiSig"
     }
 }

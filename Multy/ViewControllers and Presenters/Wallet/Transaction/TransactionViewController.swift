@@ -312,7 +312,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             
             let requiedSignsCount = presenter.wallet.multisigWallet?.signaturesRequiredCount
             let confirmationsCount = presenter.histObj.multisig?.confirmationsCount()
-            confirmationAmountLbl.text = "\(confirmationsCount!) of \(requiedSignsCount!)"
+            confirmationAmountLbl.text = "\(confirmationsCount!) " + localize(string: Constants.ofString) + " \(requiedSignsCount!)"
         } else {
             if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
                 presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue {
@@ -613,7 +613,7 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
                 date = Date(timeIntervalSince1970: owner.confirmationTime.doubleValue)
             }
             
-            let name = currentOwner!.address == owner.address ? "You" : nil
+            let name = currentOwner!.address == owner.address ? localize(string: Constants.youString) : nil
             cell.fill(address: owner.address, status: confirmationStatus, memberName: name, date: date)
         }
         
