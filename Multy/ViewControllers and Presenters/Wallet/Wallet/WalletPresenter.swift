@@ -37,7 +37,9 @@ class WalletPresenter: NSObject {
             if transactionDataSource.isEmpty == false {
                 walletVC?.hideEmptyLbls()
             }
-            walletVC!.transactionsTable.reloadData()
+            if oldValue != transactionDataSource {
+                self.walletVC!.transactionsTable.reloadData()
+            }
         }
     }
     
@@ -165,7 +167,7 @@ class WalletPresenter: NSObject {
             self.transactionDataSource = historyArray!.sorted(by: {
                 let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.blockTime : $0.mempoolTime
                 let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.blockTime : $1.mempoolTime
-                
+
                 return firstDate > secondDate
             })
             self.isSocketInitiateUpdating = false
