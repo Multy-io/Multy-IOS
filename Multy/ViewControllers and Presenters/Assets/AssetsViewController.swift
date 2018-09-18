@@ -225,9 +225,11 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
             }
         }
         
+        refreshControl.beginRefreshing()
+        refreshControl.endRefreshing()
+    
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleExchangeUpdatedNotifiction(notification:)), name: NSNotification.Name("exchageUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleTransactionUpdatedNotification(notification :)), name: NSNotification.Name("transactionUpdated"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("walletDeleted"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("msWalletDeleted"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMsTransactionUpdatedNotification(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
@@ -637,7 +639,8 @@ extension TableViewDelegate : UITableViewDelegate {
                 return 220
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
-                    return 340
+//                    return 340
+                    return 290
                 } else {
                     return 340 + Constants.AssetsScreen.backupAssetsOffset
                 }

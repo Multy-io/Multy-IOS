@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="AvenirNext.ttc">
-            <string>AvenirNext-Medium</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -24,14 +19,17 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dfF-68-ywH">
-                        <rect key="frame" x="20" y="11" width="260" height="16.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dfF-68-ywH">
+                        <rect key="frame" x="20" y="11" width="335" height="16.5"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0001 BTC / 100 USD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pxM-0D-kqw">
                         <rect key="frame" x="20" y="34.5" width="124" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="qUy-C5-Qjr"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                         <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -44,12 +42,12 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dfF-68-ywH" secondAttribute="trailing" constant="20" id="04V-46-hMS"/>
+                    <constraint firstItem="pxM-0D-kqw" firstAttribute="top" secondItem="dfF-68-ywH" secondAttribute="bottom" constant="7" id="B97-72-3K9"/>
                     <constraint firstAttribute="trailing" secondItem="Zn1-Ux-Rxq" secondAttribute="trailing" constant="20" id="HiD-mm-d8v"/>
                     <constraint firstItem="pxM-0D-kqw" firstAttribute="leading" secondItem="dfF-68-ywH" secondAttribute="leading" id="MWc-Em-34I"/>
                     <constraint firstItem="Zn1-Ux-Rxq" firstAttribute="centerY" secondItem="pxM-0D-kqw" secondAttribute="centerY" id="R6X-fH-5kh"/>
                     <constraint firstItem="dfF-68-ywH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="eOA-lL-RYL"/>
-                    <constraint firstAttribute="bottom" secondItem="pxM-0D-kqw" secondAttribute="bottom" constant="12" id="jVm-Wa-xKJ"/>
+                    <constraint firstAttribute="trailing" secondItem="dfF-68-ywH" secondAttribute="trailing" constant="20" id="fbT-Ho-5Mk"/>
                     <constraint firstItem="dfF-68-ywH" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="xbo-YW-uVq"/>
                 </constraints>
             </tableViewCellContentView>
