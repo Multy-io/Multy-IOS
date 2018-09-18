@@ -501,6 +501,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             return
         }
         
+        if presenter.canSendMinimumAmount() == false {
+            return
+        }
+        
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
         sendStartVC.presenter.transactionDTO.choosenWallet = self.presenter.wallet

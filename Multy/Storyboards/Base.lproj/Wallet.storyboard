@@ -915,23 +915,20 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <rect key="frame" x="0.0" y="0.0" width="375" height="820"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FT0-h6-feB">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="820"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GWg-bu-Ybl">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cancel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LNF-Bk-Flz">
-                                        <rect key="frame" x="20" y="13" width="54" height="24"/>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Kf-Jl-SN9" userLabel="Save">
-                                        <rect key="frame" x="318" y="13" width="37" height="24"/>
+                                        <rect key="frame" x="322" y="9.5" width="37" height="24"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z5T-zd-Viq">
-                                        <rect key="frame" x="0.0" y="0.0" width="94" height="37"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="43"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="80" id="oRq-1B-SLB"/>
+                                        </constraints>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal">
                                             <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -941,7 +938,10 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vV-Qq-x34">
-                                        <rect key="frame" x="281" y="3.5" width="94" height="30"/>
+                                        <rect key="frame" x="311" y="0.0" width="64" height="43"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="64" id="9gj-AM-QzP"/>
+                                        </constraints>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal">
                                             <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -951,26 +951,57 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YHK-vM-QZ6">
-                                        <rect key="frame" x="129" y="13" width="117" height="24"/>
+                                        <rect key="frame" x="129" y="9" width="117" height="25"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PU5-xG-oi6">
-                                        <rect key="frame" x="0.0" y="46" width="375" height="1"/>
+                                        <rect key="frame" x="0.0" y="43" width="375" height="1"/>
                                         <color key="backgroundColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="xfT-A7-kNF"/>
                                         </constraints>
                                     </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cancel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LNF-Bk-Flz">
+                                        <rect key="frame" x="16" y="9.5" width="54" height="24"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="PU5-xG-oi6" firstAttribute="leading" secondItem="GWg-bu-Ybl" secondAttribute="leading" id="Aom-65-P2d"/>
+                                    <constraint firstItem="YHK-vM-QZ6" firstAttribute="centerX" secondItem="GWg-bu-Ybl" secondAttribute="centerX" id="B9P-SA-ej1"/>
+                                    <constraint firstAttribute="trailing" secondItem="PU5-xG-oi6" secondAttribute="trailing" id="CLH-S2-HRh"/>
+                                    <constraint firstItem="5Kf-Jl-SN9" firstAttribute="centerY" secondItem="YHK-vM-QZ6" secondAttribute="centerY" id="CYU-iw-Pu0"/>
+                                    <constraint firstItem="Z5T-zd-Viq" firstAttribute="top" secondItem="GWg-bu-Ybl" secondAttribute="top" id="En1-VM-SEj"/>
+                                    <constraint firstItem="PU5-xG-oi6" firstAttribute="top" secondItem="Z5T-zd-Viq" secondAttribute="bottom" id="GFC-e5-yjk"/>
+                                    <constraint firstItem="PU5-xG-oi6" firstAttribute="top" secondItem="YHK-vM-QZ6" secondAttribute="bottom" constant="9" id="HCZ-Gq-sNb"/>
+                                    <constraint firstAttribute="trailing" secondItem="5vV-Qq-x34" secondAttribute="trailing" id="N82-Fm-xX6"/>
+                                    <constraint firstItem="PU5-xG-oi6" firstAttribute="top" secondItem="5vV-Qq-x34" secondAttribute="bottom" id="VrS-CO-gOp"/>
+                                    <constraint firstItem="Z5T-zd-Viq" firstAttribute="centerY" secondItem="YHK-vM-QZ6" secondAttribute="centerY" id="X3B-jS-6XT"/>
+                                    <constraint firstAttribute="height" constant="44" id="Ygl-Py-dne"/>
+                                    <constraint firstItem="Z5T-zd-Viq" firstAttribute="leading" secondItem="GWg-bu-Ybl" secondAttribute="leading" id="eRD-JC-lAm"/>
+                                    <constraint firstAttribute="bottom" secondItem="PU5-xG-oi6" secondAttribute="bottom" id="ekD-JH-gyR"/>
+                                    <constraint firstItem="5vV-Qq-x34" firstAttribute="top" secondItem="GWg-bu-Ybl" secondAttribute="top" id="fqo-y2-gLm"/>
+                                    <constraint firstAttribute="trailing" secondItem="5Kf-Jl-SN9" secondAttribute="trailing" constant="16" id="lPG-7E-FP8"/>
+                                    <constraint firstItem="LNF-Bk-Flz" firstAttribute="leading" secondItem="GWg-bu-Ybl" secondAttribute="leading" constant="16" id="qjM-6z-DhL"/>
+                                    <constraint firstItem="LNF-Bk-Flz" firstAttribute="centerY" secondItem="YHK-vM-QZ6" secondAttribute="centerY" id="yNv-3b-mKP"/>
+                                </constraints>
+                            </view>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FT0-h6-feB">
+                                <rect key="frame" x="0.0" y="65" width="375" height="755"/>
+                                <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GENERAL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjM-IC-HSe">
-                                        <rect key="frame" x="20" y="67" width="60" height="18"/>
+                                        <rect key="frame" x="20" y="20" width="60" height="18"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="13"/>
                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQY-0t-BKU">
-                                        <rect key="frame" x="0.0" y="89" width="375" height="128"/>
+                                        <rect key="frame" x="0.0" y="42" width="375" height="128"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DPL-wr-61u">
                                                 <rect key="frame" x="20" y="63.5" width="355" height="1"/>
@@ -1069,13 +1100,13 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SECURITY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WDy-PI-N1j">
-                                        <rect key="frame" x="20" y="237" width="61" height="18"/>
+                                        <rect key="frame" x="20" y="190" width="61" height="18"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="13"/>
                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hzz-4v-4H7">
-                                        <rect key="frame" x="0.0" y="265" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="218" width="375" height="64"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Private Keys" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a8G-dc-Q0i">
                                                 <rect key="frame" x="20" y="21" width="133" height="22"/>
@@ -1135,7 +1166,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private key allows anyone to spend your crypto assets. You should keep it secret!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="O8U-E1-QhK">
-                                        <rect key="frame" x="16" y="341" width="343" height="35"/>
+                                        <rect key="frame" x="16" y="294" width="343" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="37W-vN-PiN"/>
                                         </constraints>
@@ -1144,7 +1175,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yPy-8a-e2h" userLabel="View - Resync Block">
-                                        <rect key="frame" x="0.0" y="396" width="375" height="170"/>
+                                        <rect key="frame" x="0.0" y="349" width="375" height="170"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Sc-yT-Owa" userLabel="View - Resync Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
@@ -1213,7 +1244,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QBt-8U-2xG">
-                                        <rect key="frame" x="0.0" y="566" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="519" width="375" height="64"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DgY-No-Dab">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
@@ -1260,7 +1291,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mzu-O0-HqV">
-                                        <rect key="frame" x="16" y="646" width="343" height="40"/>
+                                        <rect key="frame" x="16" y="599" width="343" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="U1A-eq-Xjy"/>
                                         </constraints>
@@ -1271,45 +1302,29 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                 </subviews>
                                 <color key="backgroundColor" red="0.97644573450088501" green="0.98039692640304565" blue="0.99984890222549438" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="5vV-Qq-x34" secondAttribute="trailing" id="00k-lC-HsN"/>
                                     <constraint firstItem="fjM-IC-HSe" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" constant="20" id="4t6-lq-KSx"/>
                                     <constraint firstItem="WDy-PI-N1j" firstAttribute="top" secondItem="aQY-0t-BKU" secondAttribute="bottom" constant="20" id="8Xp-88-hIU"/>
-                                    <constraint firstItem="fjM-IC-HSe" firstAttribute="top" secondItem="PU5-xG-oi6" secondAttribute="bottom" constant="20" id="Ae6-Xd-clv"/>
                                     <constraint firstAttribute="trailing" secondItem="aQY-0t-BKU" secondAttribute="trailing" id="BHR-vI-sVO"/>
                                     <constraint firstItem="mzu-O0-HqV" firstAttribute="top" secondItem="c6M-Zm-uVc" secondAttribute="bottom" constant="16" id="BYd-jI-yjW"/>
                                     <constraint firstItem="O8U-E1-QhK" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" constant="16" id="DZx-Pz-d18"/>
                                     <constraint firstItem="aQY-0t-BKU" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="GoN-LJ-yT4"/>
-                                    <constraint firstItem="PU5-xG-oi6" firstAttribute="top" secondItem="Z5T-zd-Viq" secondAttribute="bottom" constant="9" id="Gss-tT-cvZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="PU5-xG-oi6" secondAttribute="trailing" id="J6I-EF-6DM"/>
-                                    <constraint firstItem="PU5-xG-oi6" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="La9-JV-7Q9"/>
+                                    <constraint firstItem="fjM-IC-HSe" firstAttribute="top" secondItem="FT0-h6-feB" secondAttribute="top" constant="20" id="PbV-gD-rbJ"/>
                                     <constraint firstItem="Hzz-4v-4H7" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="Qm3-qm-vKK"/>
                                     <constraint firstItem="mzu-O0-HqV" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" constant="16" id="Sbk-S6-tmR"/>
                                     <constraint firstAttribute="trailing" secondItem="QBt-8U-2xG" secondAttribute="trailing" id="TfC-UZ-Ihb"/>
-                                    <constraint firstItem="5vV-Qq-x34" firstAttribute="width" secondItem="Z5T-zd-Viq" secondAttribute="width" id="WN9-PC-30h"/>
                                     <constraint firstItem="aQY-0t-BKU" firstAttribute="top" secondItem="fjM-IC-HSe" secondAttribute="bottom" constant="4" id="Zha-6Q-4vR"/>
-                                    <constraint firstItem="YHK-vM-QZ6" firstAttribute="top" secondItem="FT0-h6-feB" secondAttribute="top" constant="13" id="bEO-Fj-6mt"/>
                                     <constraint firstItem="WDy-PI-N1j" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" constant="20" id="dDq-yC-hrU"/>
                                     <constraint firstItem="QBt-8U-2xG" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="duD-Dx-3mo"/>
-                                    <constraint firstItem="LNF-Bk-Flz" firstAttribute="top" secondItem="FT0-h6-feB" secondAttribute="top" constant="13" id="fde-Gm-tNi"/>
-                                    <constraint firstItem="LNF-Bk-Flz" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" constant="20" id="gkA-ex-H4L"/>
                                     <constraint firstItem="aQY-0t-BKU" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="gya-zd-Xtb"/>
-                                    <constraint firstItem="Z5T-zd-Viq" firstAttribute="bottom" secondItem="LNF-Bk-Flz" secondAttribute="bottom" id="iIs-9o-Npf"/>
-                                    <constraint firstItem="Z5T-zd-Viq" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="jGR-gq-y3u"/>
                                     <constraint firstItem="O8U-E1-QhK" firstAttribute="top" secondItem="Hzz-4v-4H7" secondAttribute="bottom" constant="12" id="kcv-EK-u43"/>
-                                    <constraint firstAttribute="bottom" secondItem="mzu-O0-HqV" secondAttribute="bottom" constant="3" id="lbX-X1-CBk"/>
+                                    <constraint firstAttribute="bottom" secondItem="mzu-O0-HqV" secondAttribute="bottom" constant="20" id="lbX-X1-CBk"/>
                                     <constraint firstItem="aQY-0t-BKU" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="mx3-GW-eMf"/>
                                     <constraint firstAttribute="trailing" secondItem="O8U-E1-QhK" secondAttribute="trailing" constant="16" id="nca-Wo-yXE"/>
-                                    <constraint firstAttribute="trailing" secondItem="5Kf-Jl-SN9" secondAttribute="trailing" constant="20" id="oFN-cg-ibs"/>
-                                    <constraint firstItem="Z5T-zd-Viq" firstAttribute="trailing" secondItem="LNF-Bk-Flz" secondAttribute="trailing" constant="20" id="pCs-d3-tIP"/>
-                                    <constraint firstItem="5vV-Qq-x34" firstAttribute="centerY" secondItem="Z5T-zd-Viq" secondAttribute="centerY" id="pNC-ke-Wdo"/>
                                     <constraint firstItem="Hzz-4v-4H7" firstAttribute="top" secondItem="WDy-PI-N1j" secondAttribute="bottom" constant="10" id="qoE-aB-jng"/>
                                     <constraint firstAttribute="trailing" secondItem="mzu-O0-HqV" secondAttribute="trailing" constant="16" id="r4s-bN-fh0"/>
                                     <constraint firstAttribute="trailing" secondItem="yPy-8a-e2h" secondAttribute="trailing" id="rsU-jc-kqX"/>
                                     <constraint firstItem="aQY-0t-BKU" firstAttribute="centerX" secondItem="FT0-h6-feB" secondAttribute="centerX" id="s5Z-kN-vRh"/>
-                                    <constraint firstItem="YHK-vM-QZ6" firstAttribute="centerX" secondItem="FT0-h6-feB" secondAttribute="centerX" id="uCW-qI-IqF"/>
-                                    <constraint firstItem="Z5T-zd-Viq" firstAttribute="top" secondItem="FT0-h6-feB" secondAttribute="top" id="unF-Sc-QeD"/>
                                     <constraint firstItem="yPy-8a-e2h" firstAttribute="top" secondItem="O8U-E1-QhK" secondAttribute="bottom" constant="20" id="vfB-vL-gRm"/>
-                                    <constraint firstItem="5Kf-Jl-SN9" firstAttribute="centerY" secondItem="LNF-Bk-Flz" secondAttribute="centerY" id="wZG-K3-Yhz"/>
                                     <constraint firstItem="QBt-8U-2xG" firstAttribute="top" secondItem="yPy-8a-e2h" secondAttribute="bottom" id="waR-3v-FRQ"/>
                                     <constraint firstAttribute="trailing" secondItem="Hzz-4v-4H7" secondAttribute="trailing" id="y6r-pK-8qr"/>
                                     <constraint firstItem="yPy-8a-e2h" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="yDw-0I-4Cb"/>
@@ -1321,10 +1336,13 @@ By donating you help us to bring blockchain technology one step closer to ordina
                             <bool key="isElement" value="YES"/>
                         </accessibility>
                         <constraints>
+                            <constraint firstItem="FT0-h6-feB" firstAttribute="top" secondItem="GWg-bu-Ybl" secondAttribute="bottom" constant="1" id="6ot-F3-6Cp"/>
                             <constraint firstAttribute="trailing" secondItem="FT0-h6-feB" secondAttribute="trailing" id="GhF-Kr-o6y"/>
                             <constraint firstItem="wEY-fz-Mtq" firstAttribute="top" secondItem="FT0-h6-feB" secondAttribute="bottom" id="Ix7-Kp-arl"/>
-                            <constraint firstItem="FT0-h6-feB" firstAttribute="top" secondItem="zBt-YV-HYV" secondAttribute="top" id="Sn6-Io-uwf"/>
+                            <constraint firstItem="GWg-bu-Ybl" firstAttribute="top" secondItem="pOF-cg-vMB" secondAttribute="bottom" id="YZx-7C-gw7"/>
                             <constraint firstItem="FT0-h6-feB" firstAttribute="leading" secondItem="zBt-YV-HYV" secondAttribute="leading" id="cn7-93-4iU"/>
+                            <constraint firstItem="GWg-bu-Ybl" firstAttribute="leading" secondItem="zBt-YV-HYV" secondAttribute="leading" id="goo-SR-jka"/>
+                            <constraint firstAttribute="trailing" secondItem="GWg-bu-Ybl" secondAttribute="trailing" id="iqr-aC-RSB"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="375" height="820"/>
@@ -1336,7 +1354,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wHR-vM-u9O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-716" y="714.69265367316348"/>
+            <point key="canvasLocation" x="-716" y="714.24287856071965"/>
         </scene>
         <!--Private Key View Controller-->
         <scene sceneID="zdR-RF-1Rg">
@@ -3408,7 +3426,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </constraints>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m5e-fD-A3P">
-                                        <rect key="frame" x="0.0" y="546.5" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="526.5" width="375" height="10"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6aq-vB-uI5">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
@@ -3418,20 +3436,20 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CGo-Ty-4ko">
-                                                <rect key="frame" x="0.0" y="63" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="9" width="375" height="1"/>
                                                 <color key="backgroundColor" red="0.83529411760000005" green="0.87058823529999996" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="0nQ-Kt-5GO"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I60-dN-CfO">
-                                                <rect key="frame" x="137.5" y="21" width="100" height="22"/>
+                                                <rect key="frame" x="137.5" y="-6" width="100" height="22"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                 <color key="textColor" red="0.90588235289999997" green="0.1843137255" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qw3-TA-bwZ">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="10"/>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3441,7 +3459,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <constraint firstItem="I60-dN-CfO" firstAttribute="centerX" secondItem="m5e-fD-A3P" secondAttribute="centerX" id="DQw-Il-IXa"/>
                                             <constraint firstItem="I60-dN-CfO" firstAttribute="centerY" secondItem="m5e-fD-A3P" secondAttribute="centerY" id="OUD-3O-PRa"/>
                                             <constraint firstAttribute="trailing" secondItem="qw3-TA-bwZ" secondAttribute="trailing" id="Z5K-HP-wDe"/>
-                                            <constraint firstAttribute="height" constant="64" id="Zfj-Q3-20f"/>
+                                            <constraint firstAttribute="height" constant="10" id="Zfj-Q3-20f"/>
                                             <constraint firstItem="6aq-vB-uI5" firstAttribute="top" secondItem="m5e-fD-A3P" secondAttribute="top" id="Zwh-PZ-dLz"/>
                                             <constraint firstAttribute="bottom" secondItem="CGo-Ty-4ko" secondAttribute="bottom" id="adQ-wl-jAN"/>
                                             <constraint firstItem="6aq-vB-uI5" firstAttribute="leading" secondItem="m5e-fD-A3P" secondAttribute="leading" id="cPd-fr-61x"/>
@@ -3452,9 +3470,9 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </constraints>
                                     </view>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7CA-wG-gWj">
-                                        <rect key="frame" x="16" y="626.5" width="343" height="40"/>
+                                        <rect key="frame" x="16" y="536.5" width="343" height="10"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="Dgh-Ui-Ubk"/>
+                                            <constraint firstAttribute="height" constant="10" id="Dgh-Ui-Ubk"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3517,14 +3535,14 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <constraint firstItem="Tm2-kk-NXX" firstAttribute="top" secondItem="ZM5-T2-3WC" secondAttribute="bottom" constant="4" id="BxB-6r-WcF"/>
                                     <constraint firstItem="LaJ-U0-dxh" firstAttribute="top" secondItem="W8S-fL-Y4Q" secondAttribute="bottom" constant="20" id="Cj3-SH-GzA"/>
                                     <constraint firstItem="nre-PM-gIV" firstAttribute="leading" secondItem="std-yQ-KXK" secondAttribute="leading" constant="20" id="CoM-QM-O4j"/>
-                                    <constraint firstItem="7CA-wG-gWj" firstAttribute="top" secondItem="qw3-TA-bwZ" secondAttribute="bottom" constant="16" id="FCN-eG-V1c"/>
+                                    <constraint firstItem="7CA-wG-gWj" firstAttribute="top" secondItem="qw3-TA-bwZ" secondAttribute="bottom" id="FCN-eG-V1c"/>
                                     <constraint firstItem="YX3-hq-CVI" firstAttribute="leading" secondItem="std-yQ-KXK" secondAttribute="leading" id="Iaj-WN-XsF"/>
                                     <constraint firstItem="jYl-j3-2zI" firstAttribute="top" secondItem="W1w-XC-pcr" secondAttribute="bottom" id="JxR-rz-L6B"/>
                                     <constraint firstItem="W8S-fL-Y4Q" firstAttribute="leading" secondItem="std-yQ-KXK" secondAttribute="leading" constant="16" id="KTw-5p-J0X"/>
                                     <constraint firstItem="Gvs-f6-04T" firstAttribute="top" secondItem="Kyg-cb-fVX" secondAttribute="bottom" constant="9" id="LNf-de-Pen"/>
                                     <constraint firstItem="ZM5-T2-3WC" firstAttribute="top" secondItem="Gvs-f6-04T" secondAttribute="bottom" constant="20" id="Mnq-3E-Oux"/>
                                     <constraint firstItem="Kyg-cb-fVX" firstAttribute="trailing" secondItem="nre-PM-gIV" secondAttribute="trailing" constant="20" id="N3G-IK-9Hf"/>
-                                    <constraint firstItem="m5e-fD-A3P" firstAttribute="top" secondItem="X7j-lC-fW7" secondAttribute="bottom" constant="20" id="NMw-A2-iwG"/>
+                                    <constraint firstItem="m5e-fD-A3P" firstAttribute="top" secondItem="X7j-lC-fW7" secondAttribute="bottom" id="NMw-A2-iwG"/>
                                     <constraint firstAttribute="trailing" secondItem="e7b-tf-bBz" secondAttribute="trailing" constant="20" id="Npf-Ku-FmU"/>
                                     <constraint firstItem="jYl-j3-2zI" firstAttribute="leading" secondItem="std-yQ-KXK" secondAttribute="leading" id="Rrb-IE-jrf"/>
                                     <constraint firstItem="KlN-yL-jIS" firstAttribute="leading" secondItem="std-yQ-KXK" secondAttribute="leading" id="Ruy-Hc-PqL"/>
@@ -3556,7 +3574,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <constraint firstItem="Tm2-kk-NXX" firstAttribute="leading" secondItem="std-yQ-KXK" secondAttribute="leading" id="v1G-A5-kuC"/>
                                     <constraint firstAttribute="trailing" secondItem="6Av-J5-fbd" secondAttribute="trailing" id="wBa-XA-hUS"/>
                                     <constraint firstAttribute="trailing" secondItem="W8S-fL-Y4Q" secondAttribute="trailing" constant="16" id="wgf-dV-YcG"/>
-                                    <constraint firstAttribute="bottom" secondItem="7CA-wG-gWj" secondAttribute="bottom" constant="3" id="z0H-YW-Pwu"/>
+                                    <constraint firstAttribute="bottom" secondItem="7CA-wG-gWj" secondAttribute="bottom" id="z0H-YW-Pwu"/>
                                     <constraint firstItem="ZM5-T2-3WC" firstAttribute="leading" secondItem="std-yQ-KXK" secondAttribute="leading" constant="20" id="z4O-TD-33k"/>
                                     <constraint firstItem="Gvs-f6-04T" firstAttribute="leading" secondItem="std-yQ-KXK" secondAttribute="leading" id="zXU-rS-2bj"/>
                                 </constraints>
