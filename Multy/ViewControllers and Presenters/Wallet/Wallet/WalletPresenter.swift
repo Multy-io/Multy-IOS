@@ -174,7 +174,7 @@ class WalletPresenter: NSObject {
         }
     }
     
-    func canSendMin() -> Bool {
+    func canSendMinimumAmount() -> Bool {
         if wallet?.ethWallet != nil && wallet!.ethWallet!.ethBalance < "0.0001".convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM) {
             let title = walletVC!.localize(string: Constants.sorryString)
             let message = walletVC!.localize(string: Constants.lowAmountString)

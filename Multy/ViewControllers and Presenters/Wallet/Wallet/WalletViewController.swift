@@ -509,7 +509,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             return
         }
         
-        if presenter.canSendMin() == false {
+        if presenter.canSendMinimumAmount() == false {
             return
         }
         
