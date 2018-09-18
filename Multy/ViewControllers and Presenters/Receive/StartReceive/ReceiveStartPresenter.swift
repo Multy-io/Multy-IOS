@@ -130,8 +130,8 @@ class ReceiveStartPresenter: NSObject {
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
         createdWallet.name = "My First \(blockchianType.shortName) Wallet"
-        createdWallet.walletID = NSNumber(value: dict!["walletID"] as! Int32)
-        createdWallet.addressID = NSNumber(value: dict!["addressID"] as! Int32)
+        createdWallet.walletID = NSNumber(value: dict!["walletID"] as! UInt32)
+        createdWallet.addressID = NSNumber(value: dict!["addressID"] as! UInt32)
         createdWallet.address = dict!["address"] as! String
         
         if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {

@@ -12,6 +12,7 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var addWallet: UIButton!
+    @IBOutlet weak var plusLbl: UILabel!
     @IBOutlet weak var emptyWalletsView: UIView!
     @IBOutlet weak var blockchainTypeLbl: UILabel!
     
@@ -50,6 +51,7 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
         (self.tabBarController as! CustomTabBarViewController).menuButton.isHidden = true
         if whereFrom != nil && whereFrom?.className == CreateMultiSigViewController.className || whereFrom?.className == AssetsViewController.className {
             addWallet.isHidden = false
+            plusLbl.isHidden = false
         }
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
 //            self.deselectCell()
