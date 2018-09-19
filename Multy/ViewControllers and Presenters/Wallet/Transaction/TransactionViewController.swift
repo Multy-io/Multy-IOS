@@ -505,8 +505,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func presentTransactionErrorAlert() {
-        let message = localize(string: Constants.errorSendingTxString)
+    func presentTransactionErrorAlert(message: String) {
+        let message = localize(string: message)
         let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
             self.doubleSliderVC.updateToInitialState()
