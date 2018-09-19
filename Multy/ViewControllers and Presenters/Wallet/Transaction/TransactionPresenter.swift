@@ -92,7 +92,7 @@ class TransactionPresenter: NSObject {
     
     func confirmMultisigTx() {
         guard isThereFundsOnMSWallet() else {
-            transctionVC!.presentAlert(with: transctionVC!.localize(string: Constants.noFundsString))
+            transctionVC!.presentTransactionErrorAlert(message: Constants.noFundsString)
             
             return
         }
@@ -142,7 +142,7 @@ class TransactionPresenter: NSObject {
                             if error != nil {
                                 print("sendHDTransaction Error: \(error)")
                                 self.transctionVC?.spiner.stopAnimating()
-                                self.transctionVC?.presentTransactionErrorAlert()
+                                self.transctionVC?.presentTransactionErrorAlert(message: Constants.errorSendingTxString)
                                 return
                             }
                             
@@ -156,14 +156,14 @@ class TransactionPresenter: NSObject {
                         break
                     case .failure(let error):
                         self.transctionVC?.spiner.stopAnimating()
-                        self.transctionVC?.presentTransactionErrorAlert()
+                        self.transctionVC?.presentTransactionErrorAlert(message: Constants.errorSendingTxString)
                         return
                     }
                 }
                 break;
             case .failure(let errorString):
                 self.transctionVC?.spiner.stopAnimating()
-                self.transctionVC?.presentTransactionErrorAlert()
+                self.transctionVC?.presentTransactionErrorAlert(message: Constants.errorSendingTxString)
                 print(errorString)
                 break;
             }
