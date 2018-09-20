@@ -287,8 +287,6 @@ class UserWalletRLM: Object {
     
     public class func initWithInfo(walletInfo: NSDictionary) -> UserWalletRLM {
         let wallet = UserWalletRLM()
-        wallet.ethWallet = ETHWallet()
-        wallet.btcWallet = BTCWallet()
         
         if let privateKey = walletInfo["importedPrivateKey"] {
             wallet.importedPrivateKey = privateKey as! String
@@ -610,6 +608,28 @@ class UserWalletRLM: Object {
             
         default:
             break
+        }
+        
+        return result
+    }
+    
+    func txAmount(_ tx: HistoryRLM) -> BigInt {
+        var result = BigInt.zero()
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            result = BigInt("\(outgoingAmount(for: tx))") - tx.fee(for: blockchain)
+            
+        //  return txOutAmount.doubleValue.fixedFraction(digits: 8)
+        case BLOCKCHAIN_ETHEREUM:
+            result = BigInt(tx.txOutAmountString)
+            
+            if tx.isOutcoming() {
+                result = result + tx.fee(for: blockchain)
+            }
+        //   return txOutAmountString.appendDelimeter(at: 18)
+        default:
+            break
+            //return ""
         }
         
         return result

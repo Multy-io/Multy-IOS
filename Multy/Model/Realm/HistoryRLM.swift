@@ -48,17 +48,22 @@ class HistoryRLM: Object {
         return ["addressesArray"]
     }
     
-    // FIXME: delete txOutAmount, only string values
-    func txAmount(for blockchain: Blockchain) -> String {
+    func fee(for blockchain: Blockchain) -> BigInt {
+        var result = BigInt.zero()
         switch blockchain {
         case BLOCKCHAIN_BITCOIN:
-            return txOutAmount.doubleValue.fixedFraction(digits: 8)
+            result = BigInt("\(txFee)")
+            break
         case BLOCKCHAIN_ETHEREUM:
-            return txOutAmountString.appendDelimeter(at: 18)
+            result = (BigInt("\(gasLimit)") * BigInt("\(gasPrice)"))
+            break
+            
         default:
-            return ""
+            break
         }
-    }
+        
+        return result
+    }    
     
     public class func initWithArray(historyArr: NSArray) -> List<HistoryRLM> {
         let history = List<HistoryRLM>()
