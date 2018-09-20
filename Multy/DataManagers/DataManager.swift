@@ -94,17 +94,32 @@ class DataManager: NSObject {
         }
     }
     
-    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: Int32, inviteCode: String?) -> String {
+    func generateWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, walletID: Int32) -> String {
         let currencyString = String(currencyID).sha3(.sha256)
         let walletString = String(walletID).sha3(.sha256)
         let networkString = String(networkID).sha3(.sha256)
-        let inviteCodeString = inviteCode?.sha3(.sha256)
         
-        var resultString = "\(currencyString)" + "\(walletString)" + "\(networkString)"
+        var resultString = "\(currencyString)"  + "\(networkString)" + "\(walletString)"
         
-        if inviteCodeString != nil {
-            resultString += inviteCodeString!
-        }
+        return resultString.sha3(.sha256)
+    }
+    
+    func generateImportedWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, address: String) -> String {
+        let currencyString = String(currencyID).sha3(.sha256)
+        let walletString = address.sha3(.sha256)
+        let networkString = String(networkID).sha3(.sha256)
+        
+        let resultString = "\(currencyString)" + "\(networkString)" + "\(walletString)"
+        
+        return resultString.sha3(.sha256)
+    }
+    
+    func generateMultisigWalletPrimaryKey(currencyID: UInt32, networkID: UInt32, inviteCode: String) -> String {
+        let currencyString = String(currencyID).sha3(.sha256)
+        let networkString = String(networkID).sha3(.sha256)
+        let inviteCodeString = inviteCode.sha3(.sha256)
+        
+        let resultString = "\(currencyString)" + "\(networkString)" + "\(inviteCodeString)"
         
         return resultString.sha3(.sha256)
     }

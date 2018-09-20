@@ -76,15 +76,15 @@ class WaitingMembersSettingsViewController: UIViewController, AnalyticsProtocol 
     }
     
     @IBAction func changeWalletName(_ sender: Any) {
-        if walletNameTF.text?.trimmingCharacters(in: .whitespaces).count == 0 {
-            let message = localize(string: Constants.walletNameAlertString)
-            let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        } else {
-            self.presenter.changeWalletName()
+//        if walletNameTF.text?.trimmingCharacters(in: .whitespaces).count == 0 {
+//            let message = localize(string: Constants.walletNameAlertString)
+//            let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+//            self.present(alert, animated: true, completion: nil)
+//        } else {
+//            self.presenter.changeWalletName()
 //            sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(presenter.wallet!.chain)", eventName: "\(saveWithChainTap)\(presenter.wallet!.chain)")
-        }
+//        }
     }
     
     @IBAction func chooseCurrenceAction(_ sender: Any) {

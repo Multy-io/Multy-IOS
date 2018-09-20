@@ -317,7 +317,7 @@ class CoreLibManager: NSObject {
     
     ///////////////////////////////////////// test import eth////////////////////////////////////////
     
-    func importWallet(blockchain: BlockchainType, walletID: UInt32, privateKey: String) -> Dictionary<String, Any>? {
+    func importWallet(blockchain: BlockchainType, walletID: Int32, privateKey: String) -> Dictionary<String, Any>? {
         
         let newAccountPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
         

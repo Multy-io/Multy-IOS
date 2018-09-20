@@ -169,6 +169,13 @@ let idOfInapps50 = ["io.multy.addingActivity50", "io.multy.addingCharts50", "io.
                   "io.multy.addingPortfolio50", "io.multy.addingSteemit50", "io.multy.wirelessScan50",
                   "io.multy.addingBCH50", "io.multy.estimationCurrencie50", "io.multy.addingEthereum50"]
 
+enum WalletType : Int {
+    case
+        Created =       0,
+        Multisig =      1,
+        Imported =      2
+}
+
 enum TxStatus : Int {
     case
         Rejected =                  0,

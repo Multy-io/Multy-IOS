@@ -346,11 +346,15 @@ extension TextViewDelegate: UITextViewDelegate {
         if copiedAddress != nil {
             let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
             
+            let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
             let pasteButton = UIBarButtonItem(title: copiedAddress!, style: .plain, target: self, action: #selector(self.handlePasteFromClipboard(_:)))
-            pasteButton.setTitleTextAttributes([NSAttributedStringKey.font : UIFont(name: "AvenirNext-Regular", size: 14.0)!], for: .normal)
-            pasteButton.setTitleTextAttributes([NSAttributedStringKey.font : UIFont(name: "AvenirNext-Regular", size: 14.0)!], for: .highlighted)
+            let font = UIFont(name: "AvenirNext-Regular", size: 14.0)!
+            let attributes = [NSAttributedStringKey.font : font]
             
-            toolbar.items = [pasteButton]
+            pasteButton.setTitleTextAttributes(attributes, for: .normal)
+            pasteButton.setTitleTextAttributes(attributes, for: .highlighted)
+            
+            toolbar.items = [spacer, pasteButton, spacer]
             addressTV.inputAccessoryView = toolbar
         }
         
