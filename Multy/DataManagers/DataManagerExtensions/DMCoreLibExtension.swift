@@ -31,8 +31,6 @@ extension DataManager {
         
     }
     
-    
-    
 //    func createWallet(from seedPhrase: String, currencyID : UInt32, walletID : UInt32, addressID: UInt32) -> Dictionary<String, Any>? {
 //        var binaryData = coreLibManager.createSeedBinaryData(from: seedPhrase)
 //        
@@ -188,7 +186,29 @@ extension MultisigManager {
                           gasPriceString: String,
                           gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
         let blockchainType = BlockchainType.create(wallet: wallet)
-        let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
+        
+        var addressData: Dictionary<String, Any>?
+        
+        if wallet.isImported {
+            let accountDataResult = coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: wallet.importedPrivateKey)
+            
+            switch accountDataResult {
+            case .failure(let error):
+                break
+            case .success(let accountData):
+                addressData = ["addressPointer" : accountData["pointer"] as? UnsafeMutablePointer<OpaquePointer?>]
+                break
+            }
+        } else {
+            addressData = coreLibManager.createAddress(blockchainType: blockchainType,
+                                                       walletID: wallet.walletID.uint32Value,
+                                                       addressID: wallet.addressID.uint32Value,
+                                                       binaryData: &binaryData)
+        }
+        
+        if addressData == nil {
+            return ("Error", false)
+        }
         
         let multiSigTxCreationInfo = coreLibManager.createMultiSigTx(addressPointer:    addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                      sendFromAddress:   sendFromAddress,
@@ -211,10 +231,29 @@ extension MultisigManager {
                            gasPriceString: String,
                            gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
         let blockchainType = BlockchainType.create(wallet: wallet)
-        let addressData = coreLibManager.createAddress(blockchainType: blockchainType,
-                                                       walletID: wallet.walletID.uint32Value,
-                                                       addressID: wallet.addressID.uint32Value,
-                                                       binaryData: &binaryData)
+        
+        var addressData: Dictionary<String, Any>?
+        
+        if wallet.isImported {
+            let accountDataResult = coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: wallet.importedPrivateKey)
+            
+            switch accountDataResult {
+            case .failure(let error):
+                break
+            case .success(let accountData):
+                addressData = ["addressPointer" : accountData["pointer"] as? UnsafeMutablePointer<OpaquePointer?>]
+                break
+            }
+        } else {
+            addressData = coreLibManager.createAddress(blockchainType: blockchainType,
+                                                           walletID: wallet.walletID.uint32Value,
+                                                           addressID: wallet.addressID.uint32Value,
+                                                           binaryData: &binaryData)
+        }
+        
+        if addressData == nil {
+            return ("Error", false)
+        }
         
         let multiSigTxConfirmInfo = coreLibManager.confirmMultiSigTx(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                      sendFromAddress: sendFromAddress,

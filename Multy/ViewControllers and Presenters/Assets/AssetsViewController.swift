@@ -536,10 +536,18 @@ extension CreateWalletDelegate: CreateWalletProtocol {
             joinVC.qrDelegate = self
             joinVC.blockchainTransferDelegate = self
             navigationController?.pushViewController(joinVC, animated: true)
+        } else if tag == "importWallet" {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let importMS = storyboard.instantiateViewController(withIdentifier: "importMS") as! ImportMSViewController
+            importMS.presenter.account = presenter.account
+            importMS.presenter.isForMS = false
+            importMS.sendWalletsDelegate = self
+            navigationController?.pushViewController(importMS, animated: true)
         } else if tag == "importMS" {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let importMS = storyboard.instantiateViewController(withIdentifier: "importMS") as! ImportMSViewController
             importMS.presenter.account = presenter.account
+            importMS.presenter.isForMS = true
             importMS.sendWalletsDelegate = self
             navigationController?.pushViewController(importMS, animated: true)
         }

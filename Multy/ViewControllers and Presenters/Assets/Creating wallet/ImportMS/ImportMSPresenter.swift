@@ -8,10 +8,12 @@ class ImportMSPresenter: NSObject {
 
     var importVC: ImportMSViewController?
     var account : AccountRLM?
-    var selectedBlockchainType = BlockchainType.create(currencyID: 60, netType: 4)
+    var selectedBlockchainType = BlockchainType.create(currencyID: 60, netType: 1)
     let createdWallet = UserWalletRLM()
     var preWallets = [UserWalletRLM]()
-    //
+    var isForMS = true
+    
+    
     func makeAuth(completion: @escaping (_ answer: String) -> ()) {
         if self.account != nil {
             return
@@ -30,24 +32,61 @@ class ImportMSPresenter: NSObject {
         }
     }
     
-    func importMSWallet(address: String, completion: @escaping (_ dict: Dictionary<String, Any>?) -> ()) {
-        if account == nil {
-            //            print("-------------ERROR: Account nil")
-            //            return
-            self.makeAuth(completion: { (answer) in
-                self.importMSWallet(address: address, completion: { (dict) in
-                    completion(dict)
-                })
-                
-            })
-        } else {
-            self.importMSWallet(address: address, completion: { (dict) in
-                completion(dict)
-            })
+    func makeImport() {
+        if checkForEmptyTF() {
+            importWallet()
         }
     }
     
-    func importMSwith(address: String, publicKey: String, completion: @escaping (_ dict: NSDictionary) -> ()) {
+    func checkForEmptyTF() -> Bool {
+        let keyTV = importVC!.privateKeyTextView
+        let msAddressTV = importVC!.msAddressTextView
+        if isForMS {
+            if keyTV!.text!.isEmpty  {
+                shakeView(viewForShake: importVC!.keyTvView)
+                return false
+            } else if msAddressTV!.text!.isEmpty {
+                shakeView(viewForShake: importVC!.msAddressView)
+                return false
+            } else { // all fields not empty
+                return true
+            }
+        } else {
+            if keyTV!.text!.isEmpty  {
+                shakeView(viewForShake: importVC!.keyTvView)
+                return false
+            } else {
+                return true
+            }
+        }
+    }
+    
+    func importWallet() {
+        var generatedAddress = ""
+        var generatedPublic  = ""
+        let coreDict = DataManager.shared.importWalletBy(privateKey: importVC!.privateKeyTextView.text!, blockchain: selectedBlockchainType, walletID: -1)
+        if ((coreDict as NSDictionary?) != nil) {
+            generatedAddress = coreDict!["address"] as! String
+            generatedPublic = coreDict!["publicKey"] as! String
+        }
+        
+        importEthWalletWith(address: generatedAddress, publicKey: generatedPublic) { (answer) in
+            if self.isForMS {
+                self.importMultiSig(contractAddress: self.importVC!.msAddressTextView.text!, linkedWalletAddress: generatedAddress, completion: { (answer, err) in
+                    self.sendImportedWalletByDelegateAndExit()
+                })
+            } else {
+                self.sendImportedWalletByDelegateAndExit()
+            }
+        }
+    }
+    
+    func sendImportedWalletByDelegateAndExit() {
+        importVC!.sendWalletsDelegate?.sendArrOfWallets(arrOfWallets: self.preWallets)
+        importVC!.navigationController?.popViewController(animated: true)
+    }
+    
+    func importEthWalletWith(address: String, publicKey: String, completion: @escaping (_ dict: NSDictionary) -> ()) {
         var binData : BinaryData = account!.binaryDataString.createBinaryData()!
         
         //MARK: topIndex
@@ -106,5 +145,37 @@ class ImportMSPresenter: NSObject {
         wallet.address = params["address"] as! String
         
         preWallets.append(wallet)
+    }
+    
+    func importMultiSig(contractAddress: String, linkedWalletAddress: String, completion: @escaping (_ dict: NSDictionary?, _ error: Error?) -> ()) {
+        let msParams = [
+            "isMultisig"        : true,
+            "signaturesRequired": nil,
+            "ownersCount"       : nil,
+            "inviteCode"        : "",
+            "isImported"        : true,
+            "contractAddress"   : contractAddress
+        ] as [String : Any?]
+        
+        let params = [
+            "currencyID"    : selectedBlockchainType.blockchain.rawValue ,
+            "networkID"     : selectedBlockchainType.net_type,
+            "address"       : linkedWalletAddress,
+            "addressIndex"  : 0,
+            "walletIndex"   : 0,
+            "walletName"    : "Imported MultiSig",
+            "isImported"    : true,
+            "multisig"      : msParams
+        ] as [String : Any]
+        
+        DataManager.shared.importWallet(params: params) { [unowned self] (dict, error) in
+            if error == nil {
+                print("success")
+                print(dict!)
+                completion(dict!, nil)
+            } else {
+                print("fail")
+            }
+        }
     }
 }
