@@ -96,7 +96,7 @@
 "Vis-uX-a9U.text" = "Blockchains";
 
 /* Class = "UILabel"; text = "Import Wallet"; ObjectID = "XSz-h8-kEl"; */
-"XSz-h8-kEl.text" = "Import Wallet";
+"XSz-h8-kEl.text" = "Import Eth Wallet";
 
 /* Class = "UILabel"; text = "BTC"; ObjectID = "XXC-0f-DEu"; */
 "XXC-0f-DEu.text" = "BTC";

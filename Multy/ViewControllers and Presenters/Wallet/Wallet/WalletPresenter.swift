@@ -11,18 +11,23 @@ class WalletPresenter: NSObject {
     var wallet : UserWalletRLM? {
         didSet {
             walletVC?.titleLbl.text = wallet?.name
-            
-            if wallet?.importedPrivateKey.isEmpty == false {
-                importedPrivateKey = wallet!.importedPrivateKey
-                importedPublicKey = wallet!.importedPublicKey
-            }
-            
+//            if wallet?.importedPrivateKey.isEmpty == false {
+//                importedPrivateKey = wallet!.importedPrivateKey
+//                importedPublicKey = wallet!.importedPublicKey
+//            }
             updateUI()
+        }
+        
+        willSet {
+            if newValue!.importedPublicKey.isEmpty && wallet?.importedPublicKey.isEmpty == false {
+                newValue?.importedPublicKey = wallet?.importedPublicKey ?? ""
+                newValue?.importedPrivateKey = wallet?.importedPrivateKey ?? ""
+            }
         }
     }
     
-    var importedPublicKey: String?
-    var importedPrivateKey: String?
+//    var importedPublicKey: String?
+//    var importedPrivateKey: String?
     
     var account : AccountRLM?
     
