@@ -609,7 +609,6 @@ extension TableViewDelegate : UITableViewDelegate {
                     self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { (answer, err) in
                         self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { (answer, err) in
                             self.presenter.getWalletsVerbose(completion: { (complete) in
-                                
                             })
                         })
                     })
@@ -630,7 +629,10 @@ extension TableViewDelegate : UITableViewDelegate {
                 self.navigationController?.pushViewController(backupSeedVC, animated: true)
             } else {
                 if self.presenter.isWalletExist() {
-                    goToWalletVC(indexPath: indexPath)
+                    let wallet = presenter.wallets?[indexPath.row - 2]
+                    if !wallet!.isSyncing.boolValue {
+                        goToWalletVC(indexPath: indexPath)
+                    }
                 }
             }
         default:

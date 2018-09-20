@@ -42,7 +42,9 @@ class WalletPresenter: NSObject {
             if transactionDataSource.isEmpty == false {
                 walletVC?.hideEmptyLbls()
             }
-            walletVC!.transactionsTable.reloadData()
+            if oldValue != transactionDataSource {
+                self.walletVC!.transactionsTable.reloadData()
+            }
         }
     }
     
@@ -170,7 +172,7 @@ class WalletPresenter: NSObject {
             self.transactionDataSource = historyArray!.sorted(by: {
                 let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.blockTime : $0.mempoolTime
                 let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.blockTime : $1.mempoolTime
-                
+
                 return firstDate > secondDate
             })
             self.isSocketInitiateUpdating = false
@@ -180,7 +182,7 @@ class WalletPresenter: NSObject {
     }
     
     func canSendMinimumAmount() -> Bool {
-        if wallet?.ethWallet != nil && wallet!.ethWallet!.ethBalance < "0.0001".convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM) {
+        if wallet!.blockchain == BLOCKCHAIN_ETHEREUM && wallet!.ethWallet!.ethBalance < "0.0001".convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM) {
             let title = walletVC!.localize(string: Constants.sorryString)
             let message = walletVC!.localize(string: Constants.lowAmountString)
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

@@ -173,7 +173,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
         NotificationCenter.default.removeObserver(self)
         isViewDidAppear = false
     }
@@ -352,16 +351,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         pendingSectionHeight = isNeedToShow ? 70 : 0
         pendingStack.isHidden = !isNeedToShow
         
-        if animated {
-            UIView.animate(withDuration: 0.2, animations: {
-                self.view.layoutIfNeeded()
-            }) { (isEnd) in
-                self.pendingSectionView.isHidden = !isNeedToShow
-            }
-        } else {
-            self.pendingSectionView.isHidden = !isNeedToShow
-            self.view.layoutIfNeeded()
-        }
+        self.pendingSectionView.isHidden = !isNeedToShow
+        self.view.layoutIfNeeded()
     }
     
     @objc func updateMultisigWalletAfterSockets(notification : NSNotification) {
@@ -432,8 +423,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             }
         }
         
-        UIView.animate(withDuration: 0.3) {
-            self.tableHolderViewHeight = tableHolderViewHeight
+        if self.tableHolderViewHeight != tableHolderViewHeight {
+            UIView.animate(withDuration: 0.3) {
+                self.tableHolderViewHeight = tableHolderViewHeight
+            }
         }
     }
     
@@ -442,7 +435,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         tableView?.setContentOffset(CGPoint.zero, animated: false)
         UIView.animate(withDuration: 0.3, animations: {
             self.tableHolderViewHeight = self.tablesHolderBottomEdge
-            
         })
     }
     

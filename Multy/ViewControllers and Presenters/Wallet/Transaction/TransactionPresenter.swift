@@ -86,7 +86,17 @@ class TransactionPresenter: NSObject {
         }
     }
     
+    func isThereFundsOnMSWallet() -> Bool {
+        return BigInt(histObj.txOutAmountString) <= wallet.availableAmount
+    }
+    
     func confirmMultisigTx() {
+        guard isThereFundsOnMSWallet() else {
+            transctionVC!.presentTransactionErrorAlert(message: Constants.noFundsString)
+            
+            return
+        }
+        
         transctionVC?.spiner.startAnimating()
         
         DataManager.shared.getWallet(primaryKey: wallet.multisigWallet!.linkedWalletID) { [unowned self] in
@@ -132,7 +142,7 @@ class TransactionPresenter: NSObject {
                             if error != nil {
                                 print("sendHDTransaction Error: \(error)")
                                 self.transctionVC?.spiner.stopAnimating()
-                                self.transctionVC?.presentTransactionErrorAlert()
+                                self.transctionVC?.presentTransactionErrorAlert(message: Constants.errorSendingTxString)
                                 return
                             }
                             
@@ -146,14 +156,14 @@ class TransactionPresenter: NSObject {
                         break
                     case .failure(let error):
                         self.transctionVC?.spiner.stopAnimating()
-                        self.transctionVC?.presentTransactionErrorAlert()
+                        self.transctionVC?.presentTransactionErrorAlert(message: Constants.errorSendingTxString)
                         return
                     }
                 }
                 break;
             case .failure(let errorString):
                 self.transctionVC?.spiner.stopAnimating()
-                self.transctionVC?.presentTransactionErrorAlert()
+                self.transctionVC?.presentTransactionErrorAlert(message: Constants.errorSendingTxString)
                 print(errorString)
                 break;
             }
