@@ -8,7 +8,7 @@ class ImportMSPresenter: NSObject {
 
     var importVC: ImportMSViewController?
     var account : AccountRLM?
-    var selectedBlockchainType = BlockchainType.create(currencyID: 60, netType: 4)
+    var selectedBlockchainType = BlockchainType.create(currencyID: 60, netType: 1)
     let createdWallet = UserWalletRLM()
     var preWallets = [UserWalletRLM]()
     var isForMS = true
