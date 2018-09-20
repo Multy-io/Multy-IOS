@@ -275,6 +275,7 @@ extension MessageHandler {
         case SocketMessageType.multisigView:
             break
         case SocketMessageType.multisigDecline:
+            NotificationCenter.default.post(name: NSNotification.Name("msTransactionUpdated"), object: nil, userInfo: nil)
             break
         case SocketMessageType.multisigWalletDeploy:
             let payload = data["payload"] as? [AnyHashable : Any]

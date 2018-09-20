@@ -127,8 +127,9 @@ class MultiSigPendingTableViewCell: UITableViewCell {
             additionalInfoLbl.text = dateFormatter.string(from: histObj.blockTime)
         }
         
-        let cryptoAmountString = BigInt(histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
-        let fiatAmountString = (BigInt(histObj.txOutAmountString) * histObj.fiatCourseExchange).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
+        let cryptoAmount = wallet!.txAmount(histObj)
+        let cryptoAmountString = cryptoAmount.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+        let fiatAmountString = (cryptoAmount * histObj.fiatCourseExchange).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
         if cryptoAmountString != "" {  // if empty need to hide view
             lockedCryptoLbl.text = cryptoAmountString + " " + wallet!.cryptoName
             lockedFiatLbl.text = fiatAmountString + " " + wallet!.fiatName

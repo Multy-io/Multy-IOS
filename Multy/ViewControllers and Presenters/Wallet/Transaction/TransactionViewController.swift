@@ -33,6 +33,10 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var blockchainInfoView: UIView!
     @IBOutlet weak var transactionInfoHolderView: UIView!
     @IBOutlet weak var spiner: UIActivityIndicatorView!
+    @IBOutlet weak var feeView: UIView!
+    @IBOutlet weak var feeAmountTitle: UILabel!
+    @IBOutlet weak var feeAmount: UILabel!
+    @IBOutlet weak var feeViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var donationView: UIView!
     @IBOutlet weak var donationCryptoSum: UILabel!
@@ -343,9 +347,9 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.transctionSumLbl.text = "+\(cryptoSumInBTC.fixedFraction(digits: 8))"
                 self.sumInFiatLbl.text = "+\((cryptoSumInBTC * presenter.histObj.fiatCourseExchange).fixedFraction(digits: 2)) USD"
             } else if presenter.histObj.isOutcoming() {
-                let outgoingAmount = presenter.wallet.outgoingAmount(for: presenter.histObj).btcValue
-                self.transctionSumLbl.text = "-\(outgoingAmount.fixedFraction(digits: 8))"
-                self.sumInFiatLbl.text = "-\((outgoingAmount * presenter.histObj.fiatCourseExchange).fixedFraction(digits: 2)) USD"
+                let outgoingAmount = presenter.wallet.txAmount(presenter.histObj)
+                self.transctionSumLbl.text = "-\(outgoingAmount.cryptoValueString(for: BLOCKCHAIN_BITCOIN))"
+                self.sumInFiatLbl.text = "-\((outgoingAmount * presenter.histObj.fiatCourseExchange).fiatValueString(for: BLOCKCHAIN_BITCOIN)) USD"
                 
                 if let donationAddress = arrOfOutputsAddresses.getDonationAddress(blockchainType: presenter.blockchainType) {
                     let donatOutPutObj = presenter.histObj.getDonationTxOutput(address: donationAddress)
@@ -411,6 +415,17 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         }
         
         self.confirmationMembersCollectionView.reloadData()
+        
+        if presenter.histObj.isOutcoming() {
+            feeView.isHidden = false
+            feeViewHeightConstraint.constant = 47
+            let fee = presenter.histObj.fee(for: presenter.wallet.blockchain)
+            let feeInFiat = fee * presenter.histObj.fiatCourseExchange
+            feeAmount.text = "\(fee.cryptoValueString(for: presenter.wallet.blockchain)) \(presenter.wallet.blockchainType.shortName) / \(feeInFiat.fiatValueString(for: presenter.wallet.blockchain)) USD"
+        } else {
+            feeView.isHidden = true
+            feeViewHeightConstraint.constant = 0
+        }
         
         updateConstraints()
     }

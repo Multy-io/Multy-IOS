@@ -66,7 +66,7 @@ class TransactionPresenter: NSObject {
     }
     
     func createPreliminaryData() {
-        let core = DataManager.shared.coreLibManager
+        _ = DataManager.shared.coreLibManager
         DataManager.shared.getAccount { [unowned self] (account, error) in
             if account != nil {
                 self.binaryData = account!.binaryDataString.createBinaryData()!
@@ -80,7 +80,7 @@ class TransactionPresenter: NSObject {
             case .success(let wallet):
                 self.linkedWallet = wallet
                 break
-            case .failure(let errorString):
+            case .failure( _):
                 break;
             }
         }
