@@ -79,9 +79,11 @@ class SendFinishPresenter: NSObject {
     
     func makeNewTx() {
         //Only for simple eth wallet, fix 'Low nonce'
-        if transactionDTO.choosenWallet!.isMultiSig || transactionDTO.choosenWallet!.importedPrivateKey.isEmpty == false {
+//        if transactionDTO.choosenWallet!.isMultiSig || transactionDTO.choosenWallet!.importedPrivateKey.isEmpty == false {
+        if transactionDTO.choosenWallet!.importedPrivateKey.isEmpty == false {
             return
         }
+        
         getOneVerbose { (updatedWallet, err) in
             if updatedWallet == nil {
                 //error

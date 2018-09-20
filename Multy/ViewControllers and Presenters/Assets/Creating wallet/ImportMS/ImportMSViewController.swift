@@ -8,10 +8,13 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var netTypeSwitch: UISwitch!
     @IBOutlet weak var netTypeLbl: UILabel!
+    @IBOutlet weak var keyTvView: UIView!
     @IBOutlet weak var privateKeyTextView: UITextView!
     @IBOutlet weak var msAddressTextView: UITextView!
     @IBOutlet weak var keyPlaceholder: UILabel!
     @IBOutlet weak var addressPlaceholder: UILabel!
+    @IBOutlet weak var msTopLbl: UILabel!
+    @IBOutlet weak var msAddressView: UIView!
     
     
     let presenter = ImportMSPresenter()
@@ -22,10 +25,16 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         presenter.importVC = self
         hideKeyboardWhenTappedAround()
+        setupUI()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    func setupUI() {
+        msTopLbl.isHidden = !presenter.isForMS
+        msAddressView.isHidden = !presenter.isForMS
     }
     
     @IBAction func cancelAction(_ sender: Any) {
@@ -33,22 +42,41 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func importAction(_ sender: Any) {
-        let dict = DataManager.shared.importWalletBy(privateKey: privateKeyTextView.text!, blockchain: BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: netType), walletID: 0)
-        if ((dict as NSDictionary?) != nil) {
-            let generatedAddress = dict!["address"] as! String
-            let generatedPublic = dict!["publicKey"] as! String
-            presenter.importMSwith(address: generatedAddress, publicKey: generatedPublic) { (answer) in
-                self.sendWalletsDelegate?.sendArrOfWallets(arrOfWallets: self.presenter.preWallets)
-                self.navigationController?.popViewController(animated: true)
-            }
-        }
+//        let dict = DataManager.shared.importWalletBy(privateKey: privateKeyTextView.text!, blockchain: BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: netType), walletID: 0)
+//        if ((dict as NSDictionary?) != nil) {
+//            let generatedAddress = dict!["address"] as! String
+//            let generatedPublic = dict!["publicKey"] as! String
+//            presenter.importMSwith(address: generatedAddress, publicKey: generatedPublic) { (answer) in
+//                self.sendWalletsDelegate?.sendArrOfWallets(arrOfWallets: self.presenter.preWallets)
+//                self.navigationController?.popViewController(animated: true)
+//            }
+//        }
+        presenter.makeImport()
     }
     
     @IBAction func changeNetTypeAction(_ sender: Any) {
         if netTypeSwitch.isOn {
-            netType = 1
+            presenter.selectedBlockchainType.net_type = 1
         } else {
-            netType = 4
+            presenter.selectedBlockchainType.net_type = 4
+        }
+    }
+    
+    func checkForEmptyTF() {
+        if presenter.isForMS {
+            if privateKeyTextView.text.isEmpty  {
+                shakeView(viewForShake: keyTvView)
+            } else if msAddressTextView.text.isEmpty {
+                shakeView(viewForShake: msAddressView)
+            } else {
+                
+            }
+        } else {
+            if privateKeyTextView.text.isEmpty {
+                shakeView(viewForShake: keyTvView)
+            } else {
+                
+            }
         }
     }
     
