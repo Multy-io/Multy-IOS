@@ -350,7 +350,7 @@ class UserWalletRLM: Object {
                     if isLinkedWalletImported {
                         wallet.multisigWallet!.linkedWalletID = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, address: owner!.address) //DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: owner!.address.int32Value, inviteCode:nil)
                     } else {
-                        wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: owner!.walletIndex.int32Value)
+                        wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: owner!.walletIndex.int32Value)
                     }
                 }
             } else {

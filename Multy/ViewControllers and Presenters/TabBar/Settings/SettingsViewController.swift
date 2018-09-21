@@ -174,13 +174,9 @@ class SettingsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     }
     
     @IBAction func goToExchangeAction(_ sender: Any) {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC")
-//        self.navigationController?.pushViewController(exchangeVC, animated: true)
-        
-        let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
-        let creatingMultiSig = storyboard.instantiateViewController(withIdentifier: "creatingMultiSigVC")
-        self.navigationController?.pushViewController(creatingMultiSig, animated: true  )
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC")
+        self.navigationController?.pushViewController(exchangeVC, animated: true)
     }
     
     func cancelAction() {
