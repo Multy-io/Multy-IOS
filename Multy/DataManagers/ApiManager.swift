@@ -233,19 +233,41 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func deleteWallet(currencyID: NSNumber, networkID: NSNumber, walletIndex: NSNumber, completion: @escaping (_ answer: NSDictionary?,_ error: Error?) -> ()) {
+    func deleteCreatedWallet(currencyID: NSNumber, networkID: NSNumber, walletIndex: NSNumber, completion: @escaping (Result<NSDictionary, String>) -> ()) {
         let header: HTTPHeaders = [
             "Authorization" : "Bearer \(self.token)"
         ]
-        requestManager.request("\(apiUrl)api/v1/wallet/\(currencyID)/\(networkID)/\(walletIndex)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallet/\(currencyID)/\(networkID)/\(walletIndex)/\(WalletType.Created.rawValue)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
-                    print(response.result.value)
-                    completion(response.result.value as? NSDictionary, nil)
+                    print(response.result.value as! NSDictionary)
+                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
                 }
             case .failure(_):
-                completion(nil, response.result.error)
+                completion(Result.failure(response.result.error!.localizedDescription))
+                break
+            }
+        }
+    }
+    
+    func deleteImportedWallet(currencyID: NSNumber, networkID: NSNumber, address: String, completion: @escaping (Result<NSDictionary, String>) -> ()) {
+        let header: HTTPHeaders = [
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        requestManager.request("\(apiUrl)api/v1/wallet/\(currencyID)/\(networkID)/\(address)/\(WalletType.Imported.rawValue)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    print(response.result.value as! NSDictionary)
+                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
+                }
+            case .failure(_):
+                completion(Result.failure(response.result.error!.localizedDescription))
                 break
             }
         }
@@ -333,7 +355,7 @@ class ApiManager: NSObject, RequestRetrier {
         ]
         
         //MARK: add chain ID
-        requestManager.request("\(apiUrl)api/v1/wallet/\(walletID)/verbose/\(blockchain.blockchain.rawValue)/\(blockchain.net_type)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallet/\(walletID)/verbose/\(blockchain.blockchain.rawValue)/\(blockchain.net_type)/\(WalletType.Created.rawValue)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
@@ -354,7 +376,7 @@ class ApiManager: NSObject, RequestRetrier {
         ]
         
         //MARK: add chain ID
-        requestManager.request("\(apiUrl)api/v1/wallet/\(inviteCode)/verbose/\(blockchain.blockchain.rawValue)/\(blockchain.net_type)/\(1)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallet/\(inviteCode)/verbose/\(blockchain.blockchain.rawValue)/\(blockchain.net_type)/\(WalletType.Multisig.rawValue)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
@@ -375,7 +397,7 @@ class ApiManager: NSObject, RequestRetrier {
         ]
         
         //MARK: add chain ID
-        requestManager.request("\(apiUrl)api/v1/wallet/\(address)/verbose/\(blockchain.blockchain.rawValue)/\(blockchain.net_type)/\(2)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallet/\(address)/verbose/\(blockchain.blockchain.rawValue)/\(blockchain.net_type)/\(WalletType.Imported.rawValue)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
@@ -454,7 +476,7 @@ class ApiManager: NSObject, RequestRetrier {
             "Authorization" : "Bearer \(self.token)"
         ]
         
-        requestManager.request("\(apiUrl)api/v1/wallets/transactions/\(currencyID)/\(networkID)/\(walletID)/\(0)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallets/transactions/\(currencyID)/\(networkID)/\(walletID)/\(WalletType.Created.rawValue)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
@@ -472,7 +494,7 @@ class ApiManager: NSObject, RequestRetrier {
             "Authorization" : "Bearer \(self.token)"
         ]
         
-        requestManager.request("\(apiUrl)api/v1/wallets/transactions/\(currencyID)/\(networkID)/\(address)/\(1)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallets/transactions/\(currencyID)/\(networkID)/\(address)/\(WalletType.Multisig.rawValue)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
@@ -490,7 +512,7 @@ class ApiManager: NSObject, RequestRetrier {
             "Authorization" : "Bearer \(self.token)"
         ]
         
-        requestManager.request("\(apiUrl)api/v1/wallets/transactions/\(currencyID)/\(networkID)/\(address)/\(2)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallets/transactions/\(currencyID)/\(networkID)/\(address)/\(WalletType.Imported.rawValue)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
@@ -503,7 +525,7 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func changeWalletName(currencyID: NSNumber, chainType: NSNumber, walletID: NSNumber, newName: String, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
+    func changeCreatedWalletName(currencyID: NSNumber, chainType: NSNumber, walletID: NSNumber, newName: String, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
         
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -514,7 +536,36 @@ class ApiManager: NSObject, RequestRetrier {
             "walletname"    : newName,
             "currencyID"    : currencyID.intValue,
             "walletIndex"   : walletID.intValue,
-            "networkID"     : chainType.intValue
+            "networkID"     : chainType.intValue,
+            "type"          : WalletType.Created.rawValue
+            ] as [String : Any]
+        
+        requestManager.request("\(apiUrl)api/v1/wallet/name", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    completion((response.result.value as! NSDictionary), nil)
+                }
+            case .failure(_):
+                completion(nil, response.result.error)
+                break
+            }
+        }
+    }
+    
+    func changeImportedWalletName(currencyID: NSNumber, chainType: NSNumber, address: String, newName: String, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
+        
+        let header: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        let params = [
+            "walletname"    : newName,
+            "currencyID"    : currencyID.intValue,
+            "address"       : address,
+            "networkID"     : chainType.intValue,
+            "type"          : WalletType.Imported.rawValue
             ] as [String : Any]
         
         requestManager.request("\(apiUrl)api/v1/wallet/name", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
@@ -570,13 +621,35 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func resyncWallet(currencyID: NSNumber, chainType: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+    func resyncCreatedWallet(currencyID: NSNumber, chainType: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
             "Authorization" : "Bearer \(self.token)"
         ]
         
-        requestManager.request("\(apiUrl)api/v1/resync/wallet/\(currencyID)/\(chainType)/\(walletID)", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/resync/wallet/\(currencyID)/\(chainType)/\(walletID)/\(WalletType.Created.rawValue)", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    print(response.result.value as! NSDictionary)
+                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
+                }
+            case .failure(_):
+                completion(Result.failure(response.result.error!.localizedDescription))
+                break
+            }
+        }
+    }
+    
+    func resyncImportedWallet(currencyID: NSNumber, chainType: NSNumber, address: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/resync/wallet/\(currencyID)/\(chainType)/\(address)/\(WalletType.Imported.rawValue)", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {

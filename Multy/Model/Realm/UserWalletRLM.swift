@@ -337,17 +337,25 @@ class UserWalletRLM: Object {
         //MARK: temporary only 0-currency
         //MARK: server BUG: WalletIndex and walletindex
         //No data from server
-        let inviteCode = wallet.multisigWallet?.inviteCode
         if walletInfo["walletindex"] != nil || walletInfo["WalletIndex"] != nil {
-            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.int32Value, inviteCode:inviteCode)
-            
-            if inviteCode != nil {
-                let owner = wallet.multisigWallet?.owners.filter { $0.associated == true }.first
-                
-                guard owner != nil else {
-                    return wallet
+            if !wallet.isMultiSig && !wallet.isImported {
+                wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.int32Value)
+            } else if wallet.isMultiSig {
+                // Multisig wallet
+                wallet.id = DataManager.shared.generateMultisigWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, inviteCode: wallet.multisigWallet!.inviteCode)
+                let owner = wallet.multisigWallet!.owners.filter { $0.associated == true }.first
+                if owner != nil {
+                    let isLinkedWalletImported = owner!.walletIndex == -1
+                    
+                    if isLinkedWalletImported {
+                        wallet.multisigWallet!.linkedWalletID = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, address: owner!.address) //DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: owner!.address.int32Value, inviteCode:nil)
+                    } else {
+                        wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: owner!.walletIndex.int32Value)
+                    }
                 }
-                wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: owner!.walletIndex.int32Value, inviteCode:nil)
+            } else {
+                // Imported wallet
+                wallet.id = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, address: wallet.address)
             }
         }
         

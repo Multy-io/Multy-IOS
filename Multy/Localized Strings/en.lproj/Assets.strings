@@ -38,3 +38,4 @@
 "SERVER STOP STRING"= "We are sorry, but Multy is temporary out of service. Please come back later.";
 "MS IS FULL" = "Can't join multisig wallet: no free slots available";
 "PLEASE WAIT MULTISIG CONFIRMATION" = "Please, wait confirmation of wallet's creation!";
+"PLEASE WAIT SYNCING" = "Please, wait. Synchronization in progress.";

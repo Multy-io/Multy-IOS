@@ -394,27 +394,32 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
 //        let walletVC = presenter.getWalletViewController(indexPath: indexPath)
         let wallet = presenter.wallets?[indexPath.row - 2]
         
-        var vc : UIViewController?
-        if wallet!.multisigWallet != nil && wallet!.multisigWallet?.deployStatus.intValue != DeployStatus.deployed.rawValue {
-            let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
-            if wallet!.multisigWallet?.deployStatus.intValue == DeployStatus.pending.rawValue {
-                presentAlert(withTitle: localize(string: Constants.warningString),
-                             andMessage: localize(string: Constants.pendingMultisigAlertString))
-                
-                return
+        if !wallet!.isSyncing.boolValue {
+            var vc : UIViewController?
+            if wallet!.multisigWallet != nil && wallet!.multisigWallet?.deployStatus.intValue != DeployStatus.deployed.rawValue {
+                let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+                if wallet!.multisigWallet?.deployStatus.intValue == DeployStatus.pending.rawValue {
+                    presentAlert(withTitle: localize(string: Constants.warningString),
+                                 andMessage: localize(string: Constants.pendingMultisigAlertString))
+                    
+                    return
+                }
+                vc  = storyboard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
+                (vc as! WaitingMembersViewController).presenter.wallet = wallet!
+                (vc as! WaitingMembersViewController).presenter.account = presenter.account
+            } else {
+                let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+                vc = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
+                (vc as! WalletViewController).presenter.account = presenter.account
+                (vc as! WalletViewController).presenter.wallet = wallet
             }
-            vc  = storyboard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
-            (vc as! WaitingMembersViewController).presenter.wallet = wallet!
-            (vc as! WaitingMembersViewController).presenter.account = presenter.account
+            
+            if vc != nil {
+                self.navigationController?.pushViewController(vc!, animated: true)
+            }
         } else {
-            let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
-            vc = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
-            (vc as! WalletViewController).presenter.account = presenter.account
-            (vc as! WalletViewController).presenter.wallet = wallet
-        }
-        
-        if vc != nil {
-            self.navigationController?.pushViewController(vc!, animated: true)
+            presentAlert(withTitle: localize(string: Constants.warningString),
+                         andMessage: localize(string: Constants.syncingAlertString))
         }
     }
     
@@ -629,10 +634,7 @@ extension TableViewDelegate : UITableViewDelegate {
                 self.navigationController?.pushViewController(backupSeedVC, animated: true)
             } else {
                 if self.presenter.isWalletExist() {
-                    let wallet = presenter.wallets?[indexPath.row - 2]
-                    if !wallet!.isSyncing.boolValue {
-                        goToWalletVC(indexPath: indexPath)
-                    }
+                    goToWalletVC(indexPath: indexPath)
                 }
             }
         default:

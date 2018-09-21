@@ -64,7 +64,7 @@ class ImportMSPresenter: NSObject {
     func importWallet() {
         var generatedAddress = ""
         var generatedPublic  = ""
-        let coreDict = DataManager.shared.importWalletBy(privateKey: importVC!.privateKeyTextView.text!, blockchain: selectedBlockchainType, walletID: 0)
+        let coreDict = DataManager.shared.importWalletBy(privateKey: importVC!.privateKeyTextView.text!, blockchain: selectedBlockchainType, walletID: -1)
         if ((coreDict as NSDictionary?) != nil) {
             generatedAddress = coreDict!["address"] as! String
             generatedPublic = coreDict!["publicKey"] as! String

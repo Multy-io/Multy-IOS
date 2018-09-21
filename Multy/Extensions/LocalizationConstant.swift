@@ -136,4 +136,5 @@ extension Constants {
     static let slideToConfirmString = "SLIDE TO CONFIRM"
     static let slideToDeclineString = "SLIDE TO DECLINE"
     static let lowAmountString = "LOW AMOUNT"
+    static let syncingAlertString = "PLEASE WAIT SYNCING"
 }

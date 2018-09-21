@@ -42,15 +42,6 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func importAction(_ sender: Any) {
-//        let dict = DataManager.shared.importWalletBy(privateKey: privateKeyTextView.text!, blockchain: BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: netType), walletID: 0)
-//        if ((dict as NSDictionary?) != nil) {
-//            let generatedAddress = dict!["address"] as! String
-//            let generatedPublic = dict!["publicKey"] as! String
-//            presenter.importMSwith(address: generatedAddress, publicKey: generatedPublic) { (answer) in
-//                self.sendWalletsDelegate?.sendArrOfWallets(arrOfWallets: self.presenter.preWallets)
-//                self.navigationController?.popViewController(animated: true)
-//            }
-//        }
         presenter.makeImport()
     }
     

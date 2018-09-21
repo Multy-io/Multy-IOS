@@ -16,21 +16,21 @@ class WaitingMembersSettingsPresenter: NSObject {
         }
     }
     
-    func changeWalletName() {
-        //        walletSettingsVC?.progressHUD.text = "Changing name"
-        presentedVC?.loader.show(customTitle: presentedVC!.localize(string: Constants.updatingString))
-        
-        DataManager.shared.getAccount { (account, error) in
-            DataManager.shared.changeWalletName(currencyID:self.wallet.chain,
-                                                chainType: self.wallet.chainType,
-                                                walletID: self.wallet.walletID,
-                                                newName: self.presentedVC!.walletNameTF.text!.trimmingCharacters(in: .whitespaces)) { (dict, error) in
-                                                    print(dict)
-                                                    self.presentedVC?.loader.hide()
-                                                    self.presentedVC!.navigationController?.popViewController(animated: true)
-            }
-        }
-    }
+//    func changeWalletName() {
+//        //        walletSettingsVC?.progressHUD.text = "Changing name"
+//        presentedVC?.loader.show(customTitle: presentedVC!.localize(string: Constants.updatingString))
+//        
+//        DataManager.shared.getAccount { (account, error) in
+//            DataManager.shared.changeWalletName(currencyID:self.wallet.chain,
+//                                                chainType: self.wallet.chainType,
+//                                                walletID: self.wallet.walletID,
+//                                                newName: self.presentedVC!.walletNameTF.text!.trimmingCharacters(in: .whitespaces)) { (dict, error) in
+//                                                    print(dict)
+//                                                    self.presentedVC?.loader.hide()
+//                                                    self.presentedVC!.navigationController?.popViewController(animated: true)
+//            }
+//        }
+//    }
     
     func delete() {
         if wallet == nil {
