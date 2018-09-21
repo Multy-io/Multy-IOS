@@ -183,7 +183,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
 //            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
         }
         
-        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
+        
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
@@ -195,6 +195,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("exchageUpdated"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("transactionUpdated"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("walletDeleted"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("resyncCompleted"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
         super.viewWillDisappear(animated)
     }
@@ -206,6 +208,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("msWalletDeleted"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMsTransactionUpdatedNotification(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletUpdatedNotification(notification:)), name: NSNotification.Name("msWalletUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleResyncCompleteNotification(notification:)), name: NSNotification.Name("resyncCompleted"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: NSNotification.Name.UIApplicationWillEnterForeground, object:nil)
         
         super.viewWillAppear(animated)
         
@@ -269,6 +273,12 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     @objc fileprivate func handleTransactionUpdatedNotification(notification : Notification) {
         DispatchQueue.main.async {
             self.presenter.updateWalletAfterSockets()
+        }
+    }
+    
+    @objc fileprivate func handleResyncCompleteNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
     
@@ -423,8 +433,9 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         }
     }
     
-    func updateUI() {
+    @objc func updateUI() {
         tabBarController?.tabBar.frame = presenter.tabBarFrame
+        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
         tableView.frame.size.height = screenHeight - presenter.tabBarFrame.height
         self.tableView.reloadData()
     }

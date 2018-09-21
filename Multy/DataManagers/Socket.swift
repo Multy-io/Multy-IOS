@@ -307,7 +307,14 @@ extension MessageHandler {
         case SocketMessageType.multisigTxRevoke:
             handlePaymentRequestMessage(data)
             break
+            
+        case SocketMessageType.resyncCompleted:
+            print("Resync completed")
+            NotificationCenter.default.post(name: NSNotification.Name("resyncCompleted"), object: nil, userInfo: nil)
+            break
         }
+        
+       
     }
     
     private func handlePaymentRequestMessage(_ data : [AnyHashable : Any]) {
