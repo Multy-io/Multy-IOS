@@ -42,11 +42,6 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     
     func updateUI() {
         self.walletNameTF.text = self.presenter.wallet?.name
-        if presenter.wallet!.isImported {
-            resyncBlockHeightConstraint.constant = 0
-            resyncBlockView.isHidden = true
-            view.layoutIfNeeded()
-        }
     }
     
     @IBAction func deleteAction(_ sender: Any) {

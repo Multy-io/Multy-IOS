@@ -201,7 +201,8 @@ enum SocketMessageType : Int {
         multisigTxPaymentRequest =  9,
         multisigTxIncoming =        10,
         multisigTxConfirm =         11,
-        multisigTxRevoke =          12
+        multisigTxRevoke =          12,
+        resyncCompleted =            13
 }
 
 enum Result<Value, Error: StringProtocol> {
