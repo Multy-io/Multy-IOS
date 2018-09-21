@@ -70,14 +70,36 @@ class ImportMSPresenter: NSObject {
             generatedPublic = coreDict!["publicKey"] as! String
         }
         
-        importEthWalletWith(address: generatedAddress, publicKey: generatedPublic) { (answer) in
-            if self.isForMS {
-                self.importMultiSig(contractAddress: self.importVC!.msAddressTextView.text!, linkedWalletAddress: generatedAddress, completion: { (answer, err) in
-                    self.sendImportedWalletByDelegateAndExit()
-                })
-            } else {
-                self.sendImportedWalletByDelegateAndExit()
+        let primaryKey = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: selectedBlockchainType.blockchain.rawValue,
+                                                               networkID: UInt32(selectedBlockchainType.net_type),
+                                                               address: generatedAddress)
+        DataManager.shared.getWallet(primaryKey: primaryKey) { [unowned self] in
+            switch $0 {
+            case .success(_):
+                self.importMSWallet(address: generatedAddress)
+                break
+            case .failure(_):
+                self.importWallets(address: generatedAddress, pubKey: generatedPublic)
+                break
             }
+        }
+    }
+    
+    func importWallets(address: String, pubKey: String) {
+        importEthWalletWith(address: address, publicKey: pubKey) { [unowned self] (answer) in
+            self.importMSWallet(address: address)
+        }
+    }
+    
+    func importMSWallet(address: String) {
+        if self.isForMS {
+            self.importMultiSig(contractAddress: self.importVC!.msAddressTextView.text!,
+                                linkedWalletAddress: address,
+                                completion: { (answer, err) in
+                self.sendImportedWalletByDelegateAndExit()
+            })
+        } else {
+            self.sendImportedWalletByDelegateAndExit()
         }
     }
     
