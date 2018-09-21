@@ -30,11 +30,37 @@ class WaitingMembersPresenter: NSObject {
         }
     }
     var feeAmount = BigInt("\(1_000_000_000)") * BigInt("\(5_000_000)")
+    var fastGasPriceRate = "1"
+    
+    func getFeeRate(_ blockchainType: BlockchainType, completion: @escaping (_ feeRateDict: String) -> ()) {
+        DataManager.shared.getFeeRate(currencyID: blockchainType.blockchain.rawValue,
+                                      networkID: UInt32(blockchainType.net_type),
+                                      ethAddress: nil,
+                                      completion: { (dict, error) in
+                                        print(dict)
+                                        if let feeRates = dict!["speeds"] as? NSDictionary, let feeRate = feeRates["Fast"] as? UInt64 {
+                                            completion("\(feeRate)")
+                                        } else {
+                                            //default values
+                                            switch blockchainType.blockchain {
+                                            case BLOCKCHAIN_BITCOIN:
+                                                return completion("10")
+                                            case BLOCKCHAIN_ETHEREUM:
+                                                return completion("1000000000")
+                                            default:
+                                                return completion("1")
+                                            }
+                                        }
+        })
+    }
     
     func viewControllerViewDidLoad() {
 //        inviteCode = makeInviteCode()
 //        viewController?.openShareInviteVC()
         updateWallet()
+        getFeeRate(BlockchainType.create(wallet: wallet)) { (feeString) in
+            self.fastGasPriceRate = feeString
+        }
     }
     
     func viewControllerViewWillAppear() {
@@ -169,7 +195,7 @@ class WaitingMembersPresenter: NSObject {
         let result = DataManager.shared.createMultiSigWallet(binaryData: &binData,
                                                              wallet: linkedWallet,
                                                              creationPriceString: "\(estimationInfo!["priceOfCreation"] as! NSNumber)",
-                                                             gasPriceString: "1000000000",
+                                                             gasPriceString: fastGasPriceRate,
                                                              gasLimitString: gasLimitForDeployMS,
                                                              owners: ownersString,
                                                              confirmationsCount: UInt32(wallet.multisigWallet!.signaturesRequiredCount))
