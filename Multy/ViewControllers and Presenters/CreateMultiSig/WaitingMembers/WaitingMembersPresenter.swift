@@ -30,7 +30,7 @@ class WaitingMembersPresenter: NSObject {
         }
     }
     var feeAmount = BigInt("\(1_000_000_000)") * BigInt("\(5_000_000)")
-    var mediumGasPriceRate = "1"
+    var fastGasPriceRate = "1"
     
     func getFeeRate(_ blockchainType: BlockchainType, completion: @escaping (_ feeRateDict: String) -> ()) {
         DataManager.shared.getFeeRate(currencyID: blockchainType.blockchain.rawValue,
@@ -59,7 +59,7 @@ class WaitingMembersPresenter: NSObject {
 //        viewController?.openShareInviteVC()
         updateWallet()
         getFeeRate(BlockchainType.create(wallet: wallet)) { (feeString) in
-            self.mediumGasPriceRate = feeString
+            self.fastGasPriceRate = feeString
         }
     }
     
@@ -195,7 +195,7 @@ class WaitingMembersPresenter: NSObject {
         let result = DataManager.shared.createMultiSigWallet(binaryData: &binData,
                                                              wallet: linkedWallet,
                                                              creationPriceString: "\(estimationInfo!["priceOfCreation"] as! NSNumber)",
-                                                             gasPriceString: mediumGasPriceRate,
+                                                             gasPriceString: fastGasPriceRate,
                                                              gasLimitString: gasLimitForDeployMS,
                                                              owners: ownersString,
                                                              confirmationsCount: UInt32(wallet.multisigWallet!.signaturesRequiredCount))
