@@ -74,4 +74,22 @@ class WalletSettingsPresenter: NSObject {
             }
         }
     }
+    
+    func checkDeletePossibility(completion: @escaping(_ result: Bool, _ reason: String?) -> ()) {
+        if !wallet!.isEmpty {
+            let message = Constants.walletAmountAlertString
+            completion(false, message)
+        } else {
+            DataManager.shared.realmManager.getAccount { (acc, err) in
+                if acc != nil {
+                    if (acc!.wallets.filter{$0.multisigWallet != nil && $0.multisigWallet!.linkedWalletAddress == self.wallet!.address}.count > 0) {
+                        let message = Constants.deleteLinkedWalletFailedString
+                        completion(false, message)
+                    }
+                } else {
+                    completion(false, nil)
+                }
+            }
+        }
+    }
 }
