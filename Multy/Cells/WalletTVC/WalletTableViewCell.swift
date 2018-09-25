@@ -4,6 +4,8 @@
 
 import UIKit
 
+private typealias LocalizeDelegate = WalletTableViewCell
+
 class WalletTableViewCell: UITableViewCell {
 
     @IBOutlet weak var backView: UIView!
@@ -64,7 +66,7 @@ class WalletTableViewCell: UITableViewCell {
     func fillInCell() {
         let blockchainType = BlockchainType.createAssociated(wallet: wallet!)
         tokenImage.image = UIImage(named: blockchainType.iconString)
-        walletNameLbl.text = self.wallet!.name
+        walletNameLbl.text = makeWalletName()
         cryptoNameLbl.text = blockchainType.shortName
         fiatSumLbl.text = wallet!.sumInFiatString + " " + self.wallet!.fiatSymbol
         
@@ -81,5 +83,24 @@ class WalletTableViewCell: UITableViewCell {
                 statusImage.isHidden = true
             }
         }
+    }
+    
+    func makeWalletName() -> String {
+        var walletName = String()
+        if wallet!.isMultiSig == true {
+            let countOfMembers = wallet!.multisigWallet!.ownersCount
+            let signsCount = wallet!.multisigWallet!.signaturesRequiredCount
+            walletName = "\(wallet!.name)" + " ∙ " + "\(signsCount) \(localize(string: Constants.ofString)) \(countOfMembers)"
+        } else {
+            walletName = wallet!.name
+        }
+        
+        return walletName
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Wallets"
     }
 }

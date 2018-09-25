@@ -27,6 +27,10 @@ extension Localizable where Self: UIViewController, Self: Localizable {
         presentAlert(withTitle: localize(string: Constants.errorString), andMessage: message)
     }
     
+    func presentInfoAlert(with message: String) {
+        presentAlert(withTitle: nil, andMessage: message)
+    }
+    
     func presentAlert(withTitle title: String?, andMessage message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

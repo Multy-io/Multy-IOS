@@ -631,7 +631,7 @@ class UserWalletRLM: Object {
         case BLOCKCHAIN_ETHEREUM:
             result = BigInt(tx.txOutAmountString)
             
-            if tx.isOutcoming() {
+            if tx.isOutcoming() && tx.multisig == nil {
                 result = result + tx.fee(for: blockchain)
             }
         //   return txOutAmountString.appendDelimeter(at: 18)

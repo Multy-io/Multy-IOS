@@ -595,7 +595,13 @@ extension TableViewDelegate: UITableViewDelegate {
             
             let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
             let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
-            transactionVC.presenter.histObj = presenter.transactionDataSource[indexPath.row]
+            let histObj = presenter.transactionDataSource[indexPath.row]
+            //MS TX We can`t go to tx vc while invokation status = bad
+            if presenter.checkForInvokationStatus(histObj: histObj) == false {
+                presentInfoAlert(with: localize(string: Constants.prNotReady))
+                return
+            }
+            transactionVC.presenter.histObj = histObj
             transactionVC.presenter.blockchainType = BlockchainType.create(wallet: presenter.wallet!)
             transactionVC.presenter.wallet = presenter.wallet!
             self.navigationController?.pushViewController(transactionVC, animated: true)
