@@ -735,6 +735,10 @@ extension WalletUpdateRLM {
                 multisigWallet!.inviteCode = inviteCode
             }
             
+            if let isHavePaymentRequest = multisig["havePaymentReqests"] as? Bool {
+                multisigWallet!.isActivePaymentRequest = isHavePaymentRequest
+            }
+            
             if let ownersStruct = multisig["owners"] as? [NSDictionary] {
                 let owners = List<MultisigOwnerRLM>()
                 for ownerStruct in ownersStruct {

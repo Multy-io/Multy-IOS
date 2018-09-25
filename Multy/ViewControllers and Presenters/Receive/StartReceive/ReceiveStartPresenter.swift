@@ -104,7 +104,10 @@ class ReceiveStartPresenter: NSObject {
         DataManager.shared.joinToMultisigWith(wallet: walletsArr[selectedIndex!], inviteCode: inviteCode) { [unowned self] result in
             switch result {
             case .success( _):
+                //if createMS
                 self.receiveStartVC?.navigationController?.pushViewController(waitingVC, animated: true)
+                //if joinMS
+//                self.receiveStartVC?.navigationController?.popToRootViewController(animated: true)
             case .failure(let error):
                 self.receiveStartVC?.presentAlert(with: error)
             }

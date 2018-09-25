@@ -178,14 +178,16 @@ enum WalletType : Int {
 
 enum TxStatus : Int {
     case
-        Rejected =                  0,
-        MempoolIncoming =           1,
-        BlockIncoming =             2,
-        MempoolOutcoming =          3,
-        BlockOutcoming =            4,
-        BlockConfirmedIncoming =    5,
-        BlockConfirmedOutcoming =   6,
-        BlockMethodInvocationFail = 7
+        Rejected =                   0,
+        MempoolIncoming =            1,
+        BlockIncoming =              2,
+        MempoolOutcoming =           3,
+        BlockOutcoming =             4,
+        BlockConfirmedIncoming =     5,
+        BlockConfirmedOutcoming =    6,
+        BlockMethodInvocationFail =  7,
+        TxStatusTxRejectedIncoming = 8,
+        TxStatusTxRejectedOutgoing = 9
 }
 
 enum SocketMessageType : Int {
