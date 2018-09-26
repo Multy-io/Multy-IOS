@@ -160,7 +160,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
         if presenter.wallet!.isMultiSig {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.handleMsTransactionDeclinedNotification(notification:)), name: NSNotification.Name("msTransactionDeclined"), object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets(notification:)), name: NSNotification.Name("transactionUpdated"), object: nil)
         }
@@ -369,7 +368,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             return
         }
         
-        let address = notification.userInfo!["To"] as? String
+        let address = notification.userInfo!["contractAddress"] as? String
         
         guard address != nil else {
             return
@@ -378,18 +377,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         if presenter.wallet!.isAddressBelongsToWallet(address!) {
             presenter.isSocketInitiateUpdating = true
             presenter.getHistoryAndWallet()
-        }
-    }
-    
-    @objc fileprivate func handleMsTransactionDeclinedNotification(notification : Notification) {
-        if presenter.wallet!.isMultiSig {
-            let address = presenter.wallet!.address
-            let triggeredAddress = notification.userInfo?["contractAddress"] as! String
-            if address == triggeredAddress {
-                DispatchQueue.main.async {
-                    self.presenter.getHistoryAndWallet()
-                }
-            }
         }
     }
     
