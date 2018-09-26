@@ -106,7 +106,7 @@ class MultiSigPendingTableViewCell: UITableViewCell {
     
     func fillEthereumCell() {
         showOnlyInfo()
-        infoBlock(isNeedToHide: histObj.multisig!.confirmed.boolValue)
+//        infoBlock(isNeedToHide: histObj.multisig!.confirmed.boolValue)
         if wallet!.isRejected(tx: histObj) {
             transactionImg.image = #imageLiteral(resourceName: "arrowDeclined")
             additionalInfoLbl.text = localize(string: Constants.rejectedString)
