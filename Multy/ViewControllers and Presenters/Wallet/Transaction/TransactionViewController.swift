@@ -145,6 +145,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             add(doubleSliderVC, to: doubleSliderHolderView)
             
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.handleMsTransactionDeclinedNotification(notification:)), name: NSNotification.Name("msTransactionDeclined"), object: nil)
         } else {
             swipeToBack()
         }
@@ -469,6 +470,18 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         
         if presenter.wallet.isAddressBelongsToWallet(address!) {
             presenter.updateTx()
+        }
+    }
+    
+    @objc fileprivate func handleMsTransactionDeclinedNotification(notification : Notification) {
+        if presenter.wallet.isMultiSig {
+            let txHash = presenter.histObj.txHash
+            let triggeredTxHash = notification.userInfo?["txHash"] as! String
+            if txHash == triggeredTxHash {
+                DispatchQueue.main.async {
+                    self.presenter.updateTx()
+                }
+            }
         }
     }
     

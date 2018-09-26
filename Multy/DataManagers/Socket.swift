@@ -275,7 +275,18 @@ extension MessageHandler {
         case SocketMessageType.multisigView:
             break
         case SocketMessageType.multisigDecline:
-            NotificationCenter.default.post(name: NSNotification.Name("msTransactionUpdated"), object: nil, userInfo: nil)
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["ContractAddress"] as? String
+            let txHash = payload!["Hash"] as? String
+            let userInfo = ["contractAddress" : address,
+                            "txHash" : txHash]
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msTransactionDeclined"), object: nil, userInfo: userInfo as [AnyHashable : Any])
             break
         case SocketMessageType.multisigWalletDeploy:
             let payload = data["payload"] as? [AnyHashable : Any]

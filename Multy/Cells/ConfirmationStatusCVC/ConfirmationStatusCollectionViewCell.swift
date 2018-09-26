@@ -35,7 +35,7 @@ class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
     }
     
     private func waitingConfirmationString(memberName: String? = nil) -> NSMutableAttributedString {
-        let result = NSMutableAttributedString(string: "Waiting for confirmation…", attributes: [
+        let result = NSMutableAttributedString(string: localize(string: Constants.waitingConfirmationsString), attributes: [
             .font: UIFont(name: "AvenirNext-Regular", size: 12.0)!,
             .foregroundColor: UIColor(red: 132.0 / 255.0, green: 160.0 / 255.0, blue: 199.0 / 255.0, alpha: 1.0)])
         
