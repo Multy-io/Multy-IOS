@@ -193,4 +193,12 @@ class WalletPresenter: NSObject {
         }
         return true
     }
+    
+    func checkForInvokationStatus(histObj: HistoryRLM) -> Bool {
+        if histObj.multisig != nil && histObj.multisig?.invocationStatus == false {
+            return false
+        } else {
+            return true
+        }
+    }
 }

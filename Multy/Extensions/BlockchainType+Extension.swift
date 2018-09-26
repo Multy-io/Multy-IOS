@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import Foundation
+import UIKit
 
 typealias BlockchainTypeEquatable = BlockchainType
 
@@ -113,6 +114,19 @@ extension BlockchainType {
             result += " Testnet"
         }
         return result
+    }
+    
+    var colorForWalletName: UIColor {
+        var color = UIColor()
+        switch self.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            color = #colorLiteral(red: 1, green: 0.6634360552, blue: 0.1786985695, alpha: 1)
+        case BLOCKCHAIN_ETHEREUM:
+            color = #colorLiteral(red: 0.4516705275, green: 0.5013847947, blue: 0.7878515124, alpha: 1)
+        default: color = #colorLiteral(red: 1, green: 0.6634360552, blue: 0.1786985695, alpha: 1)
+        }
+        
+        return color
     }
     
     var qrBlockchainString : String {

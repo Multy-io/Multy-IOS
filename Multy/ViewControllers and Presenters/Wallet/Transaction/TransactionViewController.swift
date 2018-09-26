@@ -417,7 +417,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         
         self.confirmationMembersCollectionView.reloadData()
         
-        if presenter.histObj.isOutcoming() {
+        if presenter.histObj.isOutcoming() && presenter.histObj.multisig == nil {
             feeView.isHidden = false
             feeViewHeightConstraint.constant = 47
             let fee = presenter.histObj.fee(for: presenter.wallet.blockchain)
