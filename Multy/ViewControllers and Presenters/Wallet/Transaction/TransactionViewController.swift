@@ -145,7 +145,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             add(doubleSliderVC, to: doubleSliderHolderView)
             
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.handleMsTransactionDeclinedNotification(notification:)), name: NSNotification.Name("msTransactionDeclined"), object: nil)
         } else {
             swipeToBack()
         }
@@ -247,10 +246,21 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     
     func checkStatus() {
         self.titleLbl.text = localize(string: Constants.transactionInfoString)
+        var isMultisigWaitingStatus = false
         if isMultisig && presenter.histObj.multisig != nil && !isDecided {
             // Multisig transaction waiting confirmation
+            let requiedSignsCount = presenter.wallet.multisigWallet!.signaturesRequiredCount
+            let confirmationsCount = presenter.histObj.multisig!.confirmationsCount()
+            
+            if confirmationsCount < requiedSignsCount {
+                isMultisigWaitingStatus = true
+            }
+        }
+        
+        if isMultisigWaitingStatus {
             txAction = .confirmation
             self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
+            self.titleLbl.text = localize(string: Constants.waitingConfirmationsString)
             self.titleLbl.textColor = .black
             self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
             
@@ -263,7 +273,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                         self .updateUI()
                     }
                 }
-                
             }
         } else {
             txAction = .noAction
@@ -462,18 +471,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             return
         }
         
-        let address = notification.userInfo!["To"] as? String
-        
-        guard address != nil else {
-            return
-        }
-        
-        if presenter.wallet.isAddressBelongsToWallet(address!) {
-            presenter.updateTx()
-        }
-    }
-    
-    @objc fileprivate func handleMsTransactionDeclinedNotification(notification : Notification) {
         if presenter.wallet.isMultiSig {
             let txHash = presenter.histObj.txHash
             let triggeredTxHash = notification.userInfo?["txHash"] as! String

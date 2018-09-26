@@ -273,6 +273,20 @@ extension MessageHandler {
         case SocketMessageType.multisigCheck:
             break
         case SocketMessageType.multisigView:
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["ContractAddress"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
         case SocketMessageType.multisigDecline:
             let payload = data["payload"] as? [AnyHashable : Any]
@@ -283,10 +297,12 @@ extension MessageHandler {
             
             let address = payload!["ContractAddress"] as? String
             let txHash = payload!["Hash"] as? String
-            let userInfo = ["contractAddress" : address,
-                            "txHash" : txHash]
             
-            NotificationCenter.default.post(name: NSNotification.Name("msTransactionDeclined"), object: nil, userInfo: userInfo as [AnyHashable : Any])
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
         case SocketMessageType.multisigWalletDeploy:
             let payload = data["payload"] as? [AnyHashable : Any]
@@ -307,16 +323,68 @@ extension MessageHandler {
             NotificationCenter.default.post(name: NSNotification.Name("msWalletUpdated"), object: nil, userInfo: userInfo)
             break
         case SocketMessageType.multisigTxPaymentRequest:
-            handlePaymentRequestMessage(data)
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["To"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
         case SocketMessageType.multisigTxIncoming:
-            handlePaymentRequestMessage(data)
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["To"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
         case SocketMessageType.multisigTxConfirm:
-            handlePaymentRequestMessage(data)
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["To"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
         case SocketMessageType.multisigTxRevoke:
-            handlePaymentRequestMessage(data)
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["To"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
             
         case SocketMessageType.resyncCompleted:
@@ -328,9 +396,10 @@ extension MessageHandler {
        
     }
     
-    private func handlePaymentRequestMessage(_ data : [AnyHashable : Any]) {
-        let userInfo = data["payload"] as? [AnyHashable : Any]
+    private func handleMSTxUpdatedMessage(address : String, hash : String) {
+        let data = ["contractAddress" : address,
+                    "txHash" : hash]
         
-        NotificationCenter.default.post(name: NSNotification.Name("msTransactionUpdated"), object: nil, userInfo: userInfo)
+        NotificationCenter.default.post(name: NSNotification.Name("msTransactionUpdated"), object: nil, userInfo: data)
     }
 }
