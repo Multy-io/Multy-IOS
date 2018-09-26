@@ -631,7 +631,7 @@ class UserWalletRLM: Object {
         case BLOCKCHAIN_ETHEREUM:
             result = BigInt(tx.txOutAmountString)
             
-            if tx.isOutcoming() {
+            if tx.isOutcoming() && tx.multisig == nil {
                 result = result + tx.fee(for: blockchain)
             }
         //   return txOutAmountString.appendDelimeter(at: 18)
@@ -733,6 +733,10 @@ extension WalletUpdateRLM {
             
             if let inviteCode = multisig["inviteCode"] as? String {
                 multisigWallet!.inviteCode = inviteCode
+            }
+            
+            if let isHavePaymentRequest = multisig["havePaymentReqests"] as? Bool {
+                multisigWallet!.isActivePaymentRequest = isHavePaymentRequest
             }
             
             if let ownersStruct = multisig["owners"] as? [NSDictionary] {
