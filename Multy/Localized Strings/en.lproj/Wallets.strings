@@ -31,4 +31,5 @@
 "OF" = "of";
 "SORRY" = "Sorry";
 "LOW AMOUNT" = "Commission for sending transaction is more than your available amount";
+"DELETE LINKED WALLET FAILED" = "You can't delete linked to MultiSig wallet";
 "PR NOT READY" = "Payment request is not ready to be viewed yet, please come back later.";

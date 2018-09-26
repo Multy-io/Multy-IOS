@@ -137,5 +137,6 @@ extension Constants {
     static let slideToDeclineString = "SLIDE TO DECLINE"
     static let lowAmountString = "LOW AMOUNT"
     static let syncingAlertString = "PLEASE WAIT SYNCING"
+    static let deleteLinkedWalletFailedString = "DELETE LINKED WALLET FAILED"
     static let prNotReady = "PR NOT READY"
 }

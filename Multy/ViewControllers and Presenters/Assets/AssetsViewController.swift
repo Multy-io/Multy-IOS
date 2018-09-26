@@ -197,6 +197,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("walletDeleted"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("resyncCompleted"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msTransactionDeclined"), object: nil)
         
         super.viewWillDisappear(animated)
     }
@@ -210,6 +211,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletUpdatedNotification(notification:)), name: NSNotification.Name("msWalletUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleResyncCompleteNotification(notification:)), name: NSNotification.Name("resyncCompleted"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: NSNotification.Name.UIApplicationWillEnterForeground, object:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleMsTransactionDeclinedNotification(notification:)), name: NSNotification.Name("msTransactionDeclined"), object: nil)
         
         super.viewWillAppear(animated)
         
@@ -253,6 +255,12 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     @objc fileprivate func handleMsTransactionUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleMsTransactionDeclinedNotification(notification : Notification) {
         DispatchQueue.main.async {
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
