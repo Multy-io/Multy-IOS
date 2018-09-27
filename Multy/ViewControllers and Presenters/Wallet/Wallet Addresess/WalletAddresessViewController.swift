@@ -27,6 +27,11 @@ class WalletAddresessViewController: UIViewController,AnalyticsProtocol {
             self.addButton.isHidden = true
         }
         
+        let blocchainType = BlockchainType.create(wallet: presenter.wallet!)
+        if blocchainType.blockchain != BLOCKCHAIN_BITCOIN {
+            addButton.isHidden = true
+        }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
         sendAnalyticsEvent(screenName: "\(screenWalletAddressWithChain)\(presenter.wallet!.chain)", eventName: "\(screenWalletAddressWithChain)\(presenter.wallet!.chain)")
     }

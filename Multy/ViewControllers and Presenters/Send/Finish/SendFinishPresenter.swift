@@ -83,6 +83,11 @@ class SendFinishPresenter: NSObject {
         if transactionDTO.choosenWallet!.importedPrivateKey.isEmpty == false {
             return
         }
+        //fixit: make norm check
+        let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
+        if blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
+            return
+        }
         
         getOneVerbose { (updatedWallet, err) in
             if updatedWallet == nil {

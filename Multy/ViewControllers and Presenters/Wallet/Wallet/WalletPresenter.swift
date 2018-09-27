@@ -101,7 +101,7 @@ class WalletPresenter: NSObject {
             if indexPath.row < transactionDataSource.count && transactionDataSource[indexPath.row].multisig != nil {   //46
 //                if wallet!.isRejected(tx: transactionDataSource[indexPath.row]) {
                 if transactionDataSource[indexPath.row].multisig!.confirmed.boolValue {
-                    return 64
+                    return 126 //64
                 } else {
 //                    return 172          //fixit: check for lockingmoney
                     return 126 

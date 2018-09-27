@@ -1594,7 +1594,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All Wallet Addresses" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pPx-Xk-TEa">
-                                <rect key="frame" x="107" y="32" width="161" height="24"/>
+                                <rect key="frame" x="107.5" y="32" width="160.5" height="24"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -3652,7 +3652,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
         <image name="attention" width="66" height="66"/>
         <image name="backGrey" width="13" height="21"/>
         <image name="backWhite" width="12" height="21"/>
-        <image name="chevron" width="15" height="22"/>
+        <image name="chevron" width="10" height="15"/>
         <image name="chevron__" width="13" height="13"/>
         <image name="donationIcon" width="30" height="35"/>
         <image name="donationIconSmallestWhite" width="26" height="26"/>
