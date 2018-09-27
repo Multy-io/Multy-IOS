@@ -1,10 +1,6 @@
-/* 
-  CreateMultiSig.strings
-  Multy
-
-  Created by Artyom Alekseev on 05.07.2018.
-  Copyright © 2018 Idealnaya rabota. All rights reserved.
-*/
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
 
 "READY TO START" = "Ready to Start...";
 "WAITING ALL MEMBERS" = "Waiting for all members...";

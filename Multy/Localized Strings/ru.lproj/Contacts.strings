@@ -1,10 +1,6 @@
-/* 
-  Contacts.strings
-  Multy
-
-  Created by Alex Pro on 5/31/18.
-  Copyright © 2018 Idealnaya rabota. All rights reserved.
-*/
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
 
 "ERROR" = "Ошибка";
 "SOMETHING WENT WRONG" = "Что-то пошло не так";

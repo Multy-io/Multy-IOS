@@ -152,10 +152,3 @@ extension LocalizeDelegate: Localizable {
         return "Wallets"
     }
 }
-
-//deployStatus
-//created =     1,
-//ready =       2,
-//pending =     3,
-//rejected =    4,
-//deployed =    5
