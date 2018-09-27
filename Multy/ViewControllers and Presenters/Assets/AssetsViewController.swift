@@ -18,8 +18,9 @@ private typealias CancelDelegate = AssetsViewController
 private typealias CreateWalletDelegate = AssetsViewController
 private typealias LocalizeDelegate = AssetsViewController
 private typealias PushTxDelegate = AssetsViewController
+private typealias SendWalletsDelegate = AssetsViewController
 
-class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol {
+class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol, BlockchainTransferProtocol {
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
@@ -53,14 +54,13 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
 
     var stringIdForInApp = ""
     var stringIdForInAppBig = ""
+    var blockchainForTansfer: BlockchainType?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setpuUI()
 
         self.performFirstEnterFlow { (succeeded) in
-
-            
             guard succeeded else {
                 return
             }
@@ -140,6 +140,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
                 } else if buildVersion < softVersion! {
                     self.presenter.presentSoftUpdate()
                     completion(true)
+                } else if softVersion! > hardVersion! && softVersion! > buildVersion {
+                    self.presenter.presentSoftUpdate()
                 } else {
                     completion(true)
                 }
@@ -180,22 +182,39 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
             self.presentUpdateAlert(idOfAlert: 0)
 //            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
         }
-        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msMembersUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletDeleted"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msTransactionUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("msWalletUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("exchageUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("transactionUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("walletDeleted"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("resyncCompleted"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        
         super.viewWillDisappear(animated)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleExchangeUpdatedNotifiction(notification:)), name: NSNotification.Name("exchageUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleTransactionUpdatedNotification(notification :)), name: NSNotification.Name("transactionUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletDeletedNotification(notification:)), name: NSNotification.Name("msWalletDeleted"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleMsTransactionUpdatedNotification(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletUpdatedNotification(notification:)), name: NSNotification.Name("msWalletUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleResyncCompleteNotification(notification:)), name: NSNotification.Name("resyncCompleted"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: NSNotification.Name.UIApplicationWillEnterForeground, object:nil)
+        
         super.viewWillAppear(animated)
-        
-        
         
         if !self.isFirstLaunch || !self.isInternetAvailable {
             self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
         }
+        
         self.isFirstLaunch = false
         
         self.updateUI()
@@ -213,6 +232,57 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
                     self.view.isUserInteractionEnabled = true
                 }
             }
+        }
+        
+        refreshControl.beginRefreshing()
+        refreshControl.endRefreshing()
+    }
+    
+    @objc fileprivate func handleWalletDeletedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleMembersUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleMsTransactionUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleMsTransactionDeclinedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleWalletUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+        }
+    }
+    
+    @objc fileprivate func handleExchangeUpdatedNotifiction(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateExchange()
+        }
+    }
+    
+    @objc fileprivate func handleTransactionUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletAfterSockets()
+        }
+    }
+    
+    @objc fileprivate func handleResyncCompleteNotification(notification : Notification) {
+        DispatchQueue.main.async {
+            self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
     
@@ -296,6 +366,14 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    @objc fileprivate func handleWalletDeletedNotification() {
+         self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
+    }
+    
+    @objc fileprivate func updateWallets() {
+        self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
+    }
+    
     //MARK: Setup functions
     
     func checkOSForConstraints() {
@@ -328,18 +406,40 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
     
     func goToWalletVC(indexPath: IndexPath) {
 //        let walletVC = presenter.getWalletViewController(indexPath: indexPath)
-        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
-        let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
-        
         let wallet = presenter.wallets?[indexPath.row - 2]
-        walletVC.presenter.wallet = wallet
-        walletVC.presenter.account = presenter.account
         
-        self.navigationController?.pushViewController(walletVC, animated: true)
+        if !wallet!.isSyncing.boolValue {
+            var vc : UIViewController?
+            if wallet!.multisigWallet != nil && wallet!.multisigWallet?.deployStatus.intValue != DeployStatus.deployed.rawValue {
+                let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+                if wallet!.multisigWallet?.deployStatus.intValue == DeployStatus.pending.rawValue {
+                    presentAlert(withTitle: localize(string: Constants.warningString),
+                                 andMessage: localize(string: Constants.pendingMultisigAlertString))
+                    
+                    return
+                }
+                vc  = storyboard.instantiateViewController(withIdentifier: "waitingMembers") as! WaitingMembersViewController
+                (vc as! WaitingMembersViewController).presenter.wallet = wallet!
+                (vc as! WaitingMembersViewController).presenter.account = presenter.account
+            } else {
+                let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+                vc = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
+                (vc as! WalletViewController).presenter.account = presenter.account
+                (vc as! WalletViewController).presenter.wallet = wallet
+            }
+            
+            if vc != nil {
+                self.navigationController?.pushViewController(vc!, animated: true)
+            }
+        } else {
+            presentAlert(withTitle: localize(string: Constants.warningString),
+                         andMessage: localize(string: Constants.syncingAlertString))
+        }
     }
     
-    func updateUI() {
+    @objc func updateUI() {
         tabBarController?.tabBar.frame = presenter.tabBarFrame
+        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
         tableView.frame.size.height = screenHeight - presenter.tabBarFrame.height
         self.tableView.reloadData()
     }
@@ -388,11 +488,21 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
         }
     }
     
-    func qrData(string: String) {
-        let storyboard = UIStoryboard(name: "Send", bundle: nil)
-        let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
-        destVC.presenter.transactionDTO.update(from: string)
-        navigationController?.pushViewController(destVC, animated: true)
+    func qrData(string: String, tag: String?) {
+        if tag == "joinMS" {
+            let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+            let chooseWalletVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
+            chooseWalletVC.presenter.multisigFunc(inviteCode: string)
+            chooseWalletVC.presenter.displayedBlockchainOnly = blockchainForTansfer
+            chooseWalletVC.presenter.isNeedToPop = true
+            chooseWalletVC.whereFrom = self
+            navigationController?.pushViewController(chooseWalletVC, animated: true)
+        } else {
+            let storyboard = UIStoryboard(name: "Send", bundle: nil)
+            let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+            destVC.presenter.transactionDTO.update(from: string)
+            navigationController?.pushViewController(destVC, animated: true)
+        }
     }
     // -------------
     
@@ -420,12 +530,42 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol 
     }
     // -------------
     
+    
+    func setBlockchain(blockchain: BlockchainType) {
+        blockchainForTansfer = blockchain
+    }
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
-    func goToCreateWallet() {
+    func goToCreateWallet(tag: String) {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
-        self.performSegue(withIdentifier: Constants.Storyboard.createWalletVCSegueID, sender: Any.self)
+        if tag == "createNewWallet" {
+            performSegue(withIdentifier: Constants.Storyboard.createWalletVCSegueID, sender: Any.self)
+        } else if tag == "newEthMultiSig" {
+            let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+            let createMSVC = storyboard.instantiateViewController(withIdentifier: "creatingMultiSigVC")
+            navigationController?.pushViewController(createMSVC, animated: true)
+        } else if tag == "joinToMultiSig" {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let joinVC = storyboard.instantiateViewController(withIdentifier: "joinMultiSig") as! JoinMultiSigViewController
+            joinVC.qrDelegate = self
+            joinVC.blockchainTransferDelegate = self
+            navigationController?.pushViewController(joinVC, animated: true)
+        } else if tag == "importWallet" {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let importMS = storyboard.instantiateViewController(withIdentifier: "importMS") as! ImportMSViewController
+            importMS.presenter.account = presenter.account
+            importMS.presenter.isForMS = false
+            importMS.sendWalletsDelegate = self
+            navigationController?.pushViewController(importMS, animated: true)
+        } else if tag == "importMS" {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let importMS = storyboard.instantiateViewController(withIdentifier: "importMS") as! ImportMSViewController
+            importMS.presenter.account = presenter.account
+            importMS.presenter.isForMS = true
+            importMS.sendWalletsDelegate = self
+            navigationController?.pushViewController(importMS, animated: true)
+        }
     }
 }
 
@@ -462,6 +602,12 @@ extension PresentingSheetDelegate: OpenCreatingSheet {
         creatingVC.modalTransitionStyle = .crossDissolve
         self.present(creatingVC, animated: true, completion: nil)
         self.stringIdForInApp = "io.multy.importWallet5"
+        
+        
+//        let storyboard = UIStoryboard(name: "CreateMultiSigWallet", bundle: nil)
+//        let creatingVC = storyboard.instantiateViewController(withIdentifier: "creatingMultiSigVC") as! CreateMultiSigViewController
+//
+//        navigationController?.pushViewController(creatingVC, animated: true)
     }
 }
 
@@ -483,7 +629,6 @@ extension TableViewDelegate : UITableViewDelegate {
                     self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { (answer, err) in
                         self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { (answer, err) in
                             self.presenter.getWalletsVerbose(completion: { (complete) in
-                                
                             })
                         })
                     })
@@ -521,7 +666,8 @@ extension TableViewDelegate : UITableViewDelegate {
                 return 220
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
-                    return 340
+//                    return 340
+                    return 290
                 } else {
                     return 340 + Constants.AssetsScreen.backupAssetsOffset
                 }
@@ -764,7 +910,7 @@ extension PushTxDelegate {
     
     func openTx(_ info: [AnyHashable: Any]) {
         if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
-            let walletID = NSNumber(value: Int(walletIDString)!)
+            let walletID = NSNumber(value: Int32(walletIDString)!)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.getTxAndPresent(with: txID, currencyID, networkID, walletID)
@@ -773,34 +919,49 @@ extension PushTxDelegate {
     }
     
     func getTxAndPresent(with txID: String, _ currencyID: UInt32, _ networkID: Int, _ walletID: NSNumber) {
+        let mockWallet = createMockWalletForVerbose(currencyID: currencyID, networkID: networkID, walletID: walletID)
         let blockchainType = BlockchainType.init(blockchain: Blockchain.init(currencyID), net_type: networkID)
         
-        DataManager.shared.getOneWalletVerbose(walletID: walletID, blockchain: blockchainType) { (wallet, error) in
+        DataManager.shared.getOneWalletVerbose(wallet: mockWallet) { (wallet, error) in
             if error != nil {
                 self.presentAlert(with: error.debugDescription)
             }
-            let networkNumber = NSNumber(value: networkID)
-            let currencyNumber = NSNumber(value: currencyID)
-            DataManager.shared.getTransactionHistory(currencyID: currencyNumber, networkID: networkNumber, walletID: walletID, completion: { (history, error) in
-                guard let history = history, let wallet = wallet else {
-                    return
-                }
-                
-                let tx = history.filter{ $0.txHash == txID }.first
-                
-                guard let histObj = tx else {
-                    return
-                }
-                
-                let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
-                let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
-                transactionVC.presenter.histObj = histObj
-                transactionVC.presenter.blockchainType = blockchainType
-                transactionVC.presenter.wallet = wallet
-                
-                self.navigationController?.pushViewController(transactionVC, animated: false)
-            })
+            if wallet != nil {
+                DataManager.shared.getTransactionHistory(wallet: wallet!, completion: { (history, error) in
+                    guard let history = history, let wallet = wallet else {
+                        return
+                    }
+                    
+                    let tx = history.filter{ $0.txHash == txID }.first
+                    
+                    guard let histObj = tx else {
+                        return
+                    }
+                    
+                    let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
+                    let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
+                    transactionVC.presenter.histObj = histObj
+                    transactionVC.presenter.blockchainType = blockchainType
+                    transactionVC.presenter.wallet = wallet
+                    
+                    self.navigationController?.pushViewController(transactionVC, animated: false)
+                })
+            }
         }
+    }
+    
+    func createMockWalletForVerbose(currencyID: UInt32, networkID: Int, walletID: NSNumber) -> UserWalletRLM {
+        let result = UserWalletRLM()
+        result.walletID = walletID
+        result.chain = NSNumber(value: currencyID)
+        result.chainType = NSNumber(value: networkID)
+        return result
+    }
+}
+
+extension SendWalletsDelegate: SendArrayOfWallets {
+    func sendArrOfWallets(arrOfWallets: [UserWalletRLM]) {
+        presenter.importedWalletsInDB = arrOfWallets
     }
 }
 
@@ -809,4 +970,3 @@ extension LocalizeDelegate: Localizable {
         return "Assets"
     }
 }
-

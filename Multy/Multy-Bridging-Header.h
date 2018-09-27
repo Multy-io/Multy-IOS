@@ -8,8 +8,9 @@
 
 #import "account.h"
 #import "api.h"
-#import "bip44_coin_types.h"
+#import "big_int.h"
 #import "binary_data.h"
+#import "bip44_coin_types.h"
 #import "bitcoin.h"
 #import "blockchain.h"
 #import "common.h"
@@ -18,10 +19,9 @@
 #import "golos.h"
 #import "key.h"
 #import "mnemonic.h"
+#import "properties.h"
 #import "run_tests.h"
 #import "sha3.h"
-
-#import "big_int.h"
-#import "properties.h"
+#import "transaction_builder.h"
 #import "transaction.h"
 #import "transaction_builder.h"

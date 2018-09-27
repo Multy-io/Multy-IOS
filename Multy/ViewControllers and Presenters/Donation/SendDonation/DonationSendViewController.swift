@@ -186,7 +186,7 @@ class DonationSendViewController: UIViewController, UITextFieldDelegate, Analyti
         let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
         walletsVC.presenter.isNeedToPop = true
         walletsVC.sendWalletDelegate = self.presenter
-        walletsVC.titleTextKey = "Send Donation From"
+        walletsVC.presenter.titleTextKey = "Send Donation From"
         walletsVC.whereFrom = self
         walletsVC.presenter.walletsArr = presenter.btcWallets
         self.navigationController?.pushViewController(walletsVC, animated: true)

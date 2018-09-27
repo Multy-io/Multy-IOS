@@ -2789,6 +2789,7 @@ address</string>
                         <outlet property="bottomCurrencyLbl" destination="mEs-GB-5Is" id="Ifv-o4-y12"/>
                         <outlet property="bottomSumLbl" destination="hUT-w7-NZ6" id="LVz-S8-tdJ"/>
                         <outlet property="btnSumLbl" destination="aO6-lQ-C4K" id="rb9-QX-7xS"/>
+                        <outlet property="commissionStack" destination="fwY-HZ-OWp" id="MYX-WX-shX"/>
                         <outlet property="commissionSwitch" destination="8Um-LH-7i2" id="dDn-iI-Ivb"/>
                         <outlet property="constraintForTitletoBtn" destination="TyO-UT-7Fd" id="127-Sz-ige"/>
                         <outlet property="constraintNextBtnBottom" destination="mEF-UG-aQ6" id="YoM-so-tNW"/>
@@ -2854,7 +2855,7 @@ address</string>
         <segue reference="Nqh-Rv-oVp"/>
         <segue reference="Y3u-nO-qs1"/>
         <segue reference="EUD-ex-a5v"/>
-        <segue reference="N56-qi-Hx5"/>
+        <segue reference="FRo-Sp-aVY"/>
         <segue reference="jSE-EO-qlC"/>
         <segue reference="GW1-5g-oIp"/>
     </inferredMetricsTieBreakers>

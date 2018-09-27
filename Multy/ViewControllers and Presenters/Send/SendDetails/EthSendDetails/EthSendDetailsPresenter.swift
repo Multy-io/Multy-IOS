@@ -70,10 +70,14 @@ class EthSendDetailsPresenter: NSObject, CustomFeeRateProtocol {
     func requestFee() {
         DataManager.shared.getFeeRate(currencyID: transactionDTO.choosenWallet!.chain.uint32Value,
                                       networkID: transactionDTO.choosenWallet!.chainType.uint32Value,
+                                      ethAddress: transactionDTO.sendAddress,
                                       completion: { (dict, error) in
             if dict != nil {
-                self.feeRate = dict
-            } else {
+                self.feeRate = dict!["speeds"] as? NSDictionary
+                if let gasLimitFromBack = dict!["gaslimit"] {
+                    self.customGas.gasLimit = BigInt(gasLimitFromBack as! String)
+                }
+            } else {  
                 print("Did failed getting feeRate")
             }
         })

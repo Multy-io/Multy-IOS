@@ -25,7 +25,8 @@ class SendAmountEthPresenter: NSObject {
             
             
             if transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt != nil {
-                feeAmount = BigInt("21000") * transactionDTO.transaction!.transactionRLM?.sumInCryptoBigInt
+                let limit = transactionDTO.choosenWallet!.isMultiSig ? "400000" : "40000"
+                feeAmount = BigInt(limit) * transactionDTO.transaction!.transactionRLM!.sumInCryptoBigInt
                 feeAmountInFiat = feeAmount * exchangeCourse
             }
             
@@ -42,7 +43,7 @@ class SendAmountEthPresenter: NSObject {
     
     var account = DataManager.shared.realmManager.account
     var blockedAmount = BigInt.zero()
-
+    
     var availableSumInCrypto = BigInt.zero()
     
     var availableSumInFiat: BigInt { // It is sum in crypto multiplyed by blockchain.multiplyerToMinimalUnits
@@ -80,6 +81,13 @@ class SendAmountEthPresenter: NSObject {
     //for creating transaction
     var binaryData : BinaryData?
     var addressData : Dictionary<String, Any>?
+    var linkedWallet: UserWalletRLM?
+    var estimationInfo: NSDictionary?
+    
+    func getEstimation(for operation: String) -> String {
+        let value = self.estimationInfo?[operation] as? NSNumber
+        return value == nil ? "\(400_000)" : "\(value!)"
+    }
     
     func getData() {
         self.createPreliminaryData()
@@ -90,12 +98,41 @@ class SendAmountEthPresenter: NSObject {
         let wallet = transactionDTO.choosenWallet!
         binaryData = account!.binaryDataString.createBinaryData()!
         
+        if !wallet.isImported  {
+            addressData = core.createAddress(blockchainType:    transactionDTO.blockchainType!,
+                                             walletID:      wallet.walletID.uint32Value,
+                                             addressID:     wallet.changeAddressIndex,
+                                             binaryData:    &binaryData!)
+        }
         
-        
-        addressData = core.createAddress(blockchain:    transactionDTO.blockchainType!,
-                                         walletID:      wallet.walletID.uint32Value,
-                                         addressID:     wallet.changeAddressIndex,
-                                         binaryData:    &binaryData!)
+        if transactionDTO.choosenWallet!.isMultiSig {
+            DataManager.shared.estimation(for: wallet.address) { [unowned self] in
+                switch $0 {
+                case .success(let value):
+                    self.estimationInfo = value
+                    
+                    let limit = self.getEstimation(for: "submitTransaction")
+                    self.feeAmount = BigInt(limit) * self.transactionDTO.transaction!.transactionRLM!.sumInCryptoBigInt
+                    self.feeAmountInFiat = self.feeAmount * self.exchangeCourse
+                    
+                    break
+                case .failure(let error):
+                    print(error)
+                    break
+                }
+            }
+            
+            DataManager.shared.getWallet(primaryKey: transactionDTO.choosenWallet!.multisigWallet!.linkedWalletID) { [unowned self] in
+                switch $0 {
+                case .success(let wallet):
+                    self.linkedWallet = wallet
+                    break;
+                case .failure(let errorString):
+                    print(errorString)
+                    break;
+                }
+            }
+        }
     }
     
     func estimateTransactionAndValidation() -> Bool {
@@ -104,6 +141,7 @@ class SendAmountEthPresenter: NSObject {
             return estimateBTCTransactionAndValidation()
         case BLOCKCHAIN_ETHEREUM:
             return estimateETHTransactionAndValidation()
+        
         default:
             return false
         }
@@ -167,11 +205,11 @@ class SendAmountEthPresenter: NSObject {
             
             return BigInt("-1") // error
         }
-
+        
         return finalSum()
     }
     
-    func setMaxAllowed() {       
+    func setMaxAllowed() {
         switch blockchain {
         case BLOCKCHAIN_BITCOIN:
             setBTCMaxAllowed()
@@ -267,7 +305,7 @@ class SendAmountEthPresenter: NSObject {
                 message = sendAmountVC!.localize(string: Constants.youCantSpendMoreThanFeeAndDonationString) +
                     "\(currentCryptoFeeAmountString()) \(self.cryptoName)" +
                     sendAmountVC!.localize(string: Constants.andDonationString) +
-                    "\(donationCryptoValue.cryptoValueString(for: blockchain)) \(self.cryptoName)"
+                "\(donationCryptoValue.cryptoValueString(for: blockchain)) \(self.cryptoName)"
             } else {
                 message = sendAmountVC!.localize(string: Constants.youCantSpendMoreThanFeeString) + "\(currentCryptoFeeAmountString()) \(self.cryptoName)"
             }
@@ -279,7 +317,7 @@ class SendAmountEthPresenter: NSObject {
                 message = sendAmountVC!.localize(string: Constants.youCantSpendMoreThanFeeAndDonationString) +
                     "\(currentFiatFeeAmountString()) \(self.fiatName)" +
                     sendAmountVC!.localize(string: Constants.andDonationString) +
-                    "\(donationFiatValue.cryptoValueString(for: blockchain)) \(self.fiatName)"
+                "\(donationFiatValue.cryptoValueString(for: blockchain)) \(self.fiatName)"
             } else {
                 message = sendAmountVC!.localize(string: Constants.youCantSpendMoreThanFeeString) + "   \(currentFiatFeeAmountString()) \(self.fiatName)"
             }
@@ -318,22 +356,65 @@ extension CreateTransactionDelegate {
         if sendAmountVC!.commissionSwitch.isOn {
             sendAmount = sumInCrypto
         } else {
-            sendAmount = sumInCrypto - feeAmount
+            if transactionDTO.choosenWallet!.isMultiSig {
+                sendAmount = sumInCrypto
+            } else {
+                sendAmount = sumInCrypto - feeAmount
+            }
+        }
+        let pointer: UnsafeMutablePointer<OpaquePointer?>?
+        if !transactionDTO.choosenWallet!.importedPrivateKey.isEmpty {
+            let blockchainType = transactionDTO.blockchainType!
+            let privatekey = transactionDTO.choosenWallet!.importedPrivateKey
+            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
+            switch walletInfo {
+            case .success(let value):
+                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
+            case .failure(let error):
+                print(error)
+                
+                return false
+            }
+        } else {
+            pointer = addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
         }
         
-        let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                              sendAddress: transactionDTO.sendAddress!,
-                                                                              sendAmountString: sendAmount.stringValue,
-                                                                              nonce: transactionDTO.choosenWallet!.ethWallet!.nonce.intValue,
-                                                                              balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
-            ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
-            gasPrice: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
-            gasLimit: "21000")
-        
-        rawTransaction = trData.message
-        
-        return trData.isTransactionCorrect
+        if transactionDTO.choosenWallet!.isMultiSig {
+            if linkedWallet == nil {
+                rawTransaction = "Error"
+                
+                return false
+            }
+            
+            let trData = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
+                                                             wallet: linkedWallet!,
+                                                             sendFromAddress: transactionDTO.choosenWallet!.address,
+                                                             sendAmountString: sendAmount.stringValue,
+                                                             sendToAddress: transactionDTO.sendAddress!,
+                                                             msWalletBalance: transactionDTO.choosenWallet!.availableAmount.stringValue,
+                                                             gasPriceString: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
+                                                             gasLimitString: "400000")
+            
+            rawTransaction = trData.message
+            
+            return trData.isTransactionCorrect
+        } else {
+            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
+                                                                                  sendAddress: transactionDTO.sendAddress!,
+                                                                                  sendAmountString: sendAmount.stringValue,
+                                                                                  nonce: transactionDTO.choosenWallet!.ethWallet!.nonce.intValue,
+                                                                                  balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
+                ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
+                gasPrice: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
+                gasLimit: transactionDTO.transaction!.customGAS!.gasLimit.stringValue)
+            
+            rawTransaction = trData.message
+            
+            return trData.isTransactionCorrect
+        }
     }
+    
+    
     
     func finalSum() -> BigInt {
         switch blockchain {
@@ -341,6 +422,7 @@ extension CreateTransactionDelegate {
             return finalBTCSum()
         case BLOCKCHAIN_ETHEREUM:
             return finalETHSum()
+        
         default:
             return BigInt("0")
         }
@@ -421,6 +503,25 @@ extension CreateTransactionDelegate {
         return sumInNextBtn
     }
     
+    func finalEOSSum() -> BigInt {
+        switch isCrypto {
+        case true:
+            sumInNextBtn = sumInCrypto
+            
+            if sumInNextBtn > availableSumInCrypto {
+                sumInNextBtn = availableSumInCrypto
+            }
+        case false:
+            sumInNextBtn = sumInFiat
+            
+            if sumInNextBtn > availableSumInFiat {
+                sumInNextBtn = availableSumInFiat
+            }
+        }
+        
+        return sumInNextBtn
+    }
+    
     func setBTCMaxAllowed() {
         switch isCrypto {
         case true:
@@ -467,6 +568,16 @@ extension CreateTransactionDelegate {
             } else {
                 maxAllowedToSpend = availableSumInFiat
             }
+        }
+        sendAmountVC?.spendableSumAndCurrencyLbl.text = maxAllowedToSpend.cryptoValueString(for: blockchain)
+    }
+    
+    func setEOSMaxAllowed() {
+        switch isCrypto {
+        case true:
+            maxAllowedToSpend = availableSumInCrypto
+        case false:
+            maxAllowedToSpend = availableSumInFiat
         }
         sendAmountVC?.spendableSumAndCurrencyLbl.text = maxAllowedToSpend.cryptoValueString(for: blockchain)
     }
@@ -534,6 +645,7 @@ extension CreateTransactionDelegate {
             return sumInCrypto != Int64(0) && transactionDTO.transaction!.donationDTO != nil && sendAmountVC!.amountTF.text!.isEmpty == false && convertBTCStringToSatoshi(sum: sendAmountVC!.amountTF.text!) != 0
         case BLOCKCHAIN_ETHEREUM:
             return sumInCrypto != Int64(0) && sendAmountVC!.amountTF.text!.isEmpty == false
+
         default:
             return false
         }

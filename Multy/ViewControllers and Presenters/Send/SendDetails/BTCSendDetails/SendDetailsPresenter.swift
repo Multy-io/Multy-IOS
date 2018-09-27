@@ -64,11 +64,12 @@ class SendDetailsPresenter: NSObject, CustomFeeRateProtocol {
     func requestFee() {
         DataManager.shared.getFeeRate(currencyID: transactionDTO.choosenWallet!.chain.uint32Value,
                                       networkID: transactionDTO.choosenWallet!.chainType.uint32Value,
+                                      ethAddress: nil,
                                       completion: { [unowned self] (dict, error) in
                                         self.sendDetailsVC?.loader.hide()
                                         
                                         if dict != nil {
-                                            self.feeRate = dict
+                                            self.feeRate = dict!["speeds"] as? NSDictionary
                                         } else {
                                             //Default values
                                             self.feeRate = ["VeryFast" : 32,

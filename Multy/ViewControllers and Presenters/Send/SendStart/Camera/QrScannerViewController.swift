@@ -148,7 +148,7 @@ class QrScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
                 self.navigationController?.popViewController(animated: true)
             }
             
-            self.qrDelegate?.qrData(string: stringValue)
+            self.qrDelegate?.qrData(string: stringValue, tag: nil)
         }
         
         

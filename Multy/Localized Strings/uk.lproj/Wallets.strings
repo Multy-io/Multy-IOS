@@ -1,10 +1,6 @@
-/* 
-  Wallet.strings
-  Multy
-
-  Created by Alex Pro on 5/30/18.
-  Copyright © 2018 Idealnaya rabota. All rights reserved.
-*/
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
 
 "BACKUP IS NEEDED" = "Потрібно резервне копіювання!";
 "WARNING" = "Попередження";
@@ -30,3 +26,10 @@
 "NO FUNDS" = "У вас немає доступних засобів";
 "ADD TO CONTACTS" = "Додати в контакт";
 "HOLD ON" = "Зачекайте. Синхронізація гаманця.";
+"ERROR WHILE SENDING TX" = "Помилка при відправленні транзакції. Будь ласка, спробуйте ще раз!";
+"YOU" = "Ві";
+"OF" = "із";
+"SORRY" = "Вибачте";
+"LOW AMOUNT" = "Комісія за відправку транзакції більше вашої доступної суми";
+"DELETE LINKED WALLET FAILED" = "Вы не можете удалить кошелек, привязанный к MultiSig";
+"PR NOT READY" = "Запит на оплату ще не готовий до перегляду, будь ласка, поверніться пізніше.";

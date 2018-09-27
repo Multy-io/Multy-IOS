@@ -1,0 +1,97 @@
+
+/* Class = "UILabel"; text = "Cancel"; ObjectID = "9NV-A7-uxP"; */
+"9NV-A7-uxP.text" = "Cancel";
+
+/* Class = "UILabel"; text = "Chain"; ObjectID = "9xW-Ym-49u"; */
+"9xW-Ym-49u.text" = "Linked Wallet";
+
+"Ay0-tF-3x3.text" = "Blockchain";
+
+/* Class = "UILabel"; text = " "; ObjectID = "BBT-d0-xCd"; */
+"BBT-d0-xCd.text" = " ";
+
+/* Class = "UILabel"; text = " Waiting for all members..."; ObjectID = "EMR-dI-cfF"; */
+"EMR-dI-cfF.text" = " Waiting for all members...";
+
+/* Class = "UILabel"; text = "Select Total members count"; ObjectID = "Edo-kk-Ay1"; */
+"Edo-kk-Ay1.text" = "Required Signatures";
+
+/* Class = "UILabel"; text = "Your wallet identification code"; ObjectID = "FwP-hG-eOD"; */
+"FwP-hG-eOD.text" = "Your wallet identification code";
+
+/* Class = "UILabel"; text = "Create MultiSig Wallet"; ObjectID = "Hi6-bd-grP"; */
+"Hi6-bd-grP.text" = "Create MultiSig";
+
+/* Class = "UIButton"; normalTitle = "Invitation Code"; ObjectID = "HuL-7P-xQq"; */
+"HuL-7P-xQq.normalTitle" = "Invitation Code";
+
+/* Class = "UILabel"; text = "Signs to Send"; ObjectID = "J06-E2-5SM"; */
+"J06-E2-5SM.text" = "Required Number of Signatures and Owners";
+
+/* Class = "UIButton"; normalTitle = "Create"; ObjectID = "Jgz-s4-pgP"; */
+"Jgz-s4-pgP.normalTitle" = "Create";
+
+/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "KpW-1Z-48m"; */
+"KpW-1Z-48m.normalTitle" = "Done";
+
+/* Class = "UITextField"; placeholder = "Wallet name"; ObjectID = "T4S-R1-JcS"; */
+"T4S-R1-JcS.placeholder" = "Wallet name";
+
+/* Class = "UILabel"; text = "Share"; ObjectID = "TG7-MK-AIq"; */
+"TG7-MK-AIq.text" = "Share";
+
+/* Class = "UILabel"; text = "Share MultiSig wallet"; ObjectID = "UHR-VD-lj0"; */
+"UHR-VD-lj0.text" = "Share MultiSig";
+
+/* Class = "UILabel"; text = "3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K3DA28WCp4Cu5LQiddJnDJJm"; ObjectID = "YDW-qE-1rb"; */
+"YDW-qE-1rb.text" = "3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K3DA28WCp4Cu5LQiddJnDJJm";
+
+/* Class = "UILabel"; text = "Wallet Name"; ObjectID = "cTN-bG-Iqc"; */
+"cTN-bG-Iqc.text" = "Wallet Name";
+
+/* Class = "UILabel"; text = "Users joined "; ObjectID = "f2W-zb-3lg"; */
+"f2W-zb-3lg.text" = "Users joined ";
+
+/* Class = "UILabel"; text = "3 / 4"; ObjectID = "v6L-sn-crM"; */
+"v6L-sn-crM.text" = "3 / 4";
+
+/* Class = "UILabel"; text = "Family"; ObjectID = "xd5-lj-9MQ"; */
+"xd5-lj-9MQ.text" = "Family";
+
+/* Class = "UILabel"; text = "2"; ObjectID = "xwY-2B-wkg"; */
+"xwY-2B-wkg.text" = "2";
+
+"N27-Sb-Bug.text" = "Wallet's Members";
+
+"1Sw-Kf-zr9.text" = "of";
+
+"diO-2a-JyO.text" = "Total Number of Members";
+
+"pUC-xy-VxT.text" = "LINKED WALLET";
+
+"xJZ-Op-SST.text" = "GENERAL";
+
+"kNf-MA-qmP.text" = "Select your wallet";
+
+"H8Q-1D-9u6.text" = "Your linked wallet will be used to pay for multisig wallet transactions";
+
+
+"bhy-se-Mba.text" = "Cancel";
+"ulJ-3N-WKA.text" = "Wallet Settings";
+"Fk6-hI-FE9.text" = "Save";
+"oy7-Rt-QMg.text" = "GENERAL";
+"IRh-75-ZkM.text" = "Wallet Name";
+"9mA-8A-uZY.text" = "Reference currency";
+"S8p-ye-WQV.text" = "Signs to Send and Total Members";
+"18f-jg-TVs.text" = "You can’t change the number of signs needed for sending money after creating multisig wallet.";
+"mzT-WW-AfW.text" = "LINKED WALLET";
+"cmq-45-AON.text" = "Your linked wallet will be used to pay for multisig wallet transactions ";
+"WXp-Nn-VLr.text" = "Delete";
+"lJT-vf-F2a.text" = "Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions.";
+
+"cWS-iw-JtJ.normalTitle" = "Done";
+"SUC-aK-IFw.normalTitle" = "Close";
+
+
+
+

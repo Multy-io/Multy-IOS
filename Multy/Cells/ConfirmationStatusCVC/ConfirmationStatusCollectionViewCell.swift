@@ -5,12 +5,7 @@
 import UIKit
 import Hash2Pics
 
-enum ConfirmationStatus {
-    case confirmed
-    case declined
-    case waiting
-    case viewed
-}
+private typealias LocalizeDelegate = ConfirmationStatusCollectionViewCell
 
 class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var memberPictureImageView: UIImageView!
@@ -40,7 +35,7 @@ class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
     }
     
     private func waitingConfirmationString(memberName: String? = nil) -> NSMutableAttributedString {
-        let result = NSMutableAttributedString(string: "Waiting for confirmation…", attributes: [
+        let result = NSMutableAttributedString(string: localize(string: Constants.waitingConfirmationsString), attributes: [
             .font: UIFont(name: "AvenirNext-Regular", size: 12.0)!,
             .foregroundColor: UIColor(red: 132.0 / 255.0, green: 160.0 / 255.0, blue: 199.0 / 255.0, alpha: 1.0)])
         
@@ -74,19 +69,19 @@ class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
         var statusFont = UIFont()
         switch status {
         case .confirmed:
-            statusString = "Confirmed"
+            statusString = localize(string: Constants.confirmedString)
             statusColor = UIColor(red: 95.0 / 255.0, green: 204.0 / 255.0, blue: 125.0 / 255.0, alpha: 1.0)
             statusFont = UIFont(name: "AvenirNext-Medium", size: 12.0)!
             break
             
         case .declined:
-            statusString = "Declined"
-            statusColor = UIColor(red: 95.0 / 255.0, green: 204.0 / 255.0, blue: 125.0 / 255.0, alpha: 1.0)
+            statusString = localize(string: Constants.declinedString)
+            statusColor = UIColor(red: 238 / 255.0, green: 12.0 / 255.0, blue: 53.0 / 255.0, alpha: 1.0)
             statusFont = UIFont(name: "AvenirNext-Medium", size: 12.0)!
             break
             
         case .viewed:
-            statusString = "Viewed"
+            statusString = localize(string: Constants.viewedString)
             statusColor = UIColor(red: 132.0 / 255.0, green: 160.0 / 255.0, blue: 199.0 / 255.0, alpha: 1.0)
             statusFont = UIFont(name: "AvenirNext-Regular", size: 12.0)!
             break
@@ -131,5 +126,11 @@ class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
         }
         
         return result
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "MultiSig"
     }
 }

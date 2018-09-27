@@ -27,6 +27,11 @@ class WalletAddresessViewController: UIViewController,AnalyticsProtocol {
             self.addButton.isHidden = true
         }
         
+        let blocchainType = BlockchainType.create(wallet: presenter.wallet!)
+        if blocchainType.blockchain != BLOCKCHAIN_BITCOIN {
+            addButton.isHidden = true
+        }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateExchange), name: NSNotification.Name("exchageUpdated"), object: nil)
         sendAnalyticsEvent(screenName: "\(screenWalletAddressWithChain)\(presenter.wallet!.chain)", eventName: "\(screenWalletAddressWithChain)\(presenter.wallet!.chain)")
     }
@@ -123,7 +128,7 @@ extension WalletAddresessViewController: UITableViewDelegate, UITableViewDataSou
             
             var binaryData = account!.binaryDataString.createBinaryData()!
             
-            let data = DataManager.shared.coreLibManager.createAddress(blockchain: BlockchainType.create(wallet: self.presenter.wallet!),
+            let data = DataManager.shared.coreLibManager.createAddress(blockchainType: BlockchainType.create(wallet: self.presenter.wallet!),
                                                                        walletID: self.presenter.wallet!.walletID.uint32Value,
                                                                        addressID: UInt32(self.presenter.wallet!.addresses.count),
                                                                        binaryData: &binaryData)
@@ -135,8 +140,7 @@ extension WalletAddresessViewController: UITableViewDelegate, UITableViewDataSou
             params["currencyID"] = self.presenter.wallet!.chain
             
             DataManager.shared.addAddress(params: params) { (dict, error) in
-                DataManager.shared.getOneWalletVerbose(walletID: self.presenter.wallet!.walletID,
-                                                       blockchain: BlockchainType.create(wallet: self.presenter.wallet!), completion: { (wallet, error) in
+                DataManager.shared.getOneWalletVerbose(wallet: self.presenter.wallet!, completion: { (wallet, error) in
                                                         self.presenter.wallet = wallet
                                                         self.tableView.reloadData()
                 })

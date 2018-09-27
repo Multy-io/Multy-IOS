@@ -9,6 +9,8 @@ private typealias LocalizeDelegate = WalletSettingsViewController
 class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     
     @IBOutlet weak var walletNameTF: UITextField!
+    @IBOutlet weak var resyncBlockView: UIView!
+    @IBOutlet weak var resyncBlockHeightConstraint: NSLayoutConstraint!
     
     let presenter = WalletSettingsPresenter()
     
@@ -34,11 +36,40 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
         sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(presenter.wallet!.chain)", eventName: "\(closeWithChainTap)\(presenter.wallet!.chain)")
     }
     
+    @IBAction func resyncAction(_ sender: Any) {
+        presenter.resync()
+    }
+    
     func updateUI() {
         self.walletNameTF.text = self.presenter.wallet?.name
     }
     
     @IBAction func deleteAction(_ sender: Any) {
+        presenter.checkDeletePossibility { [unowned self] (result, reason) in
+            if result {
+                let message = self.localize(string: Constants.deleteWalletAlertString)
+                let alert = UIAlertController(title: self.localize(string: Constants.warningString), message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: self.localize(string: Constants.yesString), style: .cancel, handler: { [unowned self] (action) in
+                    self.loader.show(customTitle: self.localize(string: Constants.deletingString))
+                    self.presenter.delete()
+                    self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(walletDeletedWithChain)\(self.presenter.wallet!.chain)")
+                }))
+                alert.addAction(UIAlertAction(title: self.localize(string: Constants.noString), style: .default, handler: { (action) in
+                    alert.dismiss(animated: true, completion: nil)
+                    self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(walletDeleteCancelWithChain)\(self.presenter.wallet!.chain)")
+                }))
+            } else {
+                if reason != nil {
+                    let alert = UIAlertController(title: self.localize(string: Constants.warningString), message: self.localize(string: reason!), preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+        
+        self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(deleteWithChainTap)\(self.presenter.wallet!.chain)")
+        
+        
         if presenter.wallet!.isEmpty {
             let message = localize(string: Constants.deleteWalletAlertString)
             let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
@@ -59,7 +90,7 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-        self.sendAnalyticsEvent(screenName: "\(screenWalletSettingsWithChain)\(self.presenter.wallet!.chain)", eventName: "\(deleteWithChainTap)\(self.presenter.wallet!.chain)")
+        
     }
     
     @IBAction func touchInTF(_ sender: Any) {

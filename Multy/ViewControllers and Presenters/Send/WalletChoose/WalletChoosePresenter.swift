@@ -36,19 +36,19 @@ class WalletChoosePresenter: NSObject {
     }
     
     func filterWallets() {
+        filteredWalletArray = walletsArr.filter{ !$0.isMultiSig || ($0.isMultiSig && $0.multisigWallet!.isDeployed) }
+        
         if transactionDTO.sendAddress != nil {
-            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: transactionDTO.sendAddress!, for: $0).isValid }
-        } else {
-            filteredWalletArray = walletsArr.filter{ _ in true }
+            filteredWalletArray = filteredWalletArray.filter{ DataManager.shared.isAddressValid(address: transactionDTO.sendAddress!, for: $0).isValid }
         }
         
         walletChoooseVC?.emptyDataSourceLabel.isHidden = (filteredWalletArray.count != 0)
     }
     
-    func presentAlert(message : String?) {
+    func presentAlert(message : String?, blockchain: Blockchain) {
         var alertMessage = String()
         if message == nil {
-            alertMessage = walletChoooseVC!.localize(string: Constants.notEnoughAmountString) +  " \(transactionDTO.sendAmountString ?? "0,0") \(transactionDTO.blockchain!.fullName)"
+            alertMessage = walletChoooseVC!.localize(string: Constants.notEnoughAmountString) +  " \(transactionDTO.sendAmountString ?? "0,0") \(blockchain.shortName)"
         } else {
             alertMessage = message!
         }

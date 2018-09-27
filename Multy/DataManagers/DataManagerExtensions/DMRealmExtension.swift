@@ -119,4 +119,8 @@ extension DataManager {
         apiManager.token = token
         realmManager.updateAccount(tokenData) { (_, _) in }
     }
+    
+    func getWallet(primaryKey: String, completion: @escaping(_ result: Result<UserWalletRLM, String>) -> ()) {
+        realmManager.getWallet(primaryKey: primaryKey) { completion($0) }
+    }
 }

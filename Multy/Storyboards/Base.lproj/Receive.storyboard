@@ -58,27 +58,96 @@
                                     <outlet property="delegate" destination="x6R-t5-dzo" id="7Ed-9b-vwG"/>
                                 </connections>
                             </tableView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OTf-rE-tjL">
+                                <rect key="frame" x="342" y="26.5" width="17" height="34.5"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="25"/>
+                                <color key="textColor" red="0.32156862745098042" green="0.41176470588235292" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mgD-ot-Z6t">
+                                <rect key="frame" x="335" y="20" width="40" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="mHg-oz-ysk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="25"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="0.32156862745098042" green="0.41176470588235292" blue="0.46274509803921571" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="addWalletAction:" destination="x6R-t5-dzo" eventType="touchUpInside" id="826-jP-7Rv"/>
+                                </connections>
+                            </button>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="idE-bb-nma">
+                                <rect key="frame" x="0.0" y="233.5" width="375" height="300"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You do not have any" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8Y-Ib-XQx">
+                                        <rect key="frame" x="108.5" y="0.0" width="158.5" height="23.5"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                        <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{Ethereum} {Mainnet} " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m8v-oG-DAg">
+                                        <rect key="frame" x="102.5" y="23.5" width="170.5" height="23.5"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                        <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hck-Tt-FRr">
+                                        <rect key="frame" x="66" y="47" width="244" height="116.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="244" id="EYl-0U-Bpz"/>
+                                        </constraints>
+                                        <string key="text">wallet for joining this multisig wallet. 
+
+You can create one by tapping "+"  at the top right.</string>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                        <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="m8v-oG-DAg" firstAttribute="centerX" secondItem="h8Y-Ib-XQx" secondAttribute="centerX" id="HaT-YC-QeU"/>
+                                    <constraint firstItem="h8Y-Ib-XQx" firstAttribute="top" secondItem="idE-bb-nma" secondAttribute="top" id="MKK-6y-ZKl"/>
+                                    <constraint firstItem="hck-Tt-FRr" firstAttribute="top" secondItem="m8v-oG-DAg" secondAttribute="bottom" id="dEX-t8-USX"/>
+                                    <constraint firstItem="hck-Tt-FRr" firstAttribute="centerX" secondItem="m8v-oG-DAg" secondAttribute="centerX" id="eOh-bb-wOK"/>
+                                    <constraint firstItem="h8Y-Ib-XQx" firstAttribute="centerX" secondItem="idE-bb-nma" secondAttribute="centerX" id="l85-6Y-sb4"/>
+                                    <constraint firstItem="m8v-oG-DAg" firstAttribute="top" secondItem="h8Y-Ib-XQx" secondAttribute="bottom" id="rEg-HD-3fr"/>
+                                    <constraint firstAttribute="height" constant="300" id="vSe-2P-Mrx"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.92549019607843142" green="0.93333333333333335" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="mgD-ot-Z6t" firstAttribute="top" secondItem="CaU-QW-SxE" secondAttribute="bottom" id="0eI-9f-dIc"/>
                             <constraint firstItem="RHs-Mt-eGo" firstAttribute="top" secondItem="EY0-Gq-gbn" secondAttribute="bottom" constant="13" id="51z-45-K9C"/>
+                            <constraint firstItem="idE-bb-nma" firstAttribute="width" secondItem="LGI-Wi-zI2" secondAttribute="width" id="A6R-Z6-SZG"/>
                             <constraint firstItem="EY0-Gq-gbn" firstAttribute="leading" secondItem="LGI-Wi-zI2" secondAttribute="leading" id="Eyb-bq-7iI"/>
+                            <constraint firstAttribute="trailing" secondItem="OTf-rE-tjL" secondAttribute="trailing" constant="16" id="JFN-GZ-wI2"/>
                             <constraint firstItem="39R-Mj-hYl" firstAttribute="top" secondItem="RHs-Mt-eGo" secondAttribute="bottom" id="V5K-gc-Ns2"/>
                             <constraint firstItem="EY0-Gq-gbn" firstAttribute="trailing" secondItem="Ice-ba-dkQ" secondAttribute="trailing" constant="30" id="VGA-8d-i0c"/>
                             <constraint firstItem="RHs-Mt-eGo" firstAttribute="leading" secondItem="LGI-Wi-zI2" secondAttribute="leading" constant="36" id="Wgx-uX-Hon"/>
+                            <constraint firstItem="OTf-rE-tjL" firstAttribute="centerY" secondItem="Ice-ba-dkQ" secondAttribute="centerY" id="XBa-Eq-rJp"/>
                             <constraint firstItem="lpd-w8-Ylh" firstAttribute="centerX" secondItem="LGI-Wi-zI2" secondAttribute="centerX" id="b9n-iC-KN5"/>
                             <constraint firstItem="Ice-ba-dkQ" firstAttribute="leading" secondItem="LGI-Wi-zI2" secondAttribute="leading" constant="16" id="cTi-aA-Zd5"/>
                             <constraint firstItem="EY0-Gq-gbn" firstAttribute="top" secondItem="CaU-QW-SxE" secondAttribute="bottom" constant="9" id="cki-4A-miH"/>
                             <constraint firstItem="K4L-VM-xBr" firstAttribute="top" secondItem="39R-Mj-hYl" secondAttribute="bottom" id="dnx-Ln-dnH"/>
+                            <constraint firstItem="idE-bb-nma" firstAttribute="centerX" secondItem="LGI-Wi-zI2" secondAttribute="centerX" id="fCj-o7-oXe"/>
                             <constraint firstItem="Ice-ba-dkQ" firstAttribute="top" secondItem="CaU-QW-SxE" secondAttribute="bottom" constant="13" id="fby-HY-UBx"/>
                             <constraint firstAttribute="trailing" secondItem="39R-Mj-hYl" secondAttribute="trailing" id="ifa-mN-C8h"/>
                             <constraint firstItem="lpd-w8-Ylh" firstAttribute="top" secondItem="CaU-QW-SxE" secondAttribute="bottom" constant="13" id="jw2-8X-WrL"/>
                             <constraint firstItem="39R-Mj-hYl" firstAttribute="leading" secondItem="LGI-Wi-zI2" secondAttribute="leading" id="n3o-4N-Yun"/>
+                            <constraint firstAttribute="trailing" secondItem="mgD-ot-Z6t" secondAttribute="trailing" id="rHG-Sw-w7t"/>
+                            <constraint firstItem="idE-bb-nma" firstAttribute="centerY" secondItem="LGI-Wi-zI2" secondAttribute="centerY" constant="50" id="tpq-52-XT4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3AY-Ic-L6s"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="addWallet" destination="mgD-ot-Z6t" id="bvl-u9-H15"/>
+                        <outlet property="blockchainTypeLbl" destination="m8v-oG-DAg" id="Ymo-5O-8Mv"/>
+                        <outlet property="emptyWalletsView" destination="idE-bb-nma" id="fVZ-6S-mIm"/>
+                        <outlet property="plusLbl" destination="OTf-rE-tjL" id="M8v-mH-cOC"/>
                         <outlet property="tableView" destination="39R-Mj-hYl" id="ghC-NS-aIo"/>
                         <outlet property="titleLbl" destination="lpd-w8-Ylh" id="pTe-Ls-0Ez"/>
                         <segue destination="Ci5-VC-rpK" kind="show" identifier="receiveDetails" id="N0a-eV-HdN"/>
@@ -340,7 +409,7 @@
                                                     <constraint firstAttribute="trailing" secondItem="ThE-pM-iFA" secondAttribute="trailing" id="q86-9I-Q6B"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TcM-XW-eXl">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TcM-XW-eXl">
                                                 <rect key="frame" x="50" y="175" width="245.5" height="15.5"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="11"/>
                                                 <color key="textColor" red="0.21176470589999999" green="0.21176470589999999" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -47,9 +47,22 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
         self.sendStartVC?.performSegue(withIdentifier: "qrCamera", sender: Any.self)
     }
   
-    func qrData(string: String) {
+    func qrData(string: String, tag: String?) {
         transactionDTO.update(from: string)
         sendStartVC?.updateTVAndNextButton(with: transactionDTO.sendAddress!)
+    }
+    
+    func copiedAddress() -> String? {
+        var result : String?
+        let pasteboardString: String? = UIPasteboard.general.string
+        if let theString = pasteboardString {
+            print("String is \(theString)")
+            
+            if DataManager.shared.coreLibManager.isAddressValid(theString, for: transactionDTO.choosenWallet!.blockchainType).0 {
+                result = theString
+            }
+        }
+        return result
     }
     
     func isValidCryptoAddress() -> Bool {

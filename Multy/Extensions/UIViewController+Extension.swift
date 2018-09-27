@@ -23,12 +23,21 @@ private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, origin
 
 extension Localizable where Self: UIViewController, Self: Localizable {
 
-    func presentAlert(with message: String?) {
-        let alert = UIAlertController(title: localize(string: Constants.errorString), message: message, preferredStyle: .alert)
+    func presentAlert(with message: String?) {        
+        presentAlert(withTitle: localize(string: Constants.errorString), andMessage: message)
+    }
+    
+    func presentInfoAlert(with message: String) {
+        presentAlert(withTitle: nil, andMessage: message)
+    }
+    
+    func presentAlert(withTitle title: String?, andMessage message: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         
         self.present(alert, animated: true, completion: nil)
     }
+
     
     func makePurchaseFor(productId: String) {
         let loader = PreloaderView(frame: HUDFrame, text: localize(string: Constants.loadingString), image: #imageLiteral(resourceName: "walletHuge"))
@@ -80,6 +89,22 @@ extension UIViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    func closeVcByTap() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissVC))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissVC() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func animateLayout() { // animation when changed constraint
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
     }
 
     func isOperationSystemAtLeast11() -> Bool {
@@ -207,6 +232,10 @@ extension UIViewController {
     func swipeToBack() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+    
+    func disableSwipeToBack() {
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     func isVCVisible() -> Bool {

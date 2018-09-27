@@ -12,7 +12,7 @@ class FastOperationsPresenter: NSObject, QrDataProtocol {
     var amountInCrypto = 0.0
     var blockchain: Blockchain?
     
-    func qrData(string: String) {
+    func qrData(string: String, tag: String?) {
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let destVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
         destVC.presenter.transactionDTO.update(from: string)

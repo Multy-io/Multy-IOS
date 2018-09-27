@@ -24,6 +24,9 @@ class UserWalletRLM: Object {
     @objc dynamic var lastActivityTimestamp = NSNumber(value: 0)
     @objc dynamic var isSyncing = NSNumber(booleanLiteral: false)
     
+    @objc dynamic var importedPrivateKey = String()
+    @objc dynamic var importedPublicKey = String()
+    
     var changeAddressIndex: UInt32 {
         get {
             switch blockchainType.blockchain {
@@ -172,7 +175,57 @@ class UserWalletRLM: Object {
     }
     
     var shouldCreateNewAddressAfterTransaction: Bool {
-        return blockchainType.blockchain  == BLOCKCHAIN_BITCOIN
+        return blockchainType.blockchain == BLOCKCHAIN_BITCOIN
+    }
+    
+    var isMultiSig: Bool {
+        return multisigWallet != nil
+    }
+    
+    var isImported: Bool {
+        return walletID.int32Value < 0
+    }
+    
+    func confirmationStatusForTransaction(transaction : HistoryRLM) -> ConfirmationStatus {
+        var result = ConfirmationStatus.waiting
+        if isMultiSig && transaction.multisig != nil {
+            let currentOwner = multisigWallet?.owners.filter {$0.associated == true}.first
+            guard currentOwner != nil else {
+                return result
+            }
+            
+            let transactionOwner = transaction.multisig!.owners.filter {$0.address == currentOwner!.address}.first
+            if transactionOwner != nil {
+                result = ConfirmationStatus(rawValue: transactionOwner!.confirmationStatus.intValue)!
+            }
+        }
+        return result
+    }
+    
+    func currentTransactionOwner(transaction : HistoryRLM) -> MultisigTransactionOwnerRLM? {
+        var result : MultisigTransactionOwnerRLM?
+        if isMultiSig && transaction.multisig != nil {
+            let currentOwner = multisigWallet?.owners.filter {$0.associated == true}.first
+            guard currentOwner != nil else {
+                return nil
+            }
+            
+            result = transaction.multisig!.owners.filter {$0.address == currentOwner!.address}.first
+        }
+        
+        return result
+    }
+    
+    func isRejected(tx: HistoryRLM) -> Bool {
+        guard tx.multisig != nil else {
+            return false
+        }
+        let declinedCount = tx.multisig!.owners.reduce(0) {
+            $0 + ($1.confirmationStatus.intValue == MultisigOwnerTxStatus.msOwnerStatusDeclined.rawValue ? 1 : 0)
+        }
+//        let declinedCount = tx.multisig!.owners.filter { $0.confirmationStatus.intValue == MultisigOwnerTxStatus.msOwnerStatusDeclined.rawValue }.count
+        
+        return declinedCount + multisigWallet!.signaturesRequiredCount > multisigWallet!.ownersCount
     }
     
     @objc dynamic var fiatName = String()
@@ -186,7 +239,8 @@ class UserWalletRLM: Object {
     
     @objc dynamic var ethWallet: ETHWallet?
     @objc dynamic var btcWallet: BTCWallet?
-        
+    @objc dynamic var multisigWallet: MultisigWallet?
+
     var exchangeCourse: Double {
         get {
             return DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
@@ -220,10 +274,27 @@ class UserWalletRLM: Object {
         return wallets
     }
     
+    public class func initArrayWithArray(walletsArray: NSArray) -> [UserWalletRLM] {
+        var wallets = [UserWalletRLM]()
+        
+        for walletInfo in walletsArray {
+            let wallet = UserWalletRLM.initWithInfo(walletInfo: walletInfo as! NSDictionary)
+            wallets.append(wallet)
+        }
+        
+        return wallets
+    }
+    
     public class func initWithInfo(walletInfo: NSDictionary) -> UserWalletRLM {
         let wallet = UserWalletRLM()
-        wallet.ethWallet = ETHWallet()
-        wallet.btcWallet = BTCWallet()
+        
+        if let privateKey = walletInfo["importedPrivateKey"] {
+            wallet.importedPrivateKey = privateKey as! String
+        }
+        
+        if let publicKey = walletInfo["importedPublicKey"] {
+            wallet.importedPublicKey = publicKey as! String
+        }
         
         if let chain = walletInfo["currencyid"]  {
             wallet.chain = NSNumber(value: chain as! UInt32)
@@ -235,11 +306,11 @@ class UserWalletRLM: Object {
         
         //MARK: to be deleted
         if let walletID = walletInfo["WalletIndex"]  {
-            wallet.walletID = NSNumber(value: walletID as! UInt32)
+            wallet.walletID = NSNumber(value: walletID as! Int32)
         }
         
         if let walletID = walletInfo["walletindex"]  {
-            wallet.walletID = NSNumber(value: walletID as! UInt32)
+            wallet.walletID = NSNumber(value: walletID as! Int32)
         }
         
         if let walletName = walletInfo["walletname"] {
@@ -261,14 +332,32 @@ class UserWalletRLM: Object {
         //parse addition info for each chain
         wallet.updateSpecificInfo(from: walletInfo)
         
+        wallet.updateWalletWithInfo(walletInfo: walletInfo)
+        
         //MARK: temporary only 0-currency
         //MARK: server BUG: WalletIndex and walletindex
         //No data from server
         if walletInfo["walletindex"] != nil || walletInfo["WalletIndex"] != nil {
-            wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.uint32Value)
+            if !wallet.isMultiSig && !wallet.isImported {
+                wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.int32Value)
+            } else if wallet.isMultiSig {
+                // Multisig wallet
+                wallet.id = DataManager.shared.generateMultisigWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, inviteCode: wallet.multisigWallet!.inviteCode)
+                let owner = wallet.multisigWallet!.owners.filter { $0.associated == true }.first
+                if owner != nil {
+                    let isLinkedWalletImported = owner!.walletIndex == -1
+                    
+                    if isLinkedWalletImported {
+                        wallet.multisigWallet!.linkedWalletID = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, address: owner!.address) //DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: owner!.address.int32Value, inviteCode:nil)
+                    } else {
+                        wallet.multisigWallet?.linkedWalletID = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: owner!.walletIndex.int32Value)
+                    }
+                }
+            } else {
+                // Imported wallet
+                wallet.id = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, address: wallet.address)
+            }
         }
-        
-        wallet.updateWalletWithInfo(walletInfo: walletInfo)
         
         return wallet
     }
@@ -510,6 +599,49 @@ class UserWalletRLM: Object {
 //        self.fiatName = "USD"
 //        self.fiatSymbol = "$"
 //    }
+    
+    func isAddressBelongsToWallet(_ address: String) -> Bool {
+        var result = false
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            let matchingAddresses = addresses.filter {$0.address == address}
+            if matchingAddresses.count > 0 {
+                result = true
+            }
+            break
+            
+        case BLOCKCHAIN_ETHEREUM:
+            result = self.address == address
+            break
+            
+        default:
+            break
+        }
+        
+        return result
+    }
+    
+    func txAmount(_ tx: HistoryRLM) -> BigInt {
+        var result = BigInt.zero()
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            result = BigInt("\(outgoingAmount(for: tx))") - tx.fee(for: blockchain)
+            
+        //  return txOutAmount.doubleValue.fixedFraction(digits: 8)
+        case BLOCKCHAIN_ETHEREUM:
+            result = BigInt(tx.txOutAmountString)
+            
+            if tx.isOutcoming() && tx.multisig == nil {
+                result = result + tx.fee(for: blockchain)
+            }
+        //   return txOutAmountString.appendDelimeter(at: 18)
+        default:
+            break
+            //return ""
+        }
+        
+        return result
+    }
 }
 
 extension ETHWalletRLM {
@@ -551,6 +683,7 @@ extension WalletUpdateRLM {
             break
         case BLOCKCHAIN_ETHEREUM.rawValue:
             updateETHWallet(from: infoDict)
+            updateMultiSigWallet(from: infoDict)
         default:
             break
         }
@@ -564,7 +697,7 @@ extension WalletUpdateRLM {
     func updateETHWallet(from infoDict: NSDictionary) {
         if let balance = infoDict["balance"] as? String {
             ethWallet = ETHWallet()
-            ethWallet!.balance = balance
+            ethWallet!.balance = balance.isEmpty ? "0" : balance
         }
         
         if let nonce = infoDict["nonce"] as? NSNumber {
@@ -572,10 +705,97 @@ extension WalletUpdateRLM {
         }
         
         if let pendingBalance = infoDict["pendingbalance"] as? String {
-            ethWallet!.pendingWeiAmountString = pendingBalance
+            ethWallet!.pendingWeiAmountString = pendingBalance.isEmpty ? "0" : pendingBalance
             
             if ethWallet!.pendingWeiAmountString != "0" {
                 isTherePendingTx = NSNumber(booleanLiteral: true)
+            }
+        }
+    }
+    
+    func updateMultiSigWallet(from infoDict: NSDictionary) {
+        if let multisig = infoDict["multisig"] as? NSDictionary {
+            multisigWallet = MultisigWallet()
+            
+            if chainType.intValue == ETHEREUM_CHAIN_ID_MAINNET.rawValue {
+                multisigWallet!.chainType = NSNumber(value: ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue)
+            } else {
+                multisigWallet!.chainType = NSNumber(value: ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue)
+            }
+            
+            if let ownersCount = multisig["ownersCount"] as? Int {
+                multisigWallet!.ownersCount = ownersCount
+            }
+            
+            if let signaturesRequired = multisig["confirmations"] as? Int {
+                multisigWallet!.signaturesRequiredCount = signaturesRequired
+            }
+            
+            if let inviteCode = multisig["inviteCode"] as? String {
+                multisigWallet!.inviteCode = inviteCode
+            }
+            
+            if let isHavePaymentRequest = multisig["havePaymentReqests"] as? Bool {
+                multisigWallet!.isActivePaymentRequest = isHavePaymentRequest
+            }
+            
+            if let ownersStruct = multisig["owners"] as? [NSDictionary] {
+                let owners = List<MultisigOwnerRLM>()
+                for ownerStruct in ownersStruct {
+                    let owner = MultisigOwnerRLM()
+                    
+                    if let userID = ownerStruct["userID"] as? String {
+                        owner.userID = userID
+                    }
+                    
+                    if let address = ownerStruct["address"] as? String {
+                        owner.address = address
+                    }
+                    
+                    if let associated = ownerStruct["associated"] as? Bool {
+                        owner.associated = NSNumber(booleanLiteral: associated)
+                    }
+                    
+                    if let walletIndex = ownerStruct["walletIndex"] as? Int {
+                        owner.walletIndex = NSNumber(value: walletIndex)
+                    }
+                    
+                    if let addressIndex = ownerStruct["addressIndex"] as? Int {
+                        owner.addressIndex = NSNumber(value: addressIndex)
+                    }
+                    
+                    if let creator = ownerStruct["creator"] as? Bool {
+                        owner.creator = NSNumber(booleanLiteral: creator)
+                    }
+                    
+                    if owner.creator as! Bool && owner.associated as! Bool {
+                        multisigWallet!.amICreator = true
+                    }
+                    
+                    if owner.associated as! Bool {
+                        multisigWallet!.linkedWalletAddress = owner.address
+                    }
+                    
+                    owners.append(owner)
+                }
+                
+                multisigWallet!.owners = owners
+            }
+            
+            if let deployStatus = multisig["deployStatus"] as? Int {
+                multisigWallet!.deployStatus = NSNumber(integerLiteral: deployStatus)
+            }
+            
+            if let isDeleted = multisig["status"] as? Bool {
+                multisigWallet!.isDeleted = NSNumber(booleanLiteral: isDeleted)
+            }
+            
+            if let TxOfCreation = multisig["txOfCreation"] as? String {
+                multisigWallet!.txOfCreation = TxOfCreation
+            }
+            
+            if let factoryAddress = multisig["factoryAddress"] as? String {
+                multisigWallet!.factoryAddress = factoryAddress
             }
         }
     }

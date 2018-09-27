@@ -6,6 +6,8 @@ import UIKit
 import SocketIO
 import AVFoundation
 
+private typealias MessageHandler = Socket
+
 class Socket: NSObject {
     static let shared = Socket()
     
@@ -35,6 +37,7 @@ class Socket: NSObject {
             
             self.manager = SocketManager(socketURL: URL(string: socketUrl)!, config: [.log(false), .compress, .forceWebsockets(true), .reconnectAttempts(3), .forcePolling(false), .extraHeaders(header), .secure(false)])
             self.socket = self.manager.defaultSocket
+            //SocketIOClient(manager: self.manager, nsp: "")
             
             self.socket.on(clientEvent: .connect) {data, ack in
                 print("socket connected")
@@ -75,6 +78,15 @@ class Socket: NSObject {
                 ack.with("Got your currentAmount", "dude")
             }
             
+            self.socket.on("message:recieve:\(account!.userID)") {data, ack in
+                guard let firstData = data.first as? [AnyHashable : Any] else {
+                    return
+                }
+                
+                print("message:recieve:\n\(firstData)")
+                
+                self.handleMessage(firstData)
+            }
             
             self.socket.connect()
         }
@@ -172,6 +184,28 @@ class Socket: NSObject {
         }
     }
     
+    
+    // ================================== MULTI SIG TEST =================================================== //
+    
+    func sendMsg(params: NSDictionary, completion: @escaping(_ answer: NSDictionary?, _ error: Error?) -> ()) {
+        print("SOCKET Emit message:send with params: \n\(params)")
+        socket.emitWithAck("message:send", with: [params]).timingOut(after: 1) { data in
+            print("answer: \n \(data)")
+            let answer = data.first!
+            if answer is String {
+                let err = NSError(domain: "", code: 555, userInfo: ["Error": "No Ack"]) as Error
+                completion(nil, err) // FIX IT: completion(nil, error)
+                
+                return
+            }
+            
+            let dict = answer as! NSDictionary
+            completion(dict, nil)
+        }
+    }
+    
+    
+    
 //    func txSend(params : [String: Any]) {
 //        print("txSend : \(params)")
 //
@@ -190,5 +224,182 @@ class Socket: NSObject {
 //    }
 }
 
-
-
+extension MessageHandler {
+    private func handleMessage(_ data: [AnyHashable : Any]) {
+        let msgType : Int = data["type"] as! Int
+        let messageType = SocketMessageType(rawValue: msgType)
+        
+        guard messageType != nil else {
+            return
+        }
+        
+        switch SocketMessageType(rawValue: msgType)!  {
+        case SocketMessageType.multisigJoin:
+            let payload = data["payload"] as! [AnyHashable : Any]
+            let inviteCode = payload["inviteCode"] as! String
+            let userInfo = ["inviteCode" : inviteCode]
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
+            break
+            
+        case SocketMessageType.multisigLeave:
+            let payload = data["payload"] as! [AnyHashable : Any]
+            let inviteCode = payload["inviteCode"] as! String
+            let userInfo = ["inviteCode" : inviteCode]
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
+            break
+            
+        case SocketMessageType.multisigDelete:
+            let inviteCode = data["payload"] as! String
+            NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: ["inviteCode" : inviteCode])
+            break
+            
+        case SocketMessageType.multisigKick:
+            let payload = data["payload"] as! [AnyHashable : Any]
+            let multisig = payload["multisig"] as? [AnyHashable : Any]
+            
+            guard multisig != nil else {
+                return
+            }
+            let inviteCode = multisig!["inviteCode"] as! String
+            var userInfo = ["inviteCode" : inviteCode]
+            if let kickedAddress = payload["kickedAddress"] as? String {
+                userInfo["kickedAddress"] = kickedAddress
+            }
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
+            break
+        case SocketMessageType.multisigCheck:
+            break
+        case SocketMessageType.multisigView:
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["ContractAddress"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
+            break
+        case SocketMessageType.multisigDecline:
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["ContractAddress"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
+            break
+        case SocketMessageType.multisigWalletDeploy:
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let inviteCode = payload!["inviteCode"] as? String
+            let statusCode = payload!["deployStatus"] as? Int
+            
+            guard inviteCode != nil, inviteCode!.isEmpty == false, statusCode != nil, statusCode == DeployStatus.deployed.rawValue else {
+                return
+            }
+            
+            let userInfo = ["inviteCode" : inviteCode!]
+            
+            NotificationCenter.default.post(name: NSNotification.Name("msWalletUpdated"), object: nil, userInfo: userInfo)
+            break
+        case SocketMessageType.multisigTxPaymentRequest:
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["To"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
+            break
+        case SocketMessageType.multisigTxIncoming:
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["To"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
+            break
+        case SocketMessageType.multisigTxConfirm:
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["To"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
+            break
+        case SocketMessageType.multisigTxRevoke:
+            let payload = data["payload"] as? [AnyHashable : Any]
+            
+            guard payload != nil else {
+                return
+            }
+            
+            let address = payload!["To"] as? String
+            let txHash = payload!["Hash"] as? String
+            
+            guard address != nil && txHash != nil else {
+                return
+            }
+            
+            handleMSTxUpdatedMessage(address: address!, hash: txHash!)
+            break
+            
+        case SocketMessageType.resyncCompleted:
+            print("Resync completed")
+            NotificationCenter.default.post(name: NSNotification.Name("resyncCompleted"), object: nil, userInfo: nil)
+            break
+        }
+        
+       
+    }
+    
+    private func handleMSTxUpdatedMessage(address : String, hash : String) {
+        let data = ["contractAddress" : address,
+                    "txHash" : hash]
+        
+        NotificationCenter.default.post(name: NSNotification.Name("msTransactionUpdated"), object: nil, userInfo: data)
+    }
+}

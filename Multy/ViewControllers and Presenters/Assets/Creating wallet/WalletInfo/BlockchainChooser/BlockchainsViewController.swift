@@ -21,7 +21,7 @@ class BlockchainsViewController: UIViewController {
     var stringInAppId = ""
     var stringInAppIdBig = ""
     
-    weak var delegate: ChooseBlockchainProtocol?
+    weak var delegate: BlockchainTransferProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,8 +79,13 @@ extension TableViewDelegate: UITableViewDelegate {
             label.textColor = #colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 1)
             label.text = localize(string: Constants.availableString)
         } else {
-            label.textColor = #colorLiteral(red: 0.9215686275, green: 0.08235294118, blue: 0.231372549, alpha: 1)
-            label.text = localize(string: Constants.workInProgressString)
+            if presenter.donateBlockchainArray.count > 0 {
+                label.textColor = #colorLiteral(red: 0.9215686275, green: 0.08235294118, blue: 0.231372549, alpha: 1)
+                label.text = localize(string: Constants.workInProgressString)
+            } else {
+                label.isHidden = true
+            }
+            
         }
         
         header.addSubview(label)

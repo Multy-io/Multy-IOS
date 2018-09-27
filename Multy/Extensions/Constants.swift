@@ -7,6 +7,7 @@ import UIKit
 private typealias LocalizeDelegate = Constants
 
 struct Constants {
+    
     //Assets screen
     struct AssetsScreen {
         static let createWalletString = "Create wallet"
@@ -26,11 +27,11 @@ struct Constants {
         //Assets
         static let createWalletVCSegueID = "createWalletVC"
         static let contactVCSegueID = "contactVC"
+        static let waitingMembersSettingsVCSegueID = "waitingMembersSettings"
     }
     
     struct UserDefaults {
         //Config constants
-        
         static let apiVersionKey =         "apiVersion"
         static let hardVersionKey =        "hardVersion"
         static let softVersionKey =        "softVersion"
@@ -48,6 +49,9 @@ struct Constants {
             BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_MAINNET.rawValue)),
             BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_RINKEBY.rawValue)),
         ]
+        
+        static let availableMultisigBlockchains = [BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_MAINNET.rawValue)),
+                                                   BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_RINKEBY.rawValue))]
         
         static let donationBlockchains = [
 //            BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM.rawValue, netType: UInt32(ETHEREUM_CHAIN_ID_MAINNET.rawValue)),
@@ -165,15 +169,64 @@ let idOfInapps50 = ["io.multy.addingActivity50", "io.multy.addingCharts50", "io.
                   "io.multy.addingPortfolio50", "io.multy.addingSteemit50", "io.multy.wirelessScan50",
                   "io.multy.addingBCH50", "io.multy.estimationCurrencie50", "io.multy.addingEthereum50"]
 
+enum WalletType : Int {
+    case
+        Created =       0,
+        Multisig =      1,
+        Imported =      2
+}
+
 enum TxStatus : Int {
     case
-        Rejected =                  0,
-        MempoolIncoming =           1,
-        BlockIncoming =             2,
-        MempoolOutcoming =          3,
-        BlockOutcoming =            4,
-        BlockConfirmedIncoming =    5,
-        BlockConfirmedOutcoming =   6
+        Rejected =                   0,
+        MempoolIncoming =            1,
+        BlockIncoming =              2,
+        MempoolOutcoming =           3,
+        BlockOutcoming =             4,
+        BlockConfirmedIncoming =     5,
+        BlockConfirmedOutcoming =    6,
+        BlockMethodInvocationFail =  7,
+        TxStatusTxRejectedIncoming = 8,
+        TxStatusTxRejectedOutgoing = 9
+}
+
+enum SocketMessageType : Int {
+    case
+        multisigJoin =              1,
+        multisigLeave =             2,
+        multisigDelete =            3,
+        multisigKick =              4,
+        multisigCheck =             5,
+        multisigView =              6,
+        multisigDecline =           7,
+        multisigWalletDeploy =      8,
+        multisigTxPaymentRequest =  9,
+        multisigTxIncoming =        10,
+        multisigTxConfirm =         11,
+        multisigTxRevoke =          12,
+        resyncCompleted =            13
+}
+
+enum Result<Value, Error: StringProtocol> {
+    case success(Value)
+    case failure(Error)
+}
+
+enum MultiSigWalletStatus: Int {
+    case
+        multisigStatusWaitingForJoin =  1,
+        multisigStatusAllJoined =       2,
+        multisigStatusDeployPending =   3,
+        multisigStatusRejected =        4,
+        multisigStatusDeployed =        5
+}
+
+enum MultisigOwnerTxStatus: Int {
+    case
+    msOwnerStatusWaiting   = 0,
+    msOwnerStatusSeen      = 1,
+    msOwnerStatusConfirmed = 2,
+    msOwnerStatusDeclined  = 3
 }
 
 let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for available donation
@@ -182,14 +235,15 @@ let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 //API REST constants
 //let apiUrl = "http://88.198.47.112:2278/"//"http://192.168.0.121:7778/"
 
+
 let shortURL = "api.multy.io"
 let apiUrl = "https://\(shortURL)/"
 let socketUrl = "wss://\(shortURL)/"
 
-//STAGE
-//let shortURL = "148.251.42.107"
-//let apiUrl = "http://\(shortURL)/"
-//let socketUrl = "ws://\(shortURL)/"
+//stage
+//let shortURL = "148.251.42.107/"
+//let apiUrl = "http://\(shortURL)"
+//let socketUrl = "ws://\(shortURL)"
 
 //JACK
 //let shortURL = "192.168.31.146"
@@ -203,3 +257,5 @@ let nonLocalURL = "http://88.198.47.112:7778/"
 // Bluetooth
 let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"
 let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
+
+let inviteCodeCount = 45

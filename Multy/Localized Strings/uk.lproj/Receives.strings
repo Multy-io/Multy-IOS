@@ -1,10 +1,6 @@
-/* 
-  Receive.strings
-  Multy
-
-  Created by Alex Pro on 5/30/18.
-  Copyright © 2018 Idealnaya rabota. All rights reserved.
-*/
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
 
 "WARNING" = "Попередження";
 "CANCEL" = "Скасувати";
@@ -20,3 +16,4 @@
 "CANNOT CHOOSE EMPTY WALLET" = "Ви не можете вибрати порожній гаманець. Виберіть гаманець з деякою сумою";
 "ENTER NON-ZERO AMOUNT" = "Будь ласка, введіть ненульову кількість!";
 "YOU CANT ENTER SUM" = "Ви не можете ввести суму більше, ніж має наявність в мережі";
+"JOIN WITH" = "Приєднатися з";

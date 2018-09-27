@@ -96,7 +96,7 @@
 "Vis-uX-a9U.text" = "Блокчейни";
 
 /* Class = "UILabel"; text = "Import Wallet"; ObjectID = "XSz-h8-kEl"; */
-"XSz-h8-kEl.text" = "Імпортувати гаманець";
+"XSz-h8-kEl.text" = "Імпортувати Eth гаманець";
 
 /* Class = "UILabel"; text = "BTC"; ObjectID = "XXC-0f-DEu"; */
 "XXC-0f-DEu.text" = "BTC";
@@ -150,7 +150,7 @@
 "gwH-0Q-jV7.normalTitle" = "Пожертвувати USD 5";
 
 /* Class = "UIButton"; normalTitle = "Create New"; ObjectID = "hgF-yi-Usi"; */
-"hgF-yi-Usi.normalTitle" = "Створювати Новий";
+"hgF-yi-Usi.normalTitle" = "Створити Новий";
 
 /* Class = "UILabel"; text = "Select wallet and donation sum"; ObjectID = "kVh-aV-sdy"; */
 "kVh-aV-sdy.text" = "Виберіть гаманець і суму пожертви";
@@ -202,6 +202,9 @@
 
 "tRx-hg-wDk.normalTitle" = " Скопіювати ";
 
+"Z9G-zI-eT6.normalTitle" = "Створити MultiSig";
+"HGd-JI-MhQ.normalTitle" = "Приєднатися до MultiSig";
+
 /* Class = "UILabel"; text = "Enter Address and Cryptocurrency"; ObjectID = "0kN-rx-Uz2"; */
 "0kN-rx-Uz2.text" = "Введіть адресу і блокчейн";
 
@@ -210,3 +213,10 @@
 "vIi-D1-j5u.text" = "Немає адрес";
 "oge-1a-bae.text" = "Збережені адреси";
 "oBc-4M-4Or.normalTitle" = "Видалити акаунт";
+
+
+"ZX3-vh-37X.normalTitle" = "Закрити";
+
+"11d-Ue-k9Z.text" = "Наведіть камеру на запрошення QR-код гаманця multisig або вставте код запрошення нижче";
+
+"d8O-pl-cI9.text" = "Вставте код запрошення сюди";

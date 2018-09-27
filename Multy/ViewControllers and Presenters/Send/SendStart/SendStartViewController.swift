@@ -341,6 +341,26 @@ extension TextViewDelegate: UITextViewDelegate {
         return true
     }
     
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        let copiedAddress = presenter.copiedAddress()
+        if copiedAddress != nil {
+            let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
+            
+            let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let pasteButton = UIBarButtonItem(title: copiedAddress!, style: .plain, target: self, action: #selector(self.handlePasteFromClipboard(_:)))
+            let font = UIFont(name: "AvenirNext-Regular", size: 14.0)!
+            let attributes = [NSAttributedStringKey.font : font]
+            
+            pasteButton.setTitleTextAttributes(attributes, for: .normal)
+            pasteButton.setTitleTextAttributes(attributes, for: .highlighted)
+            
+            toolbar.items = [spacer, pasteButton, spacer]
+            addressTV.inputAccessoryView = toolbar
+        }
+        
+        return true
+    }
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             placeholderLabel.isHidden = !placeholderLabel.isHidden
@@ -349,6 +369,15 @@ extension TextViewDelegate: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
+    }
+    
+    @objc fileprivate func handlePasteFromClipboard(_ button: UIBarButtonItem) {
+        addressTV.text = button.title
+        
+        if !checkTVisEmpty() {
+            modifyNextButtonMode()
+        }
+        addressTV.resignFirstResponder()
     }
 }
 

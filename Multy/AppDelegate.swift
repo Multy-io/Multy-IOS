@@ -88,9 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                 if code != nil && code != "" {
                     isNeedToAutorise = true
                 }
-                
-                // for debug and development only
-                Branch.getInstance().setDebug()
                 Branch.getInstance().initSession(launchOptions: launchOptions) { [weak self] (params, error) in
                     if error == nil {
                         let dictFormLink = params! as NSDictionary
@@ -470,36 +467,46 @@ extension AppDelegate {
     //FIXME: uncomment method after implemeting push notification on backend
     func openTx(_ info: [AnyHashable: Any]) {
         if let txID = info["txid"] as? String, let currencyID = UInt32(info["currencyid"] as! String), let networkID = Int(info["networkid"] as! String), let walletIDString = info["walletindex"] as? String {
-            let walletID = NSNumber(value: Int(walletIDString)!)
-
+            let walletID = NSNumber(value: Int32(walletIDString)!)
+            
             getTxAndPresent(with: txID, currencyID, networkID, walletID)
         }
     }
     
     func getTxAndPresent(with txID: String, _ currencyID: UInt32, _ networkID: Int, _ walletID: NSNumber) {
+        let mockWallet = createMockWalletForVerbose(currencyID: currencyID, networkID: networkID, walletID: walletID)
         let blockchainType = BlockchainType.init(blockchain: Blockchain.init(currencyID), net_type: networkID)
-        DataManager.shared.getOneWalletVerbose(walletID: walletID, blockchain: blockchainType) { (wallet, error) in
-            let networkNumber = NSNumber(value: networkID)
-            let currencyNumber = NSNumber(value: currencyID)
-            DataManager.shared.getTransactionHistory(currencyID: currencyNumber, networkID: networkNumber, walletID: walletID, completion: { (history, error) in
-                guard let history = history, let wallet = wallet else {
-                    return
-                }
-                
-                let tx = history.filter{ $0.txHash == txID }.first
-                
-                guard let histObj = tx else {
-                    return
-                }
-                
-                let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
-                let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
-                transactionVC.presenter.histObj = histObj
-                transactionVC.presenter.blockchainType = blockchainType
-                transactionVC.presenter.wallet = wallet
-                
-                ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(transactionVC, animated: false)
-            })
+        
+        DataManager.shared.getOneWalletVerbose(wallet: mockWallet) { (wallet, error) in
+            if wallet != nil {
+                DataManager.shared.getTransactionHistory(wallet: wallet!, completion: { (history, error) in
+                    guard let history = history, let wallet = wallet else {
+                        return
+                    }
+                    
+                    let tx = history.filter{ $0.txHash == txID }.first
+                    
+                    guard let histObj = tx else {
+                        return
+                    }
+                    
+                    let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
+                    let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
+                    transactionVC.presenter.histObj = histObj
+                    transactionVC.presenter.blockchainType = blockchainType
+                    transactionVC.presenter.wallet = wallet
+                    
+                    ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(transactionVC, animated: false)
+                })
+            }
         }
+    }
+    
+    func createMockWalletForVerbose(currencyID: UInt32, networkID: Int, walletID: NSNumber) -> UserWalletRLM {
+        let result = UserWalletRLM()
+        result.walletID = walletID
+        result.chain = NSNumber(value: currencyID)
+        result.chainType = NSNumber(value: networkID)
+        return result
     }
 }

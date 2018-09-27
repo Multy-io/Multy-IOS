@@ -11,12 +11,15 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var addWallet: UIButton!
+    @IBOutlet weak var plusLbl: UILabel!
+    @IBOutlet weak var emptyWalletsView: UIView!
+    @IBOutlet weak var blockchainTypeLbl: UILabel!
+    
     
     let presenter = ReceiveStartPresenter()
     
     weak var sendWalletDelegate: SendWalletProtocol?
-    
-    var titleTextKey = Constants.receiveString
     
     var whereFrom: UIViewController?
     
@@ -24,19 +27,21 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.presenter.receiveStartVC = self
         view.addSubview(loader)
         self.swipeToBack()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        self.tabBarController?.tabBar.isHidden = true
-        self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        self.titleLbl.text = localize(string: titleTextKey)
+        (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+//        self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        self.titleLbl.text = presenter.titleTextKey.count > 0 ? localize(string: presenter.titleTextKey):""
         
-        self.presenter.receiveStartVC = self
         self.registerCells()
 //        self.presenter.createWallets()
         if presenter.walletsArr.count == 0 {
             self.presenter.getWallets()
+        }
+        if presenter.displayedBlockchainOnly != nil {
+            blockchainTypeLbl.text = "\(presenter.displayedBlockchainOnly!.fullName) \(presenter.displayedBlockchainOnly!.isMainnet ? "MainNet" : "TestNet")"
         }
         sendAnalyticsEvent(screenName: screenReceive, eventName: screenReceive)
     }
@@ -44,6 +49,10 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (self.tabBarController as! CustomTabBarViewController).menuButton.isHidden = true
+        if whereFrom != nil && whereFrom?.className == CreateMultiSigViewController.className || whereFrom?.className == AssetsViewController.className {
+            addWallet.isHidden = false
+            plusLbl.isHidden = false
+        }
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
 //            self.deselectCell()
 //        })
@@ -65,7 +74,13 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
         }
         sendAnalyticsEvent(screenName: screenReceive, eventName: closeTap)
     }
-
+    
+    @IBAction func addWalletAction(_ sender: Any) {
+        presenter.blockUI()
+        presenter.createFirstWallets(blockchianType: presenter.displayedBlockchainOnly!) { (answer, err) in
+            self.presenter.getWallets()
+        }
+    }
 //    Deselecting
 //    
 //    func deselectCell() {
@@ -75,6 +90,17 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
 //        }
 //    }
     
+    func checkWhereFromForNil() -> Bool {
+        if whereFrom == nil {
+            return false
+        } else if whereFrom?.className != CreateMultiSigViewController.className {
+            return false
+        } else if whereFrom?.className != AssetsViewController.className {
+            return false
+        }
+        
+        return whereFrom == nil
+    }
 }
 
 extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource {
@@ -97,8 +123,12 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.presenter.selectedIndex = indexPath.row
+        if presenter.isForMultisig {
+            presenter.joinRequest()
+        }
+        
         if self.presenter.isNeedToPop == true {
-            if self.whereFrom != nil && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
+            if checkWhereFromForNil() && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
                 let message = localize(string: Constants.cannotChooseEmptyWalletString)
                 let alert = UIAlertController(title: localize(string: Constants.sorryString), message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
@@ -124,6 +154,11 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func updateUI() {
+        if presenter.isForMultisig && presenter.walletsArr.isEmpty {
+            emptyWalletsView.isHidden = false
+        } else {
+            emptyWalletsView.isHidden = true
+        }
         self.tableView.reloadData()
     }
     

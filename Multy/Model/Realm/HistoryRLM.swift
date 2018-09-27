@@ -39,24 +39,31 @@ class HistoryRLM: Object {
     var walletInput = List<UserWalletRLM>()
     var walletOutput = List<UserWalletRLM>()
     
-    @objc dynamic var isMultisigTx = NSNumber(booleanLiteral: false)
-    @objc dynamic var isWaitingConfirmation = NSNumber(booleanLiteral: false)
+    @objc dynamic var nonce = NSNumber(value: 0)
+   
+    @objc dynamic var multisig : MultisigTransactionRLM? = nil
+    
     
     override static func ignoredProperties() -> [String] {
         return ["addressesArray"]
     }
     
-    // FIXME: delete txOutAmount, only string values
-    func txAmount(for blockchain: Blockchain) -> String {
+    func fee(for blockchain: Blockchain) -> BigInt {
+        var result = BigInt.zero()
         switch blockchain {
         case BLOCKCHAIN_BITCOIN:
-            return txOutAmount.doubleValue.fixedFraction(digits: 8)
+            result = BigInt("\(txFee)")
+            break
         case BLOCKCHAIN_ETHEREUM:
-            return txOutAmountString.appendDelimeter(at: 18)
+            result = (BigInt("\(gasLimit)") * BigInt("\(gasPrice)"))
+            break
+            
         default:
-            return ""
+            break
         }
-    }
+        
+        return result
+    }    
     
     public class func initWithArray(historyArr: NSArray) -> List<HistoryRLM> {
         let history = List<HistoryRLM>()
@@ -179,6 +186,14 @@ class HistoryRLM: Object {
             hist.addressesArray.append(destinationAddress)
         }
         
+        if let nonce = historyDict["nonce"] as? Int {
+            hist.nonce = NSNumber(value: nonce)
+        }
+        
+        if let multisig = historyDict["multisig"] as? NSDictionary {
+            hist.multisig = MultisigTransactionRLM.initWithInfo(multisigTxDict: multisig)
+        }
+        
         return hist
     }
     
@@ -188,6 +203,14 @@ class HistoryRLM: Object {
     
     func isIncoming() -> Bool {
         return txStatus.intValue == TxStatus.MempoolIncoming.rawValue || txStatus.intValue == TxStatus.BlockIncoming.rawValue || txStatus.intValue == TxStatus.BlockConfirmedIncoming.rawValue
+    }
+    
+    func isOutcoming() -> Bool {
+        return txStatus.intValue == TxStatus.MempoolOutcoming.rawValue || txStatus.intValue == TxStatus.BlockOutcoming.rawValue || txStatus.intValue == TxStatus.BlockConfirmedOutcoming.rawValue
+    }
+    
+    func isRejected() -> Bool {
+        return txStatus.intValue == TxStatus.Rejected.rawValue || txStatus.intValue == TxStatus.BlockMethodInvocationFail.rawValue
     }
     
     func isPending() -> Bool {

@@ -1,10 +1,6 @@
-//
-//  WalletCollectionViewCell.swift
-//  Multy
-//
-//  Created by Artyom Alekseev on 15.05.2018.
-//  Copyright © 2018 Idealnaya rabota. All rights reserved.
-//
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
 
 import UIKit
 import Lottie
@@ -32,7 +28,7 @@ class WalletCollectionViewCell: UICollectionViewCell {
     }
     
     func fillInCell() {
-        let blockchainType = BlockchainType.create(wallet: wallet!)
+        let blockchainType = BlockchainType.createAssociated(wallet: wallet!)
         self.tokenImage.image = UIImage(named: blockchainType.iconString)
         let sumInFiat = wallet!.sumInFiat.fixedFraction(digits: 2)
         self.walletNameLbl.text = self.wallet!.name

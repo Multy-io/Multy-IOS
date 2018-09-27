@@ -4,6 +4,8 @@
 
 import UIKit
 
+private typealias LocalizeDelegate = WalletTableViewCell
+
 class WalletTableViewCell: UITableViewCell {
 
     @IBOutlet weak var backView: UIView!
@@ -17,6 +19,8 @@ class WalletTableViewCell: UITableViewCell {
     
     @IBOutlet weak var viewForShadow: UIView!
     @IBOutlet weak var resyncingStatusLabel: UILabel!
+    @IBOutlet weak var msStatusLbl: UILabel!
+    @IBOutlet weak var nameYConstraint: NSLayoutConstraint!
     
     var isBorderOn = false
     
@@ -35,7 +39,7 @@ class WalletTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
+
     func setupShadow() {
         viewForShadow.setShadow(with: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.6))
     }
@@ -62,15 +66,45 @@ class WalletTableViewCell: UITableViewCell {
     }
     
     func fillInCell() {
-        let blockchainType = BlockchainType.create(wallet: wallet!)
+        let blockchainType = BlockchainType.createAssociated(wallet: wallet!)
         tokenImage.image = UIImage(named: blockchainType.iconString)
-        walletNameLbl.text = self.wallet!.name
+        walletNameLbl.text = makeWalletName()
+        walletNameLbl.textColor = blockchainType.colorForWalletName
         cryptoNameLbl.text = blockchainType.shortName
         fiatSumLbl.text = wallet!.sumInFiatString + " " + self.wallet!.fiatSymbol
         
         cryptoSumLbl.text = wallet?.sumInCryptoString
 
-        if wallet != nil {
+        setupStatusImage()
+        notDeployedMsSetup(isMS: wallet!.isMultiSig, isMsDeployed: wallet?.multisigWallet?.isDeployed)
+    }
+    
+    func makeWalletName() -> String {
+        var walletName = String()
+        if wallet!.isMultiSig == true {
+            let countOfMembers = wallet!.multisigWallet!.ownersCount
+            let signsCount = wallet!.multisigWallet!.signaturesRequiredCount
+            walletName = "\(wallet!.name)" + " ∙ " + "\(signsCount) \(localize(string: Constants.ofString)) \(countOfMembers)"
+        } else {
+            walletName = wallet!.name
+        }
+        
+        return walletName
+    }
+    
+    func setupStatusImage() {
+        switch wallet!.isMultiSig {
+        case true:
+            if wallet!.multisigWallet!.deployStatus.intValue == DeployStatus.pending.rawValue {
+                statusImage.image = UIImage(named: "pending")
+                statusImage.isHidden = false
+            } else if wallet!.multisigWallet!.isActivePaymentRequest {
+                statusImage.image = UIImage(named: "arrowWaiting")
+                statusImage.isHidden = false
+            } else {
+                statusImage.isHidden = true
+            }
+        case false:
             if wallet!.isTherePendingTx.boolValue {
                 statusImage.image = UIImage(named: "pending")
                 statusImage.isHidden = false
@@ -81,5 +115,40 @@ class WalletTableViewCell: UITableViewCell {
                 statusImage.isHidden = true
             }
         }
+    }
+    
+    func notDeployedMsSetup(isMS: Bool, isMsDeployed: Bool?) {
+        if isMS && isMsDeployed != nil {
+            tokenImage.image = isMsDeployed! ? tokenImage.image : UIImage(named: "ethMSMediumIconGrey")
+            cryptoSumLbl.isHidden = !isMsDeployed!
+            fiatSumLbl.isHidden = !isMsDeployed!
+            cryptoNameLbl.isHidden = !isMsDeployed!
+            msStatusLbl.isHidden = isMsDeployed!
+            nameYConstraint.constant = isMsDeployed! ? 0 : -15
+            msStatusLbl.text = isMsDeployed! ? "" : makeMSStatusText()
+        } else {
+            cryptoSumLbl.isHidden = false
+            fiatSumLbl.isHidden = false
+            cryptoNameLbl.isHidden = false
+            msStatusLbl.isHidden = true
+            nameYConstraint.constant = 0
+        }
+    }
+    
+    func makeMSStatusText() -> String {
+        let msDeployStatus = wallet!.multisigWallet!.deployStatus.intValue
+        if msDeployStatus == DeployStatus.created.rawValue {
+            return "Not all members connected..."
+        } else if msDeployStatus == DeployStatus.ready.rawValue {
+            return "Ready to start. Payment needed..."
+        } else { //if msDeployStatus == DeployStatus.pending.rawValue {
+            return "Payment pending..."
+        }
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Wallets"
     }
 }

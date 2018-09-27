@@ -74,15 +74,17 @@ class AddressViewController: UIViewController, BranchProtocol {
         UIView.animate(withDuration: 0.5, animations: {
             self.copiedView.frame.origin.y = screenHeight - 40
         }) { (isEnd) in
-            Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.hideView), userInfo: nil, repeats: false)
+            Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.hideView), userInfo: nil, repeats: false)
         }
         
     }
     
     @objc func hideView() {
-        UIView.animate(withDuration: 1, animations: {
+        UIView.animate(withDuration: 0.05, animations: {
             self.copiedView.frame.origin.y = screenHeight + 40
-        })
+        }) { (isEnd) in
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     func presentActivtyVC(objectToShare: String) {

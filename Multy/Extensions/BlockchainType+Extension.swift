@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import Foundation
+import UIKit
 
 typealias BlockchainTypeEquatable = BlockchainType
 
@@ -32,6 +33,10 @@ extension BlockchainType {
             case ETHEREUM_CHAIN_ID_MAINNET.rawValue:
                 return true
             case ETHEREUM_CHAIN_ID_RINKEBY.rawValue:
+                return false
+            case ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue:
+                return true
+            case ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue:
                 return false
             default:
                 return false
@@ -65,8 +70,12 @@ extension BlockchainType {
             case ETHEREUM_CHAIN_ID_MAINNET.rawValue:
                 iconString = "ethMediumIcon"
             case ETHEREUM_CHAIN_ID_RINKEBY.rawValue:
-//                iconString = "ethTest"
+                //iconString = "ethTest"
                 iconString = "ethTestBg"
+            case ETHEREUM_CHAIN_ID_MULTISIG_MAINNET.rawValue:
+                iconString = "ethMSMediumIcon"
+            case ETHEREUM_CHAIN_ID_MULTISIG_TESTNET.rawValue:
+                iconString = "ethMSTestnet"
             default:
                 iconString = ""
             }
@@ -99,12 +108,40 @@ extension BlockchainType {
         return blockchain.fullName
     }
     
+    var combinedName: String {
+        var result = fullName + " ∙ " + shortName
+        if !isMainnet {
+            result += " Testnet"
+        }
+        return result
+    }
+    
+    var colorForWalletName: UIColor {
+        var color = UIColor()
+        switch self.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            color = #colorLiteral(red: 1, green: 0.6634360552, blue: 0.1786985695, alpha: 1)
+        case BLOCKCHAIN_ETHEREUM:
+            color = #colorLiteral(red: 0.4516705275, green: 0.5013847947, blue: 0.7878515124, alpha: 1)
+        default: color = #colorLiteral(red: 1, green: 0.6634360552, blue: 0.1786985695, alpha: 1)
+        }
+        
+        return color
+    }
+    
     var qrBlockchainString : String {
         return blockchain.qrBlockchainString
     }
     
     static func create(wallet: UserWalletRLM) -> BlockchainType {
         return BlockchainType.create(currencyID: wallet.chain.uint32Value, netType: wallet.chainType.uint32Value)
+    }
+    
+    // This method relates to representation layer
+    static func createAssociated(wallet: UserWalletRLM) -> BlockchainType {
+        let netType = wallet.isMultiSig ? wallet.multisigWallet!.chainType.uint32Value : wallet.chainType.uint32Value
+        
+        return BlockchainType.create(currencyID: wallet.chain.uint32Value, netType: netType)
     }
     
     static func create(currencyID: UInt32, netType: UInt32) -> BlockchainType {

@@ -122,7 +122,7 @@ class CreateWalletViewController: UIViewController, AnalyticsProtocol {
     }
 }
 
-extension ChooseBlockchainDelegate: ChooseBlockchainProtocol {
+extension ChooseBlockchainDelegate: BlockchainTransferProtocol {
     func setBlockchain(blockchain: BlockchainType) {
         presenter.selectedBlockchainType = blockchain
         updateBlockchainCell(blockchainCell: nil)    }
@@ -157,11 +157,7 @@ extension TableViewDataSource: UITableViewDataSource {
     
     fileprivate func updateBlockchainCell(blockchainCell: CreateWalletBlockchainTableViewCell?) {
         let cell2 = blockchainCell == nil ? self.tableView.dequeueReusableCell(withIdentifier: "cell2") as! CreateWalletBlockchainTableViewCell : blockchainCell!
-        cell2.blockchainLabel.text = presenter.selectedBlockchainType.fullName + " ∙ " + presenter.selectedBlockchainType.shortName
-        
-        if presenter.selectedBlockchainType.isMainnet == false {
-            cell2.blockchainLabel.text! += "  Testnet"
-        }
+        cell2.blockchainLabel.text = presenter.selectedBlockchainType.combinedName
         
         if blockchainCell == nil {
             tableView.reloadRows(at: [[0, 1]], with: .none)

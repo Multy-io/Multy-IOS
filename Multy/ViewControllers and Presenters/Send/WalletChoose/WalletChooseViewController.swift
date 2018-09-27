@@ -89,14 +89,14 @@ extension WalletChooseViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if presenter.filteredWalletArray[indexPath.row].isThereAvailableAmount() == false {
-            presenter.presentAlert(message: localize(string: Constants.noFundsString))
+            presenter.presentAlert(message: localize(string: Constants.noFundsString), blockchain: presenter.filteredWalletArray[indexPath.row].blockchain)
             
             return
         }
         
         if presenter.transactionDTO.sendAmountString != nil {
             if presenter.filteredWalletArray[indexPath.row].isThereEnoughAmount(presenter.transactionDTO.sendAmountString!) == false {
-                presenter.presentAlert(message: nil)
+                presenter.presentAlert(message: nil, blockchain: presenter.filteredWalletArray[indexPath.row].blockchain)
                 
                 return
             }
@@ -105,7 +105,7 @@ extension WalletChooseViewController: UITableViewDelegate, UITableViewDataSource
         let isValidDTO = DataManager.shared.isAddressValid(address: presenter.transactionDTO.sendAddress!, for: presenter.filteredWalletArray[indexPath.row])
         
         if !isValidDTO.isValid {
-            presenter.presentAlert(message: localize(string: Constants.notValidAddressString))
+            presenter.presentAlert(message: localize(string: Constants.notValidAddressString), blockchain: presenter.filteredWalletArray[indexPath.row].blockchain)
             
             return
         }

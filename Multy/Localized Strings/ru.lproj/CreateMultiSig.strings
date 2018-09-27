@@ -1,0 +1,14 @@
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
+
+"READY TO START" = "Готов Начать...";
+"WAITING ALL MEMBERS" = "Ожидание всех участников...";
+"PENDING" = "В ожидании...";
+"START FOR" = "Начать за";
+"INVITATION CODE" = "Код приглашения";
+"SOMETHING WENT WRONG" = "Что-то пошло не так";
+"ERROR" = "Ошибка";
+"PLEASE WAIT MULTISIG CONFIRMATION" = "Пожалуйста, ожидайте подтверждение создания кошелька!";
+"WARNING" = "Предупреждение";
+"WAITING MEMBER" = "Ожидается участник...";
