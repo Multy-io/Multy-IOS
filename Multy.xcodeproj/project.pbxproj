@@ -472,6 +472,7 @@
 		445D150820DA8513002F6747 /* EPContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPContactCell.swift; sourceTree = "<group>"; };
 		445D150F20DAB089002F6747 /* CNContact+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CNContact+Extension.swift"; sourceTree = "<group>"; };
 		445D151120DB9421002F6747 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
+		446FC9612108BC8000E53D46 /* transaction_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transaction_builder.h; sourceTree = "<group>"; };
 		4474C5A620BEFFAB00EA8B01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EthWalletHeaderCollectionViewCell.xib; sourceTree = "<group>"; };
 		4474C5A920BEFFAD00EA8B01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EthWalletHeaderCollectionViewCell.strings; sourceTree = "<group>"; };
 		4474C5AB20BEFFAF00EA8B01 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EthWalletHeaderCollectionViewCell.strings; sourceTree = "<group>"; };
@@ -2095,6 +2096,8 @@
 				44FA86C02035A77100263C72 /* sha3.h */,
 				448000D720FF3D6900813624 /* transaction_builder.h */,
 				FA7406151FCC14C4003C538C /* transaction.h */,
+				446FC9612108BC8000E53D46 /* transaction_builder.h */,
+				FA7406161FCC14C4003C538C /* properties.h */,
 			);
 			path = "Core Libs";
 			sourceTree = "<group>";

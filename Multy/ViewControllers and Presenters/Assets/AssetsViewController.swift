@@ -182,8 +182,6 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
             self.presentUpdateAlert(idOfAlert: 0)
 //            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
         }
-        
-        
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     

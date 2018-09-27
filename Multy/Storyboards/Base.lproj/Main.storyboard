@@ -1934,6 +1934,7 @@ correctly</string>
                             <constraint firstItem="7Cv-dM-kj0" firstAttribute="top" secondItem="tdq-0K-Sb2" secondAttribute="bottom" id="Gx7-nc-o3V"/>
                             <constraint firstItem="312-E7-Xe2" firstAttribute="leading" secondItem="qNv-C3-uhH" secondAttribute="leading" constant="21" id="IfC-LF-p4P"/>
                             <constraint firstAttribute="trailing" secondItem="312-E7-Xe2" secondAttribute="trailing" constant="21" id="Nle-00-FuM"/>
+                            <constraint firstItem="eXV-cf-GXL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qNv-C3-uhH" secondAttribute="leading" constant="16" id="fIH-xY-fHr"/>
                             <constraint firstItem="eXV-cf-GXL" firstAttribute="centerX" secondItem="qNv-C3-uhH" secondAttribute="centerX" id="gnX-iI-VMn"/>
                             <constraint firstItem="4xv-6L-vmO" firstAttribute="centerX" secondItem="qNv-C3-uhH" secondAttribute="centerX" id="h5b-s0-bLC"/>
                             <constraint firstItem="eXV-cf-GXL" firstAttribute="top" secondItem="4xv-6L-vmO" secondAttribute="bottom" constant="49" id="iFH-FP-t58"/>
