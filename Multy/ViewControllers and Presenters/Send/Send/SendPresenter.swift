@@ -121,7 +121,7 @@ class SendPresenter: NSObject {
     
     var checkNewUserCodesCounter = 0
     
-    var priceForSubmit = "\(1_000_000_000)"
+//    var priceForSubmit = "\(1_000_000_000)"
     
     
     func getFeeRate(_ blockchainType: BlockchainType, completion: @escaping (_ feeRateDict: String) -> ()) {
@@ -748,7 +748,7 @@ extension CreateTransactionDelegate {
                                                              sendAmountString: sendAmount,
                                                              sendToAddress: request.sendAddress,
                                                              msWalletBalance: wallet.availableAmount.stringValue,
-                                                             gasPriceString: priceForSubmit,
+                                                             gasPriceString: feeRate,
                                                              gasLimitString: submitEstimation)
             
             rawTransaction = trData.message
