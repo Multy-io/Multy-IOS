@@ -237,8 +237,8 @@ let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 
 
 let shortURL = "api.multy.io"
-let apiUrl = "http://\(shortURL)/"
-let socketUrl = "ws://\(shortURL)/"
+let apiUrl = "https://\(shortURL)/"
+let socketUrl = "wss://\(shortURL)/"
 
 //stage
 //let shortURL = "148.251.42.107/"
