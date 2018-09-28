@@ -186,8 +186,8 @@ enum TxStatus : Int {
         BlockConfirmedIncoming =     5,
         BlockConfirmedOutcoming =    6,
         BlockMethodInvocationFail =  7,
-        TxStatusTxRejectedIncoming = 8,
-        TxStatusTxRejectedOutgoing = 9
+        RejectedIncoming =           8,
+        RejectedOutgoing =           9
 }
 
 enum SocketMessageType : Int {
