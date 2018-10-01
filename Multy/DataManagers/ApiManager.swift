@@ -69,7 +69,7 @@ class ApiManager: NSObject, RequestRetrier {
     public func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
         print("\n\n\n\n\n\nretrier: \(request.request?.urlRequest?.url?.absoluteString)\n\n\n\n\n\n")
         
-        if let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 {
+        if let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 || response.statusCode == 400 {
             
             if userID.isEmpty {
                 DispatchQueue.main.async {
