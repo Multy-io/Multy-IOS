@@ -79,8 +79,12 @@ class ImportMSPresenter: NSObject {
                                                                address: generatedAddress)
         DataManager.shared.getWallet(primaryKey: primaryKey) { [unowned self] in
             switch $0 {
-            case .success(_):
-                self.importMSWallet(address: generatedAddress)
+            case .success(let wallet):
+                if wallet.isImported && wallet.privateKey.isEmpty {
+                    self.importWallets(address: generatedAddress, pubKey: generatedPublic)
+                } else {
+                    self.importMSWallet(address: generatedAddress)
+                }
                 break
             case .failure(_):
                 self.importWallets(address: generatedAddress, pubKey: generatedPublic)

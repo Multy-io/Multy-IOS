@@ -227,12 +227,13 @@ class AssetsPresenter: NSObject {
                 return
             } else {
                 var walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
-                walletsArr = self.modifyImportedWallets(walletsArr)
-                print("afterVerbose:rawdata: \(walletsArrayFromApi)")
-                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
-                    self.account = acc
-                    print("wallets: \(acc?.wallets)")
-                    completion(true)
+                self.modifyImportedWallets(walletsArr,completion: { [unowned self] err in
+                    print("afterVerbose:rawdata: \(walletsArrayFromApi)")
+                    DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
+                        self.account = acc
+                        print("wallets: \(acc?.wallets)")
+                        completion(true)
+                    })
                 })
             }
         }
@@ -394,13 +395,12 @@ class AssetsPresenter: NSObject {
         assetsVC?.present(alert, animated: true, completion: nil)
     }
     
-    func modifyImportedWallets(_ array: List<UserWalletRLM>) -> List<UserWalletRLM> {
-        var newWallets = List<UserWalletRLM>()
+    func modifyImportedWallets(_ array: List<UserWalletRLM>, completion: @escaping(_ error: NSError?)->()) {
+        var modifiedWallets = List<UserWalletRLM>()
         
         if importedWalletsInDB != nil {
-            newWallets = array
             for wallet in importedWalletsInDB! {
-                let ethWallet = newWallets.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM }.first
+                let ethWallet = array.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM }.first
                 
                 if ethWallet != nil {
                     //                    let index = newWallets.index(of: eosWallet!)!
@@ -408,16 +408,22 @@ class AssetsPresenter: NSObject {
                     ethWallet!.importedPublicKey = wallet.importedPublicKey
                     ethWallet!.importedPrivateKey = wallet.importedPrivateKey
                     
+                    modifiedWallets.append(ethWallet!)
                     //                    newWallets.replace(index: index, object: eosWallet!)
                 }
             }
             
             importedWalletsInDB = nil
             
-            return newWallets
+            if modifiedWallets.count > 0 {
+                DataManager.shared.realmManager.updateImportedWalletsInAcc(arrOfWallets: modifiedWallets, completion: { (acc, err) in
+                    completion(err)
+                })
+            } else {
+                completion(nil)
+            }
         } else {
-            return array
+            completion(nil)
         }
-
     }
 }
