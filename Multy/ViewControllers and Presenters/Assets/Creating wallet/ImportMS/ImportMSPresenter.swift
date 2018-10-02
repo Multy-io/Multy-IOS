@@ -68,6 +68,10 @@ class ImportMSPresenter: NSObject {
         if ((coreDict as NSDictionary?) != nil) {
             generatedAddress = coreDict!["address"] as! String
             generatedPublic = coreDict!["publicKey"] as! String
+        } else {
+            //add alert: wrong text in tf
+            importVC!.presentAlert(with: "Looks like you are trying to import by not private key string")
+            return
         }
         
         let primaryKey = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: selectedBlockchainType.blockchain.rawValue,
