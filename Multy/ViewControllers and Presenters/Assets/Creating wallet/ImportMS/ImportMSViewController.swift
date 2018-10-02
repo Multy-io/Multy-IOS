@@ -4,6 +4,8 @@
 
 import UIKit
 
+private typealias LocalizeDelegate = ImportMSViewController
+
 class ImportMSViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var netTypeSwitch: UISwitch!
@@ -97,5 +99,11 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
         }
         
         return true
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Assets"
     }
 }
