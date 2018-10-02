@@ -93,11 +93,16 @@ class ImportMSPresenter: NSObject {
     
     func importMSWallet(address: String) {
         if self.isForMS {
-            self.importMultiSig(contractAddress: self.importVC!.msAddressTextView.text!,
-                                linkedWalletAddress: address,
-                                completion: { (answer, err) in
+            let importedWallet = account!.wallets.filter("address == %@", self.importVC!.msAddressTextView.text!).first
+            if importedWallet != nil {
                 self.sendImportedWalletByDelegateAndExit()
-            })
+            } else {
+                self.importMultiSig(contractAddress: self.importVC!.msAddressTextView.text!,
+                                    linkedWalletAddress: address,
+                                    completion: { (answer, err) in
+                                        self.sendImportedWalletByDelegateAndExit()
+                })
+            }
         } else {
             self.sendImportedWalletByDelegateAndExit()
         }
@@ -146,14 +151,20 @@ class ImportMSPresenter: NSObject {
             "isImported"    : true
             ] as [String : Any]
         
-        DataManager.shared.importWallet(params: params) { [unowned self] (dict, error) in
-            if error == nil {
-                self.createImportedWalletInDB(params: params as NSDictionary, privateKey: self.importVC!.privateKeyTextView.text!, publicKey: publicKey)
-                print(dict!)
-                completion(dict!)
-                print("success")
-            } else {
-                print("fail")
+        let importedWallet = account!.wallets.filter("address == %@", address).first
+        if importedWallet != nil {
+            self.createImportedWalletInDB(params: params as NSDictionary, privateKey: self.importVC!.privateKeyTextView.text!, publicKey: publicKey)
+            completion([:])
+        } else {
+            DataManager.shared.importWallet(params: params) { [unowned self] (dict, error) in
+                if error == nil {
+                    self.createImportedWalletInDB(params: params as NSDictionary, privateKey: self.importVC!.privateKeyTextView.text!, publicKey: publicKey)
+                    print(dict!)
+                    completion(dict!)
+                    print("success")
+                } else {
+                    print("fail")
+                }
             }
         }
     }

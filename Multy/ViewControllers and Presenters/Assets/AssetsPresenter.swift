@@ -39,8 +39,12 @@ class AssetsPresenter: NSObject {
                 if !DataManager.shared.socketManager.isStarted {
                     DataManager.shared.socketManager.start()
                 }
+
+                wallets = validWallets().sorted(by: {
+                    BigInt($0.lastActivityTimestamp.stringValue) > BigInt($1.lastActivityTimestamp.stringValue)
+                })
+        //        wallets = validWallets().sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
                 
-                wallets = account?.wallets.sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
                 
                 assetsVC!.tableView.frame.size.height = screenHeight - assetsVC!.tabBarController!.tabBar.frame.height
                 
@@ -57,7 +61,7 @@ class AssetsPresenter: NSObject {
         }
     }
     
-    var wallets: Results<UserWalletRLM>?
+    var wallets: [UserWalletRLM]?
     var importedWalletsInDB: [UserWalletRLM]?
     
     @objc func updateExchange() {
@@ -102,6 +106,35 @@ class AssetsPresenter: NSObject {
             self.assetsVC?.backupView?.isHidden = true
             self.assetsVC?.backupView?.isUserInteractionEnabled = false
         }
+    }
+    
+    func validWallets() -> [UserWalletRLM] {
+        
+        var result = [UserWalletRLM]()
+        if account?.wallets != nil {
+            var invalidWalletsID = [String]()
+            for i in 0..<account!.wallets.count  {
+                let wallet = account!.wallets[i]
+                if wallet.isImported && wallet.importedPrivateKey.isEmpty {
+                    invalidWalletsID.append(wallet.id)
+                } else if !wallet.isMultiSig {
+                    result.append(wallet)
+                }
+            }
+            
+            for k in 0..<account!.wallets.count {
+                let wallet = account!.wallets[k]
+                if wallet.isMultiSig {
+                    let linkedWalletID = wallet.multisigWallet!.linkedWalletID
+                    let invalidID = invalidWalletsID.filter{ $0 == linkedWalletID }.first
+                    if invalidID == nil {
+                        result.append(wallet)
+                    }
+                }
+            }
+        }
+        
+        return result
     }
     
 //    func auth() {
