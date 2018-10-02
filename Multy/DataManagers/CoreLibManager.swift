@@ -1128,7 +1128,8 @@ extension EthereumCoreLibManager {
                                 balanceAmount: String,
                                 ethereumChainID: UInt32,
                                 gasPrice: String,
-                                gasLimit: String) -> (message: String, isTransactionCorrect: Bool) {
+                                gasLimit: String,
+                                payload: String = "") -> (message: String, isTransactionCorrect: Bool) {
         
         //create transaction
         let transactionPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
@@ -1163,6 +1164,12 @@ extension EthereumCoreLibManager {
         let tgpfp = transaction_get_fee(transactionPointer.pointee!, feeProperties)
         setAmountValue(key: "gas_price", value: gasPrice, pointer: feeProperties.pointee!)
         setAmountValue(key: "gas_limit", value: gasLimit, pointer: feeProperties.pointee!)
+        
+        //payload section
+        if payload.isEmpty == false {
+            let dataPointer = payload.createBinaryDataPointer()
+            transaction_set_message(transactionPointer.pointee!, UnsafePointer<BinaryData>(dataPointer))
+        }
         
         //final
         let serializedTransaction = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
