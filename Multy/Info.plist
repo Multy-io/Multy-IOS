@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>dapp</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -34,11 +36,11 @@
 	<key>CFBundleVersion</key>
 	<string>62</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>CreatingMultiSigWallet</string>
+	<string>DappBrowser</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>a1567d12</string>
+	<string>4b4ef08f</string>
 	<key>GIT_TAG_NAME</key>
-	<string>RELEASE_BUILD_1.0.5_53-dirty</string>
+	<string>RELEASE_1.2.0_61_Multisig-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
