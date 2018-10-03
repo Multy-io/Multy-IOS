@@ -520,6 +520,32 @@ extension WalletManager {
         }
     }
     
+    public func updateImportedWalletsInAcc(arrOfWallets: List<UserWalletRLM>, completion: @escaping(_ account: AccountRLM?, _ error: NSError?)->()) {
+        getRealm { [weak self] (realmOpt, err) in
+            if let realm = realmOpt {
+                let acc = realm.object(ofType: AccountRLM.self, forPrimaryKey: 1)
+                if acc != nil {
+                    let accWallets = acc!.wallets
+                    
+                    for wallet in arrOfWallets {
+                        let modifiedWallet = accWallets.filter {$0.id == wallet.id}.first
+                        
+                        try! realm.write {
+                            if modifiedWallet != nil {
+                                modifiedWallet?.importedPublicKey = wallet.importedPublicKey
+                                modifiedWallet!.importedPrivateKey = wallet.importedPrivateKey
+                            }
+                        }
+                    }
+                    
+                    completion(acc, nil)
+                } else {
+                    completion(nil, err)
+                }
+            }
+        }
+    }
+    
     public func updateWalletsInAcc(arrOfWallets: List<UserWalletRLM>, completion: @escaping(_ account: AccountRLM?, _ error: NSError?)->()) {
         getRealm { [weak self] (realmOpt, err) in
             if let realm = realmOpt {
@@ -541,7 +567,7 @@ extension WalletManager {
                                 modifiedWallet!.multisigWallet =    wallet.multisigWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
-
+                                
                                 newWallets.append(modifiedWallet!)
                             } else {
                                 newWallets.append(wallet)
