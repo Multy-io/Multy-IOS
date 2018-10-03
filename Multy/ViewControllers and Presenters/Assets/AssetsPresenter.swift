@@ -113,8 +113,9 @@ class AssetsPresenter: NSObject {
         var result = [UserWalletRLM]()
         if account?.wallets != nil {
             var invalidWalletsID = [String]()
-            for i in 0..<account!.wallets.count  {
-                let wallet = account!.wallets[i]
+//            for i in 0..<account!.wallets.count  {
+//                let wallet = account!.wallets[i]
+            for wallet in account!.wallets {
                 if wallet.isImported && wallet.importedPrivateKey.isEmpty {
                     invalidWalletsID.append(wallet.id)
                 } else if !wallet.isMultiSig {
@@ -122,8 +123,9 @@ class AssetsPresenter: NSObject {
                 }
             }
             
-            for k in 0..<account!.wallets.count {
-                let wallet = account!.wallets[k]
+//            for k in 0..<account!.wallets.count {
+//                let wallet = account!.wallets[k]
+            for wallet in account!.wallets {
                 if wallet.isMultiSig {
                     let linkedWalletID = wallet.multisigWallet!.linkedWalletID
                     let invalidID = invalidWalletsID.filter{ $0 == linkedWalletID }.first
