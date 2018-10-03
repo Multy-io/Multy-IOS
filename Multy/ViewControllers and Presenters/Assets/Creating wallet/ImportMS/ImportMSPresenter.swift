@@ -159,7 +159,7 @@ class ImportMSPresenter: NSObject {
             "isImported"    : true
             ] as [String : Any]
         
-        let importedWallet = account!.wallets.filter("address == %@", address).first
+        let importedWallet = account!.wallets.filter("address == %@", address).filter("chainType == %@", networkID).first
         if importedWallet != nil {
             self.createImportedWalletInDB(params: params as NSDictionary, privateKey: self.importVC!.privateKeyTextView.text!, publicKey: publicKey)
             completion([:])
@@ -184,6 +184,8 @@ class ImportMSPresenter: NSObject {
         wallet.importedPrivateKey = privateKey
         wallet.name = params["walletName"] as! String
         wallet.address = params["address"] as! String
+        wallet.chain = params["currencyID"] as! NSNumber
+        wallet.chainType = params["networkID"] as! NSNumber
         
         preWallets.append(wallet)
     }

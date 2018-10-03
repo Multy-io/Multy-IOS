@@ -400,7 +400,7 @@ class AssetsPresenter: NSObject {
         
         if importedWalletsInDB != nil {
             for wallet in importedWalletsInDB! {
-                let ethWallet = array.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM }.first
+                let ethWallet = array.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM && $0.chainType == wallet.chainType }.first
                 
                 if ethWallet != nil {
                     //                    let index = newWallets.index(of: eosWallet!)!
