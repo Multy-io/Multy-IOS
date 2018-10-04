@@ -41,6 +41,8 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
     @IBOutlet weak var requestSummLbl: UILabel!
     @IBOutlet weak var requestSummImageView: UIImageView!
     @IBOutlet weak var walletTokenImageView: UIImageView!
+    @IBOutlet weak var addressButton: UIButton!
+    @IBOutlet weak var addressChevron: UIImageView!
     
     @IBOutlet weak var wirelessButton: UIButton!
     @IBOutlet weak var hidedWalletView: UIView!
@@ -254,7 +256,7 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
         
         //FIXME: BLOCKCHAIN
         let blockchain = BlockchainType.createAssociated(wallet: presenter.wallet!)
-
+        
 //        self.walletCryptoSumBtn.setTitle("\((self.presenter.wallet?.sumInCryptoString) ?? "") \(blockchain.shortName /*self.presenter.wallet?.cryptoName ?? ""*/)", for: .normal)
         //FIXME:  Check this
         self.walletCryptoSumLbl.text = "\(self.presenter.wallet!.sumInCryptoString) \(blockchain.shortName /*self.presenter.wallet?.cryptoName ?? ""*/)"
@@ -266,6 +268,8 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
             self.presenter.walletAddress = (self.presenter.wallet?.address)!
         }
         self.addressLbl.text = self.presenter.walletAddress
+        addressButton.isHidden = blockchain.blockchain != BLOCKCHAIN_BITCOIN
+        addressChevron.isHidden = blockchain.blockchain != BLOCKCHAIN_BITCOIN
         
         if sumValueLbl.isHidden == false {
             setupUIWithAmounts()
