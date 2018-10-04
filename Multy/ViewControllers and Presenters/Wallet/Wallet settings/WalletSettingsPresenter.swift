@@ -82,7 +82,7 @@ class WalletSettingsPresenter: NSObject {
         } else {
             DataManager.shared.realmManager.getAccount { (acc, err) in
                 if acc != nil {
-                    if (acc!.wallets.filter{$0.multisigWallet != nil && $0.multisigWallet!.linkedWalletAddress == self.wallet!.address}.count > 0) {
+                    if (acc!.wallets.filter{$0.multisigWallet != nil && $0.multisigWallet!.linkedWalletAddress == self.wallet!.address && $0.multisigWallet!.chainType == self.wallet?.chainType}.count > 0) {
                         let message = Constants.deleteLinkedWalletFailedString
                         completion(false, message)
                     }
