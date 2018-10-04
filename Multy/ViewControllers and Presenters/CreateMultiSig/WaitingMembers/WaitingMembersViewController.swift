@@ -184,10 +184,7 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
                 presenter.getEstimationInfo { [unowned self] in
                     switch $0 {
                     case .success(_):
-                        let priceInWei = self.presenter.estimationInfo!["priceOfCreation"] as! NSNumber
-                        let totalPrice = BigInt("\(priceInWei)") + self.presenter.feeAmount
-                        let priceString = totalPrice.cryptoValueString(for: self.presenter.wallet.blockchain)
-                        self.invitationCodeButton.setTitle("\(Constants.startForString) \(priceString) ETH", for: .normal)
+                        self.setupBtnTitle()
                         break
                     case .failure(_):
                         break
@@ -207,6 +204,15 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         }
         
         invitationHolderView.isHidden = (presenter.bottomButtonStatus == .hidden)
+    }
+    
+    func setupBtnTitle() {
+        if self.presenter.estimationInfo     != nil {
+            let priceInWei = self.presenter.estimationInfo!["priceOfCreation"] as! NSNumber
+            let totalPrice = BigInt("\(priceInWei)") + self.presenter.feeAmount
+            let priceString = totalPrice.cryptoValueString(for: self.presenter.wallet.blockchain)
+            self.invitationCodeButton.setTitle("\(Constants.startForString) \(priceString) ETH", for: .normal)
+        }
     }
     
     func changeUI() {
