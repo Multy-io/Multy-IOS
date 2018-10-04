@@ -284,6 +284,7 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
             print("---------\(dict)")
 
             if error != nil {
+                self.sendAnalyticsEvent(screenName: self.className, eventName: (error! as NSError).userInfo.debugDescription)
                 self.presentAlert()
                 print("sendHDTransaction Error: \(error)")
                 self.slideToStart()

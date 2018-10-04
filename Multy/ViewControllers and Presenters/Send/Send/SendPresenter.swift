@@ -469,7 +469,8 @@ class SendPresenter: NSObject {
                         print("---------\(dict)")
                         
                         if error != nil {
-                            self.sendVC?.updateUIWithSendResponse(success: false)
+                            self.sendVC!.sendAnalyticsEvent(screenName: self.className, eventName: (error! as NSError).userInfo.debugDescription)
+                            self.sendVC!.updateUIWithSendResponse(success: false)
                             print("sendHDTransaction Error: \(error)")
                             self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionError)
                             
