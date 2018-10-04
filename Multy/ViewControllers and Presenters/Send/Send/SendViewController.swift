@@ -337,10 +337,10 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             self.dismissTxInfo()
             self.sendMode = .searching
             
+            self.presenter.cancelPrepareSending()
             if completion != nil {
                 completion!()
             }
-            self.presenter.cancelPrepareSending()
         }
     }
     
@@ -389,8 +389,9 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                     }) { (succeeded) in
 
                         doneAnimationView.removeFromSuperview()
-                        self.close()
-                        self.backUIToSearching(nil)
+                        self.backUIToSearching({ [unowned self] in
+                            self.close()
+                        })
                     }
                 }
             } else {
