@@ -8,6 +8,7 @@ class DappBrowserViewController: UIViewController {
     var presenter = DappBrowserPresenter()
     var browserCoordinator: BrowserCoordinator?
     @IBOutlet weak var browserView: UIView!
+    @IBOutlet weak var walletAddress: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,6 +17,8 @@ class DappBrowserViewController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         presenter.tabBarFrame = tabBarController?.tabBar.frame
+        
+        presenter.loadETHWallets()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -37,6 +40,13 @@ class DappBrowserViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    @IBAction func chooseWalletAction() {
+        let walletsVC = viewControllerFrom("Receive", "ReceiveStart") as! ReceiveStartViewController
+        walletsVC.presenter.isNeedToPop = true
+        walletsVC.sendWalletDelegate = self.presenter
+        self.navigationController?.pushViewController(walletsVC, animated: true)
     }
     
 //    func logAnalytics() {

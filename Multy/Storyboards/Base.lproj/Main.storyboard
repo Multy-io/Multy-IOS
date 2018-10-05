@@ -198,14 +198,17 @@
                                     <constraint firstAttribute="width" constant="38" id="xkI-GE-Gzj"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x7c1f8268206c8466e9e8bdeb6e1fa418760ff9f0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3xd-9M-rC6">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3xd-9M-rC6">
                                 <rect key="frame" x="64" y="31" width="295" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mtc-Ot-yF0">
-                                <rect key="frame" x="64" y="31" width="295" height="30"/>
+                                <rect key="frame" x="16" y="31" width="343" height="30"/>
+                                <connections>
+                                    <action selector="chooseWalletAction" destination="PcQ-zQ-GBi" eventType="touchUpInside" id="w3H-SL-ltc"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrC-qp-0mc">
                                 <rect key="frame" x="0.0" y="76" width="375" height="542"/>
@@ -217,6 +220,7 @@
                             <constraint firstItem="mtc-Ot-yF0" firstAttribute="top" secondItem="3xd-9M-rC6" secondAttribute="top" id="A9C-ni-hyb"/>
                             <constraint firstItem="jrC-qp-0mc" firstAttribute="top" secondItem="5Xh-vs-bQm" secondAttribute="bottom" constant="8" id="I1E-NU-iZD"/>
                             <constraint firstItem="jrC-qp-0mc" firstAttribute="bottom" secondItem="ymt-P8-ea2" secondAttribute="top" id="N2k-zw-928"/>
+                            <constraint firstItem="mtc-Ot-yF0" firstAttribute="leading" secondItem="5Xh-vs-bQm" secondAttribute="leading" id="Oln-1A-j0J"/>
                             <constraint firstAttribute="trailing" secondItem="jrC-qp-0mc" secondAttribute="trailing" id="UAC-Tw-A99"/>
                             <constraint firstItem="mtc-Ot-yF0" firstAttribute="trailing" secondItem="3xd-9M-rC6" secondAttribute="trailing" id="VnF-IU-m4X"/>
                             <constraint firstItem="3xd-9M-rC6" firstAttribute="centerY" secondItem="5Xh-vs-bQm" secondAttribute="centerY" constant="-3" id="YQf-Y8-3T1"/>
@@ -224,7 +228,6 @@
                             <constraint firstItem="jrC-qp-0mc" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" id="h1G-Ao-HiK"/>
                             <constraint firstItem="5Xh-vs-bQm" firstAttribute="top" secondItem="OFe-wE-wJW" secondAttribute="bottom" constant="10" id="jJU-l3-JYp"/>
                             <constraint firstItem="3xd-9M-rC6" firstAttribute="leading" secondItem="5Xh-vs-bQm" secondAttribute="trailing" constant="10" id="lXQ-S9-0Lv"/>
-                            <constraint firstItem="mtc-Ot-yF0" firstAttribute="leading" secondItem="3xd-9M-rC6" secondAttribute="leading" id="mka-P7-aq3"/>
                             <constraint firstAttribute="trailing" secondItem="3xd-9M-rC6" secondAttribute="trailing" constant="16" id="tHM-PA-rqh"/>
                             <constraint firstItem="mtc-Ot-yF0" firstAttribute="bottom" secondItem="3xd-9M-rC6" secondAttribute="bottom" id="xnT-ew-34V"/>
                         </constraints>
@@ -233,6 +236,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="browserView" destination="jrC-qp-0mc" id="MLq-8c-Ws3"/>
+                        <outlet property="walletAddress" destination="3xd-9M-rC6" id="jEs-wI-xaT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vb7-Vq-4wP" userLabel="First Responder" sceneMemberID="firstResponder"/>
