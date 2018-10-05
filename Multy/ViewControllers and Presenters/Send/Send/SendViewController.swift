@@ -386,7 +386,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                     UIView.animate(withDuration: 0.6, animations: {
                         doneAnimationView.transform = CGAffineTransform(scaleX: 10.0, y: 10.0)
                         doneAnimationView.alpha = 0.0
-                    }) { (succeeded) in
+                    }) { [unowned self] (succeeded) in
 
                         doneAnimationView.removeFromSuperview()
                         self.backUIToSearching({ [unowned self] in
@@ -395,7 +395,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                     }
                 }
             } else {
-                backUIToSearching({[unowned self] in
+                backUIToSearching({ [unowned self] in
                     self.presenter.sendAnimationComplete()})
 
                 presentSendingErrorAlert()
