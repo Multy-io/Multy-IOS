@@ -81,11 +81,11 @@ extension DappAction {
                 return .none
         }
         
-        let object = body["object"] as! [String: AnyObject]
-        let data = object["data"]  as! String
-        let hex = data.hex
-        print(data)
-        print(hex)
+//        let object = body["object"] as! [String: AnyObject]
+//        let data = object["data"]  as! String
+//        let hex = data.hex
+//        print(data)
+//        print(hex)
         
         return command
     }

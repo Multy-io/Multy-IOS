@@ -179,10 +179,10 @@
             </objects>
             <point key="canvasLocation" x="-2025" y="1586"/>
         </scene>
-        <!--Browser View Controller-->
+        <!--Dapp Browser View Controller-->
         <scene sceneID="1hf-rP-PyX">
             <objects>
-                <viewController id="PcQ-zQ-GBi" customClass="BrowserViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="PcQ-zQ-GBi" customClass="DappBrowserViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="OFe-wE-wJW"/>
                         <viewControllerLayoutGuide type="bottom" id="ymt-P8-ea2"/>
@@ -207,18 +207,21 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mtc-Ot-yF0">
                                 <rect key="frame" x="64" y="31" width="295" height="30"/>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jrC-qp-0mc">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrC-qp-0mc">
                                 <rect key="frame" x="0.0" y="76" width="375" height="542"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="mtc-Ot-yF0" firstAttribute="top" secondItem="3xd-9M-rC6" secondAttribute="top" id="A9C-ni-hyb"/>
+                            <constraint firstItem="jrC-qp-0mc" firstAttribute="top" secondItem="5Xh-vs-bQm" secondAttribute="bottom" constant="8" id="I1E-NU-iZD"/>
+                            <constraint firstItem="jrC-qp-0mc" firstAttribute="bottom" secondItem="ymt-P8-ea2" secondAttribute="top" id="N2k-zw-928"/>
+                            <constraint firstAttribute="trailing" secondItem="jrC-qp-0mc" secondAttribute="trailing" id="UAC-Tw-A99"/>
                             <constraint firstItem="mtc-Ot-yF0" firstAttribute="trailing" secondItem="3xd-9M-rC6" secondAttribute="trailing" id="VnF-IU-m4X"/>
                             <constraint firstItem="3xd-9M-rC6" firstAttribute="centerY" secondItem="5Xh-vs-bQm" secondAttribute="centerY" constant="-3" id="YQf-Y8-3T1"/>
                             <constraint firstItem="5Xh-vs-bQm" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" constant="16" id="cye-ho-sl8"/>
+                            <constraint firstItem="jrC-qp-0mc" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" id="h1G-Ao-HiK"/>
                             <constraint firstItem="5Xh-vs-bQm" firstAttribute="top" secondItem="OFe-wE-wJW" secondAttribute="bottom" constant="10" id="jJU-l3-JYp"/>
                             <constraint firstItem="3xd-9M-rC6" firstAttribute="leading" secondItem="5Xh-vs-bQm" secondAttribute="trailing" constant="10" id="lXQ-S9-0Lv"/>
                             <constraint firstItem="mtc-Ot-yF0" firstAttribute="leading" secondItem="3xd-9M-rC6" secondAttribute="leading" id="mka-P7-aq3"/>

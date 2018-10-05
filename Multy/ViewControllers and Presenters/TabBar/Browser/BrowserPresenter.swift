@@ -4,7 +4,7 @@
 
 import UIKit
 
-class BrowserPresenter: NSObject {
-    weak var mainVC: BrowserViewController?
+class DappBrowserPresenter: NSObject {
+    weak var mainVC: DappBrowserViewController?
     var tabBarFrame: CGRect?
 }
