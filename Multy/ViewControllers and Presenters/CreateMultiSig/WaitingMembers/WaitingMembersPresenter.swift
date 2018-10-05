@@ -22,15 +22,16 @@ class WaitingMembersPresenter: NSObject {
     
     var bottomButtonStatus = BottomButtonStatus.hidden
     let createdMultiSigWallet = UserWalletRLM()
-    var estimationInfo: NSDictionary? {
+    var estimationInfo: NSDictionary? 
+    var feeAmount = BigInt("\(1_000_000_000)") * BigInt("\(5_000_000)")
+    var fastGasPriceRate = "1" {
         didSet {
-            if estimationInfo != nil {
-                feeAmount = BigInt("\(1_000_000_000)") * BigInt(getEstimation(for: "deployMultisig"))
+            feeAmount = BigInt(fastGasPriceRate) * BigInt(getEstimation(for: "deployMultisig"))
+            if bottomButtonStatus.rawValue == 3 {
+                self.viewController!.setupBtnTitle()
             }
         }
     }
-    var feeAmount = BigInt("\(1_000_000_000)") * BigInt("\(5_000_000)")
-    var fastGasPriceRate = "1"
     
     func getFeeRate(_ blockchainType: BlockchainType, completion: @escaping (_ feeRateDict: String) -> ()) {
         DataManager.shared.getFeeRate(currencyID: blockchainType.blockchain.rawValue,
