@@ -119,7 +119,11 @@ class WalletTableViewCell: UITableViewCell {
     
     func notDeployedMsSetup(isMS: Bool, isMsDeployed: Bool?) {
         if isMS && isMsDeployed != nil {
-            tokenImage.image = isMsDeployed! ? tokenImage.image : UIImage(named: "ethMSMediumIconGrey")
+            if isMsDeployed! == false && wallet?.chainType == 1 {
+                tokenImage.image = tokenImage.image
+            } else {
+                tokenImage.image = isMsDeployed! ? tokenImage.image : UIImage(named: "ethMSMediumIconGrey")
+            }
             cryptoSumLbl.isHidden = !isMsDeployed!
             fiatSumLbl.isHidden = !isMsDeployed!
             cryptoNameLbl.isHidden = !isMsDeployed!
