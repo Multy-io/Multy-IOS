@@ -46,6 +46,7 @@ class DappBrowserViewController: UIViewController {
         let walletsVC = viewControllerFrom("Receive", "ReceiveStart") as! ReceiveStartViewController
         walletsVC.presenter.isNeedToPop = true
         walletsVC.sendWalletDelegate = self.presenter
+        walletsVC.presenter.displayedBlockchainOnly = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 1)
         self.navigationController?.pushViewController(walletsVC, animated: true)
     }
     
