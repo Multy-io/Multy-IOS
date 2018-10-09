@@ -69,33 +69,54 @@ class ApiManager: NSObject, RequestRetrier {
     public func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
         print("\n\n\n\n\n\nretrier: \(request.request?.urlRequest?.url?.absoluteString)\n\n\n\n\n\n")
         
-        if let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 || response.statusCode == 400 {
-            
-            if userID.isEmpty {
-                DispatchQueue.main.async {
-                    DataManager.shared.getAccount { (acc, err) in
-                        if acc != nil {
-                            self.userID = acc!.userID
+        getServerConfig { (answer, error) in
+            if answer != nil && error == nil {
+                if let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 {
+                    if self.userID.isEmpty {
+                        DispatchQueue.main.async {
+                            DataManager.shared.getAccount { (acc, err) in
+                                if acc != nil {
+                                    self.userID = acc!.userID
+                                }
+                                completion(false, 0.0)
+                            }
                         }
-                        completion(false, 0.0)
                     }
+
+                    var params : Parameters = [ : ]
+
+                    params["userID"] = self.userID
+                    params["deviceID"] = "iOS \(UIDevice.current.name)"
+                    params["deviceType"] = 1
+                    params["pushToken"] = self.pushToken
+                    params["appVersion"] = ((infoPlist["CFBundleShortVersionString"] as! String) + " " + (infoPlist["CFBundleVersion"] as! String))
+
+                    self.auth(with: params, completion: { (dict, error) in
+                        completion(true, 0.2) // retry after 0.2 second
+                    })
+                } else {
+                    completion(false, 0.0) // don't retry
                 }
+                
+                
+            } else {
+                //block UI
+                self.presentServerOff()
+                print("\n\n\n\n\n\nBlock\n\n\n\n")
             }
-            
-            var params : Parameters = [ : ]
-            
-            params["userID"] = userID
-            params["deviceID"] = "iOS \(UIDevice.current.name)"
-            params["deviceType"] = 1
-            params["pushToken"] = pushToken
-            params["appVersion"] = ((infoPlist["CFBundleShortVersionString"] as! String) + " " + (infoPlist["CFBundleVersion"] as! String))
-            
-            self.auth(with: params, completion: { (dict, error) in
-                completion(true, 0.2) // retry after 0.2 second
-            })
-        } else {
-            completion(false, 0.0) // don't retry
         }
+    }
+    
+    func presentServerOff() {
+        let currentTabIndex = (UIApplication.shared.keyWindow?.rootViewController as? CustomTabBarViewController)?.selectedIndex
+        let topVC = UIApplication.shared.keyWindow?.rootViewController?.childViewControllers[currentTabIndex!].childViewControllers.last
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let slpashScreen = storyboard.instantiateViewController(withIdentifier: "splash") as! SplashViewController
+        slpashScreen.isJailAlert = 2
+        slpashScreen.parentVC = topVC
+        slpashScreen.modalPresentationStyle = .overCurrentContext
+        topVC!.present(slpashScreen, animated: true, completion: nil)
     }
     
     func getServerConfig(completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
@@ -211,10 +232,10 @@ class ApiManager: NSObject, RequestRetrier {
         
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
-            "Authorization" : "Bearer \(self.token)"
+//            "Authorization" : "Bearer \(self.token)"
         ]
         
-        requestManager.request("\(apiUrl)api/v1/wallet", method: .post, parameters: walletDict, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallet", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 

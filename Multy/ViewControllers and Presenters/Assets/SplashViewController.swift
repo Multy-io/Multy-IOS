@@ -8,6 +8,8 @@ private typealias LocalizeDelegate = SplashViewController
 
 class SplashViewController: UIViewController {
 
+    @IBOutlet weak var connectBtn: UIButton!
+    
     var isJailAlert = 0
     var parentVC: UIViewController?
     
@@ -54,8 +56,13 @@ class SplashViewController: UIViewController {
     }
     
     func serverStopAlert() {
+        connectBtn.isHidden = false
         view.alpha = 0.5
         (parentVC?.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+        serverOffAlert()
+    }
+    
+    func serverOffAlert() {
         let title = localize(string: Constants.serverNotWorkTitleString)
         let message = localize(string: Constants.serverNotWorkingMessageString)
         
@@ -64,6 +71,16 @@ class SplashViewController: UIViewController {
             
         }))
         present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func connectAction(_ sender: Any) {
+        DataManager.shared.getServerConfig { (soft, hard, err) in
+            if soft != nil && hard != nil {
+                self.dismissVC()
+            } else {
+                self.serverOffAlert()
+            }
+        }
     }
 }
 
