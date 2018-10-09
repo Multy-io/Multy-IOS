@@ -88,7 +88,7 @@ class AddressViewController: UIViewController, BranchProtocol {
     }
     
     func presentActivtyVC(objectToShare: String) {
-        let objectsToShare = [objectToShare] as [String]
+        let objectsToShare = [objectToShare, makeStringWithAddress()] as [String]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
         activityVC.completionWithItemsHandler = {(activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in

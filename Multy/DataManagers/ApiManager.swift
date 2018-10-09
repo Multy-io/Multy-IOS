@@ -232,13 +232,12 @@ class ApiManager: NSObject, RequestRetrier {
         
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
-//            "Authorization" : "Bearer \(self.token)"
+            "Authorization" : "Bearer \(self.token)"
         ]
         
-        requestManager.request("\(apiUrl)api/v1/wallet", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/wallet", method: .post, parameters: walletDict, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
-                
                 print("api/v1/wallet: \(response.result.value)")
                 if response.result.value != nil {
                     if ((response.result.value! as! NSDictionary) ["code"] != nil) {

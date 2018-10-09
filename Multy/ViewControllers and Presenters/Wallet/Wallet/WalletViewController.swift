@@ -242,7 +242,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         setupTransactionAssetsBtns(false)
         
         //------------  WARNING  ------------//
-        setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
+//        setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
         // ------------  WARNING  ------------
        
         setupAddressBtns()
