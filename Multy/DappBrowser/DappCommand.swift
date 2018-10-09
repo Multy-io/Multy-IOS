@@ -3,7 +3,7 @@
 import Foundation
 
 struct DappCommand: Decodable {
-    let name: Method
+    let name: DappOperationType
     let id: Int
     let object: [String: DappCommandObjectValue]
 }

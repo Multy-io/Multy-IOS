@@ -317,7 +317,7 @@ extension BrowserViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         
         //COMMENTED
-                guard let command = DappAction.fromMessage(message) else { return }
+//                guard let command = DappAction.fromMessage(message) else { return }
         //        let requester = DAppRequester(title: webView.title, url: webView.url)
         //        //TODO: Refactor
         //        let token = TokensDataStore.token(for: server)
@@ -327,37 +327,43 @@ extension BrowserViewController: WKScriptMessageHandler {
         //        delegate?.didCall(action: action, callbackID: command.id)
         
         let body = message.body as! Dictionary<String, Any>
-        let name = body["name"] as! String
-            
-        guard  name == "signTransaction" else {
+        
+        guard let name = body["name"] as? String else {
+            //FIXME: callback for WebView?
             return
         }
         
-        let dict = body["object"] as! Dictionary<String, Any>
+        guard let operationType = DappOperationType.init(rawValue: name) else {
+            return
+        }
         
-        let chainID = dict["chainId"] as! NSNumber
-        let data = dict["data"] as! String
-        let from = dict["from"] as! String
-        let to = dict["to"] as! String
-        let gas = dict["gas"] as! String
-        let gasUInt = UInt64(gas.dropFirst(2), radix: 16)!
+        guard let objectData = body["object"] as? Dictionary<String, Any> else {
+            return
+        }
         
-        let gasPrice = dict["gasPrice"] as! String
-        let gasPriceUInt = UInt64(gasPrice.dropFirst(2), radix: 16)!
         
-        let nonce = dict["nonce"] as! String
-        let value = dict["value"] as! String
+        let operationObject = OperationObject.init(with: objectData)
         
-        //amount
-        let valueUINT64 = UInt64(value.dropFirst(2), radix: 16)!
-        let nonceInt = Int(nonce, radix: 16)
-        
+        switch operationType {
+        case .signTransaction:
+            signTx(for: operationObject)
+        case .signMessage:
+            return
+        case .signPersonalMessage:
+            return
+        case .signTypedMessage:
+            return
+        }
+    }
+}
+
+
+//perfom operations
+extension BrowserViewController {
+    func signTx(for object: OperationObject) {
         let account = DataManager.shared.realmManager.account
         let core = DataManager.shared.coreLibManager
         var binaryData = account!.binaryDataString.createBinaryData()!
-        var hex = data.dropFirst(2)
-        
-
         
         DataManager.shared.getWallet(primaryKey: "fe2d5a07a9095d4225ce02a25e04e0341ac5a75ccc8a730979a8162411b1dfc4") {
             switch $0 {
@@ -368,14 +374,14 @@ extension BrowserViewController: WKScriptMessageHandler {
                                                      binaryData:        &binaryData)
                 
                 let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                                      sendAddress: to,
-                                                                                      sendAmountString: "\(valueUINT64)",
-                                                                                      nonce: wallet.ethWallet!.nonce.intValue,
-                                                                                      balanceAmount: wallet.ethWallet!.balance,
-                                                                                      ethereumChainID: UInt32(wallet.blockchainType.net_type),
-                                                                                      gasPrice: "\(gasPriceUInt)",
-                                                                                      gasLimit: "\(gasUInt)",
-                                                                                      payload: String(hex))
+                                                                                      sendAddress: object.toAddress,
+                                                                                      sendAmountString: "\(object.value)",
+                    nonce: wallet.ethWallet!.nonce.intValue,
+                    balanceAmount: wallet.ethWallet!.balance,
+                    ethereumChainID: UInt32(wallet.blockchainType.net_type),
+                    gasPrice: "\(object.gasPrice)",
+                    gasLimit: "\(object.gasLimit)",
+                    payload: object.hexData)
                 let rawTransaction = trData.message
                 
                 let newAddressParams = [
