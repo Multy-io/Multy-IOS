@@ -21,13 +21,19 @@ class AddressViewController: UIViewController, BranchProtocol {
     @IBOutlet weak var thirdConstraint: NSLayoutConstraint!
     @IBOutlet weak var fourthConstraint: NSLayoutConstraint!
     
+    var addressString: String? 
+    
     var wallet: UserWalletRLM? {
         didSet {
             if wallet != nil {
                 qrBlockchainString = BlockchainType.create(wallet: wallet!).qrBlockchainString
+                if addressString != nil {
+                    wallet?.address = addressString!
+                }
             }
         }
     }
+    
     var addressIndex: Int?
     var qrBlockchainString = String()
     var qrcodeImage: CIImage!

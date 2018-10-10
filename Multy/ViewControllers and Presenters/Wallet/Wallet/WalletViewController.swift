@@ -185,7 +185,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     private func addGestureRecognizers() {
         let panGR = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
@@ -455,7 +457,11 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBAction func backAction(_ sender: Any) {
         assetsTableTrailingConstraint.constant = 0
 //        self.navigationController?.popViewController(animated: true)
-        navigationController?.popToRootViewController(animated: true)
+        if navigationController?.childViewControllers.count == 4 {
+            navigationController?.popViewController(animated: true)
+        } else {
+            navigationController?.popToRootViewController(animated: true)
+        }
     }
     
     @IBAction func shareAddressAction(_ sender: Any) {
@@ -546,6 +552,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         if presenter.wallet!.isMultiSig {
             let settingsVC = viewControllerFrom("Wallet", "msWalletSettings") as! MSWalletSettingsViewController
             settingsVC.presenter.wallet = presenter.wallet!
+            settingsVC.presenter.acc = presenter.account
 //            settingsVC.presenter.account = presenter.account!
 
             navigationController?.pushViewController(settingsVC, animated: true)

@@ -3534,7 +3534,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="W1w-XC-pcr">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="W1w-XC-pcr">
                                         <rect key="frame" x="0.0" y="371" width="375" height="128"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -3671,6 +3671,6 @@ By donating you help us to bring blockchain technology one step closer to ordina
         <image name="warninngBigWhite" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="pNd-qC-tRx"/>
+        <segue reference="bAg-Ts-2PT"/>
     </inferredMetricsTieBreakers>
 </document>
