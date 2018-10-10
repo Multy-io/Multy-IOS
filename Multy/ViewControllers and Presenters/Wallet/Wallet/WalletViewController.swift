@@ -509,8 +509,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             DataManager.shared.getWallet(primaryKey: presenter.wallet!.multisigWallet!.linkedWalletID) { (result) in
                 switch result {
                 case .success(let linkedWallet):
-                    if linkedWallet.availableAmount.isZero {
-                        self.presentAlert(with: self.localize(string: Constants.noFundsString))
+                    if linkedWallet.availableAmount > BigInt("10000") {
+                        self.presentAlert(with: self.localize(string: Constants.noLinkedFundsString))
                         return
                     }
                 case .failure(let error):

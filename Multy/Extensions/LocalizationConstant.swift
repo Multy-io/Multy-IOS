@@ -97,6 +97,7 @@ extension Constants {
     static let trySendZeroString = "TRY TO SEND ZERO"
     static let enterCorrectValueString = "ENTER CORRECT VALUE"
     static let noFundsString = "NO FUNDS"
+    static let noLinkedFundsString = "NO LINKED FUNDS"
     static let errorWhileCreatingWalletString = "ERROR WHILE CREATING WALLET"
     static let youCantSpendMoreThanFeeAndDonationString = "YOU CANT SPEND MORE THEN FEE AND DONATION"
     static let youCantSpendMoreThanFeeString = "YOU CANT SPEND MORE THEN FEE"
