@@ -73,6 +73,9 @@ class WalletPresenter: NSObject {
         
         let multiSigPendingCell = UINib.init(nibName: "MultiSigPendingTableViewCell", bundle: nil)
         walletVC!.transactionsTable.register(multiSigPendingCell, forCellReuseIdentifier: "multiSigPendingCell")
+        
+        let tokenCell = UINib.init(nibName: "TokenTableViewCell", bundle: nil)
+        walletVC!.assetsTable.register(tokenCell, forCellReuseIdentifier: "tokenCell")
     }
     
     func updateHeader() {

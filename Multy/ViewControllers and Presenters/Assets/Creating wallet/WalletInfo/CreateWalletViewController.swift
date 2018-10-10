@@ -74,7 +74,7 @@ class CreateWalletViewController: UIViewController, AnalyticsProtocol {
         let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
         walletVC.presenter.wallet = presenter.createdWallet
         walletVC.presenter.account = presenter.account
-        
+        navigationController?.popToRootViewController(animated: true)
         navigationController?.pushViewController(walletVC, animated: true)
     }
     

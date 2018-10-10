@@ -505,6 +505,21 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             return
         }
         
+        if presenter.wallet!.isMultiSig {
+            DataManager.shared.getWallet(primaryKey: presenter.wallet!.multisigWallet!.linkedWalletID) { (result) in
+                switch result {
+                case .success(let linkedWallet):
+                    if linkedWallet.availableAmount.isZero {
+                        self.presentAlert(with: self.localize(string: Constants.noFundsString))
+                        return
+                    }
+                case .failure(let error):
+                    break
+                    //error
+                }
+            }
+        }
+        
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
         sendStartVC.presenter.transactionDTO.choosenWallet = self.presenter.wallet
@@ -615,7 +630,7 @@ extension TableViewDelegate: UITableViewDelegate {
         if tableView == transactionsTable {
             return presenter.makeHeightForTableCells(indexPath: indexPath)
         } else { // if tableView == tokensTable
-            return 70
+            return 64
         }
     }
 }
@@ -663,9 +678,14 @@ extension TableViewDataSource: UITableViewDataSource {
                 return transactionCell
             }
         } else {
-            let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
-            
-            return transactionCell
+            if indexPath.row  < 3 {
+                let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
+                return tokenCell
+            } else {
+                let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
+                transactionCell.changeState(isEmpty: true)
+                return transactionCell
+            }
         }
     }
     
