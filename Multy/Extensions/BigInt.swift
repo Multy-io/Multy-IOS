@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import Foundation
+import MultyCoreLibrary
 
 enum BigIntOperation {
     case add, subtract, multiply, divide

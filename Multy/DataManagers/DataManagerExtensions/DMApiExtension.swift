@@ -5,6 +5,7 @@
 import Foundation
 import RealmSwift
 import Alamofire
+import MultyCoreLibrary
 
 extension DataManager {
     

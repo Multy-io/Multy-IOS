@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import Foundation
+import MultyCoreLibrary
 
 extension Data {
     var bytes : [UInt8] {

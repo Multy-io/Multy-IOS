@@ -4,6 +4,7 @@
 
 import UIKit
 import Alamofire
+import MultyCoreLibrary
 
 class WalletAddresessViewController: UIViewController,AnalyticsProtocol {
     

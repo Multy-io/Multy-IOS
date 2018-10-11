@@ -12,6 +12,9 @@
 		44089D15205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */; };
 		4409E40120DD047900ADBE42 /* LocalizationConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4409E40020DD047900ADBE42 /* LocalizationConstant.swift */; };
 		440AD8D22020D1220015AEF1 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */; };
+		442259FA216E376E0045A050 /* MultyCoreLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442259F9216E376E0045A050 /* MultyCoreLibrary.framework */; };
+		442259FC216E3FA70045A050 /* MultyCoreLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442259FB216E3FA70045A050 /* MultyCoreLibrary.framework */; };
+		442259FD216E3FA70045A050 /* MultyCoreLibrary.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 442259FB216E3FA70045A050 /* MultyCoreLibrary.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		442B94AD216B6E1700D1A402 /* DappOperationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */; };
 		4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4430569D20C1627600E5415A /* TransactionPendingCell.xib */; };
 		4436123020B56F000095F3C6 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436122F20B56F000095F3C6 /* UITableView+Extension.swift */; };
@@ -444,6 +447,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				442259FD216E3FA70045A050 /* MultyCoreLibrary.framework in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,6 +461,8 @@
 		44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletBlockchainTableViewCell.swift; sourceTree = "<group>"; };
 		4409E40020DD047900ADBE42 /* LocalizationConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstant.swift; sourceTree = "<group>"; };
 		440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
+		442259F9216E376E0045A050 /* MultyCoreLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MultyCoreLibrary.framework; sourceTree = "<group>"; };
+		442259FB216E3FA70045A050 /* MultyCoreLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultyCoreLibrary.framework; path = Multy/Frameworks/MultyCoreLibrary.framework; sourceTree = "<group>"; };
 		442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappOperationTypes.swift; sourceTree = "<group>"; };
 		4430569C20C1627600E5415A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TransactionPendingCell.xib; sourceTree = "<group>"; };
 		4430569F20C1627C00E5415A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransactionPendingCell.strings; sourceTree = "<group>"; };
@@ -1011,6 +1017,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				442259FA216E376E0045A050 /* MultyCoreLibrary.framework in Frameworks */,
 				85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */,
 				FA4125DF2004C0FD00DF9AC3 /* libstdc++.tbd in Frameworks */,
 				4456964920F391FE00B0C496 /* libccan.a in Frameworks */,
@@ -1021,6 +1028,7 @@
 				FA4125F02004FF1500DF9AC3 /* libmini-gmp.a in Frameworks */,
 				FA4125F22004FF1500DF9AC3 /* libsecp256k1.a in Frameworks */,
 				2903DBF32668295CED1C9139 /* Pods_Multy.framework in Frameworks */,
+				442259FC216E3FA70045A050 /* MultyCoreLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1247,6 +1255,7 @@
 		452290481FBB18D30024B550 = {
 			isa = PBXGroup;
 			children = (
+				442259FB216E3FA70045A050 /* MultyCoreLibrary.framework */,
 				452290531FBB18D30024B550 /* Multy */,
 				4491514C204976600028195F /* MultyTests */,
 				4491513E2049764D0028195F /* MultyUITests */,
@@ -2348,6 +2357,7 @@
 		FA7E97221FF2504100735D73 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				442259F9216E376E0045A050 /* MultyCoreLibrary.framework */,
 				445D151120DB9421002F6747 /* Contacts.framework */,
 				4538BDCB2099E69900573426 /* StoreKit.framework */,
 				85741D8820B55A650093933B /* CoreBluetooth.framework */,
@@ -3869,7 +3879,7 @@
 				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = Multy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/**",
 					"\"$(SRCROOT)/Pods/GGLInstanceID\"/**",
@@ -3910,7 +3920,7 @@
 				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = Multy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/**",
 					"\"$(SRCROOT)/Pods/GGLInstanceID\"/**",

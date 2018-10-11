@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import MultyCoreLibrary
 
 protocol BlockchainTransferProtocol: class {
     func setBlockchain(blockchain: BlockchainType)

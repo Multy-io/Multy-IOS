@@ -2,6 +2,8 @@
 //Licensed under Multy.io license.
 //See LICENSE for details
 
+import MultyCoreLibrary
+
 private typealias MultisigManager = DataManager
 
 extension DataManager {

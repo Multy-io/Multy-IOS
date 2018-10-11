@@ -5,6 +5,7 @@
 import UIKit
 import Lottie
 import UPCarouselFlowLayout
+import MultyCoreLibrary
 
 enum SendMode {
     case searching

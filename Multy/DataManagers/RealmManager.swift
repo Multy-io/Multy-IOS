@@ -5,6 +5,7 @@
 import UIKit
 import RealmSwift
 import Realm
+import MultyCoreLibrary
 
 private typealias RealmMigrationManager = RealmManager
 private typealias RecentAddressManager = RealmManager

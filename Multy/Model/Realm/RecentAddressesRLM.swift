@@ -4,6 +4,7 @@
 
 import Foundation
 import RealmSwift
+import MultyCoreLibrary
 
 class RecentAddressesRLM: Object {
     

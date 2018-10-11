@@ -1,0 +1,11 @@
+framework module MultyCoreLibrary {
+  umbrella header "MultyCoreLibrary-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module MultyCoreLibrary.Swift {
+    header "MultyCoreLibrary-Swift.h"
+    requires objc
+}

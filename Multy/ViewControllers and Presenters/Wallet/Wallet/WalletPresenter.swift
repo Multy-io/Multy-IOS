@@ -4,6 +4,7 @@
 
 import UIKit
 import RealmSwift
+import MultyCoreLibrary
 
 class WalletPresenter: NSObject {
 

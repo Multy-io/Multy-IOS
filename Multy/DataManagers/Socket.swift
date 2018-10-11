@@ -5,6 +5,7 @@
 import UIKit
 import SocketIO
 import AVFoundation
+import MultyCoreLibrary
 
 private typealias MessageHandler = Socket
 
