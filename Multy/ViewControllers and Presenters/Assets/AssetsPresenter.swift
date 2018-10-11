@@ -135,8 +135,10 @@ class AssetsPresenter: NSObject {
             }
         }
         
+        let fileteredWallets = result.filter{ $0.blockchain == BLOCKCHAIN_ETHEREUM }
         
-        
+        DataManager.shared.checkWallets(fileteredWallets)
+
         return result
     }
     

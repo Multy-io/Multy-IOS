@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 private typealias MultisigManager = DataManager
+private typealias CoreLibPrivateKeyFixManager = DataManager
 
 extension DataManager {
 //    func isDeviceJailbroken() -> Bool {
@@ -130,6 +131,43 @@ extension DataManager {
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
         return coreLibManager.privateKeyString(blockchain: blockchain, walletID: walletID, addressID: addressID, binaryData: &binaryData)
+    }
+}
+
+extension CoreLibPrivateKeyFixManager  {
+    func checkWallets(_ wallets: [UserWalletRLM]) {
+        guard UserPreferences.shared.getDBPrivateKeyFixValue() == false  else {
+            return
+        }
+        
+        for wallet in wallets {
+            let addressData = createWalletData(currencyID: wallet.chain, networkID: wallet.chainType, walletID: wallet.walletID)
+            let address = addressData["address"] as! String
+            
+            guard wallet.address != address else {
+                continue
+            }
+            
+            apiManager.convertToImported(currencyID: wallet.chain, networkID: wallet.chainType, walletID: wallet.walletID) { print( $0) }
+            
+            //FIXME: add fixes
+            //bad case when we should fix last byte
+            
+            //fix privateKey and privateKey
+            //UserPreferences.shared.writeDBPrivateKeyFixValue(true)
+        }
+    }
+    
+    func createWalletData(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber) -> Dictionary<String, Any> {
+        var binaryData = realmManager.account!.binaryDataString.createBinaryData()!
+        let blockchainType = BlockchainType(blockchain: Blockchain(rawValue: currencyID.uint32Value), net_type: networkID.intValue)
+        
+        let addressData = coreLibManager.createAddress(blockchainType: blockchainType,
+                                             walletID: walletID.uint32Value,
+                                             addressID: 0,
+                                             binaryData: &binaryData)
+        
+        return addressData!
     }
 }
 

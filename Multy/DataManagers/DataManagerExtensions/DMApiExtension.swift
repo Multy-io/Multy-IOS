@@ -456,4 +456,10 @@ extension DataManager {
             apiManager.deleteCreatedWallet(currencyID: wallet.chain, networkID: wallet.chainType, walletIndex: wallet.walletID, completion: completion)
         }
     }
+    
+    func convertToImported(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        apiManager.convertToImported(currencyID: currencyID, networkID: networkID, walletID: walletID) {
+            completion($0)
+        }
+    }
 }
