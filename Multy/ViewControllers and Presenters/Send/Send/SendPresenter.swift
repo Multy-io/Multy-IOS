@@ -446,9 +446,11 @@ class SendPresenter: NSObject {
                         return
                     }
                     
+                    let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? self.addressData!["address"] as! String : ""
+                    
                     let newAddressParams = [
                         "walletindex"   : wallet.walletID.intValue,
-                        "address"       : self.addressData!["address"] as! String,
+                        "address"       : newAddress,
                         "addressindex"  : wallet.addresses.count,
                         "transaction"   : self.rawTransaction,
                         "ishd"          : wallet.shouldCreateNewAddressAfterTransaction
@@ -467,7 +469,8 @@ class SendPresenter: NSObject {
                         print("---------\(dict)")
                         
                         if error != nil {
-                            self.sendVC?.updateUIWithSendResponse(success: false)
+                            self.sendVC!.sendAnalyticsEvent(screenName: self.className, eventName: (error! as NSError).userInfo.debugDescription)
+                            self.sendVC!.updateUIWithSendResponse(success: false)
                             print("sendHDTransaction Error: \(error)")
                             self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionError)
                             
@@ -735,6 +738,23 @@ extension CreateTransactionDelegate {
         
         let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(in: wallet.blockchainType.blockchain).stringValue
         
+        let pointer: UnsafeMutablePointer<OpaquePointer?>?
+        if !wallet.importedPrivateKey.isEmpty {
+            let blockchainType = wallet.blockchainType
+            let privatekey = wallet.importedPrivateKey
+            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
+            switch walletInfo {
+            case .success(let value):
+                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
+            case .failure(let error):
+                print(error)
+                
+                return false
+            }
+        } else {
+            pointer = addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
+        }
+        
         if wallet.isMultiSig {
             if self.linkedWallet == nil {
                 rawTransaction = "Error"
@@ -755,7 +775,7 @@ extension CreateTransactionDelegate {
             
             return trData.isTransactionCorrect
         } else {
-            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
                                                                                   sendAddress: request.sendAddress,
                                                                                   sendAmountString: sendAmount,
                                                                                   nonce: wallet.ethWallet!.nonce.intValue,

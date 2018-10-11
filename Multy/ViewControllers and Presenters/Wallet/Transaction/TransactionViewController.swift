@@ -260,6 +260,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         if isMultisigWaitingStatus {
             txAction = .confirmation
             self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
+            self.titleLbl.text = ""
             self.titleLbl.text = localize(string: Constants.waitingConfirmationsString)
             self.titleLbl.textColor = .black
             self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")

@@ -419,6 +419,11 @@ extension DataManager {
     
     func sendHDTransaction(transactionParameters: Parameters, completion: @escaping (_ answer: NSDictionary?,_ error: Error?) -> ()) {
         apiManager.sendHDTransaction(transactionParameters: transactionParameters) { (answer, error) in
+            if error != nil {
+                //send analytics err
+                
+                completion(nil, error)
+            }
             completion(answer, error)
         }
     }

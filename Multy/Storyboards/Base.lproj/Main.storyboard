@@ -1351,7 +1351,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qZA-gV-4vd">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NYN-I4-jg0">
                                 <rect key="frame" x="0.0" y="407" width="375" height="260"/>
@@ -2172,12 +2172,36 @@ correctly</string>
                     <view key="view" contentMode="scaleToFill" id="ENQ-94-BLC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgs-LA-w2e">
+                                <rect key="frame" x="0.0" y="303" width="375" height="64"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="YZ7-7e-UUJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
+                                <state key="normal" title="Try to Connect">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="connectAction:" destination="8BE-fQ-pBO" eventType="touchUpInside" id="taR-EW-ifV"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="0.011764705882352941" green="0.49803921568627452" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="qgs-LA-w2e" secondAttribute="trailing" id="HWl-69-0Xr"/>
+                            <constraint firstItem="f3y-3c-C3N" firstAttribute="top" secondItem="qgs-LA-w2e" secondAttribute="bottom" constant="300" id="T5h-RE-Qhy"/>
+                            <constraint firstItem="qgs-LA-w2e" firstAttribute="leading" secondItem="ENQ-94-BLC" secondAttribute="leading" id="bg5-x5-hNY"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="connectBtn" destination="qgs-LA-w2e" id="Hve-P6-erV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zvU-qz-4zB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-588" y="3261"/>
+            <point key="canvasLocation" x="-588" y="4036"/>
         </scene>
         <!--Add Address View Controller-->
         <scene sceneID="FMo-lg-RBi">
@@ -3215,7 +3239,7 @@ correctly</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pCz-aZ-HZS">
-                                <rect key="frame" x="10" y="592" width="355" height="64"/>
+                                <rect key="frame" x="10" y="1203" width="355" height="64"/>
                                 <color key="backgroundColor" red="0.97644573450000005" green="0.98039692639999998" blue="0.9998489022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="xh0-sK-EW0"/>
@@ -3234,7 +3258,7 @@ correctly</string>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcq-vK-VZQ">
-                                <rect key="frame" x="10" y="326" width="355" height="258"/>
+                                <rect key="frame" x="10" y="808" width="355" height="387"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lHM-QD-4LC" userLabel="SeparatorView">
                                         <rect key="frame" x="0.0" y="62" width="355" height="1"/>
@@ -3334,14 +3358,14 @@ correctly</string>
                                             <constraint firstAttribute="height" constant="64" id="xhm-Tp-iut"/>
                                         </constraints>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ice-Mz-kUQ" userLabel="SeparatorView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ice-Mz-kUQ" userLabel="SeparatorView">
                                         <rect key="frame" x="0.0" y="257" width="355" height="1"/>
                                         <color key="backgroundColor" red="0.47057175636291504" green="0.64270669221878052" blue="0.85454529523849487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="gyz-wf-PPE"/>
                                         </constraints>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CKO-lz-2o7" userLabel="ImportView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CKO-lz-2o7" userLabel="ImportView">
                                         <rect key="frame" x="0.0" y="258" width="355" height="64"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UK0-lJ-Jn2">
@@ -3397,14 +3421,14 @@ correctly</string>
                                             <constraint firstItem="Lum-do-Cve" firstAttribute="centerX" secondItem="CKO-lz-2o7" secondAttribute="centerX" id="u4v-EP-UeX"/>
                                         </constraints>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1kK-Wx-xkB" userLabel="SeparatorView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1kK-Wx-xkB" userLabel="SeparatorView">
                                         <rect key="frame" x="0.0" y="322" width="355" height="1"/>
                                         <color key="backgroundColor" red="0.47057175639999999" green="0.64270669219999998" blue="0.8545452952" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="5bl-VP-YjF"/>
                                         </constraints>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NJG-fh-QnE" userLabel="ImportEthMSView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NJG-fh-QnE" userLabel="ImportEthMSView">
                                         <rect key="frame" x="0.0" y="323" width="355" height="64"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AnR-4l-wY5">
@@ -3458,7 +3482,7 @@ correctly</string>
                                     <constraint firstAttribute="trailing" secondItem="W2L-hD-6eN" secondAttribute="trailing" id="nXs-Vf-DKR"/>
                                     <constraint firstAttribute="trailing" secondItem="ice-Mz-kUQ" secondAttribute="trailing" id="rBS-Pw-qvm"/>
                                     <constraint firstItem="sxA-6k-ZJp" firstAttribute="top" secondItem="W2L-hD-6eN" secondAttribute="bottom" id="s8e-RU-yc2"/>
-                                    <constraint firstAttribute="height" constant="258" id="sWg-jQ-ysu"/>
+                                    <constraint firstAttribute="height" constant="387" id="sWg-jQ-ysu"/>
                                     <constraint firstAttribute="trailing" secondItem="ni9-G7-c1c" secondAttribute="trailing" id="sZT-li-bhP"/>
                                     <constraint firstItem="CKO-lz-2o7" firstAttribute="top" secondItem="ice-Mz-kUQ" secondAttribute="bottom" id="soM-O3-8bD"/>
                                     <constraint firstItem="sRz-3m-UVg" firstAttribute="centerX" secondItem="vcq-vK-VZQ" secondAttribute="centerX" id="txt-k2-nfG"/>
@@ -3471,7 +3495,7 @@ correctly</string>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="walletIcon" translatesAutoresizingMaskIntoConstraints="NO" id="BRE-Ia-6WJ">
-                                <rect key="frame" x="160.5" y="290" width="54" height="54"/>
+                                <rect key="frame" x="160.5" y="772" width="54" height="54"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="54" id="S6J-F5-br0"/>
                                     <constraint firstAttribute="width" secondItem="BRE-Ia-6WJ" secondAttribute="height" multiplier="1:1" id="WBC-Yq-sYn"/>
@@ -3485,16 +3509,20 @@ correctly</string>
                             <constraint firstItem="pCz-aZ-HZS" firstAttribute="leading" secondItem="xIM-2F-iNl" secondAttribute="leading" constant="10" id="eq1-Fm-Qb9"/>
                             <constraint firstItem="vcq-vK-VZQ" firstAttribute="top" secondItem="BRE-Ia-6WJ" secondAttribute="bottom" constant="-18" id="iuw-Di-dgk"/>
                             <constraint firstAttribute="trailing" secondItem="pCz-aZ-HZS" secondAttribute="trailing" constant="10" id="lOz-Z4-wXA"/>
-                            <constraint firstItem="ddw-vH-tQG" firstAttribute="top" secondItem="pCz-aZ-HZS" secondAttribute="bottom" constant="11" id="sn1-VA-SwO"/>
+                            <constraint firstItem="ddw-vH-tQG" firstAttribute="top" secondItem="pCz-aZ-HZS" secondAttribute="bottom" constant="-600" id="sn1-VA-SwO"/>
                             <constraint firstItem="vcq-vK-VZQ" firstAttribute="leading" secondItem="xIM-2F-iNl" secondAttribute="leading" constant="10" id="vrh-9R-VwO"/>
                             <constraint firstItem="BRE-Ia-6WJ" firstAttribute="centerX" secondItem="xIM-2F-iNl" secondAttribute="centerX" id="wiS-El-Pot"/>
                         </constraints>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="botConstraint" destination="sn1-VA-SwO" id="SKs-Wb-UKG"/>
+                        <outlet property="viewWithBtns" destination="vcq-vK-VZQ" id="ztl-aa-VIi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AXh-Ph-kjO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3636" y="1557.5712143928038"/>
+            <point key="canvasLocation" x="-3665" y="1586"/>
         </scene>
         <!--Exchange Stocks View Controller-->
         <scene sceneID="IAz-fS-pU7">
@@ -3583,7 +3611,7 @@ correctly</string>
         <image name="activityTab" width="16" height="14"/>
         <image name="addressBookEs" width="190" height="200"/>
         <image name="backGrey" width="13" height="21"/>
-        <image name="chevron" width="15" height="22"/>
+        <image name="chevron" width="10" height="15"/>
         <image name="closeBtn" width="62" height="62"/>
         <image name="donationAlert" width="280" height="198"/>
         <image name="donationIcon" width="30" height="35"/>

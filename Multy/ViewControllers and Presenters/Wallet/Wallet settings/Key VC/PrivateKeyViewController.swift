@@ -68,12 +68,16 @@ class PrivateKeyViewController: UIViewController {
     }
     
     func makePrivateKey() -> String {
-        var binaryData = account!.binaryDataString.createBinaryData()!
-        let privateKeyString = DataManager.shared.privateKeyString(blockchain: BlockchainType.create(wallet: wallet!),
-                                                                   walletID: wallet!.walletID.uint32Value,
-                                                                   addressID: UInt32(addressID!),
-                                                                   binaryData: &binaryData)
-        return privateKeyString
+        if wallet!.isImported {
+            return wallet!.importedPrivateKey
+        } else {
+            var binaryData = account!.binaryDataString.createBinaryData()!
+            let privateKeyString = DataManager.shared.privateKeyString(blockchain: BlockchainType.create(wallet: wallet!),
+                                                                       walletID: wallet!.walletID.uint32Value,
+                                                                       addressID: UInt32(addressID!),
+                                                                       binaryData: &binaryData)
+            return privateKeyString
+        }
     }
     
 }

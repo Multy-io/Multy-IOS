@@ -26,7 +26,8 @@ extension DataManager {
         if binaryData != nil {
             return (coreLibManager.createExtendedKey(from: &binaryData!), nil)
         } else {
-            return (nil, "Seed phrase is too short")
+//            return (nil, "Seed phrase is too short")
+            return(nil, "WRONG SEED")
         }
         
     }
@@ -100,7 +101,7 @@ extension DataManager {
             //FIXME: create messages in bad cases
             if error != nil {
                 print("sendHDTransaction Error: \(error)")
-                completion(nil, nil)
+                completion(nil, error)
                 
                 return
             }

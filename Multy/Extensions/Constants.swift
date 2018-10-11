@@ -232,13 +232,19 @@ enum MultisigOwnerTxStatus: Int {
 let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for available donation
 let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 
+let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 16.10.2018
+
 //API REST constants
 //let apiUrl = "http://88.198.47.112:2278/"//"http://192.168.0.121:7778/"
 
+//
+//let shortURL = "api.multy.io"
+//let apiUrl = "https://\(shortURL)/"
+//let socketUrl = "wss://\(shortURL)/"
 
-let shortURL = "api.multy.io"
-let apiUrl = "https://\(shortURL)/"
-let socketUrl = "wss://\(shortURL)/"
+let shortURL = "test.multy.io"
+let apiUrl = "http://\(shortURL)/"
+let socketUrl = "ws://\(shortURL)/"
 
 //stage
 //let shortURL = "148.251.42.107/"

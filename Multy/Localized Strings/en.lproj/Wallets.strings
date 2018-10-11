@@ -24,6 +24,7 @@
 "DELETING" = "Deleting...";
 "GETTING WALLET" = "Getting Wallets...";
 "NO FUNDS" = "You have no available funds";
+"NO LINKED FUNDS" = "You have no available funds on linked wallet";
 "ADD TO CONTACTS" = "Add to Contacts";
 "HOLD ON" = "Hold on. Wallet is resyncing.";
 "ERROR WHILE SENDING TX" = "Error while sending transaction. Please, try again!";
