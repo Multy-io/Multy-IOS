@@ -266,7 +266,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func checkConstraints() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             bottomGradientConstant.constant = -34
             bottomGradientHeightConstraint.constant = 100
             self.view.layoutIfNeeded()
@@ -711,7 +711,7 @@ extension TableViewDataSource: UITableViewDataSource {
                     return countOfHistObjects
                 }
             } else {
-                if screenHeight == heightOfX {
+                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                     return 13
                 }
                 return 10

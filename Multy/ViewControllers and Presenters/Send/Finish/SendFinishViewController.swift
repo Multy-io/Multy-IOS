@@ -72,7 +72,7 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
                                                    UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
                                      gradientOrientation: .horizontal)
         
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             if slideColorView.frame.width == screenWidth && slideColorView.frame.maxY < screenHeight - 80 {
                 btnTopConstraint.constant = btnTopConstraint.constant + (screenHeight - slideColorView.frame.maxY - 80)
             }

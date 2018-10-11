@@ -310,7 +310,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         }
         
         let view = UIView()
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             view.frame = CGRect(x: 16, y: 50, width: screenWidth - 32, height: Constants.AssetsScreen.backupButtonHeight)
         } else {
             view.frame = CGRect(x: 16, y: 25, width: screenWidth - 32, height: Constants.AssetsScreen.backupButtonHeight)
@@ -348,7 +348,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     func setupStatusBar() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             statusView.frame.size.height = 44
         }
         let colorTop = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.8).cgColor
