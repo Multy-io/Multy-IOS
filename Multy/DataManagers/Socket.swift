@@ -52,7 +52,7 @@ class Socket: NSObject {
 //                print("-----exchangeAll: \(data)")
             }
 
-            self.socket.on("exchangeGdax") {data, ack in
+            self.socket.on("exchangePoloniex") {data, ack in
                 if !(data is NSNull) {
                     DataManager.shared.currencyExchange.update(exchangeDict: data[0] as! NSDictionary)
                 }
