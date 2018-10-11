@@ -228,7 +228,9 @@ class RealmManager: NSObject {
                     
                     completion(accountRLM, nil)
                     
+                    #if DEBUG
                     print("Successful writing account: \(accountRLM)")
+                    #endif
                 }
             } else {
                 print("Error fetching realm:\(#function)")

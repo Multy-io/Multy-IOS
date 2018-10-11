@@ -155,7 +155,9 @@ class CoreLibManager: NSObject {
     }
     
     func createSeedBinaryData(from phrase: String) -> BinaryData? {
+        #if DEBUG
         print("seed phrase: \(phrase)")
+        #endif
         let stringPointer = phrase.UTF8CStringPointer
         
         let binaryDataPointer = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
@@ -199,7 +201,10 @@ class CoreLibManager: NSObject {
         _ = errorString(from: mki, mask: "make_key_id")
         
         let extendedKey = String(cString: extendedKeyPointer.pointee!)
+        
+        #if DEBUG
         print("extended key: \(extendedKey)")
+        #endif
         
         return extendedKey
     }
@@ -891,7 +896,9 @@ class CoreLibManager: NSObject {
         
         let errorString = String(cString: pointer.pointee.message)
         
+        #if DEBUG
         print("\(mask): \(errorString))")
+        #endif
         
         return errorString
     }
@@ -957,7 +964,9 @@ extension TestCoreLibManager {
         
         let phrase = String(cString: mnemo.pointee!)
         
+        #if DEBUG
         print("seed phrase: \(phrase)")
+        #endif
         
         let stringPointer = phrase.UTF8CStringPointer
         let binaryDataPointer = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
@@ -976,7 +985,9 @@ extension TestCoreLibManager {
         print("make_key_id: \(String(describing: mki))")
         
         let extendedKey = String(cString: extendedKeyPointer.pointee!)
+        #if DEBUG
         print("extended key: \(extendedKey)")
+        #endif
         
         //HD Account
         

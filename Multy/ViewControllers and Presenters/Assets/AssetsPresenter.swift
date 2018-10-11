@@ -51,7 +51,6 @@ class AssetsPresenter: NSObject {
                 self.assetsVC?.view.isUserInteractionEnabled = true
                 
             } else {
-                
                 assetsVC!.tableView.frame.size.height = screenHeight
             }
             
@@ -135,6 +134,8 @@ class AssetsPresenter: NSObject {
                 }
             }
         }
+        
+        
         
         return result
     }
