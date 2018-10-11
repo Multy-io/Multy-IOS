@@ -685,7 +685,7 @@ extension TableViewDataSource: UITableViewDataSource {
                 return transactionCell
             }
         } else {
-            if indexPath.row  < 3 {
+            if indexPath.row < 3 {
                 let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
                 return tokenCell
             } else {
