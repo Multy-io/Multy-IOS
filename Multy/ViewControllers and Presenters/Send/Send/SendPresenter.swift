@@ -446,7 +446,7 @@ class SendPresenter: NSObject {
                         return
                     }
                     
-                    let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? self.transaction!.transaction!.newChangeAddress! : ""
+                    let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? self.addressData!["address"] as! String : ""
                     
                     let newAddressParams = [
                         "walletindex"   : wallet.walletID.intValue,
