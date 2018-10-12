@@ -693,7 +693,7 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func convertToImported(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+    func convertToBroken(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
             "Authorization" : "Bearer \(self.token)"
@@ -706,6 +706,32 @@ class ApiManager: NSObject, RequestRetrier {
         ]
         
         requestManager.request("\(apiUrl)api/v1/wallet/convert/imported", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    print(response.result.value as! NSDictionary)
+                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
+                }
+            case .failure(_):
+                completion(Result.failure(response.result.error!.localizedDescription))
+                break
+            }
+        }
+    }
+    
+    func convertToBroken(_ addresses: [String], completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type"  : "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        let params : Parameters = [
+            "addresses"    : addresses
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/wallet/convert/broken", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {

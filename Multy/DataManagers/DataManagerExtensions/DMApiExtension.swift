@@ -457,8 +457,14 @@ extension DataManager {
         }
     }
     
-    func convertToImported(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
-        apiManager.convertToImported(currencyID: currencyID, networkID: networkID, walletID: walletID) {
+    func convertToBroken(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        apiManager.convertToBroken(currencyID: currencyID, networkID: networkID, walletID: walletID) {
+            completion($0)
+        }
+    }
+    
+    func convertToBroken(_ addresses: [String], completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        apiManager.convertToBroken(addresses) {
             completion($0)
         }
     }

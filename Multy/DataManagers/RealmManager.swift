@@ -17,7 +17,7 @@ class RealmManager: NSObject {
     static let shared = RealmManager()
     
     private var realm : Realm? = nil
-    let schemaVersion : UInt64 = 30
+    let schemaVersion : UInt64 = 31
     
     var account: AccountRLM?
     var config: Realm.Configuration?
@@ -543,6 +543,9 @@ extension WalletManager {
                             if modifiedWallet != nil {
                                 modifiedWallet?.importedPublicKey = wallet.importedPublicKey
                                 modifiedWallet!.importedPrivateKey = wallet.importedPrivateKey
+                                
+                                //FIXME: check brokenState
+                                modifiedWallet?.brokenState = wallet.brokenState
                             }
                         }
                     }
@@ -576,6 +579,7 @@ extension WalletManager {
                                 modifiedWallet!.multisigWallet =    wallet.multisigWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
+                                modifiedWallet?.brokenState =       wallet.brokenState
                                 
                                 newWallets.append(modifiedWallet!)
                             } else {

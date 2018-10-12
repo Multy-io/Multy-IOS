@@ -136,8 +136,6 @@ class AssetsPresenter: NSObject {
         }
         
         let fileteredWallets = result.filter{ $0.blockchain == BLOCKCHAIN_ETHEREUM }
-        
-        DataManager.shared.checkWallets(fileteredWallets)
 
         return result
     }
@@ -232,7 +230,7 @@ class AssetsPresenter: NSObject {
                 return
             } else {
                 var walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
-                self.modifyImportedWallets(walletsArr,completion: { [unowned self] err in
+                self.modifyImportedWallets(walletsArr, completion: { [unowned self] err in
                     print("afterVerbose:rawdata: \(walletsArrayFromApi)")
                     DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
                         self.account = acc
@@ -402,6 +400,20 @@ class AssetsPresenter: NSObject {
     
     func modifyImportedWallets(_ array: List<UserWalletRLM>, completion: @escaping(_ error: NSError?)->()) {
         var modifiedWallets = List<UserWalletRLM>()
+        
+        if DataManager.shared.shouldCheckWalletsPrivateKeys {
+            let convertedWallets = DataManager.shared.checkWallets(array)
+            
+            if convertedWallets.count > 0 {
+                if importedWalletsInDB == nil {
+                    importedWalletsInDB = convertedWallets
+                } else {
+                    importedWalletsInDB!.append(contentsOf: convertedWallets)
+                }
+            }
+            
+            UserPreferences.shared.writeDBPrivateKeyFixValue(true)
+        }
         
         if importedWalletsInDB != nil {
             for wallet in importedWalletsInDB! {

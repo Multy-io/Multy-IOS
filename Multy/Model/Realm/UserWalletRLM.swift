@@ -8,6 +8,20 @@ import RealmSwift
 private typealias WalletUpdateRLM = UserWalletRLM
 private typealias ETHWalletRLM = UserWalletRLM
 
+enum WalletBrokenState: Int {
+    case
+    normal              = 0,
+    fixPrivateKey       = 1
+    
+    init!(_ value: Int) {
+        if value < 2 {
+            self.init(rawValue: value)!
+        } else {
+            self.init(rawValue: 0)
+        }
+    }
+}
+
 class UserWalletRLM: Object {
     @objc dynamic var id = String()    //
     @objc dynamic var chain = NSNumber(value: 0)    //UInt32
@@ -27,6 +41,8 @@ class UserWalletRLM: Object {
     @objc dynamic var importedPrivateKey = String()
     @objc dynamic var importedPublicKey = String()
     
+    @objc dynamic var brokenState = NSNumber(value: 0)
+    
     var changeAddressIndex: UInt32 {
         get {
             switch blockchainType.blockchain {
@@ -38,6 +54,10 @@ class UserWalletRLM: Object {
                 return 0
             }
         }
+    }
+    
+    var shouldFixPrivateKey: Bool {
+        return WalletBrokenState(brokenState.intValue) == WalletBrokenState.fixPrivateKey
     }
     
     var isEmpty: Bool {
@@ -183,6 +203,10 @@ class UserWalletRLM: Object {
     }
     
     var isImported: Bool {
+        return walletID.int32Value < 0 || !importedPrivateKey.isEmpty
+    }
+    
+    var isImportedForPrimaryKey: Bool {
         return walletID.int32Value < 0
     }
     
@@ -317,6 +341,10 @@ class UserWalletRLM: Object {
             wallet.name = walletName as! String
         }
         
+        if let brokenState = walletInfo["brokenStatus"] as? NSNumber {
+            wallet.brokenState = brokenState
+        }
+        
         if let isTherePendingTx = walletInfo["pending"] as? Bool {
             wallet.isTherePendingTx = NSNumber(booleanLiteral: isTherePendingTx)
         }
@@ -338,7 +366,7 @@ class UserWalletRLM: Object {
         //MARK: server BUG: WalletIndex and walletindex
         //No data from server
         if walletInfo["walletindex"] != nil || walletInfo["WalletIndex"] != nil {
-            if !wallet.isMultiSig && !wallet.isImported {
+            if !wallet.isMultiSig && !wallet.isImportedForPrimaryKey {
                 wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.int32Value)
             } else if wallet.isMultiSig {
                 // Multisig wallet
