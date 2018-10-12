@@ -445,6 +445,14 @@ class ApiManager: NSObject, RequestRetrier {
                     completion((response.result.value as! NSDictionary), nil)
                 } 
             case .failure(_):
+                if let data = response.data {
+                    if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: Any] {
+                        print(json)
+                        let bakcError = NSError(domain: "", code: json["code"] as! Int, userInfo: ["Message" : json["message"] as! String])
+                        completion(nil, bakcError)
+                        break
+                    }
+                }
                 completion(nil, response.result.error)
                 break
             }

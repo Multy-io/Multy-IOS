@@ -184,6 +184,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
 //            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
         }
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -440,7 +441,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     
     @objc func updateUI() {
         tabBarController?.tabBar.frame = presenter.tabBarFrame
-        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
+//        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
         tableView.frame.size.height = screenHeight - presenter.tabBarFrame.height
         self.tableView.reloadData()
     }
@@ -593,6 +594,16 @@ extension PresentingSheetDelegate: OpenCreatingSheet {
         if self.presenter.account == nil {
             return
         }
+        
+//        let transition = CATransition()
+//        transition.duration = 0.4
+//        transition.type = kCATransitionReveal
+//        transition.subtype = kCATransitionFromTop
+//        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+//        view.window!.layer.add(transition, forKey: kCATransition)
+        
+        
+        
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         sendAnalyticsEvent(screenName: screenMain, eventName: createWalletTap)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)

@@ -23,6 +23,7 @@ extension Constants {
     static let goToUpdateString = "GO TO UPDATE"
     static let buildUpdateMessage = "YOU CAN DOWNLOAD NEW VERSION IN THE APPSTORE"
     static let warningString = "WARNING"
+    static let wrongSeed = "WRONG SEED"
     static let cancelString = "CANCEL"
     static let errorString = "ERROR"
     static let walletNameAlertString = "WALLET NAME NOT EMPTY ALERT"

@@ -1351,7 +1351,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qZA-gV-4vd">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NYN-I4-jg0">
                                 <rect key="frame" x="0.0" y="407" width="375" height="260"/>
@@ -3215,7 +3215,7 @@ correctly</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pCz-aZ-HZS">
-                                <rect key="frame" x="10" y="592" width="355" height="64"/>
+                                <rect key="frame" x="10" y="1203" width="355" height="64"/>
                                 <color key="backgroundColor" red="0.97644573450000005" green="0.98039692639999998" blue="0.9998489022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="xh0-sK-EW0"/>
@@ -3234,7 +3234,7 @@ correctly</string>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcq-vK-VZQ">
-                                <rect key="frame" x="10" y="197" width="355" height="387"/>
+                                <rect key="frame" x="10" y="808" width="355" height="387"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lHM-QD-4LC" userLabel="SeparatorView">
                                         <rect key="frame" x="0.0" y="62" width="355" height="1"/>
@@ -3471,7 +3471,7 @@ correctly</string>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="walletIcon" translatesAutoresizingMaskIntoConstraints="NO" id="BRE-Ia-6WJ">
-                                <rect key="frame" x="160.5" y="161" width="54" height="54"/>
+                                <rect key="frame" x="160.5" y="772" width="54" height="54"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="54" id="S6J-F5-br0"/>
                                     <constraint firstAttribute="width" secondItem="BRE-Ia-6WJ" secondAttribute="height" multiplier="1:1" id="WBC-Yq-sYn"/>
@@ -3485,12 +3485,16 @@ correctly</string>
                             <constraint firstItem="pCz-aZ-HZS" firstAttribute="leading" secondItem="xIM-2F-iNl" secondAttribute="leading" constant="10" id="eq1-Fm-Qb9"/>
                             <constraint firstItem="vcq-vK-VZQ" firstAttribute="top" secondItem="BRE-Ia-6WJ" secondAttribute="bottom" constant="-18" id="iuw-Di-dgk"/>
                             <constraint firstAttribute="trailing" secondItem="pCz-aZ-HZS" secondAttribute="trailing" constant="10" id="lOz-Z4-wXA"/>
-                            <constraint firstItem="ddw-vH-tQG" firstAttribute="top" secondItem="pCz-aZ-HZS" secondAttribute="bottom" constant="11" id="sn1-VA-SwO"/>
+                            <constraint firstItem="ddw-vH-tQG" firstAttribute="top" secondItem="pCz-aZ-HZS" secondAttribute="bottom" constant="-600" id="sn1-VA-SwO"/>
                             <constraint firstItem="vcq-vK-VZQ" firstAttribute="leading" secondItem="xIM-2F-iNl" secondAttribute="leading" constant="10" id="vrh-9R-VwO"/>
                             <constraint firstItem="BRE-Ia-6WJ" firstAttribute="centerX" secondItem="xIM-2F-iNl" secondAttribute="centerX" id="wiS-El-Pot"/>
                         </constraints>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="botConstraint" destination="sn1-VA-SwO" id="SKs-Wb-UKG"/>
+                        <outlet property="viewWithBtns" destination="vcq-vK-VZQ" id="ztl-aa-VIi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AXh-Ph-kjO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
