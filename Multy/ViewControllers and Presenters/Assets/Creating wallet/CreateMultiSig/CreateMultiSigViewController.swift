@@ -223,7 +223,7 @@ extension TableViewDelegate: UITableViewDelegate {
             openMembersVC()
             sendAnalyticsEvent(screenName: createMSScreen, eventName: numberOfOwnersSignaturesTap)
         } else if selectedRow == 2 {
-//            chooseBlockchain()
+            chooseBlockchain()
             sendAnalyticsEvent(screenName: createMSScreen, eventName: anotherBlockchainTap)
         }
     }

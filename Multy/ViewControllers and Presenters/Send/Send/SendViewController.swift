@@ -200,7 +200,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     func fixUIForX() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             activeRequestsAmountTopConstraint.constant = activeRequestsAmountTopConstraint.constant + 20
             self.view.layoutIfNeeded()
         }
@@ -310,7 +310,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     
     func backUIToSearching(_ completion : (() -> Swift.Void)? = nil) {
         // Set constraints for presenting active requests amount
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             activeRequestsAmountTopConstraint.constant = 55
         } else {
             activeRequestsAmountTopConstraint.constant = 35

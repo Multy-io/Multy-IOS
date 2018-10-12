@@ -338,7 +338,7 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
             scrollView.setContentOffset(bottomOffset, animated: true)
             self.constraintSpendableViewBottom.constant = 0
             self.constraintForTitletoBtn.constant = 10
-        } else if screenHeight == heightOfX {
+        } else if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             self.constraintForTitletoBtn.constant = 160
             self.constraintTop.constant = 53
         } else if screenHeight == heightOfPlus {

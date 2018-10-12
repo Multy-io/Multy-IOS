@@ -103,6 +103,7 @@ let screenWidth = UIScreen.main.bounds.size.width
 let screenHeight = UIScreen.main.bounds.size.height
 
 //Devices Heights
+let heightOfXSMax    : CGFloat = 896.0
 let heightOfX        : CGFloat = 812.0
 let heightOfPlus     : CGFloat = 736.0
 let heightOfStandard : CGFloat = 667.0

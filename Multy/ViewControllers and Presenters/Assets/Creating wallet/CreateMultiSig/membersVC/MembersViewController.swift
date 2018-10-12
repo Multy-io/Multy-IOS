@@ -31,9 +31,7 @@ class MembersViewController: UIViewController {
         presenter.mainVC = self
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissMe))
         clearView.addGestureRecognizer(tap)
-        if screenHeight == heightOfX {
-            
-        }
+        
         
         countsPicker.selectRow(presenter.signaturesCount - countOffset + 1, inComponent: 0, animated: false)
         countsPicker.selectRow(presenter.membersCount - countOffset, inComponent: 1, animated: false)

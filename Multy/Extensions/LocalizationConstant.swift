@@ -141,4 +141,5 @@ extension Constants {
     static let syncingAlertString = "PLEASE WAIT SYNCING"
     static let deleteLinkedWalletFailedString = "DELETE LINKED WALLET FAILED"
     static let prNotReady = "PR NOT READY"
+    static let wrongKey = "Looks like you are trying to import by not private key string"
 }
