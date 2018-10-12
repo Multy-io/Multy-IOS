@@ -99,6 +99,10 @@ class WaitingMembersViewController: UIViewController, UITableViewDataSource, UIT
         presenter.viewControllerViewWillDisappear()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     func initialConfig() {
         progressRing.shouldShowValueText = false
         progressRing.ringStyle = .dashed

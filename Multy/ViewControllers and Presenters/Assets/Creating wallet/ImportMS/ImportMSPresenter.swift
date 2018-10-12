@@ -70,7 +70,7 @@ class ImportMSPresenter: NSObject {
             generatedPublic = coreDict!["publicKey"] as! String
         } else {
             //add alert: wrong text in tf
-            importVC!.presentAlert(with: "Looks like you are trying to import by not private key string")
+            importVC!.presentAlert(with: importVC!.localize(string: Constants.wrongKey))
             return
         }
         

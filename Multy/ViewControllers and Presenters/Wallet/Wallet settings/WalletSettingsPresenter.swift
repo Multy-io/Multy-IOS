@@ -38,6 +38,7 @@ class WalletSettingsPresenter: NSObject {
                                                     })
                                                     break
                                                 case .failure(let error):
+                                                    self.walletSettingsVC?.loader.hide()
                                                     self.walletSettingsVC?.presentAlert(with: error)
                                                     break
                                                 }

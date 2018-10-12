@@ -45,7 +45,7 @@ class CustomTabBarViewController: RAMAnimatedTabBarController, UITabBarControlle
     func setupMiddleButton() {
         self.menuButton.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
         var menuButtonFrame = menuButton.frame
-        if screenHeight == heightOfX { 
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax { 
             menuButtonFrame.origin.y = view.bounds.height - menuButtonFrame.height - 30
         } else {
             menuButtonFrame.origin.y = view.bounds.height - menuButtonFrame.height
