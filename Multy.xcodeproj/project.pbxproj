@@ -2091,7 +2091,6 @@
 				44DFEFA4206A64ED0068769C /* golos.h */,
 				44FA86BE2035A75A00263C72 /* key.h */,
 				FA74061A1FCC14C4003C538C /* mnemonic.h */,
-				FA7406161FCC14C4003C538C /* properties.h */,
 				FA74061D1FCC14C4003C538C /* run_tests.h */,
 				44FA86C02035A77100263C72 /* sha3.h */,
 				448000D720FF3D6900813624 /* transaction_builder.h */,

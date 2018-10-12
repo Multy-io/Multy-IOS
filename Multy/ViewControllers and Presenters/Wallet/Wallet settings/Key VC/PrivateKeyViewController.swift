@@ -69,10 +69,12 @@ class PrivateKeyViewController: UIViewController {
     
     func makePrivateKey() -> String {
         var binaryData = account!.binaryDataString.createBinaryData()!
+        print("Binary data: \(binaryData.convertToHexString())\nBlockchain: \(BlockchainType.create(wallet: wallet!))\nWalletID: \(wallet!.walletID.uint32Value)\nAddressID: \(UInt32(addressID!))")
         let privateKeyString = DataManager.shared.privateKeyString(blockchain: BlockchainType.create(wallet: wallet!),
                                                                    walletID: wallet!.walletID.uint32Value,
                                                                    addressID: UInt32(addressID!),
                                                                    binaryData: &binaryData)
+        print("Private key: \(privateKeyString)\n\n")
         return privateKeyString
     }
     

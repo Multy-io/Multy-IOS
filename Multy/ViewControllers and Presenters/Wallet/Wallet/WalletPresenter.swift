@@ -148,7 +148,7 @@ class WalletPresenter: NSObject {
             return
         }
         
-        DataManager.shared.getOneWalletVerbose(wallet: wallet!) { (updatedWallet, error) in
+        DataManager.shared.getOneWalletVerbose(wallet: wallet!) { [unowned self] (updatedWallet, error) in
             if updatedWallet != nil {
                 self.wallet = updatedWallet
             }

@@ -60,7 +60,7 @@ class RealmManager: NSObject {
             let realmConfig = Realm.Configuration(fileURL: URL(fileURLWithPath: RLMRealmPathForFile(realmName), isDirectory: false),
                                                   encryptionKey: pass,
                                                   schemaVersion: self.schemaVersion,
-                                                  migrationBlock: { migration, oldSchemaVersion in
+                                                  migrationBlock: { [unowned self] (migration, oldSchemaVersion) in
                                                     if oldSchemaVersion < 7 {
                                                         self.migrateFrom6To7(with: migration)
                                                     }
