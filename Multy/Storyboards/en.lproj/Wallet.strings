@@ -219,3 +219,6 @@
 
 "0cr-yj-j9D.text" = "In case of emergency: you can fix stuck transactions on this wallet by doing full-resync. Please note that it might take some time and you wouldn't be able to send any transactions from this wallet during that period.";
 
+"76O-3S-0nx.text" = "Imported Wallet"
+
+"bTm-8y-NG5.text" = "Wallet with fixed private and public keys"

@@ -203,7 +203,7 @@ class UserWalletRLM: Object {
     }
     
     var isImported: Bool {
-        return walletID.int32Value < 0 || !importedPrivateKey.isEmpty
+        return walletID.int32Value < 0
     }
     
     var isImportedForPrimaryKey: Bool {

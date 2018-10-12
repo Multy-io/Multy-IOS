@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>fixCoreLib</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -36,7 +38,7 @@
 	<key>GIT_BRANCH_NAME</key>
 	<string>CoreLib-Fix</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>aaaf38ac</string>
+	<string>49d3db72</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_1.2.1_63_Multisig-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
