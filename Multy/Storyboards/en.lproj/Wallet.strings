@@ -221,4 +221,4 @@
 
 "76O-3S-0nx.text" = "Imported Wallet";
 
-"bTm-8y-NG5.text" = "Wallet with fixed private and public keys";
+"bTm-8y-NG5.text" = "Please note that imported wallets can't be restored from seed phrase on other device. You should backup your private key in order to secure your funds, so you can import it later on other device.";

@@ -1285,11 +1285,14 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oMj-a1-eF4">
-                                        <rect key="frame" x="0.0" y="519" width="380" height="128"/>
+                                        <rect key="frame" x="0.0" y="519" width="380" height="148"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Imported Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="76O-3S-0nx">
                                                 <rect key="frame" x="0.0" y="0.0" width="380" height="64"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="64" id="j5k-Gj-GLY"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -1308,8 +1311,9 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                     <constraint firstAttribute="height" constant="1" id="Gpr-a7-GbJ"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet with fixed private and public keys" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bTm-8y-NG5">
-                                                <rect key="frame" x="16" y="64" width="348" height="64"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bTm-8y-NG5">
+                                                <rect key="frame" x="16" y="84" width="348" height="66"/>
+                                                <string key="text">Please note that imported wallets can't be restored from seed phrase on other device. You should backup your private key in order to secure your funds, so you can import it later on other device.</string>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
                                                 <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1318,7 +1322,6 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="bTm-8y-NG5" firstAttribute="leading" secondItem="oMj-a1-eF4" secondAttribute="leading" constant="16" id="2Vx-in-h2e"/>
-                                            <constraint firstItem="bTm-8y-NG5" firstAttribute="height" secondItem="oMj-a1-eF4" secondAttribute="height" multiplier="1/2" id="4gk-rq-gNW"/>
                                             <constraint firstItem="SVw-Xr-JHM" firstAttribute="leading" secondItem="oMj-a1-eF4" secondAttribute="leading" constant="2" id="6F6-GI-QnS"/>
                                             <constraint firstItem="76O-3S-0nx" firstAttribute="leading" secondItem="oMj-a1-eF4" secondAttribute="leading" id="9Rn-WG-iCC"/>
                                             <constraint firstItem="76O-3S-0nx" firstAttribute="top" secondItem="oMj-a1-eF4" secondAttribute="top" id="9ae-m3-en3"/>
@@ -1326,16 +1329,15 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <constraint firstItem="mo4-3Y-oIs" firstAttribute="leading" secondItem="oMj-a1-eF4" secondAttribute="leading" constant="2" id="GQ1-Jk-x11"/>
                                             <constraint firstAttribute="trailing" secondItem="mo4-3Y-oIs" secondAttribute="trailing" constant="3" id="IaK-pV-3V7"/>
                                             <constraint firstAttribute="trailing" secondItem="bTm-8y-NG5" secondAttribute="trailing" constant="16" id="JLB-Mo-UJX"/>
-                                            <constraint firstItem="76O-3S-0nx" firstAttribute="height" secondItem="oMj-a1-eF4" secondAttribute="height" multiplier="1/2" id="JUr-1r-zg8"/>
                                             <constraint firstItem="mo4-3Y-oIs" firstAttribute="bottom" secondItem="76O-3S-0nx" secondAttribute="bottom" id="Keb-zH-lcD"/>
                                             <constraint firstAttribute="trailing" secondItem="76O-3S-0nx" secondAttribute="trailing" id="NHa-yW-Nyw"/>
-                                            <constraint firstItem="bTm-8y-NG5" firstAttribute="top" secondItem="76O-3S-0nx" secondAttribute="bottom" id="PBO-tQ-W8h"/>
+                                            <constraint firstItem="bTm-8y-NG5" firstAttribute="top" secondItem="76O-3S-0nx" secondAttribute="bottom" constant="20" id="PBO-tQ-W8h"/>
                                             <constraint firstAttribute="trailing" secondItem="SVw-Xr-JHM" secondAttribute="trailing" constant="3" id="Zgr-BT-UOH"/>
-                                            <constraint firstAttribute="height" constant="128" id="gdb-VP-afS"/>
+                                            <constraint firstAttribute="height" constant="148" id="gdb-VP-afS"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QBt-8U-2xG">
-                                        <rect key="frame" x="0.0" y="648" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="687" width="375" height="64"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DgY-No-Dab">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
@@ -1382,7 +1384,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove this wallet from UI. Please note that we will be tracking wallet balance and notify you on incoming transactions." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mzu-O0-HqV">
-                                        <rect key="frame" x="16" y="728" width="343" height="40"/>
+                                        <rect key="frame" x="16" y="767" width="343" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="U1A-eq-Xjy"/>
                                         </constraints>
@@ -1399,7 +1401,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <constraint firstItem="mzu-O0-HqV" firstAttribute="top" secondItem="c6M-Zm-uVc" secondAttribute="bottom" constant="16" id="BYd-jI-yjW"/>
                                     <constraint firstItem="O8U-E1-QhK" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" constant="16" id="DZx-Pz-d18"/>
                                     <constraint firstItem="aQY-0t-BKU" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="GoN-LJ-yT4"/>
-                                    <constraint firstItem="QBt-8U-2xG" firstAttribute="top" secondItem="oMj-a1-eF4" secondAttribute="bottom" constant="1" id="M8g-WZ-ffX"/>
+                                    <constraint firstItem="QBt-8U-2xG" firstAttribute="top" secondItem="oMj-a1-eF4" secondAttribute="bottom" constant="20" id="M8g-WZ-ffX"/>
                                     <constraint firstItem="oMj-a1-eF4" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="OeH-X1-wYx"/>
                                     <constraint firstItem="fjM-IC-HSe" firstAttribute="top" secondItem="FT0-h6-feB" secondAttribute="top" constant="20" id="PbV-gD-rbJ"/>
                                     <constraint firstItem="Hzz-4v-4H7" firstAttribute="leading" secondItem="FT0-h6-feB" secondAttribute="leading" id="Qm3-qm-vKK"/>
