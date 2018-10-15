@@ -64,7 +64,7 @@ class RealmManager: NSObject {
             let realmConfig = Realm.Configuration(fileURL: URL(fileURLWithPath: RLMRealmPathForFile(realmName), isDirectory: false),
                                                   encryptionKey: pass,
                                                   schemaVersion: self.schemaVersion,
-                                                  migrationBlock: { migration, oldSchemaVersion in
+                                                  migrationBlock: { [unowned self] (migration, oldSchemaVersion) in
                                                     if oldSchemaVersion < 7 {
                                                         self.migrateFrom6To7(with: migration)
                                                     }
@@ -647,6 +647,18 @@ extension WalletManager {
                 }
             } else {
                 completion(Result.failure("Cannot get realm"))
+            }
+        }
+    }
+    
+    func updateImportedWallet(wallet: UserWalletRLM, impPK: String, impPubK: String) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                try! realm.write {
+                    wallet.importedPublicKey = impPubK
+                    wallet.importedPrivateKey = impPK
+                    realm.add(wallet, update: true)
+                }
             }
         }
     }

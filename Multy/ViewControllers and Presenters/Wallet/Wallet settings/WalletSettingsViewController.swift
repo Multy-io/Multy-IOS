@@ -48,7 +48,7 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
         
         let isWalletFixed = (WalletBrokenState(presenter.wallet!.brokenState.intValue) == .fixedPrivateKey)
         importedWalletUIView.isHidden = !isWalletFixed
-        importedWalletHeightConstraint.constant = isWalletFixed ? 128.0 : 0
+        importedWalletHeightConstraint.constant = isWalletFixed ? 170.0 : 0
     }
     
     @IBAction func deleteAction(_ sender: Any) {

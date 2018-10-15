@@ -41,7 +41,7 @@ class AssetsPresenter: NSObject {
                 }
 
                 wallets = validWallets().sorted(by: {
-                    BigInt($0.lastActivityTimestamp.stringValue) > BigInt($1.lastActivityTimestamp.stringValue)
+                    $0.lastActivityTimestamp.intValue > $1.lastActivityTimestamp.intValue
                 })
         //        wallets = validWallets().sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
                 
@@ -192,7 +192,7 @@ class AssetsPresenter: NSObject {
 //    }
     
     func updateWalletsInfo(isInternetAvailable: Bool) {
-        DataManager.shared.getAccount { (acc, err) in
+        DataManager.shared.getAccount { [unowned self] (acc, err) in
             self.account = acc
             
             if acc != nil {
@@ -200,7 +200,7 @@ class AssetsPresenter: NSObject {
                 if isInternetAvailable == false {
 //                    self.unlockUI()
                 }
-                self.getWalletsVerbose(completion: { (_) in
+                self.getWalletsVerbose(completion: { [unowned self] (_) in
                     self.unlockUI()
                 })
             }
@@ -224,17 +224,18 @@ class AssetsPresenter: NSObject {
 
     func getWalletsVerbose(completion: @escaping (_ flag: Bool) -> ()) {
 //        blockUI()
-        DataManager.shared.getWalletsVerbose() { (walletsArrayFromApi, err) in
+        let dm = DataManager.shared
+        dm.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
 //            self.unlockUI()
             if err != nil {
                 return
             } else {
-                var walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
-                self.modifyImportedWallets(walletsArr, completion: { [unowned self] err in
-                    print("afterVerbose:rawdata: \(walletsArrayFromApi)")
-                    DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
+                let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
+                self.modifyImportedWallets(walletsArr,completion: { [unowned self, unowned dm] err in
+                    print("afterVerbose:rawdata: \(walletsArrayFromApi!)")
+                    dm.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { [unowned self] (acc, err) in
                         self.account = acc
-                        print("wallets: \(acc?.wallets)")
+                        print("wallets: \(acc!.wallets)")
                         completion(true)
                     })
                 })
@@ -246,13 +247,13 @@ class AssetsPresenter: NSObject {
         if account == nil {
             return
         }
-        DataManager.shared.getWalletsVerbose() { (walletsArrayFromApi, err) in
+        DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             if err != nil {
                 return
             } else {
                 let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
                 print("afterVerboseForSockets:rawdata: \(walletsArrayFromApi)")
-                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
+                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { [unowned self] (acc, err) in
                     self.account = acc
                     print("wallets: \(acc?.wallets)")
                     completion(true)

@@ -111,15 +111,20 @@ class UserWalletRLM: Object {
     
     //available part
     var availableAmount: BigInt {
+        
         get {
+            var result = BigInt.zero()
+            
             switch blockchainType.blockchain {
             case BLOCKCHAIN_BITCOIN:
-                return BigInt(sumInCryptoString.convertToSatoshiAmountString()) - blockedAmount
+                result = BigInt(sumInCryptoString.convertToSatoshiAmountString()) - blockedAmount
             case BLOCKCHAIN_ETHEREUM:
-                return availableBalance
+                result = availableBalance
             default:
-                return BigInt("0")
+                break
             }
+            
+            return result
         }
     }
     

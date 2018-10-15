@@ -72,6 +72,7 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
         
         if wallet!.isMultiSig {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMSTransaction(notification:)), name: Notification.Name("msTransactionUpdated"), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.didUpdateTransaction(notification:)), name: Notification.Name("transactionUpdated"), object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(self.didUpdateTransaction(notification:)), name: Notification.Name("transactionUpdated"), object: nil)
         }
