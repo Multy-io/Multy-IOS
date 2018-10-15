@@ -64,13 +64,17 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
 //            self.sendAnalyticsEvent(screenName: screenQR, eventName: scanGotPermossion)
             camera()
         } else {
-            AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+            AVCaptureDevice.requestAccess(for: .video, completionHandler: { [weak self] (granted: Bool) in
+                guard self != nil else {
+                    return
+                }
+                
                 if granted {
 //                    self.sendAnalyticsEvent(screenName: screenQR, eventName: scanGotPermossion)
-                    self.camera()
+                    self!.camera()
                 } else {
 //                    self.sendAnalyticsEvent(screenName: screenQR, eventName: scanDeniedPermission)
-                    self.alertForGetNewPermission()
+                    self!.alertForGetNewPermission()
                 }
             })
         }

@@ -233,7 +233,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     @objc func updateExchange() {
-        presenter.updateUI()
+        DispatchQueue.main.async { [unowned self] in
+            self.presenter.updateUI()
+        }
     }
     
     func setupUI() {
@@ -258,8 +260,12 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func updateTablesHolderBottomEdge() {
-        UIView.animate(withDuration: 0.2) {
-            self.tablesHolderBottomEdge = self.contentHeight - (self.infoHolderView.frame.origin.y + self.infoHolderViewHeigth)
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            guard self != nil else {
+                return
+            }
+            
+            self!.tablesHolderBottomEdge = self!.contentHeight - (self!.infoHolderView.frame.origin.y + self!.infoHolderViewHeigth)
         }
     }
     

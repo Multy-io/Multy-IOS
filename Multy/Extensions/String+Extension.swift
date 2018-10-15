@@ -64,8 +64,8 @@ extension String {
     func createBinaryData() -> BinaryData? {
         let pointer = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
         defer {
-//            free_binarydata(pointer.pointee)
-            pointer.deallocate(capacity: 1)
+            //free_binarydata(pointer.pointee)
+            pointer.deallocate()
         }
         let mbdfh = make_binary_data_from_hex(self.UTF8CStringPointer, pointer)
         
