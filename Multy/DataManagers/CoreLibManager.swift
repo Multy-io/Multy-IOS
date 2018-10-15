@@ -466,6 +466,7 @@ class CoreLibManager: NSObject {
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
         let privateKeyPointer = createPrivateKey(blockchain: blockchain, walletID: walletID, addressID: addressID, binaryData: &binaryData)
+        print("Private Key Pointer: \(privateKeyPointer!.pointee!)")
         
         let privateKeyStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
         
@@ -473,7 +474,7 @@ class CoreLibManager: NSObject {
         _ = errorString(from: ktsPRIV, mask: "key_to_string:KEY_TYPE_PRIVATE")
         
         let privateKeyString = String(cString: privateKeyStringPointer.pointee!)
-        
+
         return privateKeyString
     }
     
@@ -505,7 +506,7 @@ class CoreLibManager: NSObject {
             free_hd_account(newAccountPointer.pointee)
             
             //will be free later
-//            free_account(newAddressPointer.pointee)
+            //free_account(newAddressPointer.pointee)
             free_string(newAddressStringPointer.pointee)
             
             free_key(addressPrivateKeyPointer.pointee)
@@ -516,7 +517,7 @@ class CoreLibManager: NSObject {
             
             masterKeyPointer.deallocate()
             newAccountPointer.deallocate()
-//            newAddressPointer.deallocate()
+            //newAddressPointer.deallocate()
             newAddressStringPointer.deallocate()
             addressPrivateKeyPointer.deallocate()
             privateKeyStringPointer.deallocate()
@@ -1184,6 +1185,10 @@ extension EthereumCoreLibManager {
             defer { pointer?.deallocate() }
             
             return (errrString, false)
+        }
+        
+        defer {
+            free_binarydata(serializedTransaction.pointee)
         }
         
         let data = serializedTransaction.pointee!.pointee.convertToData()

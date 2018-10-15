@@ -415,7 +415,6 @@ extension CreateTransactionDelegate {
     }
     
     
-    
     func finalSum() -> BigInt {
         switch blockchain {
         case BLOCKCHAIN_BITCOIN:
