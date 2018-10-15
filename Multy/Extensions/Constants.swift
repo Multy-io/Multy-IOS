@@ -65,6 +65,10 @@ struct Constants {
             BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM_CLASSIC.rawValue, netType: 0),
 //            BlockchainType.create(currencyID: BLOCKCHAIN_ERC20.rawValue,            netType: 0),
         ]
+        
+        struct RealmManager {
+            static let leastSchemaVersionAfterCoreLibPrivateKeyFix = 31
+        }
     }
     
     struct BigIntSwift {

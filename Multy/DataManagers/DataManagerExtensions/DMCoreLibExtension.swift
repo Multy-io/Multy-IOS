@@ -2,7 +2,10 @@
 //Licensed under Multy.io license.
 //See LICENSE for details
 
+import RealmSwift
+
 private typealias MultisigManager = DataManager
+private typealias CoreLibPrivateKeyFixManager = DataManager
 
 extension DataManager {
 //    func isDeviceJailbroken() -> Bool {
@@ -130,6 +133,67 @@ extension DataManager {
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
         return coreLibManager.privateKeyString(blockchain: blockchain, walletID: walletID, addressID: addressID, binaryData: &binaryData)
+    }
+}
+
+extension CoreLibPrivateKeyFixManager  {
+    func checkWallets(_ wallets: List<UserWalletRLM>) -> [UserWalletRLM] {
+        var convertedWallets = [UserWalletRLM]()
+        
+        guard DataManager.shared.shouldCheckWalletsPrivateKeys  else {
+            return convertedWallets
+        }
+        
+        for wallet in wallets {
+            if (wallet.blockchain != BLOCKCHAIN_ETHEREUM || wallet.isImported || wallet.isMultiSig) && wallet.shouldFixPrivateKey == false {
+                continue
+            }
+            
+            var binaryData = realmManager.account!.binaryDataString.createBinaryData()!
+            
+            let addressData = coreLibManager.createWallet(from: &binaryData, blockchain: wallet.blockchainType, walletID: wallet.walletID.uint32Value)
+            
+            if addressData == nil {
+                continue
+            }
+            
+            let address = addressData!["address"] as! String
+            
+            if address == wallet.address { //the good case
+                continue
+            }
+            
+            let newKeysData = coreLibManager.findPrivateKey(for: wallet.address, blockchainType: wallet.blockchainType, walletID: wallet.walletID.uint32Value, binaryData: &binaryData)
+            
+            if newKeysData == nil {
+                continue
+            }
+            
+            let convertedWallet = wallet
+            convertedWallet.importedPrivateKey = newKeysData!["privateKey"] as! String
+            convertedWallet.importedPublicKey = newKeysData!["publicKey"] as! String
+            convertedWallet.brokenState = NSNumber(value: 1)
+            
+            convertedWallets.append(convertedWallet)
+        }
+        
+        let convertedAddresses = convertedWallets.map { $0.address }
+        
+        convertToBroken(convertedAddresses) { print( $0) }
+        
+        return convertedWallets
+    }
+    
+    func createWalletData(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber) -> Dictionary<String, Any> {
+        var binaryData = realmManager.account!.binaryDataString.createBinaryData()!
+        let blockchainType = BlockchainType(blockchain: Blockchain(rawValue: currencyID.uint32Value), net_type: networkID.intValue)
+        
+        let addressData = coreLibManager.createAddress(blockchainType: blockchainType,
+                                             walletID: walletID.uint32Value,
+                                             addressID: 0,
+                                             binaryData: &binaryData)
+        
+        return addressData!
     }
 }
 

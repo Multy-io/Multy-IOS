@@ -44,7 +44,9 @@ class MasterKeyGenerator : NSObject {
         
         InstanceID.instanceID().getID { (instanceString, error) in
             if let instanceID = instanceString {
+                #if DEBUG
                 print("instanceIDToken: \(instanceID)")
+                #endif
                 
                 DispatchQueue.main.async {
                     let key = self.sha512(instanceID + UIDevice.current.identifierForVendor!.uuidString + self.localPasswordString)
