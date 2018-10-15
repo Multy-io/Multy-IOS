@@ -547,7 +547,7 @@ extension CreateTransactionDelegate {
                 } else {
                     maxAllowedToSpend = availableSumInFiat - fiatEstimation
                 }
-            } else {
+//            } else {
                 maxAllowedToSpend = availableSumInFiat
             }
         }
@@ -568,7 +568,8 @@ extension CreateTransactionDelegate {
                 maxAllowedToSpend = availableSumInFiat
             }
         }
-        sendAmountVC?.spendableSumAndCurrencyLbl.text = maxAllowedToSpend.cryptoValueString(for: blockchain)
+        let currencyName = isCrypto ? " ETH" : " USD"
+        sendAmountVC?.spendableSumAndCurrencyLbl.text = isCrypto ? maxAllowedToSpend.cryptoValueString(for: blockchain) + currencyName : maxAllowedToSpend.fiatValueString(for: blockchain) + currencyName
     }
     
     func setEOSMaxAllowed() {
