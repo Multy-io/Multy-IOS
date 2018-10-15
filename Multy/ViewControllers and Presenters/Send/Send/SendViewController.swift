@@ -337,10 +337,10 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             self.dismissTxInfo()
             self.sendMode = .searching
             
+            self.presenter.cancelPrepareSending()
             if completion != nil {
                 completion!()
             }
-            self.presenter.cancelPrepareSending()
         }
     }
     
@@ -386,15 +386,16 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                     UIView.animate(withDuration: 0.6, animations: {
                         doneAnimationView.transform = CGAffineTransform(scaleX: 10.0, y: 10.0)
                         doneAnimationView.alpha = 0.0
-                    }) { (succeeded) in
+                    }) { [unowned self] (succeeded) in
 
                         doneAnimationView.removeFromSuperview()
-                        self.close()
-                        self.backUIToSearching(nil)
+                        self.backUIToSearching({ [unowned self] in
+                            self.close()
+                        })
                     }
                 }
             } else {
-                backUIToSearching({[unowned self] in
+                backUIToSearching({ [unowned self] in
                     self.presenter.sendAnimationComplete()})
 
                 presentSendingErrorAlert()

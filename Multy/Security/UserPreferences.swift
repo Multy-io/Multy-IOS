@@ -37,7 +37,7 @@ class UserPreferences : NSObject {
     fileprivate func generateAES() {
         let iv = getAESiv()
 
-        generateUserDefaultsPassword { (pass, error) in
+        generateUserDefaultsPassword { [unowned self] (pass, error) in
             let aes = try! AES(key: pass!, blockMode: .CBC(iv: iv), padding: .pkcs5)
             
             self.aes = aes

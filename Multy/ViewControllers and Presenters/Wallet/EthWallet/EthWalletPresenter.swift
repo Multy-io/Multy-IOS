@@ -116,11 +116,11 @@ class EthWalletPresenter: NSObject {
     
     func getHistoryAndWallet() {
 //        blockUI()
-        DataManager.shared.getOneWalletVerbose(wallet: wallet!) { (updatedWallet, error) in
+        DataManager.shared.getOneWalletVerbose(wallet: wallet!) { [unowned self] (updatedWallet, error) in
             if updatedWallet != nil {
                 self.wallet = updatedWallet
             }
-            DataManager.shared.getTransactionHistory(wallet: self.wallet!) { (histList, err) in
+            DataManager.shared.getTransactionHistory(wallet: self.wallet!) { [unowned self] (histList, err) in
                 //            self.unlockUI()
                 self.mainVC?.spiner.stopAnimating()
                 if err == nil && histList != nil {
