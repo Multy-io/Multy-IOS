@@ -651,6 +651,18 @@ extension WalletManager {
         }
     }
     
+    func updateImportedWallet(wallet: UserWalletRLM, impPK: String, impPubK: String) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                try! realm.write {
+                    wallet.importedPublicKey = impPubK
+                    wallet.importedPrivateKey = impPK
+                    realm.add(wallet, update: true)
+                }
+            }
+        }
+    }
+    
     func spendableOutput(addresses: List<AddressRLM>) -> [SpendableOutputRLM] {
         let ouputs = List<SpendableOutputRLM>()
         
