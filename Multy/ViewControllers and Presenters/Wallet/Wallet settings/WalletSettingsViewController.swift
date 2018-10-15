@@ -46,7 +46,7 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     func updateUI() {
         self.walletNameTF.text = self.presenter.wallet?.name
         
-        let isWalletFixed = (WalletBrokenState(presenter.wallet!.brokenState.intValue) == .fixPrivateKey)
+        let isWalletFixed = (WalletBrokenState(presenter.wallet!.brokenState.intValue) == .fixedPrivateKey)
         importedWalletUIView.isHidden = !isWalletFixed
         importedWalletHeightConstraint.constant = isWalletFixed ? 128.0 : 0
     }

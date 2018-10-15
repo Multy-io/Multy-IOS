@@ -11,7 +11,7 @@ private typealias ETHWalletRLM = UserWalletRLM
 enum WalletBrokenState: Int {
     case
     normal              = 0,
-    fixPrivateKey       = 1
+    fixedPrivateKey       = 1
     
     init!(_ value: Int) {
         if 0 <= value && value < 2 {
@@ -57,7 +57,11 @@ class UserWalletRLM: Object {
     }
     
     var shouldFixPrivateKey: Bool {
-        return WalletBrokenState(brokenState.intValue) == WalletBrokenState.fixPrivateKey
+        return WalletBrokenState(brokenState.intValue) == .fixedPrivateKey
+    }
+    
+    var isWalletFixed: Bool {
+        return WalletBrokenState(brokenState.intValue) == .fixedPrivateKey && !importedPrivateKey.isEmpty
     }
     
     var isEmpty: Bool {
@@ -207,7 +211,7 @@ class UserWalletRLM: Object {
     }
     
     var isImportedForPrimaryKey: Bool {
-        return walletID.int32Value < 0
+        return walletID.int32Value < 0 || isWalletFixed
     }
     
     func confirmationStatusForTransaction(transaction : HistoryRLM) -> ConfirmationStatus {
@@ -366,7 +370,7 @@ class UserWalletRLM: Object {
         //MARK: server BUG: WalletIndex and walletindex
         //No data from server
         if walletInfo["walletindex"] != nil || walletInfo["WalletIndex"] != nil {
-            if !wallet.isMultiSig && !wallet.isImportedForPrimaryKey {
+            if !wallet.isMultiSig && !wallet.isImported {
                 wallet.id = DataManager.shared.generateWalletPrimaryKey(currencyID: wallet.chain.uint32Value, networkID: wallet.chainType.uint32Value, walletID: wallet.walletID.int32Value)
             } else if wallet.isMultiSig {
                 // Multisig wallet
