@@ -14,7 +14,7 @@ enum WalletBrokenState: Int {
     fixPrivateKey       = 1
     
     init!(_ value: Int) {
-        if value < 2 {
+        if 0 <= value && value < 2 {
             self.init(rawValue: value)!
         } else {
             self.init(rawValue: 0)
