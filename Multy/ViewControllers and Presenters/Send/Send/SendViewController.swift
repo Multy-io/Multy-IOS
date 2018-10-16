@@ -59,7 +59,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     var txTokenImageView: UIImageView?
     var selectedRequestAmountCloneLabel: UILabel?
     var selectedRequestAddressCloneLabel: UILabel?
-    var cloneNameLabel: UILabel!
+    var cloneNameLabel: UILabel?
     
     var searchingAnimationView : LOTAnimationView?
     var sendLongPressGR : UILongPressGestureRecognizer?
@@ -331,13 +331,20 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         UIView.animate(withDuration: ANIMATION_DURATION, animations: {
             self.hideTxInfo()
             self.animationHolderView.layoutIfNeeded()
-        }) { (succeeded) in
-            self.bluetoothEnabledContentView.isHidden = false
-            self.removeClonesViews()
-            self.dismissTxInfo()
-            self.sendMode = .searching
+        }) { [weak self] (succeeded) in
+            guard self != nil else {
+                if completion != nil {
+                    completion!()
+                }
+                return
+            }
             
-            self.presenter.cancelPrepareSending()
+            self!.bluetoothEnabledContentView.isHidden = false
+            self!.removeClonesViews()
+            self!.dismissTxInfo()
+            self!.sendMode = .searching
+            
+            self!.presenter.cancelPrepareSending()
             if completion != nil {
                 completion!()
             }
@@ -382,21 +389,33 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                 doneAnimationView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
                 
                 self.view.addSubview(doneAnimationView)
-                doneAnimationView.play{[unowned self] (finished) in
+                doneAnimationView.play{[weak self] (finished) in
                     UIView.animate(withDuration: 0.6, animations: {
                         doneAnimationView.transform = CGAffineTransform(scaleX: 10.0, y: 10.0)
                         doneAnimationView.alpha = 0.0
-                    }) { [unowned self] (succeeded) in
-
+                    }) { [weak self] (succeeded) in
+                        
                         doneAnimationView.removeFromSuperview()
-                        self.backUIToSearching({ [unowned self] in
-                            self.close()
+                        guard self != nil else {
+                            return
+                        }
+                        
+                        self!.backUIToSearching({ [weak self] in
+                            guard self != nil else {
+                                return
+                            }
+                            
+                            self!.close()
                         })
                     }
                 }
             } else {
-                backUIToSearching({ [unowned self] in
-                    self.presenter.sendAnimationComplete()})
+                backUIToSearching({ [weak self] in
+                    guard self != nil else {
+                        return
+                    }
+                    
+                    self!.presenter.sendAnimationComplete()})
 
                 presentSendingErrorAlert()
             }
@@ -438,7 +457,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             UIView.animate(withDuration: 0.15, animations: {
                 self.selectedRequestAmountCloneLabel!.alpha = 0
                 self.selectedRequestAddressCloneLabel!.alpha = 0
-                self.cloneNameLabel.alpha = 0
+                self.cloneNameLabel?.alpha = 0
                 self.txTokenImageView!.frame = CGRect(x: centerActiveRequestView.x, y: centerActiveRequestView.y, width: 0, height: 0)
                 self.txInfoView!.frame = CGRect(x: self.txTokenImageView!.center.x, y: (self.txTokenImageView!.frame.origin.y - 5 - self.txInfoView!.frame.size.height), width: 0, height: 0)
                  self.txTokenImageView!.alpha = 0
@@ -461,10 +480,10 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     func dismissTxInfo() {
-        txInfoView!.removeFromSuperview()
+        txInfoView?.removeFromSuperview()
         txInfoView = nil
         
-        txTokenImageView!.removeFromSuperview()
+        txTokenImageView?.removeFromSuperview()
         txTokenImageView = nil
     }
 
@@ -496,11 +515,12 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     func removeClonesViews() {
-        selectedRequestAmountCloneLabel!.removeFromSuperview()
+        selectedRequestAmountCloneLabel?.removeFromSuperview()
         selectedRequestAmountCloneLabel = nil
-        selectedRequestAddressCloneLabel!.removeFromSuperview()
+        selectedRequestAddressCloneLabel?.removeFromSuperview()
         selectedRequestAddressCloneLabel = nil
-        cloneNameLabel.removeFromSuperview()
+        cloneNameLabel?.removeFromSuperview()
+        
         cloneNameLabel = nil
         
         removeWalletsCellsClones()
