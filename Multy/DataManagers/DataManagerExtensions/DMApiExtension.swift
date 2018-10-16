@@ -464,8 +464,10 @@ extension DataManager {
     }
     
     func convertToBroken(_ addresses: [String], completion: @escaping(Result<NSDictionary, String>) -> ()) {
-        apiManager.convertToBroken(addresses) {
-            completion($0)
+        if addresses.isEmpty == false {
+            apiManager.convertToBroken(addresses) {
+                completion($0)
+            }
         }
     }
 }
