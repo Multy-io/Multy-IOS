@@ -77,14 +77,15 @@ class ImportMSPresenter: NSObject {
         }
         
         let primaryKey = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: selectedBlockchainType.blockchain.rawValue,
-                                                               networkID: UInt32(selectedBlockchainType.net_type),
-                                                               address: generatedAddress)
+                                                                             networkID: UInt32(selectedBlockchainType.net_type),
+                                                                             address: generatedAddress)
         DataManager.shared.getWallet(primaryKey: primaryKey) { [unowned self] in
             switch $0 {
             case .success(let wallet):
                 if wallet.isImported && wallet.privateKey.isEmpty {
 //                    self.importWallets(address: generatedAddress, pubKey: generatedPublic)
                     DataManager.shared.update(wallet: wallet, impPK: privateKey, impPubK: generatedPublic)
+                    self.importMSWallet(address: generatedAddress)
                 } else {
                     self.importMSWallet(address: generatedAddress)
                 }
