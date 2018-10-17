@@ -53,10 +53,16 @@ class MSWalletSettingsViewController: UIViewController {
     func openWallet() {
         let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
         let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
-        walletVC.presenter.wallet = presenter.wallet
-        walletVC.presenter.account = presenter.acc
-//        navigationController?.popToRootViewController(animated: true)
-        navigationController?.pushViewController(walletVC, animated: true)
+        DataManager.shared.getWallet(primaryKey: presenter.wallet!.multisigWallet!.linkedWalletID) { [unowned self] in
+            switch $0 {
+            case .success(let wallet):
+                walletVC.presenter.wallet = wallet
+                walletVC.presenter.account = self.presenter.acc
+                self.navigationController?.pushViewController(walletVC, animated: true)
+            case .failure( _):
+                break;
+            }
+        }
     }
     
     func openAddressVC(address: String) {
