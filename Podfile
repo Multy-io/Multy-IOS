@@ -31,7 +31,7 @@ target 'Multy' do
   pod 'UICircularProgressRing', '~> 3.3.2'
   pod 'Hash2Pics'
   pod 'MultyCoreLibrary'
-  
+
   #dapp
 #  pod 'Result'
   pod 'TrustCore', :git=>'https://github.com/TrustWallet/trust-core', :commit=>'b539f0ff5d5fa344ba0b910c09bc9c65cb863660'
