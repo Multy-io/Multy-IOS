@@ -399,11 +399,7 @@ class AssetsPresenter: NSObject {
         
         assetsVC?.present(alert, animated: true, completion: nil)
     }
-    
-<<<<<<< HEAD
-    func modifyImportedWallets(_ array: List<UserWalletRLM>) -> List<UserWalletRLM> {
-        var newWallets = List<UserWalletRLM>()
-=======
+
     func modifyImportedWallets(_ array: List<UserWalletRLM>, completion: @escaping(_ error: NSError?)->()) {
         var modifiedWallets = List<UserWalletRLM>()
         
@@ -421,7 +417,6 @@ class AssetsPresenter: NSObject {
             UserPreferences.shared.writeDBPrivateKeyFixValue(true)
         }
         
->>>>>>> 5d5d080baeba65967f359e03673e3ae91129e632
         if importedWalletsInDB != nil {
             for wallet in importedWalletsInDB! {
                 let ethWallet = array.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM && $0.chainType == wallet.chainType }.first
