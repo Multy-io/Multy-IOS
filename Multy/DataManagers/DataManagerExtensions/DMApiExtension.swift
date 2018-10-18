@@ -66,6 +66,11 @@ extension DataManager {
                     userDefaults.set(encodedData, forKey: Constants.UserDefaults.btcDonationAddressesKey)
                 }
                 
+                if let erc20Info = answerDict!["erc20tokenlist"] as? NSArray {
+                    let chpokens = Erc20TokensRLM.initArrayWithArray(tokensArray: erc20Info)
+                    DataManager.shared.realmManager.updateErc20Tokens(tokens: chpokens)
+                }
+                
                 if let multisigFactoriesInfo = answerDict!["multisigfactory"] as? Dictionary<String,  String> {
                     self.saveMultisigFactories(multisigFactoriesInfo)
                 }

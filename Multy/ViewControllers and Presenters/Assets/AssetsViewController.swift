@@ -85,7 +85,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                 self.tableView.frame.size.height = screenHeight - self.tabBarController!.tabBar.frame.height
             }
             dm.socketManager.start()
-            dm.subscribeToFirebaseMessaging()
+            dm.subscribeToFirebaseMessaging() 
             
             //FIXME: add later or refactor
             
@@ -578,7 +578,7 @@ extension CancelDelegate: CancelProtocol {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
     
-        func donate50(idOfProduct: String) {
+    func donate50(idOfProduct: String) {
         self.makePurchaseFor(productId: idOfProduct)
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }

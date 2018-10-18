@@ -172,6 +172,7 @@
 		458C8B062072516900B8D71B /* SendAmountEthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458C8B052072516900B8D71B /* SendAmountEthViewController.swift */; };
 		458C8B082072518000B8D71B /* SendAmountEthPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458C8B072072518000B8D71B /* SendAmountEthPresenter.swift */; };
 		458FD4C71FE3C2CB001C25BA /* SpendableOutputRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD4C61FE3C2CB001C25BA /* SpendableOutputRLM.swift */; };
+		4598071D21777DBE00A16111 /* Erc20TokensRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4598071C21777DBE00A16111 /* Erc20TokensRLM.swift */; };
 		459A0B3420F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A0B3220F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift */; };
 		459A0B3520F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459A0B3320F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib */; };
 		459D482E1FE280ED0044740F /* CustomFeeRateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459D482D1FE280ED0044740F /* CustomFeeRateProtocol.swift */; };
@@ -647,6 +648,7 @@
 		458C8B052072516900B8D71B /* SendAmountEthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAmountEthViewController.swift; sourceTree = "<group>"; };
 		458C8B072072518000B8D71B /* SendAmountEthPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAmountEthPresenter.swift; sourceTree = "<group>"; };
 		458FD4C61FE3C2CB001C25BA /* SpendableOutputRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendableOutputRLM.swift; sourceTree = "<group>"; };
+		4598071C21777DBE00A16111 /* Erc20TokensRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc20TokensRLM.swift; sourceTree = "<group>"; };
 		459A0B3220F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSigPendingTableViewCell.swift; sourceTree = "<group>"; };
 		459A0B3320F0EC1A0076D10C /* MultiSigPendingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSigPendingTableViewCell.xib; sourceTree = "<group>"; };
 		459D482D1FE280ED0044740F /* CustomFeeRateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeeRateProtocol.swift; sourceTree = "<group>"; };
@@ -2027,6 +2029,7 @@
 			children = (
 				44BCBDB320601A24001611A5 /* Wallets */,
 				FA4D43E41FC590F6003C7117 /* SeedPhraseRLM.swift */,
+				4598071C21777DBE00A16111 /* Erc20TokensRLM.swift */,
 				FA4D44001FC71B6D003C7117 /* AccountRLM.swift */,
 				44DCC200205A9D34001080FB /* TopIndexRLM.swift */,
 				45E215D71FD147950078945A /* TransactionRLM.swift */,
@@ -2781,6 +2784,7 @@
 				4540944C2031EF1600603DB5 /* SecuritySettingsPresenter.swift in Sources */,
 				FA58DF651FDC403E00C45303 /* WrongSeedPhrasePresenter.swift in Sources */,
 				859C7B0120EE2CEC002EA215 /* MemberTableViewCell.swift in Sources */,
+				4598071D21777DBE00A16111 /* Erc20TokensRLM.swift in Sources */,
 				45E215E01FD164F80078945A /* QrScannerPresenter.swift in Sources */,
 				44CD6B8F208B5018009C07F6 /* BigInt.swift in Sources */,
 				8555721020C7E5C500108FCD /* TxInfoView.swift in Sources */,

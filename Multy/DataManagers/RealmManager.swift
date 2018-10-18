@@ -12,6 +12,7 @@ private typealias CurrencyExchangeManager = RealmManager
 private typealias WalletManager = RealmManager
 private typealias LegacyCodeManager = RealmManager
 private typealias SeedPhraseManager = RealmManager
+private typealias TokensManager = RealmManager
 
 class RealmManager: NSObject {
     static let shared = RealmManager()
@@ -1094,7 +1095,6 @@ extension RealmMigrationManager {
             msWallet?["isActivePaymentRequest"] = Bool()
         }
     }
-    
     func migrateFrom30To31(with migration: Migration) {
         UserPreferences.shared.writeDBPrivateKeyFixValue(false)
     }
@@ -1151,5 +1151,28 @@ extension LegacyCodeManager {
         }
         
         return sum
+    }
+}
+
+extension TokensManager {
+    func updateErc20Tokens(tokens: [Erc20TokensRLM]) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                try! realm.write {
+                    realm.delete(realm.objects(Erc20TokensRLM.self))
+                    for token in tokens {
+                        realm.add(token, update: true)
+                    }
+                }
+            }
+        }
+    }
+    
+    func getErc20TokenBy(address: String, completion: @escaping(_ token: Erc20TokensRLM) -> ()) {
+        getRealm { (realmOpt, err) in
+            if let realm = realmOpt {
+                completion(realm.object(ofType: Erc20TokensRLM.self, forPrimaryKey: address)!)
+            }
+        }
     }
 }
