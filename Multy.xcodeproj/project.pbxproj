@@ -12,9 +12,6 @@
 		44089D15205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */; };
 		4409E40120DD047900ADBE42 /* LocalizationConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4409E40020DD047900ADBE42 /* LocalizationConstant.swift */; };
 		440AD8D22020D1220015AEF1 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */; };
-		442259FA216E376E0045A050 /* MultyCoreLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442259F9216E376E0045A050 /* MultyCoreLibrary.framework */; };
-		442259FC216E3FA70045A050 /* MultyCoreLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442259FB216E3FA70045A050 /* MultyCoreLibrary.framework */; };
-		442259FD216E3FA70045A050 /* MultyCoreLibrary.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 442259FB216E3FA70045A050 /* MultyCoreLibrary.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		442B94AD216B6E1700D1A402 /* DappOperationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */; };
 		4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4430569D20C1627600E5415A /* TransactionPendingCell.xib */; };
 		4436123020B56F000095F3C6 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436122F20B56F000095F3C6 /* UITableView+Extension.swift */; };
@@ -162,6 +159,7 @@
 		44DCC201205A9D34001080FB /* TopIndexRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DCC200205A9D34001080FB /* TopIndexRLM.swift */; };
 		44DFEF9F206A51AF0068769C /* UInt64+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */; };
 		44E0245C20F7AB1F00F822D6 /* MultiSigWalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */; };
+		44E39EB02177974E0095A42A /* ripemd160.c in Sources */ = {isa = PBXBuildFile; fileRef = 44E39EAF2177974E0095A42A /* ripemd160.c */; };
 		44EFBE5B20923EAC0081EE3A /* Blockchain+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44EFBE5A20923EAC0081EE3A /* Blockchain+Extension.swift */; };
 		44FB26C0205A6D5600F208EB /* BlockchainTransferProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FB26BF205A6D5600F208EB /* BlockchainTransferProtocol.swift */; };
 		4506F1741FD9A2E700D575BA /* WalletSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */; };
@@ -447,7 +445,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				442259FD216E3FA70045A050 /* MultyCoreLibrary.framework in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,8 +458,6 @@
 		44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletBlockchainTableViewCell.swift; sourceTree = "<group>"; };
 		4409E40020DD047900ADBE42 /* LocalizationConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstant.swift; sourceTree = "<group>"; };
 		440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
-		442259F9216E376E0045A050 /* MultyCoreLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MultyCoreLibrary.framework; sourceTree = "<group>"; };
-		442259FB216E3FA70045A050 /* MultyCoreLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultyCoreLibrary.framework; path = Multy/Frameworks/MultyCoreLibrary.framework; sourceTree = "<group>"; };
 		442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappOperationTypes.swift; sourceTree = "<group>"; };
 		4430569C20C1627600E5415A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TransactionPendingCell.xib; sourceTree = "<group>"; };
 		4430569F20C1627C00E5415A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransactionPendingCell.strings; sourceTree = "<group>"; };
@@ -557,7 +552,6 @@
 		445D150820DA8513002F6747 /* EPContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPContactCell.swift; sourceTree = "<group>"; };
 		445D150F20DAB089002F6747 /* CNContact+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CNContact+Extension.swift"; sourceTree = "<group>"; };
 		445D151120DB9421002F6747 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
-		446FC9612108BC8000E53D46 /* transaction_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transaction_builder.h; sourceTree = "<group>"; };
 		4474C5A620BEFFAB00EA8B01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EthWalletHeaderCollectionViewCell.xib; sourceTree = "<group>"; };
 		4474C5A920BEFFAD00EA8B01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EthWalletHeaderCollectionViewCell.strings; sourceTree = "<group>"; };
 		4474C5AB20BEFFAF00EA8B01 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EthWalletHeaderCollectionViewCell.strings; sourceTree = "<group>"; };
@@ -593,8 +587,6 @@
 		4477265320BECD2D006BF4A7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Sends.strings; sourceTree = "<group>"; };
 		4477265420BECD2E006BF4A7 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Sends.strings; sourceTree = "<group>"; };
 		447ECAD220330C2C0085C26D /* TransactionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDTO.swift; sourceTree = "<group>"; };
-		448000D620FF3D6900813624 /* EOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EOS.h; sourceTree = "<group>"; };
-		448000D720FF3D6900813624 /* transaction_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transaction_builder.h; sourceTree = "<group>"; };
 		448C38562165603100D83D02 /* WalletType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletType.swift; sourceTree = "<group>"; };
 		448C38572165603100D83D02 /* BrowserCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserCoordinator.swift; sourceTree = "<group>"; };
 		448C38582165603100D83D02 /* CryptoAddressValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoAddressValidator.swift; sourceTree = "<group>"; };
@@ -702,16 +694,14 @@
 		44CD6B8E208B5018009C07F6 /* BigInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigInt.swift; sourceTree = "<group>"; };
 		44DCC200205A9D34001080FB /* TopIndexRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopIndexRLM.swift; sourceTree = "<group>"; };
 		44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extension.swift"; sourceTree = "<group>"; };
-		44DFEFA0206A64ED0068769C /* binary_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = binary_data.h; sourceTree = "<group>"; };
-		44DFEFA1206A64ED0068769C /* blockchain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blockchain.h; sourceTree = "<group>"; };
-		44DFEFA2206A64ED0068769C /* bitcoin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bitcoin.h; sourceTree = "<group>"; };
-		44DFEFA3206A64ED0068769C /* ethereum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ethereum.h; sourceTree = "<group>"; };
-		44DFEFA4206A64ED0068769C /* golos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = golos.h; sourceTree = "<group>"; };
 		44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSigWalletCell.swift; sourceTree = "<group>"; };
+		44E39EAE2177974E0095A42A /* ripemd160.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ripemd160.h; sourceTree = "<group>"; };
+		44E39EAF2177974E0095A42A /* ripemd160.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ripemd160.c; sourceTree = "<group>"; };
+		44E39EB1217881AA0095A42A /* endian.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
+		44E39EB2217881C00095A42A /* compiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compiler.h; sourceTree = "<group>"; };
+		44E39EB3217881E90095A42A /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		44E39EB4217881FA0095A42A /* ccan_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ccan_config.h; sourceTree = "<group>"; };
 		44EFBE5A20923EAC0081EE3A /* Blockchain+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blockchain+Extension.swift"; sourceTree = "<group>"; };
-		44FA86BE2035A75A00263C72 /* key.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = key.h; sourceTree = "<group>"; };
-		44FA86BF2035A76400263C72 /* big_int.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = big_int.h; sourceTree = "<group>"; };
-		44FA86C02035A77100263C72 /* sha3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sha3.h; sourceTree = "<group>"; };
 		44FB26BF205A6D5600F208EB /* BlockchainTransferProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainTransferProtocol.swift; sourceTree = "<group>"; };
 		4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsPresenter.swift; sourceTree = "<group>"; };
 		4506F1751FD9A30700D575BA /* WalletSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsViewController.swift; sourceTree = "<group>"; };
@@ -967,15 +957,7 @@
 		FA58DF631FDC403E00C45303 /* WrongSeedPhrasePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrongSeedPhrasePresenter.swift; sourceTree = "<group>"; };
 		FA58DF641FDC403E00C45303 /* WrongSeedPhraseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrongSeedPhraseViewController.swift; sourceTree = "<group>"; };
 		FA6226F01FE7D1C60033CCCE /* Data+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
-		FA7406151FCC14C4003C538C /* transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transaction.h; sourceTree = "<group>"; };
-		FA7406161FCC14C4003C538C /* properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = properties.h; sourceTree = "<group>"; };
-		FA7406191FCC14C4003C538C /* account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = account.h; sourceTree = "<group>"; };
-		FA74061A1FCC14C4003C538C /* mnemonic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mnemonic.h; sourceTree = "<group>"; };
-		FA74061B1FCC14C4003C538C /* api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = api.h; sourceTree = "<group>"; };
-		FA74061C1FCC14C4003C538C /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
-		FA74061D1FCC14C4003C538C /* run_tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = run_tests.h; sourceTree = "<group>"; };
 		FA74062A1FCC5D6A003C538C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		FA869D081FD5AD9700C815C3 /* error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
 		FA869D0B1FD6B85700C815C3 /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		FA869D111FD6C17900C815C3 /* ExchangePriceRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangePriceRLM.swift; sourceTree = "<group>"; };
 		FA86A7401FC2C72B002826EC /* MasterKeyGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterKeyGenerator.swift; sourceTree = "<group>"; };
@@ -993,7 +975,6 @@
 		FADC004B1FC323A900182E45 /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		FADC004D1FC323C300182E45 /* CoreLibManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLibManager.swift; sourceTree = "<group>"; };
 		FAFCDA871FD7DD7A0056DD64 /* Request+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+Extension.swift"; sourceTree = "<group>"; };
-		FAFCDA891FD7FD250056DD64 /* bip44_coin_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bip44_coin_types.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1017,7 +998,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				442259FA216E376E0045A050 /* MultyCoreLibrary.framework in Frameworks */,
 				85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */,
 				FA4125DF2004C0FD00DF9AC3 /* libstdc++.tbd in Frameworks */,
 				4456964920F391FE00B0C496 /* libccan.a in Frameworks */,
@@ -1028,7 +1008,6 @@
 				FA4125F02004FF1500DF9AC3 /* libmini-gmp.a in Frameworks */,
 				FA4125F22004FF1500DF9AC3 /* libsecp256k1.a in Frameworks */,
 				2903DBF32668295CED1C9139 /* Pods_Multy.framework in Frameworks */,
-				442259FC216E3FA70045A050 /* MultyCoreLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1255,7 +1234,6 @@
 		452290481FBB18D30024B550 = {
 			isa = PBXGroup;
 			children = (
-				442259FB216E3FA70045A050 /* MultyCoreLibrary.framework */,
 				452290531FBB18D30024B550 /* Multy */,
 				4491514C204976600028195F /* MultyTests */,
 				4491513E2049764D0028195F /* MultyUITests */,
@@ -1455,10 +1433,15 @@
 		457486131FBD7DAF002D1925 /* Additional Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				44E39EB3217881E90095A42A /* config.h */,
+				44E39EB4217881FA0095A42A /* ccan_config.h */,
+				44E39EAE2177974E0095A42A /* ripemd160.h */,
+				44E39EB1217881AA0095A42A /* endian.h */,
+				44E39EB2217881C00095A42A /* compiler.h */,
+				44E39EAF2177974E0095A42A /* ripemd160.c */,
 				445D14E420DA8364002F6747 /* Contacts Picker */,
 				45ECDBD4203D9E50009FD339 /* LoggingPrint */,
 				FA869D091FD6B84900C815C3 /* HUD */,
-				FA74060F1FCC14C4003C538C /* Core Libs */,
 			);
 			path = "Additional Libraries";
 			sourceTree = "<group>";
@@ -2327,37 +2310,9 @@
 			path = WrongSeedPhrase;
 			sourceTree = "<group>";
 		};
-		FA74060F1FCC14C4003C538C /* Core Libs */ = {
-			isa = PBXGroup;
-			children = (
-				FA7406191FCC14C4003C538C /* account.h */,
-				FA74061B1FCC14C4003C538C /* api.h */,
-				44FA86BF2035A76400263C72 /* big_int.h */,
-				44DFEFA0206A64ED0068769C /* binary_data.h */,
-				FAFCDA891FD7FD250056DD64 /* bip44_coin_types.h */,
-				44DFEFA2206A64ED0068769C /* bitcoin.h */,
-				44DFEFA1206A64ED0068769C /* blockchain.h */,
-				FA74061C1FCC14C4003C538C /* common.h */,
-				448000D620FF3D6900813624 /* EOS.h */,
-				FA869D081FD5AD9700C815C3 /* error.h */,
-				44DFEFA3206A64ED0068769C /* ethereum.h */,
-				44DFEFA4206A64ED0068769C /* golos.h */,
-				44FA86BE2035A75A00263C72 /* key.h */,
-				FA74061A1FCC14C4003C538C /* mnemonic.h */,
-				FA74061D1FCC14C4003C538C /* run_tests.h */,
-				44FA86C02035A77100263C72 /* sha3.h */,
-				448000D720FF3D6900813624 /* transaction_builder.h */,
-				FA7406151FCC14C4003C538C /* transaction.h */,
-				446FC9612108BC8000E53D46 /* transaction_builder.h */,
-				FA7406161FCC14C4003C538C /* properties.h */,
-			);
-			path = "Core Libs";
-			sourceTree = "<group>";
-		};
 		FA7E97221FF2504100735D73 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				442259F9216E376E0045A050 /* MultyCoreLibrary.framework */,
 				445D151120DB9421002F6747 /* Contacts.framework */,
 				4538BDCB2099E69900573426 /* StoreKit.framework */,
 				85741D8820B55A650093933B /* CoreBluetooth.framework */,
@@ -2721,6 +2676,7 @@
 				"${BUILT_PRODUCTS_DIR}/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/JSONRPCKit/JSONRPCKit.framework",
 				"${BUILT_PRODUCTS_DIR}/LTMorphingLabel/LTMorphingLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/MultyCoreLibrary/MultyCoreLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework",
 				"${BUILT_PRODUCTS_DIR}/RAMAnimatedTabBarController/RAMAnimatedTabBarController.framework",
@@ -2757,6 +2713,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IDZSwiftCommonCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONRPCKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LTMorphingLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MultyCoreLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Rswift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RAMAnimatedTabBarController.framework",
@@ -2839,6 +2796,7 @@
 				"${BUILT_PRODUCTS_DIR}/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/JSONRPCKit/JSONRPCKit.framework",
 				"${BUILT_PRODUCTS_DIR}/LTMorphingLabel/LTMorphingLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/MultyCoreLibrary/MultyCoreLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework",
 				"${BUILT_PRODUCTS_DIR}/RAMAnimatedTabBarController/RAMAnimatedTabBarController.framework",
@@ -2873,6 +2831,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IDZSwiftCommonCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONRPCKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LTMorphingLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MultyCoreLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Rswift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RAMAnimatedTabBarController.framework",
@@ -3165,6 +3124,7 @@
 				448C38E22165603500D83D02 /* ConfirmCoordinator.swift in Sources */,
 				45A949621FC766BE003C3A23 /* SendFinishPresenter.swift in Sources */,
 				4575F0D82081FE01002616DD /* WebTextPageViewController.swift in Sources */,
+				44E39EB02177974E0095A42A /* ripemd160.c in Sources */,
 				859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */,
 				448C38B02165603500D83D02 /* SignTransaction.swift in Sources */,
 				448C38CF2165603500D83D02 /* BrowserNavigationBar.swift in Sources */,

@@ -30,6 +30,7 @@ target 'Multy' do
   pod 'SwiftyContacts'
   pod 'UICircularProgressRing', '~> 3.3.2'
   pod 'Hash2Pics'
+  pod 'MultyCoreLibrary'
   
   #dapp
 #  pod 'Result'
