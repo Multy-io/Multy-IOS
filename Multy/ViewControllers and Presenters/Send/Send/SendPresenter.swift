@@ -155,11 +155,16 @@ class SendPresenter: NSObject {
             let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain)
 //            let address = request.sendAddress
             
-            filteredWalletArray = walletsArr.filter{ $0.blockchainType == blockchainType && $0.availableAmount > sendAmount }
+            filteredWalletArray = walletsArr.filter {
+                $0.blockchainType == blockchainType && $0.availableAmount > sendAmount
+            }
 
 //            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: address, for: $0).isValid && $0.availableAmount > sendAmount}
         } else {
-            filteredWalletArray = walletsArr.filter{ $0.availableAmount > BigInt.zero()}
+            
+            filteredWalletArray = walletsArr.filter {
+                $0.availableAmount > BigInt.zero()
+            }
         }
     }
     
@@ -168,7 +173,7 @@ class SendPresenter: NSObject {
     }
     
     func viewControllerViewWillAppear() {
-       viewWillAppear()
+        viewWillAppear()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.applicationWillResignActive(notification:)), name: Notification.Name.UIApplicationWillResignActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.applicationWillTerminate(notification:)), name: Notification.Name.UIApplicationWillTerminate, object: nil)
@@ -225,7 +230,8 @@ class SendPresenter: NSObject {
                 // MARK: check this
                 if acc != nil && acc!.wallets.count > 0 {
                     self.account = acc
-                    self.walletsArr = acc!.wallets.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
+                    self.walletsArr = acc!.wallets.sorted(by: {
+                        $0.availableSumInCrypto > $1.availableSumInCrypto })
                 }
             }
         }
@@ -238,10 +244,14 @@ class SendPresenter: NSObject {
             } else {
                 let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
                 print("afterVerbose:rawdata: \(walletsArrayFromApi)")
-                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
-                    self.account = acc
-                    self.walletsArr = acc!.wallets.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
-                    self.isSocketInitiateUpdating = false
+                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { [weak self] (acc, err) in
+                    if self != nil {
+                        self!.account = acc
+                        self!.walletsArr = acc!.wallets.sorted(by: {
+                            $0.availableSumInCrypto > $1.availableSumInCrypto
+                        })
+                        self!.isSocketInitiateUpdating = false
+                    }
                 })
             }
         }
@@ -365,7 +375,6 @@ class SendPresenter: NSObject {
         binaryData = account!.binaryDataString.createBinaryData()!
         
         
-        
         addressData = core.createAddress(blockchainType:    wallet.blockchainType,
                                          walletID:      wallet.walletID.uint32Value,
                                          addressID:     wallet.changeAddressIndex,
@@ -447,9 +456,11 @@ class SendPresenter: NSObject {
                         return
                     }
                     
+                    let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? self.addressData!["address"] as! String : ""
+                    
                     let newAddressParams = [
                         "walletindex"   : wallet.walletID.intValue,
-                        "address"       : self.addressData!["address"] as! String,
+                        "address"       : newAddress,
                         "addressindex"  : wallet.addresses.count,
                         "transaction"   : self.rawTransaction,
                         "ishd"          : wallet.shouldCreateNewAddressAfterTransaction
@@ -468,7 +479,8 @@ class SendPresenter: NSObject {
                         print("---------\(dict)")
                         
                         if error != nil {
-                            self.sendVC?.updateUIWithSendResponse(success: false)
+                            self.sendVC!.sendAnalyticsEvent(screenName: self.className, eventName: (error! as NSError).userInfo.debugDescription)
+                            self.sendVC!.updateUIWithSendResponse(success: false)
                             print("sendHDTransaction Error: \(error)")
                             self.sendVC!.sendAnalyticsEvent(screenName: KFSendScreen, eventName: KFTransactionError)
                             
@@ -525,12 +537,13 @@ class SendPresenter: NSObject {
     }
     
     @objc private func didReceiveNewRequests(notification: Notification) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             let requests = notification.userInfo!["paymentRequests"] as! [PaymentRequest]
             
-            self.updateActiveRequests(requests)
-            
-            self.sendVC?.updateUI()
+            if self != nil {
+                self!.updateActiveRequests(requests)
+                self!.sendVC?.updateUI()
+            }
         }
     }
     
@@ -736,6 +749,23 @@ extension CreateTransactionDelegate {
         
         let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(in: wallet.blockchainType.blockchain).stringValue
         
+        let pointer: UnsafeMutablePointer<OpaquePointer?>?
+        if !wallet.importedPrivateKey.isEmpty {
+            let blockchainType = wallet.blockchainType
+            let privatekey = wallet.importedPrivateKey
+            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
+            switch walletInfo {
+            case .success(let value):
+                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
+            case .failure(let error):
+                print(error)
+                
+                return false
+            }
+        } else {
+            pointer = addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
+        }
+        
         if wallet.isMultiSig {
             if self.linkedWallet == nil {
                 rawTransaction = "Error"
@@ -756,7 +786,7 @@ extension CreateTransactionDelegate {
             
             return trData.isTransactionCorrect
         } else {
-            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
                                                                                   sendAddress: request.sendAddress,
                                                                                   sendAmountString: sendAmount,
                                                                                   nonce: wallet.ethWallet!.nonce.intValue,

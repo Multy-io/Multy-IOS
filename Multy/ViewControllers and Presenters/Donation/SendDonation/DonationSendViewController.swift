@@ -92,7 +92,7 @@ class DonationSendViewController: UIViewController, UITextFieldDelegate, Analyti
         
         
         
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             sendButtonContraint.constant = 140
         } else if screenHeight > scrollView.contentSize.height + 20 && scrollView.contentSize.height > 0 {
             sendButtonContraint.constant = 30 + (screenHeight - scrollView.contentSize.height - 20)
@@ -158,7 +158,7 @@ class DonationSendViewController: UIViewController, UITextFieldDelegate, Analyti
 //                self.scrollView.setContentOffset(bottOffset, animated: true)
 //                self.view.frame.origin.y -= keyboardSize.height/4
                 self.tableView.isUserInteractionEnabled = false
-                if screenHeight == heightOfX {
+                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                     self.view.frame.origin.y -= keyboardSize.height/4
                 } else {
                     self.view.frame.origin.y -= keyboardSize.height
@@ -172,7 +172,7 @@ class DonationSendViewController: UIViewController, UITextFieldDelegate, Analyti
             if self.view.frame.origin.y != 0 {
                 self.tableView.isUserInteractionEnabled = true
                 self.makeSendAvailable(isAvailable: true)
-                if screenHeight == heightOfX {
+                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                     self.view.frame.origin.y += keyboardSize.height/4
                 } else {
                     self.view.frame.origin.y += keyboardSize.height

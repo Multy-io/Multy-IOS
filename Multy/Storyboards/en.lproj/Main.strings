@@ -219,3 +219,13 @@
 "11d-Ue-k9Z.text" = "Point your camera at multisig wallet identification QR-code or insert your invitation code";
 
 "d8O-pl-cI9.text" = "Paste Invite Code Here";
+
+"AnR-4l-wY5.normalTitle" = "Import EthMS Wallet";
+
+"aUa-aN-cH2.text" = "Cancel";
+"KzO-Ts-pl5.text" = "Import";
+"Tr5-AT-qlK.text" = "Your private key for ETH wallet:";
+"CXZ-l4-ytE.text" = "Paste key here";
+"rNL-5Y-D1r.text" = "MultiSig Wallet Address";
+"KVQ-Nt-yXc.text" = "Enter Address Here";
+"bdc-Nl-Tpm.normalTitle" = "Import Now";

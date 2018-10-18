@@ -177,6 +177,8 @@
 		4522905A1FBB18D30024B550 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 452290581FBB18D30024B550 /* Main.storyboard */; };
 		4522905C1FBB18D30024B550 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4522905B1FBB18D30024B550 /* Assets.xcassets */; };
 		4522905F1FBB18D30024B550 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4522905D1FBB18D30024B550 /* LaunchScreen.storyboard */; };
+		452ED155216E039600B86A67 /* TokenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452ED153216E039600B86A67 /* TokenTableViewCell.swift */; };
+		452ED156216E039600B86A67 /* TokenTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 452ED154216E039600B86A67 /* TokenTableViewCell.xib */; };
 		45310D0F2063B9F500105532 /* EthereumGasInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45310D0E2063B9F500105532 /* EthereumGasInfo.swift */; };
 		45344AC420E6587B0039DF30 /* CreateMultiSigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45344AC320E6587B0039DF30 /* CreateMultiSigViewController.swift */; };
 		45344AC620E6589B0039DF30 /* CreateMultiSigPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */; };
@@ -721,6 +723,8 @@
 		4522905E1FBB18D30024B550 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		452290601FBB18D30024B550 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4526F8DD2015383D00D2E491 /* Multy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Multy.entitlements; sourceTree = "<group>"; };
+		452ED153216E039600B86A67 /* TokenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenTableViewCell.swift; sourceTree = "<group>"; };
+		452ED154216E039600B86A67 /* TokenTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenTableViewCell.xib; sourceTree = "<group>"; };
 		45310D0E2063B9F500105532 /* EthereumGasInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumGasInfo.swift; sourceTree = "<group>"; };
 		45344AC320E6587B0039DF30 /* CreateMultiSigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMultiSigViewController.swift; sourceTree = "<group>"; };
 		45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMultiSigPresenter.swift; sourceTree = "<group>"; };
@@ -1278,6 +1282,15 @@
 				FA86A74E1FC2C806002826EC /* Multy-Bridging-Header.h */,
 			);
 			path = Multy;
+			sourceTree = "<group>";
+		};
+		452ED152216E02C800B86A67 /* TokenTVC */ = {
+			isa = PBXGroup;
+			children = (
+				452ED153216E039600B86A67 /* TokenTableViewCell.swift */,
+				452ED154216E039600B86A67 /* TokenTableViewCell.xib */,
+			);
+			path = TokenTVC;
 			sourceTree = "<group>";
 		};
 		45344AC220E658300039DF30 /* CreateMultiSig */ = {
@@ -1953,6 +1966,7 @@
 		45B9CB041FBB4B6600AA2A31 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				452ED152216E02C800B86A67 /* TokenTVC */,
 				859C7B1020F4D3A8002EA215 /* ConfirmationStatusCVC */,
 				44AAAE1120E258BA00A481A4 /* ContactCell */,
 				85DE62E520AC1CD000423D89 /* ActiveRequestCVC */,
@@ -2530,6 +2544,7 @@
 				4474C5B020BFE60600EA8B01 /* Contacts.strings in Resources */,
 				4522905F1FBB18D30024B550 /* LaunchScreen.storyboard in Resources */,
 				4522905C1FBB18D30024B550 /* Assets.xcassets in Resources */,
+				452ED156216E039600B86A67 /* TokenTableViewCell.xib in Resources */,
 				859C7B1420F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib in Resources */,
 				FA4D43FF1FC6D058003C7117 /* TransactionWalletCell.xib in Resources */,
 				459D82342136DBCF00BE479B /* InfoPlist.strings in Resources */,
@@ -3217,6 +3232,7 @@
 				4583AC981FBC8596001991AA /* PortfolioCollectionViewCell.swift in Sources */,
 				45E215D81FD147950078945A /* TransactionRLM.swift in Sources */,
 				448C38D92165603500D83D02 /* UIActivityViewController.swift in Sources */,
+				452ED155216E039600B86A67 /* TokenTableViewCell.swift in Sources */,
 				45A949481FC5C55C003C3A23 /* WalletChoosePresenter.swift in Sources */,
 				4583AC9F1FBC991E001991AA /* NewWalletTableViewCell.swift in Sources */,
 				448C38B42165603500D83D02 /* Address.swift in Sources */,

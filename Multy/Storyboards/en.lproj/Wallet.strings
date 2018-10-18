@@ -177,7 +177,7 @@
 
 "4kk-4F-HrQ.text" = "Pending Balance";
 
-"5Jb-Vr-nch.normalTitle" = "Share address";
+"5Jb-Vr-nch.normalTitle" = "       Share address       ";
 
 "8RE-29-d1G.normalTitle" = "Show all addresses";
 
@@ -219,3 +219,6 @@
 
 "0cr-yj-j9D.text" = "In case of emergency: you can fix stuck transactions on this wallet by doing full-resync. Please note that it might take some time and you wouldn't be able to send any transactions from this wallet during that period.";
 
+"76O-3S-0nx.text" = "Imported Wallet";
+
+"bTm-8y-NG5.text" = "Please note that imported wallets can't be restored from seed phrase on other device. You should backup your private key in order to secure your funds, so you can import it later on other device.";

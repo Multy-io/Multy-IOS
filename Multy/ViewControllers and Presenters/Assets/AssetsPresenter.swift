@@ -11,7 +11,7 @@ class AssetsPresenter: NSObject {
     var assetsVC: AssetsViewController?
     
     var tabBarFrame: CGRect {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax{
             return account != nil ? CGRect(x: 0, y: screenHeight - 85, width: screenWidth, height: 85) : CGRect(x: 0, y: 0, width: 0, height: 0)
         } else {
             return account != nil ? CGRect(x: 0, y: screenHeight - 49, width: screenWidth, height: 49) : CGRect(x: 0, y: 0, width: 0, height: 0)
@@ -40,15 +40,18 @@ class AssetsPresenter: NSObject {
                 if !DataManager.shared.socketManager.isStarted {
                     DataManager.shared.socketManager.start()
                 }
+
+                wallets = validWallets().sorted(by: {
+                    $0.lastActivityTimestamp.intValue > $1.lastActivityTimestamp.intValue
+                })
+        //        wallets = validWallets().sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
                 
-                wallets = account?.wallets.sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
                 
                 assetsVC!.tableView.frame.size.height = screenHeight - assetsVC!.tabBarController!.tabBar.frame.height
                 
                 self.assetsVC?.view.isUserInteractionEnabled = true
                 
             } else {
-                
                 assetsVC!.tableView.frame.size.height = screenHeight
             }
             
@@ -58,7 +61,7 @@ class AssetsPresenter: NSObject {
         }
     }
     
-    var wallets: Results<UserWalletRLM>?
+    var wallets: [UserWalletRLM]?
     var importedWalletsInDB: [UserWalletRLM]?
     
     @objc func updateExchange() {
@@ -103,6 +106,39 @@ class AssetsPresenter: NSObject {
             self.assetsVC?.backupView?.isHidden = true
             self.assetsVC?.backupView?.isUserInteractionEnabled = false
         }
+    }
+    
+    func validWallets() -> [UserWalletRLM] {
+        
+        var result = [UserWalletRLM]()
+        if account?.wallets != nil {
+            var invalidWalletsID = [String]()
+//            for i in 0..<account!.wallets.count  {
+//                let wallet = account!.wallets[i]
+            for wallet in account!.wallets {
+                if wallet.isImported && wallet.importedPrivateKey.isEmpty {
+                    invalidWalletsID.append(wallet.id)
+                } else if !wallet.isMultiSig {
+                    result.append(wallet)
+                }
+            }
+            
+//            for k in 0..<account!.wallets.count {
+//                let wallet = account!.wallets[k]
+            for wallet in account!.wallets {
+                if wallet.isMultiSig {
+                    let linkedWalletID = wallet.multisigWallet!.linkedWalletID
+                    let invalidID = invalidWalletsID.filter{ $0 == linkedWalletID }.first
+                    if invalidID == nil {
+                        result.append(wallet)
+                    }
+                }
+            }
+        }
+        
+        let fileteredWallets = result.filter{ $0.blockchain == BLOCKCHAIN_ETHEREUM }
+
+        return result
     }
     
 //    func auth() {
@@ -157,7 +193,7 @@ class AssetsPresenter: NSObject {
 //    }
     
     func updateWalletsInfo(isInternetAvailable: Bool) {
-        DataManager.shared.getAccount { (acc, err) in
+        DataManager.shared.getAccount { [unowned self] (acc, err) in
             self.account = acc
             
             if acc != nil {
@@ -165,7 +201,7 @@ class AssetsPresenter: NSObject {
                 if isInternetAvailable == false {
 //                    self.unlockUI()
                 }
-                self.getWalletsVerbose(completion: { (_) in
+                self.getWalletsVerbose(completion: { [unowned self] (_) in
                     self.unlockUI()
                 })
             }
@@ -189,18 +225,20 @@ class AssetsPresenter: NSObject {
 
     func getWalletsVerbose(completion: @escaping (_ flag: Bool) -> ()) {
 //        blockUI()
-        DataManager.shared.getWalletsVerbose() { (walletsArrayFromApi, err) in
+        let dm = DataManager.shared
+        dm.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
 //            self.unlockUI()
             if err != nil {
                 return
             } else {
-                var walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
-                walletsArr = self.modifyImportedWallets(walletsArr)
-                print("afterVerbose:rawdata: \(walletsArrayFromApi)")
-                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
-                    self.account = acc
-                    print("wallets: \(acc?.wallets)")
-                    completion(true)
+                let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
+                self.modifyImportedWallets(walletsArr,completion: { [unowned self, unowned dm] err in
+                    print("afterVerbose:rawdata: \(walletsArrayFromApi!)")
+                    dm.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { [unowned self] (acc, err) in
+                        self.account = acc
+                        print("wallets: \(acc!.wallets)")
+                        completion(true)
+                    })
                 })
             }
         }
@@ -210,13 +248,13 @@ class AssetsPresenter: NSObject {
         if account == nil {
             return
         }
-        DataManager.shared.getWalletsVerbose() { (walletsArrayFromApi, err) in
+        DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             if err != nil {
                 return
             } else {
                 let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
                 print("afterVerboseForSockets:rawdata: \(walletsArrayFromApi)")
-                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, err) in
+                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { [unowned self] (acc, err) in
                     self.account = acc
                     print("wallets: \(acc?.wallets)")
                     completion(true)
@@ -362,12 +400,31 @@ class AssetsPresenter: NSObject {
         assetsVC?.present(alert, animated: true, completion: nil)
     }
     
+<<<<<<< HEAD
     func modifyImportedWallets(_ array: List<UserWalletRLM>) -> List<UserWalletRLM> {
         var newWallets = List<UserWalletRLM>()
+=======
+    func modifyImportedWallets(_ array: List<UserWalletRLM>, completion: @escaping(_ error: NSError?)->()) {
+        var modifiedWallets = List<UserWalletRLM>()
+        
+        if DataManager.shared.shouldCheckWalletsPrivateKeys {
+            let convertedWallets = DataManager.shared.checkWallets(array)
+            
+            if convertedWallets.count > 0 {
+                if importedWalletsInDB == nil {
+                    importedWalletsInDB = convertedWallets
+                } else {
+                    importedWalletsInDB!.append(contentsOf: convertedWallets)
+                }
+            }
+            
+            UserPreferences.shared.writeDBPrivateKeyFixValue(true)
+        }
+        
+>>>>>>> 5d5d080baeba65967f359e03673e3ae91129e632
         if importedWalletsInDB != nil {
-            newWallets = array
             for wallet in importedWalletsInDB! {
-                let ethWallet = newWallets.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM }.first
+                let ethWallet = array.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM && $0.chainType == wallet.chainType }.first
                 
                 if ethWallet != nil {
                     //                    let index = newWallets.index(of: eosWallet!)!
@@ -375,16 +432,22 @@ class AssetsPresenter: NSObject {
                     ethWallet!.importedPublicKey = wallet.importedPublicKey
                     ethWallet!.importedPrivateKey = wallet.importedPrivateKey
                     
+                    modifiedWallets.append(ethWallet!)
                     //                    newWallets.replace(index: index, object: eosWallet!)
                 }
             }
             
             importedWalletsInDB = nil
             
-            return newWallets
+            if modifiedWallets.count > 0 {
+                DataManager.shared.realmManager.updateImportedWalletsInAcc(arrOfWallets: modifiedWallets, completion: { (acc, err) in
+                    completion(err)
+                })
+            } else {
+                completion(nil)
+            }
         } else {
-            return array
+            completion(nil)
         }
-
     }
 }
