@@ -363,7 +363,6 @@ class AssetsPresenter: NSObject {
     
     func modifyImportedWallets(_ array: List<UserWalletRLM>) -> List<UserWalletRLM> {
         var newWallets = List<UserWalletRLM>()
-        
         if importedWalletsInDB != nil {
             newWallets = array
             for wallet in importedWalletsInDB! {

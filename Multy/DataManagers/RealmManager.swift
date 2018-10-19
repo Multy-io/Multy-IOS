@@ -623,7 +623,7 @@ extension WalletManager {
             }
         }
         
-        let results = ouputs.sorted(by: { (out1, out2) -> Bool in
+        let results = ouputs .sorted(by: { (out1, out2) -> Bool in
             out1.transactionOutAmount.uint64Value > out2.transactionOutAmount.int64Value
         })
         

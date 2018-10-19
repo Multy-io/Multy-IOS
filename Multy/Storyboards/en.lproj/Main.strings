@@ -21,7 +21,7 @@
 "312-E7-Xe2.text" = "Unfortunately you are not conencted to \nthe network now. Multy needs constant \nconenction to provide it’s work\ncorrectly";
 
 /* Class = "UITabBarItem"; title = "Activity"; ObjectID = "3Tm-8r-aym"; */
-"3Tm-8r-aym.title" = "Activity";
+"3Tm-8r-aym.title" = "Browser";
 
 /* Class = "UIButton"; normalTitle = "Privacy Policy"; ObjectID = "4BO-WF-MtY"; */
 "4BO-WF-MtY.normalTitle" = "Privacy Policy";

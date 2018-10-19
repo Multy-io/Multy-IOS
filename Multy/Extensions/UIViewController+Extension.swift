@@ -152,7 +152,8 @@ extension UIViewController {
                 tmvc!.className.hasPrefix("BackupSeedPhraseViewController") ||
                 tmvc!.className.hasPrefix("CheckWords") ||
                 tmvc!.className.hasPrefix("AssetsViewController") ||
-                tmvc!.className.hasPrefix("ActivityViewController") ||
+//                tmvc!.className.hasPrefix("ActivityViewController") ||
+                tmvc!.className.hasPrefix("BrowserViewController") ||
                 tmvc!.className.hasPrefix("FastOperationsViewController") ||
                 tmvc!.className.hasPrefix("ContactsViewController") ||
                 tmvc!.className.hasPrefix("SettingsViewController")) {

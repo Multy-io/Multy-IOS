@@ -21,7 +21,7 @@
 "312-E7-Xe2.text" = "К сожалению, вы не подключены \nк интернету сейчас. Multy необходимо постоянное \nсоединение для обеспечения корректной работы";
 
 /* Class = "UITabBarItem"; title = "Activity"; ObjectID = "3Tm-8r-aym"; */
-"3Tm-8r-aym.title" = "События";
+"3Tm-8r-aym.title" = "Браузер";
 
 /* Class = "UIButton"; normalTitle = "Privacy Policy"; ObjectID = "4BO-WF-MtY"; */
 "4BO-WF-MtY.normalTitle" = "Политика конфиденциальности";
