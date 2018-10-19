@@ -177,7 +177,71 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PMc-n8-FmC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1703.2" y="1558.4707646176912"/>
+            <point key="canvasLocation" x="-2025" y="1586"/>
+        </scene>
+        <!--Dapp Browser View Controller-->
+        <scene sceneID="1hf-rP-PyX">
+            <objects>
+                <viewController id="PcQ-zQ-GBi" customClass="DappBrowserViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OFe-wE-wJW"/>
+                        <viewControllerLayoutGuide type="bottom" id="ymt-P8-ea2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="raf-dH-pgr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ETH_medium_icon" translatesAutoresizingMaskIntoConstraints="NO" id="5Xh-vs-bQm">
+                                <rect key="frame" x="16" y="30" width="38" height="38"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="5Xh-vs-bQm" secondAttribute="height" multiplier="1:1" id="lDS-x0-b0x"/>
+                                    <constraint firstAttribute="width" constant="38" id="xkI-GE-Gzj"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3xd-9M-rC6">
+                                <rect key="frame" x="64" y="31" width="295" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mtc-Ot-yF0">
+                                <rect key="frame" x="16" y="31" width="343" height="30"/>
+                                <connections>
+                                    <action selector="chooseWalletAction" destination="PcQ-zQ-GBi" eventType="touchUpInside" id="w3H-SL-ltc"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrC-qp-0mc">
+                                <rect key="frame" x="0.0" y="76" width="375" height="542"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="mtc-Ot-yF0" firstAttribute="top" secondItem="3xd-9M-rC6" secondAttribute="top" id="A9C-ni-hyb"/>
+                            <constraint firstItem="jrC-qp-0mc" firstAttribute="top" secondItem="5Xh-vs-bQm" secondAttribute="bottom" constant="8" id="I1E-NU-iZD"/>
+                            <constraint firstItem="jrC-qp-0mc" firstAttribute="bottom" secondItem="ymt-P8-ea2" secondAttribute="top" id="N2k-zw-928"/>
+                            <constraint firstItem="mtc-Ot-yF0" firstAttribute="leading" secondItem="5Xh-vs-bQm" secondAttribute="leading" id="Oln-1A-j0J"/>
+                            <constraint firstAttribute="trailing" secondItem="jrC-qp-0mc" secondAttribute="trailing" id="UAC-Tw-A99"/>
+                            <constraint firstItem="mtc-Ot-yF0" firstAttribute="trailing" secondItem="3xd-9M-rC6" secondAttribute="trailing" id="VnF-IU-m4X"/>
+                            <constraint firstItem="3xd-9M-rC6" firstAttribute="centerY" secondItem="5Xh-vs-bQm" secondAttribute="centerY" constant="-3" id="YQf-Y8-3T1"/>
+                            <constraint firstItem="5Xh-vs-bQm" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" constant="16" id="cye-ho-sl8"/>
+                            <constraint firstItem="jrC-qp-0mc" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" id="h1G-Ao-HiK"/>
+                            <constraint firstItem="5Xh-vs-bQm" firstAttribute="top" secondItem="OFe-wE-wJW" secondAttribute="bottom" constant="10" id="jJU-l3-JYp"/>
+                            <constraint firstItem="3xd-9M-rC6" firstAttribute="leading" secondItem="5Xh-vs-bQm" secondAttribute="trailing" constant="10" id="lXQ-S9-0Lv"/>
+                            <constraint firstAttribute="trailing" secondItem="3xd-9M-rC6" secondAttribute="trailing" constant="16" id="tHM-PA-rqh"/>
+                            <constraint firstItem="mtc-Ot-yF0" firstAttribute="bottom" secondItem="3xd-9M-rC6" secondAttribute="bottom" id="xnT-ew-34V"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="hvF-6y-Fiu"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="browserView" destination="jrC-qp-0mc" id="MLq-8c-Ws3"/>
+                        <outlet property="walletAddress" destination="3xd-9M-rC6" id="jEs-wI-xaT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vb7-Vq-4wP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1300" y="1584.5577211394304"/>
         </scene>
         <!--fastSend-->
         <scene sceneID="PCf-hr-RGd">
@@ -187,7 +251,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fFq-CQ-gae" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-409" y="1127"/>
+            <point key="canvasLocation" x="-588" y="1118"/>
         </scene>
         <!--Fast Operations View Controller-->
         <scene sceneID="xvQ-Gz-As9">
@@ -541,7 +605,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d3Q-Ma-B8L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="496.80000000000001" y="1557.5712143928038"/>
+            <point key="canvasLocation" x="497" y="1558"/>
         </scene>
         <!--Assets View Controller-->
         <scene sceneID="nuC-K4-qjE">
@@ -597,7 +661,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Dr-dB-Viy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2815.1999999999998" y="1586.3568215892055"/>
+            <point key="canvasLocation" x="-2796" y="1585"/>
         </scene>
         <!--Create Wallet View Controller-->
         <scene sceneID="FNV-5c-hqY">
@@ -2513,11 +2577,11 @@ correctly</string>
             </objects>
             <point key="canvasLocation" x="-2795.1999999999998" y="577.51124437781118"/>
         </scene>
-        <!--Activity-->
+        <!--Browser-->
         <scene sceneID="owf-M8-GmK">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cAx-yg-zUy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Activity" image="activityTab" id="3Tm-8r-aym" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                    <tabBarItem key="tabBarItem" title="Browser" image="activityTab" id="3Tm-8r-aym" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
                         <connections>
                             <outlet property="animation" destination="ham-a4-c0a" id="PeQ-f2-5yr"/>
                         </connections>
@@ -2529,7 +2593,7 @@ correctly</string>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="dmP-I8-1Pw" kind="relationship" relationship="rootViewController" id="YH4-oy-fRg"/>
+                        <segue destination="PcQ-zQ-GBi" kind="relationship" relationship="rootViewController" id="9Wc-Rb-pCM"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Mo-ig-LP8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3605,6 +3669,7 @@ correctly</string>
     <resources>
         <image name="Active_wallet_Tab" width="20" height="19"/>
         <image name="Address_Book_Tab" width="25" height="18"/>
+        <image name="ETH_medium_icon" width="38" height="38"/>
         <image name="Settings_Tab" width="20" height="20"/>
         <image name="activityBgd" width="343" height="160"/>
         <image name="activityEs" width="210" height="180"/>

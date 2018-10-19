@@ -209,7 +209,7 @@ enum SocketMessageType : Int {
         multisigTxIncoming =        10,
         multisigTxConfirm =         11,
         multisigTxRevoke =          12,
-        resyncCompleted =            13
+        resyncCompleted =           13
 }
 
 enum Result<Value, Error: StringProtocol> {
@@ -247,9 +247,9 @@ let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 1
 //let apiUrl = "https://\(shortURL)/"
 //let socketUrl = "wss://\(shortURL)/"
 
-let shortURL = "api.multy.io"
-let apiUrl = "https://\(shortURL)/"
-let socketUrl = "wss://\(shortURL)/"
+let shortURL = "test.multy.io"
+let apiUrl = "http://\(shortURL)/"
+let socketUrl = "ws://\(shortURL)/"
 
 //stage
 //let shortURL = "148.251.42.107/"

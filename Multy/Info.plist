@@ -34,9 +34,9 @@
 	<key>CFBundleVersion</key>
 	<string>67</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>master</string>
+	<string>DappBrowser</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>5d5d080b</string>
+	<string>c4bfccac</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_1.2.2_66_ImportFix-dirty</string>
 	<key>LSRequiresIPhoneOS</key>

@@ -13,6 +13,7 @@ class CustomTabBarViewController: RAMAnimatedTabBarController, UITabBarControlle
     // MARK: - View lifecycle
     let menuButton = UIButton()
     var previousSelectedIndex = 0
+    var browserCoordinator: BrowserCoordinator?
     
     var isLocked = false
     
