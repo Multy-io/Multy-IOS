@@ -4,7 +4,7 @@
 
 import Foundation
 import RealmSwift
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 class AddressRLM: Object {
     @objc dynamic var addressID = NSNumber(value: 0)    //UInt32

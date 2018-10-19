@@ -4,7 +4,7 @@
 
 import UIKit
 import RealmSwift
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = ReceiveStartPresenter
 

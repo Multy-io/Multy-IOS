@@ -3,7 +3,7 @@
 //See LICENSE for details
 
 import UIKit
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 class TransactionPresenter: NSObject {
     var transctionVC: TransactionViewController?

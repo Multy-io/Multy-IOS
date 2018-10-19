@@ -4,7 +4,7 @@
 
 import UIKit
 import Firebase
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = CreateWalletPresenter
 

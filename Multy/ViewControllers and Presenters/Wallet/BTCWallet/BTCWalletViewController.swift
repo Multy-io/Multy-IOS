@@ -5,7 +5,7 @@
 import UIKit
 import SwiftyContacts
 import Contacts
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 private typealias TableViewDelegate = BTCWalletViewController
 private typealias ScrollViewDelegate = BTCWalletViewController

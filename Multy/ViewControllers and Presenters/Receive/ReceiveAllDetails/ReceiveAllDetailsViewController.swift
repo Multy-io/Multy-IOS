@@ -5,7 +5,7 @@
 import UIKit
 import Branch
 import Lottie
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 enum ReceivingOption {
     case qrCode

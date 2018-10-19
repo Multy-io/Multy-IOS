@@ -4,7 +4,7 @@
 
 import Foundation
 import Branch
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 protocol BranchProtocol {
     

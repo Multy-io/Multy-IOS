@@ -3,7 +3,7 @@
 //See LICENSE for details
 
 import UIKit
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 class DappBrowserViewController: UIViewController {
     var presenter = DappBrowserPresenter()

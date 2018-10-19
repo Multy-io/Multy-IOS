@@ -4,7 +4,7 @@
 
 import UIKit
 import Alamofire
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 class AccessTokenAdapter: RequestAdapter {
     private let accessToken: String

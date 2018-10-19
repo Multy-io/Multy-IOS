@@ -5,7 +5,7 @@
 import Foundation
 import RealmSwift
 import Alamofire
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 extension DataManager {
     

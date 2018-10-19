@@ -4,7 +4,7 @@
 
 import UIKit
 import Lottie
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 class WalletCollectionViewCell: UICollectionViewCell {
     

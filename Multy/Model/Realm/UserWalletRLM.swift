@@ -4,7 +4,7 @@
 
 import Foundation
 import RealmSwift
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 private typealias WalletUpdateRLM = UserWalletRLM
 private typealias ETHWalletRLM = UserWalletRLM

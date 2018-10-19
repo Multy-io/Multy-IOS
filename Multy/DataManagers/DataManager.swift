@@ -5,7 +5,7 @@
 import UIKit
 import RealmSwift
 import FirebaseMessaging
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 private typealias FCMDelegate = DataManager
 private typealias UserDefaultsDelegate = DataManager

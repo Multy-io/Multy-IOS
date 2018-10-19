@@ -4,7 +4,7 @@
 
 import UIKit
 import ZFRippleButton
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 private typealias TableViewDataSource = CreateWalletViewController
 private typealias TableViewDelegate = CreateWalletViewController

@@ -5,7 +5,7 @@
 import Foundation
 import Contacts
 import SwiftyContacts
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 protocol ContactsProtocol: BranchProtocol {
     

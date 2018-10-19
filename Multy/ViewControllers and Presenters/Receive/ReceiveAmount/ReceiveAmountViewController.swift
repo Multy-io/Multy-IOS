@@ -4,7 +4,7 @@
 
 import UIKit
 import ZFRippleButton
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = ReceiveAmountViewController
 

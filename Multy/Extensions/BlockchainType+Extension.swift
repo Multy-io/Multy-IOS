@@ -4,7 +4,7 @@
 
 import Foundation
 import UIKit
-import MultyCoreLibrary
+//import MultyCoreLibrary
 
 typealias BlockchainTypeEquatable = BlockchainType
 
