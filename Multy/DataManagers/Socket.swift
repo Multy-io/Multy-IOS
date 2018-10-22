@@ -5,6 +5,7 @@
 import UIKit
 import SocketIO
 import AVFoundation
+import MultyCoreLibrary
 
 private typealias MessageHandler = Socket
 
@@ -26,7 +27,8 @@ class Socket: NSObject {
         if self.manager.status == .connected {
             return
         }
-        DataManager.shared.getAccount { (account, error) in
+        
+        DataManager.shared.getAccount { [unowned self] (account, error) in
             guard account != nil else {
                 return
             }
@@ -39,7 +41,7 @@ class Socket: NSObject {
             self.socket = self.manager.defaultSocket
             //SocketIOClient(manager: self.manager, nsp: "")
             
-            self.socket.on(clientEvent: .connect) {data, ack in
+            self.socket.on(clientEvent: .connect) { [unowned self] (data, ack) in
                 print("socket connected")
                 self.getExchangeReq()
             }
@@ -48,17 +50,18 @@ class Socket: NSObject {
 //                print("socket disconnected")
 //            }
             
-            self.socket.on("exchangeAll") {data, ack in
+            self.socket.on("exchangeAll") { (data, ack) in
 //                print("-----exchangeAll: \(data)")
             }
 
-            self.socket.on("exchangeGdax") {data, ack in
+            self.socket.on("exchangePoloniex") {data, ack in
+            let dataManager = DataManager.shared
                 if !(data is NSNull) {
-                    DataManager.shared.currencyExchange.update(exchangeDict: data[0] as! NSDictionary)
+                    dataManager.currencyExchange.update(exchangeDict: data[0] as! NSDictionary)
                 }
             }
             
-            self.socket.on("TransactionUpdate") { data, ack in
+            self.socket.on("TransactionUpdate") { (data, ack) in
                 print("-----TransactionUpdate: \(data)")
                 if data.first != nil {
                     let msg = data.first! as! [AnyHashable : Any]
@@ -68,17 +71,17 @@ class Socket: NSObject {
 //                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             }
             
-            self.socket.on("currentAmount") {data, ack in
+            self.socket.on("currentAmount") { [unowned self] (data, ack) in
                 guard let cur = data[0] as? Double else { return }
                 
-                self.socket.emitWithAck("canUpdate", cur).timingOut(after: 0) {data in
+                self.socket.emitWithAck("canUpdate", cur).timingOut(after: 0) { [unowned self] data in
                     self.socket.emit("update", ["amount": cur + 2.50])
                 }
                 
                 ack.with("Got your currentAmount", "dude")
             }
             
-            self.socket.on("message:recieve:\(account!.userID)") {data, ack in
+            self.socket.on("message:recieve:\(account!.userID)") { [unowned self] (data, ack) in
                 guard let firstData = data.first as? [AnyHashable : Any] else {
                     return
                 }

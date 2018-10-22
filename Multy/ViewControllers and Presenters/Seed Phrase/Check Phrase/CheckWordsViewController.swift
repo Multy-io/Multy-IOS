@@ -170,13 +170,13 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let inset : UIEdgeInsets = UIEdgeInsetsMake(64, 0, keyboardSize.height, 0)
             if self.isRestore {
-                if screenHeight == heightOfX {
+                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                     self.constraintBtnBottom.constant = inset.bottom - 35
                 } else {
                     self.constraintBtnBottom.constant = inset.bottom// - 50
                 }
             } else {
-                if screenHeight == heightOfX {
+                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                     self.constraintBtnBottom.constant = inset.bottom - 35
                 } else {
                     self.constraintBtnBottom.constant = inset.bottom

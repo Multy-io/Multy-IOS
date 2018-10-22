@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import MultyCoreLibrary
 
 private typealias LocalizeDelegate = TransactionViewController
 private typealias PickerContactsDelegate = TransactionViewController
@@ -260,7 +261,6 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         if isMultisigWaitingStatus {
             txAction = .confirmation
             self.makeBackColor(color: self.presenter.waitingConfirmationBackColor)
-            self.titleLbl.text = localize(string: Constants.waitingConfirmationsString)
             self.titleLbl.textColor = .black
             self.transactionImg.image = #imageLiteral(resourceName: "waitingMembersBigIcon")
             
@@ -314,7 +314,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.blockchainInfoViewHeightConstraint.constant = 104
                 self.numberOfConfirmationLbl.text = makeConfirmationText()
             } else {
-                self.dateLbl.text = "Waiting for confirmations..."
+                self.dateLbl.text = localize(string: Constants.waitingConfirmationsString)
                 
                 self.blockchainInfoView.isHidden = true
                 self.blockchainInfoViewHeightConstraint.constant = 8

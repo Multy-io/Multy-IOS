@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import MultyCoreLibrary
 
 private typealias LocalizeDelegate = SendStartPresenter
 
@@ -58,7 +59,7 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
         if let theString = pasteboardString {
             print("String is \(theString)")
             
-            if DataManager.shared.coreLibManager.isAddressValid(theString, for: transactionDTO.choosenWallet!.blockchainType).0 {
+            if transactionDTO.choosenWallet == nil || DataManager.shared.coreLibManager.isAddressValid(theString, for: transactionDTO.choosenWallet!.blockchainType).0 {
                 result = theString
             }
         }

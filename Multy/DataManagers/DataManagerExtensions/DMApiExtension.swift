@@ -5,6 +5,7 @@
 import Foundation
 import RealmSwift
 import Alamofire
+import MultyCoreLibrary
 
 extension DataManager {
     
@@ -130,7 +131,10 @@ extension DataManager {
                         let hexBinData = self.coreLibManager.createSeedBinaryData(from: rootKey!)?.convertToHexString()
                         paramsDict["binaryData"] = hexBinData
                         paramsDict["backupSeedPhrase"] = rootKey
+                        
+                        #if DEBUG
                         print(paramsDict)
+                        #endif
                         
                         self.apiManager.userID = params["userID"] as! String
                     }
@@ -419,6 +423,11 @@ extension DataManager {
     
     func sendHDTransaction(transactionParameters: Parameters, completion: @escaping (_ answer: NSDictionary?,_ error: Error?) -> ()) {
         apiManager.sendHDTransaction(transactionParameters: transactionParameters) { (answer, error) in
+            if error != nil {
+                //send analytics err
+                
+                completion(nil, error)
+            }
             completion(answer, error)
         }
     }
@@ -446,6 +455,20 @@ extension DataManager {
             apiManager.deleteImportedWallet(currencyID: wallet.chain, networkID: wallet.chainType, address: wallet.address, completion: completion)
         } else {
             apiManager.deleteCreatedWallet(currencyID: wallet.chain, networkID: wallet.chainType, walletIndex: wallet.walletID, completion: completion)
+        }
+    }
+    
+    func convertToBroken(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        apiManager.convertToBroken(currencyID: currencyID, networkID: networkID, walletID: walletID) {
+            completion($0)
+        }
+    }
+    
+    func convertToBroken(_ addresses: [String], completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        if addresses.isEmpty == false {
+            apiManager.convertToBroken(addresses) {
+                completion($0)
+            }
         }
     }
 }

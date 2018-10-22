@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import MultyCoreLibrary
 
 private typealias LocalizeDelegate = EthWalletViewController
 
@@ -401,7 +402,7 @@ class EthWalletViewController: UIViewController, AnalyticsProtocol, CancelProtoc
     }
     
     func fixForX() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             self.bottomView.frame.size.height = 83
 //            self.heightOfBottomBar.constant = 83
             self.bottomConstraint.constant = 30
@@ -439,7 +440,7 @@ extension EthWalletViewController: UITableViewDelegate, UITableViewDataSource {
                 return countOfHistObjects
             }
         } else {
-            if screenHeight == heightOfX {
+            if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                 return 13
             }
             return 10

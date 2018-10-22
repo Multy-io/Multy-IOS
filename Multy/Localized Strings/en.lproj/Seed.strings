@@ -16,3 +16,4 @@
 "WANT TO CANCEL" = "Are you really want to cancel?";
 "LOADING" = "Loading";
 "RESTORING WALLETS" = "Restoring Wallets";
+"WRONG SEED" = "Seed phrase is too short";

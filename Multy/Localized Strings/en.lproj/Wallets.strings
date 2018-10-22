@@ -24,6 +24,7 @@
 "DELETING" = "Deleting...";
 "GETTING WALLET" = "Getting Wallets...";
 "NO FUNDS" = "You have no available funds";
+"NO LINKED FUNDS" = "You have no available funds on linked wallet";
 "ADD TO CONTACTS" = "Add to Contacts";
 "HOLD ON" = "Hold on. Wallet is resyncing.";
 "ERROR WHILE SENDING TX" = "Error while sending transaction. Please, try again!";
@@ -33,3 +34,4 @@
 "LOW AMOUNT" = "Commission for sending transaction is more than your available amount";
 "DELETE LINKED WALLET FAILED" = "You can't delete linked to MultiSig wallet";
 "PR NOT READY" = "Payment request is not ready to be viewed yet, please come back later.";
+"WAITING CONFIRMATIONS" = "Waiting for confirmations...";

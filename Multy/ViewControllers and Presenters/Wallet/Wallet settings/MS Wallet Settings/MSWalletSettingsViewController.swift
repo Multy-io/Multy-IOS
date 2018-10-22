@@ -49,6 +49,26 @@ class MSWalletSettingsViewController: UIViewController {
         let currencyVC = storyboard.instantiateViewController(withIdentifier: "currencyVC")
         self.navigationController?.pushViewController(currencyVC, animated: true)
     }
+    
+    func openWallet() {
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
+        walletVC.presenter.wallet = presenter.wallet
+        walletVC.presenter.account = presenter.acc
+//        navigationController?.popToRootViewController(animated: true)
+        navigationController?.pushViewController(walletVC, animated: true)
+    }
+    
+    func openAddressVC(address: String) {
+        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+        let adressVC = storyboard.instantiateViewController(withIdentifier: "walletAdressVC") as! AddressViewController
+        adressVC.modalPresentationStyle = .overCurrentContext
+        adressVC.modalTransitionStyle = .crossDissolve
+        adressVC.addressString = address
+        adressVC.wallet = presenter.wallet
+        present(adressVC, animated: true, completion: nil)
+    }
+
 }
 
 
@@ -75,7 +95,27 @@ extension TableViewDataSource: UITableViewDataSource {
         cell.fillWithMember(address: owner.address, image: memberImage!, isCurrentUser: owner.associated.boolValue)
         
         cell.hideSeparator = indexPath.item == (presenter.wallet!.multisigWallet!.ownersCount - 1)
-        
+//        cell.isUserInteractionEnabled = true
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if presenter.wallet!.multisigWallet!.owners[indexPath.row].associated.boolValue == true {
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            actionSheet.addAction(UIAlertAction(title: "Open Wallet", style: .default, handler: { (action) in
+                self.openWallet()
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Open Address", style: .default, handler: { (action) in
+                self.openAddressVC(address: self.presenter.wallet!.multisigWallet!.owners[indexPath.row].address)
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            present(actionSheet, animated: true, completion: nil)
+        } else {
+            openAddressVC(address: self.presenter.wallet!.multisigWallet!.owners[indexPath.row].address)
+        }
     }
 }

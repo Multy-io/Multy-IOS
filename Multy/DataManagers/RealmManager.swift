@@ -5,6 +5,7 @@
 import UIKit
 import RealmSwift
 import Realm
+import MultyCoreLibrary
 
 private typealias RealmMigrationManager = RealmManager
 private typealias RecentAddressManager = RealmManager
@@ -17,10 +18,14 @@ class RealmManager: NSObject {
     static let shared = RealmManager()
     
     private var realm : Realm? = nil
-    let schemaVersion : UInt64 = 30
+    let schemaVersion : UInt64 = 31
     
     var account: AccountRLM?
     var config: Realm.Configuration?
+    
+    var schemaversion : UInt64 {
+        return realm!.configuration.schemaVersion
+    }
     
     private override init() {
         super.init()
@@ -60,7 +65,7 @@ class RealmManager: NSObject {
             let realmConfig = Realm.Configuration(fileURL: URL(fileURLWithPath: RLMRealmPathForFile(realmName), isDirectory: false),
                                                   encryptionKey: pass,
                                                   schemaVersion: self.schemaVersion,
-                                                  migrationBlock: { migration, oldSchemaVersion in
+                                                  migrationBlock: { [unowned self] (migration, oldSchemaVersion) in
                                                     if oldSchemaVersion < 7 {
                                                         self.migrateFrom6To7(with: migration)
                                                     }
@@ -132,6 +137,9 @@ class RealmManager: NSObject {
                                                     }
                                                     if oldSchemaVersion <= 30 {
                                                         self.migrateFrom29To30(with: migration)
+                                                    }
+                                                    if oldSchemaVersion <= 31 {
+                                                        self.migrateFrom30To31(with: migration)
                                                     }
             })
             
@@ -228,7 +236,9 @@ class RealmManager: NSObject {
                     
                     completion(accountRLM, nil)
                     
+                    #if DEBUG
                     print("Successful writing account: \(accountRLM)")
+                    #endif
                 }
             } else {
                 print("Error fetching realm:\(#function)")
@@ -520,6 +530,35 @@ extension WalletManager {
         }
     }
     
+    public func updateImportedWalletsInAcc(arrOfWallets: List<UserWalletRLM>, completion: @escaping(_ account: AccountRLM?, _ error: NSError?)->()) {
+        getRealm { [weak self] (realmOpt, err) in
+            if let realm = realmOpt {
+                let acc = realm.object(ofType: AccountRLM.self, forPrimaryKey: 1)
+                if acc != nil {
+                    let accWallets = acc!.wallets
+                    
+                    for wallet in arrOfWallets {
+                        let modifiedWallet = accWallets.filter {$0.id == wallet.id}.first
+                        
+                        try! realm.write {
+                            if modifiedWallet != nil {
+                                modifiedWallet?.importedPublicKey = wallet.importedPublicKey
+                                modifiedWallet!.importedPrivateKey = wallet.importedPrivateKey
+                                
+                                //FIXME: check brokenState
+                                modifiedWallet?.brokenState = wallet.brokenState
+                            }
+                        }
+                    }
+                    
+                    completion(acc, nil)
+                } else {
+                    completion(nil, err)
+                }
+            }
+        }
+    }
+    
     public func updateWalletsInAcc(arrOfWallets: List<UserWalletRLM>, completion: @escaping(_ account: AccountRLM?, _ error: NSError?)->()) {
         getRealm { [weak self] (realmOpt, err) in
             if let realm = realmOpt {
@@ -541,7 +580,8 @@ extension WalletManager {
                                 modifiedWallet!.multisigWallet =    wallet.multisigWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
-
+                                modifiedWallet?.brokenState =       wallet.brokenState
+                                
                                 newWallets.append(modifiedWallet!)
                             } else {
                                 newWallets.append(wallet)
@@ -608,6 +648,18 @@ extension WalletManager {
                 }
             } else {
                 completion(Result.failure("Cannot get realm"))
+            }
+        }
+    }
+    
+    func updateImportedWallet(wallet: UserWalletRLM, impPK: String, impPubK: String) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                try! realm.write {
+                    wallet.importedPublicKey = impPubK
+                    wallet.importedPrivateKey = impPK
+                    realm.add(wallet, update: true)
+                }
             }
         }
     }
@@ -1042,6 +1094,10 @@ extension RealmMigrationManager {
         migration.enumerateObjects(ofType: MultisigWallet.className()) { (_, msWallet) in
             msWallet?["isActivePaymentRequest"] = Bool()
         }
+    }
+    
+    func migrateFrom30To31(with migration: Migration) {
+        UserPreferences.shared.writeDBPrivateKeyFixValue(false)
     }
 }
 

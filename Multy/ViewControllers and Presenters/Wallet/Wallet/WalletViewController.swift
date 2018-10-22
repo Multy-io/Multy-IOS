@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import MultyCoreLibrary
 
 private typealias TableViewDelegate = WalletViewController
 private typealias TableViewDataSource = WalletViewController
@@ -185,7 +186,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     private func addGestureRecognizers() {
         let panGR = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
@@ -233,7 +236,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     @objc func updateExchange() {
-        presenter.updateUI()
+        DispatchQueue.main.async { [unowned self] in
+            self.presenter.updateUI()
+        }
     }
     
     func setupUI() {
@@ -258,13 +263,17 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func updateTablesHolderBottomEdge() {
-        UIView.animate(withDuration: 0.2) {
-            self.tablesHolderBottomEdge = self.contentHeight - (self.infoHolderView.frame.origin.y + self.infoHolderViewHeigth)
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            guard self != nil else {
+                return
+            }
+            
+            self!.tablesHolderBottomEdge = self!.contentHeight - (self!.infoHolderView.frame.origin.y + self!.infoHolderViewHeigth)
         }
     }
     
     func checkConstraints() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             bottomGradientConstant.constant = -34
             bottomGradientHeightConstraint.constant = 100
             self.view.layoutIfNeeded()
@@ -455,7 +464,11 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBAction func backAction(_ sender: Any) {
         assetsTableTrailingConstraint.constant = 0
 //        self.navigationController?.popViewController(animated: true)
-        navigationController?.popToRootViewController(animated: true)
+        if navigationController?.childViewControllers.count == 4 {
+            navigationController?.popViewController(animated: true)
+        } else {
+            navigationController?.popToRootViewController(animated: true)
+        }
     }
     
     @IBAction func shareAddressAction(_ sender: Any) {
@@ -505,6 +518,21 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             return
         }
         
+        if presenter.wallet!.isMultiSig {
+            DataManager.shared.getWallet(primaryKey: presenter.wallet!.multisigWallet!.linkedWalletID) { (result) in
+                switch result {
+                case .success(let linkedWallet):
+                    if linkedWallet.availableAmount < minimumAmountForMakeEthTX {
+                        self.presentAlert(with: self.localize(string: Constants.noLinkedFundsString))
+                        return
+                    }
+                case .failure(let error):
+                    break
+                    //error
+                }
+            }
+        }
+        
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
         sendStartVC.presenter.transactionDTO.choosenWallet = self.presenter.wallet
@@ -531,6 +559,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         if presenter.wallet!.isMultiSig {
             let settingsVC = viewControllerFrom("Wallet", "msWalletSettings") as! MSWalletSettingsViewController
             settingsVC.presenter.wallet = presenter.wallet!
+            settingsVC.presenter.acc = presenter.account
 //            settingsVC.presenter.account = presenter.account!
 
             navigationController?.pushViewController(settingsVC, animated: true)
@@ -615,7 +644,7 @@ extension TableViewDelegate: UITableViewDelegate {
         if tableView == transactionsTable {
             return presenter.makeHeightForTableCells(indexPath: indexPath)
         } else { // if tableView == tokensTable
-            return 70
+            return 64
         }
     }
 }
@@ -663,9 +692,14 @@ extension TableViewDataSource: UITableViewDataSource {
                 return transactionCell
             }
         } else {
-            let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
-            
-            return transactionCell
+            if indexPath.row < 3 {
+                let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
+                return tokenCell
+            } else {
+                let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
+                transactionCell.changeState(isEmpty: true)
+                return transactionCell
+            }
         }
     }
     
@@ -684,7 +718,7 @@ extension TableViewDataSource: UITableViewDataSource {
                     return countOfHistObjects
                 }
             } else {
-                if screenHeight == heightOfX {
+                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                     return 13
                 }
                 return 10

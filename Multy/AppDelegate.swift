@@ -9,6 +9,7 @@ import FirebaseMessaging
 import Branch
 import UserNotifications
 import SwiftyStoreKit
+import MultyCoreLibrary
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
@@ -479,7 +480,7 @@ extension AppDelegate {
         
         DataManager.shared.getOneWalletVerbose(wallet: mockWallet) { (wallet, error) in
             if wallet != nil {
-                DataManager.shared.getTransactionHistory(wallet: wallet!, completion: { (history, error) in
+                DataManager.shared.getTransactionHistory(wallet: wallet!, completion: { [unowned self] (history, error) in
                     guard let history = history, let wallet = wallet else {
                         return
                     }

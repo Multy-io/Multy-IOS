@@ -4,6 +4,7 @@
 
 import UIKit
 import RealmSwift
+import MultyCoreLibrary
 
 class TransactionPendingCell: UITableViewCell {
 //    @IBOutlet weak var transactionImage: UIImageView!
