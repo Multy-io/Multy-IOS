@@ -36,9 +36,9 @@
 	<key>CFBundleVersion</key>
 	<string>67</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>HEAD</string>
+	<string>withoutFramework</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>4b5a207a</string>
+	<string>3eb4c47c</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_1.2.0_61_Multisig-dirty</string>
 	<key>LSRequiresIPhoneOS</key>

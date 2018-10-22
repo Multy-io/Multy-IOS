@@ -184,7 +184,7 @@ class BrowserViewController: UIViewController {
 //        }
     
     func goHome() {
-        guard let url = URL(string: Constants.dappsBrowserURL) else { return }
+        guard let url = URL(string: "https://app.alpha.dragonereum.io/") else { return } //"https://dapps.trustwalletapp.com/"
         var request = URLRequest(url: url)
         request.cachePolicy = .returnCacheDataElseLoad
         hideErrorView()
