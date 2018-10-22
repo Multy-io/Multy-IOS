@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="117" id="KGk-i7-Jjw" customClass="TokenTableViewCell" customModule="Multy" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chainEth" translatesAutoresizingMaskIntoConstraints="NO" id="WK0-Ru-Jh9">
+                        <rect key="frame" x="16" y="17" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="EEc-vp-IXJ"/>
+                            <constraint firstAttribute="height" constant="30" id="KdG-fy-AIT"/>
+                        </constraints>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ej-zT-ELu">
+                        <rect key="frame" x="62" y="62.5" width="313" height="1"/>
+                        <color key="backgroundColor" red="0.87052696943283081" green="0.8979983925819397" blue="0.93708223104476929" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="D8Y-Co-gS1"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="se4-pX-ooN">
+                        <rect key="frame" x="62" y="21" width="72" height="22"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.001 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d7M-nG-J6f">
+                        <rect key="frame" x="282" y="11" width="77" height="22"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1684.24 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FhL-al-Uuc">
+                        <rect key="frame" x="285" y="33" width="74" height="17"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                        <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="WK0-Ru-Jh9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="2c5-bC-bah"/>
+                    <constraint firstItem="d7M-nG-J6f" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="7bG-GA-yNx"/>
+                    <constraint firstItem="3ej-zT-ELu" firstAttribute="leading" secondItem="WK0-Ru-Jh9" secondAttribute="trailing" constant="16" id="C4o-Gw-fWB"/>
+                    <constraint firstAttribute="bottom" secondItem="3ej-zT-ELu" secondAttribute="bottom" id="Cbx-fU-ONy"/>
+                    <constraint firstAttribute="trailing" secondItem="d7M-nG-J6f" secondAttribute="trailing" constant="16" id="Cdj-a2-XrD"/>
+                    <constraint firstItem="FhL-al-Uuc" firstAttribute="top" secondItem="d7M-nG-J6f" secondAttribute="bottom" id="Cfk-d7-rac"/>
+                    <constraint firstItem="WK0-Ru-Jh9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="MYt-TG-YcB"/>
+                    <constraint firstAttribute="trailing" secondItem="3ej-zT-ELu" secondAttribute="trailing" id="WOh-hh-4lU"/>
+                    <constraint firstItem="se4-pX-ooN" firstAttribute="centerY" secondItem="WK0-Ru-Jh9" secondAttribute="centerY" id="cWJ-Xg-PPu"/>
+                    <constraint firstItem="FhL-al-Uuc" firstAttribute="trailing" secondItem="d7M-nG-J6f" secondAttribute="trailing" id="mRU-Wm-FPQ"/>
+                    <constraint firstItem="se4-pX-ooN" firstAttribute="leading" secondItem="3ej-zT-ELu" secondAttribute="leading" id="yv4-CC-yd6"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <point key="canvasLocation" x="138.40000000000001" y="187.1064467766117"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="chainEth" width="26" height="26"/>
+    </resources>
+</document>

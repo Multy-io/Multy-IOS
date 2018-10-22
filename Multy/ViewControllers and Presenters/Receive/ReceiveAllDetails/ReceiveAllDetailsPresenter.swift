@@ -4,6 +4,7 @@
 
 import UIKit
 import Hash2Pics
+//import MultyCoreLibrary
 
 let wirelessRequestImagesAmount = 10
 
@@ -70,10 +71,9 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
         blockWirelessActivityUpdating = false
         startWirelessReceiverActivity()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didUpdateTransaction(notification:)), name: Notification.Name("transactionUpdated"), object: nil)
         if wallet!.isMultiSig {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMSTransaction(notification:)), name: Notification.Name("msTransactionUpdated"), object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self, selector: #selector(self.didUpdateTransaction(notification:)), name: Notification.Name("transactionUpdated"), object: nil)
         }
     }
     

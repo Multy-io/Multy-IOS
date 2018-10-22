@@ -30,7 +30,7 @@ class InviteCodeViewController: UIViewController {
     
     @IBAction func shareAction(_ sender: Any) {
         let sharedText = "Invite code for MultiSig Wallet in Multy\nPlease join:\n" + shareCodeLbl.text!
-        let objectsToShare = [sharedText] as [String]
+        let objectsToShare = [sharedText, "\(shareCodeLbl.text!)"] as [String]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
         activityVC.completionWithItemsHandler = {(activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in

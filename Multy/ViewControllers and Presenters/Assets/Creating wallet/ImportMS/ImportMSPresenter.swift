@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+//import MultyCoreLibrary
 
 class ImportMSPresenter: NSObject {
 
@@ -64,19 +65,31 @@ class ImportMSPresenter: NSObject {
     func importWallet() {
         var generatedAddress = ""
         var generatedPublic  = ""
+        var privateKey = ""
         let coreDict = DataManager.shared.importWalletBy(privateKey: importVC!.privateKeyTextView.text!, blockchain: selectedBlockchainType, walletID: -1)
         if ((coreDict as NSDictionary?) != nil) {
             generatedAddress = coreDict!["address"] as! String
             generatedPublic = coreDict!["publicKey"] as! String
+            privateKey = coreDict!["privateKey"] as! String
+        } else {
+            //add alert: wrong text in tf
+            importVC!.presentAlert(with: importVC!.localize(string: Constants.wrongKey))
+            return
         }
         
         let primaryKey = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: selectedBlockchainType.blockchain.rawValue,
-                                                               networkID: UInt32(selectedBlockchainType.net_type),
-                                                               address: generatedAddress)
+                                                                             networkID: UInt32(selectedBlockchainType.net_type),
+                                                                             address: generatedAddress)
         DataManager.shared.getWallet(primaryKey: primaryKey) { [unowned self] in
             switch $0 {
-            case .success(_):
-                self.importMSWallet(address: generatedAddress)
+            case .success(let wallet):
+                if wallet.isImported && wallet.privateKey.isEmpty {
+//                    self.importWallets(address: generatedAddress, pubKey: generatedPublic)
+                    DataManager.shared.update(wallet: wallet, impPK: privateKey, impPubK: generatedPublic)
+                    self.importMSWallet(address: generatedAddress)
+                } else {
+                    self.importMSWallet(address: generatedAddress)
+                }
                 break
             case .failure(_):
                 self.importWallets(address: generatedAddress, pubKey: generatedPublic)
@@ -93,11 +106,16 @@ class ImportMSPresenter: NSObject {
     
     func importMSWallet(address: String) {
         if self.isForMS {
-            self.importMultiSig(contractAddress: self.importVC!.msAddressTextView.text!,
-                                linkedWalletAddress: address,
-                                completion: { (answer, err) in
+            let importedWallet = account!.wallets.filter("address == %@", self.importVC!.msAddressTextView.text!).first
+            if importedWallet != nil {
                 self.sendImportedWalletByDelegateAndExit()
-            })
+            } else {
+                self.importMultiSig(contractAddress: self.importVC!.msAddressTextView.text!,
+                                    linkedWalletAddress: address,
+                                    completion: { (answer, err) in
+                                        self.sendImportedWalletByDelegateAndExit()
+                })
+            }
         } else {
             self.sendImportedWalletByDelegateAndExit()
         }
@@ -146,14 +164,20 @@ class ImportMSPresenter: NSObject {
             "isImported"    : true
             ] as [String : Any]
         
-        DataManager.shared.importWallet(params: params) { [unowned self] (dict, error) in
-            if error == nil {
-                self.createImportedWalletInDB(params: params as NSDictionary, privateKey: self.importVC!.privateKeyTextView.text!, publicKey: publicKey)
-                print(dict!)
-                completion(dict!)
-                print("success")
-            } else {
-                print("fail")
+        let importedWallet = account!.wallets.filter("address == %@", address).filter("chainType == %@", networkID).first
+        if importedWallet != nil {
+            self.createImportedWalletInDB(params: params as NSDictionary, privateKey: self.importVC!.privateKeyTextView.text!, publicKey: publicKey)
+            completion([:])
+        } else {
+            DataManager.shared.importWallet(params: params) { [unowned self] (dict, error) in
+                if error == nil {
+                    self.createImportedWalletInDB(params: params as NSDictionary, privateKey: self.importVC!.privateKeyTextView.text!, publicKey: publicKey)
+                    print(dict!)
+                    completion(dict!)
+                    print("success")
+                } else {
+                    print("fail")
+                }
             }
         }
     }
@@ -165,6 +189,8 @@ class ImportMSPresenter: NSObject {
         wallet.importedPrivateKey = privateKey
         wallet.name = params["walletName"] as! String
         wallet.address = params["address"] as! String
+        wallet.chain = params["currencyID"] as! NSNumber
+        wallet.chainType = params["networkID"] as! NSNumber
         
         preWallets.append(wallet)
     }

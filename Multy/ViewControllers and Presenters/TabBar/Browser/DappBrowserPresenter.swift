@@ -3,10 +3,12 @@
 //See LICENSE for details
 
 import UIKit
+//import MultyCoreLibrary
 
 class DappBrowserPresenter: NSObject {
     weak var mainVC: DappBrowserViewController?
     var tabBarFrame: CGRect?
+    var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
     
     weak var delegate: SendWalletProtocol?
     var walletAddtess: String? {
@@ -21,7 +23,7 @@ class DappBrowserPresenter: NSObject {
                 return
             } else {
                 let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
-                let choosenWallet = walletsArray.filter { $0.blockchainType == BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 1) }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
+                let choosenWallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
                 
                 DispatchQueue.main.async { [unowned self] in
                     self.walletAddtess = choosenWallet?.address

@@ -6,6 +6,7 @@
 // 124 row height with one bottom view
 
 import UIKit
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = MultiSigPendingTableViewCell
 

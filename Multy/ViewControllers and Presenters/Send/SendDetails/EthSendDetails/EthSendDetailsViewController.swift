@@ -60,7 +60,9 @@ class EthSendDetailsViewController: UIViewController, AnalyticsProtocol {
             bottomBtnConstraint.constant = 0
             topButtonConstraint.constant = 70
         } else if screenHeight == heightOfPlus {
-            topButtonConstraint.constant = 58
+             topButtonConstraint.constant = 58
+        } else if screenHeight == heightOfXSMax {
+            topButtonConstraint.constant = 154
         }
         
         if self.presenter.selectedIndexOfSpeed == nil {

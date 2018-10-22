@@ -4,6 +4,7 @@
 
 import Foundation
 import RealmSwift
+//import MultyCoreLibrary
 
 class TransactionDTO: NSObject {
     var sendAddress : String?

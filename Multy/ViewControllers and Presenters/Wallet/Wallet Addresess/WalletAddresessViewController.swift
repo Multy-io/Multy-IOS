@@ -4,6 +4,7 @@
 
 import UIKit
 import Alamofire
+//import MultyCoreLibrary
 
 class WalletAddresessViewController: UIViewController,AnalyticsProtocol {
     
@@ -121,14 +122,15 @@ extension WalletAddresessViewController: UITableViewDelegate, UITableViewDataSou
     func addAddress() {
         var params : Parameters = [ : ]
         
-        DataManager.shared.getAccount { (account, error) in
+        let dm = DataManager.shared
+        dm.getAccount { [unowned self, unowned dm] (account, error) in
             if error != nil {
                 return
             }
             
             var binaryData = account!.binaryDataString.createBinaryData()!
             
-            let data = DataManager.shared.coreLibManager.createAddress(blockchainType: BlockchainType.create(wallet: self.presenter.wallet!),
+            let data = dm.coreLibManager.createAddress(blockchainType: BlockchainType.create(wallet: self.presenter.wallet!),
                                                                        walletID: self.presenter.wallet!.walletID.uint32Value,
                                                                        addressID: UInt32(self.presenter.wallet!.addresses.count),
                                                                        binaryData: &binaryData)
@@ -139,8 +141,8 @@ extension WalletAddresessViewController: UITableViewDelegate, UITableViewDataSou
             params["networkID"] = self.presenter.wallet!.chainType
             params["currencyID"] = self.presenter.wallet!.chain
             
-            DataManager.shared.addAddress(params: params) { (dict, error) in
-                DataManager.shared.getOneWalletVerbose(wallet: self.presenter.wallet!, completion: { (wallet, error) in
+            dm.addAddress(params: params) { [unowned self, unowned dm] (dict, error) in
+                dm.getOneWalletVerbose(wallet: self.presenter.wallet!, completion: { [unowned self] (wallet, error) in
                                                         self.presenter.wallet = wallet
                                                         self.tableView.reloadData()
                 })

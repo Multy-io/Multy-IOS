@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = CreateMultiSigPresenter
 
@@ -39,15 +40,15 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
             return
         }
         
-        DataManager.shared.auth(rootKey: nil) { (account, error) in
-            //            self.assetsVC?.view.isUserInteractionEnabled = true
-            //            self.assetsVC?.progressHUD.hide()
-            guard account != nil else {
+        let dm = DataManager.shared
+        DataManager.shared.auth(rootKey: nil) { [weak self, unowned dm] (account, error) in
+
+            guard account != nil && self != nil else {
                 return
             }
-            self.account = account
-            DataManager.shared.socketManager.start()
-            DataManager.shared.subscribeToFirebaseMessaging()
+            self!.account = account
+            dm.socketManager.start()
+            dm.subscribeToFirebaseMessaging()
             completion("ok")
         }
     }
@@ -56,8 +57,11 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
         if account == nil {
             //            print("-------------ERROR: Account nil")
             //            return
-            self.makeAuth(completion: { (answer) in
-                self.create()
+            self.makeAuth(completion: { [weak self] (answer) in
+                guard self != nil else {
+                    return
+                }
+                self!.create()
             })
         } else {
             self.create()
@@ -129,13 +133,16 @@ class CreateMultiSigPresenter: NSObject, CountOfProtocol {
             return
         }
         
-        DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
-            //FIXME: sometimes self is nil?!
-            self.mainVC?.loader.hide()
+        DataManager.shared.addWallet(params: params) { [weak self] (dict, error) in
+            guard self != nil else {
+                return
+            }
+            
+            self!.mainVC?.loader.hide()
             if error == nil {
-                self.mainVC!.openNewlyCreatedWallet()
+                self!.mainVC!.openNewlyCreatedWallet()
             } else {
-                self.mainVC?.presentAlert(with: self.localize(string: Constants.errorWhileCreatingWalletString))
+                self!.mainVC?.presentAlert(with: self!.localize(string: Constants.errorWhileCreatingWalletString))
             }
         }
     }

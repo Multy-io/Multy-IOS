@@ -22,7 +22,7 @@
 		444066D82059342E00342046 /* Bool+Extantion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444066D72059342E00342046 /* Bool+Extantion.swift */; };
 		4448DCC720C8333100CE80CB /* LocalLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448DCC620C8333100CE80CB /* LocalLanguage.swift */; };
 		444905932163813600911A11 /* DappBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444905922163813600911A11 /* DappBrowserViewController.swift */; };
-		444905962163818900911A11 /* BrowserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444905952163818900911A11 /* BrowserPresenter.swift */; };
+		444905962163818900911A11 /* DappBrowserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444905952163818900911A11 /* DappBrowserPresenter.swift */; };
 		444B3B652045723C008129B8 /* BigInt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444B3B642045723C008129B8 /* BigInt+Extension.swift */; };
 		4453507B20D14E21004F8DAE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4453507D20D14E21004F8DAE /* Localizable.strings */; };
 		4456964920F391FE00B0C496 /* libccan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4456964820F391FD00B0C496 /* libccan.a */; };
@@ -159,6 +159,7 @@
 		44DCC201205A9D34001080FB /* TopIndexRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DCC200205A9D34001080FB /* TopIndexRLM.swift */; };
 		44DFEF9F206A51AF0068769C /* UInt64+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */; };
 		44E0245C20F7AB1F00F822D6 /* MultiSigWalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */; };
+		44E39EB02177974E0095A42A /* ripemd160.c in Sources */ = {isa = PBXBuildFile; fileRef = 44E39EAF2177974E0095A42A /* ripemd160.c */; };
 		44EFBE5B20923EAC0081EE3A /* Blockchain+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44EFBE5A20923EAC0081EE3A /* Blockchain+Extension.swift */; };
 		44FB26C0205A6D5600F208EB /* BlockchainTransferProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FB26BF205A6D5600F208EB /* BlockchainTransferProtocol.swift */; };
 		4506F1741FD9A2E700D575BA /* WalletSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */; };
@@ -176,6 +177,8 @@
 		4522905A1FBB18D30024B550 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 452290581FBB18D30024B550 /* Main.storyboard */; };
 		4522905C1FBB18D30024B550 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4522905B1FBB18D30024B550 /* Assets.xcassets */; };
 		4522905F1FBB18D30024B550 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4522905D1FBB18D30024B550 /* LaunchScreen.storyboard */; };
+		452ED155216E039600B86A67 /* TokenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452ED153216E039600B86A67 /* TokenTableViewCell.swift */; };
+		452ED156216E039600B86A67 /* TokenTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 452ED154216E039600B86A67 /* TokenTableViewCell.xib */; };
 		45310D0F2063B9F500105532 /* EthereumGasInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45310D0E2063B9F500105532 /* EthereumGasInfo.swift */; };
 		45344AC420E6587B0039DF30 /* CreateMultiSigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45344AC320E6587B0039DF30 /* CreateMultiSigViewController.swift */; };
 		45344AC620E6589B0039DF30 /* CreateMultiSigPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */; };
@@ -470,7 +473,7 @@
 		444066D72059342E00342046 /* Bool+Extantion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Extantion.swift"; sourceTree = "<group>"; };
 		4448DCC620C8333100CE80CB /* LocalLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLanguage.swift; sourceTree = "<group>"; };
 		444905922163813600911A11 /* DappBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappBrowserViewController.swift; sourceTree = "<group>"; };
-		444905952163818900911A11 /* BrowserPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserPresenter.swift; sourceTree = "<group>"; };
+		444905952163818900911A11 /* DappBrowserPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappBrowserPresenter.swift; sourceTree = "<group>"; };
 		444B3B642045723C008129B8 /* BigInt+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BigInt+Extension.swift"; sourceTree = "<group>"; };
 		4453507C20D14E21004F8DAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4453508020D14E43004F8DAE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -551,7 +554,6 @@
 		445D150820DA8513002F6747 /* EPContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPContactCell.swift; sourceTree = "<group>"; };
 		445D150F20DAB089002F6747 /* CNContact+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CNContact+Extension.swift"; sourceTree = "<group>"; };
 		445D151120DB9421002F6747 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
-		446FC9612108BC8000E53D46 /* transaction_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transaction_builder.h; sourceTree = "<group>"; };
 		4474C5A620BEFFAB00EA8B01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EthWalletHeaderCollectionViewCell.xib; sourceTree = "<group>"; };
 		4474C5A920BEFFAD00EA8B01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EthWalletHeaderCollectionViewCell.strings; sourceTree = "<group>"; };
 		4474C5AB20BEFFAF00EA8B01 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EthWalletHeaderCollectionViewCell.strings; sourceTree = "<group>"; };
@@ -587,8 +589,6 @@
 		4477265320BECD2D006BF4A7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Sends.strings; sourceTree = "<group>"; };
 		4477265420BECD2E006BF4A7 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Sends.strings; sourceTree = "<group>"; };
 		447ECAD220330C2C0085C26D /* TransactionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDTO.swift; sourceTree = "<group>"; };
-		448000D620FF3D6900813624 /* EOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EOS.h; sourceTree = "<group>"; };
-		448000D720FF3D6900813624 /* transaction_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transaction_builder.h; sourceTree = "<group>"; };
 		448C38562165603100D83D02 /* WalletType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletType.swift; sourceTree = "<group>"; };
 		448C38572165603100D83D02 /* BrowserCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserCoordinator.swift; sourceTree = "<group>"; };
 		448C38582165603100D83D02 /* CryptoAddressValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoAddressValidator.swift; sourceTree = "<group>"; };
@@ -694,18 +694,34 @@
 		44CBABA520BEEC99005F04C6 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EthWalletHeaderTableViewCell.strings; sourceTree = "<group>"; };
 		44CBABA720BEEC9B005F04C6 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/EthWalletHeaderTableViewCell.strings; sourceTree = "<group>"; };
 		44CD6B8E208B5018009C07F6 /* BigInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigInt.swift; sourceTree = "<group>"; };
+		44D3F030217A2634003A4F0B /* big_int.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = big_int.h; sourceTree = "<group>"; };
+		44D3F031217A2634003A4F0B /* bip44_coin_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bip44_coin_types.h; sourceTree = "<group>"; };
+		44D3F032217A2634003A4F0B /* mnemonic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mnemonic.h; sourceTree = "<group>"; };
+		44D3F033217A2634003A4F0B /* EOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EOS.h; sourceTree = "<group>"; };
+		44D3F034217A2634003A4F0B /* run_tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = run_tests.h; sourceTree = "<group>"; };
+		44D3F035217A2634003A4F0B /* properties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = properties.h; sourceTree = "<group>"; };
+		44D3F036217A2634003A4F0B /* account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = account.h; sourceTree = "<group>"; };
+		44D3F037217A2634003A4F0B /* binary_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = binary_data.h; sourceTree = "<group>"; };
+		44D3F038217A2634003A4F0B /* error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
+		44D3F039217A2634003A4F0B /* transaction_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transaction_builder.h; sourceTree = "<group>"; };
+		44D3F03A217A2634003A4F0B /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		44D3F03B217A2634003A4F0B /* api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = api.h; sourceTree = "<group>"; };
+		44D3F03C217A2635003A4F0B /* key.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = key.h; sourceTree = "<group>"; };
+		44D3F03D217A2635003A4F0B /* transaction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transaction.h; sourceTree = "<group>"; };
+		44D3F03E217A2635003A4F0B /* golos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = golos.h; sourceTree = "<group>"; };
+		44D3F03F217A2635003A4F0B /* blockchain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blockchain.h; sourceTree = "<group>"; };
+		44D3F040217A2635003A4F0B /* ethereum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ethereum.h; sourceTree = "<group>"; };
+		44D3F041217A2635003A4F0B /* bitcoin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bitcoin.h; sourceTree = "<group>"; };
 		44DCC200205A9D34001080FB /* TopIndexRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopIndexRLM.swift; sourceTree = "<group>"; };
 		44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extension.swift"; sourceTree = "<group>"; };
-		44DFEFA0206A64ED0068769C /* binary_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = binary_data.h; sourceTree = "<group>"; };
-		44DFEFA1206A64ED0068769C /* blockchain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blockchain.h; sourceTree = "<group>"; };
-		44DFEFA2206A64ED0068769C /* bitcoin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bitcoin.h; sourceTree = "<group>"; };
-		44DFEFA3206A64ED0068769C /* ethereum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ethereum.h; sourceTree = "<group>"; };
-		44DFEFA4206A64ED0068769C /* golos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = golos.h; sourceTree = "<group>"; };
 		44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSigWalletCell.swift; sourceTree = "<group>"; };
+		44E39EAE2177974E0095A42A /* ripemd160.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ripemd160.h; sourceTree = "<group>"; };
+		44E39EAF2177974E0095A42A /* ripemd160.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ripemd160.c; sourceTree = "<group>"; };
+		44E39EB1217881AA0095A42A /* endian.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
+		44E39EB2217881C00095A42A /* compiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compiler.h; sourceTree = "<group>"; };
+		44E39EB3217881E90095A42A /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		44E39EB4217881FA0095A42A /* ccan_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ccan_config.h; sourceTree = "<group>"; };
 		44EFBE5A20923EAC0081EE3A /* Blockchain+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blockchain+Extension.swift"; sourceTree = "<group>"; };
-		44FA86BE2035A75A00263C72 /* key.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = key.h; sourceTree = "<group>"; };
-		44FA86BF2035A76400263C72 /* big_int.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = big_int.h; sourceTree = "<group>"; };
-		44FA86C02035A77100263C72 /* sha3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sha3.h; sourceTree = "<group>"; };
 		44FB26BF205A6D5600F208EB /* BlockchainTransferProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainTransferProtocol.swift; sourceTree = "<group>"; };
 		4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsPresenter.swift; sourceTree = "<group>"; };
 		4506F1751FD9A30700D575BA /* WalletSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsViewController.swift; sourceTree = "<group>"; };
@@ -725,6 +741,8 @@
 		4522905E1FBB18D30024B550 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		452290601FBB18D30024B550 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4526F8DD2015383D00D2E491 /* Multy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Multy.entitlements; sourceTree = "<group>"; };
+		452ED153216E039600B86A67 /* TokenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenTableViewCell.swift; sourceTree = "<group>"; };
+		452ED154216E039600B86A67 /* TokenTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenTableViewCell.xib; sourceTree = "<group>"; };
 		45310D0E2063B9F500105532 /* EthereumGasInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumGasInfo.swift; sourceTree = "<group>"; };
 		45344AC320E6587B0039DF30 /* CreateMultiSigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMultiSigViewController.swift; sourceTree = "<group>"; };
 		45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMultiSigPresenter.swift; sourceTree = "<group>"; };
@@ -961,15 +979,7 @@
 		FA58DF631FDC403E00C45303 /* WrongSeedPhrasePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrongSeedPhrasePresenter.swift; sourceTree = "<group>"; };
 		FA58DF641FDC403E00C45303 /* WrongSeedPhraseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrongSeedPhraseViewController.swift; sourceTree = "<group>"; };
 		FA6226F01FE7D1C60033CCCE /* Data+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
-		FA7406151FCC14C4003C538C /* transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transaction.h; sourceTree = "<group>"; };
-		FA7406161FCC14C4003C538C /* properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = properties.h; sourceTree = "<group>"; };
-		FA7406191FCC14C4003C538C /* account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = account.h; sourceTree = "<group>"; };
-		FA74061A1FCC14C4003C538C /* mnemonic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mnemonic.h; sourceTree = "<group>"; };
-		FA74061B1FCC14C4003C538C /* api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = api.h; sourceTree = "<group>"; };
-		FA74061C1FCC14C4003C538C /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
-		FA74061D1FCC14C4003C538C /* run_tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = run_tests.h; sourceTree = "<group>"; };
 		FA74062A1FCC5D6A003C538C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		FA869D081FD5AD9700C815C3 /* error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
 		FA869D0B1FD6B85700C815C3 /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		FA869D111FD6C17900C815C3 /* ExchangePriceRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangePriceRLM.swift; sourceTree = "<group>"; };
 		FA86A7401FC2C72B002826EC /* MasterKeyGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterKeyGenerator.swift; sourceTree = "<group>"; };
@@ -987,7 +997,6 @@
 		FADC004B1FC323A900182E45 /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		FADC004D1FC323C300182E45 /* CoreLibManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLibManager.swift; sourceTree = "<group>"; };
 		FAFCDA871FD7DD7A0056DD64 /* Request+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+Extension.swift"; sourceTree = "<group>"; };
-		FAFCDA891FD7FD250056DD64 /* bip44_coin_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bip44_coin_types.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1049,7 +1058,7 @@
 			isa = PBXGroup;
 			children = (
 				444905922163813600911A11 /* DappBrowserViewController.swift */,
-				444905952163818900911A11 /* BrowserPresenter.swift */,
+				444905952163818900911A11 /* DappBrowserPresenter.swift */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -1293,6 +1302,15 @@
 			path = Multy;
 			sourceTree = "<group>";
 		};
+		452ED152216E02C800B86A67 /* TokenTVC */ = {
+			isa = PBXGroup;
+			children = (
+				452ED153216E039600B86A67 /* TokenTableViewCell.swift */,
+				452ED154216E039600B86A67 /* TokenTableViewCell.xib */,
+			);
+			path = TokenTVC;
+			sourceTree = "<group>";
+		};
 		45344AC220E658300039DF30 /* CreateMultiSig */ = {
 			isa = PBXGroup;
 			children = (
@@ -1446,10 +1464,33 @@
 		457486131FBD7DAF002D1925 /* Additional Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				44D3F036217A2634003A4F0B /* account.h */,
+				44D3F03B217A2634003A4F0B /* api.h */,
+				44D3F030217A2634003A4F0B /* big_int.h */,
+				44D3F037217A2634003A4F0B /* binary_data.h */,
+				44D3F031217A2634003A4F0B /* bip44_coin_types.h */,
+				44D3F041217A2635003A4F0B /* bitcoin.h */,
+				44D3F03F217A2635003A4F0B /* blockchain.h */,
+				44D3F03A217A2634003A4F0B /* common.h */,
+				44D3F033217A2634003A4F0B /* EOS.h */,
+				44D3F038217A2634003A4F0B /* error.h */,
+				44D3F040217A2635003A4F0B /* ethereum.h */,
+				44D3F03E217A2635003A4F0B /* golos.h */,
+				44D3F03C217A2635003A4F0B /* key.h */,
+				44D3F032217A2634003A4F0B /* mnemonic.h */,
+				44D3F035217A2634003A4F0B /* properties.h */,
+				44D3F034217A2634003A4F0B /* run_tests.h */,
+				44D3F039217A2634003A4F0B /* transaction_builder.h */,
+				44D3F03D217A2635003A4F0B /* transaction.h */,
+				44E39EB3217881E90095A42A /* config.h */,
+				44E39EB4217881FA0095A42A /* ccan_config.h */,
+				44E39EAE2177974E0095A42A /* ripemd160.h */,
+				44E39EB1217881AA0095A42A /* endian.h */,
+				44E39EB2217881C00095A42A /* compiler.h */,
+				44E39EAF2177974E0095A42A /* ripemd160.c */,
 				445D14E420DA8364002F6747 /* Contacts Picker */,
 				45ECDBD4203D9E50009FD339 /* LoggingPrint */,
 				FA869D091FD6B84900C815C3 /* HUD */,
-				FA74060F1FCC14C4003C538C /* Core Libs */,
 			);
 			path = "Additional Libraries";
 			sourceTree = "<group>";
@@ -1961,6 +2002,7 @@
 		45B9CB041FBB4B6600AA2A31 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				452ED152216E02C800B86A67 /* TokenTVC */,
 				859C7B1020F4D3A8002EA215 /* ConfirmationStatusCVC */,
 				44AAAE1120E258BA00A481A4 /* ContactCell */,
 				85DE62E520AC1CD000423D89 /* ActiveRequestCVC */,
@@ -2565,6 +2607,7 @@
 				4474C5B020BFE60600EA8B01 /* Contacts.strings in Resources */,
 				4522905F1FBB18D30024B550 /* LaunchScreen.storyboard in Resources */,
 				4522905C1FBB18D30024B550 /* Assets.xcassets in Resources */,
+				452ED156216E039600B86A67 /* TokenTableViewCell.xib in Resources */,
 				859C7B1420F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib in Resources */,
 				FA4D43FF1FC6D058003C7117 /* TransactionWalletCell.xib in Resources */,
 				459D82342136DBCF00BE479B /* InfoPlist.strings in Resources */,
@@ -3049,7 +3092,7 @@
 				45D4D168205C12DC008B1F0B /* EthWalletHeaderTableViewCell.swift in Sources */,
 				448C38C62165603500D83D02 /* Bookmark.swift in Sources */,
 				4583AC921FBC7122001991AA /* PortfolioTableViewCell.swift in Sources */,
-				444905962163818900911A11 /* BrowserPresenter.swift in Sources */,
+				444905962163818900911A11 /* DappBrowserPresenter.swift in Sources */,
 				4400A53C20EE1B86004CD7AB /* ChooseContactsAddressProtocol.swift in Sources */,
 				45E148AC204553E4006BD4D1 /* DonationSendViewController.swift in Sources */,
 				45A9495A1FC6E785003C3A23 /* UIViewController+Extension.swift in Sources */,
@@ -3155,6 +3198,7 @@
 				448C38E22165603500D83D02 /* ConfirmCoordinator.swift in Sources */,
 				45A949621FC766BE003C3A23 /* SendFinishPresenter.swift in Sources */,
 				4575F0D82081FE01002616DD /* WebTextPageViewController.swift in Sources */,
+				44E39EB02177974E0095A42A /* ripemd160.c in Sources */,
 				859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */,
 				448C38B02165603500D83D02 /* SignTransaction.swift in Sources */,
 				448C38CF2165603500D83D02 /* BrowserNavigationBar.swift in Sources */,
@@ -3247,6 +3291,7 @@
 				4583AC981FBC8596001991AA /* PortfolioCollectionViewCell.swift in Sources */,
 				45E215D81FD147950078945A /* TransactionRLM.swift in Sources */,
 				448C38D92165603500D83D02 /* UIActivityViewController.swift in Sources */,
+				452ED155216E039600B86A67 /* TokenTableViewCell.swift in Sources */,
 				45A949481FC5C55C003C3A23 /* WalletChoosePresenter.swift in Sources */,
 				4583AC9F1FBC991E001991AA /* NewWalletTableViewCell.swift in Sources */,
 				448C38B42165603500D83D02 /* Address.swift in Sources */,
@@ -3869,7 +3914,7 @@
 				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = Multy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/**",
 					"\"$(SRCROOT)/Pods/GGLInstanceID\"/**",
@@ -3910,7 +3955,7 @@
 				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = Multy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/**",
 					"\"$(SRCROOT)/Pods/GGLInstanceID\"/**",
