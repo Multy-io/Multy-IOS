@@ -34,7 +34,7 @@ class DappBrowserViewController: UIViewController {
         
         browserCoordinator = BrowserCoordinator()
         
-        browserView.addSubview(browserCoordinator!.browserViewController.view)
+        add(browserCoordinator!.browserViewController, to: browserView)
         browserCoordinator!.start()
     }
     

@@ -346,6 +346,7 @@
 		45F8CD47208F391B00DEB495 /* TermsOfServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8CD46208F391B00DEB495 /* TermsOfServiceViewController.swift */; };
 		45F8CD49208F393C00DEB495 /* TermsOfServicePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8CD48208F393C00DEB495 /* TermsOfServicePresenter.swift */; };
 		50D1AA3CFDA9BDFA53D3B9D0 /* Pods_MultyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */; };
+		853C41BF217A0E3800155B84 /* ripemd160.c in Sources */ = {isa = PBXBuildFile; fileRef = 853C41BB217A0E3800155B84 /* ripemd160.c */; };
 		854C748B20C56C6900CBAFE9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854C748A20C56C6900CBAFE9 /* Utilities.swift */; };
 		854EF14A20C06DA4000C2247 /* tx_success_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 854EF14920C06DA4000C2247 /* tx_success_animation.json */; };
 		8555721020C7E5C500108FCD /* TxInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8555720F20C7E5C500108FCD /* TxInfoView.swift */; };
@@ -901,6 +902,12 @@
 		572DB9D15F9362827245CF67 /* Pods_Multy_MultyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy_MultyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		647A035491B0F1BEBEB72A55 /* Pods-MultyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultyTests/Pods-MultyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7304C17824311A19240183E0 /* Pods_Multy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		853C41B9217A0E3700155B84 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
+		853C41BA217A0E3700155B84 /* ccan_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccan_config.h; sourceTree = "<group>"; };
+		853C41BB217A0E3800155B84 /* ripemd160.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ripemd160.c; sourceTree = "<group>"; };
+		853C41BC217A0E3800155B84 /* compiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compiler.h; sourceTree = "<group>"; };
+		853C41BD217A0E3800155B84 /* ripemd160.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ripemd160.h; sourceTree = "<group>"; };
+		853C41BE217A0E3800155B84 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		854C748A20C56C6900CBAFE9 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		854EF14920C06DA4000C2247 /* tx_success_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tx_success_animation.json; sourceTree = "<group>"; };
 		8555720F20C7E5C500108FCD /* TxInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoView.swift; sourceTree = "<group>"; };
@@ -1459,6 +1466,12 @@
 		457486131FBD7DAF002D1925 /* Additional Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				853C41BA217A0E3700155B84 /* ccan_config.h */,
+				853C41BC217A0E3800155B84 /* compiler.h */,
+				853C41BE217A0E3800155B84 /* config.h */,
+				853C41B9217A0E3700155B84 /* endian.h */,
+				853C41BB217A0E3800155B84 /* ripemd160.c */,
+				853C41BD217A0E3800155B84 /* ripemd160.h */,
 				445D14E420DA8364002F6747 /* Contacts Picker */,
 				45ECDBD4203D9E50009FD339 /* LoggingPrint */,
 				FA869D091FD6B84900C815C3 /* HUD */,
@@ -3144,6 +3157,7 @@
 				448C38AC2165603500D83D02 /* Balance.swift in Sources */,
 				45D7890F20ED1F48001AB402 /* CountOfProtocol.swift in Sources */,
 				448C38CE2165603500D83D02 /* WalletAddress.swift in Sources */,
+				853C41BF217A0E3800155B84 /* ripemd160.c in Sources */,
 				457569461FBDDD0F00FDEE20 /* CheckWordsPresenter.swift in Sources */,
 				45DCF9D71FE19AFD005A9896 /* CustomFeePresenter.swift in Sources */,
 				45B0B0F01FEBF30C005BB1C0 /* SettingsViewController.swift in Sources */,
