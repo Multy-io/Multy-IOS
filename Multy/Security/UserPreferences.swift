@@ -37,7 +37,7 @@ class UserPreferences : NSObject {
     fileprivate func generateAES() {
         let iv = getAESiv()
 
-        generateUserDefaultsPassword { (pass, error) in
+        generateUserDefaultsPassword { [unowned self] (pass, error) in
             let aes = try! AES(key: pass!, blockMode: .CBC(iv: iv), padding: .pkcs5)
             
             self.aes = aes
@@ -288,5 +288,14 @@ class UserPreferences : NSObject {
     func resetUserPreferences() {
         aes = nil
         generateAES()
+    }
+    
+    // not ciphered data
+    func writeDBPrivateKeyFixValue(_ isUpdatedBD: Bool) {
+        UserDefaults.standard.set(isUpdatedBD, forKey: "DBPrivateKeyFixKey")
+    }
+    
+    func getDBPrivateKeyFixValue() -> Bool {
+        return UserDefaults.standard.bool(forKey: "DBPrivateKeyFixKey")
     }
 }

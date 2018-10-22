@@ -40,7 +40,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     
     var isInternetAvailable = true
     
-    let loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
+    var loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
     
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -61,12 +61,14 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         super.viewDidLoad()
         self.setpuUI()
 
-        self.performFirstEnterFlow { (succeeded) in
+        let dm = DataManager.shared
+        let mkg = MasterKeyGenerator.shared
+        self.performFirstEnterFlow { [unowned self, unowned dm, unowned mkg] (succeeded) in
             guard succeeded else {
                 return
             }
             
-            let isFirst = DataManager.shared.checkIsFirstLaunch()
+            let isFirst = dm.checkIsFirstLaunch()
             if isFirst {
                 self.sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: screenFirstLaunch)
                 self.view.isUserInteractionEnabled = true
@@ -74,9 +76,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                 self.sendAnalyticsEvent(screenName: screenMain, eventName: screenMain)
             }
             
-            let _ = MasterKeyGenerator.shared.generateMasterKey{_,_, _ in }
+            let _ = mkg.generateMasterKey{_,_, _ in }
             
-
             self.checkOSForConstraints()
             
 //            self.view.addSubview(self.progressHUD)
@@ -84,8 +85,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
             if self.presenter.account != nil {
                 self.tableView.frame.size.height = screenHeight - self.tabBarController!.tabBar.frame.height
             }
-            DataManager.shared.socketManager.start()
-            DataManager.shared.subscribeToFirebaseMessaging()
+            dm.socketManager.start()
+            dm.subscribeToFirebaseMessaging()
             
             //FIXME: add later or refactor
             
@@ -123,7 +124,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                 completion(true)
                 return
             }
-            DataManager.shared.getServerConfig { (hardVersion, softVersion, err) in
+            DataManager.shared.getServerConfig { [unowned self] (hardVersion, softVersion, err) in
                 self.loader.hide()
                 
                 if hardVersion == nil || softVersion == nil {
@@ -184,6 +185,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
 //            self.presentWarningAlert(message: localize(string: Constants.jailbrokenDeviceWarningString))
         }
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -240,49 +242,49 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     @objc fileprivate func handleWalletDeletedNotification(notification : Notification) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
     
     @objc fileprivate func handleMembersUpdatedNotification(notification : Notification) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
     
     @objc fileprivate func handleMsTransactionUpdatedNotification(notification : Notification) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
     
     @objc fileprivate func handleMsTransactionDeclinedNotification(notification : Notification) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
     
     @objc fileprivate func handleWalletUpdatedNotification(notification : Notification) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
     
     @objc fileprivate func handleExchangeUpdatedNotifiction(notification : Notification) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.presenter.updateExchange()
         }
     }
     
     @objc fileprivate func handleTransactionUpdatedNotification(notification : Notification) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletAfterSockets()
         }
     }
     
     @objc fileprivate func handleResyncCompleteNotification(notification : Notification) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
         }
     }
@@ -310,7 +312,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         }
         
         let view = UIView()
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             view.frame = CGRect(x: 16, y: 50, width: screenWidth - 32, height: Constants.AssetsScreen.backupButtonHeight)
         } else {
             view.frame = CGRect(x: 16, y: 25, width: screenWidth - 32, height: Constants.AssetsScreen.backupButtonHeight)
@@ -348,7 +350,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     func setupStatusBar() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             statusView.frame.size.height = 44
         }
         let colorTop = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.8).cgColor
@@ -440,7 +442,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     
     @objc func updateUI() {
         tabBarController?.tabBar.frame = presenter.tabBarFrame
-        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
+//        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
         tableView.frame.size.height = screenHeight - presenter.tabBarFrame.height
         self.tableView.reloadData()
     }
@@ -593,6 +595,16 @@ extension PresentingSheetDelegate: OpenCreatingSheet {
         if self.presenter.account == nil {
             return
         }
+        
+//        let transition = CATransition()
+//        transition.duration = 0.4
+//        transition.type = kCATransitionReveal
+//        transition.subtype = kCATransitionFromTop
+//        transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+//        view.window!.layer.add(transition, forKey: kCATransition)
+        
+        
+        
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         sendAnalyticsEvent(screenName: screenMain, eventName: createWalletTap)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -626,9 +638,9 @@ extension TableViewDelegate : UITableViewDelegate {
             if self.presenter.account == nil {
                 sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
 //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
-                self.presenter.makeAuth { (answer) in
-                    self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { (answer, err) in
-                        self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { (answer, err) in
+                self.presenter.makeAuth { [unowned self] (answer) in
+                    self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
+                        self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
                             self.presenter.getWalletsVerbose(completion: { (complete) in
                             })
                         })
@@ -928,7 +940,7 @@ extension PushTxDelegate {
                 self.presentAlert(with: error.debugDescription)
             }
             if wallet != nil {
-                DataManager.shared.getTransactionHistory(wallet: wallet!, completion: { (history, error) in
+                DataManager.shared.getTransactionHistory(wallet: wallet!, completion: { [unowned self] (history, error) in
                     guard let history = history, let wallet = wallet else {
                         return
                     }

@@ -75,7 +75,7 @@ class CreateWalletViewController: UIViewController, AnalyticsProtocol {
         let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
         walletVC.presenter.wallet = presenter.createdWallet
         walletVC.presenter.account = presenter.account
-        
+        navigationController?.popToRootViewController(animated: true)
         navigationController?.pushViewController(walletVC, animated: true)
     }
     
@@ -107,7 +107,7 @@ class CreateWalletViewController: UIViewController, AnalyticsProtocol {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let inset : UIEdgeInsets = UIEdgeInsetsMake(64, 0, keyboardSize.height, 0)
             self.constraintContinueBtnBottom.constant = inset.bottom
-            if screenHeight == heightOfX {
+            if screenHeight == heightOfX || screenHeight == heightOfXSMax{
                 self.constraintContinueBtnBottom.constant = inset.bottom - 35
             }
         }

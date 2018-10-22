@@ -10,6 +10,14 @@ enum BigIntOperation {
 }
 
 class BigInt: NSObject {
+//    func copy(with zone: NSZone? = nil) -> Any {
+//        let newBigInt = BigInt()
+//        let mbic = make_big_int_clone(self.valuePointer.pointee, newBigInt.valuePointer)
+//        let _ = DataManager.shared.coreLibManager.errorString(from: mbic, mask: "\n\nbig int: make_big_int_clone\n\n")
+//
+//        return newBigInt
+//    }
+    
     // main stored value
     var valuePointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
     
@@ -37,7 +45,8 @@ class BigInt: NSObject {
     }
     
     class func zero() -> BigInt {
-        return BigInt("0")
+        let result = BigInt("0")
+        return result
     }
     
     func setBigInt(string: String) {
@@ -48,6 +57,7 @@ class BigInt: NSObject {
     
     func cloneBigInt() -> BigInt {
         let newBigInt = BigInt()
+        free_big_int(newBigInt.valuePointer.pointee)
         let mbic = make_big_int_clone(self.valuePointer.pointee, newBigInt.valuePointer)
         let _ = DataManager.shared.coreLibManager.errorString(from: mbic, mask: "\n\nbig int: make_big_int_clone\n\n")
         
@@ -58,6 +68,7 @@ class BigInt: NSObject {
     func modify<T>(with operation: BigIntOperation, by right: T) -> BigInt {
         let newSelf = self.cloneBigInt()
         var error: OpaquePointer?
+
         
         switch operation {
         case .add:
@@ -144,6 +155,10 @@ class BigInt: NSObject {
         let boolPointer = UnsafeMutablePointer<Int32>.allocate(capacity: 1)
         var bic: OpaquePointer?
         
+        defer {
+            boolPointer.deallocate()
+        }
+        
         if let right = right as? BigInt {
             bic = big_int_cmp(self.valuePointer.pointee, right.valuePointer.pointee, boolPointer)
         } else if let right = right as? Int64 {
@@ -188,6 +203,7 @@ class BigInt: NSObject {
         let amountStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
         defer {
             free_string(amountStringPointer.pointee)
+            amountStringPointer.deallocate()
         }
         big_int_get_value(valuePointer.pointee, amountStringPointer)
         
@@ -204,5 +220,6 @@ class BigInt: NSObject {
     
     deinit {
         free_big_int(valuePointer.pointee)
+        valuePointer.deallocate()
     }
 }

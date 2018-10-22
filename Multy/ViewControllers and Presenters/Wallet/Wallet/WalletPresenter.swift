@@ -74,6 +74,9 @@ class WalletPresenter: NSObject {
         
         let multiSigPendingCell = UINib.init(nibName: "MultiSigPendingTableViewCell", bundle: nil)
         walletVC!.transactionsTable.register(multiSigPendingCell, forCellReuseIdentifier: "multiSigPendingCell")
+        
+        let tokenCell = UINib.init(nibName: "TokenTableViewCell", bundle: nil)
+        walletVC!.assetsTable.register(tokenCell, forCellReuseIdentifier: "tokenCell")
     }
     
     func updateHeader() {
@@ -149,7 +152,7 @@ class WalletPresenter: NSObject {
             return
         }
         
-        DataManager.shared.getOneWalletVerbose(wallet: wallet!) { (updatedWallet, error) in
+        DataManager.shared.getOneWalletVerbose(wallet: wallet!) { [unowned self] (updatedWallet, error) in
             if updatedWallet != nil {
                 self.wallet = updatedWallet
             }

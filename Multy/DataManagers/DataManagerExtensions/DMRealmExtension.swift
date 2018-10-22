@@ -123,4 +123,8 @@ extension DataManager {
     func getWallet(primaryKey: String, completion: @escaping(_ result: Result<UserWalletRLM, String>) -> ()) {
         realmManager.getWallet(primaryKey: primaryKey) { completion($0) }
     }
+    
+    func update(wallet: UserWalletRLM, impPK: String, impPubK: String) {
+        realmManager.updateImportedWallet(wallet: wallet, impPK: impPK, impPubK: impPubK)
+    }
 }

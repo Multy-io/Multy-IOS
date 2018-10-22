@@ -53,7 +53,7 @@ class EthWalletHeaderTableViewCell: UITableViewCell, UICollectionViewDelegate {
         self.bottomView.layer.mask = mask
         
 //        self.bottomView.roundCorners(corners: [.topLeft, .topRight], radius: 20)
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             self.topConstraint.constant = 40
         }
         

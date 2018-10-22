@@ -143,6 +143,10 @@ class DataManager: NSObject {
 }
 
 extension UserDefaultsDelegate {
+    var shouldCheckWalletsPrivateKeys : Bool {
+        return UserPreferences.shared.getDBPrivateKeyFixValue() == false
+    }
+    
     func getBTCDonationAddressesFromUserDerfaults() -> Dictionary<Int, String> {
         let donationData  = UserDefaults.standard.object(forKey: Constants.UserDefaults.btcDonationAddressesKey) as! Data
         let decodedDonationAddresses = NSKeyedUnarchiver.unarchiveObject(with: donationData) as! Dictionary<Int, String>

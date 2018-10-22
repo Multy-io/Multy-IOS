@@ -60,7 +60,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     var txTokenImageView: UIImageView?
     var selectedRequestAmountCloneLabel: UILabel?
     var selectedRequestAddressCloneLabel: UILabel?
-    var cloneNameLabel: UILabel!
+    var cloneNameLabel: UILabel?
     
     var searchingAnimationView : LOTAnimationView?
     var sendLongPressGR : UILongPressGestureRecognizer?
@@ -201,7 +201,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     func fixUIForX() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             activeRequestsAmountTopConstraint.constant = activeRequestsAmountTopConstraint.constant + 20
             self.view.layoutIfNeeded()
         }
@@ -311,7 +311,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     
     func backUIToSearching(_ completion : (() -> Swift.Void)? = nil) {
         // Set constraints for presenting active requests amount
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             activeRequestsAmountTopConstraint.constant = 55
         } else {
             activeRequestsAmountTopConstraint.constant = 35
@@ -338,10 +338,10 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             self.dismissTxInfo()
             self.sendMode = .searching
             
+            self.presenter.cancelPrepareSending()
             if completion != nil {
                 completion!()
             }
-            self.presenter.cancelPrepareSending()
         }
     }
     
@@ -387,15 +387,16 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                     UIView.animate(withDuration: 0.6, animations: {
                         doneAnimationView.transform = CGAffineTransform(scaleX: 10.0, y: 10.0)
                         doneAnimationView.alpha = 0.0
-                    }) { (succeeded) in
+                    }) { [unowned self] (succeeded) in
 
                         doneAnimationView.removeFromSuperview()
-                        self.close()
-                        self.backUIToSearching(nil)
+                        self.backUIToSearching({ [unowned self] in
+                            self.close()
+                        })
                     }
                 }
             } else {
-                backUIToSearching({[unowned self] in
+                backUIToSearching({ [unowned self] in
                     self.presenter.sendAnimationComplete()})
 
                 presentSendingErrorAlert()
@@ -438,7 +439,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             UIView.animate(withDuration: 0.15, animations: {
                 self.selectedRequestAmountCloneLabel!.alpha = 0
                 self.selectedRequestAddressCloneLabel!.alpha = 0
-                self.cloneNameLabel.alpha = 0
+                self.cloneNameLabel?.alpha = 0
                 self.txTokenImageView!.frame = CGRect(x: centerActiveRequestView.x, y: centerActiveRequestView.y, width: 0, height: 0)
                 self.txInfoView!.frame = CGRect(x: self.txTokenImageView!.center.x, y: (self.txTokenImageView!.frame.origin.y - 5 - self.txInfoView!.frame.size.height), width: 0, height: 0)
                  self.txTokenImageView!.alpha = 0
@@ -461,10 +462,10 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     func dismissTxInfo() {
-        txInfoView!.removeFromSuperview()
+        txInfoView?.removeFromSuperview()
         txInfoView = nil
         
-        txTokenImageView!.removeFromSuperview()
+        txTokenImageView?.removeFromSuperview()
         txTokenImageView = nil
     }
 
@@ -496,15 +497,17 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     func removeClonesViews() {
-        selectedRequestAmountCloneLabel!.removeFromSuperview()
+        if selectedRequestAmountCloneLabel != nil {
+        selectedRequestAmountCloneLabel?.removeFromSuperview()
         selectedRequestAmountCloneLabel = nil
-        selectedRequestAddressCloneLabel!.removeFromSuperview()
+        selectedRequestAddressCloneLabel?.removeFromSuperview()
         selectedRequestAddressCloneLabel = nil
-        cloneNameLabel.removeFromSuperview()
+            cloneNameLabel?.removeFromSuperview()
         cloneNameLabel = nil
         
         removeWalletsCellsClones()
         removeActiveRequestsCellsClones()
+        }
     }
     
     func prepareWalletsCellsClones() {

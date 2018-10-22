@@ -42,12 +42,15 @@ class MasterKeyGenerator : NSObject {
         
 //        let iidInstance = GGLInstanceID.sharedInstance()
         
-        InstanceID.instanceID().getID { (instanceString, error) in
+        let device = UIDevice.current
+        InstanceID.instanceID().getID { [unowned self] (instanceString, error) in
             if let instanceID = instanceString {
+                #if DEBUG
                 print("instanceIDToken: \(instanceID)")
+                #endif
                 
-                DispatchQueue.main.async {
-                    let key = self.sha512(instanceID + UIDevice.current.identifierForVendor!.uuidString + self.localPasswordString)
+                DispatchQueue.main.async { [unowned self, unowned device] in
+                    let key = self.sha512(instanceID + device.identifierForVendor!.uuidString + self.localPasswordString)
                     
                     guard let masterKey = key else {
                         print("Error generating master key")

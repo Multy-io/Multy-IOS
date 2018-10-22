@@ -31,11 +31,9 @@ class MembersViewController: UIViewController {
         presenter.mainVC = self
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissMe))
         clearView.addGestureRecognizer(tap)
-        if screenHeight == heightOfX {
-            
-        }
         
-        countsPicker.selectRow(presenter.signaturesCount - countOffset, inComponent: 0, animated: false)
+        
+        countsPicker.selectRow(presenter.signaturesCount - countOffset + 1, inComponent: 0, animated: false)
         countsPicker.selectRow(presenter.membersCount - countOffset, inComponent: 1, animated: false)
     }
     
@@ -49,7 +47,7 @@ class MembersViewController: UIViewController {
     }
     
     @IBAction func doneAction() {
-        let firstSectionCount = countOffset + countsPicker.selectedRow(inComponent: 0)
+        let firstSectionCount = countOffset - 1 + countsPicker.selectedRow(inComponent: 0)
         let secondSectionCount = countOffset + countsPicker.selectedRow(inComponent: 1)
         countOfDelegate?.passMultiSigInfo(signaturesCount: firstSectionCount, membersCount: secondSectionCount)
         dismissMe()
@@ -58,7 +56,10 @@ class MembersViewController: UIViewController {
 
 extension PickerViewDelegate: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(row + countOffset)"
+        if component == 1  {
+            return "\(row + countOffset)"
+        }
+        return "\(row + countOffset - 1)"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -66,12 +67,12 @@ extension PickerViewDelegate: UIPickerViewDelegate {
         case 0:
             let secondSectionRow = pickerView.selectedRow(inComponent: 1)
             if row > secondSectionRow {
-                pickerView.selectRow(row, inComponent: 1, animated: true)
+                pickerView.selectRow(row - 1, inComponent: 1, animated: true)
             }
         case 1:
             let firstSectionRow = pickerView.selectedRow(inComponent: 0)
             if firstSectionRow > row {
-                pickerView.selectRow(row, inComponent: 0, animated: true)
+                pickerView.selectRow(row + 1, inComponent: 0, animated: true)
             }
         default:
             break
@@ -87,6 +88,10 @@ extension PickerViewDataSource: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 49
+        if component == 0 {
+            return 50
+        } else {
+            return 49
+        }
     }
 }

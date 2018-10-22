@@ -141,6 +141,7 @@ class TransactionPresenter: NSObject {
                             self.transctionVC?.spiner.stopAnimating()
                             
                             if error != nil {
+                                self.transctionVC!.sendAnalyticsEvent(screenName: self.className, eventName: (error! as NSError).userInfo.debugDescription)
                                 print("sendHDTransaction Error: \(error)")
                                 self.transctionVC?.spiner.stopAnimating()
                                 self.transctionVC?.presentTransactionErrorAlert(message: Constants.errorSendingTxString)
