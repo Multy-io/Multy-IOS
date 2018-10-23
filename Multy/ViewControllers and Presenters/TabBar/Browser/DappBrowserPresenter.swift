@@ -10,6 +10,8 @@ class DappBrowserPresenter: NSObject {
     var tabBarFrame: CGRect?
     var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
     
+    var deepLinkParams: NSDictionary?
+    
     weak var delegate: SendWalletProtocol?
     var walletAddtess: String? {
         didSet {
