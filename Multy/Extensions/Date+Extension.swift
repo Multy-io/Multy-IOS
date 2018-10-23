@@ -2,6 +2,8 @@
 //Licensed under Multy.io license.
 //See LICENSE for details
 
+import UIKit
+
 extension Date {
     static func defaultGMTDateFormatter() -> DateFormatter {
         let dateFormatter = DateFormatter()

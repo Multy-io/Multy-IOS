@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = WalletTableViewCell
 

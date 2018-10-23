@@ -9,8 +9,9 @@ extension WKWebViewConfiguration {
     static func make(for address: String, in messageHandler: WKScriptMessageHandler) -> WKWebViewConfiguration {
         let config = WKWebViewConfiguration()
         
-        let rpcURL = "https://mainnet.infura.io/llyrtzQ3YhkdESt2Fzrk"
-        let chainID = 1
+//        let rpcURL = "https://mainnet.infura.io/llyrtzQ3YhkdESt2Fzrk"
+        let rpcURL = "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
+        let chainID = 4
         
         var js = ""
 

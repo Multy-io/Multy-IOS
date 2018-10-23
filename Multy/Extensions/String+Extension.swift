@@ -4,6 +4,7 @@
 
 import Foundation
 import UIKit
+//import MultyCoreLibrary
 
 typealias Wireless = String
 

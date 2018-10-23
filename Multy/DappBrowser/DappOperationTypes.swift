@@ -28,24 +28,53 @@ struct OperationObject {
     
     
     init(with object: Dictionary<String, Any>) {
-        chainID =   object["chainId"] as! NSNumber
-        let data =      object["data"] as! String
-        hexData = String(data.dropFirst(2))
+        if let chainID =  object["chainId"] as? NSNumber {
+            self.chainID = chainID
+        } else {
+            chainID = 4
+        }
         
-        fromAddress =      object["from"] as! String
-        toAddress =        object["to"] as! String
+        if let hexData =  object["data"] as? String {
+            self.hexData = String(hexData.dropFirst(2))
+        } else {
+            self.hexData = ""
+        }
         
-        let gas =       object["gas"] as! String
-        gasLimit =   UInt64(gas.dropFirst(2), radix: 16)!
+        if let fromAddress =  object["from"] as? String {
+            self.fromAddress = fromAddress
+        } else {
+            self.fromAddress = ""
+        }
         
-        let gasPriceString =  object["gasPrice"] as! String
-        gasPrice = UInt64(gasPriceString.dropFirst(2), radix: 16)!
+        if let toAddress =  object["to"] as? String {
+            self.toAddress = toAddress
+        } else {
+            self.toAddress = ""
+        }
         
-        let nonceString =     object["nonce"] as! String
-        nonce =  Int(nonceString, radix: 16)!
+        if let gas =  object["gas"] as? String {
+            self.gasLimit = UInt64(gas.dropFirst(2), radix: 16)!
+        } else {
+            self.gasLimit = 0
+        }
+        
+        if let gasPriceString =  object["gasPrice"] as? String {
+            self.gasPrice = UInt64(gasPriceString.dropFirst(2), radix: 16)!
+        } else {
+            self.gasPrice = 0
+        }
+        
+        if let nonceString =  object["nonce"] as? String {
+            self.nonce = Int(nonceString, radix: 16)!
+        } else {
+            self.nonce = 0
+        }
         
         //amount
-        let valueString =     object["value"] as! String
-        value = UInt64(valueString.dropFirst(2), radix: 16)!
+        if let valueString =     object["value"] as? String {
+            self.value = UInt64(valueString.dropFirst(2), radix: 16)!
+        } else {
+            self.value = 0
+        }
     }
 }

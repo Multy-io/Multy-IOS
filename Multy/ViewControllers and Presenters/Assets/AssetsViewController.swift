@@ -6,6 +6,7 @@ import UIKit
 import RealmSwift
 import Alamofire
 import CryptoSwift
+//import MultyCoreLibrary
 //import BiometricAuthentication
 
 private typealias ScrollViewDelegate = AssetsViewController

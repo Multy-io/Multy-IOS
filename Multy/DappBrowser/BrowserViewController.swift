@@ -184,7 +184,8 @@ class BrowserViewController: UIViewController {
 //        }
     
     func goHome() {
-        guard let url = URL(string: Constants.dappsBrowserURL) else { return }
+        let linkString = "https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.alpha.dragonereum.io"
+        guard let url = URL(string: linkString) else { return } //"https://dapps.trustwalletapp.com/"
         var request = URLRequest(url: url)
         request.cachePolicy = .returnCacheDataElseLoad
         hideErrorView()
@@ -365,7 +366,7 @@ extension BrowserViewController {
         let core = DataManager.shared.coreLibManager
         var binaryData = account!.binaryDataString.createBinaryData()!
         
-        DataManager.shared.getWallet(primaryKey: "fe2d5a07a9095d4225ce02a25e04e0341ac5a75ccc8a730979a8162411b1dfc4") {
+        DataManager.shared.getWallet(primaryKey: "c6124b7e456281fbef3d39dacdebb0cda9102fea8c05cc863028db934c903ffe") {
             switch $0 {
             case .success(let wallet):
                 let addressData = core.createAddress(blockchainType:    wallet.blockchainType,

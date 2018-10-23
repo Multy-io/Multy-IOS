@@ -235,6 +235,7 @@
                     <navigationItem key="navigationItem" id="hvF-6y-Fiu"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="blockchainTypeImageView" destination="5Xh-vs-bQm" id="E4U-ho-F9Z"/>
                         <outlet property="browserView" destination="jrC-qp-0mc" id="MLq-8c-Ws3"/>
                         <outlet property="walletAddress" destination="3xd-9M-rC6" id="jEs-wI-xaT"/>
                     </connections>

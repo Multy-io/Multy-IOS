@@ -9,6 +9,7 @@ import FirebaseMessaging
 import Branch
 import UserNotifications
 import SwiftyStoreKit
+//import MultyCoreLibrary
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
