@@ -346,6 +346,7 @@
 		45F6340C202388DF00C17A7C /* ViewInBlockchainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F6340B202388DF00C17A7C /* ViewInBlockchainViewController.swift */; };
 		45F8CD47208F391B00DEB495 /* TermsOfServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8CD46208F391B00DEB495 /* TermsOfServiceViewController.swift */; };
 		45F8CD49208F393C00DEB495 /* TermsOfServicePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8CD48208F393C00DEB495 /* TermsOfServicePresenter.swift */; };
+		45FE5A72217F651100C1539E /* DeepLinksProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE5A71217F651100C1539E /* DeepLinksProtocol.swift */; };
 		50D1AA3CFDA9BDFA53D3B9D0 /* Pods_MultyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */; };
 		854C748B20C56C6900CBAFE9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854C748A20C56C6900CBAFE9 /* Utilities.swift */; };
 		854EF14A20C06DA4000C2247 /* tx_success_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 854EF14920C06DA4000C2247 /* tx_success_animation.json */; };
@@ -911,6 +912,7 @@
 		45F6340B202388DF00C17A7C /* ViewInBlockchainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewInBlockchainViewController.swift; sourceTree = "<group>"; };
 		45F8CD46208F391B00DEB495 /* TermsOfServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceViewController.swift; sourceTree = "<group>"; };
 		45F8CD48208F393C00DEB495 /* TermsOfServicePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServicePresenter.swift; sourceTree = "<group>"; };
+		45FE5A71217F651100C1539E /* DeepLinksProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinksProtocol.swift; sourceTree = "<group>"; };
 		4F755B7866B0879E2567D290 /* Pods-Multy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Multy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Multy/Pods-Multy.debug.xcconfig"; sourceTree = "<group>"; };
 		572DB9D15F9362827245CF67 /* Pods_Multy_MultyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy_MultyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		647A035491B0F1BEBEB72A55 /* Pods-MultyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultyTests/Pods-MultyTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1780,6 +1782,7 @@
 				44AAAE1820E4E0D000A481A4 /* NewContactAddressProtocol.swift */,
 				4400A53B20EE1B86004CD7AB /* ChooseContactsAddressProtocol.swift */,
 				4585C96621444698000364F0 /* SendArrayOfWallets.swift */,
+				45FE5A71217F651100C1539E /* DeepLinksProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -2358,33 +2361,6 @@
 				FA58DF641FDC403E00C45303 /* WrongSeedPhraseViewController.swift */,
 			);
 			path = WrongSeedPhrase;
-			sourceTree = "<group>";
-		};
-		FA74060F1FCC14C4003C538C /* Core Libs */ = {
-			isa = PBXGroup;
-			children = (
-				FA7406191FCC14C4003C538C /* account.h */,
-				FA74061B1FCC14C4003C538C /* api.h */,
-				44FA86BF2035A76400263C72 /* big_int.h */,
-				44DFEFA0206A64ED0068769C /* binary_data.h */,
-				FAFCDA891FD7FD250056DD64 /* bip44_coin_types.h */,
-				44DFEFA2206A64ED0068769C /* bitcoin.h */,
-				44DFEFA1206A64ED0068769C /* blockchain.h */,
-				FA74061C1FCC14C4003C538C /* common.h */,
-				448000D620FF3D6900813624 /* EOS.h */,
-				FA869D081FD5AD9700C815C3 /* error.h */,
-				44DFEFA3206A64ED0068769C /* ethereum.h */,
-				44DFEFA4206A64ED0068769C /* golos.h */,
-				44FA86BE2035A75A00263C72 /* key.h */,
-				FA74061A1FCC14C4003C538C /* mnemonic.h */,
-				FA74061D1FCC14C4003C538C /* run_tests.h */,
-				44FA86C02035A77100263C72 /* sha3.h */,
-				448000D720FF3D6900813624 /* transaction_builder.h */,
-				FA7406151FCC14C4003C538C /* transaction.h */,
-				446FC9612108BC8000E53D46 /* transaction_builder.h */,
-				FA7406161FCC14C4003C538C /* properties.h */,
-			);
-			path = "Core Libs";
 			sourceTree = "<group>";
 		};
 		FA7E97221FF2504100735D73 /* Frameworks */ = {
@@ -3123,6 +3099,7 @@
 				FA4D43E51FC590F6003C7117 /* SeedPhraseRLM.swift in Sources */,
 				45E215DE1FD164E30078945A /* QrScannerViewController.swift in Sources */,
 				457569341FBDBC9600FDEE20 /* SeedPhraseAboutPresenter.swift in Sources */,
+				45FE5A72217F651100C1539E /* DeepLinksProtocol.swift in Sources */,
 				45DCF9D91FE19B33005A9896 /* CustomFeeViewController.swift in Sources */,
 				448C38BC2165603500D83D02 /* Data.swift in Sources */,
 				448C38BB2165603500D83D02 /* Method.swift in Sources */,

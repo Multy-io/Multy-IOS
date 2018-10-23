@@ -95,7 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                         if (dictFormLink["address"] != nil) {  //deep link for send
                             self!.openSendFlow(acc: acc, dictFormLink: dictFormLink)
                         } else if dictFormLink["$marketing_title"] as? String == dappDLtestNetTitle {   //dapp dragon testNet
-                            self!.openDragonsFlow(params: dictFormLink)
+                            self!.openDragonsFlow(acc: acc, params: dictFormLink)
                         }
                     }
                 }
@@ -138,7 +138,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
         sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
     }
     
-    func openDragonsFlow(params: NSDictionary) {
+    func openDragonsFlow(acc: AccountRLM?, params: NSDictionary) {
+        if acc == nil && self.window?.rootViewController?.topMostViewController().className  == TermsOfServiceViewController.className {
+            let termsVC = self.window?.rootViewController?.topMostViewController() as! TermsOfServiceViewController
+            termsVC.deepLinkParams = params
+        } else {
+            openBrowserWith(params: params)
+        }
+    }
+    
+    func openBrowserWith(params: NSDictionary) {
         let tabBar = self.window?.rootViewController as! CustomTabBarViewController
         tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 1)
         let browserVC = tabBar.childViewControllers[1].childViewControllers[0] as! DappBrowserViewController
