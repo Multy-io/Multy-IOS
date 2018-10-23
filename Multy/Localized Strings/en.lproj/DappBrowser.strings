@@ -1,0 +1,8 @@
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
+
+"ERROR" = "Error";
+"SOMETHING WENT WRONG" = "Something went wrong";
+"YOU ENTERED TOO SMALL AMOUNT" = "You entered too small amount!";
+"YOU ARE TRYING SPEND MORE THEN HAVE" = "You are trying to spend more then you have.";

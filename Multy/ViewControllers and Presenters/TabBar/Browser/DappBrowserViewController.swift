@@ -33,13 +33,6 @@ class DappBrowserViewController: UIViewController {
         
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
-        
-        
-        browserCoordinator = BrowserCoordinator()
-        
-        add(browserCoordinator!.browserViewController, to: browserView)
-//        browserView.addSubview(browserCoordinator!.browserViewController.view)
-        browserCoordinator!.start()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,7 +43,7 @@ class DappBrowserViewController: UIViewController {
         let walletsVC = viewControllerFrom("Receive", "ReceiveStart") as! ReceiveStartViewController
         walletsVC.presenter.isNeedToPop = true
         walletsVC.sendWalletDelegate = self.presenter
-        walletsVC.presenter.displayedBlockchainOnly = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 1)
+        walletsVC.presenter.displayedBlockchainOnly = presenter.defaultBlockchainType
         self.navigationController?.pushViewController(walletsVC, animated: true)
     }
     
