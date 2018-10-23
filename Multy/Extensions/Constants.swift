@@ -271,3 +271,5 @@ let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"
 let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 
 let inviteCodeCount = 45
+
+let dappDLtestNetTitle = "Dapp test net"

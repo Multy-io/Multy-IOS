@@ -92,36 +92,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                 Branch.getInstance().initSession(launchOptions: launchOptions) { [weak self] (params, error) in
                     if error == nil {
                         let dictFormLink = params! as NSDictionary
-                        if (dictFormLink["address"] != nil) {
-                            if acc == nil {
-                                return
-                            }
-                            
-                            //FIXME: amountFromLink pass as String
-                            var amountFromLink: String?
-                            let deepLinkAddressInfoArray = (dictFormLink["address"] as! String).split(separator: ":")
-                            
-                            let chainNameFromLink = deepLinkAddressInfoArray.first
-                            let addressFromLink = deepLinkAddressInfoArray.last
-                            if let amount = dictFormLink["amount"] as? String {
-                                amountFromLink = amount
-                            } else if let number = dictFormLink["amount"] as? NSNumber {
-                                amountFromLink = "\(number)"
-                            } else {
-                                print("\n\n\nAmount from deepLink not parsed!\n\n\n")
-                            }
-                            
-                            let storyboard = UIStoryboard(name: "Send", bundle: nil)
-                            let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
-                            sendStartVC.presenter.transactionDTO.sendAddress = "\(addressFromLink ?? "")"
-                            sendStartVC.presenter.transactionDTO.sendAmountString = amountFromLink
-                            switch chainNameFromLink {
-                            case "ethereum":
-                                sendStartVC.presenter.transactionDTO.blockchainType?.blockchain = BLOCKCHAIN_ETHEREUM
-                            default: break   //by default create tr for bitcoin
-                            }
-                            ((self!.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
-                            sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
+                        if (dictFormLink["address"] != nil) {  //deep link for send
+                            self!.openSendFlow(acc: acc, dictFormLink: dictFormLink)
+                        } else if dictFormLink["$marketing_title"] as? String == dappDLtestNetTitle {   //dapp dragon testNet
+                            self!.openDragonsFlow(acc: acc, params: dictFormLink)
                         }
                     }
                 }
@@ -130,6 +104,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                 appDel.authorization(isNeedToPresentBiometric: true)
             })
         }
+    }
+    
+    func openSendFlow(acc: AccountRLM?, dictFormLink: NSDictionary) {
+        if acc == nil {
+            return
+        }
+        
+        //FIXME: amountFromLink pass as String
+        var amountFromLink: String?
+        let deepLinkAddressInfoArray = (dictFormLink["address"] as! String).split(separator: ":")
+        
+        let chainNameFromLink = deepLinkAddressInfoArray.first
+        let addressFromLink = deepLinkAddressInfoArray.last
+        if let amount = dictFormLink["amount"] as? String {
+            amountFromLink = amount
+        } else if let number = dictFormLink["amount"] as? NSNumber {
+            amountFromLink = "\(number)"
+        } else {
+            print("\n\n\nAmount from deepLink not parsed!\n\n\n")
+        }
+        
+        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+        let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+        sendStartVC.presenter.transactionDTO.sendAddress = "\(addressFromLink ?? "")"
+        sendStartVC.presenter.transactionDTO.sendAmountString = amountFromLink
+        switch chainNameFromLink {
+        case "ethereum":
+            sendStartVC.presenter.transactionDTO.blockchainType?.blockchain = BLOCKCHAIN_ETHEREUM
+        default: break   //by default create tr for bitcoin
+        }
+        ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
+        sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
+    }
+    
+    func openDragonsFlow(acc: AccountRLM?, params: NSDictionary) {
+        if acc == nil && self.window?.rootViewController?.topMostViewController().className  == TermsOfServiceViewController.className {
+            let termsVC = self.window?.rootViewController?.topMostViewController() as! TermsOfServiceViewController
+            termsVC.deepLinkParams = params
+        } else {
+            openBrowserWith(params: params)
+        }
+    }
+    
+    func openBrowserWith(params: NSDictionary) {
+        let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+        tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 1)
+        let browserVC = tabBar.childViewControllers[1].childViewControllers[0] as! DappBrowserViewController
+        browserVC.presenter.deepLinkParams = params
     }
     
     // Respond to URI scheme links

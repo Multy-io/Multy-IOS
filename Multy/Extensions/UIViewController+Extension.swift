@@ -81,6 +81,13 @@ extension EPPickerDelegate where Self: UIViewController {
 }
 
 extension UIViewController {
+    func presentAlert(withTitle title: String?, andMessage message: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -304,5 +311,22 @@ extension UIViewController {
         childView.translatesAutoresizingMaskIntoConstraints = false
         parentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-0-[childView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["childView" : childView]))
         parentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[childView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["childView" : childView]))
+    }
+    
+    func topMostViewController() -> UIViewController {
+        
+        if let presented = self.presentedViewController {
+            return presented.topMostViewController()
+        }
+        
+        if let navigation = self as? UINavigationController {
+            return navigation.visibleViewController?.topMostViewController() ?? navigation
+        }
+        
+        if let tab = self as? UITabBarController {
+            return tab.selectedViewController?.topMostViewController() ?? tab
+        }
+        
+        return self
     }
 }

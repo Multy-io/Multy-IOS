@@ -12,6 +12,10 @@ class TermsOfServiceViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var spiner: UIActivityIndicatorView!
     @IBOutlet weak var agreeTextLabel: UILabel!
     
+    var deepLinkParams: NSDictionary?
+    
+    var sendDeepLinksDelegate: DeepLinksProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
@@ -46,6 +50,9 @@ class TermsOfServiceViewController: UIViewController, UIWebViewDelegate {
         
         UserDefaults.standard.set(true, forKey: "isTermsAccept")
         UserDefaults.standard.set(true, forKey: "isFCMAccepted")
+        if deepLinkParams != nil {
+            sendDeepLinksDelegate?.sendDeepLinksParams(params: deepLinkParams!)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

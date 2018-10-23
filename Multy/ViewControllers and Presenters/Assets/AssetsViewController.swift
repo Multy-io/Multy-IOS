@@ -21,7 +21,7 @@ private typealias LocalizeDelegate = AssetsViewController
 private typealias PushTxDelegate = AssetsViewController
 private typealias SendWalletsDelegate = AssetsViewController
 
-class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol, BlockchainTransferProtocol {
+class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol, BlockchainTransferProtocol, DeepLinksProtocol {
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
@@ -467,7 +467,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         let result = DataManager.shared.checkTermsOfService()
         if !result {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let termsVC = storyBoard.instantiateViewController(withIdentifier: "termsVC")
+            let termsVC = storyBoard.instantiateViewController(withIdentifier: "termsVC") as! TermsOfServiceViewController
+            termsVC.sendDeepLinksDelegate = self
             self.present(termsVC, animated: true, completion: nil)
         }
         return !result
@@ -536,6 +537,18 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     
     func setBlockchain(blockchain: BlockchainType) {
         blockchainForTansfer = blockchain
+    }
+    
+    func sendDeepLinksParams(params: NSDictionary) {
+        loader.show(customTitle: "Creating")
+        let isNeedEthTest: Bool = Int(params["chainType"] as! String) == 4 ? true : false
+        createFirstWallets(isNeedEthTest: isNeedEthTest) { (error) in
+            if error == nil {
+                self.loader.hide()
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.openBrowserWith(params: params)
+            }
+        }
     }
 }
 
@@ -638,13 +651,10 @@ extension TableViewDelegate : UITableViewDelegate {
             if self.presenter.account == nil {
                 sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
 //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
-                self.presenter.makeAuth { [unowned self] (answer) in
-                    self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
-                        self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
-                            self.presenter.getWalletsVerbose(completion: { (complete) in
-                            })
-                        })
-                    })
+                createFirstWallets(isNeedEthTest: false) { (error) in
+                    if error == nil {
+                        print("Wallets created")
+                    }
                 }
             } else {
                 if self.presenter.isWalletExist() {
@@ -669,6 +679,26 @@ extension TableViewDelegate : UITableViewDelegate {
             if self.presenter.isWalletExist() {
                 goToWalletVC(indexPath: indexPath)
             }
+        }
+    }
+    
+    func createFirstWallets(isNeedEthTest: Bool, completion: @escaping(_ error: String?) -> ()) {
+        self.presenter.makeAuth { [unowned self] (answer) in
+            self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
+                self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
+                    if isNeedEthTest {
+                        self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 4), completion: { [unowned self] (answer, err) in
+                            self.presenter.getWalletsVerbose(completion: { (complete) in
+                                completion(nil)
+                            })
+                        })
+                    } else {
+                        self.presenter.getWalletsVerbose(completion: { (complete) in
+                            completion(nil)
+                        })
+                    }
+                })
+            })
         }
     }
     
