@@ -270,3 +270,7 @@ let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"
 let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 
 let inviteCodeCount = 45
+
+
+var currentStatusStyle = UIStatusBarStyle.default
+var isServerConnectionExist = true

@@ -10,6 +10,8 @@ class ETHWallet: Object {
     @objc dynamic var balance = "0"
     @objc dynamic var pendingWeiAmountString = "0"
     
+    var erc20Tokens : List<WalletTokenRLM>?
+    
     var pendingBalance: BigInt {
         get {
             return BigInt(pendingWeiAmountString)

@@ -143,6 +143,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentStatusStyle
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
@@ -162,7 +166,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets(notification:)), name: NSNotification.Name("transactionUpdated"), object: nil)
-        }
+        }        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -183,10 +187,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         if !isViewDidAppear {
             setupUI()
         }
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     private func addGestureRecognizers() {

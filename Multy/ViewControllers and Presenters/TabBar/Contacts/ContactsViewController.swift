@@ -59,6 +59,10 @@ class ContactsViewController: UIViewController, CancelProtocol {
         super.viewWillDisappear(animated)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentStatusStyle
+    }
+    
     func ipadFix() {
         if screenHeight == heightOfiPad {
             self.donationTopConstraint.constant = 0

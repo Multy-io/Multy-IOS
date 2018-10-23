@@ -260,6 +260,7 @@
 		45E215E01FD164F80078945A /* QrScannerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E215DF1FD164F80078945A /* QrScannerPresenter.swift */; };
 		45E215E21FD16AA70078945A /* GoToQrProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E215E11FD16AA70078945A /* GoToQrProtocol.swift */; };
 		45E215E41FD179100078945A /* QrDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E215E31FD179100078945A /* QrDataProtocol.swift */; };
+		45E2D178217898E3006F862A /* WalletTokenRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E2D177217898E3006F862A /* WalletTokenRLM.swift */; };
 		45E7A8A620065455005D2D6E /* StockExchanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E7A8A520065455005D2D6E /* StockExchanges.swift */; };
 		45EBB6A8200D312700F81322 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45EBB6A7200D312700F81322 /* GoogleService-Info.plist */; };
 		45ECDBD7203D9E77009FD339 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 45ECDBD5203D9E77009FD339 /* LICENSE */; };
@@ -737,6 +738,7 @@
 		45E215DF1FD164F80078945A /* QrScannerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrScannerPresenter.swift; sourceTree = "<group>"; };
 		45E215E11FD16AA70078945A /* GoToQrProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToQrProtocol.swift; sourceTree = "<group>"; };
 		45E215E31FD179100078945A /* QrDataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrDataProtocol.swift; sourceTree = "<group>"; };
+		45E2D177217898E3006F862A /* WalletTokenRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokenRLM.swift; sourceTree = "<group>"; };
 		45E7A8A520065455005D2D6E /* StockExchanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockExchanges.swift; sourceTree = "<group>"; };
 		45EBB6A7200D312700F81322 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45ECDBD5203D9E77009FD339 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -2033,6 +2035,7 @@
 				FA4D44001FC71B6D003C7117 /* AccountRLM.swift */,
 				44DCC200205A9D34001080FB /* TopIndexRLM.swift */,
 				45E215D71FD147950078945A /* TransactionRLM.swift */,
+				45E2D177217898E3006F862A /* WalletTokenRLM.swift */,
 				454A9D7B20067E530035966F /* HistoryRLM.swift */,
 				45C8D1442007EACE00F5994E /* TxHistoryRLM.swift */,
 				FA869D111FD6C17900C815C3 /* ExchangePriceRLM.swift */,
@@ -2446,7 +2449,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\"";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		B610E7A7228D4A231598207D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2669,6 +2672,7 @@
 				FA8C8783200E65E900F8D5D9 /* Date+Extension.swift in Sources */,
 				FA4D43EC1FC5CEE0003C7117 /* BTCWalletHeaderTableViewCell.swift in Sources */,
 				45E7A8A620065455005D2D6E /* StockExchanges.swift in Sources */,
+				45E2D178217898E3006F862A /* WalletTokenRLM.swift in Sources */,
 				FA58DF661FDC403E00C45303 /* WrongSeedPhraseViewController.swift in Sources */,
 				45090AE01FE95E7700019D00 /* BackupSeedPhraseView.swift in Sources */,
 				85DE62DF20AB003A00423D89 /* SendPresenter.swift in Sources */,

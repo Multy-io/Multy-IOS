@@ -56,6 +56,10 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     var stringIdForInAppBig = ""
     var blockchainForTansfer: BlockchainType?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentStatusStyle
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setpuUI()
@@ -127,7 +131,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                 self.loader.hide()
                 
                 if hardVersion == nil || softVersion == nil {
-                    self.presentUpdateAlert(idOfAlert: 2)
+//                    self.presentUpdateAlert(idOfAlert: 2)
                     completion(true)
                     return
                 }
@@ -635,15 +639,10 @@ extension TableViewDelegate : UITableViewDelegate {
             break
         case [0,2]:
             if self.presenter.account == nil {
-                sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
-//                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
-                self.presenter.makeAuth { [unowned self] (answer) in
-                    self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
-                        self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
-                            self.presenter.getWalletsVerbose(completion: { (complete) in
-                            })
-                        })
-                    })
+                if isServerConnectionExist == false {
+                    checkServerConnection()
+                } else {
+                    createFirstWallets()
                 }
             } else {
                 if self.presenter.isWalletExist() {
@@ -654,6 +653,10 @@ extension TableViewDelegate : UITableViewDelegate {
             }
         case [0,3]:
             if self.presenter.account == nil {
+                if isServerConnectionExist == false {
+                    checkServerConnection()
+                    return
+                }
                 sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: restoreMultyTap)
                 let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
                 let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
@@ -668,6 +671,28 @@ extension TableViewDelegate : UITableViewDelegate {
             if self.presenter.isWalletExist() {
                 goToWalletVC(indexPath: indexPath)
             }
+        }
+    }
+    
+    func checkServerConnection() {
+        loader.show(customTitle: "Connecting")
+        DataManager.shared.getServerConfig { (hard, soft, err) in
+            self.loader.hide()
+            if err != nil {
+                self.presentAlert(withTitle: self.localize(string: Constants.serverOffTitle), andMessage: self.localize(string: Constants.serverOffMessage))
+            }
+        }
+    }
+    
+    func createFirstWallets () {
+        sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
+        self.presenter.makeAuth { [unowned self] (answer) in
+            self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
+                self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
+                    self.presenter.getWalletsVerbose(completion: { (complete) in
+                    })
+                })
+            })
         }
     }
     

@@ -31,6 +31,10 @@ class FastOperationsViewController: UIViewController, AnalyticsProtocol {
         (self.tabBarController as! CustomTabBarViewController).menuButton.isHidden = true
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentStatusStyle
+    }
+    
     func updateUI() {
         let myColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
         closeBtnImg.setShadow(with: myColor)

@@ -748,6 +748,16 @@ extension WalletUpdateRLM {
                 isTherePendingTx = NSNumber(booleanLiteral: true)
             }
         }
+        
+        if let addressesArr = infoDict["addresses"] as? NSArray {
+            if let addressObj = addressesArr.firstObject as? NSDictionary {
+                if let tokensArr = addressObj["erc20balances"] as? NSArray {
+                    let walletToken = WalletTokenRLM()
+                    ethWallet?.erc20Tokens = walletToken.initERC20With(infoArray: tokensArr)
+                }
+            }
+        }
+        
     }
     
     func updateMultiSigWallet(from infoDict: NSDictionary) {

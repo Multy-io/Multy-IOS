@@ -121,6 +121,10 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         presenter.viewControllerViewWillDisappear()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentStatusStyle
+    }
+    
     func registerCells() {
         let walletCollectionCell = UINib.init(nibName: "WalletCollectionViewCell", bundle: nil)
         walletsCollectionView.register(walletCollectionCell, forCellWithReuseIdentifier: "WalletCollectionViewCell")

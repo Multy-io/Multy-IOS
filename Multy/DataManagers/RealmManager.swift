@@ -23,6 +23,8 @@ class RealmManager: NSObject {
     var account: AccountRLM?
     var config: Realm.Configuration?
     
+    var erc20Tokens = Dictionary<String, Erc20TokensRLM>()
+    
     var schemaversion : UInt64 {
         return realm!.configuration.schemaVersion
     }
@@ -148,6 +150,7 @@ class RealmManager: NSObject {
             do {
                 let realm = try Realm(configuration: self.config!)
                 self.realm = realm
+                
                 
                 completion(realm, nil)
             } catch let error as NSError {
@@ -1156,14 +1159,19 @@ extension LegacyCodeManager {
 
 extension TokensManager {
     func updateErc20Tokens(tokens: [Erc20TokensRLM]) {
-        getRealm { (realmOpt, error) in
+        getRealm { [unowned self] (realmOpt, error) in
             if let realm = realmOpt {
                 try! realm.write {
                     realm.delete(realm.objects(Erc20TokensRLM.self))
                     for token in tokens {
                         realm.add(token, update: true)
+                        
                     }
                 }
+                let tokens = realm.objects(Erc20TokensRLM.self)
+                self.erc20Tokens.removeAll()
+                tokens.forEach{ self.erc20Tokens[$0.contractAddress] = $0 }
+                
             }
         }
     }
