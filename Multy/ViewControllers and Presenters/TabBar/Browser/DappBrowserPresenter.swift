@@ -5,6 +5,8 @@
 import UIKit
 //import MultyCoreLibrary
 
+private typealias BrowserCacheDelegate = DappBrowserPresenter
+
 class DappBrowserPresenter: NSObject {
     weak var mainVC: DappBrowserViewController?
     var tabBarFrame: CGRect?
@@ -13,11 +15,14 @@ class DappBrowserPresenter: NSObject {
     var deepLinkParams: NSDictionary?  //dappURL, chainID, chainType // allStrings
     
     weak var delegate: SendWalletProtocol?
-    var walletAddtess: String? {
+    var walletAddress: String? {
         didSet {
-            mainVC?.walletAddress.text = walletAddtess
+            mainVC?.walletAddress.text = walletAddress
+            self.loadWebViewContent()
         }
     }
+    
+    var choosenWallet = UserWalletRLM()
     
     func loadETHWallets() {
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
@@ -25,18 +30,48 @@ class DappBrowserPresenter: NSObject {
                 return
             } else {
                 let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
-                let choosenWallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
-                
-                DispatchQueue.main.async { [unowned self] in
-                    self.walletAddtess = choosenWallet?.address
-                }
+                //FIXME: MS wallets
+                self.choosenWallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first!
+                self.walletAddress = self.choosenWallet.address
             }
+        }
+    }
+    
+    fileprivate func loadWebViewContent() {
+        clear(cache: true, cookies: true)
+        
+        DispatchQueue.main.async { [unowned self] in
+            self.mainVC!.browserCoordinator = BrowserCoordinator(wallet: self.choosenWallet)
+            self.mainVC!.add(self.mainVC!.browserCoordinator!.browserViewController, to: self.mainVC!.browserView)
+            self.mainVC!.browserCoordinator!.start()
         }
     }
 }
 
+extension BrowserCacheDelegate {
+    func clear(cache: Bool, cookies: Bool) {
+        if cache { clearCache() }
+        if cookies { clearCookies() }
+    }
+    
+    fileprivate func clearCache() {
+        URLCache.shared.removeAllCachedResponses()
+        URLCache.shared.diskCapacity = 0
+        URLCache.shared.memoryCapacity = 0
+    }
+    
+    fileprivate func clearCookies() {
+        let cookieStorage = HTTPCookieStorage.shared
+        
+        guard let cookies = cookieStorage.cookies else { return }
+        
+        cookies.forEach { cookieStorage.deleteCookie($0) }
+    }
+}
+
+
 extension DappBrowserPresenter: SendWalletProtocol {
     func sendWallet(wallet: UserWalletRLM) {
-        self.walletAddtess = wallet.address
+        self.walletAddress = wallet.address
     }
 }

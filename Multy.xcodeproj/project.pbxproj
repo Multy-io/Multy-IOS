@@ -156,6 +156,7 @@
 		44C3F38A207E5FAB00AC1BD4 /* ProgressHUD+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C3F389207E5FAB00AC1BD4 /* ProgressHUD+Extension.swift */; };
 		44CBAB9F20BEEC8A005F04C6 /* EthWalletHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44CBABA120BEEC8A005F04C6 /* EthWalletHeaderTableViewCell.xib */; };
 		44CD6B8F208B5018009C07F6 /* BigInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CD6B8E208B5018009C07F6 /* BigInt.swift */; };
+		44D3F044217F2FC0003A4F0B /* DappBrowser.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44D3F046217F2FC0003A4F0B /* DappBrowser.strings */; };
 		44DCC201205A9D34001080FB /* TopIndexRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DCC200205A9D34001080FB /* TopIndexRLM.swift */; };
 		44DFEF9F206A51AF0068769C /* UInt64+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */; };
 		44E0245C20F7AB1F00F822D6 /* MultiSigWalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */; };
@@ -713,6 +714,9 @@
 		44D3F03F217A2635003A4F0B /* blockchain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blockchain.h; sourceTree = "<group>"; };
 		44D3F040217A2635003A4F0B /* ethereum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ethereum.h; sourceTree = "<group>"; };
 		44D3F041217A2635003A4F0B /* bitcoin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bitcoin.h; sourceTree = "<group>"; };
+		44D3F045217F2FC0003A4F0B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DappBrowser.strings; sourceTree = "<group>"; };
+		44D3F047217F2FC3003A4F0B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DappBrowser.strings; sourceTree = "<group>"; };
+		44D3F048217F2FC4003A4F0B /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/DappBrowser.strings; sourceTree = "<group>"; };
 		44DCC200205A9D34001080FB /* TopIndexRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopIndexRLM.swift; sourceTree = "<group>"; };
 		44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extension.swift"; sourceTree = "<group>"; };
 		44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSigWalletCell.swift; sourceTree = "<group>"; };
@@ -1069,6 +1073,7 @@
 			isa = PBXGroup;
 			children = (
 				442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */,
+				448C38572165603100D83D02 /* BrowserCoordinator.swift */,
 				44A6F8342166542F00FC3A41 /* BrowserViewController.swift */,
 				448C386C2165603200D83D02 /* Address.swift */,
 				448C38722165603200D83D02 /* AppStyle.swift */,
@@ -1076,7 +1081,6 @@
 				448C38592165603100D83D02 /* BalanceProtocol.swift */,
 				448C387E2165603300D83D02 /* Bookmark.swift */,
 				448C386E2165603200D83D02 /* BrowserAction.swift */,
-				448C38572165603100D83D02 /* BrowserCoordinator.swift */,
 				448C38802165603300D83D02 /* BrowserErrorView.swift */,
 				448C38872165603400D83D02 /* BrowserNavigationBar.swift */,
 				448C38962165603500D83D02 /* BrowserURLParser.swift */,
@@ -1161,6 +1165,7 @@
 				4453507D20D14E21004F8DAE /* Localizable.strings */,
 				859C7B0820EE66F0002EA215 /* CreateMultiSig.strings */,
 				44A5BB0520F64282007FBB68 /* MultiSig.strings */,
+				44D3F046217F2FC0003A4F0B /* DappBrowser.strings */,
 			);
 			path = "Localized Strings";
 			sourceTree = "<group>";
@@ -2602,6 +2607,7 @@
 				445B129720BC1CEE00FD0D33 /* CustomTrasanctionFeeTableViewCell.xib in Resources */,
 				445B127020BC1BA800FD0D33 /* SeedPhrase.storyboard in Resources */,
 				4477262420BE9F53006BF4A7 /* NewWalletTableViewCell.xib in Resources */,
+				44D3F044217F2FC0003A4F0B /* DappBrowser.strings in Resources */,
 				445B12E020BD78D000FD0D33 /* CurrencyChooser.strings in Resources */,
 				45EBB6A8200D312700F81322 /* GoogleService-Info.plist in Resources */,
 				45AC16292048214C00E75BD6 /* CurrencyTableViewCell.xib in Resources */,
@@ -3628,6 +3634,16 @@
 				44CBABA720BEEC9B005F04C6 /* uk */,
 			);
 			name = EthWalletHeaderTableViewCell.xib;
+			sourceTree = "<group>";
+		};
+		44D3F046217F2FC0003A4F0B /* DappBrowser.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				44D3F045217F2FC0003A4F0B /* en */,
+				44D3F047217F2FC3003A4F0B /* ru */,
+				44D3F048217F2FC4003A4F0B /* uk */,
+			);
+			name = DappBrowser.strings;
 			sourceTree = "<group>";
 		};
 		452290581FBB18D30024B550 /* Main.storyboard */ = {
