@@ -35,6 +35,7 @@ class BrowserViewController: UIViewController {
     private struct Keys {
         static let estimatedProgress = "estimatedProgress"
         static let developerExtrasEnabled = "developerExtrasEnabled"
+//        static let webKitWebGLEnabledKey = "webKitWebGLEnabled"
         static let URL = "URL"
         static let ClientName = "Trust"
     }
@@ -51,8 +52,10 @@ class BrowserViewController: UIViewController {
         webView.allowsBackForwardNavigationGestures = true
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.navigationDelegate = self
+        
         if isDebug {
             webView.configuration.preferences.setValue(true, forKey: Keys.developerExtrasEnabled)
+//            webView.configuration.preferences.setValue(true, forKey: Keys.webKitWebGLEnabledKey)
         }
         
         return webView
@@ -91,6 +94,9 @@ class BrowserViewController: UIViewController {
         let config = WKWebViewConfiguration.make(for: wallet.address,
                                                  in: ScriptMessageProxy(delegate: self))
         config.websiteDataStore = WKWebsiteDataStore.default()
+        
+        config.allowsInlineMediaPlayback = true
+        config.suppressesIncrementalRendering = true
         
         return config
     }()
