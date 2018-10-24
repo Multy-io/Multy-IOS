@@ -6,3 +6,5 @@
 "SOMETHING WENT WRONG" = "Щось пішло не так";
 "YOU ENTERED TOO SMALL AMOUNT" = "Ви ввели занадто малу суму!";
 "YOU ARE TRYING SPEND MORE THEN HAVE" = "Ви намагаєтеся витратити більше ніж маєте.";
+"SUCCESS" = "Успішно!";
+"ERROR WHILE CREATING WALLET" = "Помилка при створенні гаманця!";

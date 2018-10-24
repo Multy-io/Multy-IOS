@@ -6,3 +6,5 @@
 "SOMETHING WENT WRONG" = "Something went wrong";
 "YOU ENTERED TOO SMALL AMOUNT" = "You entered too small amount!";
 "YOU ARE TRYING SPEND MORE THEN HAVE" = "You are trying to spend more then you have.";
+"SUCCESS" = "Succsess!";
+"ERROR WHILE CREATING WALLET" = "Error while creating wallet!";

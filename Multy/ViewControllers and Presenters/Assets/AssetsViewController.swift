@@ -688,6 +688,7 @@ extension TableViewDelegate : UITableViewDelegate {
                 self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
                     if isNeedEthTest {
                         self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 4), completion: { [unowned self] (answer, err) in
+                            //FIXME: possibly unused request
                             self.presenter.getWalletsVerbose(completion: { (complete) in
                                 completion(nil)
                             })
