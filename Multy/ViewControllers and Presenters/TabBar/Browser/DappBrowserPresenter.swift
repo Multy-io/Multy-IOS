@@ -12,7 +12,7 @@ class DappBrowserPresenter: NSObject {
     var tabBarFrame: CGRect?
     var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
     
-    var deepLinkParams: NSDictionary?  //dappURL, chainID, chainType // allStrings
+    var dragonDLObj: DragonDLObj?
     
     weak var delegate: SendWalletProtocol?
     var walletAddress: String? {

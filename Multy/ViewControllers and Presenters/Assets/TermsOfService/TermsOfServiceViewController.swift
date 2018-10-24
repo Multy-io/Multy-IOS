@@ -12,7 +12,7 @@ class TermsOfServiceViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var spiner: UIActivityIndicatorView!
     @IBOutlet weak var agreeTextLabel: UILabel!
     
-    var deepLinkParams: NSDictionary?
+    var dragonDLObj: DragonDLObj?
     
     var sendDeepLinksDelegate: DeepLinksProtocol?
     
@@ -50,8 +50,8 @@ class TermsOfServiceViewController: UIViewController, UIWebViewDelegate {
         
         UserDefaults.standard.set(true, forKey: "isTermsAccept")
         UserDefaults.standard.set(true, forKey: "isFCMAccepted")
-        if deepLinkParams != nil {
-            sendDeepLinksDelegate?.sendDeepLinksParams(params: deepLinkParams!)
+        if dragonDLObj != nil {
+            sendDeepLinksDelegate?.sendDeepLinksParams(params: dragonDLObj!)
         }
         self.dismiss(animated: true, completion: nil)
     }

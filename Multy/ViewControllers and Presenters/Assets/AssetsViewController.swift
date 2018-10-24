@@ -539,9 +539,9 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         blockchainForTansfer = blockchain
     }
     
-    func sendDeepLinksParams(params: NSDictionary) {
+    func sendDeepLinksParams(params: DragonDLObj) {
         loader.show(customTitle: "Creating")
-        let isNeedEthTest: Bool = Int(params["chainType"] as! String) == 4 ? true : false
+        let isNeedEthTest: Bool = params.chaintType == 4 ? true : false
         createFirstWallets(isNeedEthTest: isNeedEthTest) { (error) in
             if error == nil {
                 self.loader.hide()
