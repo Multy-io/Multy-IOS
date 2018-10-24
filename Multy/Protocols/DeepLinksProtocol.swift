@@ -5,5 +5,5 @@
 import Foundation
 
 protocol DeepLinksProtocol: class {
-    func sendDeepLinksParams(params: NSDictionary)
+    func sendDeepLinksParams(params: DragonDLObj)
 }

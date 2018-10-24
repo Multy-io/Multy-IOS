@@ -139,19 +139,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
     }
     
     func openDragonsFlow(acc: AccountRLM?, params: NSDictionary) {
+        let dragonDL = DragonDLObj()
+        dragonDL.chainID = Int(params["chainID"] as! String)!
+        dragonDL.chaintType = Int(params["chainType"] as! String)!
+        dragonDL.URLforBrowser = params["dappURL"] as! String
         if acc == nil && self.window?.rootViewController?.topMostViewController().className  == TermsOfServiceViewController.className {
             let termsVC = self.window?.rootViewController?.topMostViewController() as! TermsOfServiceViewController
-            termsVC.deepLinkParams = params
+            termsVC.dragonDLObj = dragonDL
         } else {
-            openBrowserWith(params: params)
+            openBrowserWith(params: dragonDL)
         }
     }
     
-    func openBrowserWith(params: NSDictionary) {
+    func openBrowserWith(params: DragonDLObj) {
         let tabBar = self.window?.rootViewController as! CustomTabBarViewController
         tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 1)
         let browserVC = tabBar.childViewControllers[1].childViewControllers[0] as! DappBrowserViewController
-        browserVC.presenter.deepLinkParams = params
+        browserVC.presenter.dragonDLObj = params
     }
     
     // Respond to URI scheme links
