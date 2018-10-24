@@ -317,6 +317,7 @@
 		45D4D168205C12DC008B1F0B /* EthWalletHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D4D164205C12DC008B1F0B /* EthWalletHeaderTableViewCell.swift */; };
 		45D4D16D205C1DC7008B1F0B /* EthWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D4D16B205C1DC7008B1F0B /* EthWalletViewController.swift */; };
 		45D4D16E205C1DC7008B1F0B /* EthWalletPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D4D16C205C1DC7008B1F0B /* EthWalletPresenter.swift */; };
+		45D5610F2180620D00AFF74D /* DragonDLObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D5610E2180620D00AFF74D /* DragonDLObj.swift */; };
 		45D7890B20ECF776001AB402 /* MembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D7890A20ECF776001AB402 /* MembersViewController.swift */; };
 		45D7890D20ECFA0A001AB402 /* MembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D7890C20ECFA0A001AB402 /* MembersPresenter.swift */; };
 		45D7890F20ED1F48001AB402 /* CountOfProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D7890E20ED1F48001AB402 /* CountOfProtocol.swift */; };
@@ -887,6 +888,7 @@
 		45D4D164205C12DC008B1F0B /* EthWalletHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EthWalletHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		45D4D16B205C1DC7008B1F0B /* EthWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EthWalletViewController.swift; sourceTree = "<group>"; };
 		45D4D16C205C1DC7008B1F0B /* EthWalletPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EthWalletPresenter.swift; sourceTree = "<group>"; };
+		45D5610E2180620D00AFF74D /* DragonDLObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragonDLObj.swift; sourceTree = "<group>"; };
 		45D7890A20ECF776001AB402 /* MembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersViewController.swift; sourceTree = "<group>"; };
 		45D7890C20ECFA0A001AB402 /* MembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersPresenter.swift; sourceTree = "<group>"; };
 		45D7890E20ED1F48001AB402 /* CountOfProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountOfProtocol.swift; sourceTree = "<group>"; };
@@ -2135,6 +2137,7 @@
 				45498F922061662A00130B94 /* CurrencyExchange.swift */,
 				45310D0E2063B9F500105532 /* EthereumGasInfo.swift */,
 				85DE62EC20AC4E4C00423D89 /* PaymentRequest.swift */,
+				45D5610E2180620D00AFF74D /* DragonDLObj.swift */,
 			);
 			path = PONSO;
 			sourceTree = "<group>";
@@ -3162,6 +3165,7 @@
 				FAFCDA881FD7DD7A0056DD64 /* Request+Extension.swift in Sources */,
 				44AAAE1320E258D200A481A4 /* ContactCell.swift in Sources */,
 				448C38DB2165603500D83D02 /* UIColor.swift in Sources */,
+				45D5610F2180620D00AFF74D /* DragonDLObj.swift in Sources */,
 				448C38A12165603500D83D02 /* BalanceProtocol.swift in Sources */,
 				444066D0205926D400342046 /* UIApplication+Extension.swift in Sources */,
 				8592E02A2101CCBD0040125B /* WaitingMembersSettingsPresenter.swift in Sources */,
