@@ -79,8 +79,7 @@ class SendFinishPresenter: NSObject {
     
     
     func makeNewTx() {
-        //Only for simple eth wallet, fix 'Low nonce'
-//        if transactionDTO.choosenWallet!.isMultiSig || transactionDTO.choosenWallet!.importedPrivateKey.isEmpty == false {
+        // fix for 'Low nonce'
         if transactionDTO.choosenWallet!.importedPrivateKey.isEmpty == false {
             return
         }
@@ -124,13 +123,34 @@ class SendFinishPresenter: NSObject {
     
     func getOneVerbose(completion: @escaping (_ updatedWallet: UserWalletRLM?,_ error: Error?) -> ()) {
         blockUI()
-        DataManager.shared.getOneWalletVerbose(wallet: transactionDTO.choosenWallet!) { (updatedWallet, error) in
-            self.unlockUI()
-            if updatedWallet != nil {
-                completion(updatedWallet, nil)
+        var walletForUpdate: UserWalletRLM?
+        if transactionDTO.choosenWallet!.isMultiSig {
+            DataManager.shared.getWallet(primaryKey: transactionDTO.choosenWallet!.multisigWallet!.linkedWalletID) { (result) in
+                switch result {
+                case .success(let wallet):
+                    walletForUpdate = wallet
+                    DataManager.shared.getOneWalletVerbose(wallet: walletForUpdate!) { (updatedWallet, error) in
+                        self.unlockUI()
+                        if updatedWallet != nil {
+                            completion(updatedWallet, nil)
+                        }
+                    }
+                case .failure(_):
+                    //fix it return error (but if we have MS how can we doesn`t have linked wallet? so error chance is minimum)
+                    completion(nil, nil)
+                }
+            }
+        } else {
+            walletForUpdate = transactionDTO.choosenWallet!
+            DataManager.shared.getOneWalletVerbose(wallet: walletForUpdate!) { (updatedWallet, error) in
+                self.unlockUI()
+                if updatedWallet != nil {
+                    completion(updatedWallet, nil)
+                }
             }
         }
     }
+    
     
     func blockUI() {
         sendFinishVC!.view.isUserInteractionEnabled = false
