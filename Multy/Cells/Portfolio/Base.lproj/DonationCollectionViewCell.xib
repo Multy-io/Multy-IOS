@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -49,6 +49,14 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="multy-dragon-banner382" translatesAutoresizingMaskIntoConstraints="NO" id="MKu-wV-M4t">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="237"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97644573450088501" green="0.98039692640304565" blue="0.99984890222549438" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -58,9 +66,13 @@
                                     <constraint firstAttribute="bottom" secondItem="zPc-In-lrp" secondAttribute="bottom" constant="17" id="9GK-OE-OHa"/>
                                     <constraint firstAttribute="bottom" secondItem="Jln-yG-HES" secondAttribute="bottom" constant="16" id="EwR-Vo-ab9"/>
                                     <constraint firstItem="Jln-yG-HES" firstAttribute="top" secondItem="ohW-i9-vkE" secondAttribute="bottom" id="HC6-i3-06C"/>
+                                    <constraint firstAttribute="trailing" secondItem="MKu-wV-M4t" secondAttribute="trailing" id="P0A-7A-U3O"/>
                                     <constraint firstItem="ohW-i9-vkE" firstAttribute="top" secondItem="3q6-ea-FbV" secondAttribute="bottom" constant="12" id="RcU-QZ-mcS"/>
                                     <constraint firstAttribute="trailing" secondItem="3q6-ea-FbV" secondAttribute="trailing" id="UY4-9w-uhm"/>
+                                    <constraint firstAttribute="bottom" secondItem="MKu-wV-M4t" secondAttribute="bottom" id="WLl-Pq-LRB"/>
+                                    <constraint firstItem="MKu-wV-M4t" firstAttribute="leading" secondItem="WIB-5d-PIn" secondAttribute="leading" id="WlM-W1-uyO"/>
                                     <constraint firstAttribute="bottom" secondItem="3q6-ea-FbV" secondAttribute="bottom" constant="67" id="efX-dr-fGj"/>
+                                    <constraint firstItem="MKu-wV-M4t" firstAttribute="top" secondItem="WIB-5d-PIn" secondAttribute="top" id="f62-ew-8VR"/>
                                     <constraint firstItem="Jln-yG-HES" firstAttribute="leading" secondItem="ohW-i9-vkE" secondAttribute="leading" id="ka2-Zg-Fvb"/>
                                     <constraint firstItem="3q6-ea-FbV" firstAttribute="leading" secondItem="WIB-5d-PIn" secondAttribute="leading" id="oLU-1K-ivS"/>
                                     <constraint firstItem="zPc-In-lrp" firstAttribute="top" secondItem="3q6-ea-FbV" secondAttribute="bottom" constant="15" id="oPI-zy-GwM"/>
@@ -98,14 +110,16 @@
             <size key="customSize" width="343" height="261"/>
             <connections>
                 <outlet property="backgroundImg" destination="3q6-ea-FbV" id="Y3d-tH-H2t"/>
+                <outlet property="bannerImg" destination="MKu-wV-M4t" id="0te-1u-SS1"/>
                 <outlet property="botView" destination="WIB-5d-PIn" id="uno-UE-2H8"/>
                 <outlet property="midLbl" destination="ohW-i9-vkE" id="Y8N-tu-3bK"/>
             </connections>
-            <point key="canvasLocation" x="33.5" y="64.5"/>
+            <point key="canvasLocation" x="32.799999999999997" y="64.31784107946028"/>
         </collectionViewCell>
     </objects>
     <resources>
         <image name="chartsDonationImage" width="343" height="170"/>
         <image name="donationIcon" width="30" height="35"/>
+        <image name="multy-dragon-banner382" width="764" height="524"/>
     </resources>
 </document>
