@@ -43,6 +43,7 @@ class DappBrowserViewController: UIViewController {
         let walletsVC = viewControllerFrom("Receive", "ReceiveStart") as! ReceiveStartViewController
         walletsVC.presenter.isNeedToPop = true
         walletsVC.sendWalletDelegate = self.presenter
+        walletsVC.presenter.isMultisigAllowed = false
         walletsVC.presenter.displayedBlockchainOnly = presenter.defaultBlockchainType
         self.navigationController?.pushViewController(walletsVC, animated: true)
     }

@@ -41,7 +41,7 @@ class DappBrowserPresenter: NSObject {
             } else {
                 let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
                 //FIXME: MS wallets
-                let wallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
+                let wallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType && $0.isMultiSig == false }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
                 
                 if wallet == nil {
                     self.createFirstWalletAndLoadBrowser()
