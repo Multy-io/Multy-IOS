@@ -58,6 +58,8 @@ class DappBrowserPresenter: NSObject {
         
         DispatchQueue.main.async { [unowned self] in
             self.mainVC!.browserCoordinator = BrowserCoordinator(wallet: self.choosenWallet, urlString: self.defaultURLString)
+            print(self.choosenWallet.name)
+            print(self.choosenWallet.blockchainType)
             self.mainVC!.add(self.mainVC!.browserCoordinator!.browserViewController, to: self.mainVC!.browserView)
             self.mainVC!.browserCoordinator!.start()
         }
@@ -141,6 +143,7 @@ extension BrowserCacheDelegate {
 
 extension DappBrowserPresenter: SendWalletProtocol {
     func sendWallet(wallet: UserWalletRLM) {
+        self.choosenWallet = wallet
         self.walletAddress = wallet.address
     }
 }
