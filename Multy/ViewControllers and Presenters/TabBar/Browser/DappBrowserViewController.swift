@@ -68,14 +68,10 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-<<<<<<< HEAD
-        
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
         presenter.loadETHWallets()
-=======
         presenter.vcViewWillAppear()
->>>>>>> e6846be6f7115eca1c1b2af3cf92057b8cd496e4
     }
     
     override func viewWillDisappear(_ animated: Bool) {

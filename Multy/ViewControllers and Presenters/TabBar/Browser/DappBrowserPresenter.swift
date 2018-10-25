@@ -67,6 +67,15 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     func vcViewDidAppear() {
     }
     
+    var walletAddress: String? {
+        didSet {
+//            mainVC?.walletAddress.text = walletAddress
+            self.loadWebViewContent()
+        }
+    }
+    
+    var choosenWallet = UserWalletRLM()
+    
     func loadETHWallets() {
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             if err != nil {
