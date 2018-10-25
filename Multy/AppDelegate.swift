@@ -142,7 +142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
         let dragonDL = DragonDLObj()
         dragonDL.chainID = Int(params["chainID"] as! String)!
         dragonDL.chaintType = Int(params["chainType"] as! String)!
-        dragonDL.URLforBrowser = params["dappURL"] as! String
+        dragonDL.browserURL = params["dappURL"] as! String
         if acc == nil && self.window?.rootViewController?.topMostViewController().className  == TermsOfServiceViewController.className {
             let termsVC = self.window?.rootViewController?.topMostViewController() as! TermsOfServiceViewController
             termsVC.dragonDLObj = dragonDL

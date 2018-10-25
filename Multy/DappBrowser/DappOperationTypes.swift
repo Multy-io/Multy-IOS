@@ -55,7 +55,7 @@ struct OperationObject {
         if let gas =  object["gas"] as? String {
             self.gasLimit = UInt64(gas.dropFirst(2), radix: 16)!
         } else {
-            self.gasLimit = 0
+            self.gasLimit = UInt64("\(2_000_000)")!
         }
         
         if let gasPriceString =  object["gasPrice"] as? String {
