@@ -18,19 +18,20 @@ class WalletTableViewCell: UITableViewCell {
     @IBOutlet weak var arrowImage: UIImageView!
     @IBOutlet weak var statusImage: UIImageView!
     
-    @IBOutlet weak var viewForShadow: UIView!
     @IBOutlet weak var resyncingStatusLabel: UILabel!
     @IBOutlet weak var msStatusLbl: UILabel!
     @IBOutlet weak var nameYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var backViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var selectedView: UIView!
     
     var isBorderOn = false
-    
+    var isCellSelected = false
     var wallet: UserWalletRLM?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        setupShadow()
+        setupShadow(false)
 //        self.backView.layer.shadowColor = UIColor.black.cgColor
 //        self.backView.layer.shadowOpacity = 0.1
 //        self.backView.layer.shadowOffset = .zero
@@ -41,8 +42,11 @@ class WalletTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    func setupShadow() {
-        viewForShadow.setShadow(with: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.6))
+    func setupShadow(_ selected : Bool) {
+        backView.layer.shadowColor = #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.6).cgColor
+        backView.layer.shadowOpacity = selected ? 0 : 0.7
+        backView.layer.shadowOffset = selected ? .zero : CGSize(width: 0, height: 2)
+        backView.layer.shadowRadius = selected ? 6 : 3
     }
     
 //    func makeshadow() {
@@ -149,6 +153,12 @@ class WalletTableViewCell: UITableViewCell {
         } else { //if msDeployStatus == DeployStatus.pending.rawValue {
             return "Payment pending..."
         }
+    }
+    
+    func selectCell(_ selected: Bool) {
+        selectedView.backgroundColor = selected ? #colorLiteral(red: 0.5294117647, green: 0.631372549, blue: 0.7725490196, alpha: 0.2988816353) : #colorLiteral(red: 0.9254901961, green: 0.9333333333, blue: 0.968627451, alpha: 1)
+        contentView.layoutIfNeeded()
+        setupShadow(selected)
     }
 }
 
