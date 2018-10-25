@@ -142,6 +142,7 @@ extension BrowserCacheDelegate {
 extension DappBrowserPresenter: SendWalletProtocol {
     func sendWallet(wallet: UserWalletRLM) {
         self.walletAddress = wallet.address
+        self.choosenWallet = wallet
     }
 }
 

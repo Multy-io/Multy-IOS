@@ -21,7 +21,34 @@ class DappBrowserViewController: UIViewController {
         presenter.tabBarFrame = tabBarController?.tabBar.frame
         
         blockchainTypeImageView.image = UIImage(named: presenter.defaultBlockchainType.iconString)
-        presenter.loadETHWallets()
+        
+        if presenter.dragonDLObj == nil {
+            presenter.dragonDLObj = make()
+        }
+        
+    }
+    
+    func make() -> DragonDLObj {
+        let settingsObj = DragonDLObj()
+        if let curID = UserDefaults.standard.value(forKey: "browserCurrencyID") {
+            settingsObj.chainID = curID as! Int
+        } else {
+            settingsObj.chainID = 60
+        }
+        
+        if let netId = UserDefaults.standard.value(forKey: "browserNetworkID") {
+            settingsObj.chaintType = netId as! Int
+        } else {
+            settingsObj.chaintType = 1
+        }
+        
+        if let url = UserDefaults.standard.value(forKey: "browserDefURL") {
+            settingsObj.browserURL = url as! String
+        } else {
+            settingsObj.browserURL = "https://dragonereum-alpha-test.firebaseapp.com"
+        }
+        
+        return settingsObj
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -33,6 +60,7 @@ class DappBrowserViewController: UIViewController {
         
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
+        presenter.loadETHWallets()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
