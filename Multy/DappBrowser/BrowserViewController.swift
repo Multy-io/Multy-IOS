@@ -8,6 +8,8 @@ import JavaScriptCore
 import Result
 //typealias ResultDapp<T, Error: Swift.Error> = Result
 
+private typealias LocalizeDelegate = BrowserViewController
+
 enum BrowserAction {
     case history
     //    case addBookmark(bookmark: Bookmark)
@@ -28,10 +30,14 @@ class BrowserViewController: UIViewController {
     private var myContext = 0
     //    let account: WalletInfo
     //    let sessionConfig: Config
+    var wallet = UserWalletRLM()
+    var urlString = String()
+    var alert: UIAlertController?
     
     private struct Keys {
         static let estimatedProgress = "estimatedProgress"
         static let developerExtrasEnabled = "developerExtrasEnabled"
+//        static let webKitWebGLEnabledKey = "webKitWebGLEnabled"
         static let URL = "URL"
         static let ClientName = "Trust"
     }
@@ -48,9 +54,12 @@ class BrowserViewController: UIViewController {
         webView.allowsBackForwardNavigationGestures = true
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.navigationDelegate = self
+        
         if isDebug {
             webView.configuration.preferences.setValue(true, forKey: Keys.developerExtrasEnabled)
+//            webView.configuration.preferences.setValue(true, forKey: WKWebsiteDataTypeOfflineWebApplicationCache)
         }
+        
         return webView
     }()
     
@@ -58,6 +67,7 @@ class BrowserViewController: UIViewController {
         let errorView = BrowserErrorView()
         errorView.translatesAutoresizingMaskIntoConstraints = false
         errorView.delegate = self
+        
         return errorView
     }()
     
@@ -76,27 +86,29 @@ class BrowserViewController: UIViewController {
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.tintColor = Colors.darkBlue
         progressView.trackTintColor = .clear
+        
         return progressView
     }()
     
     //    //Take a look at this issue : https://stackoverflow.com/questions/26383031/wkwebview-causes-my-view-controller-to-leak
     lazy var config: WKWebViewConfiguration = {
         //TODO
-        let config = WKWebViewConfiguration.make(for: "0xf946d8b85f4e53a375daeeb9111043f107b013a1",
+        let config = WKWebViewConfiguration.make(for: wallet.address,
                                                  in: ScriptMessageProxy(delegate: self))
-        config.websiteDataStore = WKWebsiteDataStore.default()
+        config.websiteDataStore =  WKWebsiteDataStore.default()
+        
+        config.allowsInlineMediaPlayback = true
+        config.suppressesIncrementalRendering = true
+        
         return config
     }()
     
+    var lastTxID = ""
     
-    init(
-        //        account: WalletInfo,
-        //        config: Config
-        //        server: RPCServer
-        ) {
-        //        self.account = account
-        //        self.sessionConfig = config
-        //        self.server = server
+    
+    init(wallet: UserWalletRLM, urlString: String) {
+        self.wallet = wallet
+        self.urlString = urlString
         
         super.init(nibName: nil, bundle: nil)
         
@@ -148,10 +160,14 @@ class BrowserViewController: UIViewController {
         super.viewWillAppear(animated)
         
         refreshURL()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleTransactionUpdatedNotification(notification :)), name: NSNotification.Name("transactionUpdated"), object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("transactionUpdated"), object: nil)
     }
     
     //    func logAnalytics() {
@@ -163,6 +179,23 @@ class BrowserViewController: UIViewController {
         webView.evaluateJavaScript("navigator.userAgent") { [weak self] result, _ in
             guard let `self` = self, let currentUserAgent = result as? String else { return }
             self.webView.customUserAgent = currentUserAgent + " " + self.userClient
+        }
+    }
+    
+    @objc fileprivate func handleTransactionUpdatedNotification(notification : Notification) {
+        DispatchQueue.main.async { [unowned self] in
+            print(notification)
+            
+            let msg = notification.userInfo?["NotificationMsg"] as? [AnyHashable : Any]
+            guard msg != nil, let txID = msg!["txid"] as? String else {
+                return
+            }
+            
+            if txID == self.lastTxID {
+                self.webView.reload()
+            }
+            
+            self.lastTxID = ""
         }
     }
     
@@ -184,10 +217,11 @@ class BrowserViewController: UIViewController {
 //        }
     
     func goHome() {
-        let linkString = "https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.alpha.dragonereum.io"
+        let linkString = urlString //"https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.alpha.dragonereum.io"
         guard let url = URL(string: linkString) else { return } //"https://dapps.trustwalletapp.com/"
         var request = URLRequest(url: url)
         request.cachePolicy = .returnCacheDataElseLoad
+//        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         hideErrorView()
         webView.load(request)
         browserNavBar?.textField.text = url.absoluteString
@@ -315,7 +349,6 @@ extension BrowserViewController: WKNavigationDelegate {
 
 extension BrowserViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        
         //COMMENTED
 //                guard let command = DappAction.fromMessage(message) else { return }
         //        let requester = DAppRequester(title: webView.title, url: webView.url)
@@ -346,7 +379,7 @@ extension BrowserViewController: WKScriptMessageHandler {
         
         switch operationType {
         case .signTransaction:
-            signTx(for: operationObject)
+            showAlert(with: operationObject)
         case .signMessage:
             return
         case .signPersonalMessage:
@@ -360,58 +393,149 @@ extension BrowserViewController: WKScriptMessageHandler {
 
 //perfom operations
 extension BrowserViewController {
+    func refreshWalletAndSendTx(for object: OperationObject) {
+        DataManager.shared.getOneWalletVerbose(wallet: wallet) { [unowned self] (wallet, error) in
+            if error != nil {
+                self.webView.reload()
+                self.presentAlert(for: "") // default message
+            } else {
+                self.wallet = wallet!
+                self.signTx(for: object)
+            }
+        }
+    }
+    
+    func showAlert(with txInfo: OperationObject) {
+        let localizedFormatString = localize(string: Constants.browserTxAlertSring)
+        let valueString = BigInt("\(txInfo.value)").cryptoValueString(for: wallet.blockchain)
+        let feeString = (BigInt("\(txInfo.gasLimit)") * BigInt("\(txInfo.gasPrice)")).cryptoValueString(for: wallet.blockchain)
+        
+        let message = NSString.init(format: NSString.init(string: localizedFormatString),  valueString, feeString, wallet.name)
+        let alert = UIAlertController(title: nil, message: message as String, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: localize(string: Constants.denyString), style: .default, handler: { [weak self] (action) in
+            if self != nil {
+                self!.webView.reload()
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: localize(string: Constants.confirmString), style: .cancel, handler: { [weak self] (action) in
+            if self != nil {
+                self!.signTx(for: txInfo)
+            }
+        }))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     func signTx(for object: OperationObject) {
         let account = DataManager.shared.realmManager.account
         let core = DataManager.shared.coreLibManager
         var binaryData = account!.binaryDataString.createBinaryData()!
         
-        DataManager.shared.getWallet(primaryKey: "c6124b7e456281fbef3d39dacdebb0cda9102fea8c05cc863028db934c903ffe") {
-            switch $0 {
-            case .success(let wallet):
-                let addressData = core.createAddress(blockchainType:    wallet.blockchainType,
-                                                     walletID:          wallet.walletID.uint32Value,
-                                                     addressID:         wallet.changeAddressIndex,
-                                                     binaryData:        &binaryData)
+        let addressData = core.createAddress(blockchainType:    wallet.blockchainType,
+                                             walletID:          wallet.walletID.uint32Value,
+                                             addressID:         wallet.changeAddressIndex,
+                                             binaryData:        &binaryData)
+        
+        let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                                              sendAddress: object.toAddress,
+                                                                              sendAmountString: "\(object.value)",
+            nonce: wallet.ethWallet!.nonce.intValue,
+            balanceAmount: wallet.ethWallet!.balance,
+            ethereumChainID: UInt32(wallet.blockchainType.net_type),
+            gasPrice: "\(object.gasPrice)",
+            gasLimit: "\(object.gasLimit)",
+            payload: object.hexData)
+        let rawTransaction = trData.message
+        
+        guard trData.isTransactionCorrect else {
+            self.webView.reload()
+            self.presentAlert(for: rawTransaction)
+            
+            
+            return
+        }
+        
+        let newAddressParams = [
+            "walletindex"   : wallet.walletID.intValue,
+            "address"       : addressData!["address"] as! String,
+            "addressindex"  : wallet.addresses.count,
+            "transaction"   : rawTransaction,
+            "ishd"          : wallet.shouldCreateNewAddressAfterTransaction
+            ] as [String : Any]
+        
+        let params = [
+            "currencyid": wallet.chain,
+            /*"JWT"       : jwtToken,*/
+            "networkid" : wallet.chainType,
+            "payload"   : newAddressParams
+            ] as [String : Any]
+        
+        DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
+            if dict != nil {
+                self.saveLastTXID(from:  dict!)
                 
-                let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                                      sendAddress: object.toAddress,
-                                                                                      sendAmountString: "\(object.value)",
-                    nonce: wallet.ethWallet!.nonce.intValue,
-                    balanceAmount: wallet.ethWallet!.balance,
-                    ethereumChainID: UInt32(wallet.blockchainType.net_type),
-                    gasPrice: "\(object.gasPrice)",
-                    gasLimit: "\(object.gasLimit)",
-                    payload: object.hexData)
-                let rawTransaction = trData.message
-                
-                let newAddressParams = [
-                    "walletindex"   : wallet.walletID.intValue,
-                    "address"       : addressData!["address"] as! String,
-                    "addressindex"  : wallet.addresses.count,
-                    "transaction"   : rawTransaction,
-                    "ishd"          : wallet.shouldCreateNewAddressAfterTransaction
-                    ] as [String : Any]
-                
-                let params = [
-                    "currencyid": wallet.chain,
-                    /*"JWT"       : jwtToken,*/
-                    "networkid" : wallet.chainType,
-                    "payload"   : newAddressParams
-                    ] as [String : Any]
-                
-                DataManager.shared.sendHDTransaction(transactionParameters: params, completion: { (dict, error) in
-                    print(dict)
-                })
-                
-            case .failure(let error):
-                print(print(error))
+                self.showSuccessAlert()
+            } else {
+                self.presentAlert(for: "")
+                self.webView.reload()
             }
         }
+    }
+    
+    func showSuccessAlert() {
+        // show success alert
+        alert = UIAlertController(title: "", message: Constants.successString, preferredStyle: .alert)
+        present(self.alert!, animated: true, completion: nil)
+        let when = DispatchTime.now() + 2
+        DispatchQueue.main.asyncAfter(deadline: when){ [unowned self] in
+            if let alert = self.alert {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func presentAlert(for info: String) {
+        var message = String()
+        if info.hasPrefix("BigInt value is not representable as") {
+            message = Constants.youEnteredTooSmallAmountString
+        } else if info.hasPrefix("Transaction is trying to spend more than available") {
+            message = Constants.youTryingSpendMoreThenHaveString
+        } else {
+            message = Constants.somethingWentWrongString
+        }
+        
+        let alert = UIAlertController(title: localize(string: Constants.errorString), message: localize(string: message), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in }))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func saveLastTXID(from info: NSDictionary) {
+        guard let code = info["code"] as? Int, code == 200 else {
+            return
+        }
+        
+        guard let message = info["message"] as? NSDictionary else {
+            return
+        }
+        
+        guard let txID = message["message"] as? String else {
+            return
+        }
+        
+        lastTxID = txID
     }
 }
 
 extension BrowserViewController: BrowserErrorViewDelegate {
     func didTapReload(_ sender: Button) {
         reload()
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "DappBrowser"
     }
 }

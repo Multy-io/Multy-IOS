@@ -27,7 +27,6 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
-        add(presenter.browserCoordinator!.browserViewController, to: browserView)
         addGesturesRecognizers()
     }
     
@@ -103,7 +102,8 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
         walletsVC.presenter.preselectedWallet = presenter.wallet
         
         walletsVC.sendWalletDelegate = self.presenter
-        walletsVC.presenter.displayedBlockchainOnly = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
+
+        walletsVC.presenter.displayedBlockchainOnly = presenter.defaultBlockchainType
         self.navigationController?.pushViewController(walletsVC, animated: true)
     }
     

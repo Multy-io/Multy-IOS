@@ -1,0 +1,13 @@
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for detailss
+
+"ERROR" = "Помилка";
+"SOMETHING WENT WRONG" = "Щось пішло не так";
+"YOU ENTERED TOO SMALL AMOUNT" = "Ви ввели занадто малу суму!";
+"YOU ARE TRYING SPEND MORE THEN HAVE" = "Ви намагаєтеся витратити більше ніж маєте.";
+"SUCCESS" = "Успішно!";
+"ERROR WHILE CREATING WALLET" = "Помилка при створенні гаманця!";
+"BROWSER ALERT FOR TX" = "Вы потратите %@ ETH (и %@ ETH для комиссии) из кошелька \"%@\"";
+"CONFIRM" = "Затверджувати";
+"DENY" = "Відкидати";
