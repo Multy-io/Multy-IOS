@@ -31,6 +31,8 @@ class BrowserViewController: UIViewController {
     //    let account: WalletInfo
     //    let sessionConfig: Config
     var wallet = UserWalletRLM()
+    var urlString = String()
+    var alert: UIAlertController?
     
     private struct Keys {
         static let estimatedProgress = "estimatedProgress"
@@ -55,7 +57,7 @@ class BrowserViewController: UIViewController {
         
         if isDebug {
             webView.configuration.preferences.setValue(true, forKey: Keys.developerExtrasEnabled)
-//            webView.configuration.preferences.setValue(true, forKey: Keys.webKitWebGLEnabledKey)
+//            webView.configuration.preferences.setValue(true, forKey: WKWebsiteDataTypeOfflineWebApplicationCache)
         }
         
         return webView
@@ -93,7 +95,7 @@ class BrowserViewController: UIViewController {
         //TODO
         let config = WKWebViewConfiguration.make(for: wallet.address,
                                                  in: ScriptMessageProxy(delegate: self))
-        config.websiteDataStore = WKWebsiteDataStore.default()
+        config.websiteDataStore =  WKWebsiteDataStore.default()
         
         config.allowsInlineMediaPlayback = true
         config.suppressesIncrementalRendering = true
@@ -104,8 +106,9 @@ class BrowserViewController: UIViewController {
     var lastTxID = ""
     
     
-    init(wallet: UserWalletRLM) {
+    init(wallet: UserWalletRLM, urlString: String) {
         self.wallet = wallet
+        self.urlString = urlString
         
         super.init(nibName: nil, bundle: nil)
         
@@ -181,7 +184,6 @@ class BrowserViewController: UIViewController {
     
     @objc fileprivate func handleTransactionUpdatedNotification(notification : Notification) {
         DispatchQueue.main.async { [unowned self] in
-            
             print(notification)
             
             let msg = notification.userInfo?["NotificationMsg"] as? [AnyHashable : Any]
@@ -215,10 +217,11 @@ class BrowserViewController: UIViewController {
 //        }
     
     func goHome() {
-        let linkString = "https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.alpha.dragonereum.io"
+        let linkString = urlString //"https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.alpha.dragonereum.io"
         guard let url = URL(string: linkString) else { return } //"https://dapps.trustwalletapp.com/"
         var request = URLRequest(url: url)
         request.cachePolicy = .returnCacheDataElseLoad
+//        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         hideErrorView()
         webView.load(request)
         browserNavBar?.textField.text = url.absoluteString
@@ -377,7 +380,7 @@ extension BrowserViewController: WKScriptMessageHandler {
         
         switch operationType {
         case .signTransaction:
-            signTx(for: operationObject)
+            showAlert(with: operationObject)
         case .signMessage:
             return
         case .signPersonalMessage:
@@ -401,6 +404,29 @@ extension BrowserViewController {
                 self.signTx(for: object)
             }
         }
+    }
+    
+    func showAlert(with txInfo: OperationObject) {
+        let localizedFormatString = localize(string: Constants.browserTxAlertSring)
+        let valueString = BigInt("\(txInfo.value)").cryptoValueString(for: wallet.blockchain)
+        let feeString = (BigInt("\(txInfo.gasLimit)") * BigInt("\(txInfo.gasPrice)")).cryptoValueString(for: wallet.blockchain)
+        
+        let message = NSString.init(format: NSString.init(string: localizedFormatString),  valueString, feeString, wallet.name)
+        let alert = UIAlertController(title: nil, message: message as String, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: localize(string: Constants.denyString), style: .default, handler: { [weak self] (action) in
+            if self != nil {
+                self!.webView.reload()
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: localize(string: Constants.confirmString), style: .cancel, handler: { [weak self] (action) in
+            if self != nil {
+                self!.signTx(for: txInfo)
+            }
+        }))
+        
+        present(alert, animated: true, completion: nil)
     }
     
     func signTx(for object: OperationObject) {
@@ -447,14 +473,28 @@ extension BrowserViewController {
             "payload"   : newAddressParams
             ] as [String : Any]
         
-        DataManager.shared.sendHDTransaction(transactionParameters: params, completion: { [unowned self] (dict, error) in
+        DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
             if dict != nil {
                 self.saveLastTXID(from:  dict!)
+                
+                self.showSuccessAlert()
             } else {
                 self.presentAlert(for: "")
                 self.webView.reload()
             }
-        })
+        }
+    }
+    
+    func showSuccessAlert() {
+        // show success alert
+        alert = UIAlertController(title: "", message: Constants.successString, preferredStyle: .alert)
+        present(self.alert!, animated: true, completion: nil)
+        let when = DispatchTime.now() + 2
+        DispatchQueue.main.asyncAfter(deadline: when){ [unowned self] in
+            if let alert = self.alert {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     func presentAlert(for info: String) {

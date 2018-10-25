@@ -16,6 +16,7 @@ protocol BrowserCoordinatorDelegate: class {
 final class BrowserCoordinator: NSObject, Coordinator {
     var coordinators: [Coordinator] = []
     let wallet: UserWalletRLM
+    let urlString: String
 //    let session: WalletSession
 //    let keystore: Keystore
 //    let navigationController: NavigationController
@@ -44,7 +45,7 @@ final class BrowserCoordinator: NSObject, Coordinator {
     }()
 
     lazy var browserViewController: BrowserViewController = {
-        let controller = BrowserViewController(wallet: wallet/*account: session.account, config: session.config, server: server*/)
+        let controller = BrowserViewController(wallet: wallet, urlString: urlString/*account: session.account, config: session.config, server: server*/)
         controller.delegate = self
         print("\n\ncontroller.delegate = self: \(self)\n\nbrowserViewController: \(controller)")
         controller.webView.uiDelegate = self
@@ -77,13 +78,15 @@ final class BrowserCoordinator: NSObject, Coordinator {
         }
     }
 
-    init(wallet: UserWalletRLM
+    init(wallet: UserWalletRLM,
+         urlString: String
 //        session: WalletSession
 //        keystore: Keystore,
 //        navigator: Navigator,
 //        sharedRealm: Realm
     ) {
         self.wallet = wallet
+        self.urlString = urlString
 //        self.navigationController = NavigationController(navigationBarClass: BrowserNavigationBar.self, toolbarClass: nil)
 //        self.session = session
 //        self.keystore = keystore

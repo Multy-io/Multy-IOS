@@ -11,9 +11,18 @@ private typealias LocalizeDelegate = DappBrowserPresenter
 class DappBrowserPresenter: NSObject {
     weak var mainVC: DappBrowserViewController?
     var tabBarFrame: CGRect?
-    var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
     
-    var dragonDLObj: DragonDLObj?
+    var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
+    var defaultURLString = "https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.alpha.dragonereum.io // "https://dapps.trustwalletapp.com"
+    
+    var dragonDLObj: DragonDLObj? {
+        didSet {
+            if dragonDLObj != nil {
+                self.defaultBlockchainType = BlockchainType(blockchain: Blockchain(UInt32(dragonDLObj!.chainID)), net_type: dragonDLObj!.chaintType)
+                self.defaultURLString = dragonDLObj!.browserURL
+            }
+        }
+    }
     
     weak var delegate: SendWalletProtocol?
     var walletAddress: String? {
@@ -48,7 +57,7 @@ class DappBrowserPresenter: NSObject {
         clear(cache: true, cookies: true)
         
         DispatchQueue.main.async { [unowned self] in
-            self.mainVC!.browserCoordinator = BrowserCoordinator(wallet: self.choosenWallet)
+            self.mainVC!.browserCoordinator = BrowserCoordinator(wallet: self.choosenWallet, urlString: self.defaultURLString)
             self.mainVC!.add(self.mainVC!.browserCoordinator!.browserViewController, to: self.mainVC!.browserView)
             self.mainVC!.browserCoordinator!.start()
         }
