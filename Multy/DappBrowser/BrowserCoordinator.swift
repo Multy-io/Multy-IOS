@@ -11,6 +11,7 @@ import Branch
 
 protocol BrowserCoordinatorDelegate: class {
     func didSentTransaction(transaction: SentTransaction, in coordinator: BrowserCoordinator)
+    func didUpdateHistory(coordinator: BrowserCoordinator)
 }
 
 final class BrowserCoordinator: NSObject, Coordinator {
@@ -58,9 +59,11 @@ final class BrowserCoordinator: NSObject, Coordinator {
 //    private lazy var historyStore: HistoryStore = {
 //        return HistoryStore(realm: sharedRealm)
 //    }()
+    var historyStore = [URL]()
     lazy var preferences: PreferencesController = {
         return PreferencesController()
     }()
+    
     var urlParser: BrowserURLParser {
         let engine = SearchEngine(rawValue: preferences.get(for: .browserSearchEngine)) ?? .default
         return BrowserURLParser(engine: engine)
@@ -310,7 +313,7 @@ extension BrowserCoordinator: BrowserViewControllerDelegate {
     }
 
     func didVisitURL(url: URL, title: String) {
-//        historyStore.record(url: url, title: title)
+        historyStore.append(url)
     }
 }
 
