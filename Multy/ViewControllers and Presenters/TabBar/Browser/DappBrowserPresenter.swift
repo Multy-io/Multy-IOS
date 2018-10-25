@@ -67,7 +67,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     }
     
     func loadPreviousPage() {
-        
+        browserCoordinator?.runAction(action: .navigationAction(.goBack))
     }
     
     func loadPageWithURLString(_ urlString: String) {

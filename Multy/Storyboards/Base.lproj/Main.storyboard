@@ -313,6 +313,13 @@
                                     <constraint firstItem="Zlp-i8-EXv" firstAttribute="centerX" secondItem="X2D-DR-16d" secondAttribute="centerX" id="wBK-HQ-iga"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d7Y-gk-Wfh">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="PCe-OP-yrg"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrC-qp-0mc">
                                 <rect key="frame" x="0.0" y="86" width="375" height="532"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -322,10 +329,13 @@
                         <constraints>
                             <constraint firstItem="jrC-qp-0mc" firstAttribute="top" secondItem="Yzy-d1-FHK" secondAttribute="bottom" id="KUr-Nb-Ynd"/>
                             <constraint firstItem="jrC-qp-0mc" firstAttribute="bottom" secondItem="ymt-P8-ea2" secondAttribute="top" id="N2k-zw-928"/>
+                            <constraint firstItem="d7Y-gk-Wfh" firstAttribute="top" secondItem="raf-dH-pgr" secondAttribute="top" id="R64-tH-PL4"/>
                             <constraint firstItem="Yzy-d1-FHK" firstAttribute="top" secondItem="raf-dH-pgr" secondAttribute="topMargin" id="TJY-pV-Luk"/>
                             <constraint firstAttribute="trailing" secondItem="jrC-qp-0mc" secondAttribute="trailing" id="UAC-Tw-A99"/>
                             <constraint firstAttribute="trailing" secondItem="Yzy-d1-FHK" secondAttribute="trailing" id="Y3O-K3-kbq"/>
+                            <constraint firstItem="d7Y-gk-Wfh" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" id="Y8C-bD-BYR"/>
                             <constraint firstItem="jrC-qp-0mc" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" id="h1G-Ao-HiK"/>
+                            <constraint firstAttribute="trailing" secondItem="d7Y-gk-Wfh" secondAttribute="trailing" id="oBh-8h-zu1"/>
                             <constraint firstItem="Yzy-d1-FHK" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" id="xIm-oq-YLL"/>
                         </constraints>
                     </view>
@@ -336,6 +346,7 @@
                         <outlet property="backHolderViewLeadingConstraint" destination="Pz2-HA-HPd" id="BWU-8e-XxG"/>
                         <outlet property="blockchainTypeImageView" destination="5Xh-vs-bQm" id="E4U-ho-F9Z"/>
                         <outlet property="browserView" destination="jrC-qp-0mc" id="MLq-8c-Ws3"/>
+                        <outlet property="navigationBarTopConstraint" destination="TJY-pV-Luk" id="Mu8-ic-Cbf"/>
                         <outlet property="navigationBarView" destination="Yzy-d1-FHK" id="pG1-90-nru"/>
                         <outlet property="urlTextField" destination="gg7-zF-aeu" id="qYF-gA-ogH"/>
                     </connections>

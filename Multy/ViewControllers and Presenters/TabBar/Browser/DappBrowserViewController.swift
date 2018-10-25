@@ -14,6 +14,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var urlTextField: UITextField!
     @IBOutlet weak var navigationBarView: UIView!
+    @IBOutlet weak var navigationBarTopConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,15 +50,41 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
         navigationBarView.addGestureRecognizer(panGR)
     }
     
+    var touchLocation : CGPoint = .zero
     @objc func handlePanGestureRecognizer(_ sender:UIPanGestureRecognizer){
-        let translation = sender.translation(in: self.view)
+        let translation = sender.translation(in: view)
+        switch sender.state {
+        case .began:
+            touchLocation = sender.location(in: view)
+        case .changed:
+            let translation = sender.location(in: view).y - touchLocation.y
+            touchLocation = sender.location(in: view)
+            navigationBarTopConstraint.constant += translation
+            view.layoutIfNeeded()
+        case .ended:
+            let navigationBarBottom = navigationBarView.frame.size.height + navigationBarView.frame.origin.y
+            if navigationBarBottom < navigationBarView.frame.size.height {
+                navigationBarTopConstraint.constant = -navigationBarView.frame.size.height + 15
+            } else {
+                navigationBarTopConstraint.constant = 0
+            }
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+            
+            touchLocation = .zero
+            break
+        default:
+            break
+        }
+        
         print(translation)
     }
     
     func updateUI() {
         blockchainTypeImageView.image = UIImage(named: presenter.defaultBlockchainType.iconString)
-        backButton.isHidden = presenter.isBackButtonHidden
-        backHolderViewLeadingConstraint.constant = presenter.isBackButtonHidden ? -36 : 0
+//        backButton.isHidden = presenter.isBackButtonHidden
+//        backHolderViewLeadingConstraint.constant = presenter.isBackButtonHidden ? -36 : 0
         view.layoutIfNeeded()
     }
     
@@ -81,7 +108,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func backAction(_ sender: Any) {
-        
+        presenter.loadPreviousPage()
     }
     
 //    func logAnalytics() {
