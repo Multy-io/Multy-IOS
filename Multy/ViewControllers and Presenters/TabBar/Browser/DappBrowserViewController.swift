@@ -57,10 +57,14 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
             touchLocation = sender.location(in: view)
         case .changed:
             let translation = sender.location(in: view).y - touchLocation.y
+            var navBarTopConstant = navigationBarTopConstraint.constant + translation
+            if navBarTopConstant > 0 {
+                navBarTopConstant = 0
+            }
             touchLocation = sender.location(in: view)
-            navigationBarTopConstraint.constant += translation
+            navigationBarTopConstraint.constant = navBarTopConstant
             view.layoutIfNeeded()
-        case .ended:
+        case .ended, .cancelled, .failed:
             let navigationBarBottom = navigationBarView.frame.size.height + navigationBarView.frame.origin.y
             if navigationBarBottom < navigationBarView.frame.size.height {
                 navigationBarTopConstraint.constant = -navigationBarView.frame.size.height + 15
@@ -76,8 +80,6 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
         default:
             break
         }
-        
-        print(translation)
     }
     
     func updateUI() {
