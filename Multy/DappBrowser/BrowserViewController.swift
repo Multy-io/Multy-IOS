@@ -205,7 +205,6 @@ class BrowserViewController: UIViewController {
     private func refreshURL() {
         browserNavBar?.textField.text = webView.url?.absoluteString
         browserNavBar?.backButton.isHidden = !webView.canGoBack
-        
     }
     
     private func recordURL() {

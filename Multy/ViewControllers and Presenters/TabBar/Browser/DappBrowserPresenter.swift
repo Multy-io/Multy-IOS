@@ -5,16 +5,50 @@
 import UIKit
 //import MultyCoreLibrary
 
-class DappBrowserPresenter: NSObject {
+class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
+    
     weak var mainVC: DappBrowserViewController?
+    var browserCoordinator: BrowserCoordinator?
     var tabBarFrame: CGRect?
     var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
     
-    weak var delegate: SendWalletProtocol?
-    var walletAddtess: String? {
+    var isBackButtonHidden = true {
         didSet {
-            mainVC?.walletAddress.text = walletAddtess
+            if oldValue != isBackButtonHidden {
+                mainVC?.updateUI()
+            }
         }
+    }
+    
+    weak var delegate: SendWalletProtocol?
+    var wallet: UserWalletRLM? {
+        didSet {
+            if oldValue != wallet {
+                mainVC?.updateUI()
+            }
+        }
+    }
+    
+    var currentHistoryIndex : Int = 0 {
+        didSet {
+            isBackButtonHidden = currentHistoryIndex == 0
+        }
+    }
+    
+    func vcViewDidLoad() {
+        tabBarFrame = mainVC?.tabBarController?.tabBar.frame
+        loadETHWallets()
+    }
+    
+    func vcViewWillAppear() {
+        browserCoordinator = BrowserCoordinator()
+        browserCoordinator?.delegate = self
+        mainVC?.configureUI()
+        mainVC?.updateUI()
+        browserCoordinator!.start()
+    }
+    
+    func vcViewDidAppear() {
     }
     
     func loadETHWallets() {
@@ -26,15 +60,35 @@ class DappBrowserPresenter: NSObject {
                 let choosenWallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
                 
                 DispatchQueue.main.async { [unowned self] in
-                    self.walletAddtess = choosenWallet?.address
+                    self.wallet = choosenWallet
                 }
             }
         }
+    }
+    
+    func loadPreviousPage() {
+        
+    }
+    
+    func loadPageWithURLString(_ urlString: String) {
+        let url = URL(string: urlString)
+        if url != nil {
+            browserCoordinator?.browserViewController.goTo(url: url!)
+        }
+    }
+    
+    func didSentTransaction(transaction: SentTransaction, in coordinator: BrowserCoordinator) {
+        
+    }
+    
+    func didUpdateHistory(coordinator: BrowserCoordinator) {
+        
+        mainVC?.updateUI()
     }
 }
 
 extension DappBrowserPresenter: SendWalletProtocol {
     func sendWallet(wallet: UserWalletRLM) {
-        self.walletAddtess = wallet.address
+        self.wallet = wallet
     }
 }
