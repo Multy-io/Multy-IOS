@@ -899,26 +899,32 @@ extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout 
 
 extension CollectionViewDelegate : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            
+            let customTab = tabBarController as! CustomTabBarViewController
+            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
+        } else {
         unowned let weakSelf =  self
         makeIdForInAppBigBy(indexPath: indexPath)
         makeIdForInAppBy(indexPath: indexPath)
         self.presentDonationAlertVC(from: weakSelf, with: stringIdForInAppBig)
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         logAnalytics(indexPath: indexPath)
+        }
     }
     
     func makeIdForInAppBy(indexPath: IndexPath) {
         switch indexPath.row {
-        case 0: stringIdForInApp = "io.multy.addingPortfolio5"
-        case 1: stringIdForInApp = "io.multy.addingCharts5"
+        case 1: stringIdForInApp = "io.multy.addingPortfolio5"
+        case 2: stringIdForInApp = "io.multy.addingCharts5"
         default: break
         }
     }
     
     func makeIdForInAppBigBy(indexPath: IndexPath) {
         switch indexPath.row {
-        case 0: stringIdForInAppBig = "io.multy.addingPortfolio50"
-        case 1: stringIdForInAppBig = "io.multy.addingCharts50"
+        case 1: stringIdForInAppBig = "io.multy.addingPortfolio50"
+        case 2: stringIdForInAppBig = "io.multy.addingCharts50"
         default: break
         }
     }
