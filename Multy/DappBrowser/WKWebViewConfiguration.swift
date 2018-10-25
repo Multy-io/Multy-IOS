@@ -6,12 +6,18 @@ import JavaScriptCore
 import TrustCore
 extension WKWebViewConfiguration {
 
-    static func make(for address: String, in messageHandler: WKScriptMessageHandler) -> WKWebViewConfiguration {
+    static func make(for wallet: UserWalletRLM, in messageHandler: WKScriptMessageHandler) -> WKWebViewConfiguration {
         let config = WKWebViewConfiguration()
         
-//        let rpcURL = "https://mainnet.infura.io/llyrtzQ3YhkdESt2Fzrk"
-        let rpcURL = "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
-        let chainID = 4
+        var rpcURL = ""
+        
+        if UInt32(wallet.blockchainType.net_type) == ETHEREUM_CHAIN_ID_MAINNET.rawValue {
+            rpcURL = "https://mainnet.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
+        } else {
+            rpcURL = "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
+        }
+
+        let chainID = wallet.chainType.intValue
         
         var js = ""
 
@@ -27,7 +33,7 @@ extension WKWebViewConfiguration {
 
         js +=
         """
-        const addressHex = "\(address.lowercased())"
+        const addressHex = "\(wallet.address.lowercased())"
         const rpcURL = "\(rpcURL)"
         const chainID = "\(chainID)"
 
