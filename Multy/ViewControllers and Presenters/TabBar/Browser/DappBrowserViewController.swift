@@ -7,7 +7,8 @@ import UIKit
 
 typealias DappBrowserScrollViewDelegate = DappBrowserViewController
 
-class DappBrowserViewController: UIViewController, UITextFieldDelegate {
+class DappBrowserViewController: UIViewController, UITextFieldDelegate, AnalyticsProtocol {
+
     var presenter = DappBrowserPresenter()
     
     @IBOutlet weak var browserView: UIView!
@@ -23,7 +24,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         presenter.mainVC = self
-        presenter.vcViewDidLoad()        
+        presenter.vcViewDidLoad()
     }
     
     func configureUI() {
