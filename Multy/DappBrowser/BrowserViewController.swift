@@ -238,6 +238,11 @@ class BrowserViewController: UIViewController {
     
     private func refreshURL() {
         browserNavBar?.textField.text = webView.url?.absoluteString
+        
+        if let url = webView.url?.absoluteURL {
+            delegate?.didVisitURL(url: url, title: "Go")
+        }
+        
         browserNavBar?.backButton.isHidden = !webView.canGoBack
     }
     

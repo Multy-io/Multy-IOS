@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                         let dictFormLink = params! as NSDictionary
                         if (dictFormLink["address"] != nil) {  //deep link for send
                             self!.openSendFlow(acc: acc, dictFormLink: dictFormLink)
-                        } else if dictFormLink["$marketing_title"] as? String == dappDLtestNetTitle {   //dapp dragon testNet
+                        } else if dictFormLink["deepLinkIDstring"] as? String == dappDLTitle {   //dapp dragon testNet
                             self!.openDragonsFlow(acc: acc, params: dictFormLink)
                         }
                     }
