@@ -13,13 +13,14 @@ class ReceiveStartPresenter: NSObject {
     var receiveStartVC: ReceiveStartViewController?
     
     var isNeedToPop = false
-    
+        
     var selectedIndexPath: IndexPath? = nil
     
 //    var walletsArr = [UserWalletRLM?]()
     var walletsArr = Array<UserWalletRLM>()
     
     var selectedIndex: Int?
+    var preselectedWallet: UserWalletRLM?
     
     var displayedBlockchainOnly: BlockchainType?
     var isMultisigAllowed = true
