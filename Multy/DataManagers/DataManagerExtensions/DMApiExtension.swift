@@ -71,6 +71,19 @@ extension DataManager {
                     self.saveMultisigFactories(multisigFactoriesInfo)
                 }
                 
+                if let browserDefaults = answerDict!["browserdefault"] as? NSDictionary {
+                    let currencyID = browserDefaults["currencyid"] as! Int
+                    userDefaults.set(currencyID, forKey: "browserCurrencyID")
+                    
+                    let networkID = browserDefaults["networkid"] as! Int
+                    userDefaults.set(networkID, forKey: "browserNetworkID")
+                    
+                    let browserURL = browserDefaults["url"] as! String
+                    userDefaults.set(browserURL, forKey: "browserDefURL")
+                    // Check this, you can change link
+//                    userDefaults.set("https://www.onliner.by/", forKey: "browserDefURL")
+                }
+                
                 userDefaults.synchronize()
                 
                 completion(hardVersion, softVersion, nil)

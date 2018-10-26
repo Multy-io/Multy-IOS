@@ -25,9 +25,42 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
     
     func configureUI() {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        presenter.tabBarFrame = tabBarController?.tabBar.frame
+        
+        blockchainTypeImageView.image = UIImage(named: presenter.defaultBlockchainType.iconString)
+        
+        if presenter.dragonDLObj == nil {
+            presenter.dragonDLObj = make()
+        }
+        
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
         addGesturesRecognizers()
+    }
+    
+    func make() -> DragonDLObj {
+        //FIXME: DAPP
+        let settingsObj = DragonDLObj()
+        if let curID = UserDefaults.standard.value(forKey: "browserCurrencyID") {
+            settingsObj.chainID = curID as! Int
+        } else {
+            settingsObj.chainID = 60
+        }
+        
+        if let netId = UserDefaults.standard.value(forKey: "browserNetworkID") {
+            settingsObj.chaintType = netId as! Int
+        } else {
+            settingsObj.chaintType = 4
+        }
+        
+        if let url = UserDefaults.standard.value(forKey: "browserDefURL") {
+            settingsObj.browserURL = url as! String
+        } else {
+            //FIXME: DAPP
+            settingsObj.browserURL = "https://dragonereum-alpha-test.firebaseapp.com" //"https://app.alpha.dragonereum.io"
+        }
+        
+        return settingsObj
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -37,6 +70,9 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
+        tabBarController?.tabBar.frame = presenter.tabBarFrame!
+        presenter.loadETHWallets()
         presenter.vcViewWillAppear()
     }
     
@@ -103,6 +139,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
         
         walletsVC.sendWalletDelegate = self.presenter
 
+        walletsVC.presenter.isMultisigAllowed = false
         walletsVC.presenter.displayedBlockchainOnly = presenter.defaultBlockchainType
         self.navigationController?.pushViewController(walletsVC, animated: true)
     }
