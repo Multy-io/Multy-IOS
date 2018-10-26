@@ -191,18 +191,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gQc-dr-Uro">
+                                <rect key="frame" x="177.5" y="43" width="20" height="20"/>
+                            </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yzy-d1-FHK" userLabel="View - Navigation Bar">
                                 <rect key="frame" x="0.0" y="20" width="375" height="66"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ETH_medium_icon" translatesAutoresizingMaskIntoConstraints="NO" id="5Xh-vs-bQm">
-                                        <rect key="frame" x="321" y="12" width="38" height="38"/>
+                                        <rect key="frame" x="321" y="14" width="38" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="5Xh-vs-bQm" secondAttribute="height" multiplier="1:1" id="lDS-x0-b0x"/>
                                             <constraint firstAttribute="width" constant="38" id="xkI-GE-Gzj"/>
                                         </constraints>
                                     </imageView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Specify URL..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gg7-zF-aeu">
-                                        <rect key="frame" x="52" y="12" width="253" height="38"/>
+                                        <rect key="frame" x="52" y="14" width="253" height="38"/>
                                         <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="38" id="bXV-mH-P8a"/>
@@ -231,7 +234,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="36" height="66"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backLightGrey" translatesAutoresizingMaskIntoConstraints="NO" id="msw-jO-PoF" userLabel="Image View - Back">
-                                                <rect key="frame" x="16" y="21" width="20" height="20"/>
+                                                <rect key="frame" x="16" y="23" width="20" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="lKe-Rh-lUq"/>
                                                     <constraint firstAttribute="height" constant="20" id="v9y-bn-tWW"/>
@@ -254,32 +257,6 @@
                                             <constraint firstAttribute="trailing" secondItem="O9M-fN-4UW" secondAttribute="trailing" constant="-16" id="j6F-dN-0Wi"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xEC-Ai-dAo">
-                                        <rect key="frame" x="177.5" y="61" width="20" height="1"/>
-                                        <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="P7e-h2-n4f"/>
-                                            <constraint firstAttribute="width" constant="20" id="rDt-QL-7Dr"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zlp-i8-EXv">
-                                        <rect key="frame" x="177.5" y="58" width="20" height="1"/>
-                                        <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="20" id="bDl-7K-E0W"/>
-                                            <constraint firstAttribute="height" constant="1" id="cxD-ed-eOc"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X2D-DR-16d">
                                         <rect key="frame" x="0.0" y="65" width="375" height="1"/>
                                         <color key="backgroundColor" red="0.69803921568627447" green="0.69803921568627447" blue="0.69803921568627447" alpha="0.25050834760273971" colorSpace="custom" customColorSpace="sRGB"/>
@@ -295,13 +272,10 @@
                                     <constraint firstAttribute="bottom" secondItem="15h-Xl-AGG" secondAttribute="bottom" id="2dD-26-oWp"/>
                                     <constraint firstItem="5Xh-vs-bQm" firstAttribute="leading" secondItem="gg7-zF-aeu" secondAttribute="trailing" constant="16" id="2o8-qB-xNQ"/>
                                     <constraint firstAttribute="bottom" secondItem="bjt-DE-EyX" secondAttribute="bottom" id="5Ko-QN-ztQ"/>
-                                    <constraint firstItem="X2D-DR-16d" firstAttribute="top" secondItem="Zlp-i8-EXv" secondAttribute="bottom" constant="6" id="8Nh-Xp-lcS"/>
-                                    <constraint firstItem="gg7-zF-aeu" firstAttribute="centerY" secondItem="Yzy-d1-FHK" secondAttribute="centerY" constant="-2" id="C3F-im-EAl"/>
+                                    <constraint firstItem="gg7-zF-aeu" firstAttribute="centerY" secondItem="Yzy-d1-FHK" secondAttribute="centerY" id="C3F-im-EAl"/>
                                     <constraint firstItem="bjt-DE-EyX" firstAttribute="top" secondItem="Yzy-d1-FHK" secondAttribute="top" id="Dii-an-tUN"/>
                                     <constraint firstAttribute="trailing" secondItem="X2D-DR-16d" secondAttribute="trailing" id="GoV-aG-lS6"/>
-                                    <constraint firstItem="xEC-Ai-dAo" firstAttribute="centerX" secondItem="Yzy-d1-FHK" secondAttribute="centerX" id="H0D-lW-dKs"/>
                                     <constraint firstAttribute="height" constant="66" id="Hif-jX-Wnu"/>
-                                    <constraint firstAttribute="bottom" secondItem="xEC-Ai-dAo" secondAttribute="bottom" constant="4" id="OT2-T6-dtk"/>
                                     <constraint firstAttribute="trailing" secondItem="5Xh-vs-bQm" secondAttribute="trailing" constant="16" id="PT8-Cm-orH"/>
                                     <constraint firstItem="bjt-DE-EyX" firstAttribute="leading" secondItem="Yzy-d1-FHK" secondAttribute="leading" id="Pz2-HA-HPd"/>
                                     <constraint firstItem="gg7-zF-aeu" firstAttribute="leading" secondItem="bjt-DE-EyX" secondAttribute="trailing" constant="16" id="Uir-gT-VgE"/>
@@ -310,7 +284,6 @@
                                     <constraint firstItem="5Xh-vs-bQm" firstAttribute="centerY" secondItem="gg7-zF-aeu" secondAttribute="centerY" id="jgA-zr-aq0"/>
                                     <constraint firstItem="X2D-DR-16d" firstAttribute="leading" secondItem="Yzy-d1-FHK" secondAttribute="leading" id="pby-G9-KNG"/>
                                     <constraint firstAttribute="trailing" secondItem="15h-Xl-AGG" secondAttribute="trailing" id="uQO-lh-TV5"/>
-                                    <constraint firstItem="Zlp-i8-EXv" firstAttribute="centerX" secondItem="X2D-DR-16d" secondAttribute="centerX" id="wBK-HQ-iga"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d7Y-gk-Wfh">
@@ -327,6 +300,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="gQc-dr-Uro" firstAttribute="centerX" secondItem="raf-dH-pgr" secondAttribute="centerX" id="6mC-5y-lXr"/>
                             <constraint firstItem="jrC-qp-0mc" firstAttribute="top" secondItem="Yzy-d1-FHK" secondAttribute="bottom" id="KUr-Nb-Ynd"/>
                             <constraint firstItem="jrC-qp-0mc" firstAttribute="bottom" secondItem="ymt-P8-ea2" secondAttribute="top" id="N2k-zw-928"/>
                             <constraint firstItem="d7Y-gk-Wfh" firstAttribute="top" secondItem="raf-dH-pgr" secondAttribute="top" id="R64-tH-PL4"/>
@@ -336,6 +310,7 @@
                             <constraint firstItem="d7Y-gk-Wfh" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" id="Y8C-bD-BYR"/>
                             <constraint firstItem="jrC-qp-0mc" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" id="h1G-Ao-HiK"/>
                             <constraint firstAttribute="trailing" secondItem="d7Y-gk-Wfh" secondAttribute="trailing" id="oBh-8h-zu1"/>
+                            <constraint firstItem="gQc-dr-Uro" firstAttribute="top" secondItem="OFe-wE-wJW" secondAttribute="bottom" constant="23" id="tpk-KW-oCo"/>
                             <constraint firstItem="Yzy-d1-FHK" firstAttribute="leading" secondItem="raf-dH-pgr" secondAttribute="leading" id="xIm-oq-YLL"/>
                         </constraints>
                     </view>
@@ -348,6 +323,7 @@
                         <outlet property="browserView" destination="jrC-qp-0mc" id="MLq-8c-Ws3"/>
                         <outlet property="navigationBarTopConstraint" destination="TJY-pV-Luk" id="Mu8-ic-Cbf"/>
                         <outlet property="navigationBarView" destination="Yzy-d1-FHK" id="pG1-90-nru"/>
+                        <outlet property="refreshIndicator" destination="gQc-dr-Uro" id="roT-HA-nyL"/>
                         <outlet property="urlTextField" destination="gg7-zF-aeu" id="qYF-gA-ogH"/>
                     </connections>
                 </viewController>

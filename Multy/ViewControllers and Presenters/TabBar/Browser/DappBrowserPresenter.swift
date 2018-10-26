@@ -114,6 +114,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
             self.browserCoordinator = BrowserCoordinator(wallet: self.wallet!, urlString: self.defaultURLString)
             self.browserCoordinator!.delegate = self
             self.mainVC!.add(self.browserCoordinator!.browserViewController, to: self.mainVC!.browserView)
+            self.browserCoordinator?.browserViewController.webView.scrollView.delegate = self.mainVC!
             self.browserCoordinator!.start()
         }
     }
