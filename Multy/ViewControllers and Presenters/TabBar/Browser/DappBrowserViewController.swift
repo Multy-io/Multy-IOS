@@ -5,7 +5,10 @@
 import UIKit
 //import MultyCoreLibrary
 
+typealias DappBrowserScrollViewDelegate = DappBrowserViewController
+
 class DappBrowserViewController: UIViewController, UITextFieldDelegate, AnalyticsProtocol {
+
     var presenter = DappBrowserPresenter()
     
     @IBOutlet weak var browserView: UIView!
@@ -15,6 +18,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
     @IBOutlet weak var urlTextField: UITextField!
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var navigationBarTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var refreshIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +39,6 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
-        addGesturesRecognizers()
     }
     
     func make() -> DragonDLObj {
@@ -78,42 +81,6 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-    }
-    
-    private func addGesturesRecognizers() {
-        let panGR = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGestureRecognizer(_:)))
-        navigationBarView.addGestureRecognizer(panGR)
-    }
-    
-    var touchLocation : CGPoint = .zero
-    @objc func handlePanGestureRecognizer(_ sender:UIPanGestureRecognizer){
-        let translation = sender.translation(in: view)
-        switch sender.state {
-        case .began:
-            touchLocation = sender.location(in: view)
-        case .changed:
-            let translation = sender.location(in: view).y - touchLocation.y
-            touchLocation = sender.location(in: view)
-            navigationBarTopConstraint.constant += translation
-            view.layoutIfNeeded()
-        case .ended:
-            let navigationBarBottom = navigationBarView.frame.size.height + navigationBarView.frame.origin.y
-            if navigationBarBottom < navigationBarView.frame.size.height {
-                navigationBarTopConstraint.constant = -navigationBarView.frame.size.height + 15
-            } else {
-                navigationBarTopConstraint.constant = 0
-            }
-            UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
-            }
-            
-            touchLocation = .zero
-            break
-        default:
-            break
-        }
-        
-        print(translation)
     }
     
     func updateUI() {
@@ -164,5 +131,33 @@ extension UITextField
         self.layer.borderWidth = 1.0
         self.layer.borderColor = #colorLiteral(red: 0.9568627451, green: 0.9568627451, blue: 0.9568627451, alpha: 1).cgColor
         self.layer.masksToBounds = true
+    }
+}
+
+extension DappBrowserScrollViewDelegate: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let yContentOffset = scrollView.contentOffset.y
+        var navBarTopConstant = -yContentOffset
+        if yContentOffset > navigationBarView.frame.size.height {
+            navBarTopConstant = -navigationBarView.frame.size.height
+        } else if yContentOffset < 0  {
+            navBarTopConstant = navigationBarTopConstraint.constant - yContentOffset
+        }
+        
+        navigationBarTopConstraint.constant = navBarTopConstant
+        view.layoutIfNeeded()
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if navigationBarTopConstraint.constant < 0 && navigationBarTopConstraint.constant > -navigationBarView.frame.size.height {
+            showNavigationBar()
+        }
+    }
+    
+    func showNavigationBar() {
+        navigationBarTopConstraint.constant = 0
+        UIView.animate(withDuration: 0.3) { [unowned self] in
+            self.view.layoutIfNeeded()
+        }
     }
 }

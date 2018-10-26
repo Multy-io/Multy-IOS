@@ -138,6 +138,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
             self.browserCoordinator!.delegate = self
             self.mainVC!.childViewControllers.last?.remove()
             self.mainVC!.add(self.browserCoordinator!.browserViewController, to: self.mainVC!.browserView)
+            self.browserCoordinator?.browserViewController.webView.scrollView.delegate = self.mainVC!
             self.browserCoordinator!.start()
             self.mainVC?.sendAnalyticsEvent(screenName: screenBrowser, eventName: "loading URL" + "\(self.defaultURLString)")
         }
