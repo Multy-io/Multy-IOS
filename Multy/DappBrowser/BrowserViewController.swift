@@ -426,7 +426,7 @@ extension BrowserViewController {
         
         alert.addAction(UIAlertAction(title: localize(string: Constants.confirmString), style: .cancel, handler: { [weak self] (action) in
             if self != nil {
-                self!.signTx(for: txInfo)
+                self!.refreshWalletAndSendTx(for: txInfo)
             }
         }))
         
@@ -445,7 +445,7 @@ extension BrowserViewController {
         
         let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                               sendAddress: object.toAddress,
-                                                                              sendAmountString: "\(object.value)",
+                                                                              sendAmountString: object.value,
             nonce: wallet.ethWallet!.nonce.intValue,
             balanceAmount: wallet.ethWallet!.balance,
             ethereumChainID: UInt32(wallet.blockchainType.net_type),

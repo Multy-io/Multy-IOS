@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BigInt
 
 enum DappOperationType : String, Decodable {
     case
@@ -24,7 +25,7 @@ struct OperationObject {
     var gasPrice:   UInt64
     var gasLimit:   UInt64
     var nonce:      Int
-    var value:      UInt64
+    var value:      String
     
     
     init(with object: Dictionary<String, Any>) {
@@ -72,9 +73,13 @@ struct OperationObject {
         
         //amount
         if let valueString =     object["value"] as? String {
-            self.value = UInt64(valueString.dropFirst(2), radix: 16)!
+            if let value = BigUInt(valueString.dropFirst(2), radix: 16) {
+                self.value = value.description
+            } else {
+                self.value = "0"
+            }
         } else {
-            self.value = 0
+            self.value = "0"
         }
     }
 }
