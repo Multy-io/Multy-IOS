@@ -264,6 +264,34 @@
                                             <constraint firstAttribute="height" constant="1" id="5gI-ci-N2u"/>
                                         </constraints>
                                     </view>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BSO-SC-cxs" userLabel="View - Wallet Info">
+                                        <rect key="frame" x="8" y="8" width="297" height="49"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xf0f0f0f0f0f0f0f0f0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFs-H7-43u">
+                                                <rect key="frame" x="8" y="0.0" width="281" height="24.5"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6v0-lH-YY9">
+                                                <rect key="frame" x="8" y="24.5" width="281" height="24.5"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="6v0-lH-YY9" firstAttribute="top" secondItem="uFs-H7-43u" secondAttribute="bottom" id="0vq-Xb-ZNp"/>
+                                            <constraint firstItem="uFs-H7-43u" firstAttribute="leading" secondItem="BSO-SC-cxs" secondAttribute="leading" constant="8" id="4XL-a5-ZBL"/>
+                                            <constraint firstItem="6v0-lH-YY9" firstAttribute="height" secondItem="uFs-H7-43u" secondAttribute="height" id="KgQ-aI-xG4"/>
+                                            <constraint firstItem="uFs-H7-43u" firstAttribute="top" secondItem="BSO-SC-cxs" secondAttribute="top" id="QkJ-Cl-xi5"/>
+                                            <constraint firstAttribute="trailing" secondItem="uFs-H7-43u" secondAttribute="trailing" constant="8" id="VFT-lX-UCB"/>
+                                            <constraint firstItem="6v0-lH-YY9" firstAttribute="leading" secondItem="BSO-SC-cxs" secondAttribute="leading" constant="8" id="gJA-fr-JN1"/>
+                                            <constraint firstAttribute="bottom" secondItem="6v0-lH-YY9" secondAttribute="bottom" id="n1q-HT-nXO"/>
+                                            <constraint firstAttribute="trailing" secondItem="6v0-lH-YY9" secondAttribute="trailing" constant="8" id="nGt-mr-C5p"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
@@ -272,15 +300,19 @@
                                     <constraint firstAttribute="bottom" secondItem="15h-Xl-AGG" secondAttribute="bottom" id="2dD-26-oWp"/>
                                     <constraint firstItem="5Xh-vs-bQm" firstAttribute="leading" secondItem="gg7-zF-aeu" secondAttribute="trailing" constant="16" id="2o8-qB-xNQ"/>
                                     <constraint firstAttribute="bottom" secondItem="bjt-DE-EyX" secondAttribute="bottom" id="5Ko-QN-ztQ"/>
+                                    <constraint firstItem="15h-Xl-AGG" firstAttribute="leading" secondItem="BSO-SC-cxs" secondAttribute="trailing" id="8Xx-36-WLx"/>
                                     <constraint firstItem="gg7-zF-aeu" firstAttribute="centerY" secondItem="Yzy-d1-FHK" secondAttribute="centerY" id="C3F-im-EAl"/>
                                     <constraint firstItem="bjt-DE-EyX" firstAttribute="top" secondItem="Yzy-d1-FHK" secondAttribute="top" id="Dii-an-tUN"/>
+                                    <constraint firstAttribute="bottom" secondItem="BSO-SC-cxs" secondAttribute="bottom" constant="9" id="GQc-nX-kA3"/>
                                     <constraint firstAttribute="trailing" secondItem="X2D-DR-16d" secondAttribute="trailing" id="GoV-aG-lS6"/>
                                     <constraint firstAttribute="height" constant="66" id="Hif-jX-Wnu"/>
+                                    <constraint firstItem="BSO-SC-cxs" firstAttribute="top" secondItem="Yzy-d1-FHK" secondAttribute="top" constant="8" id="IC6-f1-LuW"/>
                                     <constraint firstAttribute="trailing" secondItem="5Xh-vs-bQm" secondAttribute="trailing" constant="16" id="PT8-Cm-orH"/>
                                     <constraint firstItem="bjt-DE-EyX" firstAttribute="leading" secondItem="Yzy-d1-FHK" secondAttribute="leading" id="Pz2-HA-HPd"/>
                                     <constraint firstItem="gg7-zF-aeu" firstAttribute="leading" secondItem="bjt-DE-EyX" secondAttribute="trailing" constant="16" id="Uir-gT-VgE"/>
                                     <constraint firstItem="msw-jO-PoF" firstAttribute="centerY" secondItem="gg7-zF-aeu" secondAttribute="centerY" id="UyA-PA-uCJ"/>
                                     <constraint firstAttribute="bottom" secondItem="X2D-DR-16d" secondAttribute="bottom" id="gBP-lp-0T5"/>
+                                    <constraint firstItem="BSO-SC-cxs" firstAttribute="leading" secondItem="Yzy-d1-FHK" secondAttribute="leading" constant="8" id="gL8-i6-FyK"/>
                                     <constraint firstItem="5Xh-vs-bQm" firstAttribute="centerY" secondItem="gg7-zF-aeu" secondAttribute="centerY" id="jgA-zr-aq0"/>
                                     <constraint firstItem="X2D-DR-16d" firstAttribute="leading" secondItem="Yzy-d1-FHK" secondAttribute="leading" id="pby-G9-KNG"/>
                                     <constraint firstAttribute="trailing" secondItem="15h-Xl-AGG" secondAttribute="trailing" id="uQO-lh-TV5"/>
@@ -321,10 +353,14 @@
                         <outlet property="backHolderViewLeadingConstraint" destination="Pz2-HA-HPd" id="BWU-8e-XxG"/>
                         <outlet property="blockchainTypeImageView" destination="5Xh-vs-bQm" id="E4U-ho-F9Z"/>
                         <outlet property="browserView" destination="jrC-qp-0mc" id="MLq-8c-Ws3"/>
+                        <outlet property="chooseWalletButton" destination="15h-Xl-AGG" id="qlB-ug-ya0"/>
                         <outlet property="navigationBarTopConstraint" destination="TJY-pV-Luk" id="Mu8-ic-Cbf"/>
                         <outlet property="navigationBarView" destination="Yzy-d1-FHK" id="pG1-90-nru"/>
                         <outlet property="refreshIndicator" destination="gQc-dr-Uro" id="roT-HA-nyL"/>
                         <outlet property="urlTextField" destination="gg7-zF-aeu" id="qYF-gA-ogH"/>
+                        <outlet property="walletBalanceLabel" destination="6v0-lH-YY9" id="pm4-BF-wQl"/>
+                        <outlet property="walletInfoView" destination="BSO-SC-cxs" id="bx9-od-jx7"/>
+                        <outlet property="walletNameLabel" destination="uFs-H7-43u" id="EVc-Ge-FOE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vb7-Vq-4wP" userLabel="First Responder" sceneMemberID="firstResponder"/>
