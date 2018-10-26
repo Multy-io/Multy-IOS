@@ -2,6 +2,7 @@
 //Licensed under Multy.io license.
 //See LICENSE for details
 
+import Foundation
 import RealmSwift
 
 private typealias MultisigManager = DataManager
@@ -299,7 +300,8 @@ extension MultisigManager {
         
         var addressData: Dictionary<String, Any>?
         
-        if wallet.isImported {
+//        if wallet.isImported {
+        if wallet.isImportedForPrimaryKey {
             let accountDataResult = coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: wallet.importedPrivateKey)
             
             switch accountDataResult {

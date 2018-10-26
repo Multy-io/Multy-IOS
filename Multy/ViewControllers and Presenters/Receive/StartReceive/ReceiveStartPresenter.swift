@@ -4,6 +4,7 @@
 
 import UIKit
 import RealmSwift
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = ReceiveStartPresenter
 
@@ -12,15 +13,17 @@ class ReceiveStartPresenter: NSObject {
     var receiveStartVC: ReceiveStartViewController?
     
     var isNeedToPop = false
-    
+        
     var selectedIndexPath: IndexPath? = nil
     
 //    var walletsArr = [UserWalletRLM?]()
     var walletsArr = Array<UserWalletRLM>()
     
     var selectedIndex: Int?
+    var preselectedWallet: UserWalletRLM?
     
     var displayedBlockchainOnly: BlockchainType?
+    var isMultisigAllowed = true
     
     var isForMultisig = false
     var inviteCode = ""
@@ -78,8 +81,9 @@ class ReceiveStartPresenter: NSObject {
                 
                 if let blockchainType = self.displayedBlockchainOnly {
                     walletsArray = walletsArray.filter{ blockchainType == $0.blockchainType }
-                    if self.isForMultisig {
-                        walletsArray = walletsArray.filter{ $0.multisigWallet == nil }
+                    
+                    if self.isForMultisig || self.isMultisigAllowed == false {
+                        walletsArray = walletsArray.filter{ $0.isMultiSig == false }
                     }
                 }
                 

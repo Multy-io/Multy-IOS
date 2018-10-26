@@ -4,6 +4,7 @@
 
 import UIKit
 import ZFRippleButton
+//import MultyCoreLibrary
 
 private typealias TableViewDataSource = CreateMultiSigViewController
 private typealias TableViewDelegate = CreateMultiSigViewController

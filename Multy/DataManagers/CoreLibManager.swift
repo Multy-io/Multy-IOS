@@ -4,6 +4,7 @@
 
 import UIKit
 import RealmSwift
+//import MultyCoreLibrary
 
 private typealias TestCoreLibManager = CoreLibManager
 private typealias BigIntCoreLibManager = CoreLibManager

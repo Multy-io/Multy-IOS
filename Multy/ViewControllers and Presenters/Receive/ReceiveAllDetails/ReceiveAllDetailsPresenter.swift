@@ -4,6 +4,7 @@
 
 import UIKit
 import Hash2Pics
+//import MultyCoreLibrary
 
 let wirelessRequestImagesAmount = 10
 

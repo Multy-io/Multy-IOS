@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = Constants
 
@@ -209,7 +210,7 @@ enum SocketMessageType : Int {
         multisigTxIncoming =        10,
         multisigTxConfirm =         11,
         multisigTxRevoke =          12,
-        resyncCompleted =            13
+        resyncCompleted =           13
 }
 
 enum Result<Value, Error: StringProtocol> {
@@ -270,3 +271,5 @@ let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"
 let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 
 let inviteCodeCount = 45
+
+let dappDLTitle = "Dragonereum"
