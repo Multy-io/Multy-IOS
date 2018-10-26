@@ -16,13 +16,15 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     
     //FIXME: DAPP
     var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
-    var defaultURLString = "https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.alpha.dragonereum.io // "https://dapps.trustwalletapp.com"
+    var defaultURLString = "https://app.alpha.dragonereum.io" // "https://dragonereum-alpha-test.firebaseapp.com" // "https://dapps.trustwalletapp.com"
     
     var dragonDLObj: DragonDLObj? {
         didSet {
             if dragonDLObj != nil {
                 self.defaultBlockchainType = BlockchainType(blockchain: Blockchain(UInt32(dragonDLObj!.chainID)), net_type: dragonDLObj!.chaintType)
                 self.defaultURLString = dragonDLObj!.browserURL
+                
+                self.loadETHWallets()
             }
         }
     }
@@ -39,10 +41,10 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
 
     var wallet: UserWalletRLM? {
         didSet {
-            if oldValue?.id != wallet?.id {
+//            if oldValue?.id != wallet?.id {
                 loadWebViewContent()
                 mainVC?.updateUI()
-            }
+//            }
         }
     }
     
@@ -58,7 +60,6 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     }
     
     func vcViewWillAppear() {
-        
         mainVC?.configureUI()
         mainVC?.updateUI()
     }
@@ -66,14 +67,20 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     func vcViewDidAppear() {
     }
     
-    var walletAddress: String? {
-        didSet {
+    var walletAddress: String? //{
+//        didSet {
 //            mainVC?.walletAddress.text = walletAddress
-            self.loadWebViewContent()
-        }
-    }
+//            self.loadWebViewContent()
+//        }
+//    }
     
     func loadETHWallets() {
+        if wallet != nil {
+            loadWebViewContent()
+            
+            return
+        }
+        
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             if err != nil {
                 return
@@ -98,7 +105,13 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     }
     
     func loadPageWithURLString(_ urlString: String) {
-        let url = URL(string: urlString)
+        var absoluteURLString = urlString
+        
+        if absoluteURLString.hasPrefix("http") == false {
+            absoluteURLString = "http://" + absoluteURLString
+        }
+        
+        let url = URL(string: absoluteURLString)
         if url != nil {
             browserCoordinator?.browserViewController.goTo(url: url!)
         }
@@ -112,7 +125,11 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         mainVC?.updateUI()
     }
     
-    fileprivate func loadWebViewContent() {
+    func didLoadUrl(url: String) {
+        mainVC!.urlTextField.text = url
+    }
+    
+    func loadWebViewContent() {
         clear(cache: true, cookies: true)
         
         DispatchQueue.main.async { [unowned self] in

@@ -57,7 +57,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
             settingsObj.browserURL = url as! String
         } else {
             //FIXME: DAPP
-            settingsObj.browserURL = "https://dragonereum-alpha-test.firebaseapp.com" //"https://app.alpha.dragonereum.io"
+            settingsObj.browserURL = "https://dragonereum-alpha-test.firebaseapp.com" // "https://app.alpha.dragonereum.io"
         }
         
         return settingsObj
