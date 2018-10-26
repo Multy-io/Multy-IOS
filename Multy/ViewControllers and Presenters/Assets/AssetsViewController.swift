@@ -930,8 +930,15 @@ extension CollectionViewDelegate : UICollectionViewDelegate {
     }
     
     func logAnalytics(indexPath: IndexPath) {
-        let eventCode = indexPath.row == 0 ? donationForPortfolioSC : donationForChartsSC
-        sendDonationAlertScreenPresentedAnalytics(code: eventCode)
+//        var eventCode = 0
+        switch indexPath.row {
+        case 0: sendAnalyticsEvent(screenName: screenMain, eventName: "Dragon_Banner_Clicked")
+        case 1: sendDonationAlertScreenPresentedAnalytics(code: donationForPortfolioSC)
+        case 2: sendDonationAlertScreenPresentedAnalytics(code: donationForChartsSC)
+        default: break
+        }
+//        let eventCode = indexPath.row == 0 ? donationForPortfolioSC : donationForChartsSC
+//        sendDonationAlertScreenPresentedAnalytics(code: eventCode)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

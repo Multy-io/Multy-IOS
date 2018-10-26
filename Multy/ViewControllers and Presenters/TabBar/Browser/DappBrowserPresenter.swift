@@ -127,6 +127,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     
     func didLoadUrl(url: String) {
         mainVC!.urlTextField.text = url
+        self.mainVC?.sendAnalyticsEvent(screenName: screenBrowser, eventName: "loading URL " + "\(url)")
     }
     
     func loadWebViewContent() {
@@ -138,6 +139,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
             self.mainVC!.childViewControllers.last?.remove()
             self.mainVC!.add(self.browserCoordinator!.browserViewController, to: self.mainVC!.browserView)
             self.browserCoordinator!.start()
+            self.mainVC?.sendAnalyticsEvent(screenName: screenBrowser, eventName: "loading URL" + "\(self.defaultURLString)")
         }
     }
     
