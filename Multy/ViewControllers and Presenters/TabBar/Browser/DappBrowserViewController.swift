@@ -19,6 +19,10 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var navigationBarTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var refreshIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var chooseWalletButton: UIButton!
+    @IBOutlet weak var walletInfoView: UIView!
+    @IBOutlet weak var walletBalanceLabel: UILabel!
+    @IBOutlet weak var walletNameLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +43,12 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
+        addGesturesRecognizers()
+    }
+    
+    fileprivate func addGesturesRecognizers() {
+        let chooseWalletLongPressGR = UILongPressGestureRecognizer(target: self, action: #selector(self.showWalletInfo(_:)))
+        chooseWalletButton.addGestureRecognizer(chooseWalletLongPressGR)
     }
     
     func make() -> DragonDLObj {
@@ -87,6 +97,15 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         blockchainTypeImageView.image = UIImage(named: presenter.defaultBlockchainType.iconString)
 //        backButton.isHidden = presenter.isBackButtonHidden
 //        backHolderViewLeadingConstraint.constant = presenter.isBackButtonHidden ? -36 : 0
+        if presenter.wallet != nil {
+            walletNameLabel.text = presenter.wallet!.name
+            let blockchainType = BlockchainType.createAssociated(wallet: presenter.wallet!)
+            walletBalanceLabel.text = "\(presenter.wallet!.availableAmount.cryptoValueString(for: blockchainType.blockchain)) \(blockchainType.shortName)"
+        } else {
+            walletNameLabel.text = ""
+            walletBalanceLabel.text = ""
+        }
+
         view.layoutIfNeeded()
     }
     
@@ -105,7 +124,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         walletsVC.presenter.preselectedWallet = presenter.wallet
         
         walletsVC.sendWalletDelegate = self.presenter
-
+        walletsVC.presenter.titleTextKey = ""
         walletsVC.presenter.isMultisigAllowed = false
         walletsVC.presenter.displayedBlockchainOnly = presenter.defaultBlockchainType
         self.navigationController?.pushViewController(walletsVC, animated: true)
@@ -121,6 +140,22 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
     
     func presentNoInternet() {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
+    }
+    
+    @objc func showWalletInfo(_ sender: UILongPressGestureRecognizer) {
+        switch sender.state {
+        case .began:
+            walletInfoView.isHidden = false
+            let walletCVC = WalletCollectionViewCell()
+            break
+            
+        case .ended, .cancelled, .failed:
+            walletInfoView.isHidden = true
+            break
+            
+        default:
+            break
+        }
     }
 }
 
