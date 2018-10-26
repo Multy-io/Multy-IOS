@@ -93,7 +93,7 @@ class BrowserViewController: UIViewController {
     //    //Take a look at this issue : https://stackoverflow.com/questions/26383031/wkwebview-causes-my-view-controller-to-leak
     lazy var config: WKWebViewConfiguration = {
         //TODO
-        let config = WKWebViewConfiguration.make(for: wallet.address,
+        let config = WKWebViewConfiguration.make(for: wallet,
                                                  in: ScriptMessageProxy(delegate: self))
         config.websiteDataStore =  WKWebsiteDataStore.default()
         
@@ -238,6 +238,11 @@ class BrowserViewController: UIViewController {
     
     private func refreshURL() {
         browserNavBar?.textField.text = webView.url?.absoluteString
+        
+        if let url = webView.url?.absoluteURL {
+            delegate?.didVisitURL(url: url, title: "Go")
+        }
+        
         browserNavBar?.backButton.isHidden = !webView.canGoBack
     }
     

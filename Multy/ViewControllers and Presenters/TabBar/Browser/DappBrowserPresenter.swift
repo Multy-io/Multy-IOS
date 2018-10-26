@@ -14,14 +14,17 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     var browserCoordinator: BrowserCoordinator?
     var tabBarFrame: CGRect?
     
+    //FIXME: DAPP
     var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
-    var defaultURLString = "https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.alpha.dragonereum.io // "https://dapps.trustwalletapp.com"
+    var defaultURLString = "https://app.alpha.dragonereum.io" // "https://dragonereum-alpha-test.firebaseapp.com" // "https://dapps.trustwalletapp.com"
     
     var dragonDLObj: DragonDLObj? {
         didSet {
             if dragonDLObj != nil {
                 self.defaultBlockchainType = BlockchainType(blockchain: Blockchain(UInt32(dragonDLObj!.chainID)), net_type: dragonDLObj!.chaintType)
                 self.defaultURLString = dragonDLObj!.browserURL
+                
+                self.loadETHWallets()
             }
         }
     }
@@ -38,12 +41,10 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
 
     var wallet: UserWalletRLM? {
         didSet {
-            if oldValue != wallet {
-                if oldValue == nil {
-                    loadWebViewContent()
-                }
+//            if oldValue?.id != wallet?.id {
+                loadWebViewContent()
                 mainVC?.updateUI()
-            }
+//            }
         }
     }
     
@@ -59,7 +60,6 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     }
     
     func vcViewWillAppear() {
-        
         mainVC?.configureUI()
         mainVC?.updateUI()
     }
@@ -67,20 +67,33 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     func vcViewDidAppear() {
     }
     
+    var walletAddress: String? //{
+//        didSet {
+//            mainVC?.walletAddress.text = walletAddress
+//            self.loadWebViewContent()
+//        }
+//    }
+    
     func loadETHWallets() {
+        if wallet != nil {
+            loadWebViewContent()
+            
+            return
+        }
+        
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             if err != nil {
                 return
             } else {
                 let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
-                //FIXME: MS wallets
-                let choosenWallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
+
+                let wallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType && $0.isMultiSig == false }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
                 
                 DispatchQueue.main.async { [unowned self] in
-                    if choosenWallet == nil {
+                    if wallet == nil {
                         self.createFirstWalletAndLoadBrowser()
                     } else {
-                        self.wallet = choosenWallet
+                        self.wallet = wallet
                     }
                 }
             }
@@ -92,7 +105,13 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     }
     
     func loadPageWithURLString(_ urlString: String) {
-        let url = URL(string: urlString)
+        var absoluteURLString = urlString
+        
+        if absoluteURLString.hasPrefix("http") == false {
+            absoluteURLString = "http://" + absoluteURLString
+        }
+        
+        let url = URL(string: absoluteURLString)
         if url != nil {
             browserCoordinator?.browserViewController.goTo(url: url!)
         }
@@ -103,16 +122,20 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     }
     
     func didUpdateHistory(coordinator: BrowserCoordinator) {
-        
         mainVC?.updateUI()
     }
     
-    fileprivate func loadWebViewContent() {
+    func didLoadUrl(url: String) {
+        mainVC!.urlTextField.text = url
+    }
+    
+    func loadWebViewContent() {
         clear(cache: true, cookies: true)
         
         DispatchQueue.main.async { [unowned self] in
             self.browserCoordinator = BrowserCoordinator(wallet: self.wallet!, urlString: self.defaultURLString)
             self.browserCoordinator!.delegate = self
+            self.mainVC!.childViewControllers.last?.remove()
             self.mainVC!.add(self.browserCoordinator!.browserViewController, to: self.mainVC!.browserView)
             self.browserCoordinator?.browserViewController.webView.scrollView.delegate = self.mainVC!
             self.browserCoordinator!.start()
@@ -198,6 +221,7 @@ extension BrowserCacheDelegate {
 extension DappBrowserPresenter: SendWalletProtocol {
     func sendWallet(wallet: UserWalletRLM) {
         self.wallet = wallet
+        self.walletAddress = wallet.address
     }
 }
 

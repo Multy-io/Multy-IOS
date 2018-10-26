@@ -12,6 +12,7 @@ import Branch
 protocol BrowserCoordinatorDelegate: class {
     func didSentTransaction(transaction: SentTransaction, in coordinator: BrowserCoordinator)
     func didUpdateHistory(coordinator: BrowserCoordinator)
+    func didLoadUrl(url: String)
 }
 
 final class BrowserCoordinator: NSObject, Coordinator {
@@ -314,6 +315,7 @@ extension BrowserCoordinator: BrowserViewControllerDelegate {
 
     func didVisitURL(url: URL, title: String) {
         historyStore.append(url)
+        delegate?.didLoadUrl(url: url.absoluteString)
     }
 }
 

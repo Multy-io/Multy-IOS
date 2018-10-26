@@ -8,6 +8,6 @@
 "YOU ARE TRYING SPEND MORE THEN HAVE" = "Ви намагаєтеся витратити більше ніж маєте.";
 "SUCCESS" = "Успішно!";
 "ERROR WHILE CREATING WALLET" = "Помилка при створенні гаманця!";
-"BROWSER ALERT FOR TX" = "Вы потратите %@ ETH (и %@ ETH для комиссии) из кошелька \"%@\"";
+"BROWSER ALERT FOR TX" = "Ви витратите %@ ETH (і %@ ETH для комісії) з гаманця \"%@\"";
 "CONFIRM" = "Затверджувати";
 "DENY" = "Відкидати";
