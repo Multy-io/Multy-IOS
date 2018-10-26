@@ -15,8 +15,9 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     var tabBarFrame: CGRect?
     
     //FIXME: DAPP
-    var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 4)
-    var defaultURLString = "https://app.alpha.dragonereum.io" // "https://dragonereum-alpha-test.firebaseapp.com" // "https://dapps.trustwalletapp.com"
+    var defaultBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 1)
+    var defaultURLString = "https://app.dragonereum.io" //https://app.alpha.dragonereum.io" // "https://dragonereum-alpha-test.firebaseapp.com" // "https://dapps.trustwalletapp.com"
+    var isWalletsLoading = false
     
     var dragonDLObj: DragonDLObj? {
         didSet {
@@ -56,7 +57,10 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     
     func vcViewDidLoad() {
         tabBarFrame = mainVC?.tabBarController?.tabBar.frame
-        loadETHWallets()
+
+        if dragonDLObj == nil {
+            dragonDLObj = mainVC!.make()
+        }
     }
     
     func vcViewWillAppear() {
@@ -75,14 +79,22 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
 //    }
     
     func loadETHWallets() {
-        if wallet != nil {
+        if isWalletsLoading {
+            return
+        }
+        
+        if wallet != nil && wallet!.blockchainType == defaultBlockchainType {
             loadWebViewContent()
             
             return
         }
         
+        isWalletsLoading = true
+        
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             if err != nil {
+                self.isWalletsLoading = false
+                
                 return
             } else {
                 let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
@@ -93,6 +105,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
                     if wallet == nil {
                         self.createFirstWalletAndLoadBrowser()
                     } else {
+                        self.isWalletsLoading = false
                         self.wallet = wallet
                     }
                 }
@@ -187,6 +200,8 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
             ] as [String : Any]
         
         DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
+            self.isWalletsLoading = false
+            
             if error == nil {
                 self.loadETHWallets()
             } else {

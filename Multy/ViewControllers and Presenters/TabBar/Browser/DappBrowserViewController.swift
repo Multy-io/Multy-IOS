@@ -32,16 +32,11 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
         
         blockchainTypeImageView.image = UIImage(named: presenter.defaultBlockchainType.iconString)
         
-        if presenter.dragonDLObj == nil {
-            presenter.dragonDLObj = make()
-        }
-        
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
     }
     
     func make() -> DragonDLObj {
-        //FIXME: DAPP
         let settingsObj = DragonDLObj()
         if let curID = UserDefaults.standard.value(forKey: "browserCurrencyID") {
             settingsObj.chainID = curID as! Int
@@ -52,14 +47,13 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate {
         if let netId = UserDefaults.standard.value(forKey: "browserNetworkID") {
             settingsObj.chaintType = netId as! Int
         } else {
-            settingsObj.chaintType = 4
+            settingsObj.chaintType = 1
         }
         
         if let url = UserDefaults.standard.value(forKey: "browserDefURL") {
             settingsObj.browserURL = url as! String
         } else {
-            //FIXME: DAPP
-            settingsObj.browserURL = "https://dragonereum-alpha-test.firebaseapp.com" // "https://app.alpha.dragonereum.io"
+            settingsObj.browserURL = "https://app.dragonereum.io" //"https://dragonereum-alpha-test.firebaseapp.com" // "https://app.alpha.dragonereum.io"
         }
         
         return settingsObj
