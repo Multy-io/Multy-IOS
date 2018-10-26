@@ -25,7 +25,7 @@ protocol BrowserViewControllerDelegate: class {
     func didVisitURL(url: URL, title: String)
 }
 
-class BrowserViewController: UIViewController {
+class BrowserViewController: UIViewController, AnalyticsProtocol {
     
     private var myContext = 0
     //    let account: WalletInfo
@@ -482,11 +482,27 @@ extension BrowserViewController {
                 self.saveLastTXID(from:  dict!)
                 
                 self.showSuccessAlert()
+                
+                let amountString = BigInt("\(object.value)").cryptoValueString(for: self.wallet.blockchain)
+                self.sendDappAnalytics(screenName: screenBrowser, params: self.makeAnalyticsParams(sendAmountString: amountString, gasPrice: "\(object.gasPrice)", gasLimit: "\(object.gasLimit)"))
             } else {
                 self.presentAlert(for: "")
                 self.webView.reload()
             }
         }
+    }
+    
+    func makeAnalyticsParams(sendAmountString: String, gasPrice: String, gasLimit: String) -> NSDictionary {
+        let params: NSDictionary = [
+            "URL" : webView.url ?? "empty URL",
+            "Blockchain": wallet.chain,
+            "NetType" : wallet.chainType,
+            "Amount" : sendAmountString,
+            "GasPrice" : gasPrice,
+            "GasLimit" : gasLimit
+        ]
+        
+        return params
     }
     
     func showSuccessAlert() {

@@ -14,6 +14,10 @@ extension AnalyticsProtocol {
         Analytics.logEvent(screenName, parameters: [screenName : eventName])
     }
     
+    func sendDappAnalytics(screenName: String, params: NSDictionary) {
+        Analytics.logEvent(screenName, parameters: params as? [String : Any])
+    }
+    
     //Donation Alert
     func sendDonationAlertScreenPresentedAnalytics(code: Int) {
         DataManager.shared.donationCode = code
