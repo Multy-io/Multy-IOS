@@ -34,11 +34,11 @@
 	<key>CFBundleVersion</key>
 	<string>70</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>DappBrowserIvan</string>
+	<string>master</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>f0387b41</string>
+	<string>64d6ce03</string>
 	<key>GIT_TAG_NAME</key>
-	<string>RELEASE_1.2.2_66_ImportFix-dirty</string>
+	<string>RELEASE_1.3.0_70_Dragons-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
