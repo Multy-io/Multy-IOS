@@ -247,7 +247,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         setupTransactionAssetsBtns(false)
         
         //------------  WARNING  ------------//
-        setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
+        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
+            setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
+        }
         // ------------  WARNING  ------------
        
         setupAddressBtns()
@@ -683,7 +685,8 @@ extension TableViewDataSource: UITableViewDataSource {
                         transactionCell.wallet = presenter.wallet!
                         transactionCell.fillCell()
                         transactionCell.changeState(isEmpty: false)
-                        hideEmptyLbls()                    }
+                        hideEmptyLbls()
+                    }
                 } else {
                     transactionCell.changeState(isEmpty: true)
                     //                    fixForiPad()
@@ -692,8 +695,10 @@ extension TableViewDataSource: UITableViewDataSource {
                 return transactionCell
             }
         } else {
-            if indexPath.row < 3 {
+            let countOfTokens = presenter.wallet?.ethWallet?.erc20Tokens.count
+            if indexPath.row < countOfTokens ?? 0 {
                 let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
+                tokenCell.fillingCell(tokenObj: presenter.wallet!.ethWallet!.erc20Tokens[indexPath.row])
                 return tokenCell
             } else {
                 let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
@@ -724,6 +729,22 @@ extension TableViewDataSource: UITableViewDataSource {
                 return 10
             }
         } else {
+            if let countOfErc20Tokens = presenter.wallet?.ethWallet?.erc20Tokens.count {
+                if countOfErc20Tokens > 0 {
+                    hideEmptyLbls()
+                    tableView.isScrollEnabled = true
+                    if countOfErc20Tokens < 10 {
+                        return 10
+                    } else {
+                        return countOfErc20Tokens
+                    }
+                } else {
+                    if screenHeight == heightOfX || screenHeight == heightOfXSMax {
+                        return 13
+                    }
+                    return 10
+                }
+            }
             return 10
         }
     }

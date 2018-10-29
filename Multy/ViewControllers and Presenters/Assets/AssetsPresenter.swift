@@ -232,11 +232,13 @@ class AssetsPresenter: NSObject {
                 return
             } else {
                 let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
+                print(walletsArr[1].ethWallet?.erc20Tokens)
                 self.modifyImportedWallets(walletsArr,completion: { [unowned self, unowned dm] err in
                     print("afterVerbose:rawdata: \(walletsArrayFromApi!)")
                     dm.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { [unowned self] (acc, err) in
                         self.account = acc
-                        print("wallets: \(acc!.wallets)")
+//                        print("wallets: \(acc!.wallets)")
+                        print("wallets: \(acc!.wallets[1].ethWallet?.erc20Tokens)")
                         completion(true)
                     })
                 })

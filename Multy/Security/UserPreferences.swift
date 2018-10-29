@@ -112,7 +112,7 @@ class UserPreferences : NSObject {
         
         let originalArrayData = try! aes?.decrypt(cipheredData!.bytes)
         loggingPrint("getAndDecryptDatabasePassword:\n\n\(cipheredData!.base64EncodedString())\n\n\(originalArrayData!.data.base64EncodedString())\n\n\(originalArrayData!.data.count)")
-        
+         
         completion(originalArrayData!.data, nil)
     }
     

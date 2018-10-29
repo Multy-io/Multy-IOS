@@ -41,9 +41,13 @@ class WalletTokenRLM: Object {
             token.balance = balance as! String
         }
         
-        let erc20FromDB = realmManagerReference!.erc20Tokens[token.address]
-        token.ticker = erc20FromDB!.ticker
-        token.name = erc20FromDB!.name
+        if let erc20FromDB = realmManagerReference!.erc20Tokens[token.address] {
+            token.ticker = erc20FromDB.ticker
+            token.name = erc20FromDB.name
+        } else { //not valid tokens default values
+            token.ticker = "Token"
+            token.name = "Token"
+        }
         
         return token
     }

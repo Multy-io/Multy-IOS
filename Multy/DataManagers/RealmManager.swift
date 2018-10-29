@@ -580,7 +580,12 @@ extension WalletManager {
                                 modifiedWallet!.addresses =         wallet.addresses
                                 modifiedWallet!.isTherePendingTx =  wallet.isTherePendingTx
                                 modifiedWallet!.btcWallet =         wallet.btcWallet
-                                modifiedWallet!.ethWallet =         wallet.ethWallet
+                                if modifiedWallet?.ethWallet != nil {
+                                    realm.delete(realm.objects(ETHWallet.self))
+                                    realm.delete(realm.objects(WalletTokenRLM.self))
+                                    modifiedWallet!.ethWallet =         wallet.ethWallet
+                                    modifiedWallet!.ethWallet =         wallet.ethWallet
+                                }
                                 modifiedWallet!.multisigWallet =    wallet.multisigWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
