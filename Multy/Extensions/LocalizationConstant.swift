@@ -144,4 +144,7 @@ extension Constants {
     static let wrongKey = "Looks like you are trying to import by not private key string"
     static let serverOffTitle = "SERVER OFF TITLE"
     static let serverOffMessage = "SERVER OFF MESSAGE"
+    static let browserTxAlertSring = "BROWSER ALERT FOR TX"
+    static let confirmString = "CONFIRM"
+    static let denyString = "DENY"
 }

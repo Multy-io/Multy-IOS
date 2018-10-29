@@ -115,9 +115,14 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell
         walletCell.arrowImage.image = nil
-        walletCell.wallet = self.presenter.walletsArr[indexPath.row]
+        let wallet = self.presenter.walletsArr[indexPath.row]
+        walletCell.wallet = wallet
         walletCell.fillInCell()
-        
+        if presenter.preselectedWallet != nil && presenter.preselectedWallet!.address == wallet.address {
+            walletCell.selectCell(true)
+        } else {
+            walletCell.selectCell(false)
+        }
         return walletCell
     }
     

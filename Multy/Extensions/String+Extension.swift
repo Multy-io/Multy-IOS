@@ -4,6 +4,7 @@
 
 import Foundation
 import UIKit
+//import MultyCoreLibrary
 
 typealias Wireless = String
 
@@ -38,7 +39,8 @@ extension String {
         }
     }
     
-    //temporaty usage // FIXME: address blockchain
+    //temporaty usage
+    //FIXME: address blockchain
     var addressBlockchainValue: Blockchain {
         get {
             if hasPrefix("0x") {

@@ -2,10 +2,10 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
-#import <Foundation/Foundation.h>
-
-//#import "GGLInstanceID/GGLInstanceIDHeaders.h"
-
+//#import <Foundation/Foundation.h>
+//
+////#import "GGLInstanceID/GGLInstanceIDHeaders.h"
+//
 #import "account.h"
 #import "api.h"
 #import "big_int.h"
@@ -21,7 +21,7 @@
 #import "mnemonic.h"
 #import "properties.h"
 #import "run_tests.h"
-#import "sha3.h"
+//#import "sha3.h"
 #import "transaction_builder.h"
 #import "transaction.h"
 #import "transaction_builder.h"
