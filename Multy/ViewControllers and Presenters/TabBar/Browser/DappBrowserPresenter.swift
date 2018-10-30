@@ -19,6 +19,8 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     var defaultURLString = "https://app.dragonereum.io" //https://app.alpha.dragonereum.io" // "https://dragonereum-alpha-test.firebaseapp.com" // "https://dapps.trustwalletapp.com"
     var isWalletsLoading = false
     
+    var webViewDidLoaded = false
+    
     var dragonDLObj: DragonDLObj? {
         didSet {
             if dragonDLObj != nil {
@@ -154,6 +156,8 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
             self.browserCoordinator?.browserViewController.webView.scrollView.delegate = self.mainVC!
             self.browserCoordinator!.start()
             self.mainVC?.sendAnalyticsEvent(screenName: screenBrowser, eventName: "loading URL" + "\(self.defaultURLString)")
+            
+            self.webViewDidLoaded = true
         }
     }
     
@@ -237,8 +241,13 @@ extension BrowserCacheDelegate {
 
 extension DappBrowserPresenter: SendWalletProtocol {
     func sendWallet(wallet: UserWalletRLM) {
+        guard self.wallet == nil || self.wallet!.id != wallet.id else {
+            return
+        }
+        
+        webViewDidLoaded = false
+        walletAddress = wallet.address
         self.wallet = wallet
-        self.walletAddress = wallet.address
     }
 }
 
