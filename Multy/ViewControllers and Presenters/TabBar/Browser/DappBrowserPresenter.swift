@@ -130,9 +130,9 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         }
     }
     
-    func didSentTransaction(transaction: SentTransaction, in coordinator: BrowserCoordinator) {
-        
-    }
+//    func didSentTransaction(transaction: SentTransaction, in coordinator: BrowserCoordinator) {
+//        
+//    }
     
     func didUpdateHistory(coordinator: BrowserCoordinator) {
         mainVC?.updateUI()

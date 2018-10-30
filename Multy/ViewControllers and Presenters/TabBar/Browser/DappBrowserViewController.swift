@@ -64,7 +64,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         if let url = UserDefaults.standard.value(forKey: "browserDefURL") {
             settingsObj.browserURL = url as! String
         } else {
-            settingsObj.browserURL = "https://app.dragonereum.io" //"https://dragonereum-alpha-test.firebaseapp.com" // "https://app.alpha.dragonereum.io"
+            settingsObj.browserURL = "https://kyber.network/swap" // "https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.dragonereum.io" // "https://app.alpha.dragonereum.io"
         }
         
         return settingsObj

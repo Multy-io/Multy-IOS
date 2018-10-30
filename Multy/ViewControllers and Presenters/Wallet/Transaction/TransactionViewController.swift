@@ -456,6 +456,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             } else if presenter.isDonationExist {
                 result = result + 300
             }
+        } else {
+            
         }
         
         return result
