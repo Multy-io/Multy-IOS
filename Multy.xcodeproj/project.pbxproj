@@ -3720,7 +3720,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.testimony;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3761,7 +3761,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.testimony;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";
