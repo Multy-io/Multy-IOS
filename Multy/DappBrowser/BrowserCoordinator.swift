@@ -15,8 +15,8 @@ protocol BrowserCoordinatorDelegate: class {
     func didLoadUrl(url: String)
 }
 
-final class BrowserCoordinator: NSObject, Coordinator {
-    var coordinators: [Coordinator] = []
+final class BrowserCoordinator: NSObject/*, Coordinator*/ {
+//    var coordinators: [Coordinator] = []
     let wallet: UserWalletRLM
     let urlString: String
 //    let session: WalletSession

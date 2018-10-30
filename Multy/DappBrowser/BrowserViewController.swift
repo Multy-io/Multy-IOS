@@ -213,6 +213,7 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
             
             if txID == self.lastTxID {
                 self.webView.reload()
+                self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
             }
             
             self.lastTxID = ""
@@ -250,6 +251,7 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
     func reload() {
 //        hideErrorView()
         webView.reload()
+        self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
     }
     
     private func stopLoading() {
@@ -422,6 +424,7 @@ extension BrowserViewController {
         DataManager.shared.getOneWalletVerbose(wallet: wallet) { [unowned self] (wallet, error) in
             if error != nil {
                 self.webView.reload()
+                self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
                 self.presentAlert(for: "") // default message
             } else {
                 self.wallet = wallet!
@@ -441,6 +444,7 @@ extension BrowserViewController {
         alert.addAction(UIAlertAction(title: localize(string: Constants.denyString), style: .default, handler: { [weak self] (action) in
             if self != nil {
                 self!.webView.reload()
+                self!.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
             }
         }))
         
@@ -520,12 +524,14 @@ extension BrowserViewController {
                 
                 self.showSuccessAlert()
                 self.webView.reload()
+                self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
                 
                 let amountString = BigInt("\(object.value)").cryptoValueString(for: self.wallet.blockchain)
                 self.sendDappAnalytics(screenName: screenBrowser, params: self.makeAnalyticsParams(sendAmountString: amountString, gasPrice: "\(object.gasPrice)", gasLimit: "\(object.gasLimit)"))
             } else {
                 self.presentAlert(for: "")
                 self.webView.reload()
+                self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
             }
         }
     }
