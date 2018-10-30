@@ -146,7 +146,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
         } else {
-            swipeToBack()
+            enableSwipeToBack()
         }
     }
     

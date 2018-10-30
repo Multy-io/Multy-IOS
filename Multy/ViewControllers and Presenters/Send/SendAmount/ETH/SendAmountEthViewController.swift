@@ -38,7 +38,7 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         presenter.sendAmountVC = self
         numberFormatter.numberStyle = .decimal
         multiSigSetup()
@@ -210,8 +210,6 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
         sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: payMaxTap)
     }
     
-    
-    
     @IBAction func nextAction(_ sender: Any) {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         changeSum()
@@ -305,7 +303,6 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
         return newLength <= self.presenter.maxLengthForSum
     }
     
-    
     func setSumInNextBtn() {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         
@@ -329,7 +326,7 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
             presenter.transactionDTO.sendAmountString = presenter.sumInCrypto.cryptoValueString(for: presenter.blockchain)
             presenter.transactionDTO.transaction?.rawTransaction = presenter.rawTransaction
             presenter.transactionDTO.transaction?.transactionRLM = presenter.transactionObj
-            presenter.transactionDTO.transaction?.endSumBigInt = presenter.getNextBtnSum()
+            presenter.transactionDTO.transaction?.endSum = presenter.getNextBtnSum()
             presenter.transactionDTO.transaction?.feeAmount = presenter.feeAmount
             
             if let changeAddress = presenter.addressData?["address"] {
@@ -337,12 +334,6 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
             }
             
             sendFinishVC.presenter.transactionDTO = presenter.transactionDTO
-        }
-    }
-    
-    func test () {
-        DataManager.shared.getAccount { (account, error) in
-            
         }
     }
     

@@ -6,200 +6,170 @@ import UIKit
 import RealmSwift
 
 private typealias LocalizeDelegate = SendDetailsPresenter
+private typealias CustomFeeRateDelegate = SendDetailsPresenter
 
-class SendDetailsPresenter: NSObject, CustomFeeRateProtocol {
+class SendDetailsPresenter: NSObject {
     
-    var sendDetailsVC: SendDetailsViewController?
+    var vc: SendDetailsViewController?
     var transactionDTO = TransactionDTO() {
         didSet {
-            self.blockedAmount = transactionDTO.choosenWallet?.calculateBlockedAmount()
-            availableSumInCrypto = self.transactionDTO.choosenWallet!.sumInCrypto - self.blockedAmount!.btcValue
-            availableSumInFiat = availableSumInCrypto! * transactionDTO.choosenWallet!.exchangeCourse
+            availableSumInCrypto = transactionDTO.choosenWallet!.availableBalance
+            availableSumInFiat = transactionDTO.choosenWallet!.availableAmountInFiat
             cryptoName = transactionDTO.blockchain!.shortName
-            customFee = transactionDTO.transaction?.customFee ?? UInt64(0)
+            fiatName = transactionDTO.choosenWallet!.fiatName
+            feeRates = defaultFeeRates()
         }
     }
     
-    var blockedAmount           : UInt64?
-    var availableSumInCrypto    : Double?
-    var availableSumInFiat      : Double?
+    var availableSumInCrypto    : BigInt?
+    var availableSumInFiat      : BigInt?
     
-    var selectedIndexOfSpeed: Int?
-    
-    var donationInCrypto: Double? = 0.0001
-    var donationInFiat: Double?
-    var cryptoName = "BTC"
-    var fiatName = "USD"
-    
-//    var addressToStr: String?
-//    var amountFromQr: Double?
-    
-    var maxAllowedToSpend = 0.0
-    
-    let transactionObj = TransactionRLM()
-    let donationObj = DonationDTO()
-    var customFee = UInt64(0)
-    
-    var feeRate: NSDictionary? {
+    var selectedIndexOfSpeed: Int? {
         didSet {
-            if let verySlowFeeRate = feeRate?["VerySlow"] as? UInt64 {
-                if customFee == 0 {
-                    customFee = verySlowFeeRate
-                }
-                
-                sendDetailsVC?.tableView.reloadData()
-                updateCellsVisibility()
+            if oldValue != selectedIndexOfSpeed {
+                updateTransaction()
             }
         }
     }
     
-    func getData() {
-        DataManager.shared.getAccount { (account, error) in
-            if error != nil {
-                return
+    // Donation
+    var isDonationSwitchedOn : Bool? {
+        didSet {
+            if isDonationSwitchedOn != nil {
+                donationInCrypto = isDonationSwitchedOn! ? BigInt("\(minBTCDonationAmount)") : BigInt.zero()
+            } else {
+                donationInCrypto = nil
+            }
+            vc?.updateDonationUI()
+        }
+    }
+    
+    var donationInCrypto: BigInt? {
+        didSet {
+            if oldValue != donationInCrypto {
+                updateTransaction()
+                vc?.updateDonationUI()
             }
         }
+    }
+    
+    var donationInFiat: BigInt? {
+        get {
+            guard donationInCrypto != nil else {
+                return nil
+            }
+            
+            return donationInCrypto! * transactionDTO.choosenWallet!.exchangeCourse
+        }
+    }
+    
+    var cryptoName = ""
+    var fiatName = ""
+    
+    var customFee: BigInt? {
+        didSet {
+            if oldValue != customFee {
+                vc?.tableView.reloadData()
+            }
+        }
+    }
+    
+    var feeRates : NSDictionary? {
+        didSet {
+            vc?.tableView.reloadData()
+            updateCellsVisibility()
+        }
+    }
+    
+    var isDonationAvailable : Bool {
+        get {
+            let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
+            return blockchainType.blockchain == BLOCKCHAIN_BITCOIN
+        }
+    }
+    
+    
+    func vcViewDidLoad() {
+        vc?.setupUI()
+        requestFee()
+    }
+    
+    func vcViewWillAppear() {
     }
     
     func requestFee() {
         DataManager.shared.getFeeRate(currencyID: transactionDTO.choosenWallet!.chain.uint32Value,
                                       networkID: transactionDTO.choosenWallet!.chainType.uint32Value,
-                                      ethAddress: nil,
-                                      completion: { [unowned self] (dict, error) in
-                                        self.sendDetailsVC?.loader.hide()
+                                      ethAddress: transactionDTO.sendAddress,
+                                      completion: { [weak self] (dict, error) in
+                                        guard self != nil else {
+                                            return
+                                        }
+                                        
+                                        self!.vc?.loader.hide()
                                         
                                         if dict != nil {
-                                            self.feeRate = dict!["speeds"] as? NSDictionary
+                                            self!.feeRates = dict!["speeds"] as? NSDictionary
                                         } else {
-                                            //Default values
-                                            self.feeRate = ["VeryFast" : 32,
-                                                            "Fast" : 16,
-                                                            "Medium" : 8,
-                                                            "Slow" : 4,
-                                                            "VerySlow" : 2,
-                                            ]
                                             print("Did failed getting feeRate")
                                         }
         })
     }
     
-    func createTransaction(index: Int) {
-        let exchangeCourse = transactionDTO.choosenWallet!.exchangeCourse
+    func defaultFeeRates() -> NSDictionary {
+        return transactionDTO.blockchain == BLOCKCHAIN_BITCOIN ? DefaultFeeRates.btc.hashValue : DefaultFeeRates.eth.hashValue
+    }
+    
+    func feeRateForIndex(_ index: Int) -> (name: String, value: BigInt) {
         switch index {
         case 0:
-            self.transactionObj.speedName = localize(string: Constants.veryFastString)
-            self.transactionObj.speedTimeString = "∙ 10 minutes"
-            self.transactionObj.sumInCrypto = 0.00000005
-            self.transactionObj.sumInFiat = Double(round(100*self.transactionObj.sumInCrypto * exchangeCourse)/100)
-            self.transactionObj.cryptoName = cryptoName
-            self.transactionObj.fiatName = fiatName
-            self.transactionObj.numberOfBlocks = 6
+            return (localize(string: Constants.veryFastString), BigInt("\(feeRates!["VeryFast"])"))
         case 1:
-            self.transactionObj.speedName = localize(string: Constants.fastString)
-            self.transactionObj.speedTimeString = "∙ 6 hour"
-            self.transactionObj.sumInCrypto = 0.00000005
-            self.transactionObj.sumInFiat = Double(round(100*self.transactionObj.sumInCrypto * exchangeCourse)/100)
-            self.transactionObj.cryptoName = cryptoName
-            self.transactionObj.fiatName = fiatName
-            self.transactionObj.numberOfBlocks = 10
+            return (localize(string: Constants.fastString), BigInt("\(feeRates!["Fast"]!)"))
         case 2:
-            self.transactionObj.speedName = localize(string: Constants.mediumString)
-            self.transactionObj.speedTimeString = "∙ 5 days"
-            self.transactionObj.sumInCrypto = 0.00000005
-            self.transactionObj.sumInFiat = Double(round(100*self.transactionObj.sumInCrypto * exchangeCourse)/100)
-            self.transactionObj.cryptoName = cryptoName
-            self.transactionObj.fiatName = fiatName
-            self.transactionObj.numberOfBlocks = 20
+            return (localize(string: Constants.mediumString), BigInt("\(feeRates!["Medium"]!)"))
         case 3:
-            self.transactionObj.speedName = localize(string: Constants.slowString)
-            self.transactionObj.speedTimeString = "∙ 1 week"
-            self.transactionObj.sumInCrypto = 0.00000005
-            self.transactionObj.sumInFiat = Double(round(100*self.transactionObj.sumInCrypto * exchangeCourse)/100)
-            self.transactionObj.cryptoName = cryptoName
-            self.transactionObj.fiatName = fiatName
-            self.transactionObj.numberOfBlocks = 50
+            return (localize(string: Constants.slowString), BigInt("\(feeRates!["Slow"]!)"))
         case 4:
-            self.transactionObj.speedName = localize(string: Constants.verySlowString)
-            self.transactionObj.speedTimeString = "∙ 2 weeks"
-            self.transactionObj.sumInCrypto = 0.00000005
-            self.transactionObj.sumInFiat = Double(round(100*self.transactionObj.sumInCrypto * exchangeCourse)/100)
-            self.transactionObj.cryptoName = cryptoName
-            self.transactionObj.fiatName = fiatName
-            self.transactionObj.numberOfBlocks = 70
+            return (localize(string: Constants.verySlowString), BigInt("\(feeRates!["VerySlow"]!)"))
         case 5:
-            self.transactionObj.speedName = localize(string: Constants.customString)
-            self.transactionObj.speedTimeString = ""
-            self.transactionObj.sumInCrypto = self.customFee.btcValue
-            self.transactionObj.sumInFiat = 0.0
-            self.transactionObj.cryptoName = cryptoName
-            self.transactionObj.fiatName = fiatName
-            self.transactionObj.numberOfBlocks = 0
+            return (localize(string: Constants.customString), customFee ?? BigInt.zero())
         default:
-            return
+            return ("", BigInt.zero())
         }
     }
     
-    func createDonation() {
-        let exchangeCourse = transactionDTO.choosenWallet!.exchangeCourse
-        self.donationObj.sumInCrypto = self.donationInCrypto
-        self.donationObj.cryptoName = self.cryptoName
-        self.donationObj.sumInFiat = Double(round(100*self.donationInCrypto!*exchangeCourse/100))
-        self.donationObj.fiatName = self.fiatName
+    func updateTransaction() {
+        if selectedIndexOfSpeed != nil {
+            let feeRate = feeRateForIndex(selectedIndexOfSpeed!)
+            transactionDTO.feeRate = feeRate.value
+        }
+        
+        transactionDTO.donationAmount = donationInCrypto
     }
     
-    func nullifyDonation() {
-        self.donationObj.sumInCrypto = 0.0
-        self.donationObj.cryptoName = ""
-        self.donationObj.sumInFiat = 0.0
-        self.donationObj.fiatName = ""
-    }
-    
-    func setMaxAllowed() {
-//        self.maxAllowedToSpend = (self.choosenWallet?.availableSumInCrypto)! - self.trasactionObj.sumInCrypto
-    }
-    
-    func checkMaxAvailable() {
+    func segueToAmount() {
         if self.availableSumInCrypto == nil || availableSumInCrypto! < 0.0 {
-            self.sendDetailsVC?.presentWarning(message: "Wrong wallet data. Please download wallet data again.")
+            self.vc?.presentWarning(message: "Wrong wallet data. Please download wallet data again.")
             
             return
         }
         
-        if !sendDetailsVC!.isDonateAvailableSW.isOn {
-            self.sendDetailsVC?.performSegue(withIdentifier: "sendEthVC", sender: Any.self)
-            
-            return
-        }
-        
-        self.maxAllowedToSpend = self.availableSumInCrypto!
-
-//        self.maxAllowedToSpend = (self.choosenWallet?.sumInCrypto)! - self.trasactionObj.sumInCrypto
-        if self.donationObj.sumInCrypto! > self.maxAllowedToSpend  {
-//            self.sendDetailsVC?.presentWarning(message: "Your donation sum and fee cost more than you have in wallet.\n\n Fee cost: \(self.trasactionObj.sumInCrypto) \(self.trasactionObj.cryptoName)\n Donation sum: \(self.donationObj.sumInCrypto ?? 0.0) \(self.cryptoName)\n Sum in Wallet: \(self.choosenWallet?.sumInCrypto ?? 0.0) \(self.cryptoName)")
-            self.sendDetailsVC?.presentWarning(message: "Your donation more than you have in wallet.\n\nDonation sum: \((self.donationObj.sumInCrypto ?? 0.0).fixedFraction(digits: 8)) \(self.cryptoName)\n Sum in Wallet: \((self.availableSumInCrypto ?? 0.0).fixedFraction(digits: 8)) \(self.cryptoName)")
-        } else if self.donationObj.sumInCrypto! == self.maxAllowedToSpend {
-            self.sendDetailsVC?.presentWarning(message: "Your donation is equal your wallet sum.\n\nDonation sum: \((self.donationObj.sumInCrypto ?? 0.0).fixedFraction(digits: 8)) \(self.cryptoName)\n Sum in Wallet: \((self.availableSumInCrypto ?? 0.0).fixedFraction(digits: 2)) \(self.cryptoName)")
+        if isDonationSwitchedOn != nil && isDonationSwitchedOn! {
+            if self.donationInCrypto! > self.availableSumInCrypto!  {
+                self.vc?.presentWarning(message: "Your donation more than you have in wallet.\n\nDonation sum: \(self.donationInCrypto!.cryptoValueString(for: transactionDTO.choosenWallet!.blockchain)) \(self.cryptoName)\n Sum in Wallet: \(self.availableSumInCrypto!.cryptoValueString(for: transactionDTO.choosenWallet!.blockchain)) \(self.cryptoName)")
+            } else if self.donationInCrypto! == self.availableSumInCrypto! {
+                self.vc?.presentWarning(message: "Your donation is equal your wallet sum.\n\nDonation sum: \(self.donationInCrypto!.cryptoValueString(for: transactionDTO.choosenWallet!.blockchain)) \(self.cryptoName)\n Sum in Wallet: \(self.availableSumInCrypto!.cryptoValueString(for: transactionDTO.choosenWallet!.blockchain)) \(self.cryptoName)")
+            } else {
+                self.vc?.performSegue(withIdentifier: "sendEthVC", sender: Any.self)
+            }
         } else {
-            self.sendDetailsVC?.performSegue(withIdentifier: "sendEthVC", sender: Any.self)
+            self.vc?.performSegue(withIdentifier: "sendEthVC", sender: Any.self)
         }
-    }
-    
-    func customFeeData(firstValue: Int?, secValue: Int?) {
-        print(firstValue)
-        if selectedIndexOfSpeed != 5 {
-           selectedIndexOfSpeed = 5
-        }
-        let cell = self.sendDetailsVC?.tableView.cellForRow(at: [0, selectedIndexOfSpeed!]) as! CustomTrasanctionFeeTableViewCell
-        cell.value = UInt64(firstValue!)
-        cell.setupUI()
-        customFee = UInt64(firstValue!)
-//        self.sendDetailsVC?.tableView.reloadData()
-        updateCellsVisibility()
-        sendDetailsVC?.sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(transactionDTO.choosenWallet!.chain)", eventName: customFeeSetuped)
     }
     
     func updateCellsVisibility () {
-        var cells = sendDetailsVC?.tableView.visibleCells
+        var cells = vc?.tableView.visibleCells
         let selectedCell = selectedIndexOfSpeed == nil ? nil : cells![selectedIndexOfSpeed!]
         
         for cell in cells! {
@@ -210,16 +180,28 @@ class SendDetailsPresenter: NSObject, CustomFeeRateProtocol {
             }
         }
     }
-    
-    func setPreviousSelected(index: Int?) {
-        self.sendDetailsVC?.tableView.selectRow(at: [0,index!], animated: false, scrollPosition: .none)
-        self.sendDetailsVC?.tableView.delegate?.tableView!(self.sendDetailsVC!.tableView, didSelectRowAt: [0,index!])
-        self.selectedIndexOfSpeed = index!
-    }
 }
 
 extension LocalizeDelegate: Localizable {
     var tableName: String {
         return "Sends"
+    }
+}
+
+extension CustomFeeRateDelegate: CustomFeeRateProtocol {
+    func customFeeData(firstValue: Int?, secValue: Int?) {
+        guard firstValue != nil else {
+            return
+        }
+        
+        customFee = BigInt("\(firstValue!)")
+        vc?.sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(transactionDTO.choosenWallet!.chain)", eventName: customFeeSetuped)
+    }
+
+    
+    func setPreviousSelected(index: Int?) {
+        self.vc?.tableView.selectRow(at: [0,index!], animated: false, scrollPosition: .none)
+        self.vc?.tableView.delegate?.tableView!(self.vc!.tableView, didSelectRowAt: [0,index!])
+        self.selectedIndexOfSpeed = index!
     }
 }

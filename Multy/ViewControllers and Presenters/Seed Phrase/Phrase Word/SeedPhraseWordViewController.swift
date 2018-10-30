@@ -24,7 +24,7 @@ class SeedPhraseWordViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         if screenWidth < 325 {
             constraintTopBricks.constant = 90
         }

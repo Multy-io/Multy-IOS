@@ -229,7 +229,7 @@ extension UIViewController {
         appDelegate.presentedVC = self
     }
     
-    func swipeToBack() {
+    func enableSwipeToBack() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }

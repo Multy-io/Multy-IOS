@@ -26,7 +26,7 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.fixForiPad()
         sendAnalyticsEvent(screenName: screenViewPhrase, eventName: screenViewPhrase)
     }

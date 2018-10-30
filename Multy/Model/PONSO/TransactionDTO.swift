@@ -7,44 +7,29 @@ import RealmSwift
 
 class TransactionDTO: NSObject {
     var sendAddress : String?
-    var sendAmount: Double?
-    var sendAmountString: String?
+    var sendAmount: BigInt?
+    var requestedAmount: BigInt?
+    
+    var blockchain: Blockchain?
+    
     var choosenWallet: UserWalletRLM? {
         didSet {
             if choosenWallet != nil {
-                currencyID = choosenWallet?.chain
-                blockchainType = BlockchainType.create(wallet: choosenWallet!)
+                blockchain = choosenWallet!.blockchain
             }
         }
     }
     
-    var blockchainType: BlockchainType? {
-        didSet {
-            if blockchainType != nil {
-                blockchain = blockchainType!.blockchain
-            }
-        }
-    }
-    var blockchain: Blockchain?
-    
-    var currencyID : NSNumber? {
-        didSet {
-            createTransactionDTO()
+    var feeRate: BigInt?
+    var feeAmount: BigInt? {
+        get {
+            return feeRate
         }
     }
     
-    var transaction: BaseTransactionDTO?
+    var rawValue: String?
     
-    func createTransactionDTO() {
-        switch currencyID?.uint32Value {
-        case BLOCKCHAIN_BITCOIN.rawValue?:
-            transaction = BTCTransactionDTO()
-        case BLOCKCHAIN_ETHEREUM.rawValue?:
-            transaction = ETHTransactionDTO()
-        default:
-            transaction = BTCTransactionDTO()
-        }
-    }
+    var donationAmount: BigInt?
     
     func update(from qrString: String) {
         let array = qrString.components(separatedBy: CharacterSet(charactersIn: ":?="))
@@ -58,8 +43,8 @@ class TransactionDTO: NSObject {
         case 4:                                // chain name + address + amount
             let blockchainName = array[0]
             sendAddress = array[1]
-            sendAmountString = array[3]
-            sendAmount = (sendAmountString! as NSString).doubleValue
+            let sendAmountString = array[3]
+            sendAmount = BigInt(sendAmountString)
             blockchain = Blockchain.blockchainFromString(blockchainName)
         default:
             return
@@ -67,27 +52,18 @@ class TransactionDTO: NSObject {
     }
 }
 
-class BaseTransactionDTO {
-    var finalSendSum: Double?
-    var donationDTO: DonationDTO?
-    var transactionRLM: TransactionRLM?
-    var customFee: UInt64?
-    var rawTransaction: String?
+class BTCTransactionDTO: TransactionDTO {
     var newChangeAddress: String?
-    var endSum: Double?
-    var endSumBigInt: BigInt?
-    var customGAS: EthereumGasInfo?
-    var feeAmount = BigInt("0")
 }
 
-class BTCTransactionDTO: BaseTransactionDTO {
+class ETHTransactionDTO: TransactionDTO {
+    var gasLimit: BigInt?
     
-}
-
-class ETHTransactionDTO: BaseTransactionDTO {
-    
-}
-
-class GOLOSTransactionDTO: BaseTransactionDTO {
-    
+    override var feeAmount: BigInt? {
+        if gasLimit != nil && feeRate != nil {
+            return gasLimit! * feeRate!
+        }
+        
+        return nil
+    }
 }

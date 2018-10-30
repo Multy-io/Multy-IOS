@@ -51,9 +51,9 @@ class SendFinishPresenter: NSObject {
             } else if transactionDTO.choosenWallet!.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
                 sumInCryptoString = transactionDTO.sendAmountString!
                 if isCrypto {
-                    sumInFiatString = (transactionDTO.transaction!.endSumBigInt! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
+                    sumInFiatString = (transactionDTO.transaction!.endSum! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
                 } else {
-                    sumInFiatString = (transactionDTO.transaction!.endSumBigInt!).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
+                    sumInFiatString = (transactionDTO.transaction!.endSum!).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
                 }
                 
                 

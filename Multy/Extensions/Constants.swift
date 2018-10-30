@@ -84,6 +84,7 @@ struct Constants {
         static let defaultBTCCustomFeeKey = 2
         static let defaultETHCustomFeeKey = 1 // in GWei
     }
+    
 }
 
 extension LocalizeDelegate: Localizable {
@@ -91,6 +92,32 @@ extension LocalizeDelegate: Localizable {
         return "Assets"
     }
 }
+
+enum DefaultFeeRates: Hashable {
+    case eth
+    case btc
+    
+    public var hashValue: NSDictionary {
+        switch self {
+        case .eth:
+            return ["VeryFast" : 32,
+                    "Fast" : 16,
+                    "Medium" : 8,
+                    "Slow" : 4,
+                    "VerySlow" : 2,
+            ]
+        case .btc:
+            return ["VeryFast" : 5,
+                    "Fast" : 4,
+                    "Medium" : 3,
+                    "Slow" : 2,
+                    "VerySlow" : 1,
+            ]
+        }
+    }
+}
+
+let minBTCDonationAmount = 0.0001
 
 let defaultDelimeter = "," as Character
 
@@ -263,3 +290,5 @@ let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"
 let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 
 let inviteCodeCount = 45
+
+let exchangeCourseDefault : Double = 1.0

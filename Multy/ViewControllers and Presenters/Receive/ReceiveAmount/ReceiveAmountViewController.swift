@@ -39,7 +39,7 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        swipeToBack()
+        enableSwipeToBack()
         presenter.receiveAmountVC = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)),

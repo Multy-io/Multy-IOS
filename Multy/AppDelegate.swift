@@ -244,8 +244,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                     seedVC.pinTF.becomeFirstResponder()
                 } else if let receiveVC = vcOnScren as? ReceiveAmountViewController {
                     receiveVC.amountTF.becomeFirstResponder()
-                } else if let amountVC = vcOnScren as? SendAmountViewController {
-                    amountVC.amountTF.becomeFirstResponder()
                 } else if let amountVC = vcOnScren as? SendAmountEthViewController {
                     amountVC.amountTF.becomeFirstResponder()
                 }

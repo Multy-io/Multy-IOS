@@ -19,7 +19,7 @@ class WalletChooseViewController: UIViewController, AnalyticsProtocol {
         
         emptyDataSourceLabel.text = localize(string: Constants.youDontHaveWalletString) + presenter.transactionDTO.sendAddress!.addressBlockchainValue.shortName
         
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.registerCell()
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         self.presenter.walletChoooseVC = self
@@ -48,15 +48,11 @@ class WalletChooseViewController: UIViewController, AnalyticsProtocol {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sendBTCDetailsVC" {
+        if segue.identifier == "sendDetailsVC" {
             let detailsVC = segue.destination as! SendDetailsViewController
             presenter.transactionDTO.choosenWallet = presenter.filteredWalletArray[presenter.selectedIndex!]
             detailsVC.presenter.transactionDTO = presenter.transactionDTO
-        } else if segue.identifier == "sendETHDetailsVC" {
-            let detailsVC = segue.destination as! EthSendDetailsViewController
-            presenter.transactionDTO.choosenWallet = presenter.filteredWalletArray[presenter.selectedIndex!]
-            detailsVC.presenter.transactionDTO = presenter.transactionDTO
-        }
+        } 
     }
     
     @IBAction func cancelAction(_ sender: Any) {

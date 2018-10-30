@@ -23,7 +23,7 @@ class CreateWalletViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.hideKeyboardWhenTappedAround()
         self.tableView.tableFooterView = nil
         loader.show(customTitle: localize(string: Constants.creatingWalletString))

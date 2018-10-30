@@ -25,7 +25,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         setupUI()
     }
     

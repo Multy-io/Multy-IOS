@@ -54,7 +54,7 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
 //        self.fixUIForX()
         self.presenter.sendFinishVC = self
         self.hideKeyboardWhenTappedAround()

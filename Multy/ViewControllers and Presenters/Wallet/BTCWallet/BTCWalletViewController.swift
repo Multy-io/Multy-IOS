@@ -78,7 +78,7 @@ class BTCWalletViewController: UIViewController, AnalyticsProtocol {
         loader.show(customTitle: localize(string: Constants.updatingString))
         view.addSubview(loader)
         loader.hide()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         presenter.mainVC = self
         presenter.fixConstraints()
         presenter.registerCells()

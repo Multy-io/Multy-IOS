@@ -19,7 +19,7 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         walletNameTF.accessibilityIdentifier = "nameField"
         loader = PreloaderView(frame: HUDFrame, text: localize(string: Constants.updatingString), image: #imageLiteral(resourceName: "walletHuge"))
 //        loader.setupUI(text: localize(string: Constants.updatingString), image: #imageLiteral(resourceName: "walletHuge"))
