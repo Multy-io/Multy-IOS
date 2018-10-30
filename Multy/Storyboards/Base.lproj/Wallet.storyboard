@@ -2421,6 +2421,8 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <outlet property="pendingSectionView" destination="AYj-hl-hwi" id="CLD-cn-3YG"/>
                         <outlet property="pendingSeparatorWidthConstraint" destination="HNz-8J-GMH" id="cVc-nV-pHm"/>
                         <outlet property="pendingStack" destination="CYp-70-3mO" id="LEn-uV-CQV"/>
+                        <outlet property="settingsBtn" destination="bM7-D6-kiZ" id="HLA-Zb-nvb"/>
+                        <outlet property="settingsImg" destination="0hh-xw-DNt" id="3I1-c6-bto"/>
                         <outlet property="shareAddressBtn" destination="5Jb-Vr-nch" id="YEz-Vn-GXQ"/>
                         <outlet property="showAddressesBtn" destination="8RE-29-d1G" id="Zjs-qv-YNZ"/>
                         <outlet property="spiner" destination="Qeg-eG-Br7" id="5oL-Bv-Oct"/>

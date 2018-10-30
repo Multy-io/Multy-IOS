@@ -40,13 +40,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.001 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d7M-nG-J6f">
-                        <rect key="frame" x="282" y="11" width="77" height="22"/>
+                        <rect key="frame" x="282" y="13" width="77" height="22"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1684.24 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FhL-al-Uuc">
-                        <rect key="frame" x="285" y="33" width="74" height="17"/>
+                        <rect key="frame" x="285" y="35" width="74" height="17"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                         <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -54,7 +54,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="WK0-Ru-Jh9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="2c5-bC-bah"/>
-                    <constraint firstItem="d7M-nG-J6f" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="7bG-GA-yNx"/>
+                    <constraint firstItem="d7M-nG-J6f" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="7bG-GA-yNx"/>
                     <constraint firstItem="3ej-zT-ELu" firstAttribute="leading" secondItem="WK0-Ru-Jh9" secondAttribute="trailing" constant="16" id="C4o-Gw-fWB"/>
                     <constraint firstAttribute="bottom" secondItem="3ej-zT-ELu" secondAttribute="bottom" id="Cbx-fU-ONy"/>
                     <constraint firstAttribute="trailing" secondItem="d7M-nG-J6f" secondAttribute="trailing" constant="16" id="Cdj-a2-XrD"/>

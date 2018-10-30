@@ -33,6 +33,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var pendingAmountFiatLbl: UILabel!
         //
     //
+    @IBOutlet weak var settingsImg: UIImageView!
+    @IBOutlet weak var settingsBtn: UIButton!
     
     @IBOutlet weak var adressWithBtnView: UIView!
     @IBOutlet weak var addressButtonsStackView: UIStackView!
@@ -145,7 +147,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return currentStatusStyle
+        return .lightContent//currentStatusStyle
     }
     
     override func viewDidLoad() {
@@ -154,6 +156,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         presenter.walletVC = self
         presenter.registerCells()
         addGestureRecognizers()
+        
+        if presenter.isToken {
+            setupUIForToken()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -457,6 +463,12 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         presenter.getHistoryAndWallet()
     }
     
+    func setupUIForToken() {
+        settingsImg.isHidden = true
+        settingsBtn.isHidden = true
+//        presenter.isToken = true
+    }
+    
     @IBAction func titleAction(_ sender: Any) {
         if tableHolderViewHeight == tablesHolderTopEdge {
             setInitialTableHolderPosition()
@@ -466,10 +478,23 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBAction func backAction(_ sender: Any) {
         assetsTableTrailingConstraint.constant = 0
 //        self.navigationController?.popViewController(animated: true)
-        if navigationController?.childViewControllers.count == 4 {
+//        if navigationController?.childViewControllers.count == 4 {
+//            navigationController?.popViewController(animated: true)
+//        } else {
+//            navigationController?.popToRootViewController(animated: true)
+//        }
+        backAction(isToken: presenter.isToken)
+    }
+    
+    func backAction(isToken: Bool) {
+        if isToken {
             navigationController?.popViewController(animated: true)
-        } else {
-            navigationController?.popToRootViewController(animated: true)
+        } else { //default
+            if navigationController?.childViewControllers.count == 4 {
+                navigationController?.popViewController(animated: true)
+            } else {
+                navigationController?.popToRootViewController(animated: true)
+            }
         }
     }
     
@@ -638,7 +663,14 @@ extension TableViewDelegate: UITableViewDelegate {
             self.navigationController?.pushViewController(transactionVC, animated: true)
             sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(transactionWithChainTap)\(presenter.wallet!.chain)")
         } else {
-            
+            //open
+            tableView.deselectRow(at: indexPath, animated: true)
+            let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+            let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
+            walletVC.presenter.isToken = true
+            walletVC.presenter.account = presenter.account
+            walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.wallet!.ethWallet!.erc20Tokens[indexPath.row])
+            navigationController?.pushViewController(walletVC, animated: true)
         }
     }
     
