@@ -899,32 +899,36 @@ extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout 
 
 extension CollectionViewDelegate : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            
-            let customTab = tabBarController as! CustomTabBarViewController
-            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
-        } else {
+//        if indexPath.row == 0 {
+//
+//            let customTab = tabBarController as! CustomTabBarViewController
+//            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
+//        } else {
         unowned let weakSelf =  self
         makeIdForInAppBigBy(indexPath: indexPath)
         makeIdForInAppBy(indexPath: indexPath)
         self.presentDonationAlertVC(from: weakSelf, with: stringIdForInAppBig)
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         logAnalytics(indexPath: indexPath)
-        }
+//        }
     }
     
     func makeIdForInAppBy(indexPath: IndexPath) {
         switch indexPath.row {
-        case 1: stringIdForInApp = "io.multy.addingPortfolio5"
-        case 2: stringIdForInApp = "io.multy.addingCharts5"
+//        case 1: stringIdForInApp = "io.multy.addingPortfolio5"
+//        case 2: stringIdForInApp = "io.multy.addingCharts5"
+        case 0: stringIdForInApp = "io.multy.addingPortfolio5"
+        case 1: stringIdForInApp = "io.multy.addingCharts5"
         default: break
         }
     }
     
     func makeIdForInAppBigBy(indexPath: IndexPath) {
         switch indexPath.row {
-        case 1: stringIdForInAppBig = "io.multy.addingPortfolio50"
-        case 2: stringIdForInAppBig = "io.multy.addingCharts50"
+//        case 1: stringIdForInAppBig = "io.multy.addingPortfolio50"
+//        case 2: stringIdForInAppBig = "io.multy.addingCharts50"
+        case 0: stringIdForInAppBig = "io.multy.addingPortfolio50"
+        case 1: stringIdForInAppBig = "io.multy.addingCharts50"
         default: break
         }
     }
@@ -932,9 +936,9 @@ extension CollectionViewDelegate : UICollectionViewDelegate {
     func logAnalytics(indexPath: IndexPath) {
 //        var eventCode = 0
         switch indexPath.row {
-        case 0: sendAnalyticsEvent(screenName: screenMain, eventName: "Dragon_Banner_Clicked")
-        case 1: sendDonationAlertScreenPresentedAnalytics(code: donationForPortfolioSC)
-        case 2: sendDonationAlertScreenPresentedAnalytics(code: donationForChartsSC)
+//        case 0: sendAnalyticsEvent(screenName: screenMain, eventName: "Dragon_Banner_Clicked")
+        case 0: sendDonationAlertScreenPresentedAnalytics(code: donationForPortfolioSC)
+        case 1: sendDonationAlertScreenPresentedAnalytics(code: donationForChartsSC)
         default: break
         }
 //        let eventCode = indexPath.row == 0 ? donationForPortfolioSC : donationForChartsSC

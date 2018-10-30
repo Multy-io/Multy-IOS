@@ -6,6 +6,13 @@ import Foundation
 import UIKit
 
 extension UIView {
+    var layoutGuide: UILayoutGuide {
+        if #available(iOS 11, *) {
+            return safeAreaLayoutGuide
+        } else {
+            return layoutMarginsGuide
+        }
+    }
     
     func setRounded(radius : CGFloat) {
         self.layer.cornerRadius = radius

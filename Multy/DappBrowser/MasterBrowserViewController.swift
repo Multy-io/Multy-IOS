@@ -5,27 +5,27 @@ import UIKit
 
 final class MasterBrowserViewController: UIViewController {
 
-    private lazy var segmentController: UISegmentedControl = {
-        let items = [
-            R.string.localizable.new(),
-            R.string.localizable.bookmarks(),
-            R.string.localizable.history(),
-        ]
-        let segmentedControl = UISegmentedControl(items: items)
-        segmentedControl.addTarget(self, action: #selector(selectionDidChange(_:)), for: .valueChanged)
-        segmentedControl.tintColor = .clear
-        return segmentedControl
-    }()
+//    private lazy var segmentController: UISegmentedControl = {
+//        let items = [
+//            R.string.localizable.new(),
+//            R.string.localizable.bookmarks(),
+//            R.string.localizable.history(),
+//        ]
+//        let segmentedControl = UISegmentedControl(items: items)
+//        segmentedControl.addTarget(self, action: #selector(selectionDidChange(_:)), for: .valueChanged)
+//        segmentedControl.tintColor = .clear
+//        return segmentedControl
+//    }()
 
-    private lazy var qrcodeButton: UIButton = {
-        let button = Button(size: .normal, style: .borderless)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(R.image.browser_scan(), for: .normal)
-        button.addTarget(self, action: #selector(qrReader), for: .touchUpInside)
-        return button
-    }()
+//    private lazy var qrcodeButton: UIButton = {
+//        let button = Button(size: .normal, style: .borderless)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.setImage(R.image.browser_scan(), for: .normal)
+//        button.addTarget(self, action: #selector(qrReader), for: .touchUpInside)
+//        return button
+//    }()
 
-    weak var delegate: MasterBrowserViewControllerDelegate?
+//    weak var delegate: MasterBrowserViewControllerDelegate?
 
 //    let bookmarksViewController: BookmarkViewController
 //    let historyViewController: HistoryViewController
@@ -34,77 +34,77 @@ final class MasterBrowserViewController: UIViewController {
     init(
 //        bookmarksViewController: BookmarkViewController,
 //        historyViewController: HistoryViewController,
-        browserViewController: BrowserViewController,
-        type: BookmarksViewType
+        browserViewController: BrowserViewController
+//        type: BookmarksViewType
     ) {
 //        self.bookmarksViewController = bookmarksViewController
 //        self.historyViewController = historyViewController
         self.browserViewController = browserViewController
         super.init(nibName: nil, bundle: nil)
 
-        segmentController.selectedSegmentIndex = type.rawValue
+//        segmentController.selectedSegmentIndex = type.rawValue
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-    }
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        setupView()
+//    }
 
-    func select(viewType: BookmarksViewType) {
-        segmentController.selectedSegmentIndex = viewType.rawValue
-        updateView()
-    }
+//    func select(viewType: BookmarksViewType) {
+//        segmentController.selectedSegmentIndex = viewType.rawValue
+//        updateView()
+//    }
 
-    private func setupView() {
-        let items: [UIBarButtonItem] = [
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-            UIBarButtonItem(customView: segmentController),
-            UIBarButtonItem(customView: qrcodeButton),
-            UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-        ]
-        self.toolbarItems = items
-        self.navigationController?.isToolbarHidden = false
-        self.navigationController?.toolbar.isTranslucent = false
-        updateView()
-    }
+//    private func setupView() {
+//        let items: [UIBarButtonItem] = [
+//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+//            UIBarButtonItem(customView: segmentController),
+//            UIBarButtonItem(customView: qrcodeButton),
+//            UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil),
+//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+//        ]
+//        self.toolbarItems = items
+//        self.navigationController?.isToolbarHidden = false
+//        self.navigationController?.toolbar.isTranslucent = false
+//        updateView()
+//    }
 
-    private func updateView() {
-        if segmentController.selectedSegmentIndex == BookmarksViewType.bookmarks.rawValue {
-            remove(asChildViewController: browserViewController)
+//    private func updateView() {
+//        if segmentController.selectedSegmentIndex == BookmarksViewType.bookmarks.rawValue {
+//            remove(asChildViewController: browserViewController)
 //            remove(asChildViewController: historyViewController)
 //            add(asChildViewController: bookmarksViewController)
-        } else if segmentController.selectedSegmentIndex == BookmarksViewType.history.rawValue {
-            remove(asChildViewController: browserViewController)
+//        } else if segmentController.selectedSegmentIndex == BookmarksViewType.history.rawValue {
+//            remove(asChildViewController: browserViewController)
 //            remove(asChildViewController: bookmarksViewController)
 //            add(asChildViewController: historyViewController)
-        } else {
+//        } else {
 //            remove(asChildViewController: bookmarksViewController)
 //            remove(asChildViewController: historyViewController)
-            add(asChildViewController: browserViewController)
-        }
-    }
+//            add(asChildViewController: browserViewController)
+//        }
+//    }
 
-    @objc func selectionDidChange(_ sender: UISegmentedControl) {
-        updateView()
+//    @objc func selectionDidChange(_ sender: UISegmentedControl) {
+//        updateView()
 
-        guard let viewType = BookmarksViewType(rawValue: sender.selectedSegmentIndex) else {
-            return
-        }
-        delegate?.didPressAction(.view(viewType))
-    }
+//        guard let viewType = BookmarksViewType(rawValue: sender.selectedSegmentIndex) else {
+//            return
+//        }
+//        delegate?.didPressAction(.view(viewType))
+//    }
 
-    @objc func qrReader() {
-        delegate?.didPressAction(.qrCode)
-    }
+//    @objc func qrReader() {
+//        delegate?.didPressAction(.qrCode)
+//    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-extension MasterBrowserViewController: Scrollable {
-    func scrollOnTop() {
-        browserViewController.goHome()
-    }
-}
+//extension MasterBrowserViewController: Scrollable {
+//    func scrollOnTop() {
+//        browserViewController.goHome()
+//    }
+//}

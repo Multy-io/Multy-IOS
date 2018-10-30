@@ -66,7 +66,7 @@ struct OperationObject {
         }
         
         if let nonceString =  object["nonce"] as? String {
-            self.nonce = Int(nonceString, radix: 16)!
+            self.nonce = Int(nonceString.dropFirst(2), radix: 16)!
         } else {
             self.nonce = 0
         }
