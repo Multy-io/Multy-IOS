@@ -484,15 +484,17 @@ extension BrowserViewController {
                                              binaryData:        &binaryData)!
         }
         
+        let dappPayload = object.hexData
+        
         let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                               sendAddress: object.toAddress,
                                                                               sendAmountString: object.value,
-            nonce: wallet.ethWallet!.nonce.intValue,
-            balanceAmount: wallet.ethWallet!.balance,
-            ethereumChainID: UInt32(wallet.blockchainType.net_type),
-            gasPrice: "\(object.gasPrice)",
-            gasLimit: "\(object.gasLimit)",
-            payload: object.hexData)
+                                                                              nonce: wallet.ethWallet!.nonce.intValue,
+                                                                              balanceAmount: wallet.ethWallet!.balance,
+                                                                              ethereumChainID: UInt32(wallet.blockchainType.net_type),
+                                                                              gasPrice: "\(object.gasPrice)",
+                                                                              gasLimit: "\(object.gasLimit)",
+                                                                              payload: dappPayload)
         let rawTransaction = trData.message
         
         guard trData.isTransactionCorrect else {
@@ -527,7 +529,10 @@ extension BrowserViewController {
                 self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
                 
                 let amountString = BigInt("\(object.value)").cryptoValueString(for: self.wallet.blockchain)
-                self.sendDappAnalytics(screenName: screenBrowser, params: self.makeAnalyticsParams(sendAmountString: amountString, gasPrice: "\(object.gasPrice)", gasLimit: "\(object.gasLimit)"))
+                self.sendDappAnalytics(screenName: browserTx, params: self.makeAnalyticsParams(sendAmountString: amountString,
+                                                                                               gasPrice: "\(object.gasPrice)",
+                                                                                               gasLimit: "\(object.gasLimit)",
+                                                                                               contractMethod: String(dappPayload.prefix(8))))
             } else {
                 self.presentAlert(for: "")
                 self.webView.reload()
@@ -536,14 +541,15 @@ extension BrowserViewController {
         }
     }
     
-    func makeAnalyticsParams(sendAmountString: String, gasPrice: String, gasLimit: String) -> NSDictionary {
+    func makeAnalyticsParams(sendAmountString: String, gasPrice: String, gasLimit: String, contractMethod: String) -> NSDictionary {
         let params: NSDictionary = [
-            "URL" : webView.url ?? "empty URL",
-            "Blockchain": wallet.chain,
-            "NetType" : wallet.chainType,
-            "Amount" : sendAmountString,
-            "GasPrice" : gasPrice,
-            "GasLimit" : gasLimit
+            "dAppURL" :         webView.url != nil ? webView.url!.absoluteString : "empty URL",
+            "Blockchain":       wallet.chain,
+            "NetType" :         wallet.chainType,
+            "Amount" :          sendAmountString,
+            "GasPrice" :        gasPrice,
+            "GasLimit" :        gasLimit,
+            "ContractMethod":   contractMethod
         ]
         
         return params
