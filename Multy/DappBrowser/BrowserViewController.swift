@@ -1,7 +1,6 @@
 //Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
-
 import UIKit
 import WebKit
 import JavaScriptCore
@@ -15,16 +14,10 @@ protocol BrowserNavigationBarDelegate: class {
 }
 
 enum BrowserAction {
-//    case history
-    //    case addBookmark(bookmark: Bookmark)
-//    case bookmarks
-//    case qrCode
-//    case changeURL(URL)
     case navigationAction(BrowserNavigation)
 }
 
 protocol BrowserViewControllerDelegate: class {
-//    func didCall(action: DappAction, callbackID: Int)
     func runAction(action: BrowserAction)
     func didVisitURL(url: URL, title: String)
 }
@@ -32,8 +25,6 @@ protocol BrowserViewControllerDelegate: class {
 class BrowserViewController: UIViewController, AnalyticsProtocol {
     
     private var myContext = 0
-    //    let account: WalletInfo
-    //    let sessionConfig: Config
     var wallet = UserWalletRLM() {
         didSet {
             if wallet.id.isEmpty == false {
@@ -57,7 +48,6 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
     private struct Keys {
         static let estimatedProgress = "estimatedProgress"
         static let developerExtrasEnabled = "developerExtrasEnabled"
-//        static let webKitWebGLEnabledKey = "webKitWebGLEnabled"
         static let URL = "URL"
         static let ClientName = "Trust"
     }
@@ -83,23 +73,7 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         return webView
     }()
     
-//    lazy var errorView: BrowserErrorView = {
-//        let errorView = BrowserErrorView()
-//        errorView.translatesAutoresizingMaskIntoConstraints = false
-//        errorView.delegate = self
-//
-//        return errorView
-//    }()
-    
-    weak var delegate: BrowserViewControllerDelegate? {
-        didSet {
-            print("\noldValue: \(oldValue)\nnewValue: \(delegate)\n")
-        }
-    }
-    
-//    var browserNavBar: BrowserNavigationBar? {
-//        return navigationController?.navigationBar as? BrowserNavigationBar
-//    }
+    weak var delegate: BrowserViewControllerDelegate?
     
     lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .default)
@@ -110,7 +84,6 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         return progressView
     }()
     
-    //    //Take a look at this issue : https://stackoverflow.com/questions/26383031/wkwebview-causes-my-view-controller-to-leak
     lazy var config: WKWebViewConfiguration = {
         //TODO
         let config = WKWebViewConfiguration.make(for: wallet,
