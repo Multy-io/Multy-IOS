@@ -92,12 +92,15 @@ extension WKWebViewConfiguration {
         }
 
         """
+        
         let userScript = WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        
         config.userContentController.add(messageHandler, name: DappOperationType.signTransaction.rawValue)
         config.userContentController.add(messageHandler, name: DappOperationType.signPersonalMessage.rawValue)
         config.userContentController.add(messageHandler, name: DappOperationType.signMessage.rawValue)
         config.userContentController.add(messageHandler, name: DappOperationType.signTypedMessage.rawValue)
         config.userContentController.addUserScript(userScript)
+        
         return config
     }
 }
