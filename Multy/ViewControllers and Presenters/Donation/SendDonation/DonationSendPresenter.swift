@@ -80,8 +80,8 @@ class DonationSendPresenter: NSObject, CustomFeeRateProtocol, SendWalletProtocol
         let transaction = TransactionDTO()
         transaction.choosenWallet = self.walletPayFrom
         transaction.sendAddress = donationAddress
-        transaction.sendAmount = self.mainVC?.donationTF.text?.convertStringWithCommaToDouble()
-        transaction.transaction?.customFee = self.customFee
+        transaction.sendAmount = BigInt("\(self.mainVC?.donationTF.text?.convertStringWithCommaToDouble())")
+        transaction.feeRate = BigInt("\(self.customFee)")
         
         DataManager.shared.createAndSendDonationTransaction(transactionDTO: transaction) { [unowned self] (answer, err) in
             self.mainVC?.loader.show(customTitle: self.localize(string: Constants.sendingString))

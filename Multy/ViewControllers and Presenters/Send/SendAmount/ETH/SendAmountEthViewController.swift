@@ -90,10 +90,10 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
     }
     
     @IBAction func backAction(_ sender: Any) {
-        presenter.transactionDTO.sendAmountString = nil
-        presenter.transactionDTO.transaction?.newChangeAddress = nil
-        presenter.transactionDTO.transaction?.rawTransaction = nil
-        presenter.transactionDTO.transaction?.endSum = nil
+//        presenter.transactionDTO.sendAmountString = nil
+//        presenter.transactionDTO.transaction?.newChangeAddress = nil
+//        presenter.transactionDTO.transaction?.rawTransaction = nil
+//        presenter.transactionDTO.transaction?.endSum = nil
         
         self.navigationController?.popViewController(animated: true)
     }
@@ -322,15 +322,15 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
         if segue.identifier == "sendFinishVC" {
             let sendFinishVC = segue.destination as! SendFinishViewController
             sendFinishVC.presenter.isCrypto = presenter.isCrypto
-            
-            presenter.transactionDTO.sendAmountString = presenter.sumInCrypto.cryptoValueString(for: presenter.blockchain)
-            presenter.transactionDTO.transaction?.rawTransaction = presenter.rawTransaction
-            presenter.transactionDTO.transaction?.transactionRLM = presenter.transactionObj
-            presenter.transactionDTO.transaction?.endSum = presenter.getNextBtnSum()
-            presenter.transactionDTO.transaction?.feeAmount = presenter.feeAmount
+//
+//            presenter.transactionDTO.sendAmountString = presenter.sumInCrypto.cryptoValueString(for: presenter.blockchain)
+//            presenter.transactionDTO.transaction?.rawTransaction = presenter.rawTransaction
+//            presenter.transactionDTO.transaction?.transactionRLM = presenter.transactionObj
+//            presenter.transactionDTO.transaction?.endSum = presenter.getNextBtnSum()
+//            presenter.transactionDTO.transaction?.feeAmount = presenter.feeAmount
             
             if let changeAddress = presenter.addressData?["address"] {
-                presenter.transactionDTO.transaction?.newChangeAddress = changeAddress as? String
+//                presenter.transactionDTO.transaction?.newChangeAddress = changeAddress as? String
             }
             
             sendFinishVC.presenter.transactionDTO = presenter.transactionDTO

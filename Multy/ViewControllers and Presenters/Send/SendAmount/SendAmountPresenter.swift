@@ -13,14 +13,14 @@ class SendAmountPresenter: NSObject {
         }
     }
     
-    private var cryptoName: String {
+    var cryptoName: String {
         get {
             let result = transactionDTO.blockchain?.shortName
             return result != nil ? result! : ""
         }
     }
     
-    private var fiatName: String {
+    var fiatName: String {
         get {
             let result = transactionDTO.choosenWallet?.fiatName
             return result != nil ? result! : ""
@@ -44,8 +44,22 @@ class SendAmountPresenter: NSObject {
         }
     }
     
-    private var sumInCrypto = BigInt.zero()
-    private var sumInFiat = BigInt.zero()
+    private var sumInCrypto = BigInt.zero() {
+        didSet {
+            if oldValue != sumInCrypto {
+                sumInFiat = BigInt("\(exchangeCourse)") * sumInCrypto
+            }
+        }
+    }
+    
+    private var sumInFiat = BigInt.zero() {
+        didSet {
+            if oldValue != sumInFiat {
+                sumInCrypto = sumInFiat / BigInt("\(exchangeCourse)")
+            }
+        }
+    }
+    
     private var totalSum: BigInt {
         get {
             let result = isInputInCrypto ? (sumInCrypto + feeInCrypto) : (sumInFiat + feeInFiat)
@@ -53,7 +67,14 @@ class SendAmountPresenter: NSObject {
         }
     }
     
-    private var feeInCrypto = BigInt.zero()
+    private var feeInCrypto = BigInt.zero() {
+        didSet {
+            if oldValue != feeInCrypto {
+                feeInFiat = BigInt("\(exchangeCourse)") * feeInCrypto
+            }
+        }
+    }
+    
     private var feeInFiat = BigInt.zero()
     
     var sumInCryptoString: String {
@@ -66,6 +87,13 @@ class SendAmountPresenter: NSObject {
     var sumInFiatString: String {
         get {
             let result = "\(sumInFiat) \(fiatName)"
+            return result
+        }
+    }
+    
+    var totalSumString: String {
+        get {
+            let result = blockchain != nil ? "\(totalSum.cryptoValueString(for: blockchain!)) \(cryptoName)"  : ""
             return result
         }
     }
@@ -91,15 +119,17 @@ class SendAmountPresenter: NSObject {
     
     private func disassembleTransaction() {
         exchangeCourse = transactionDTO.choosenWallet != nil ? transactionDTO.choosenWallet!.exchangeCourse : exchangeCourseDefault
-        if transactionDTO.sendAmountString != nil && blockchain != nil {
-            sumInCrypto = transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(in: blockchain!)
-            sumInFiat = sumInCrypto * exchangeCourse
+        if transactionDTO.sendAmount?.stringValue != nil && blockchain != nil {
+            sumInCrypto = transactionDTO.sendAmount!.stringValue.convertCryptoAmountStringToMinimalUnits(in: blockchain!)
         }
         
-        if transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt != nil {
-            let limit = transactionDTO.choosenWallet!.isMultiSig ? "400000" : "40000"
-            feeAmount = BigInt(limit) * transactionDTO.transaction!.transactionRLM!.sumInCryptoBigInt
-            feeAmountInFiat = feeAmount * exchangeCourse
+        if blockchain != nil && transactionDTO.feeAmount != nil {
+            if blockchain! == BLOCKCHAIN_ETHEREUM {
+                let limit = transactionDTO.choosenWallet!.isMultiSig ? "400000" : "40000"
+                feeInCrypto = BigInt(limit) * transactionDTO.feeAmount!
+            } else {
+                feeInCrypto = transactionDTO.feeAmount!
+            }
         }
     }
 }

@@ -27,6 +27,7 @@ class SendDetailsPresenter: NSObject {
     var selectedIndexOfSpeed: Int? {
         didSet {
             if oldValue != selectedIndexOfSpeed {
+                vc?.updateCellsVisibility()
                 updateTransaction()
             }
         }
@@ -77,7 +78,6 @@ class SendDetailsPresenter: NSObject {
     var feeRates : NSDictionary? {
         didSet {
             vc?.tableView.reloadData()
-            updateCellsVisibility()
         }
     }
     
@@ -117,7 +117,7 @@ class SendDetailsPresenter: NSObject {
     }
     
     func defaultFeeRates() -> NSDictionary {
-        return transactionDTO.blockchain == BLOCKCHAIN_BITCOIN ? DefaultFeeRates.btc.hashValue : DefaultFeeRates.eth.hashValue
+        return transactionDTO.blockchain == BLOCKCHAIN_BITCOIN ? DefaultFeeRates.btc.feeValue : DefaultFeeRates.eth.feeValue
     }
     
     func feeRateForIndex(_ index: Int) -> (name: String, value: BigInt) {
@@ -165,19 +165,6 @@ class SendDetailsPresenter: NSObject {
             }
         } else {
             self.vc?.performSegue(withIdentifier: "sendEthVC", sender: Any.self)
-        }
-    }
-    
-    func updateCellsVisibility () {
-        var cells = vc?.tableView.visibleCells
-        let selectedCell = selectedIndexOfSpeed == nil ? nil : cells![selectedIndexOfSpeed!]
-        
-        for cell in cells! {
-            cell.alpha = (cell === selectedCell) ? 1.0 : 0.3
-            
-            if !cell.isKind(of: CustomTrasanctionFeeTableViewCell.self) {
-                (cell as! TransactionFeeTableViewCell).checkMarkImage.isHidden = (cell !== selectedCell)
-            }
         }
     }
 }

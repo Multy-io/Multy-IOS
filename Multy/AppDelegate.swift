@@ -113,10 +113,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                             let storyboard = UIStoryboard(name: "Send", bundle: nil)
                             let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
                             sendStartVC.presenter.transactionDTO.sendAddress = "\(addressFromLink ?? "")"
-                            sendStartVC.presenter.transactionDTO.sendAmountString = amountFromLink
+                            sendStartVC.presenter.transactionDTO.sendAmount = amountFromLink != nil ? BigInt(amountFromLink!) : BigInt.zero()
                             switch chainNameFromLink {
                             case "ethereum":
-                                sendStartVC.presenter.transactionDTO.blockchainType?.blockchain = BLOCKCHAIN_ETHEREUM
+                                sendStartVC.presenter.transactionDTO.blockchain = BLOCKCHAIN_ETHEREUM
                             default: break   //by default create tr for bitcoin
                             }
                             ((self!.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
@@ -177,7 +177,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
             let storyboard = UIStoryboard(name: "Send", bundle: nil)
             let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
             sendStartVC.presenter.transactionDTO.sendAddress = "\(addressStr)"
-            sendStartVC.presenter.transactionDTO.sendAmountString = amountFromQr
+            sendStartVC.presenter.transactionDTO.sendAmount = amountFromQr != nil ? BigInt(amountFromQr!) : BigInt.zero()
             ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
             sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
         })

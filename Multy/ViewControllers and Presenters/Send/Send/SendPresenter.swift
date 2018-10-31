@@ -299,7 +299,7 @@ class SendPresenter: NSObject {
             transaction = TransactionDTO()
             let request = activeRequestsArr[selectedActiveRequestIndex!]
             //FIXME:
-            transaction!.sendAmount = request.sendAmount.doubleValue
+            transaction!.sendAmount = BigInt(request.sendAmount)
             transaction!.sendAddress = request.sendAddress
             transaction!.choosenWallet = filteredWalletArray[selectedWalletIndex!]
         }
@@ -455,7 +455,7 @@ class SendPresenter: NSObject {
                         return
                     }
                     
-                    let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? self.transaction!.transaction!.newChangeAddress! : ""
+                    let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? (self.transaction as! BTCTransactionDTO).newChangeAddress! : ""
                     
                     let newAddressParams = [
                         "walletindex"   : wallet.walletID.intValue,

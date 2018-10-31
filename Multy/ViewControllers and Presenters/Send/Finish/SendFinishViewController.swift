@@ -88,7 +88,8 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
         topView.setShadow(with: shadowColor)
         middle.setShadow(with: shadowColor)
         bottom.setShadow(with: shadowColor)
-        cryptoImage.image = UIImage(named: presenter.transactionDTO.blockchainType!.iconString)
+        let blockchainType = BlockchainType.create(wallet: presenter.transactionDTO.choosenWallet!)
+        cryptoImage.image = UIImage(named: blockchainType.iconString)
         
         cryptoSumLbl.text = presenter.sumInCryptoString
         cryptoNamelbl.text = presenter.cryptoName
@@ -101,7 +102,7 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
         let fiatSum = presenter.transactionDTO.choosenWallet!.sumInFiatString
         walletFiatSumAndCurrencyLbl.text = "\(presenter.transactionDTO.choosenWallet!.sumInCryptoString) \(presenter.transactionDTO.choosenWallet!.cryptoName)" + " / " + "\(fiatSum) \(presenter.transactionDTO.choosenWallet!.fiatName)"
         transactionFeeCostLbl.text = "\(presenter.feeAmountInCryptoString) \(presenter.cryptoName)/\(presenter.feeAmountInFiatString) \(presenter.fiatName)"
-        transactionSpeedNameLbl.text = "\(presenter.transactionDTO.transaction?.transactionRLM?.speedName ?? "") "
+        transactionSpeedNameLbl.text = "" //\(presenter.transactionDTO.transaction?.transactionRLM?.speedName ?? "") "
 //        transactionSpeedTimeLbl.text =  "\(presenter.transactionDTO.transaction?.transactionRLM?.speedTimeString ?? "")"
 //        if view.frame.height == 736 {
 //            btnTopConstraint.constant = 105
@@ -264,13 +265,13 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
     @IBAction func nextAction(_ sender: Any) {
         self.createRecentAddress()
         let wallet = presenter.transactionDTO.choosenWallet!
-        let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? presenter.transactionDTO.transaction!.newChangeAddress! : ""
+        let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? (presenter.transactionDTO as! BTCTransactionDTO).newChangeAddress! : ""
         
         let newAddressParams = [
             "walletindex"   : wallet.walletID.intValue,
             "address"       : newAddress,
             "addressindex"  : wallet.addresses.count,
-            "transaction"   : presenter.transactionDTO.transaction!.rawTransaction!,
+            "transaction"   : presenter.transactionDTO.rawValue!,
             "ishd"          : NSNumber(booleanLiteral: wallet.shouldCreateNewAddressAfterTransaction)
             ] as [String : Any]
         
@@ -305,7 +306,8 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
     }
 
     func createRecentAddress() {
-        RealmManager.shared.writeOrUpdateRecentAddress(blockchainType: presenter.transactionDTO.blockchainType!,
+        let blockchainType = BlockchainType.create(wallet: presenter.transactionDTO.choosenWallet!)
+        RealmManager.shared.writeOrUpdateRecentAddress(blockchainType: blockchainType,
                                                        address: presenter.transactionDTO.sendAddress!,
                                                        date: Date())
     }

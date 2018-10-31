@@ -97,7 +97,7 @@ enum DefaultFeeRates: Hashable {
     case eth
     case btc
     
-    public var hashValue: NSDictionary {
+    public var feeValue: NSDictionary {
         switch self {
         case .eth:
             return ["VeryFast" : 32,

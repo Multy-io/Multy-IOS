@@ -816,7 +816,7 @@ scan</string>
                         <outlet property="topView" destination="T5g-DB-3sj" id="0Ls-xz-3Y6"/>
                         <segue destination="3gL-lZ-1hN" kind="show" identifier="chooseWalletVC" id="o35-7A-1Zt"/>
                         <segue destination="Tfc-aA-5T8" kind="show" identifier="qrCamera" id="FRo-Sp-aVY"/>
-                        <segue destination="Can-YJ-fx8" kind="show" identifier="sendBTCDetailsVC" id="EUD-ex-a5v"/>
+                        <segue destination="Can-YJ-fx8" kind="show" identifier="sendDetailsVC" id="EUD-ex-a5v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uor-oM-Mbh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1184,7 +1184,7 @@ scan</string>
                         <outlet property="emptyDataSourceLabel" destination="28l-xW-5E4" id="B66-Nd-zhN"/>
                         <outlet property="qrAmountLbl" destination="B2E-Qe-eWd" id="EPV-Zq-krE"/>
                         <outlet property="tableView" destination="JAJ-uD-tG4" id="3Xg-4G-SMh"/>
-                        <segue destination="Can-YJ-fx8" kind="show" identifier="sendBTCDetailsVC" id="RTX-aa-bzX"/>
+                        <segue destination="Can-YJ-fx8" kind="show" identifier="sendDetailsVC" id="RTX-aa-bzX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q7b-f1-wOH" userLabel="First Responder" sceneMemberID="firstResponder"/>

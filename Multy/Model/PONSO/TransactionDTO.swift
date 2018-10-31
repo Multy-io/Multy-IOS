@@ -58,10 +58,15 @@ class BTCTransactionDTO: TransactionDTO {
 
 class ETHTransactionDTO: TransactionDTO {
     var gasLimit: BigInt?
+    var gasPrice: BigInt? {
+        get {
+            return feeRate
+        }
+    }
     
     override var feeAmount: BigInt? {
-        if gasLimit != nil && feeRate != nil {
-            return gasLimit! * feeRate!
+        if gasLimit != nil && gasPrice != nil {
+            return gasLimit! * gasPrice!
         }
         
         return nil

@@ -66,15 +66,14 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
             commissionStack.isHidden = true
             commissionSwitch.isOn = false
         }
-        
+
         topCurrencyNameLbl.text = " " + presenter.cryptoName
-        
-        if presenter.sumInCrypto > Int64(0) && presenter.blockchain != nil {
-            let cryptoValue = presenter.sumInCrypto.cryptoValueString(for: presenter.blockchain!)
-            amountTF.text = cryptoValue
-            topSumLbl.text = cryptoValue
-            btnSumLbl.text = cryptoValue
-        }
+
+        amountTF.text = presenter.sumInCryptoString
+        topSumLbl.text = presenter.sumInCryptoString
+        btnSumLbl.text = presenter.sumInCryptoString
+        bottomSumLbl.text = presenter.sumInFiatString
+        bottomCurrencyLbl.text = presenter.fiatName
     }
     
     @IBAction func cancelAction(_ sender: Any) {
