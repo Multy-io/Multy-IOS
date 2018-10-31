@@ -532,7 +532,7 @@ extension BrowserViewController {
                 self.sendDappAnalytics(screenName: browserTx, params: self.makeAnalyticsParams(sendAmountString: amountString,
                                                                                                gasPrice: "\(object.gasPrice)",
                                                                                                gasLimit: "\(object.gasLimit)",
-                                                                                               contractMethod: String(dappPayload.dropFirst(2).prefix(8))))
+                                                                                               contractMethod: String(dappPayload.prefix(8))))
             } else {
                 self.presentAlert(for: "")
                 self.webView.reload()
