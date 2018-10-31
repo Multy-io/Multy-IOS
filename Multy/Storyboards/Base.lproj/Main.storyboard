@@ -2705,7 +2705,7 @@ correctly</string>
         <scene sceneID="owf-M8-GmK">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cAx-yg-zUy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Browser" image="activityTab" id="3Tm-8r-aym" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                    <tabBarItem key="tabBarItem" title="Browser" image="browserIconUnactive" id="3Tm-8r-aym" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
                         <connections>
                             <outlet property="animation" destination="ham-a4-c0a" id="PeQ-f2-5yr"/>
                         </connections>
@@ -3801,6 +3801,7 @@ correctly</string>
         <image name="addressBookEs" width="190" height="200"/>
         <image name="backGrey" width="13" height="21"/>
         <image name="backLightGrey" width="48" height="48"/>
+        <image name="browserIconUnactive" width="40" height="40"/>
         <image name="chevron" width="10" height="15"/>
         <image name="closeBtn" width="62" height="62"/>
         <image name="donationAlert" width="280" height="198"/>
