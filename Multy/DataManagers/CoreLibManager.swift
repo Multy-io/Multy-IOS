@@ -151,6 +151,7 @@ class CoreLibManager: NSObject {
         }
         
         walletDict["pointer"] = newAccountPointer
+        walletDict["addressPointer"] = newAccountPointer
         
         return Result.success(walletDict)
     }

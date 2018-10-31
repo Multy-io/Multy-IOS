@@ -10,17 +10,21 @@ import Result
 
 private typealias LocalizeDelegate = BrowserViewController
 
+protocol BrowserNavigationBarDelegate: class {
+    func did(action: BrowserNavigation)
+}
+
 enum BrowserAction {
-    case history
+//    case history
     //    case addBookmark(bookmark: Bookmark)
-    case bookmarks
-    case qrCode
-    case changeURL(URL)
+//    case bookmarks
+//    case qrCode
+//    case changeURL(URL)
     case navigationAction(BrowserNavigation)
 }
 
 protocol BrowserViewControllerDelegate: class {
-    func didCall(action: DappAction, callbackID: Int)
+//    func didCall(action: DappAction, callbackID: Int)
     func runAction(action: BrowserAction)
     func didVisitURL(url: URL, title: String)
 }
@@ -30,7 +34,23 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
     private var myContext = 0
     //    let account: WalletInfo
     //    let sessionConfig: Config
-    var wallet = UserWalletRLM()
+    var wallet = UserWalletRLM() {
+        didSet {
+            if wallet.id.isEmpty == false {
+                DataManager.shared.getWallet(primaryKey: self.wallet.id) { [unowned self] in
+                    switch $0 {
+                    case .success(let wallet):
+                        self.wallletFromDB = wallet
+                    case .failure(_):
+                        break
+                    }
+                }
+            }
+        }
+    }
+        
+    var wallletFromDB = UserWalletRLM()
+    
     var urlString = String()
     var alert: UIAlertController?
     
@@ -63,13 +83,13 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         return webView
     }()
     
-    lazy var errorView: BrowserErrorView = {
-        let errorView = BrowserErrorView()
-        errorView.translatesAutoresizingMaskIntoConstraints = false
-        errorView.delegate = self
-        
-        return errorView
-    }()
+//    lazy var errorView: BrowserErrorView = {
+//        let errorView = BrowserErrorView()
+//        errorView.translatesAutoresizingMaskIntoConstraints = false
+//        errorView.delegate = self
+//
+//        return errorView
+//    }()
     
     weak var delegate: BrowserViewControllerDelegate? {
         didSet {
@@ -77,14 +97,14 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
-    var browserNavBar: BrowserNavigationBar? {
-        return navigationController?.navigationBar as? BrowserNavigationBar
-    }
+//    var browserNavBar: BrowserNavigationBar? {
+//        return navigationController?.navigationBar as? BrowserNavigationBar
+//    }
     
     lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .default)
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.tintColor = Colors.darkBlue
+        progressView.tintColor = UIColor(hex: "3375BB")
         progressView.trackTintColor = .clear
         
         return progressView
@@ -117,7 +137,7 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         
         webView.addSubview(progressView)
         webView.bringSubview(toFront: progressView)
-        view.addSubview(errorView)
+//        view.addSubview(errorView)
         
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.layoutGuide.topAnchor),// topLayoutGuide.bottomAnchor),
@@ -130,10 +150,10 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
             progressView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
             progressView.heightAnchor.constraint(equalToConstant: 2),
             
-            errorView.topAnchor.constraint(equalTo: webView.topAnchor),
-            errorView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
-            errorView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
-            errorView.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
+//            errorView.topAnchor.constraint(equalTo: webView.topAnchor),
+//            errorView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
+//            errorView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
+//            errorView.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
             ])
         view.backgroundColor = .white
         webView.addObserver(self, forKeyPath: Keys.estimatedProgress, options: .new, context: &myContext)
@@ -193,6 +213,7 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
             
             if txID == self.lastTxID {
                 self.webView.reload()
+                self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
             }
             
             self.lastTxID = ""
@@ -222,14 +243,15 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         var request = URLRequest(url: url)
         request.cachePolicy = .returnCacheDataElseLoad
 //        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        hideErrorView()
+//        hideErrorView()
         webView.load(request)
-        browserNavBar?.textField.text = url.absoluteString
+//        browserNavBar?.textField.text = url.absoluteString
     }
     
     func reload() {
-        hideErrorView()
+//        hideErrorView()
         webView.reload()
+        self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
     }
     
     private func stopLoading() {
@@ -237,13 +259,13 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
     }
     
     private func refreshURL() {
-        browserNavBar?.textField.text = webView.url?.absoluteString
+//        browserNavBar?.textField.text = webView.url?.absoluteString
         
         if let url = webView.url?.absoluteURL {
             delegate?.didVisitURL(url: url, title: "Go")
         }
         
-        browserNavBar?.backButton.isHidden = !webView.canGoBack
+//        browserNavBar?.backButton.isHidden = !webView.canGoBack
     }
     
     private func recordURL() {
@@ -254,13 +276,13 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
     }
     
     private func changeURL(_ url: URL) {
-        delegate?.runAction(action: .changeURL(url))
+//        delegate?.runAction(action: .changeURL(url))
         refreshURL()
     }
     
-    private func hideErrorView() {
-        errorView.isHidden = true
-    }
+//    private func hideErrorView() {
+//        errorView.isHidden = true
+//    }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard let change = change else { return }
@@ -275,7 +297,7 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
             }
         } else if keyPath == Keys.URL {
             if let url = webView.url {
-                self.browserNavBar?.textField.text = url.absoluteString
+//                self.browserNavBar?.textField.text = url.absoluteString
                 changeURL(url)
             }
         }
@@ -293,25 +315,25 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         //        delegate?.runAction(action: .addBookmark(bookmark: Bookmark(url: url, title: title)))
     }
     
-    @objc private func showBookmarks() {
-        delegate?.runAction(action: .bookmarks)
-    }
+//    @objc private func showBookmarks() {
+//        delegate?.runAction(action: .bookmarks)
+//    }
     
-    @objc private func history() {
-        delegate?.runAction(action: .history)
-    }
+//    @objc private func history() {
+//        delegate?.runAction(action: .history)
+//    }
     
-    func handleError(error: Error) {
-        if error.code == NSURLErrorCancelled {
-            return
-        } else {
-            if error.domain == NSURLErrorDomain,
-                let failedURL = (error as NSError).userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-                changeURL(failedURL)
-            }
-            errorView.show(error: error)
-        }
-    }
+//    func handleError(error: Error) {
+//        if error.code == NSURLErrorCancelled {
+//            return
+//        } else {
+//            if error.domain == NSURLErrorDomain,
+//                let failedURL = (error as NSError).userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+//                changeURL(failedURL)
+//            }
+//            errorView.show(error: error)
+//        }
+//    }
 }
 
 extension BrowserViewController: BrowserNavigationBarDelegate {
@@ -335,20 +357,20 @@ extension BrowserViewController: BrowserNavigationBarDelegate {
 extension BrowserViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         recordURL()
-        hideErrorView()
+//        hideErrorView()
         refreshURL()
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        hideErrorView()
+//        hideErrorView()
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        handleError(error: error)
+//        handleError(error: error)
     }
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        handleError(error: error)
+//        handleError(error: error)
     }
 }
 
@@ -402,6 +424,7 @@ extension BrowserViewController {
         DataManager.shared.getOneWalletVerbose(wallet: wallet) { [unowned self] (wallet, error) in
             if error != nil {
                 self.webView.reload()
+                self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
                 self.presentAlert(for: "") // default message
             } else {
                 self.wallet = wallet!
@@ -421,6 +444,7 @@ extension BrowserViewController {
         alert.addAction(UIAlertAction(title: localize(string: Constants.denyString), style: .default, handler: { [weak self] (action) in
             if self != nil {
                 self!.webView.reload()
+                self!.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
             }
         }))
         
@@ -438,20 +462,39 @@ extension BrowserViewController {
         let core = DataManager.shared.coreLibManager
         var binaryData = account!.binaryDataString.createBinaryData()!
         
-        let addressData = core.createAddress(blockchainType:    wallet.blockchainType,
+        var addressData = Dictionary<String, Any>()
+        
+        if wallletFromDB.isImportedForPrimaryKey {
+            if wallletFromDB.importedPrivateKey.isEmpty == false {
+                let data = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: wallletFromDB.blockchainType, privateKey: wallletFromDB.importedPrivateKey)
+                switch data {
+                case .success(let dict):
+                    addressData = dict
+                case .failure(let error):
+                    //FIXME: add ALERT
+                    break
+                }
+            } else {
+                //FIXME: add ALERT
+            }
+        } else {
+            addressData = core.createAddress(blockchainType:    wallet.blockchainType,
                                              walletID:          wallet.walletID.uint32Value,
                                              addressID:         wallet.changeAddressIndex,
-                                             binaryData:        &binaryData)
+                                             binaryData:        &binaryData)!
+        }
         
-        let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+        let dappPayload = object.hexData
+        
+        let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                               sendAddress: object.toAddress,
                                                                               sendAmountString: object.value,
-            nonce: wallet.ethWallet!.nonce.intValue,
-            balanceAmount: wallet.ethWallet!.balance,
-            ethereumChainID: UInt32(wallet.blockchainType.net_type),
-            gasPrice: "\(object.gasPrice)",
-            gasLimit: "\(object.gasLimit)",
-            payload: object.hexData)
+                                                                              nonce: wallet.ethWallet!.nonce.intValue,
+                                                                              balanceAmount: wallet.ethWallet!.balance,
+                                                                              ethereumChainID: UInt32(wallet.blockchainType.net_type),
+                                                                              gasPrice: "\(object.gasPrice)",
+                                                                              gasLimit: "\(object.gasLimit)",
+                                                                              payload: dappPayload)
         let rawTransaction = trData.message
         
         guard trData.isTransactionCorrect else {
@@ -464,8 +507,8 @@ extension BrowserViewController {
         
         let newAddressParams = [
             "walletindex"   : wallet.walletID.intValue,
-            "address"       : addressData!["address"] as! String,
-            "addressindex"  : wallet.addresses.count,
+            "address"       : wallet.address,
+            "addressindex"  : 0,
             "transaction"   : rawTransaction,
             "ishd"          : wallet.shouldCreateNewAddressAfterTransaction
             ] as [String : Any]
@@ -482,24 +525,31 @@ extension BrowserViewController {
                 self.saveLastTXID(from:  dict!)
                 
                 self.showSuccessAlert()
+                self.webView.reload()
+                self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
                 
                 let amountString = BigInt("\(object.value)").cryptoValueString(for: self.wallet.blockchain)
-                self.sendDappAnalytics(screenName: screenBrowser, params: self.makeAnalyticsParams(sendAmountString: amountString, gasPrice: "\(object.gasPrice)", gasLimit: "\(object.gasLimit)"))
+                self.sendDappAnalytics(screenName: browserTx, params: self.makeAnalyticsParams(sendAmountString: amountString,
+                                                                                               gasPrice: "\(object.gasPrice)",
+                                                                                               gasLimit: "\(object.gasLimit)",
+                                                                                               contractMethod: String(dappPayload.prefix(8))))
             } else {
                 self.presentAlert(for: "")
                 self.webView.reload()
+                self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
             }
         }
     }
     
-    func makeAnalyticsParams(sendAmountString: String, gasPrice: String, gasLimit: String) -> NSDictionary {
+    func makeAnalyticsParams(sendAmountString: String, gasPrice: String, gasLimit: String, contractMethod: String) -> NSDictionary {
         let params: NSDictionary = [
-            "URL" : webView.url ?? "empty URL",
-            "Blockchain": wallet.chain,
-            "NetType" : wallet.chainType,
-            "Amount" : sendAmountString,
-            "GasPrice" : gasPrice,
-            "GasLimit" : gasLimit
+            "dAppURL" :         webView.url != nil ? webView.url!.absoluteString : "empty URL",
+            "Blockchain":       wallet.chain,
+            "NetType" :         wallet.chainType,
+            "Amount" :          sendAmountString,
+            "GasPrice" :        gasPrice,
+            "GasLimit" :        gasLimit,
+            "ContractMethod":   contractMethod
         ]
         
         return params
@@ -549,11 +599,11 @@ extension BrowserViewController {
     }
 }
 
-extension BrowserViewController: BrowserErrorViewDelegate {
-    func didTapReload(_ sender: Button) {
-        reload()
-    }
-}
+//extension BrowserViewController: BrowserErrorViewDelegate {
+//    func didTapReload(_ sender: Button) {
+//        reload()
+//    }
+//}
 
 extension LocalizeDelegate: Localizable {
     var tableName: String {

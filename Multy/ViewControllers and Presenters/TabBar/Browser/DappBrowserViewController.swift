@@ -64,7 +64,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         if let url = UserDefaults.standard.value(forKey: "browserDefURL") {
             settingsObj.browserURL = url as! String
         } else {
-            settingsObj.browserURL = "https://app.dragonereum.io" //"https://dragonereum-alpha-test.firebaseapp.com" // "https://app.alpha.dragonereum.io"
+            settingsObj.browserURL = "https://kyber.network/swap" // "https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.dragonereum.io" // "https://app.alpha.dragonereum.io"
         }
         
         return settingsObj
@@ -79,8 +79,11 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         super.viewWillAppear(animated)
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
-        presenter.loadETHWallets()
+        
         presenter.vcViewWillAppear()
+        if presenter.webViewDidLoaded == false {
+            presenter.loadETHWallets()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
