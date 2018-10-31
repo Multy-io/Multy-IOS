@@ -22,7 +22,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="103.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="srv-bR-zld">
-                                <rect key="frame" x="16" y="6.5" width="343" height="91"/>
+                                <rect key="frame" x="16" y="6.5" width="343" height="90.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC ∙ Personal" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pYm-cg-fCJ">
                                         <rect key="frame" x="58" y="9.5" width="104.5" height="22"/>
@@ -91,7 +91,7 @@ Wallet is resyncing</string>
                                 <constraints>
                                     <constraint firstItem="bGK-TI-pDK" firstAttribute="centerY" secondItem="srv-bR-zld" secondAttribute="centerY" id="0Ym-P2-81O"/>
                                     <constraint firstAttribute="trailing" secondItem="Vd1-0D-jGB" secondAttribute="trailing" constant="13" id="2Ov-Ph-ySE"/>
-                                    <constraint firstAttribute="width" secondItem="srv-bR-zld" secondAttribute="height" multiplier="49:13" id="5Y5-KM-bXQ"/>
+                                    <constraint firstAttribute="width" secondItem="srv-bR-zld" secondAttribute="height" multiplier="49:13" priority="750" id="5Y5-KM-bXQ"/>
                                     <constraint firstItem="gSM-u4-t8a" firstAttribute="top" secondItem="pYm-cg-fCJ" secondAttribute="bottom" constant="-2" id="GKt-5L-uKf"/>
                                     <constraint firstItem="dSJ-UU-BM0" firstAttribute="centerY" secondItem="srv-bR-zld" secondAttribute="centerY" id="Gtj-7v-5X2"/>
                                     <constraint firstItem="gSM-u4-t8a" firstAttribute="leading" secondItem="pYm-cg-fCJ" secondAttribute="leading" id="Hzl-bU-syv"/>
@@ -129,6 +129,7 @@ Wallet is resyncing</string>
                         </accessibility>
                         <constraints>
                             <constraint firstItem="srv-bR-zld" firstAttribute="leading" secondItem="N4e-sp-CyH" secondAttribute="leading" constant="16" id="Gtk-5N-ZGx"/>
+                            <constraint firstItem="srv-bR-zld" firstAttribute="top" relation="greaterThanOrEqual" secondItem="N4e-sp-CyH" secondAttribute="top" constant="6.5" id="Sqh-Us-ezi"/>
                             <constraint firstItem="srv-bR-zld" firstAttribute="centerY" secondItem="N4e-sp-CyH" secondAttribute="centerY" id="oh8-bT-JtU"/>
                             <constraint firstItem="srv-bR-zld" firstAttribute="centerX" secondItem="N4e-sp-CyH" secondAttribute="centerX" id="vZP-u7-NJz"/>
                         </constraints>
