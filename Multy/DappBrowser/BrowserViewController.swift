@@ -110,7 +110,6 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         
         webView.addSubview(progressView)
         webView.bringSubview(toFront: progressView)
-//        view.addSubview(errorView)
         
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.layoutGuide.topAnchor),// topLayoutGuide.bottomAnchor),
