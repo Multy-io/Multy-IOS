@@ -750,13 +750,12 @@ extension WalletUpdateRLM {
             }
         }
         
-        if let addressesArr = infoDict["addresses"] as? NSArray {
-            if let addressObj = addressesArr.firstObject as? NSDictionary {
-                if let tokensArr = addressObj["erc20balances"] as? NSArray {
-                    let walletToken = WalletTokenRLM()
-                    ethWallet?.erc20Tokens = walletToken.initERC20With(infoArray: tokensArr)
-                }
-            }
+        if let addressesArr = infoDict["addresses"] as? NSArray,
+            let addressObj = addressesArr.firstObject as? NSDictionary,
+            let tokensArr = addressObj["erc20balances"] as? NSArray {
+            
+            let walletToken = WalletTokenRLM()
+            ethWallet?.erc20Tokens = walletToken.initERC20With(infoArray: tokensArr)
         }
         
     }
