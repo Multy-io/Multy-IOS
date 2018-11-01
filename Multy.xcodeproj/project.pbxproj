@@ -65,10 +65,9 @@
 		447ECAD320330C2C0085C26D /* TransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447ECAD220330C2C0085C26D /* TransactionDTO.swift */; };
 		448C389F2165603500D83D02 /* BrowserCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C38572165603100D83D02 /* BrowserCoordinator.swift */; };
 		448C38B62165603500D83D02 /* BrowserAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C386E2165603200D83D02 /* BrowserAction.swift */; };
-		448C38B92165603500D83D02 /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C38712165603200D83D02 /* MasterBrowserViewController.swift */; };
 		448C38D12165603500D83D02 /* WKWebViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C38892165603400D83D02 /* WKWebViewConfiguration.swift */; };
 		448C38D32165603500D83D02 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C388B2165603400D83D02 /* Bundle.swift */; };
-		448C38D52165603500D83D02 /* ScriptMessageProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C388D2165603400D83D02 /* ScriptMessageProxy.swift */; };
+		448C38D52165603500D83D02 /* ScriptMessageMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C388D2165603400D83D02 /* ScriptMessageMediator.swift */; };
 		449151402049764D0028195F /* MultyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491513F2049764D0028195F /* MultyUITests.swift */; };
 		4491514E204976600028195F /* MultyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491514D204976600028195F /* MultyTests.swift */; };
 		44A3DF93205AA1F300FE9955 /* BlockchainType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DF92205AA1F300FE9955 /* BlockchainType+Extension.swift */; };
@@ -530,10 +529,9 @@
 		447ECAD220330C2C0085C26D /* TransactionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDTO.swift; sourceTree = "<group>"; };
 		448C38572165603100D83D02 /* BrowserCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserCoordinator.swift; sourceTree = "<group>"; };
 		448C386E2165603200D83D02 /* BrowserAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserAction.swift; sourceTree = "<group>"; };
-		448C38712165603200D83D02 /* MasterBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewController.swift; sourceTree = "<group>"; };
 		448C38892165603400D83D02 /* WKWebViewConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewConfiguration.swift; sourceTree = "<group>"; };
 		448C388B2165603400D83D02 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
-		448C388D2165603400D83D02 /* ScriptMessageProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptMessageProxy.swift; sourceTree = "<group>"; };
+		448C388D2165603400D83D02 /* ScriptMessageMediator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptMessageMediator.swift; sourceTree = "<group>"; };
 		4491513D2049764D0028195F /* MultyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4491513F2049764D0028195F /* MultyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultyUITests.swift; sourceTree = "<group>"; };
 		449151412049764D0028195F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -953,8 +951,7 @@
 				442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */,
 				448C38572165603100D83D02 /* BrowserCoordinator.swift */,
 				44A6F8342166542F00FC3A41 /* BrowserViewController.swift */,
-				448C38712165603200D83D02 /* MasterBrowserViewController.swift */,
-				448C388D2165603400D83D02 /* ScriptMessageProxy.swift */,
+				448C388D2165603400D83D02 /* ScriptMessageMediator.swift */,
 				448C38892165603400D83D02 /* WKWebViewConfiguration.swift */,
 				448C386E2165603200D83D02 /* BrowserAction.swift */,
 				448C388B2165603400D83D02 /* Bundle.swift */,
@@ -2911,7 +2908,6 @@
 				45DCF9D91FE19B33005A9896 /* CustomFeeViewController.swift in Sources */,
 				445D150E20DA8513002F6747 /* EPContactCell.swift in Sources */,
 				45A9492F1FC4780F003C3A23 /* ReceiveProtocol.swift in Sources */,
-				448C38B92165603500D83D02 /* MasterBrowserViewController.swift in Sources */,
 				45A9495D1FC70F2F003C3A23 /* SendAmountViewController.swift in Sources */,
 				8592E02E2105E0040040125B /* MultisigConstants.swift in Sources */,
 				448C38B62165603500D83D02 /* BrowserAction.swift in Sources */,
@@ -2964,7 +2960,7 @@
 				45A949621FC766BE003C3A23 /* SendFinishPresenter.swift in Sources */,
 				4575F0D82081FE01002616DD /* WebTextPageViewController.swift in Sources */,
 				859C7AFE20ECF3D8002EA215 /* WaitingMembersPresenter.swift in Sources */,
-				448C38D52165603500D83D02 /* ScriptMessageProxy.swift in Sources */,
+				448C38D52165603500D83D02 /* ScriptMessageMediator.swift in Sources */,
 				FADC00481FC3236F00182E45 /* ApiManager.swift in Sources */,
 				FA4D43FE1FC6D058003C7117 /* TransactionWalletCell.swift in Sources */,
 				4436123020B56F000095F3C6 /* UITableView+Extension.swift in Sources */,

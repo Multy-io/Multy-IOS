@@ -85,8 +85,6 @@ extension DataManager {
                     
                     let browserURL = browserDefaults["url"] as! String
                     userDefaults.set(browserURL, forKey: "browserDefURL")
-                    // Check this, you can change link
-//                    userDefaults.set("https://www.onliner.by/", forKey: "browserDefURL")
                 }
                 
                 userDefaults.synchronize()

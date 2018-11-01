@@ -87,7 +87,7 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
     lazy var config: WKWebViewConfiguration = {
         //TODO
         let config = WKWebViewConfiguration.make(for: wallet,
-                                                 in: ScriptMessageProxy(delegate: self))
+                                                 in: ScriptMessageMediator(delegate: self))
         config.websiteDataStore =  WKWebsiteDataStore.default()
         
         config.allowsInlineMediaPlayback = true
@@ -110,7 +110,6 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         
         webView.addSubview(progressView)
         webView.bringSubview(toFront: progressView)
-//        view.addSubview(errorView)
         
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.layoutGuide.topAnchor),// topLayoutGuide.bottomAnchor),
@@ -121,12 +120,7 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
             progressView.topAnchor.constraint(equalTo: view.layoutGuide.topAnchor),
             progressView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
             progressView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
-            progressView.heightAnchor.constraint(equalToConstant: 2),
-            
-//            errorView.topAnchor.constraint(equalTo: webView.topAnchor),
-//            errorView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
-//            errorView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
-//            errorView.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
+            progressView.heightAnchor.constraint(equalToConstant: 2)
             ])
         view.backgroundColor = .white
         webView.addObserver(self, forKeyPath: Keys.estimatedProgress, options: .new, context: &myContext)
@@ -135,11 +129,8 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        //        fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -163,11 +154,6 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("transactionUpdated"), object: nil)
     }
     
-    //    func logAnalytics() {
-    //        sendDonationAlertScreenPresentedAnalytics(code: donationForActivitySC)
-    //    }
-    
-    /////////
     private func injectUserAgent() {
         webView.evaluateJavaScript("navigator.userAgent") { [weak self] result, _ in
             guard let `self` = self, let currentUserAgent = result as? String else { return }
@@ -197,32 +183,17 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         webView.load(URLRequest(url: url))
     }
     
-    //COMMENTED
-//        func notifyFinish(callbackID: Int, value: ResultDapp<DappCallback, DAppError>) {
-//            let script: String = {
-//                switch value {
-//                case .success(let result):
-//                    return "executeCallback(\(callbackID), null, \"\(result.value.object)\")"
-//                case .failure(let error):
-//                    return "executeCallback(\(callbackID), \"\(error)\", null)"
-//                }
-//            }()
-//            webView.evaluateJavaScript(script, completionHandler: nil)
-//        }
-    
     func goHome() {
         let linkString = urlString //"https://dragonereum-alpha-test.firebaseapp.com"  //"https://app.alpha.dragonereum.io"
         guard let url = URL(string: linkString) else { return } //"https://dapps.trustwalletapp.com/"
         var request = URLRequest(url: url)
         request.cachePolicy = .returnCacheDataElseLoad
 //        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-//        hideErrorView()
         webView.load(request)
 //        browserNavBar?.textField.text = url.absoluteString
     }
     
     func reload() {
-//        hideErrorView()
         webView.reload()
         self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
     }
@@ -232,13 +203,9 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
     }
     
     private func refreshURL() {
-//        browserNavBar?.textField.text = webView.url?.absoluteString
-        
         if let url = webView.url?.absoluteURL {
             delegate?.didVisitURL(url: url, title: "Go")
         }
-        
-//        browserNavBar?.backButton.isHidden = !webView.canGoBack
     }
     
     private func recordURL() {
@@ -252,10 +219,6 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
 //        delegate?.runAction(action: .changeURL(url))
         refreshURL()
     }
-    
-//    private func hideErrorView() {
-//        errorView.isHidden = true
-//    }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard let change = change else { return }
@@ -280,33 +243,6 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
         webView.removeObserver(self, forKeyPath: Keys.estimatedProgress)
         webView.removeObserver(self, forKeyPath: Keys.URL)
     }
-    
-    func addBookmark() {
-        guard let url = webView.url?.absoluteString else { return }
-        guard let title = webView.title else { return }
-        //COMMENTED:
-        //        delegate?.runAction(action: .addBookmark(bookmark: Bookmark(url: url, title: title)))
-    }
-    
-//    @objc private func showBookmarks() {
-//        delegate?.runAction(action: .bookmarks)
-//    }
-    
-//    @objc private func history() {
-//        delegate?.runAction(action: .history)
-//    }
-    
-//    func handleError(error: Error) {
-//        if error.code == NSURLErrorCancelled {
-//            return
-//        } else {
-//            if error.domain == NSURLErrorDomain,
-//                let failedURL = (error as NSError).userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-//                changeURL(failedURL)
-//            }
-//            errorView.show(error: error)
-//        }
-//    }
 }
 
 extension BrowserViewController: BrowserNavigationBarDelegate {
@@ -349,16 +285,6 @@ extension BrowserViewController: WKNavigationDelegate {
 
 extension BrowserViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        //COMMENTED
-//                guard let command = DappAction.fromMessage(message) else { return }
-        //        let requester = DAppRequester(title: webView.title, url: webView.url)
-        //        //TODO: Refactor
-        //        let token = TokensDataStore.token(for: server)
-        //        let transfer = Transfer(server: server, type: .dapp(token, requester))
-        //        let action = DappAction.fromCommand(command, transfer: transfer)
-        //
-        //        delegate?.didCall(action: action, callbackID: command.id)
-        
         let body = message.body as! Dictionary<String, Any>
         
         guard let name = body["name"] as? String else {
@@ -474,7 +400,6 @@ extension BrowserViewController {
             self.webView.reload()
             self.presentAlert(for: rawTransaction)
             
-            
             return
         }
         
@@ -571,12 +496,6 @@ extension BrowserViewController {
         lastTxID = txID
     }
 }
-
-//extension BrowserViewController: BrowserErrorViewDelegate {
-//    func didTapReload(_ sender: Button) {
-//        reload()
-//    }
-//}
 
 extension LocalizeDelegate: Localizable {
     var tableName: String {
