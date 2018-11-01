@@ -68,7 +68,7 @@ extension DataManager {
                 }
                 
                 if let erc20Info = answerDict!["erc20tokenlist"] as? NSArray {
-                    let chpokens = Erc20TokensRLM.initArrayWithArray(tokensArray: erc20Info)
+                    let chpokens = TokenRLM.initArrayWithArray(tokensArray: erc20Info)
                     DataManager.shared.realmManager.updateErc20Tokens(tokens: chpokens)
                 }
                 

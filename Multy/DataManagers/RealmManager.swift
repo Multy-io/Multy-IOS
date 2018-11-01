@@ -24,7 +24,7 @@ class RealmManager: NSObject {
     var account: AccountRLM?
     var config: Realm.Configuration?
     
-    var erc20Tokens = Dictionary<String, Erc20TokensRLM>()
+    var erc20Tokens = Dictionary<String, TokenRLM>()
     
     var schemaversion : UInt64 {
         return realm!.configuration.schemaVersion
@@ -1164,17 +1164,17 @@ extension LegacyCodeManager {
 }
 
 extension TokensManager {
-    func updateErc20Tokens(tokens: [Erc20TokensRLM]) {
+    func updateErc20Tokens(tokens: [TokenRLM]) {
         getRealm { [unowned self] (realmOpt, error) in
             if let realm = realmOpt {
                 try! realm.write {
-                    realm.delete(realm.objects(Erc20TokensRLM.self))
+                    realm.delete(realm.objects(TokenRLM.self))
                     for token in tokens {
                         realm.add(token, update: true)
                         
                     }
                 }
-                let tokens = realm.objects(Erc20TokensRLM.self)
+                let tokens = realm.objects(TokenRLM.self)
                 self.erc20Tokens.removeAll()
                 tokens.forEach{ self.erc20Tokens[$0.contractAddress] = $0 }
                 
@@ -1182,10 +1182,10 @@ extension TokensManager {
         }
     }
     
-    func getErc20TokenBy(address: String, completion: @escaping(_ token: Erc20TokensRLM) -> ()) {
+    func getErc20TokenBy(address: String, completion: @escaping(_ token: TokenRLM) -> ()) {
         getRealm { (realmOpt, err) in
             if let realm = realmOpt {
-                completion(realm.object(ofType: Erc20TokensRLM.self, forPrimaryKey: address)!)
+                completion(realm.object(ofType: TokenRLM.self, forPrimaryKey: address)!)
             }
         }
     }

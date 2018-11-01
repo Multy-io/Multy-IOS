@@ -5,7 +5,7 @@
 import Foundation
 import RealmSwift
 
-class Erc20TokensRLM: Object {
+class TokenRLM: Object {
     @objc dynamic var contractAddress = String()
     @objc dynamic var ticker = String()             //short name
     @objc dynamic var name = String()
@@ -16,19 +16,19 @@ class Erc20TokensRLM: Object {
     
     //func makeIcon by address for example or ticker
     
-    public class func initArrayWithArray(tokensArray: NSArray) -> [Erc20TokensRLM] {
-        var tokens = [Erc20TokensRLM]()
+    public class func initArrayWithArray(tokensArray: NSArray) -> [TokenRLM] {
+        var tokens = [TokenRLM]()
         
         for tokenInfo in tokensArray {
-            let token = Erc20TokensRLM.initWithInfo(tokensInfo: tokenInfo as! NSDictionary)
+            let token = TokenRLM.initWithInfo(tokensInfo: tokenInfo as! NSDictionary)
             tokens.append(token)
         }
         
         return tokens
     }
     
-    public class func initWithInfo(tokensInfo: NSDictionary) -> Erc20TokensRLM {
-        let erc20token = Erc20TokensRLM()
+    public class func initWithInfo(tokensInfo: NSDictionary) -> TokenRLM {
+        let erc20token = TokenRLM()
         
         if let contractAddress = tokensInfo["ContractAddress"] {
             erc20token.contractAddress = contractAddress as! String
