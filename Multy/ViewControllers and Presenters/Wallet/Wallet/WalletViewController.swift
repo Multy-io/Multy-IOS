@@ -254,7 +254,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         //------------  WARNING  ------------//
 //        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
-        if presenter.wallet!.isTokenExist {
+        if presenter.wallet!.isTokenExist == false {
             setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
         }
         // ------------  WARNING  ------------
