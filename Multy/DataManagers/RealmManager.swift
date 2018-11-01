@@ -576,18 +576,27 @@ extension WalletManager {
                         
                         try! realm.write {
                             if modifiedWallet != nil {
-                                modifiedWallet?.name =              wallet.name
+                                modifiedWallet!.name =              wallet.name
                                 modifiedWallet!.addresses =         wallet.addresses
                                 modifiedWallet!.isTherePendingTx =  wallet.isTherePendingTx
                                 modifiedWallet!.btcWallet =         wallet.btcWallet
-                                if modifiedWallet?.ethWallet != nil {
-                                    realm.delete(realm.objects(ETHWallet.self))
-                                    realm.delete(realm.objects(WalletTokenRLM.self))
-                                    modifiedWallet!.ethWallet =         wallet.ethWallet
-                                    //FIXME: check ethWallet.erc20Tokens
-                                    //modifiedWallet!.ethWallet =         wallet.ethWallet
+                                
+                                let delETH = modifiedWallet?.ethWallet
+                                let delM = modifiedWallet?.multisigWallet
+                                
+                                modifiedWallet?.ethWallet       = wallet.ethWallet
+                                modifiedWallet!.multisigWallet  = wallet.multisigWallet
+                                
+                                if delETH != nil {
+                                    realm.delete(delETH!.erc20Tokens)
+                                    realm.delete(delETH!)
                                 }
-                                modifiedWallet!.multisigWallet =    wallet.multisigWallet
+                                
+                                if delM != nil {
+                                    realm.delete(delM!.owners)
+                                    realm.delete(delM!)
+                                }
+
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
                                 modifiedWallet?.brokenState =       wallet.brokenState
