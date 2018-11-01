@@ -584,7 +584,8 @@ extension WalletManager {
                                     realm.delete(realm.objects(ETHWallet.self))
                                     realm.delete(realm.objects(WalletTokenRLM.self))
                                     modifiedWallet!.ethWallet =         wallet.ethWallet
-                                    modifiedWallet!.ethWallet =         wallet.ethWallet
+                                    //FIXME: check ethWallet.erc20Tokens
+                                    //modifiedWallet!.ethWallet =         wallet.ethWallet
                                 }
                                 modifiedWallet!.multisigWallet =    wallet.multisigWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
