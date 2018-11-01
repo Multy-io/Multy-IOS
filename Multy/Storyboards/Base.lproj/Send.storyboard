@@ -2850,11 +2850,6 @@ address</string>
         <image name="swap" width="25" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Nqh-Rv-oVp"/>
-        <segue reference="TSe-kF-31L"/>
-        <segue reference="RTX-aa-bzX"/>
-        <segue reference="FRo-Sp-aVY"/>
-        <segue reference="jSE-EO-qlC"/>
-        <segue reference="GW1-5g-oIp"/>
+
     </inferredMetricsTieBreakers>
 </document>

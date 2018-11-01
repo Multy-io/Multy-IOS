@@ -142,6 +142,8 @@ extension Constants {
     static let deleteLinkedWalletFailedString = "DELETE LINKED WALLET FAILED"
     static let prNotReady = "PR NOT READY"
     static let wrongKey = "Looks like you are trying to import by not private key string"
+    static let serverOffTitle = "SERVER OFF TITLE"
+    static let serverOffMessage = "SERVER OFF MESSAGE"
     static let browserTxAlertSring = "BROWSER ALERT FOR TX"
     static let confirmString = "CONFIRM"
     static let denyString = "DENY"

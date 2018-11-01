@@ -34,11 +34,11 @@
 	<key>CFBundleVersion</key>
 	<string>72</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>master</string>
+	<string>Tokens</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>8499db42</string>
+	<string>f2a45c2c</string>
 	<key>GIT_TAG_NAME</key>
-	<string>RELEASE_1.3.0_71_KyberNetwork-dirty</string>
+	<string>RELEASE_1.3.0_72_KyberNetwork-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

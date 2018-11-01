@@ -248,9 +248,9 @@ let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 1
 //let apiUrl = "https://\(shortURL)/"
 //let socketUrl = "wss://\(shortURL)/"
 
-let shortURL = "api.multy.io"
-let apiUrl = "https://\(shortURL)/"
-let socketUrl = "wss://\(shortURL)/"
+let shortURL = "test.multy.io"
+let apiUrl = "http://\(shortURL)/"
+let socketUrl = "ws://\(shortURL)/"
 
 //stage
 //let shortURL = "148.251.42.107/"
@@ -272,4 +272,7 @@ let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 
 let inviteCodeCount = 45
 
+
+var currentStatusStyle = UIStatusBarStyle.default
+var isServerConnectionExist = true
 let dappDLTitle = "Dragonereum"

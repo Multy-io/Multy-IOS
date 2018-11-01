@@ -172,6 +172,8 @@ extension UIViewController {
             } else {
                 self.present(nextViewController, animated: true, completion: nil)
             }
+        } else if isServerConnectionExist == false {
+            DataManager.shared.apiManager.presentServerOff()
         }
         //        print("swizzled_layoutSubviews")
     }
@@ -313,6 +315,46 @@ extension UIViewController {
         parentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[childView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["childView" : childView]))
     }
     
+
+    func noConnectionView() -> UIView {
+//        let blockView = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 60))
+        
+        let heightOfView: CGFloat = screenHeight > heightOfPlus ? 60 : 40
+        let blockView = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: heightOfView))
+        blockView.backgroundColor = .red
+        blockView.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6)
+        blockView.layer.shadowOpacity = 1
+        blockView.layer.shadowOffset = .zero
+        blockView.layer.shadowRadius = 10
+        blockView.tag = 500  // for tracking is on screen
+        
+        
+        let reconnectBtn = UIButton(frame: CGRect(x: 0, y: blockView.frame.height/2, width: screenWidth, height: blockView.frame.height/2))
+        reconnectBtn.setTitle("Server is Unavailable", for: .normal)
+        reconnectBtn.setTitleColor(.white, for: .normal)
+        
+        blockView.addSubview(reconnectBtn)
+        
+        return blockView
+    }
+    
+    func isNoConnectionOnScreen() -> Bool {
+        for subviewView in self.view.subviews {
+            if subviewView.tag == 500 {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func removeNoConnection(view: UIView) {
+        UIView.animate(withDuration: 0.2, animations: {
+            view.alpha = 0
+        }) { (isEnd) in
+            view.removeFromSuperview()
+        }
+    }
+        
     func topMostViewController() -> UIViewController {
         
         if let presented = self.presentedViewController {
@@ -328,5 +370,6 @@ extension UIViewController {
         }
         
         return self
+
     }
 }

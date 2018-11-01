@@ -57,6 +57,8 @@ class WalletPresenter: NSObject {
     
     var isSocketInitiateUpdating = false
     
+    var isToken = false
+    
     func updateUI() {
         if walletVC == nil {
             return
@@ -83,8 +85,9 @@ class WalletPresenter: NSObject {
         walletVC!.showHidePendingSection(true)
         
         walletVC!.amountCryptoLbl.text = wallet!.availableAmountString
-        walletVC!.nameCryptoLbl.text = wallet!.blockchain.shortName
+        walletVC!.nameCryptoLbl.text = isToken ? wallet!.cryptoName : wallet!.blockchain.shortName
         walletVC!.fiatAmountLbl.text = fiatSymbol + wallet!.availableAmountInFiatString
+        walletVC!.titleLbl.text = wallet!.name
         
         if wallet!.isThereBlockedAmount {
             walletVC!.pendingAmountCryptoLbl.text = wallet!.sumInCryptoString
@@ -152,6 +155,10 @@ class WalletPresenter: NSObject {
             return
         }
         
+        if isToken {
+            return
+        }
+        
         DataManager.shared.getOneWalletVerbose(wallet: wallet!) { [unowned self] (updatedWallet, error) in
             if updatedWallet != nil {
                 self.wallet = updatedWallet
@@ -204,5 +211,22 @@ class WalletPresenter: NSObject {
         } else {
             return true
         }
+    }
+    
+    func makeWalletFrom(token: WalletTokenRLM) -> UserWalletRLM {
+        let tokenWallet = UserWalletRLM()
+        tokenWallet.address = self.wallet!.address
+        tokenWallet.name = token.name//self.wallet!.name
+        tokenWallet.chain = self.wallet!.chain
+        tokenWallet.chainType = self.wallet!.chainType
+        tokenWallet.cryptoName = token.ticker
+        tokenWallet.importedPrivateKey = self.wallet!.importedPrivateKey
+        tokenWallet.importedPublicKey = self.wallet!.importedPublicKey
+        tokenWallet.fiatName = self.wallet!.fiatName
+        tokenWallet.fiatSymbol = self.wallet!.fiatSymbol
+        tokenWallet.ethWallet = ETHWallet()
+        tokenWallet.ethWallet?.balance = token.balance
+        
+        return tokenWallet
     }
 }

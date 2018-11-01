@@ -13,6 +13,7 @@ private typealias CurrencyExchangeManager = RealmManager
 private typealias WalletManager = RealmManager
 private typealias LegacyCodeManager = RealmManager
 private typealias SeedPhraseManager = RealmManager
+private typealias TokensManager = RealmManager
 
 class RealmManager: NSObject {
     static let shared = RealmManager()
@@ -22,6 +23,8 @@ class RealmManager: NSObject {
     
     var account: AccountRLM?
     var config: Realm.Configuration?
+    
+    var erc20Tokens = Dictionary<String, TokenRLM>()
     
     var schemaversion : UInt64 {
         return realm!.configuration.schemaVersion
@@ -148,6 +151,7 @@ class RealmManager: NSObject {
             do {
                 let realm = try Realm(configuration: self.config!)
                 self.realm = realm
+                
                 
                 completion(realm, nil)
             } catch let error as NSError {
@@ -576,7 +580,13 @@ extension WalletManager {
                                 modifiedWallet!.addresses =         wallet.addresses
                                 modifiedWallet!.isTherePendingTx =  wallet.isTherePendingTx
                                 modifiedWallet!.btcWallet =         wallet.btcWallet
-                                modifiedWallet!.ethWallet =         wallet.ethWallet
+                                if modifiedWallet?.ethWallet != nil {
+                                    realm.delete(realm.objects(ETHWallet.self))
+                                    realm.delete(realm.objects(WalletTokenRLM.self))
+                                    modifiedWallet!.ethWallet =         wallet.ethWallet
+                                    //FIXME: check ethWallet.erc20Tokens
+                                    //modifiedWallet!.ethWallet =         wallet.ethWallet
+                                }
                                 modifiedWallet!.multisigWallet =    wallet.multisigWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
@@ -1095,7 +1105,6 @@ extension RealmMigrationManager {
             msWallet?["isActivePaymentRequest"] = Bool()
         }
     }
-    
     func migrateFrom30To31(with migration: Migration) {
         UserPreferences.shared.writeDBPrivateKeyFixValue(false)
     }
@@ -1152,5 +1161,33 @@ extension LegacyCodeManager {
         }
         
         return sum
+    }
+}
+
+extension TokensManager {
+    func updateErc20Tokens(tokens: [TokenRLM]) {
+        getRealm { [unowned self] (realmOpt, error) in
+            if let realm = realmOpt {
+                try! realm.write {
+                    realm.delete(realm.objects(TokenRLM.self))
+                    for token in tokens {
+                        realm.add(token, update: true)
+                        
+                    }
+                }
+                let tokens = realm.objects(TokenRLM.self)
+                self.erc20Tokens.removeAll()
+                tokens.forEach{ self.erc20Tokens[$0.contractAddress] = $0 }
+                
+            }
+        }
+    }
+    
+    func getErc20TokenBy(address: String, completion: @escaping(_ token: TokenRLM) -> ()) {
+        getRealm { (realmOpt, err) in
+            if let realm = realmOpt {
+                completion(realm.object(ofType: TokenRLM.self, forPrimaryKey: address)!)
+            }
+        }
     }
 }

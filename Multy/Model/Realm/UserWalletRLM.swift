@@ -71,6 +71,10 @@ class UserWalletRLM: Object {
         }
     }
     
+    var isTokenExist: Bool {
+        return (ethWallet?.erc20Tokens.count ?? 0) > 0 ? true : false
+    }
+    
     var sumInCryptoString: String {
         get {
             switch blockchainType.blockchain {
@@ -749,6 +753,14 @@ extension WalletUpdateRLM {
                 isTherePendingTx = NSNumber(booleanLiteral: true)
             }
         }
+        
+        if let addressesArr = infoDict["addresses"] as? NSArray,
+            let addressObj = addressesArr.firstObject as? NSDictionary,
+            let tokensArr = addressObj["erc20balances"] as? NSArray {
+            
+            ethWallet?.erc20Tokens = WalletTokenRLM.initERC20With(infoArray: tokensArr)
+        }
+        
     }
     
     func updateMultiSigWallet(from infoDict: NSDictionary) {

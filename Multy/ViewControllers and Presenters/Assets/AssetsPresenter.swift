@@ -236,7 +236,6 @@ class AssetsPresenter: NSObject {
                     print("afterVerbose:rawdata: \(walletsArrayFromApi!)")
                     dm.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { [unowned self] (acc, err) in
                         self.account = acc
-                        print("wallets: \(acc!.wallets)")
                         completion(true)
                     })
                 })

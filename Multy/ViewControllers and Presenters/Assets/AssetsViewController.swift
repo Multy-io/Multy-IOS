@@ -57,6 +57,10 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     var stringIdForInAppBig = ""
     var blockchainForTansfer: BlockchainType?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentStatusStyle
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setpuUI()
@@ -86,7 +90,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                 self.tableView.frame.size.height = screenHeight - self.tabBarController!.tabBar.frame.height
             }
             dm.socketManager.start()
-            dm.subscribeToFirebaseMessaging()
+            dm.subscribeToFirebaseMessaging() 
             
             //FIXME: add later or refactor
             
@@ -128,7 +132,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                 self.loader.hide()
                 
                 if hardVersion == nil || softVersion == nil {
-                    self.presentUpdateAlert(idOfAlert: 2)
+//                    self.presentUpdateAlert(idOfAlert: 2)
                     completion(true)
                     return
                 }
@@ -592,7 +596,7 @@ extension CancelDelegate: CancelProtocol {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
     
-        func donate50(idOfProduct: String) {
+    func donate50(idOfProduct: String) {
         self.makePurchaseFor(productId: idOfProduct)
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
@@ -649,11 +653,15 @@ extension TableViewDelegate : UITableViewDelegate {
             break
         case [0,2]:
             if self.presenter.account == nil {
-                sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
-//                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
-                createFirstWallets(isNeedEthTest: false) { (error) in
-                    if error == nil {
-                        print("Wallets created")
+                if isServerConnectionExist == false {
+                    checkServerConnection()
+                } else {
+                    sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
+                    //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
+                    createFirstWallets(isNeedEthTest: false) { (error) in
+                        if error == nil {
+                            print("Wallets created")
+                        }
                     }
                 }
             } else {
@@ -665,6 +673,10 @@ extension TableViewDelegate : UITableViewDelegate {
             }
         case [0,3]:
             if self.presenter.account == nil {
+                if isServerConnectionExist == false {
+                    checkServerConnection()
+                    return
+                }
                 sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: restoreMultyTap)
                 let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
                 let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
@@ -682,6 +694,19 @@ extension TableViewDelegate : UITableViewDelegate {
         }
     }
     
+
+    func checkServerConnection() {
+        loader.show(customTitle: "Connecting")
+        DataManager.shared.getServerConfig { (hard, soft, err) in
+            self.loader.hide()
+            if err != nil {
+                self.presentAlert(withTitle: self.localize(string: Constants.serverOffTitle), andMessage: self.localize(string: Constants.serverOffMessage))
+            }
+        }
+    }
+    
+   
+
     func createFirstWallets(isNeedEthTest: Bool, completion: @escaping(_ error: String?) -> ()) {
         self.presenter.makeAuth { [unowned self] (answer) in
             self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in

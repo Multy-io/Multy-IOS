@@ -69,6 +69,10 @@ class SettingsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         NotificationCenter.default.removeObserver(self)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentStatusStyle
+    }
+    
     @IBAction func pushAction(_ sender: Any) {
         if pushSwitch.isOn {
             DataManager.shared.subscribeToFirebaseMessaging()

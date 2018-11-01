@@ -12,7 +12,7 @@
         <!--Activity View Controller-->
         <scene sceneID="VPd-c9-EvE">
             <objects>
-                <viewController id="dmP-I8-1Pw" customClass="ActivityViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="activityVC" id="dmP-I8-1Pw" customClass="ActivityViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1De-4d-wjN"/>
                         <viewControllerLayoutGuide type="bottom" id="u8k-fD-1Dr"/>
@@ -2775,7 +2775,7 @@ correctly</string>
         <!--Settings-->
         <scene sceneID="Ds3-39-44j">
             <objects>
-                <viewController id="iYV-U9-fj0" customClass="SettingsViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="settingsVC" id="iYV-U9-fj0" customClass="SettingsViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ydE-vw-AGj"/>
                         <viewControllerLayoutGuide type="bottom" id="WU9-9d-Ces"/>
