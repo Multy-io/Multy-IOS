@@ -68,6 +68,7 @@
 		448C38D12165603500D83D02 /* WKWebViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C38892165603400D83D02 /* WKWebViewConfiguration.swift */; };
 		448C38D32165603500D83D02 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C388B2165603400D83D02 /* Bundle.swift */; };
 		448C38D52165603500D83D02 /* ScriptMessageMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C388D2165603400D83D02 /* ScriptMessageMediator.swift */; };
+		448F8327218B578600B734F3 /* libjsoncpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 448F8326218B578600B734F3 /* libjsoncpp.a */; };
 		449151402049764D0028195F /* MultyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491513F2049764D0028195F /* MultyUITests.swift */; };
 		4491514E204976600028195F /* MultyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491514D204976600028195F /* MultyTests.swift */; };
 		44A3DF93205AA1F300FE9955 /* BlockchainType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DF92205AA1F300FE9955 /* BlockchainType+Extension.swift */; };
@@ -532,6 +533,8 @@
 		448C38892165603400D83D02 /* WKWebViewConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewConfiguration.swift; sourceTree = "<group>"; };
 		448C388B2165603400D83D02 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		448C388D2165603400D83D02 /* ScriptMessageMediator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptMessageMediator.swift; sourceTree = "<group>"; };
+		448F8325218B56E500B734F3 /* json_api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = json_api.h; sourceTree = "<group>"; };
+		448F8326218B578600B734F3 /* libjsoncpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjsoncpp.a; sourceTree = "<group>"; };
 		4491513D2049764D0028195F /* MultyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4491513F2049764D0028195F /* MultyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultyUITests.swift; sourceTree = "<group>"; };
 		449151412049764D0028195F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -902,6 +905,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				448F8327218B578600B734F3 /* libjsoncpp.a in Frameworks */,
 				85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */,
 				FA4125DF2004C0FD00DF9AC3 /* libstdc++.tbd in Frameworks */,
 				4456964920F391FE00B0C496 /* libccan.a in Frameworks */,
@@ -1298,6 +1302,7 @@
 				44D3F038217A2634003A4F0B /* error.h */,
 				44D3F040217A2635003A4F0B /* ethereum.h */,
 				44D3F03E217A2635003A4F0B /* golos.h */,
+				448F8325218B56E500B734F3 /* json_api.h */,
 				44D3F03C217A2635003A4F0B /* key.h */,
 				44D3F032217A2634003A4F0B /* mnemonic.h */,
 				44D3F035217A2634003A4F0B /* properties.h */,
@@ -2187,6 +2192,7 @@
 		FA7E97221FF2504100735D73 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				448F8326218B578600B734F3 /* libjsoncpp.a */,
 				445D151120DB9421002F6747 /* Contacts.framework */,
 				4538BDCB2099E69900573426 /* StoreKit.framework */,
 				85741D8820B55A650093933B /* CoreBluetooth.framework */,
@@ -3668,7 +3674,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.testimony;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3709,7 +3715,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.testimony;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";

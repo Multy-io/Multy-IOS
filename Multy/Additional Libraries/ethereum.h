@@ -7,11 +7,14 @@
 #ifndef MULTY_CORE_ETHEREUM_H
 #define MULTY_CORE_ETHEREUM_H
 
+#include "api.h"
 #include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+struct MultyError;
 
 enum EthereumChainId
 {
@@ -33,15 +36,30 @@ enum EthereumChainId
      */
     ETHEREUM_CHAIN_ID_MULTISIG_MAINNET = 128, // Multisig mainnet
     ETHEREUM_CHAIN_ID_MULTISIG_TESTNET = 129  // Multisig testnet
+
 };
 
 enum EthereumTransactionBuilderType
 {
-//    ETHEREUM_TRANSACTION_BUILDER_ERC20,
     ETHEREUM_TRANSACTION_BUILDER_MULTISIG,
+    ETHEREUM_TRANSACTION_BUILDER_ERC20,
+    ETHEREUM_TRANSACTION_BUILDER_BASIC,
 };
 
 const size_t ETHEREUM_BINARY_ADDRESS_SIZE = 20;
+
+/** The sign method calculates an Ethereum specific signature
+ * compatitable with geth/partity 'personal_sign' and web3.js.
+
+ @param serialized_private_key - serialized Ethereum private key.
+ @param hex_encoded_message - hex-encoded message to sign (may contain 0x prefix).
+ @param signature - OUT hex-encoded signature, with recovery_id set to 27 or 28.
+ @return nullptr if no error Error object otherwise.
+*/
+MULTY_CORE_API struct MultyError* ethereum_personal_sign(
+        const char* serialized_private_key,
+        const char* hex_encoded_message,
+        char** signature);
 
 #ifdef __cplusplus
 } // extern "C"
