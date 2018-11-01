@@ -68,8 +68,8 @@ extension DataManager {
                 }
                 
                 if let erc20Info = answerDict!["erc20tokenlist"] as? NSArray {
-                    let chpokens = Erc20TokensRLM.initArrayWithArray(tokensArray: erc20Info)
-                    DataManager.shared.realmManager.updateErc20Tokens(tokens: chpokens)
+                    let tokens = Erc20TokensRLM.initArrayWithArray(tokensArray: erc20Info)
+                    DataManager.shared.realmManager.updateErc20Tokens(tokens: tokens)
                 }
                 
                 if let multisigFactoriesInfo = answerDict!["multisigfactory"] as? Dictionary<String,  String> {
