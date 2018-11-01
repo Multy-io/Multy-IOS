@@ -34,7 +34,7 @@ class TokenTableViewCell: UITableViewCell {
     func fillingCell(tokenObj: WalletTokenRLM) {
         //set token img
         tokenName.text = tokenObj.name
-        let ethBalance = tokenObj.balabnceBigInt
+        let ethBalance = tokenObj.balanceBigInt
         cryptoAmountLbl.text = "\(ethBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)) ETH"
         let fiatBalance = ethBalance * exchangeCourse
         fiatAmountLbl.text = "\(fiatBalance.fiatValueString(for: BLOCKCHAIN_ETHEREUM)) USD"

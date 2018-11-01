@@ -71,6 +71,10 @@ class UserWalletRLM: Object {
         }
     }
     
+    var isTokenExist: Bool {
+        return (ethWallet?.erc20Tokens.count ?? 0) > 0 ? true : false
+    }
+    
     var sumInCryptoString: String {
         get {
             switch blockchainType.blockchain {
@@ -754,8 +758,7 @@ extension WalletUpdateRLM {
             let addressObj = addressesArr.firstObject as? NSDictionary,
             let tokensArr = addressObj["erc20balances"] as? NSArray {
             
-            let walletToken = WalletTokenRLM()
-            ethWallet?.erc20Tokens = walletToken.initERC20With(infoArray: tokensArr)
+            ethWallet?.erc20Tokens = WalletTokenRLM.initERC20With(infoArray: tokensArr)
         }
         
     }

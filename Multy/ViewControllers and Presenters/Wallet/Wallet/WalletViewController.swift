@@ -253,7 +253,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         setupTransactionAssetsBtns(false)
         
         //------------  WARNING  ------------//
-        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
+//        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
+        if presenter.wallet!.isTokenExist {
             setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
         }
         // ------------  WARNING  ------------
@@ -477,12 +478,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     @IBAction func backAction(_ sender: Any) {
         assetsTableTrailingConstraint.constant = 0
-//        self.navigationController?.popViewController(animated: true)
-//        if navigationController?.childViewControllers.count == 4 {
-//            navigationController?.popViewController(animated: true)
-//        } else {
-//            navigationController?.popToRootViewController(animated: true)
-//        }
         backAction(isToken: presenter.isToken)
     }
     
@@ -665,8 +660,7 @@ extension TableViewDelegate: UITableViewDelegate {
         } else {
             //open
             tableView.deselectRow(at: indexPath, animated: true)
-            let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
-            let walletVC = storyboard.instantiateViewController(withIdentifier: "newWallet") as! WalletViewController
+            let walletVC = viewControllerFrom("Wallet", "newWallet") as! WalletViewController
             walletVC.presenter.isToken = true
             walletVC.presenter.account = presenter.account
             walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.wallet!.ethWallet!.erc20Tokens[indexPath.row])
