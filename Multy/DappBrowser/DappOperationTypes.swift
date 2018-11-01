@@ -1,10 +1,6 @@
-//
-//  DappOperation.swift
-//  Multy
-//
-//  Created by Alex Pro on 10/8/18.
-//  Copyright © 2018 Idealnaya rabota. All rights reserved.
-//
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
 
 import Foundation
 import BigInt
@@ -66,7 +62,7 @@ struct OperationObject {
         }
         
         if let nonceString =  object["nonce"] as? String {
-            self.nonce = Int(nonceString, radix: 16)!
+            self.nonce = Int(nonceString.dropFirst(2), radix: 16)!
         } else {
             self.nonce = 0
         }
