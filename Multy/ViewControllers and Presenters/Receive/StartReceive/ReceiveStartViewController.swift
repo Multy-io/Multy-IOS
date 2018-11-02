@@ -119,9 +119,9 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
         walletCell.wallet = wallet
         walletCell.fillInCell()
         if presenter.preselectedWallet != nil && presenter.preselectedWallet!.address == wallet.address {
-            walletCell.selectCell(true)
+            walletCell.arrowImage.image = UIImage(named: "checkmark")
         } else {
-            walletCell.selectCell(false)
+            walletCell.arrowImage.image = nil
         }
         return walletCell
     }

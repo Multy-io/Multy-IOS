@@ -85,6 +85,10 @@ class ReceiveStartPresenter: NSObject {
                     if self.isForMultisig || self.isMultisigAllowed == false {
                         walletsArray = walletsArray.filter{ $0.isMultiSig == false }
                     }
+                } else if self.displayedBlockchainOnly == nil {
+                    if self.isForMultisig || self.isMultisigAllowed == false {
+                        walletsArray = walletsArray.filter{ $0.isMultiSig == false }
+                    }
                 }
                 
                 walletsArray = walletsArray.filter{ !$0.isMultiSig || ($0.isMultiSig && $0.multisigWallet!.isDeployed) }

@@ -35,7 +35,8 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         presenter.tabBarFrame = tabBarController?.tabBar.frame
         
-        blockchainTypeImageView.image = UIImage(named: presenter.defaultBlockchainType.iconString)
+        let iconString = presenter.wallet?.blockchainType.iconString ?? presenter.defaultBlockchainType.iconString
+        blockchainTypeImageView.image = UIImage(named: iconString)
         
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: false)
         tabBarController?.tabBar.frame = presenter.tabBarFrame!
@@ -91,7 +92,8 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
     }
     
     func updateUI() {
-        blockchainTypeImageView.image = UIImage(named: presenter.defaultBlockchainType.iconString)
+        let iconString = presenter.wallet?.blockchainType.iconString ?? presenter.defaultBlockchainType.iconString
+        blockchainTypeImageView.image = UIImage(named: iconString)
 //        backButton.isHidden = presenter.isBackButtonHidden
 //        backHolderViewLeadingConstraint.constant = presenter.isBackButtonHidden ? -36 : 0
         if presenter.wallet != nil {
@@ -123,7 +125,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         walletsVC.sendWalletDelegate = self.presenter
         walletsVC.presenter.titleTextKey = ""
         walletsVC.presenter.isMultisigAllowed = false
-        walletsVC.presenter.displayedBlockchainOnly = presenter.defaultBlockchainType
+//        walletsVC.presenter.displayedBlockchainOnly = presenter.defaultBlockchainType
         self.navigationController?.pushViewController(walletsVC, animated: true)
     }
     
