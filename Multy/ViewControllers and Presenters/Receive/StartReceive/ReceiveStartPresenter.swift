@@ -71,6 +71,14 @@ class ReceiveStartPresenter: NSObject {
 //            }
 //        }
         blockUI()
+        if receiveStartVC?.whereFrom?.className == DappBrowserViewController.className {
+            fromDB()
+        } else {
+            fromVerbose()
+        }
+    }
+    
+    func fromVerbose() {
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             self.unlockUI()
             if err != nil {
@@ -96,6 +104,22 @@ class ReceiveStartPresenter: NSObject {
                 self.walletsArr = walletsArray.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
                 self.receiveStartVC?.updateUI()
             }
+        }
+    }
+    
+    func fromDB() {
+        DataManager.shared.realmManager.getAllWallets { (allWallets, error) in
+            self.unlockUI()
+            if error != nil {
+                //print something
+            }
+            
+            var nonMSwallets = allWallets!.filter{ $0.isMultiSig == false }
+            nonMSwallets = nonMSwallets.filter{ $0.isImportedHasKey }
+            
+            
+            self.walletsArr = nonMSwallets.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
+            self.receiveStartVC?.updateUI()
         }
     }
     

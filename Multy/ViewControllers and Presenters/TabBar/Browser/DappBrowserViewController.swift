@@ -123,6 +123,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         walletsVC.presenter.preselectedWallet = presenter.wallet
         
         walletsVC.sendWalletDelegate = self.presenter
+        walletsVC.whereFrom = self
         walletsVC.presenter.titleTextKey = ""
         walletsVC.presenter.isMultisigAllowed = false
 //        walletsVC.presenter.displayedBlockchainOnly = presenter.defaultBlockchainType
