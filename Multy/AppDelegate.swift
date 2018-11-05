@@ -438,7 +438,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
 //        let token = Messaging.messaging().fcmToken
         print("FCM token: \(fcmToken)")
-        ApiManager.shared.pushToken = fcmToken
         
         DataManager.shared.isFCMSubscribed() ? DataManager.shared.subscribeToFirebaseMessaging() : DataManager.shared.unsubscribeToFirebaseMessaging()
     }
@@ -495,9 +494,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         }
         self.application!.registerForRemoteNotifications()
         
-        if Messaging.messaging().fcmToken != nil {
-            ApiManager.shared.pushToken = Messaging.messaging().fcmToken!
-        } else {
+        if Messaging.messaging().fcmToken == nil {
             configureFirebaseApp()
         }
     }

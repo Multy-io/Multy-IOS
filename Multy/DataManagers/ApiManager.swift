@@ -34,7 +34,11 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     var userID = String()
-    var pushToken = String()
+    var pushToken: String {
+        get {
+            return Messaging.messaging().fcmToken ?? ""
+        }
+    }
     
     var topVC: UIViewController?
     var noConnectionView: UIView?
@@ -97,11 +101,6 @@ class ApiManager: NSObject, RequestRetrier {
                     params["userID"] = self.userID
                     params["deviceID"] = "iOS \(UIDevice.current.name)"
                     params["deviceType"] = 1
-                    
-                    if self.pushToken.isEmpty {
-                        self.pushToken = Messaging.messaging().fcmToken ?? ""
-                    }
-                    
                     params["pushToken"] = self.pushToken
                     params["appVersion"] = ((infoPlist["CFBundleShortVersionString"] as! String) + " " + (infoPlist["CFBundleVersion"] as! String))
 
