@@ -1278,6 +1278,23 @@ extension TestCoreLibManager {
 
 //////////////////////////
 extension EthereumCoreLibManager {
+    func createEtherTx(from jsonString: String) -> (message: String, isTransactionCorrect: Bool) {
+        let jsonStringPointer = jsonString.UTF8CStringPointer
+        let txPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
+        
+        let mtfj = make_transaction_from_json(jsonStringPointer, txPointer)
+        
+        if mtfj != nil {
+            let error = errorString(from: mtfj, mask: "createEtherTxFromJSON")
+            
+            return (error!, false)
+        } else {
+            let rawTxString = String(cString: txPointer.pointee!)
+            
+            return (rawTxString, true)
+        }
+    }
+    
     func createEtherTransaction(addressPointer: UnsafeMutablePointer<OpaquePointer?>,
                                 sendAddress: String,
                                 sendAmountString: String,

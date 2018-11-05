@@ -23,7 +23,7 @@ struct Transaction;
  *  @param out_transaction_json - JSON object with serialized transaction.
  *  @return Error non null if something went wrong, null otherwise.
  */
-MULTY_CORE_API struct MultyError* make_transaction_from_json(const char* json_string, const char** out_transaction_json);
+MULTY_CORE_API struct Error* make_transaction_from_json(const char* json_string, const char** out_transaction_json);
 
 #ifdef __cplusplus
 } // extern "C"

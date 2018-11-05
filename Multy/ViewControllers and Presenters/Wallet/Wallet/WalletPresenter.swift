@@ -9,6 +9,8 @@ import RealmSwift
 class WalletPresenter: NSObject {
 
     var walletVC: WalletViewController?
+    
+    var tokenHolderWallet = UserWalletRLM()
     var wallet : UserWalletRLM? {
         didSet {
             walletVC?.titleLbl.text = wallet?.name
@@ -17,6 +19,7 @@ class WalletPresenter: NSObject {
 //                importedPublicKey = wallet!.importedPublicKey
 //            }
             updateUI()
+            walletVC?.setupUI()
         }
         
         willSet {
@@ -149,6 +152,76 @@ class WalletPresenter: NSObject {
         //            return 126                //cell with only locked or only info viewr
     }
     
+    func sendTestToken() {
+        let info = DataManager.shared.privateInfo(for: tokenHolderWallet)
+        if info == nil { return }
+
+        var txInfo = Dictionary<String, Any>()
+        var accountDict = Dictionary<String, Any>()
+        var builderDict = Dictionary<String, Any>()
+        var payloadDict = Dictionary<String, Any>()
+        var txDict = Dictionary<String, Any>()
+        var feeDict = Dictionary<String, Any>()
+        
+        txInfo["blockchain"] = wallet!.blockchain.fullName
+        txInfo["net_type"] = wallet!.blockchainType.net_type
+        
+        //account
+        accountDict["type"] = ACCOUNT_TYPE_DEFAULT.rawValue
+        accountDict["private_key"] = info!["privateKey"] as! String
+        txInfo["account"] = accountDict
+        
+        //builder
+        builderDict["type"] = "erc20"
+        builderDict["action"] = "transfer"
+        //payload
+        payloadDict["balance_eth"] = tokenHolderWallet.availableBalance.stringValue
+        payloadDict["contract_address"] = wallet!.address
+        payloadDict["balance_token"] = wallet!.ethWallet!.balance
+        payloadDict["transfer_amount_token"] = "1"
+        payloadDict["destination_address"] = "0x1430dde34403100a3e2deb515d65dcb6afe889d1"
+        builderDict["payload"] = payloadDict
+        txInfo["builder"] = builderDict
+        
+        //transaction
+        txDict["nonce"] = tokenHolderWallet.ethWallet!.nonce
+        feeDict["gas_price"] = "1000000000"
+        feeDict["gas_limit"] = "\(3_000_000)"
+        txDict["fee"] = feeDict
+        txInfo["transaction"] = txDict
+        
+        let rawTX = DataManager.shared.makeTX(from: txInfo)
+        
+        switch rawTX {
+        case .success(let txString):
+            print(rawTX)
+            
+            let newAddressParams = [
+                "walletindex"   : tokenHolderWallet.walletID.intValue,
+                "address"       : tokenHolderWallet.address,
+                "addressindex"  : 0,
+                "transaction"   : txString,
+                "ishd"          : tokenHolderWallet.shouldCreateNewAddressAfterTransaction
+                ] as [String : Any]
+            
+            let params = [
+                "currencyid": tokenHolderWallet.chain,
+                /*"JWT"       : jwtToken,*/
+                "networkid" : tokenHolderWallet.chainType,
+                "payload"   : newAddressParams
+                ] as [String : Any]
+            
+            DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
+                if dict != nil {
+                    print(dict)
+                } else {
+                    print(error)
+                }
+            }
+        case .failure(let error):
+            break
+        }
+    }
     
     func getHistoryAndWallet() {
         if walletVC?.isCanUpdate == false {
@@ -156,6 +229,8 @@ class WalletPresenter: NSObject {
         }
         
         if isToken {
+//            sendTestToken()
+            
             return
         }
         
@@ -215,7 +290,7 @@ class WalletPresenter: NSObject {
     
     func makeWalletFrom(token: WalletTokenRLM) -> UserWalletRLM {
         let tokenWallet = UserWalletRLM()
-        tokenWallet.address = self.wallet!.address
+        tokenWallet.address = token.address
         tokenWallet.name = token.name//self.wallet!.name
         tokenWallet.chain = self.wallet!.chain
         tokenWallet.chainType = self.wallet!.chainType
@@ -225,7 +300,7 @@ class WalletPresenter: NSObject {
         tokenWallet.fiatName = self.wallet!.fiatName
         tokenWallet.fiatSymbol = self.wallet!.fiatSymbol
         tokenWallet.ethWallet = ETHWallet()
-        tokenWallet.ethWallet?.balance = token.balance
+        tokenWallet.ethWallet!.balance = token.balance
         
         return tokenWallet
     }
