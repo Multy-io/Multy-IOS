@@ -80,6 +80,11 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
         self.requestSummImageView.setShadow(with: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.5))
         self.wirelessButton.setShadow(with: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.5))
         self.presenter.viewControllerViewDidLoad()
+        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+        
+        if presenter.isOpenByDL {
+            presenter.openByDL(params: presenter.dlParams!)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -295,7 +300,6 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
                 changeVisibility(isHidden: true)
                 wirelessButton.setTitle(localize(string: Constants.magicalReceiveString), for: .normal)
                 sendAnalyticsEvent(screenName: KFReceiveScreen, eventName: KFStopReceiving)
-                
             case .qrCode:
                 option = .wireless
                 changeVisibility(isHidden: false)

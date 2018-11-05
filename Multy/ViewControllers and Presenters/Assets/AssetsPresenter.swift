@@ -61,6 +61,15 @@ class AssetsPresenter: NSObject {
         }
     }
     
+    var magicReceiveParams: NSDictionary? {
+        didSet {
+            if self.account == nil {
+                return
+            }
+            openMagicReceiveWith(params: magicReceiveParams!)
+        }
+    }
+    
     var wallets: [UserWalletRLM]?
     var importedWalletsInDB: [UserWalletRLM]?
     
@@ -326,7 +335,7 @@ class AssetsPresenter: NSObject {
         }
     }
     
-    func createFirstWallets(blockchianType: BlockchainType, completion: @escaping (_ answer: String?,_ error: Error?) -> ()) {
+    func createFirstWallets(walletName: String?, blockchianType: BlockchainType, completion: @escaping (_ answer: String?,_ error: Error?) -> ()) {
         var binData : BinaryData = account!.binaryDataString.createBinaryData()!
         let createdWallet = UserWalletRLM()
         //MARK: topIndex
@@ -343,7 +352,7 @@ class AssetsPresenter: NSObject {
         
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
-        createdWallet.name = "My First \(blockchianType.shortName) Wallet"
+        createdWallet.name = walletName == nil ? "My First \(blockchianType.shortName) Wallet" : walletName!
         createdWallet.walletID = NSNumber(value: Int32(dict!["walletID"] as! UInt32))
         createdWallet.addressID = NSNumber(value: Int32(dict!["addressID"] as! UInt32))
         createdWallet.address = dict!["address"] as! String
@@ -444,5 +453,36 @@ class AssetsPresenter: NSObject {
         } else {
             completion(nil)
         }
+    }
+    
+    func openMagicReceiveWith(params: NSDictionary) {
+        let walletName = params["walletName"] as! String
+        let chainId = UInt32(params["chainID"] as! String)
+        let chainType = UInt32(params["chainType"] as! String)
+        let blockchainType = BlockchainType(blockchain: Blockchain(rawValue: chainId!), net_type: Int(params["chainType"] as! String)!)
+        DataManager.shared.getWalletWith(name: walletName, chain: chainId! as NSNumber, chainType: chainType! as NSNumber) { (wallet) in
+            if wallet != nil {
+                self.openMagicReceive(wallet: wallet!, dlParams: params)
+            } else {
+                self.createFirstWallets(walletName: walletName, blockchianType: blockchainType, completion: { [unowned self] (answer, err) in
+                    let walletID = self.account!.topIndexes.filter("currencyID = \(chainId!) AND networkID == \(chainType!)").first
+                    print(answer)
+                    print(walletID)
+                    DataManager.shared.apiManager.getOneCreatedWalletVerbose(walletID: walletID!.topIndex, blockchain: blockchainType, completion: { (dict, err) in
+                        print(dict)
+                        let wallet = UserWalletRLM.initWithInfo(walletInfo: (dict!["wallet"] as! NSArray)[0] as! NSDictionary)
+                        self.openMagicReceive(wallet: wallet, dlParams: params)
+                    })
+                })
+            }
+        }  
+    }
+    
+    func openMagicReceive(wallet: UserWalletRLM, dlParams: NSDictionary) {
+        let receiveVC = viewControllerFrom("Receive", "receiveDetails") as! ReceiveAllDetailsViewController
+        receiveVC.presenter.wallet = wallet
+        receiveVC.presenter.dlParams = dlParams
+        receiveVC.presenter.isOpenByDL = true
+        self.assetsVC?.navigationController?.pushViewController(receiveVC, animated: true)
     }
 }
