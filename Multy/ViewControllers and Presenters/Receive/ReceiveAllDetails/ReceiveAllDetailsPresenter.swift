@@ -38,8 +38,16 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
                 if oldValue != wallet {
                     if wallet!.addresses.count > 0 {
                         walletAddress = wallet!.addresses.last!.address
+                        
+                        if walletAddress.isEmpty {
+                            walletAddress = wallet!.address
+                        }
                     } else {
                         walletAddress = ""
+                        
+                        if wallet!.address.isEmpty {
+                            walletAddress = wallet!.address
+                        }
                     }
                 }
             }
