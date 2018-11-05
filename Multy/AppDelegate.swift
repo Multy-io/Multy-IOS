@@ -164,6 +164,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
         if acc == nil && self.window?.rootViewController?.topMostViewController().className  == TermsOfServiceViewController.className {
             let termsVC = self.window?.rootViewController?.topMostViewController() as! TermsOfServiceViewController
             termsVC.magicLinkParams = params
+        } else if acc == nil && self.window?.rootViewController?.topMostViewController().className == AssetsViewController.className {
+            let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+            tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 0)
+            let assetsVC = tabBar.childViewControllers[0].childViewControllers[0] as! AssetsViewController
+            assetsVC.presenter.magicReceiveParams = params
+            assetsVC.createFirstWallets(isNeedEthTest: false) { (str) in
+                
+            }
         } else {
             let tabBar = self.window?.rootViewController as! CustomTabBarViewController
             tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 0)

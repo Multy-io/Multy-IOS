@@ -470,6 +470,10 @@ class AssetsPresenter: NSObject {
                     print(walletID)
                     DataManager.shared.apiManager.getOneCreatedWalletVerbose(walletID: walletID!.topIndex, blockchain: blockchainType, completion: { (dict, err) in
                         print(dict)
+                        if ((dict as! NSDictionary)["code"] as! NSNumber) == 400 {
+                            self.assetsVC?.presentAlert(with: "Sorry Error")
+                            return
+                        }
                         let wallet = UserWalletRLM.initWithInfo(walletInfo: (dict!["wallet"] as! NSArray)[0] as! NSDictionary)
                         self.openMagicReceive(wallet: wallet, dlParams: params)
                     })
