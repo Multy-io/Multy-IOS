@@ -56,10 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
             registerPush()
         }
         
-        let filePathOpt = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
-        if let filePath = filePathOpt, let options = FirebaseOptions(contentsOfFile: filePath) {
-            FirebaseApp.configure(options: options)
-        }
+        configureFirebaseApp()
         
 
         if let option = launchOptions {
@@ -73,6 +70,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
 
         
         return true
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Device Token: \(deviceToken)")
+    }
+    
+    func configureFirebaseApp() {
+        if FirebaseApp.app() != nil { return }
+        
+        let filePathOpt = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
+        if let filePath = filePathOpt, let options = FirebaseOptions(contentsOfFile: filePath) {
+            FirebaseApp.configure(options: options)
+        }
     }
 
     func performFirstSegue(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
@@ -484,8 +494,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
             self.application!.registerUserNotificationSettings(settings)
         }
         self.application!.registerForRemoteNotifications()
+        
         if Messaging.messaging().fcmToken != nil {
             ApiManager.shared.pushToken = Messaging.messaging().fcmToken!
+        } else {
+            configureFirebaseApp()
         }
     }
 }

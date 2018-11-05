@@ -4,6 +4,7 @@
 
 import UIKit
 import Alamofire
+import FirebaseMessaging
 //import MultyCoreLibrary
 
 class AccessTokenAdapter: RequestAdapter {
@@ -96,6 +97,11 @@ class ApiManager: NSObject, RequestRetrier {
                     params["userID"] = self.userID
                     params["deviceID"] = "iOS \(UIDevice.current.name)"
                     params["deviceType"] = 1
+                    
+                    if self.pushToken.isEmpty {
+                        self.pushToken = Messaging.messaging().fcmToken ?? ""
+                    }
+                    
                     params["pushToken"] = self.pushToken
                     params["appVersion"] = ((infoPlist["CFBundleShortVersionString"] as! String) + " " + (infoPlist["CFBundleVersion"] as! String))
 
