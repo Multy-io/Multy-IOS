@@ -38,8 +38,16 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
                 if oldValue != wallet {
                     if wallet!.addresses.count > 0 {
                         walletAddress = wallet!.addresses.last!.address
+                        
+                        if walletAddress.isEmpty {
+                            walletAddress = wallet!.address
+                        }
                     } else {
                         walletAddress = ""
+                        
+                        if wallet!.address.isEmpty {
+                            walletAddress = wallet!.address
+                        }
                     }
                 }
             }
@@ -49,6 +57,9 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     var qrBlockchainString = String()
     
     var blockWirelessActivityUpdating = false
+    
+    var isOpenByDL = false
+    var dlParams: NSDictionary?
     
     func viewControllerViewDidLoad() {
         let _ = BLEManager.shared
@@ -143,6 +154,19 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
             startWirelessReceiverActivity()
             break
         }
+    }
+    
+    func openByDL(params: NSDictionary) {
+        let cryptoAmountString = params["amount"] as! String
+        self.cryptoSum = BigInt(cryptoAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+        self.cryptoName = wallet?.cryptoName
+        self.fiatSum = "5"
+        self.fiatName = "$"
+        
+        self.receiveAllDetailsVC?.setupUIWithAmounts()
+//        self.receiveAllDetailsVC?.option = .wireless
+        self.receiveAllDetailsVC?.receiveViaWirelessScanAction(Any.self)
+//        startWirelessReceiverActivity()
     }
     
     private func handleBluetoothReachability() {

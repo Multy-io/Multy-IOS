@@ -96,6 +96,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                             self!.openSendFlow(acc: acc, dictFormLink: dictFormLink)
                         } else if dictFormLink["deepLinkIDstring"] as? String == dappDLTitle {   //dapp dragon testNet
                             self!.openDragonsFlow(acc: acc, params: dictFormLink)
+                        } else if dictFormLink["deepLinkIDstring"] as? String == magicReceiveDL {
+                            self!.magicReceiveFlow(acc: acc, params: dictFormLink)
                         }
                     }
                 }
@@ -156,6 +158,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
         tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 1)
         let browserVC = tabBar.childViewControllers[1].childViewControllers[0] as! DappBrowserViewController
         browserVC.presenter.dragonDLObj = params
+    }
+    
+    func magicReceiveFlow(acc: AccountRLM?, params: NSDictionary) {
+        if acc == nil && self.window?.rootViewController?.topMostViewController().className  == TermsOfServiceViewController.className {
+            let termsVC = self.window?.rootViewController?.topMostViewController() as! TermsOfServiceViewController
+            termsVC.magicLinkParams = params
+        } else if acc == nil && self.window?.rootViewController?.topMostViewController().className == AssetsViewController.className {
+            let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+            tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 0)
+            let assetsVC = tabBar.childViewControllers[0].childViewControllers[0] as! AssetsViewController
+            assetsVC.presenter.magicReceiveParams = params
+            assetsVC.createFirstWallets(isNeedEthTest: false) { (str) in
+                
+            }
+        } else {
+            let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+            tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 0)
+            let assetsVC = tabBar.childViewControllers[0].childViewControllers[0] as! AssetsViewController
+            assetsVC.presenter.magicReceiveParams = params
+        }
     }
     
     // Respond to URI scheme links

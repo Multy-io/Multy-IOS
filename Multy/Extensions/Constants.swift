@@ -273,3 +273,4 @@ let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 let inviteCodeCount = 45
 
 let dappDLTitle = "Dragonereum"
+let magicReceiveDL = "magicReceive"

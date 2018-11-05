@@ -652,6 +652,17 @@ extension WalletManager {
         }
     }
     
+    func getAllWallets(completion: @escaping(_ wallets: [UserWalletRLM]?,_ error: Error?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let wallets = realm.objects(UserWalletRLM.self)
+                completion(Array(wallets), nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     func updateImportedWallet(wallet: UserWalletRLM, impPK: String, impPubK: String) {
         getRealm { (realmOpt, error) in
             if let realm = realmOpt {

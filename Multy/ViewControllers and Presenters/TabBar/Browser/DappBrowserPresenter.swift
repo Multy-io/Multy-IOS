@@ -85,7 +85,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
             return
         }
         
-        if wallet != nil && wallet!.blockchainType == defaultBlockchainType {
+        if wallet != nil {
             loadWebViewContent()
             
             return
