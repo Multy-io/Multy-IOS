@@ -9,7 +9,7 @@ target 'Multy' do
 
   pod 'RealmSwift'
   pod 'R.swift'
-  pod 'LTMorphingLabel'
+  pod 'LTMorphingLabel', '0.5.7'
   pod 'ZFRippleButton'
   pod 'ButtonProgressBar-iOS'
   pod 'CryptoSwift', '~> 0.9.0'
@@ -30,6 +30,7 @@ target 'Multy' do
   pod 'SwiftyContacts'
   pod 'UICircularProgressRing', '~> 3.3.2'
   pod 'Hash2Pics'
+  pod 'Web3/ContractABI'
 #  pod 'MultyCoreLibrary'#, '0.1.7'
 
   #dapp
