@@ -224,6 +224,14 @@ class UserWalletRLM: Object {
         return walletID.int32Value < 0 || isWalletFixed
     }
     
+    var isImportedHasKey: Bool {
+        if isImportedForPrimaryKey {
+            return importedPrivateKey != ""
+        } else {
+            return true
+        }
+    }
+    
     func confirmationStatusForTransaction(transaction : HistoryRLM) -> ConfirmationStatus {
         var result = ConfirmationStatus.waiting
         if isMultiSig && transaction.multisig != nil {

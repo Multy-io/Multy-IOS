@@ -276,3 +276,4 @@ let inviteCodeCount = 45
 var currentStatusStyle = UIStatusBarStyle.default
 var isServerConnectionExist = true
 let dappDLTitle = "Dragonereum"
+let magicReceiveDL = "magicReceive"
