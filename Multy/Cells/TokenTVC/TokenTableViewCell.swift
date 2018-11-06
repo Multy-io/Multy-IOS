@@ -33,6 +33,7 @@ class TokenTableViewCell: UITableViewCell {
     
     func fillingCell(tokenObj: WalletTokenRLM) {
         //set token img
+        //FIXME: Token balance .cryptoValue balance delimeter
         tokenName.text = tokenObj.name
         let ethBalance = tokenObj.balanceBigInt
         cryptoAmountLbl.text = "\(ethBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)) ETH"
