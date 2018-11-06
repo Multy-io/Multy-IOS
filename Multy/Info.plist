@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.0</string>
+	<string>1.3.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -36,7 +36,7 @@
 	<key>GIT_BRANCH_NAME</key>
 	<string>master</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>58ec268e</string>
+	<string>57a660c3</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_1.3.0_73_KyberNetwork_DL-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
