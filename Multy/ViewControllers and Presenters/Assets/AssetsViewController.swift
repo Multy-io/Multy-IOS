@@ -554,6 +554,13 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
             }
         }
     }
+    
+    func sendDL(params: NSDictionary) {
+        presenter.magicReceiveParams = params
+        createFirstWallets(isNeedEthTest: false) { (error) in
+            
+        }
+    }
 }
 
 extension CreateWalletDelegate: CreateWalletProtocol {
@@ -658,7 +665,10 @@ extension TableViewDelegate : UITableViewDelegate {
                 } else {
                     sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
                     //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
-                    createFirstWallets(isNeedEthTest: false) { (error) in
+                    self.view.isUserInteractionEnabled = false
+                    createFirstWallets(isNeedEthTest: false) { [unowned self] (error) in
+                        self.view.isUserInteractionEnabled = true
+                        
                         if error == nil {
                             print("Wallets created")
                         }
@@ -709,17 +719,23 @@ extension TableViewDelegate : UITableViewDelegate {
 
     func createFirstWallets(isNeedEthTest: Bool, completion: @escaping(_ error: String?) -> ()) {
         self.presenter.makeAuth { [unowned self] (answer) in
-            self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
-                self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
+            self.presenter.createFirstWallets(walletName: nil, blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
+                self.presenter.createFirstWallets(walletName: nil, blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
                     if isNeedEthTest {
-                        self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 4), completion: { [unowned self] (answer, err) in
+                        self.presenter.createFirstWallets(walletName: nil, blockchianType: BlockchainType.create(currencyID: 60, netType: 4), completion: { [unowned self] (answer, err) in
                             //FIXME: possibly unused request
                             self.presenter.getWalletsVerbose(completion: { (complete) in
+                                if self.presenter.magicReceiveParams != nil {
+                                    self.presenter.openMagicReceiveWith(params: self.presenter.magicReceiveParams!)
+                                }
                                 completion(nil)
                             })
                         })
                     } else {
                         self.presenter.getWalletsVerbose(completion: { (complete) in
+                            if self.presenter.magicReceiveParams != nil {
+                                self.presenter.openMagicReceiveWith(params: self.presenter.magicReceiveParams!)
+                            }
                             completion(nil)
                         })
                     }
