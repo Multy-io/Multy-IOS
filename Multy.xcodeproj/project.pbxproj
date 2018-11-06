@@ -25,6 +25,7 @@
 		444905962163818900911A11 /* DappBrowserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444905952163818900911A11 /* DappBrowserPresenter.swift */; };
 		444B3B652045723C008129B8 /* BigInt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444B3B642045723C008129B8 /* BigInt+Extension.swift */; };
 		4453507B20D14E21004F8DAE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4453507D20D14E21004F8DAE /* Localizable.strings */; };
+		4454BAC22191C90800BC06B3 /* DMTokenExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4454BAC12191C90800BC06B3 /* DMTokenExtension.swift */; };
 		4456964920F391FE00B0C496 /* libccan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4456964820F391FD00B0C496 /* libccan.a */; };
 		445B127020BC1BA800FD0D33 /* SeedPhrase.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127220BC1BA800FD0D33 /* SeedPhrase.storyboard */; };
 		445B127320BC1BB100FD0D33 /* Receive.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127520BC1BB100FD0D33 /* Receive.storyboard */; };
@@ -68,6 +69,7 @@
 		448C38D12165603500D83D02 /* WKWebViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C38892165603400D83D02 /* WKWebViewConfiguration.swift */; };
 		448C38D32165603500D83D02 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C388B2165603400D83D02 /* Bundle.swift */; };
 		448C38D52165603500D83D02 /* ScriptMessageMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C388D2165603400D83D02 /* ScriptMessageMediator.swift */; };
+		448F8327218B578600B734F3 /* libjsoncpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 448F8326218B578600B734F3 /* libjsoncpp.a */; };
 		449151402049764D0028195F /* MultyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491513F2049764D0028195F /* MultyUITests.swift */; };
 		4491514E204976600028195F /* MultyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491514D204976600028195F /* MultyTests.swift */; };
 		44A3DF93205AA1F300FE9955 /* BlockchainType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DF92205AA1F300FE9955 /* BlockchainType+Extension.swift */; };
@@ -416,6 +418,7 @@
 		4453507C20D14E21004F8DAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4453508020D14E43004F8DAE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4453508120D14E47004F8DAE /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4454BAC12191C90800BC06B3 /* DMTokenExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMTokenExtension.swift; sourceTree = "<group>"; };
 		4456964820F391FD00B0C496 /* libccan.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libccan.a; sourceTree = "<group>"; };
 		445B127120BC1BA800FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SeedPhrase.storyboard; sourceTree = "<group>"; };
 		445B127420BC1BB100FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Receive.storyboard; sourceTree = "<group>"; };
@@ -532,6 +535,8 @@
 		448C38892165603400D83D02 /* WKWebViewConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewConfiguration.swift; sourceTree = "<group>"; };
 		448C388B2165603400D83D02 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		448C388D2165603400D83D02 /* ScriptMessageMediator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptMessageMediator.swift; sourceTree = "<group>"; };
+		448F8325218B56E500B734F3 /* json_api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = json_api.h; sourceTree = "<group>"; };
+		448F8326218B578600B734F3 /* libjsoncpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjsoncpp.a; sourceTree = "<group>"; };
 		4491513D2049764D0028195F /* MultyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4491513F2049764D0028195F /* MultyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultyUITests.swift; sourceTree = "<group>"; };
 		449151412049764D0028195F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -902,6 +907,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				448F8327218B578600B734F3 /* libjsoncpp.a in Frameworks */,
 				85741D8920B55A660093933B /* CoreBluetooth.framework in Frameworks */,
 				FA4125DF2004C0FD00DF9AC3 /* libstdc++.tbd in Frameworks */,
 				4456964920F391FE00B0C496 /* libccan.a in Frameworks */,
@@ -1298,6 +1304,7 @@
 				44D3F038217A2634003A4F0B /* error.h */,
 				44D3F040217A2635003A4F0B /* ethereum.h */,
 				44D3F03E217A2635003A4F0B /* golos.h */,
+				448F8325218B56E500B734F3 /* json_api.h */,
 				44D3F03C217A2635003A4F0B /* key.h */,
 				44D3F032217A2634003A4F0B /* mnemonic.h */,
 				44D3F035217A2634003A4F0B /* properties.h */,
@@ -2103,6 +2110,7 @@
 				FA4D43DA1FC581AE003C7117 /* DMRealmExtension.swift */,
 				FA4D43DC1FC581CF003C7117 /* DMSocketExtension.swift */,
 				FA4D43D81FC5772E003C7117 /* DMCoreLibExtension.swift */,
+				4454BAC12191C90800BC06B3 /* DMTokenExtension.swift */,
 			);
 			path = DataManagerExtensions;
 			sourceTree = "<group>";
@@ -2187,6 +2195,7 @@
 		FA7E97221FF2504100735D73 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				448F8326218B578600B734F3 /* libjsoncpp.a */,
 				445D151120DB9421002F6747 /* Contacts.framework */,
 				4538BDCB2099E69900573426 /* StoreKit.framework */,
 				85741D8820B55A650093933B /* CoreBluetooth.framework */,
@@ -3050,6 +3059,7 @@
 				45C8D143200780CF00F5994E /* SplashViewController.swift in Sources */,
 				45B5CCA21FDA90DF0069BD46 /* NoInternetConnectionViewController.swift in Sources */,
 				85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */,
+				4454BAC22191C90800BC06B3 /* DMTokenExtension.swift in Sources */,
 				455EA8761FD842610093F69D /* CustomTabBarViewController.swift in Sources */,
 				FA4D43FB1FC6C760003C7117 /* BTCWalletPresenter.swift in Sources */,
 				8592E02320FF9B5D0040125B /* MultisigWallet.swift in Sources */,
@@ -3676,7 +3686,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.testimony;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3717,7 +3727,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.testimony;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";

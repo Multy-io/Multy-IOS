@@ -28,6 +28,7 @@ enum Blockchain
     BLOCKCHAIN_ETHEREUM_CLASSIC =   0x3d,
     BLOCKCHAIN_STEEM =              0x87,
     BLOCKCHAIN_BITCOIN_CASH =       0x99,
+    BLOCKCHAIN_EOS =                0xc2,
     BLOCKCHAIN_GOLOS =              0x060105,
     
     //not available in bip44

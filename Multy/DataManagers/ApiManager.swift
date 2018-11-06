@@ -33,17 +33,16 @@ class ApiManager: NSObject, RequestRetrier {
             self.requestManager.adapter = AccessTokenAdapter(accessToken: token)
         }
     }
-    var userID = String()
-    
-    var topVC: UIViewController?
-    var noConnectionView: UIView?
-    
+    var userID = String()    
     var pushToken: String {
         get {
             return Messaging.messaging().fcmToken ?? ""
         }
     }
-
+    
+    var topVC: UIViewController?
+    var noConnectionView: UIView?
+    
     override init() {
         super.init()
         

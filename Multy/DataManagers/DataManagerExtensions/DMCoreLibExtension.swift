@@ -7,6 +7,8 @@ import RealmSwift
 
 private typealias MultisigManager = DataManager
 private typealias CoreLibPrivateKeyFixManager = DataManager
+private typealias CoreLibInfoManager = DataManager
+private typealias CoreLibETHManager = DataManager
 
 extension DataManager {
 //    func isDeviceJailbroken() -> Bool {
@@ -134,6 +136,68 @@ extension DataManager {
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
         return coreLibManager.privateKeyString(blockchain: blockchain, walletID: walletID, addressID: addressID, binaryData: &binaryData)
+    }
+}
+
+extension CoreLibETHManager {
+    func makeTX(from json: Dictionary<String, Any>) -> Result<String, String> {
+        if let theJSONData = try? JSONSerialization.data(withJSONObject: json,
+                                                         options: []) {
+            let theJSONText = String(data: theJSONData, encoding: .ascii)
+            print("JSON string = \(theJSONText!)")
+            
+            let rawTxInfo = coreLibManager.createEtherTx(from: theJSONText!)
+            
+            if rawTxInfo.isTransactionCorrect {
+                if let data = rawTxInfo.message.data(using: .utf8) {
+                    let info = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                    
+                    if let tx = info?["transaction"] as? Dictionary<String, String> {
+                        if let serialized = tx["serialized"] as? String {
+                            return Result.success(serialized)
+                        } else {
+                            return Result.failure("cannot get serialized")
+                        }
+                    } else {
+                        return Result.failure("cannot get transaction")
+                    }
+                } else {
+                    return Result.failure("cannot convert to data")
+                }
+            } else {
+                return Result.failure(rawTxInfo.message)
+            }
+        }
+        
+        return Result.failure("Error")
+    }
+}
+
+extension CoreLibInfoManager {
+    func privateInfo(for wallet: UserWalletRLM) -> Dictionary<String, Any>? {
+        if wallet.blockchain != BLOCKCHAIN_ETHEREUM {
+            return nil
+        }
+        
+        if wallet.isImported {
+            if wallet.privateKey.isEmpty {
+                return nil
+            } else {
+                switch coreLibManager.createPublicInfo(blockchainType: wallet.blockchainType, privateKey: wallet.privateKey) {
+                case .success(let info):
+                    return info
+                case .failure(_):
+                    return nil
+                }
+                
+            }
+        } else if wallet.isMultiSig {
+            return nil
+        } else {
+            var binData = realmManager.account!.binaryDataString.createBinaryData()!
+            
+            return coreLibManager.createAddress(blockchainType: wallet.blockchainType, walletID: wallet.walletID.uint32Value, addressID: 0, binaryData: &binData)
+        }
     }
 }
 

@@ -68,7 +68,7 @@ extension DataManager {
                 }
                 
                 if let erc20Info = answerDict!["erc20tokenlist"] as? NSArray {
-                    let tokens = TokenRLM.initArrayWithArray(tokensArray: erc20Info)
+                    let tokens = TokenRLM.initArrayWithArray(tokensArray: erc20Info, blockchainType: BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 1))
                     DataManager.shared.realmManager.updateErc20Tokens(tokens: tokens)
                 }
                 
