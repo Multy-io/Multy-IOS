@@ -16,6 +16,7 @@ class WalletPresenter: NSObject {
 //                importedPrivateKey = wallet!.importedPrivateKey
 //                importedPublicKey = wallet!.importedPublicKey
 //            }
+            assetsDataSource = Array(wallet!.ethWallet!.erc20Tokens)
             updateUI()
         }
         
@@ -33,11 +34,12 @@ class WalletPresenter: NSObject {
     var account : AccountRLM?
     
     var fiatSymbol: String = "$"
-    var assetsDataSource = [HistoryRLM]() {
+    var assetsDataSource = [WalletTokenRLM]() {
         didSet {
-            walletVC!.assetsTable.reloadData()
+            walletVC?.assetsTable.reloadData()
         }
     }
+    
     var transactionDataSource = [HistoryRLM]() {
         didSet {
             if transactionDataSource.isEmpty == false {
@@ -162,6 +164,7 @@ class WalletPresenter: NSObject {
         DataManager.shared.getOneWalletVerbose(wallet: wallet!) { [unowned self] (updatedWallet, error) in
             if updatedWallet != nil {
                 self.wallet = updatedWallet
+                self.assetsDataSource = Array(self.wallet!.ethWallet!.erc20Tokens)
             }
             
             self.getHistory()
@@ -190,6 +193,7 @@ class WalletPresenter: NSObject {
             
             self.updateHeader()
         }
+        walletVC!.setupUI()
     }
     
     func canSendMinimumAmount() -> Bool {

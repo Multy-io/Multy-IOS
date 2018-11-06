@@ -250,13 +250,14 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     func setupUI() {
         checkConstraints()
         makeGradientForBottom()
-        setupTransactionAssetsBtns(false)
+        
         
         //------------  WARNING  ------------//
 //        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
-        if presenter.wallet!.isTokenExist == false {
-            setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
-        }
+//        if presenter.wallet!.isTokenExist == false {
+            setTransactionsTableFirst(hide: !presenter.wallet!.isTokenExist)  // if wallet tokens == nil // ONLY TRANSACTIONS
+        setupTransactionAssetsBtns(false)
+//        }
         // ------------  WARNING  ------------
        
         setupAddressBtns()
@@ -321,15 +322,22 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
-    func setTransactionsTableFirst() {
-        hideAssetsBtn()
-        assetsTableTrailingConstraint.constant = -screenWidth
+    func setTransactionsTableFirst(hide: Bool) {
+        hideAssetsBtn(bool: hide)
+        assetsTableTrailingConstraint.constant = hide ? -screenWidth : 0
         view.layoutIfNeeded()
     }
     
-    func hideAssetsBtn() {
-        assetsTransactionsBtnsView.isHidden = true
-        assetsTansactionsHeightConstraint.constant = 0
+    func hideAssetsBtn(bool: Bool) {
+        if bool {
+            assetsTransactionsBtnsView.isHidden = true
+            assetsTansactionsHeightConstraint.constant = 0
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.assetsTransactionsBtnsView.isHidden = false
+                self.assetsTansactionsHeightConstraint.constant = 50
+            }
+        }
     }
     
     func hideBackup() {
@@ -724,7 +732,7 @@ extension TableViewDataSource: UITableViewDataSource {
             let countOfTokens = presenter.wallet?.ethWallet?.erc20Tokens.count
             if indexPath.row < countOfTokens ?? 0 {
                 let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
-                tokenCell.fillingCell(tokenObj: presenter.wallet!.ethWallet!.erc20Tokens[indexPath.row])
+                tokenCell.fillingCell(tokenObj: presenter.assetsDataSource[indexPath.row])
                 return tokenCell
             } else {
                 let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
