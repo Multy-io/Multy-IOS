@@ -658,7 +658,10 @@ extension TableViewDelegate : UITableViewDelegate {
             if self.presenter.account == nil {
                 sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
 //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
-                createFirstWallets(isNeedEthTest: false) { (error) in
+                self.view.isUserInteractionEnabled = false
+                createFirstWallets(isNeedEthTest: false) { [unowned self] (error) in
+                    self.view.isUserInteractionEnabled = true
+                    
                     if error == nil {
                         print("Wallets created")
                     }

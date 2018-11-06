@@ -26,6 +26,10 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     
     var walletAddress = "" {
         didSet {
+            if wallet != nil || walletAddress.isEmpty {
+                walletAddress = wallet!.address
+            }
+            
             generateWirelessRequestImage()
         }
     }
