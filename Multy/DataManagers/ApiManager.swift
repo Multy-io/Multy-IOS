@@ -4,6 +4,7 @@
 
 import UIKit
 import Alamofire
+import FirebaseMessaging
 //import MultyCoreLibrary
 
 class AccessTokenAdapter: RequestAdapter {
@@ -33,11 +34,16 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     var userID = String()
-    var pushToken = String()
     
     var topVC: UIViewController?
     var noConnectionView: UIView?
     
+    var pushToken: String {
+        get {
+            return Messaging.messaging().fcmToken ?? ""
+        }
+    }
+
     override init() {
         super.init()
         

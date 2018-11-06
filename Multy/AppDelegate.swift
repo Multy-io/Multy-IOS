@@ -56,10 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
             registerPush()
         }
         
-        let filePathOpt = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
-        if let filePath = filePathOpt, let options = FirebaseOptions(contentsOfFile: filePath) {
-            FirebaseApp.configure(options: options)
-        }
+        configureFirebaseApp()
         
 
         if let option = launchOptions {
@@ -73,6 +70,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
 
         
         return true
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Device Token: \(deviceToken)")
+    }
+    
+    func configureFirebaseApp() {
+        if FirebaseApp.app() != nil { return }
+        
+        let filePathOpt = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
+        if let filePath = filePathOpt, let options = FirebaseOptions(contentsOfFile: filePath) {
+            FirebaseApp.configure(options: options)
+        }
     }
 
     func performFirstSegue(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
@@ -96,6 +106,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                             self!.openSendFlow(acc: acc, dictFormLink: dictFormLink)
                         } else if dictFormLink["deepLinkIDstring"] as? String == dappDLTitle {   //dapp dragon testNet
                             self!.openDragonsFlow(acc: acc, params: dictFormLink)
+                        } else if dictFormLink["deepLinkIDstring"] as? String == magicReceiveDL {
+                            self!.magicReceiveFlow(acc: acc, params: dictFormLink)
                         }
                     }
                 }
@@ -156,6 +168,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
         tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 1)
         let browserVC = tabBar.childViewControllers[1].childViewControllers[0] as! DappBrowserViewController
         browserVC.presenter.dragonDLObj = params
+    }
+    
+    func magicReceiveFlow(acc: AccountRLM?, params: NSDictionary) {
+        if acc == nil && self.window?.rootViewController?.topMostViewController().className  == TermsOfServiceViewController.className {
+            let termsVC = self.window?.rootViewController?.topMostViewController() as! TermsOfServiceViewController
+            termsVC.magicLinkParams = params
+        } else if acc == nil && self.window?.rootViewController?.topMostViewController().className == AssetsViewController.className {
+            let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+            tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 0)
+            let assetsVC = tabBar.childViewControllers[0].childViewControllers[0] as! AssetsViewController
+            assetsVC.presenter.magicReceiveParams = params
+            assetsVC.createFirstWallets(isNeedEthTest: false) { (str) in
+                
+            }
+        } else {
+            let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+            tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 0)
+            let assetsVC = tabBar.childViewControllers[0].childViewControllers[0] as! AssetsViewController
+            assetsVC.presenter.magicReceiveParams = params
+        }
     }
     
     // Respond to URI scheme links
@@ -428,7 +460,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
 //        let token = Messaging.messaging().fcmToken
         print("FCM token: \(fcmToken)")
-        ApiManager.shared.pushToken = fcmToken
         
         DataManager.shared.isFCMSubscribed() ? DataManager.shared.subscribeToFirebaseMessaging() : DataManager.shared.unsubscribeToFirebaseMessaging()
     }
@@ -484,8 +515,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
             self.application!.registerUserNotificationSettings(settings)
         }
         self.application!.registerForRemoteNotifications()
-        if Messaging.messaging().fcmToken != nil {
-            ApiManager.shared.pushToken = Messaging.messaging().fcmToken!
+        
+        if Messaging.messaging().fcmToken == nil {
+            configureFirebaseApp()
         }
     }
 }
