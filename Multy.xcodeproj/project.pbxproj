@@ -25,6 +25,7 @@
 		444905962163818900911A11 /* DappBrowserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444905952163818900911A11 /* DappBrowserPresenter.swift */; };
 		444B3B652045723C008129B8 /* BigInt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444B3B642045723C008129B8 /* BigInt+Extension.swift */; };
 		4453507B20D14E21004F8DAE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4453507D20D14E21004F8DAE /* Localizable.strings */; };
+		4454BAC22191C90800BC06B3 /* DMTokenExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4454BAC12191C90800BC06B3 /* DMTokenExtension.swift */; };
 		4456964920F391FE00B0C496 /* libccan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4456964820F391FD00B0C496 /* libccan.a */; };
 		445B127020BC1BA800FD0D33 /* SeedPhrase.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127220BC1BA800FD0D33 /* SeedPhrase.storyboard */; };
 		445B127320BC1BB100FD0D33 /* Receive.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445B127520BC1BB100FD0D33 /* Receive.storyboard */; };
@@ -417,6 +418,7 @@
 		4453507C20D14E21004F8DAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4453508020D14E43004F8DAE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4453508120D14E47004F8DAE /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4454BAC12191C90800BC06B3 /* DMTokenExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMTokenExtension.swift; sourceTree = "<group>"; };
 		4456964820F391FD00B0C496 /* libccan.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libccan.a; sourceTree = "<group>"; };
 		445B127120BC1BA800FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SeedPhrase.storyboard; sourceTree = "<group>"; };
 		445B127420BC1BB100FD0D33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Receive.storyboard; sourceTree = "<group>"; };
@@ -2108,6 +2110,7 @@
 				FA4D43DA1FC581AE003C7117 /* DMRealmExtension.swift */,
 				FA4D43DC1FC581CF003C7117 /* DMSocketExtension.swift */,
 				FA4D43D81FC5772E003C7117 /* DMCoreLibExtension.swift */,
+				4454BAC12191C90800BC06B3 /* DMTokenExtension.swift */,
 			);
 			path = DataManagerExtensions;
 			sourceTree = "<group>";
@@ -3056,6 +3059,7 @@
 				45C8D143200780CF00F5994E /* SplashViewController.swift in Sources */,
 				45B5CCA21FDA90DF0069BD46 /* NoInternetConnectionViewController.swift in Sources */,
 				85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */,
+				4454BAC22191C90800BC06B3 /* DMTokenExtension.swift in Sources */,
 				455EA8761FD842610093F69D /* CustomTabBarViewController.swift in Sources */,
 				FA4D43FB1FC6C760003C7117 /* BTCWalletPresenter.swift in Sources */,
 				8592E02320FF9B5D0040125B /* MultisigWallet.swift in Sources */,

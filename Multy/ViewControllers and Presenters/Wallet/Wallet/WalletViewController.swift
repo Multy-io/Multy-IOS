@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import Web3
 //import MultyCoreLibrary
 
 private typealias TableViewDelegate = WalletViewController
@@ -173,7 +174,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets(notification:)), name: NSNotification.Name("transactionUpdated"), object: nil)
-        }        
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -663,6 +664,7 @@ extension TableViewDelegate: UITableViewDelegate {
             let walletVC = viewControllerFrom("Wallet", "newWallet") as! WalletViewController
             walletVC.presenter.isToken = true
             walletVC.presenter.account = presenter.account
+            walletVC.presenter.tokenHolderWallet = presenter.wallet!
             walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.wallet!.ethWallet!.erc20Tokens[indexPath.row])
             navigationController?.pushViewController(walletVC, animated: true)
         }

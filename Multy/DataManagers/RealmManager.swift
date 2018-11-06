@@ -19,7 +19,7 @@ class RealmManager: NSObject {
     static let shared = RealmManager()
     
     private var realm : Realm? = nil
-    let schemaVersion : UInt64 = 31
+    let schemaVersion : UInt64 = 32
     
     var account: AccountRLM?
     var config: Realm.Configuration?
@@ -143,6 +143,9 @@ class RealmManager: NSObject {
                                                     }
                                                     if oldSchemaVersion <= 31 {
                                                         self.migrateFrom30To31(with: migration)
+                                                    }
+                                                    if oldSchemaVersion <= 31 {
+                                                        self.migrateFrom31To32(with: migration)
                                                     }
             })
             
@@ -1128,6 +1131,13 @@ extension RealmMigrationManager {
     func migrateFrom30To31(with migration: Migration) {
         UserPreferences.shared.writeDBPrivateKeyFixValue(false)
     }
+    func migrateFrom31To32(with migration: Migration) {
+        migration.enumerateObjects(ofType: TokenRLM.className()) { (_, token) in
+            token?["decimals"] = Int(-1)
+            token?["currencyID"] = UInt32(0)
+            token?["netType"] = Int(0)
+        }
+    }
 }
 
 extension LegacyCodeManager {
@@ -1186,19 +1196,49 @@ extension LegacyCodeManager {
 
 extension TokensManager {
     func updateErc20Tokens(tokens: [TokenRLM]) {
+        //tokens need to be updated iff token.decimals missing iff token.decimals = -1
+        // after update this value will be non-negative
         getRealm { [unowned self] (realmOpt, error) in
             if let realm = realmOpt {
+                var neededUpdateArray = [TokenRLM]()
+                
                 try! realm.write {
-                    realm.delete(realm.objects(TokenRLM.self))
                     for token in tokens {
-                        realm.add(token, update: true)
+                        let object = realm.object(ofType: TokenRLM.self, forPrimaryKey: token.contractAddress)
                         
+                        if let oldToken = object {
+                            oldToken.name       = token.name
+                            oldToken.ticker     = token.ticker
+                            
+                            //decimals
+                            if oldToken.decimals == -1 {//case: there was no info
+                                oldToken.decimals = token.decimals
+                            } else if token.decimals != -1 {//case: there is correct value of decimals (that maybe changed)
+                                oldToken.decimals   = token.decimals
+                            }
+                            
+                            if oldToken.decimals == -1 {
+                                neededUpdateArray.append(oldToken)
+                            }
+                            
+                            realm.add(oldToken, update: true)
+                        } else {
+                            if token.decimals == -1 {
+                                neededUpdateArray.append(token)
+                            }
+                            
+                            realm.add(token, update: true)
+                        }
                     }
                 }
+                
                 let tokens = realm.objects(TokenRLM.self)
                 self.erc20Tokens.removeAll()
                 tokens.forEach{ self.erc20Tokens[$0.contractAddress] = $0 }
                 
+                if neededUpdateArray.isEmpty == false {
+                    DataManager.shared.updateTokensInfo(neededUpdateArray)
+                }
             }
         }
     }
