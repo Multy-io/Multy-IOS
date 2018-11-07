@@ -117,7 +117,7 @@
 "VW7-w3-CZx.text" = "Платить комиссию        ";
 
 /* Class = "UILabel"; text = "Send Amount"; ObjectID = "VhT-01-bTB"; */
-"VhT-01-bTB.text" = "Отправить сумму";
+"VhT-01-bTB.text" = "Сумма";//"Отправить сумму";
 
 /* Class = "UILabel"; text = "MAX"; ObjectID = "Xhi-Qs-0Ca"; */
 "Xhi-Qs-0Ca.text" = "ВСЁ";
@@ -240,7 +240,7 @@
 "uaU-U0-1YQ.text" = "(в разработке)";
 
 /* Class = "UILabel"; text = "Send Amount"; ObjectID = "vsy-Hb-OWB"; */
-"vsy-Hb-OWB.text" = "Отправить сумму";
+"vsy-Hb-OWB.text" = "Сумма";//"Отправить сумму";
 
 /* Class = "UILabel"; text = "Donate to Multy"; ObjectID = "wCG-9b-EeH"; */
 "wCG-9b-EeH.text" = "Пожертвовать Multy";
