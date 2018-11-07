@@ -35,6 +35,8 @@ class DoubleSlideViewController: UIViewController {
         
         let slideToDeclineGR = UIPanGestureRecognizer(target: self, action: #selector(slideToDecline(_ :)))
         declineSlideView.addGestureRecognizer(slideToDeclineGR)
+        
+        slideTextLbl.text = forAccept ? localize(string: Constants.slideToConfirmString) : localize(string: Constants.slideToDeclineString)
     }
     
     func startTimer() {
@@ -163,3 +165,4 @@ extension LocalizeDelegate: Localizable {
         return "MultiSig"
     }
 }
+
