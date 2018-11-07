@@ -11,7 +11,7 @@ import Web3
 
 extension DataManager {
     func updateTokensInfo(_ tokensarray: [TokenRLM]) {
-        if tokensarray .count == 0 {
+        if tokensarray.count == 0 {
             return
         }
         
@@ -37,6 +37,16 @@ extension DataManager {
             let dec = contract.decimals()
             let symbol = contract.symbol()
             
+//            let call = EthereumCall(from: contractAddress,
+//                                    to: contractAddress,
+//                                    gas: EthereumQuantity(integerLiteral: 21_000),
+//                                    gasPrice: EthereumQuantity(integerLiteral: 1_000_000_000),
+//                                    value: EthereumQuantity(integerLiteral: 1_000_000_000_000_000),
+//                                    data: nil)
+            
+//            contract.estimateGas(call) { (quantity, error) in
+//                print("\(newToken.name): \(quantity?.quantity.description)")
+//            }
             
             name.call { [unowned self] (dict, error) in
                 if dict != nil, dict!.keys.count > 0 {
@@ -55,7 +65,9 @@ extension DataManager {
                             newToken.ticker = dict!.values.first! as! String
                         }
                         
+                        //lock access to newTokenInfo
                         objc_sync_enter(newTokenInfo)
+                        
                         newTokenInfo.append(newToken)
                         print("newTokenInfo: \(newTokenInfo.count)")
                         

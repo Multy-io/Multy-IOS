@@ -130,6 +130,20 @@ let statuses = ["createdTx", "fromSocketTx", "incoming in mempool", "spend in me
 var isNeedToAutorise = false
 var isViewPresented = false
 
+var isDebug: Bool {
+    #if DEBUG
+    return true
+    #else
+    return false
+    #endif
+}
+
+func sync(lock: NSObject, closure: @escaping () -> Void) {
+    objc_sync_enter(lock)
+    closure()
+    objc_sync_exit(lock)
+}
+
 func convertSatoshiToBTCString(sum: UInt64) -> String {
     return (Double(sum) / pow(10, 8)).fixedFraction(digits: 8) + " BTC"
 }

@@ -309,6 +309,28 @@ class UserWalletRLM: Object {
         }
     }
     
+    fileprivate class func checkMissingTokens(array: List<UserWalletRLM>) {
+        var addressesSet = Set<TokenRLM>()
+        array.forEach { wallet in
+            if let tokenArray = wallet.ethWallet?.erc20Tokens {
+                tokenArray.forEach { if $0.token == nil { addressesSet.insert(TokenRLM.createWith($0.address, blockchainType: wallet.blockchainType)) } }
+            }
+        }
+        
+        DataManager.shared.updateTokensInfo(Array(addressesSet))
+    }
+    
+    fileprivate class func checkMissingTokens(array: [UserWalletRLM]) {
+        var addressesSet = Set<TokenRLM>()
+        array.forEach { wallet in
+            if let tokenArray = wallet.ethWallet?.erc20Tokens {
+                tokenArray.forEach{ if $0.token == nil { addressesSet.insert(TokenRLM.createWith($0.address, blockchainType: wallet.blockchainType)) } }
+            }
+        }
+        
+        DataManager.shared.updateTokensInfo(Array(addressesSet))
+    }
+    
     public class func initWithArray(walletsInfo: NSArray) -> List<UserWalletRLM> {
         let wallets = List<UserWalletRLM>()
         
@@ -316,6 +338,8 @@ class UserWalletRLM: Object {
             let wallet = UserWalletRLM.initWithInfo(walletInfo: walletInfo as! NSDictionary)
             wallets.append(wallet)
         }
+        
+        checkMissingTokens(array: wallets)
         
         return wallets
     }
@@ -327,6 +351,8 @@ class UserWalletRLM: Object {
             let wallet = UserWalletRLM.initWithInfo(walletInfo: walletInfo as! NSDictionary)
             wallets.append(wallet)
         }
+        
+        checkMissingTokens(array: wallets)
         
         return wallets
     }

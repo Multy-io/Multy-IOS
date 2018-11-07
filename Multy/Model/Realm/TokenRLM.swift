@@ -36,6 +36,16 @@ class TokenRLM: Object {
         return tokens
     }
     
+    public class func createWith(_ address: String, blockchainType: BlockchainType) -> TokenRLM {
+        let erc20token = TokenRLM()
+        
+        erc20token.contractAddress  = address
+        erc20token.currencyID       = NSNumber(value: blockchainType.blockchain.rawValue)
+        erc20token.netType          = NSNumber(value: blockchainType.net_type)
+        
+        return erc20token
+    }
+    
     public class func initWithInfo(tokensInfo: NSDictionary, blockchainType: BlockchainType) -> TokenRLM {
         let erc20token = TokenRLM()
         
@@ -60,4 +70,22 @@ class TokenRLM: Object {
         
         return erc20token
     }
+    
+    override var hash: Int {
+        return contractAddress.hash
+    }
+    
+    override var hashValue: Int {
+        return contractAddress.hashValue
+    }
+    
+    public override func isEqual(_ object: Any?) -> Bool {
+        if let token = object as? TokenRLM {
+            return self.hash == token.hash
+        } else {
+            return super.isEqual(object)
+        }
+    }
 }
+
+
