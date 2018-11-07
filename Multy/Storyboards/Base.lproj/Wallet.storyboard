@@ -1478,7 +1478,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QPb-nk-2ek">
-                                        <rect key="frame" x="0.0" y="177" width="343" height="336"/>
+                                        <rect key="frame" x="0.0" y="217" width="343" height="296"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY PRIVATE KEY:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xI1-Qo-90r">
                                                 <rect key="frame" x="123" y="20" width="97" height="17"/>
@@ -1486,7 +1486,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6o-9x-tsS">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6o-9x-tsS">
                                                 <rect key="frame" x="20" y="43" width="303" height="66"/>
                                                 <string key="text">83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L</string>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
@@ -1494,28 +1494,28 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jhS-TU-GFq">
-                                                <rect key="frame" x="0.0" y="277" width="343" height="2"/>
+                                                <rect key="frame" x="0.0" y="237" width="343" height="2"/>
                                                 <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="2" id="e2R-cu-GlQ"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tSD-Ha-0mh">
-                                                <rect key="frame" x="0.0" y="218" width="343" height="2"/>
+                                                <rect key="frame" x="0.0" y="178" width="343" height="2"/>
                                                 <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="2" id="EgL-XM-Bnj"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSe-nt-KE0">
-                                                <rect key="frame" x="0.0" y="159" width="343" height="2"/>
+                                                <rect key="frame" x="0.0" y="119" width="343" height="2"/>
                                                 <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="2" id="vfX-j7-gqO"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ai-kQ-3aX">
-                                                <rect key="frame" x="0.0" y="161" width="343" height="57"/>
+                                                <rect key="frame" x="0.0" y="121" width="343" height="57"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                                 <state key="normal" title="Copy to clipboard">
                                                     <color key="titleColor" red="0.21176470588235294" green="0.21176470588235294" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
@@ -1525,7 +1525,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k4a-bD-22T">
-                                                <rect key="frame" x="0.0" y="220" width="343" height="57"/>
+                                                <rect key="frame" x="0.0" y="180" width="343" height="57"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                                 <state key="normal" title="Share">
                                                     <color key="titleColor" red="0.21176470588235294" green="0.21176470588235294" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
@@ -1535,7 +1535,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZiB-8K-BTa">
-                                                <rect key="frame" x="0.0" y="279" width="343" height="57"/>
+                                                <rect key="frame" x="0.0" y="239" width="343" height="57"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                                 <state key="normal" title="Cancel">
                                                     <color key="titleColor" red="0.21176470588235294" green="0.21176470588235294" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
@@ -1564,7 +1564,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <constraint firstItem="k4a-bD-22T" firstAttribute="leading" secondItem="QPb-nk-2ek" secondAttribute="leading" id="bSk-dE-PxT"/>
                                             <constraint firstItem="jhS-TU-GFq" firstAttribute="top" secondItem="k4a-bD-22T" secondAttribute="bottom" id="bh6-8d-zrJ"/>
                                             <constraint firstAttribute="bottom" secondItem="ZiB-8K-BTa" secondAttribute="bottom" id="eSw-c3-T20"/>
-                                            <constraint firstItem="OSe-nt-KE0" firstAttribute="top" secondItem="a6o-9x-tsS" secondAttribute="bottom" constant="50" id="eer-Xa-AoY"/>
+                                            <constraint firstItem="OSe-nt-KE0" firstAttribute="top" secondItem="a6o-9x-tsS" secondAttribute="bottom" constant="10" id="eer-Xa-AoY"/>
                                             <constraint firstItem="ZiB-8K-BTa" firstAttribute="top" secondItem="jhS-TU-GFq" secondAttribute="bottom" id="f3b-Y8-TPg"/>
                                             <constraint firstAttribute="bottom" secondItem="jhS-TU-GFq" secondAttribute="bottom" constant="57" id="fba-vz-du5"/>
                                             <constraint firstItem="5Ai-kQ-3aX" firstAttribute="leading" secondItem="QPb-nk-2ek" secondAttribute="leading" id="fxP-J3-wW0"/>
@@ -1605,7 +1605,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <constraint firstItem="tqL-rh-vBW" firstAttribute="top" secondItem="7m6-Qb-tpt" secondAttribute="bottom" constant="10" id="Yte-LJ-WUf"/>
                                     <constraint firstItem="QPb-nk-2ek" firstAttribute="width" secondItem="kdd-iN-g0f" secondAttribute="width" id="b3v-Df-u4f"/>
                                     <constraint firstAttribute="trailing" secondItem="QPb-nk-2ek" secondAttribute="trailing" id="hW0-M8-euy"/>
-                                    <constraint firstItem="QPb-nk-2ek" firstAttribute="height" secondItem="kdd-iN-g0f" secondAttribute="height" multiplier="336/513" id="seB-q7-vkU"/>
+                                    <constraint firstItem="QPb-nk-2ek" firstAttribute="height" secondItem="kdd-iN-g0f" secondAttribute="height" multiplier="296/513" id="seB-q7-vkU"/>
                                     <constraint firstItem="QPb-nk-2ek" firstAttribute="leading" secondItem="kdd-iN-g0f" secondAttribute="leading" id="uZv-ec-XJa"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
