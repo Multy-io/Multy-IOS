@@ -124,7 +124,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         
         walletsVC.sendWalletDelegate = self.presenter
         walletsVC.whereFrom = self
-        walletsVC.presenter.titleTextKey = ""
+        walletsVC.presenter.titleTextKey =  Constants.walletString
         walletsVC.presenter.isMultisigAllowed = false
 //        walletsVC.presenter.displayedBlockchainOnly = presenter.defaultBlockchainType
         self.navigationController?.pushViewController(walletsVC, animated: true)
