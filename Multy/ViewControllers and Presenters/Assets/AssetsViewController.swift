@@ -730,9 +730,11 @@ extension TableViewDelegate : UITableViewDelegate {
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
 //                    return 340
-                    return 290
+                    return screenHeight == heightOfFive ? 270 : 340
                 } else {
-                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+//                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 340
+                    return heightConstant + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
@@ -767,7 +769,8 @@ extension TableViewDelegate : UITableViewDelegate {
                 if presenter.account!.isSeedPhraseSaved() {
                     return 340
                 } else {
-                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+//                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+                    return 100 + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
@@ -900,7 +903,12 @@ extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout 
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: screenWidth, height: 277 /* (screenWidth / 375.0)*/)
+        var height: CGFloat = 277
+        if screenHeight == heightOfFive {
+            height = 250.0
+        }
+//        return CGSize(width: screenWidth, height: 277 /* (screenWidth / 375.0)*/)
+        return CGSize(width: screenWidth, height: height /* (screenWidth / 375.0)*/)
     }
     
     func collectionView(_ collectionView: UICollectionView,
