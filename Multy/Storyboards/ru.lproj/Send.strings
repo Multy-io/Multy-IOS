@@ -1,6 +1,6 @@
 
 /* Class = "UILabel"; text = "Transaction Fee"; ObjectID = "0ZI-tj-Idl"; */
-"0ZI-tj-Idl.text" = "Комиссия за перевод";
+"0ZI-tj-Idl.text" = "Комиссия";//"Комиссия за перевод";
 
 /* Class = "UILabel"; text = "1.1234 BTC / 1 123 USD"; ObjectID = "31h-f9-3fx"; */
 "31h-f9-3fx.text" = "1.1234 BTC / 1 123 USD";
@@ -57,7 +57,7 @@
 "Cg1-VD-fBS.text" = "Далее";
 
 /* Class = "UILabel"; text = "Transaction Fee"; ObjectID = "CmP-mh-W1O"; */
-"CmP-mh-W1O.text" = "Комиссия за перевод";
+"CmP-mh-W1O.text" = "Комиссия";//"Комиссия за перевод";
 
 /* Class = "UILabel"; text = "Scan\nQR"; ObjectID = "Cmu-SL-LS1"; */
 "Cmu-SL-LS1.text" = "Скан\nQR";

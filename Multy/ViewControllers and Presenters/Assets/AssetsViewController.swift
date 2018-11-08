@@ -333,6 +333,9 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         chevronImg.image = #imageLiteral(resourceName: "chevron__")
         let btn = UIButton()
         btn.frame = CGRect(x: 50, y: 0, width: chevronImg.frame.origin.x - 50, height: view.frame.height)
+        if screenHeight <= heightOfFive {
+            btn.frame = CGRect(x: 50, y: -3, width: chevronImg.frame.origin.x - 50, height: view.frame.height)
+        }
         btn.setTitle(localize(string: Constants.backupNeededString), for: .normal)
         btn.setTitleColor(.white, for: .normal)
         btn.titleLabel?.adjustsFontSizeToFitWidth = true
