@@ -390,7 +390,7 @@ class AssetsPresenter: NSObject {
         }
     }
     
-    func presentSoftUpdate() {
+    func presentSoftUpdate(completion: @escaping(_ isUpToDate: Bool) -> ()?) {
         let title = Constants.weHaveUpdateString
         let message = Constants.buildUpdateMessage
         let alert = UIAlertController(title: assetsVC?.localize(string: title), message: assetsVC?.localize(string: message), preferredStyle: .alert)
@@ -403,6 +403,7 @@ class AssetsPresenter: NSObject {
         })
         alert.addAction(UIAlertAction(title: assetsVC?.localize(string: Constants.cancelString), style: .cancel, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
+            completion(true)
         }))
         
         assetsVC?.present(alert, animated: true, completion: nil)

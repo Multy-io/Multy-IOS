@@ -18,7 +18,7 @@ class WalletPresenter: NSObject {
 //                importedPrivateKey = wallet!.importedPrivateKey
 //                importedPublicKey = wallet!.importedPublicKey
 //            }
-            assetsDataSource = Array(wallet!.ethWallet!.erc20Tokens)
+            assetsDataSource = Array(wallet!.ethWallet?.erc20Tokens ?? List<WalletTokenRLM>())
             updateUI()
             walletVC?.setupUI()
         }
@@ -239,7 +239,7 @@ class WalletPresenter: NSObject {
         DataManager.shared.getOneWalletVerbose(wallet: wallet!) { [unowned self] (updatedWallet, error) in
             if updatedWallet != nil {
                 self.wallet = updatedWallet
-                self.assetsDataSource = Array(self.wallet!.ethWallet!.erc20Tokens)
+                self.assetsDataSource = Array(self.wallet!.ethWallet?.erc20Tokens ?? List<WalletTokenRLM>())
             }
             
             self.getHistory()
