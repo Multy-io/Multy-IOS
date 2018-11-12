@@ -251,7 +251,7 @@ Make sure that Seed Phrase backup was successfully done!</string>
                                 <rect key="frame" x="0.0" y="20" width="375" height="50"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="GV3-t4-n8v">
-                                        <rect key="frame" x="8" y="14.5" width="13" height="21"/>
+                                        <rect key="frame" x="9" y="14.5" width="13" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="4ad-HA-5Pn"/>
                                             <constraint firstAttribute="width" constant="13" id="E9e-f0-Srs"/>
@@ -289,7 +289,7 @@ Make sure that Seed Phrase backup was successfully done!</string>
                                     <constraint firstItem="ntm-mq-dg0" firstAttribute="leading" secondItem="Lpa-xl-a0I" secondAttribute="leading" constant="8" id="duQ-vN-6rZ"/>
                                     <constraint firstItem="FXE-eY-RwS" firstAttribute="centerY" secondItem="Lpa-xl-a0I" secondAttribute="centerY" id="eUf-md-naN"/>
                                     <constraint firstAttribute="trailing" secondItem="WRd-mz-yov" secondAttribute="trailing" id="fE1-f4-XXO"/>
-                                    <constraint firstItem="GV3-t4-n8v" firstAttribute="leading" secondItem="Lpa-xl-a0I" secondAttribute="leading" constant="8" id="sW2-uB-eMn"/>
+                                    <constraint firstItem="GV3-t4-n8v" firstAttribute="leading" secondItem="Lpa-xl-a0I" secondAttribute="leading" constant="9" id="sW2-uB-eMn"/>
                                     <constraint firstItem="WRd-mz-yov" firstAttribute="leading" secondItem="Lpa-xl-a0I" secondAttribute="leading" id="xce-0T-Hdc"/>
                                     <constraint firstItem="ntm-mq-dg0" firstAttribute="centerY" secondItem="Lpa-xl-a0I" secondAttribute="centerY" id="zDg-so-IcO"/>
                                 </constraints>
@@ -337,7 +337,7 @@ Make sure that Seed Phrase backup was successfully done!</string>
                                 <rect key="frame" x="0.0" y="20" width="375" height="50"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="fo8-Wi-iKj">
-                                        <rect key="frame" x="8" y="14.5" width="13" height="21"/>
+                                        <rect key="frame" x="9" y="14.5" width="13" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="13" id="gPJ-mn-OIk"/>
                                             <constraint firstAttribute="height" constant="21" id="jDe-Ke-CcE"/>
@@ -376,7 +376,7 @@ Make sure that Seed Phrase backup was successfully done!</string>
                                     <constraint firstItem="fiA-YL-fDh" firstAttribute="centerY" secondItem="b5j-pe-a5A" secondAttribute="centerY" id="OpS-TJ-dVs"/>
                                     <constraint firstAttribute="bottom" secondItem="0Yj-Cd-F2g" secondAttribute="bottom" id="RVW-R7-q7h"/>
                                     <constraint firstItem="fiA-YL-fDh" firstAttribute="leading" secondItem="b5j-pe-a5A" secondAttribute="leading" constant="8" id="YVm-1Z-oY2"/>
-                                    <constraint firstItem="fo8-Wi-iKj" firstAttribute="leading" secondItem="b5j-pe-a5A" secondAttribute="leading" constant="8" id="sEe-vQ-a9d"/>
+                                    <constraint firstItem="fo8-Wi-iKj" firstAttribute="leading" secondItem="b5j-pe-a5A" secondAttribute="leading" constant="9" id="sEe-vQ-a9d"/>
                                     <constraint firstItem="OFP-3F-XGz" firstAttribute="centerY" secondItem="b5j-pe-a5A" secondAttribute="centerY" id="xEh-Bu-1t8"/>
                                 </constraints>
                             </view>
@@ -652,7 +652,7 @@ Make sure that Seed Phrase backup was successfully done!</string>
                                 <rect key="frame" x="0.0" y="20" width="375" height="50"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="0ih-M0-ikg">
-                                        <rect key="frame" x="8" y="14.5" width="13" height="21"/>
+                                        <rect key="frame" x="9" y="14.5" width="13" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="RDq-J4-XLr"/>
                                             <constraint firstAttribute="width" constant="13" id="oFj-03-mi4"/>
@@ -687,7 +687,7 @@ Make sure that Seed Phrase backup was successfully done!</string>
                                     <constraint firstItem="9dj-av-QYR" firstAttribute="leading" secondItem="Gxe-qw-vgB" secondAttribute="leading" constant="8" id="BG6-Dg-bqR"/>
                                     <constraint firstAttribute="bottom" secondItem="DNY-2X-60g" secondAttribute="bottom" id="QjI-fC-rs9"/>
                                     <constraint firstItem="0ih-M0-ikg" firstAttribute="centerY" secondItem="Gxe-qw-vgB" secondAttribute="centerY" id="RN7-Pm-cww"/>
-                                    <constraint firstItem="0ih-M0-ikg" firstAttribute="leading" secondItem="Gxe-qw-vgB" secondAttribute="leading" constant="8" id="UGE-Zd-CZv"/>
+                                    <constraint firstItem="0ih-M0-ikg" firstAttribute="leading" secondItem="Gxe-qw-vgB" secondAttribute="leading" constant="9" id="UGE-Zd-CZv"/>
                                     <constraint firstItem="DNY-2X-60g" firstAttribute="leading" secondItem="Gxe-qw-vgB" secondAttribute="leading" id="Ym1-c4-gZQ"/>
                                     <constraint firstAttribute="trailing" secondItem="DNY-2X-60g" secondAttribute="trailing" id="c4m-eY-nhy"/>
                                     <constraint firstItem="gcx-NH-dQH" firstAttribute="centerX" secondItem="Gxe-qw-vgB" secondAttribute="centerX" id="h6S-bO-g4C"/>

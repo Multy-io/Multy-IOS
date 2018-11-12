@@ -31,14 +31,14 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="j41-bT-TYo">
-                                        <rect key="frame" x="16" y="14" width="12" height="21"/>
+                                        <rect key="frame" x="9" y="14" width="12" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="PN6-W4-BLR"/>
                                             <constraint firstAttribute="width" constant="12" id="VE5-W3-zBd"/>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uDZ-qU-zHH">
-                                        <rect key="frame" x="0.0" y="0.0" width="78" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="71" height="44"/>
                                         <connections>
                                             <action selector="closeAction" destination="ckJ-B1-hh7" eventType="touchUpInside" id="a3Y-pK-egq"/>
                                         </connections>
@@ -46,7 +46,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="j41-bT-TYo" firstAttribute="leading" secondItem="Czg-lZ-KFq" secondAttribute="leading" constant="16" id="3RS-aL-9m7"/>
+                                    <constraint firstItem="j41-bT-TYo" firstAttribute="leading" secondItem="Czg-lZ-KFq" secondAttribute="leading" constant="9" id="3RS-aL-9m7"/>
                                     <constraint firstItem="uDZ-qU-zHH" firstAttribute="top" secondItem="Czg-lZ-KFq" secondAttribute="top" id="83t-w1-jaa"/>
                                     <constraint firstAttribute="height" constant="44" id="95D-Eo-q5c"/>
                                     <constraint firstItem="I4U-wc-DLI" firstAttribute="top" secondItem="Czg-lZ-KFq" secondAttribute="top" constant="14" id="W7A-k1-g1u"/>
@@ -736,14 +736,14 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </webView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="GfT-DZ-979">
-                                <rect key="frame" x="16" y="40" width="12" height="21"/>
+                                <rect key="frame" x="9" y="40" width="12" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="12" id="UYV-Ar-uAr"/>
                                     <constraint firstAttribute="height" constant="21" id="v6f-1Q-9cG"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JED-BP-ugC">
-                                <rect key="frame" x="0.0" y="40" width="48" height="30"/>
+                                <rect key="frame" x="0.0" y="40" width="41" height="30"/>
                                 <connections>
                                     <action selector="backAction:" destination="aaV-AB-1NL" eventType="touchUpInside" id="Yhy-YE-4Ep"/>
                                 </connections>
@@ -756,7 +756,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6p7-Q6-H26" firstAttribute="top" secondItem="6SZ-SU-G7x" secondAttribute="top" id="2jW-G4-tgp"/>
-                            <constraint firstItem="GfT-DZ-979" firstAttribute="leading" secondItem="6SZ-SU-G7x" secondAttribute="leading" constant="16" id="3fj-0v-wGf"/>
+                            <constraint firstItem="GfT-DZ-979" firstAttribute="leading" secondItem="6SZ-SU-G7x" secondAttribute="leading" constant="9" id="3fj-0v-wGf"/>
                             <constraint firstItem="6p7-Q6-H26" firstAttribute="leading" secondItem="6SZ-SU-G7x" secondAttribute="leading" id="Gr4-eY-Neu"/>
                             <constraint firstItem="JED-BP-ugC" firstAttribute="top" secondItem="GfT-DZ-979" secondAttribute="top" id="HCr-i6-6Wt"/>
                             <constraint firstItem="exA-CS-1fw" firstAttribute="top" secondItem="6p7-Q6-H26" secondAttribute="bottom" id="KtG-O7-KBq"/>
@@ -1645,7 +1645,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="sBq-8E-UCv">
-                                <rect key="frame" x="8" y="32" width="13" height="21"/>
+                                <rect key="frame" x="9" y="32" width="13" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="13" id="2rx-AP-Fok"/>
                                     <constraint firstAttribute="height" constant="21" id="ZM4-eZ-dLg"/>
@@ -1658,7 +1658,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KDx-Q1-Axi">
-                                <rect key="frame" x="0.0" y="28" width="41" height="30"/>
+                                <rect key="frame" x="0.0" y="28" width="42" height="30"/>
                                 <connections>
                                     <action selector="backAction:" destination="xp7-VY-w4q" eventType="touchUpInside" id="FXe-2T-B51"/>
                                 </connections>
@@ -1706,7 +1706,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                             <constraint firstItem="pPx-Xk-TEa" firstAttribute="centerX" secondItem="ZdL-CL-zEQ" secondAttribute="centerX" id="RWE-U6-T3f"/>
                             <constraint firstItem="H37-Od-ZOG" firstAttribute="centerY" secondItem="pPx-Xk-TEa" secondAttribute="centerY" id="cv9-X1-BIc"/>
                             <constraint firstItem="pPx-Xk-TEa" firstAttribute="top" secondItem="8tS-Ni-ugU" secondAttribute="bottom" constant="12" id="jnw-ld-LRA"/>
-                            <constraint firstItem="sBq-8E-UCv" firstAttribute="leading" secondItem="ZdL-CL-zEQ" secondAttribute="leading" constant="8" id="kvM-jh-SAO"/>
+                            <constraint firstItem="sBq-8E-UCv" firstAttribute="leading" secondItem="ZdL-CL-zEQ" secondAttribute="leading" constant="9" id="kvM-jh-SAO"/>
                             <constraint firstAttribute="trailing" secondItem="0b1-fi-W3g" secondAttribute="trailing" id="sUF-Aa-pRu"/>
                             <constraint firstItem="KDx-Q1-Axi" firstAttribute="top" secondItem="8tS-Ni-ugU" secondAttribute="bottom" constant="8" id="xSH-dh-c6I"/>
                             <constraint firstAttribute="trailing" secondItem="H37-Od-ZOG" secondAttribute="trailing" id="xhY-7q-EVP"/>
