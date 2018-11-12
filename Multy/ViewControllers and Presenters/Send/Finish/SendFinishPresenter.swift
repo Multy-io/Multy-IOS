@@ -39,16 +39,15 @@ class SendFinishPresenter: NSObject {
     var updatedWallet: UserWalletRLM?
     
     func makeEndSum() {
-//        switch isCrypto {
-//        case true:
-        let exchangeCourse = transactionDTO.choosenWallet!.exchangeCourse
-        sumInCrypto = transactionDTO.sendAmount
-        sumInCryptoString = sumInCrypto!.stringValue
-        sumInFiat = sumInCrypto!.stringValue.doubleValue * exchangeCourse
-        sumInFiatString = sumInFiat!.fixedFraction(digits: 2)
+        //        switch isCrypto {
+        //        case true:
+        sumInCrypto = "\(transactionDTO.sendAmount!)".convertCryptoAmountStringToMinimalUnits(in: transactionDTO.blockchain!)
+        sumInCryptoString = sumInCrypto!.cryptoValueString(for: transactionDTO.blockchain!)
+        sumInFiatString = (sumInCrypto! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.blockchain!)
+        sumInFiat = sumInFiatString.doubleValue
         
-        feeAmountInCryptoString = (transactionDTO.feeAmount ?? BigInt.zero()).stringValue
-        feeAmountInFiatString = transactionDTO.feeAmount != nil ? (transactionDTO.feeAmount! * BigInt("\(exchangeCourse)")).stringValue : BigInt.zero().stringValue
+        feeAmountInCryptoString = (transactionDTO.feeEstimation ?? BigInt.zero()).cryptoValueString(for: transactionDTO.blockchain!)
+        feeAmountInFiatString = transactionDTO.feeEstimation != nil ? (transactionDTO.feeEstimation! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.blockchain!) : BigInt.zero().stringValue
     }
     
     func makeFrameForSlider() -> CGRect {
@@ -88,11 +87,11 @@ class SendFinishPresenter: NSObject {
             }
             self.pointer = self.addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
             
-            let amount = self.transactionDTO.sendAmount?.stringValue.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM)
+            let amount = String(format: "%f", self.transactionDTO.sendAmount!).convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM)
             
             let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: self.pointer!,
                                                                                   sendAddress: self.transactionDTO.sendAddress!,
-                                                                                  sendAmountString: amount!.stringValue,
+                                                                                  sendAmountString: amount.stringValue,
                                                                                   nonce: updatedWallet!.ethWallet!.nonce.intValue,  //new nonce
                 balanceAmount: "\(self.transactionDTO.choosenWallet!.ethWallet!.balance)",
                 ethereumChainID: UInt32(self.transactionDTO.choosenWallet!.blockchainType.net_type),

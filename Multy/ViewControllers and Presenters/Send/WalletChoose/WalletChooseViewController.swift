@@ -35,7 +35,7 @@ class WalletChooseViewController: UIViewController, AnalyticsProtocol {
     
     func checkAmountFromQr() {
         if presenter.transactionDTO.sendAmount != nil {
-            qrAmountLbl.text = "Amount from QR: \(presenter.transactionDTO.sendAmount!.stringValue) \(presenter.transactionDTO.blockchain?.shortName ?? "")"
+            qrAmountLbl.text = "Amount from QR: \(presenter.transactionDTO.sendAmount!) \(presenter.transactionDTO.blockchain?.shortName ?? "")"
         } else {
             qrAmountLbl.isHidden = true
         }
@@ -91,7 +91,7 @@ extension WalletChooseViewController: UITableViewDelegate, UITableViewDataSource
         }
         
         if presenter.transactionDTO.sendAmount != nil {
-            if presenter.filteredWalletArray[indexPath.row].isThereEnoughAmount(presenter.transactionDTO.sendAmount!.stringValue) == false {
+            if !presenter.filteredWalletArray[indexPath.row].isThereEnoughAmount(String(format: "%f", presenter.transactionDTO.sendAmount!)) {
                 presenter.presentAlert(message: nil, blockchain: presenter.filteredWalletArray[indexPath.row].blockchain)
                 
                 return

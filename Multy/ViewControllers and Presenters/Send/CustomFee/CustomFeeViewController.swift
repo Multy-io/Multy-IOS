@@ -112,7 +112,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
             default: return
             }
         } else {
-            self.delegate?.customFeeData(firstValue: (self.topPriceTF.text! as NSString).integerValue, secValue: (self.botLimitTf.text! as NSString).integerValue)
+            self.delegate?.customFeeData(firstValue: presenter.rateForText(topPriceTF.text!), secValue: (self.botLimitTf.text! as NSString).integerValue)
             self.navigationController?.popViewController(animated: true)
         }
     }

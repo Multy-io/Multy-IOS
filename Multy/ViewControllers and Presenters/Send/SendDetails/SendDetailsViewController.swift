@@ -22,12 +22,15 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     @IBOutlet weak var donationFiatNameLbl: UILabel!
     @IBOutlet weak var donationCryptoNameLbl: UILabel!
     @IBOutlet weak var isDonateAvailableSW: UISwitch!
+    @IBOutlet weak var feeRateDescriptionView: UILabel!
     
     @IBOutlet weak var donationHolderView: UIView!
-    @IBOutlet weak var constraintDonationHeight: NSLayoutConstraint!
     @IBOutlet weak var nextBtn: ZFRippleButton!
     
     @IBOutlet weak var bottomBtnConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nextButtonTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var donationHolderTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var donationHeightConstraint: NSLayoutConstraint!
     
     
     let presenter = SendDetailsPresenter()
@@ -56,13 +59,36 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
                                                  UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
                                    gradientOrientation: .horizontal)
         
-        let firstCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TransactionFeeTableViewCell
-        firstCell.setCornersForFirstCell()
+        let firstCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TransactionFeeTableViewCell
+        if firstCell != nil {
+            firstCell!.setCornersForFirstCell()
+        }
+        
+        updateConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         presenter.vcViewWillAppear()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presenter.vcViewWillDisappear()
+    }
+    
+    func updateConstraints() {
+        if presenter.isDonationAvailable {
+            donationHolderTopConstraint.constant = 39
+            donationHeightConstraint.constant = presenter.isDonationSwitchedOn! ? 267 : 193
+        } else {
+            donationHolderTopConstraint.constant = -267
+            donationHeightConstraint.constant = 267
+        }
+        
+        let contentHeight = feeRateDescriptionView.frame.maxY + donationHolderTopConstraint.constant + donationHeightConstraint.constant + 25 + nextBtn.frame.height
+        nextButtonTopConstraint.constant = contentHeight < view.frame.size.height ? ((view.frame.size.height - nextBtn.frame.size.height - bottomLayoutGuide.length - topLayoutGuide.length) - (feeRateDescriptionView.frame.maxY + donationHolderTopConstraint.constant + donationHeightConstraint.constant)) : 25
+        view.layoutIfNeeded()
     }
     
     func setupShadow() {
@@ -77,7 +103,6 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         enableSwipeToBack()
         hideKeyboardWhenTappedAround()
         registerCells()
-        registerNotificationFromKeyboard()
         setupShadow()
         setupDonationUI()
         
@@ -91,13 +116,11 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         if presenter.isDonationAvailable {
             donationHolderView.isHidden = false
             presenter.isDonationSwitchedOn = true
-            constraintDonationHeight.constant = 267
             
-            self.donationTF.text = (presenter.donationInCrypto ?? BigInt.zero()).stringValue
-            self.donationFiatSumLbl.text = (presenter.donationInFiat ?? BigInt.zero()).stringValue
+            self.donationTF.text = presenter.donationInCryptoString ?? BigInt.zero().stringValue
+            self.donationFiatSumLbl.text = presenter.donationInFiatString ?? BigInt.zero().stringValue
         } else {
             donationHolderView.isHidden = true
-            constraintDonationHeight.constant = -25
         }
     }
     
@@ -105,25 +128,35 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         if presenter.isDonationAvailable {
             donationHolderView.isHidden = false
             
-            constraintDonationHeight.constant = presenter.isDonationSwitchedOn! ? 267 : 193
-            
-            self.donationTF.text = (presenter.donationInCrypto ?? BigInt.zero()).stringValue
-            self.donationFiatSumLbl.text = (presenter.donationInFiat ?? BigInt.zero()).stringValue
-            
-            if !presenter.isDonationSwitchedOn! && donationTF.isFirstResponder {
-                donationTF.resignFirstResponder()
-            }
+            if presenter.isDonationSwitchedOn! {
+                donationSeparatorView.isHidden = false
+                
+                self.donationTF.text = presenter.donationInCryptoString != nil ? presenter.donationInCryptoString! :  BigInt.zero().stringValue
+                self.donationFiatSumLbl.text = presenter.donationInFiatString != nil ? presenter.donationInFiatString! : BigInt.zero().stringValue
+                
+            } else {
+                if donationTF.isFirstResponder {
+                    donationTF.resignFirstResponder()
+                }
+            }            
         } else {
             donationHolderView.isHidden = true
-            constraintDonationHeight.constant = -25
         }
         
-        UIView.animate(withDuration: 0.3) { [weak self] in
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
             guard self != nil else {
                 return
             }
             
-            self!.view.layoutIfNeeded()
+            self!.updateConstraints()
+        }) { [weak self] (success) in
+            guard self != nil else {
+                return
+            }
+            
+            if !self!.presenter.isDonationSwitchedOn! {
+                self!.donationSeparatorView.isHidden = true
+            }
         }
     }
     
@@ -136,7 +169,6 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     }
     
     @IBAction func backAction(_ sender: Any) {
-        
         navigationController?.popViewController(animated: true)
         sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: closeTap)
     }
@@ -159,11 +191,16 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     }
     
     //MARK: Keyboard to scrollview
-    func registerNotificationFromKeyboard() {
+    func addNotificationsObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(SendDetailsViewController.keyboardWillShow),
                                                name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SendDetailsViewController.keyboardWillHide),
                                                name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func removeNotificationsObservers() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -286,16 +323,16 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     }
     
     func saveDonationSum(string: String) {
-        if string == "" && self.donationTF.text == "" {
-            self.presenter.donationInCrypto = BigInt.zero()
-        } else {
-            self.presenter.donationInCrypto = BigInt(donationTF.text! + string as String)
-        }
+//        if string == "" && self.donationTF.text == "" {
+//            self.presenter.donationInCrypto = BigInt.zero()
+//        } else {
+//            self.presenter.donationInCrypto = BigInt(donationTF.text! + string as String)
+//        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sendEthVC" {
-            let sendAmountVC = segue.destination as! SendAmountEthViewController
+        if segue.identifier == "sendAmountVC" {
+            let sendAmountVC = segue.destination as! SendAmountViewController
             sendAmountVC.presenter.transactionDTO = presenter.transactionDTO
         }
     }

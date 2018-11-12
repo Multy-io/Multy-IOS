@@ -25,14 +25,21 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var swapBtn: UIButton!
     
-    @IBOutlet weak var constraintNextBtnBottom: NSLayoutConstraint!
     @IBOutlet weak var constratintNextBtnHeight: NSLayoutConstraint!
-    @IBOutlet weak var constraintForTitletoBtn: NSLayoutConstraint!
-    @IBOutlet weak var constraintSpendableViewBottom: NSLayoutConstraint!
-    @IBOutlet weak var constraintTop: NSLayoutConstraint!
+    @IBOutlet weak var nextButtonBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewContentHeightConstraint: NSLayoutConstraint!
     
     let presenter = SendAmountPresenter()
     let numberFormatter = NumberFormatter()
+    var keyboardHeight : CGFloat = 0 {
+        didSet {
+            if oldValue != keyboardHeight {
+                updateConstraints()
+            }
+        }
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,14 +58,15 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         presenter.vcViewWillAppear()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        presenter.vcViewDidDisappear()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presenter.vcViewWillDisappear()
     }
     
     func configure() {
         enableSwipeToBack()
         numberFormatter.numberStyle = .decimal
+        commissionSwitch.setOn(presenter.payForCommission, animated: false)
     }
     
     func updateUI() {
@@ -67,25 +75,166 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
             commissionSwitch.isOn = false
         }
 
-        topCurrencyNameLbl.text = " " + presenter.cryptoName
+        amountTF.text = presenter.sendAmountString
+        topSumLbl.text = presenter.sendAmountString
+        topCurrencyNameLbl.text = presenter.isCrypto ? " " + presenter.cryptoName : " " + presenter.fiatName
+        bottomSumLbl.text = presenter.convertedAmountString
+        bottomCurrencyLbl.text = presenter.isCrypto ? " " + presenter.fiatName : " " + presenter.cryptoName
+        spendableSumAndCurrencyLbl.text = presenter.isCrypto ? presenter.maxAllowedToSpendInChoosenCurrencyString + " " + presenter.cryptoName : presenter.availableSumInFiatString + " " + presenter.fiatName
+        
+        btnSumLbl.text = presenter.isCrypto ? presenter.totalSumInCryptoString + " " + presenter.cryptoName : presenter.totalSumInFiatString + " " + presenter.fiatName
+    }
+    
+    func updateConstraints() {
+        nextButtonBottomConstraint.constant = keyboardHeight - bottomLayoutGuide.length
+        scrollViewContentHeightConstraint.constant = screenHeight - nextBtn.frame.height - nextButtonBottomConstraint.constant - scrollView.frame.origin.y - bottomLayoutGuide.length
+        view.updateConstraints()
+    }
+    
+    @objc func hideKeyboard() {
+        self.amountTF.resignFirstResponder()
+    }
+    
+    @objc func showKeyboard() {
+        self.amountTF.becomeFirstResponder()
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var prevAmount = textField.text
+        let changeSymbol = string
+        if prevAmount == "" || (prevAmount == "0" && changeSymbol != "," && changeSymbol != "." && !changeSymbol.isEmpty) {
+            if !presenter.isPossibleToSpendAmount(changeSymbol) {
+                presentWarning(message: localize(string: Constants.youTryingSpendMoreThenHaveString))
+                
+                return false
+            }
+        }
+        
+        if let prevAmountString = prevAmount {
+            if prevAmountString == "0" && changeSymbol != "," && changeSymbol != "." && !changeSymbol.isEmpty {
+                prevAmount = ""
+            } else if prevAmountString.isEmpty && (string == "," || string == ".") {
+                return false
+            }
+        }
+        
+        let changedAmountString = (prevAmount! + changeSymbol)
+        if (changeSymbol != "" && changeSymbol != "," && changeSymbol != ".") && !presenter.isPossibleToSpendAmount(changedAmountString)  {
+            self.presentWarning(message: localize(string: Constants.moreThenYouHaveString))
+            
+            return false
+        }
 
-        amountTF.text = presenter.sumInCryptoString
-        topSumLbl.text = presenter.sumInCryptoString
-        btnSumLbl.text = presenter.sumInCryptoString
-        bottomSumLbl.text = presenter.sumInFiatString
-        bottomCurrencyLbl.text = presenter.fiatName
+        let newLength = prevAmount!.count + changeSymbol.count - range.length
+        
+        if newLength <= self.presenter.maxLengthForSum {
+            let changedAmountString =  prevAmount! + changeSymbol
+            
+            if (changeSymbol == "," || changeSymbol == ".") && (prevAmount?.contains(","))!{
+                return false
+            }
+            
+            if (prevAmount?.contains(","))! && changeSymbol != "" {
+                let strAfterDot: [String?] = (prevAmount?.components(separatedBy: ","))!
+                if self.presenter.isCrypto {
+                    if strAfterDot[1]?.count == 8 {
+                        return false
+                    } else {
+                        presenter.changeSendAmountString(changedAmountString)
+                    }
+                } else {
+                    if strAfterDot[1]?.count == 2 {
+                        return false
+                    } else {
+                        presenter.changeSendAmountString(changedAmountString)
+                    }
+                }
+            } else {
+                var sendAmountString = presenter.sendAmountString
+                if changeSymbol == "," || changeSymbol == "." {
+                    sendAmountString = changedAmountString
+                } else {
+                    if changeSymbol != "" {
+                        sendAmountString = changedAmountString
+                    } else {
+                        sendAmountString.removeLast()
+                        if sendAmountString == "" {
+                            sendAmountString = "0"
+                        }
+                    }
+                }
+                
+                presenter.changeSendAmountString(sendAmountString)
+            }
+        }
+        
+        return false
+    }
+    
+    func segueToFinish() {
+        performSegue(withIdentifier: "sendFinishVC", sender: Any.self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "sendFinishVC" {
+            let sendAmountVC = segue.destination as! SendFinishViewController
+            sendAmountVC.presenter.transactionDTO = presenter.transactionDTO
+        }
     }
     
     @IBAction func cancelAction(_ sender: Any) {
+        self.tabBarController?.selectedIndex = 0
+        self.navigationController?.popToRootViewController(animated: false)
         
+        sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: cancelTap)
+    }
+    
+    @IBAction func backAction(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func clearAction(_ sender: Any) {
+        presenter.resetAmount()
     }
     
     @IBAction func payForCommisionAction(_ sender: Any) {
-        
+        presenter.payForCommission = commissionSwitch.isOn
     }
     
-    @IBAction func changeAction(_ sender: Any) {
+    @IBAction func swapAction(_ sender: Any) {
+        presenter.swapCurrencies()
+        sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: switchTap)
+    }
+    
+    @IBAction func topAmountAction(_ sender: Any) {
+        var tap = ""
+        if self.presenter.isCrypto {
+            tap = cryptoTap
+        } else {
+            tap = fiatTap
+        }
+        sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: tap)
+    }
+    
+    @IBAction func bottomAmountAction(_ sender: Any) {
+        var tap = ""
+        if self.presenter.isCrypto {
+            tap = cryptoTap
+        } else {
+            tap = fiatTap
+        }
+        sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: tap)
+    }
+    
+    @IBAction func sendAllAction(_ sender: Any) {
+        commissionSwitch.isOn = false
+        presenter.setSumToMaxAllowed()
         
+        sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: payMaxTap)
+    }
+    
+    @IBAction func nextAction(_ sender: Any) {
+        presenter.goToFinish()
     }
 }
 

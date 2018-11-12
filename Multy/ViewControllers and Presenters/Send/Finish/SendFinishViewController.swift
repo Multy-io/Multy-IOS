@@ -37,7 +37,6 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var arr3: UIImageView!
     @IBOutlet var arrCollection: [UIImageView]!
     
-    @IBOutlet weak var btnTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var slideView: UIView!
     @IBOutlet weak var slideLabel: UILabel!
     @IBOutlet weak var slideColorView: UIView!
@@ -58,10 +57,9 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
 //        self.fixUIForX()
         self.presenter.sendFinishVC = self
         self.hideKeyboardWhenTappedAround()
-        self.presenter.makeEndSum()
 
         self.noteTF.delegate = self
-        
+        presenter.makeEndSum()
         self.setupUI()
         sendAnalyticsEvent(screenName: "\(screenSendSummaryWithChain)\(presenter.transactionDTO.choosenWallet!.chain)",
                             eventName: "\(screenSendSummaryWithChain)\(presenter.transactionDTO.choosenWallet!.chain)")
@@ -71,16 +69,6 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
         slideColorView.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
                                                    UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
                                      gradientOrientation: .horizontal)
-        
-        if screenHeight == heightOfX {
-            if slideColorView.frame.width == screenWidth && slideColorView.frame.maxY < screenHeight - 80 {
-                btnTopConstraint.constant = btnTopConstraint.constant + (screenHeight - slideColorView.frame.maxY - 80)
-            }
-        } else {
-            if slideColorView.frame.width == screenWidth && slideColorView.frame.maxY < screenHeight - 20 {
-                btnTopConstraint.constant = btnTopConstraint.constant + (screenHeight - slideColorView.frame.maxY - 20)
-            }
-        }
     }
     
     func setupUI() {
@@ -102,11 +90,8 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
         let fiatSum = presenter.transactionDTO.choosenWallet!.sumInFiatString
         walletFiatSumAndCurrencyLbl.text = "\(presenter.transactionDTO.choosenWallet!.sumInCryptoString) \(presenter.transactionDTO.choosenWallet!.cryptoName)" + " / " + "\(fiatSum) \(presenter.transactionDTO.choosenWallet!.fiatName)"
         transactionFeeCostLbl.text = "\(presenter.feeAmountInCryptoString) \(presenter.cryptoName)/\(presenter.feeAmountInFiatString) \(presenter.fiatName)"
-        transactionSpeedNameLbl.text = "" //\(presenter.transactionDTO.transaction?.transactionRLM?.speedName ?? "") "
+        transactionSpeedNameLbl.text = "\(presenter.transactionDTO.feeRateName ?? "") "
 //        transactionSpeedTimeLbl.text =  "\(presenter.transactionDTO.transaction?.transactionRLM?.speedTimeString ?? "")"
-//        if view.frame.height == 736 {
-//            btnTopConstraint.constant = 105
-//        }
         
         animate()
         

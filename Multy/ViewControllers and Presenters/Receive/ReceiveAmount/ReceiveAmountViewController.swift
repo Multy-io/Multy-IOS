@@ -22,9 +22,9 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     let presenter = ReceiveAmountPresenter()
     
 //    var sumInCrypto = 0.0
-    var sumInCryptoString = "0.0"
+    var sumInCryptoString = "0"
 //    var sumInFiat = 0.0
-    var sumInFiatString = "0.0"
+    var sumInFiatString = "0"
     
     var blockchainType = BlockchainType.create(currencyID: 0, netType: 0)
     
@@ -195,6 +195,9 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
                     self.sumLbl.text = self.amountTF.text! + string
                 } else {
                     self.sumLbl.text?.removeLast()
+                    if self.sumLbl.text == "" {
+                        self.sumLbl.text = "0"
+                    }
                 }
             }
             self.saveTfValue()

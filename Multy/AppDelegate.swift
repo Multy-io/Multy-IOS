@@ -113,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                             let storyboard = UIStoryboard(name: "Send", bundle: nil)
                             let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
                             sendStartVC.presenter.transactionDTO.sendAddress = "\(addressFromLink ?? "")"
-                            sendStartVC.presenter.transactionDTO.sendAmount = amountFromLink != nil ? BigInt(amountFromLink!) : BigInt.zero()
+                            sendStartVC.presenter.transactionDTO.sendAmount = amountFromLink != nil ? amountFromLink!.doubleValue : 0
                             switch chainNameFromLink {
                             case "ethereum":
                                 sendStartVC.presenter.transactionDTO.blockchain = BLOCKCHAIN_ETHEREUM
@@ -177,7 +177,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
             let storyboard = UIStoryboard(name: "Send", bundle: nil)
             let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
             sendStartVC.presenter.transactionDTO.sendAddress = "\(addressStr)"
-            sendStartVC.presenter.transactionDTO.sendAmount = amountFromQr != nil ? BigInt(amountFromQr!) : BigInt.zero()
+            sendStartVC.presenter.transactionDTO.sendAmount = amountFromQr != nil ? amountFromQr!.doubleValue : 0
             ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
             sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
         })
@@ -244,9 +244,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                     seedVC.pinTF.becomeFirstResponder()
                 } else if let receiveVC = vcOnScren as? ReceiveAmountViewController {
                     receiveVC.amountTF.becomeFirstResponder()
-                } else if let amountVC = vcOnScren as? SendAmountEthViewController {
-                    amountVC.amountTF.becomeFirstResponder()
-                }
+                } 
             }
             isActiveFirstTime = false
         }

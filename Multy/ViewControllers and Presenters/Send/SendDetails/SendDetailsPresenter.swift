@@ -18,6 +18,28 @@ class SendDetailsPresenter: NSObject {
             cryptoName = transactionDTO.blockchain!.shortName
             fiatName = transactionDTO.choosenWallet!.fiatName
             feeRates = defaultFeeRates()
+           
+            if transactionDTO.blockchain == BLOCKCHAIN_ETHEREUM {
+                if transactionDTO.choosenWallet!.isMultiSig {
+                    DataManager.shared.estimation(for: transactionDTO.choosenWallet!.address) { [weak self] in
+                        switch $0 {
+                        case .success(let value):
+                            guard self != nil else {
+                                return
+                            }
+                            
+                            let limit = value["submitTransaction"] as! String
+                            self!.transactionDTO.ETHDTO!.gasLimit = BigInt(limit)
+                            break
+                        case .failure(let error):
+                            print(error)
+                            break
+                        }
+                    }
+                } else {
+                    transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainTxGasLimit)")
+                }
+            }
         }
     }
     
@@ -37,7 +59,7 @@ class SendDetailsPresenter: NSObject {
     var isDonationSwitchedOn : Bool? {
         didSet {
             if isDonationSwitchedOn != nil {
-                donationInCrypto = isDonationSwitchedOn! ? BigInt("\(minBTCDonationAmount)") : BigInt.zero()
+                donationInCrypto = isDonationSwitchedOn! ? "\(minBTCDonationAmount)".convertCryptoAmountStringToMinimalUnits(in: transactionDTO.choosenWallet!.blockchain) : BigInt.zero()
             } else {
                 donationInCrypto = nil
             }
@@ -45,7 +67,27 @@ class SendDetailsPresenter: NSObject {
         }
     }
     
-    var donationInCrypto: BigInt? {
+    var donationInCryptoString: String? {
+        get {
+            guard donationInCrypto != nil else {
+                return nil
+            }
+            
+            return donationInCrypto!.cryptoValueString(for: transactionDTO.blockchain!)
+        }
+    }
+    
+    var donationInFiatString: String? {
+        get {
+            guard donationInFiat != nil else {
+                return nil
+            }
+            
+            return donationInFiat!.fiatValueString(for: transactionDTO.blockchain!)
+        }
+    }
+    
+    private var donationInCrypto: BigInt? {
         didSet {
             if oldValue != donationInCrypto {
                 updateTransaction()
@@ -54,7 +96,7 @@ class SendDetailsPresenter: NSObject {
         }
     }
     
-    var donationInFiat: BigInt? {
+    private var donationInFiat: BigInt? {
         get {
             guard donationInCrypto != nil else {
                 return nil
@@ -70,6 +112,7 @@ class SendDetailsPresenter: NSObject {
     var customFee: BigInt? {
         didSet {
             if oldValue != customFee {
+                updateTransaction()
                 vc?.tableView.reloadData()
             }
         }
@@ -77,6 +120,7 @@ class SendDetailsPresenter: NSObject {
     
     var feeRates : NSDictionary? {
         didSet {
+            updateTransaction()
             vc?.tableView.reloadData()
         }
     }
@@ -95,6 +139,11 @@ class SendDetailsPresenter: NSObject {
     }
     
     func vcViewWillAppear() {
+        vc?.addNotificationsObservers()
+    }
+    
+    func vcViewWillDisappear() {
+        vc?.removeNotificationsObservers()
     }
     
     func requestFee() {
@@ -143,6 +192,7 @@ class SendDetailsPresenter: NSObject {
         if selectedIndexOfSpeed != nil {
             let feeRate = feeRateForIndex(selectedIndexOfSpeed!)
             transactionDTO.feeRate = feeRate.value
+            transactionDTO.feeRateName = feeRate.name
         }
         
         transactionDTO.donationAmount = donationInCrypto
@@ -161,10 +211,10 @@ class SendDetailsPresenter: NSObject {
             } else if self.donationInCrypto! == self.availableSumInCrypto! {
                 self.vc?.presentWarning(message: "Your donation is equal your wallet sum.\n\nDonation sum: \(self.donationInCrypto!.cryptoValueString(for: transactionDTO.choosenWallet!.blockchain)) \(self.cryptoName)\n Sum in Wallet: \(self.availableSumInCrypto!.cryptoValueString(for: transactionDTO.choosenWallet!.blockchain)) \(self.cryptoName)")
             } else {
-                self.vc?.performSegue(withIdentifier: "sendEthVC", sender: Any.self)
+                self.vc?.performSegue(withIdentifier: "sendAmountVC", sender: Any.self)
             }
         } else {
-            self.vc?.performSegue(withIdentifier: "sendEthVC", sender: Any.self)
+            self.vc?.performSegue(withIdentifier: "sendAmountVC", sender: Any.self)
         }
     }
 }

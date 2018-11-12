@@ -38,7 +38,7 @@ class CustomTrasanctionFeeTableViewCell: UITableViewCell {
         if blockchainType?.blockchain == BLOCKCHAIN_BITCOIN {
             return "\(value) " + localize(string: Constants.satoshiPerByteShortString)
         } else if blockchainType?.blockchain == BLOCKCHAIN_ETHEREUM {
-            return "\(value)" + " GWei/Gas"
+            return "\(value / 1_000_000_000)" + " GWei/Gas"
         } else {
             return ""
         }

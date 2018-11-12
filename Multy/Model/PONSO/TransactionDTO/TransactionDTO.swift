@@ -7,10 +7,25 @@ import RealmSwift
 
 class TransactionDTO: NSObject {
     var sendAddress : String?
-    var sendAmount: BigInt?
-    var requestedAmount: BigInt?
+    var sendAmount: Double?
+    var requestedAmount: Double?
     
-    var blockchain: Blockchain?
+    var blockchain: Blockchain? {
+        didSet {
+            guard blockchain != nil else {
+                return
+            }
+            
+            switch blockchain! {
+            case BLOCKCHAIN_BITCOIN:
+                BTCDTO = BTCTransactionDTO()
+            case BLOCKCHAIN_ETHEREUM:
+                ETHDTO = ETHTransactionDTO()
+            default:
+                break
+            }
+        }
+    }
     
     var choosenWallet: UserWalletRLM? {
         didSet {
@@ -20,16 +35,28 @@ class TransactionDTO: NSObject {
         }
     }
     
-    var feeRate: BigInt?
-    var feeAmount: BigInt? {
-        get {
-            return feeRate
+    var feeRate: BigInt? {
+        didSet {
+            guard feeRate != nil else {
+                return
+            }
+            
+            if blockchain != nil && blockchain! == BLOCKCHAIN_ETHEREUM {
+                ETHDTO?.gasPrice = feeRate
+            }
         }
     }
+    
+    var feeRateName: String?
+    
+    var feeEstimation: BigInt?
     
     var rawValue: String?
     
     var donationAmount: BigInt?
+    
+    var BTCDTO: BTCTransactionDTO?
+    var ETHDTO: ETHTransactionDTO?
     
     func update(from qrString: String) {
         let array = qrString.components(separatedBy: CharacterSet(charactersIn: ":?="))
@@ -44,31 +71,10 @@ class TransactionDTO: NSObject {
             let blockchainName = array[0]
             sendAddress = array[1]
             let sendAmountString = array[3]
-            sendAmount = BigInt(sendAmountString)
+            sendAmount = sendAmountString.doubleValue
             blockchain = Blockchain.blockchainFromString(blockchainName)
         default:
             return
         }
-    }
-}
-
-class BTCTransactionDTO: TransactionDTO {
-    var newChangeAddress: String?
-}
-
-class ETHTransactionDTO: TransactionDTO {
-    var gasLimit: BigInt?
-    var gasPrice: BigInt? {
-        get {
-            return feeRate
-        }
-    }
-    
-    override var feeAmount: BigInt? {
-        if gasLimit != nil && gasPrice != nil {
-            return gasLimit! * gasPrice!
-        }
-        
-        return nil
     }
 }

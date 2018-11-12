@@ -48,7 +48,7 @@ class WalletChoosePresenter: NSObject {
     func presentAlert(message : String?, blockchain: Blockchain) {
         var alertMessage = String()
         if message == nil {
-            alertMessage = walletChoooseVC!.localize(string: Constants.notEnoughAmountString) +  " \(transactionDTO.sendAmount?.stringValue ?? "0.0") \(blockchain.shortName)"
+            alertMessage = walletChoooseVC!.localize(string: Constants.notEnoughAmountString) +  " \(transactionDTO.sendAmount ?? 0.0) \(blockchain.shortName)"
         } else {
             alertMessage = message!
         }

@@ -299,7 +299,7 @@ class SendPresenter: NSObject {
             transaction = TransactionDTO()
             let request = activeRequestsArr[selectedActiveRequestIndex!]
             //FIXME:
-            transaction!.sendAmount = BigInt(request.sendAmount)
+            transaction!.sendAmount = request.sendAmount.doubleValue
             transaction!.sendAddress = request.sendAddress
             transaction!.choosenWallet = filteredWalletArray[selectedWalletIndex!]
         }
