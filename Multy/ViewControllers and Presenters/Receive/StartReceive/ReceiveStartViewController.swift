@@ -21,7 +21,13 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     
     weak var sendWalletDelegate: SendWalletProtocol?
     
-    var whereFrom: UIViewController?
+    var whereFrom: UIViewController? {
+        didSet {
+            if whereFrom?.className == CreateMultiSigViewController.className {
+                presenter.isNeedSort = true
+            }
+        }
+    }
     
     let loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
     

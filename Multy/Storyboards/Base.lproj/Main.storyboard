@@ -1406,7 +1406,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MultiSig Wallet Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rNL-5Y-D1r">
-                                <rect key="frame" x="31" y="247.5" width="186.5" height="23.5"/>
+                                <rect key="frame" x="94.5" y="247.5" width="186.5" height="23.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                 <color key="textColor" red="0.52938139439999998" green="0.63111037020000005" blue="0.77227652069999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1499,7 +1499,6 @@
                             <constraint firstItem="H3c-JG-hxI" firstAttribute="top" secondItem="rNL-5Y-D1r" secondAttribute="bottom" constant="10" id="1Pl-iy-Xkt"/>
                             <constraint firstAttribute="trailing" secondItem="Tr5-AT-qlK" secondAttribute="trailing" constant="31" id="7LV-cB-hXE"/>
                             <constraint firstItem="Tr5-AT-qlK" firstAttribute="top" secondItem="PKg-pd-YdS" secondAttribute="bottom" constant="19" id="7c4-ht-8pW"/>
-                            <constraint firstItem="rNL-5Y-D1r" firstAttribute="leading" secondItem="Tr5-AT-qlK" secondAttribute="leading" id="9LO-Bj-ODd"/>
                             <constraint firstAttribute="trailing" secondItem="bdc-Nl-Tpm" secondAttribute="trailing" id="9y3-HR-D9n"/>
                             <constraint firstItem="bdc-Nl-Tpm" firstAttribute="leading" secondItem="Sj7-4o-pn5" secondAttribute="leading" id="Cne-MP-Je9"/>
                             <constraint firstItem="aUa-aN-cH2" firstAttribute="centerY" secondItem="KzO-Ts-pl5" secondAttribute="centerY" id="D6G-NT-Oww"/>
@@ -1509,6 +1508,7 @@
                             <constraint firstItem="YNX-Ok-b0q" firstAttribute="centerX" secondItem="Sj7-4o-pn5" secondAttribute="centerX" id="R0f-Pv-KLA"/>
                             <constraint firstItem="Z5m-eo-eyx" firstAttribute="leading" secondItem="Sj7-4o-pn5" secondAttribute="leading" id="RTr-Ru-u9M"/>
                             <constraint firstAttribute="trailing" secondItem="Z5m-eo-eyx" secondAttribute="trailing" id="Rip-4b-NJe"/>
+                            <constraint firstItem="rNL-5Y-D1r" firstAttribute="centerX" secondItem="Sj7-4o-pn5" secondAttribute="centerX" id="ThS-mq-F8E"/>
                             <constraint firstItem="YNX-Ok-b0q" firstAttribute="top" secondItem="Z5m-eo-eyx" secondAttribute="bottom" constant="10" id="UbL-K1-5Yg"/>
                             <constraint firstItem="kTj-cw-UZ2" firstAttribute="leading" secondItem="Sj7-4o-pn5" secondAttribute="leading" constant="16" id="ZJO-vZ-6T3"/>
                             <constraint firstItem="Z5m-eo-eyx" firstAttribute="top" secondItem="KzO-Ts-pl5" secondAttribute="bottom" constant="8" id="fxb-4R-R3M"/>

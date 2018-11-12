@@ -1800,9 +1800,9 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="feu-hn-1gj">
-                                                <rect key="frame" x="0.0" y="0.0" width="60" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="70" height="44"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="60" id="fj9-av-u43"/>
+                                                    <constraint firstAttribute="width" constant="70" id="fj9-av-u43"/>
                                                 </constraints>
                                                 <connections>
                                                     <action selector="backAction:" destination="KLb-lE-n1e" eventType="touchUpInside" id="aT6-kq-k64"/>
@@ -1836,7 +1836,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <constraint firstAttribute="trailing" secondItem="bM7-D6-kiZ" secondAttribute="trailing" id="Zui-AR-rdr"/>
                                             <constraint firstItem="obI-jq-bPP" firstAttribute="centerY" secondItem="D5f-iZ-t4o" secondAttribute="centerY" id="cff-kG-H5q"/>
                                             <constraint firstAttribute="bottom" secondItem="obI-jq-bPP" secondAttribute="bottom" constant="2.5" id="fCM-ii-uR2"/>
-                                            <constraint firstItem="91J-wu-geI" firstAttribute="leading" secondItem="feu-hn-1gj" secondAttribute="trailing" constant="16" id="leo-Z4-PBT"/>
+                                            <constraint firstItem="91J-wu-geI" firstAttribute="leading" secondItem="feu-hn-1gj" secondAttribute="trailing" constant="6" id="leo-Z4-PBT"/>
                                             <constraint firstAttribute="trailing" secondItem="0hh-xw-DNt" secondAttribute="trailing" constant="17" id="o2l-cl-bEe"/>
                                             <constraint firstItem="bM7-D6-kiZ" firstAttribute="top" secondItem="0hh-xw-DNt" secondAttribute="top" constant="-13" id="qO3-fa-9pd"/>
                                             <constraint firstItem="91J-wu-geI" firstAttribute="top" secondItem="sgo-Sb-5VU" secondAttribute="top" id="qOg-H9-Yys"/>
