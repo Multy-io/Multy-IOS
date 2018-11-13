@@ -224,6 +224,8 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     func fixForIpad() {
         if screenHeight == heightOfiPad {
             self.btnTopConstraint.constant = 10
+        } else if screenHeight == heightOfFive {
+            self.btnTopConstraint.constant = 60
         }
     }
 }

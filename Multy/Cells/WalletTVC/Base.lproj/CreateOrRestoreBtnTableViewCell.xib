@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,14 +32,14 @@
                         <rect key="frame" x="16" y="4" width="343" height="91.5"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="walletCreateNewBigger" translatesAutoresizingMaskIntoConstraints="NO" id="45T-09-G6X">
-                                <rect key="frame" x="25" y="32" width="29" height="29"/>
+                                <rect key="frame" x="25" y="31.5" width="29" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="45T-09-G6X" secondAttribute="height" multiplier="1:1" id="J05-cY-HIY"/>
                                     <constraint firstAttribute="width" constant="29" id="par-ua-nMJ"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create First Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="h5z-tm-u38">
-                                <rect key="frame" x="95" y="33.5" width="152" height="25"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create First Wallet" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5z-tm-u38">
+                                <rect key="frame" x="106" y="33.5" width="151.5" height="25"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -50,9 +49,10 @@
                         <constraints>
                             <constraint firstItem="h5z-tm-u38" firstAttribute="centerY" secondItem="gn8-OE-mGD" secondAttribute="centerY" id="9Gk-71-h9z"/>
                             <constraint firstItem="45T-09-G6X" firstAttribute="centerY" secondItem="gn8-OE-mGD" secondAttribute="centerY" id="OOw-Ue-ipH"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="h5z-tm-u38" secondAttribute="trailing" constant="16" id="cC9-rm-sQy"/>
+                            <constraint firstItem="h5z-tm-u38" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="45T-09-G6X" secondAttribute="trailing" constant="3" id="hRa-dg-cMR"/>
                             <constraint firstItem="45T-09-G6X" firstAttribute="leading" secondItem="gn8-OE-mGD" secondAttribute="leading" constant="25" id="ssR-lf-sdA"/>
-                            <constraint firstItem="h5z-tm-u38" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="45T-09-G6X" secondAttribute="trailing" constant="3" id="vlY-uc-yy1"/>
-                            <constraint firstItem="h5z-tm-u38" firstAttribute="centerX" secondItem="gn8-OE-mGD" secondAttribute="centerX" id="z6t-E3-9mO"/>
+                            <constraint firstItem="h5z-tm-u38" firstAttribute="centerX" secondItem="gn8-OE-mGD" secondAttribute="centerX" constant="10" id="z6t-E3-9mO"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -81,7 +81,7 @@
                 <outlet property="mainLabel" destination="h5z-tm-u38" id="R7y-3R-lxv"/>
                 <outlet property="shadowView" destination="deq-zO-08q" id="tsa-AL-8lB"/>
             </connections>
-            <point key="canvasLocation" x="33.5" y="139"/>
+            <point key="canvasLocation" x="32.799999999999997" y="138.53073463268368"/>
         </tableViewCell>
     </objects>
     <resources>
