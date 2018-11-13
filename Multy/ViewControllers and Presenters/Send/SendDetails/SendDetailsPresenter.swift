@@ -13,7 +13,7 @@ class SendDetailsPresenter: NSObject {
     var vc: SendDetailsViewController?
     var transactionDTO = TransactionDTO() {
         didSet {
-            availableSumInCrypto = transactionDTO.choosenWallet!.availableBalance
+            availableSumInCrypto = transactionDTO.choosenWallet!.availableAmount
             availableSumInFiat = transactionDTO.choosenWallet!.availableAmountInFiat
             cryptoName = transactionDTO.blockchain!.shortName
             fiatName = transactionDTO.choosenWallet!.fiatName
@@ -59,31 +59,36 @@ class SendDetailsPresenter: NSObject {
     var isDonationSwitchedOn : Bool? {
         didSet {
             if isDonationSwitchedOn != nil {
-                donationInCrypto = isDonationSwitchedOn! ? "\(minBTCDonationAmount)".convertCryptoAmountStringToMinimalUnits(in: transactionDTO.choosenWallet!.blockchain) : BigInt.zero()
+                changeDonationString(isDonationSwitchedOn! ? "\(minBTCDonationAmount)".convertCryptoAmountStringToMinimalUnits(in: transactionDTO.choosenWallet!.blockchain).cryptoValueString(for: transactionDTO.choosenWallet!.blockchain) : BigInt.zero().stringValue)
             } else {
-                donationInCrypto = nil
+                changeDonationString(nil)
             }
             vc?.updateDonationUI()
         }
     }
     
     var donationInCryptoString: String? {
-        get {
-            guard donationInCrypto != nil else {
-                return nil
+        didSet {
+            if donationInCryptoString == nil {
+                donationInCrypto = nil
+            } else {
+                var donationStringForDouble = donationInCryptoString!
+                if donationStringForDouble.last == "," {
+                    donationStringForDouble.removeLast()
+                }
+                
+                donationInCrypto = donationStringForDouble.convertCryptoAmountStringToMinimalUnits(in: transactionDTO.choosenWallet!.blockchain)
             }
-            
-            return donationInCrypto!.cryptoValueString(for: transactionDTO.blockchain!)
         }
     }
     
     var donationInFiatString: String? {
         get {
-            guard donationInFiat != nil else {
+            guard donationInCrypto != nil else {
                 return nil
             }
             
-            return donationInFiat!.fiatValueString(for: transactionDTO.blockchain!)
+            return (donationInCrypto! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.blockchain!)
         }
     }
     
@@ -93,16 +98,6 @@ class SendDetailsPresenter: NSObject {
                 updateTransaction()
                 vc?.updateDonationUI()
             }
-        }
-    }
-    
-    private var donationInFiat: BigInt? {
-        get {
-            guard donationInCrypto != nil else {
-                return nil
-            }
-            
-            return donationInCrypto! * transactionDTO.choosenWallet!.exchangeCourse
         }
     }
     
@@ -216,6 +211,20 @@ class SendDetailsPresenter: NSObject {
         } else {
             self.vc?.performSegue(withIdentifier: "sendAmountVC", sender: Any.self)
         }
+    }
+    
+    func isPossibleToDonate(_ amountString: String) -> Bool {
+        var donationStringForDouble = amountString
+        if donationStringForDouble.last == "," {
+            donationStringForDouble.removeLast()
+        }
+        
+        let donationInMinimalUnits = donationStringForDouble.convertCryptoAmountStringToMinimalUnits(in: transactionDTO.choosenWallet!.blockchain)
+        return donationInMinimalUnits <= availableSumInCrypto!
+    }
+    
+    func changeDonationString(_ toAmount: String?) {
+        donationInCryptoString = toAmount
     }
 }
 

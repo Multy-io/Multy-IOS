@@ -250,7 +250,7 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
     @IBAction func nextAction(_ sender: Any) {
         self.createRecentAddress()
         let wallet = presenter.transactionDTO.choosenWallet!
-        let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? (presenter.transactionDTO as! BTCTransactionDTO).newChangeAddress! : ""
+        let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? presenter.transactionDTO.BTCDTO!.newChangeAddress! : ""
         
         let newAddressParams = [
             "walletindex"   : wallet.walletID.intValue,

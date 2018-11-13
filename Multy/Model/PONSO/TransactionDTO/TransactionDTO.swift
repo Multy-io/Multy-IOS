@@ -43,6 +43,8 @@ class TransactionDTO: NSObject {
             
             if blockchain != nil && blockchain! == BLOCKCHAIN_ETHEREUM {
                 ETHDTO?.gasPrice = feeRate
+            } else {
+                BTCDTO?.feePerByte = feeRate
             }
         }
     }

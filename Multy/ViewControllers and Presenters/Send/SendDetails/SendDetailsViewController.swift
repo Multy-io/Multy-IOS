@@ -228,33 +228,8 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     
     //MARK: donationSwitch actions
     @IBAction func switchDonationAction(_ sender: Any) {
-
-//        if !self.isDonateAvailableSW.isOn {
-//            self.donationTF.resignFirstResponder()
-//            self.presenter.donationInCrypto = 0.0
-//            self.presenter.donationInFiat = 0.0
-//            self.constraintDonationHeight.constant = self.constraintDonationHeight.constant / 2
-//            self.scrollView.contentSize.height = self.scrollView.contentSize.height - self.constraintDonationHeight.constant
-//            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: donationDisabledTap)
-//        } else {
-//            self.donationTF.becomeFirstResponder()
-//            self.presenter.donationInCrypto = (self.donationTF.text! as NSString).doubleValue
-//            self.presenter.donationInFiat = self.presenter.donationInCrypto! * exchangeCourse
-//            self.constraintDonationHeight.constant = self.constraintDonationHeight.constant * 2
-//            self.scrollView.contentSize.height = self.scrollView.contentSize.height + self.constraintDonationHeight.constant
-//            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: donationEnableTap)
-//        }
-//        self.hideOrShowDonationBottom()
-////        self.scrollView.scrollRectToVisible(self.nextBtn.frame, animated: true)
-//
-//        offset.y = scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.bounds.size.height - 75
-//        if !self.isDonateAvailableSW.isOn {
-//            offset.y += 74
-//        }
-//        scrollView.setContentOffset(offset, animated: true)
         presenter.isDonationSwitchedOn = isDonateAvailableSW.isOn
     }
-    
 
     
     //MARK: TextField delegates
@@ -279,55 +254,55 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if (string != "," || string != ".") && ((self.donationTF.text! + string) as NSString).doubleValue > presenter.transactionDTO.choosenWallet!.sumInCrypto {
-            if string != "" {
-                self.presentWarning(message: localize(string: Constants.moreThenYouHaveString))
-                return false
+        guard var prevAmount = textField.text else { return true }
+        
+        let changeSymbol = string
+        
+        if prevAmount == "0" && changeSymbol != "," && changeSymbol != "." && !changeSymbol.isEmpty {
+            prevAmount = ""
+        } else if prevAmount.isEmpty && (changeSymbol == "," || changeSymbol == ".") {
+            return false
+        }
+
+        if (changeSymbol == "," || changeSymbol == ".") && prevAmount == "" {
+            prevAmount = "0"
+        }
+        
+        if changeSymbol == "" {
+            prevAmount.removeLast()
+            if prevAmount == "" {
+                prevAmount = "0"
             }
         }
         
-        guard let text = textField.text else { return true }
-        
-        if text == "0" && string != "," && string != "." && !string.isEmpty {
-            return false
-        }
-        
-        let newLength = text.count + string.count - range.length
-
-        if (string == "," || string == ".") && self.donationTF.text == "" {
-            self.donationTF.text = "0\(string)"
-        }
-        
-        if string == "" {
-            self.donationTF.text?.removeLast()
-            self.saveDonationSum(string: "")
-            return false
-        }
+        let newLength = prevAmount.count + changeSymbol.count - range.length
         
         if newLength <= self.maxLengthForSum {
-            self.donationTF.text = self.donationTF.text?.replacingOccurrences(of: ",", with: ".")
-            if string == "," && (self.donationTF.text?.contains("."))!{
-                return false
-            }
-            if (self.donationTF.text?.contains("."))! && string != "" {
-                let strAfterDot: [String?] = (self.donationTF.text?.components(separatedBy: "."))!
-                if strAfterDot[1]?.count == 8 {
+            var donation = prevAmount + changeSymbol
+            
+            if (changeSymbol != "," || changeSymbol != ".") && !presenter.isPossibleToDonate(donation) {
+                if string != "" {
+                    self.presentWarning(message: localize(string: Constants.moreThenYouHaveString))
                     return false
                 }
             }
-            self.saveDonationSum(string: string)
+            
+            donation = donation.replacingOccurrences(of: ",", with: ".")
+            if string == "," && prevAmount.contains(".") {
+                return false
+            }
+            if donation.contains(".") && string != "" {
+                let strAfterDot: [String] = donation.components(separatedBy: ".")
+                if strAfterDot[1].count >= 8 {
+                    return false
+                }
+            }
+            
+            presenter.changeDonationString(donation)
         }
         sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: donationChanged)
         
-        return newLength <= self.maxLengthForSum
-    }
-    
-    func saveDonationSum(string: String) {
-//        if string == "" && self.donationTF.text == "" {
-//            self.presenter.donationInCrypto = BigInt.zero()
-//        } else {
-//            self.presenter.donationInCrypto = BigInt(donationTF.text! + string as String)
-//        }
+        return false
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

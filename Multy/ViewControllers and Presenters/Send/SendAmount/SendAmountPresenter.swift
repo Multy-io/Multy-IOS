@@ -20,7 +20,17 @@ class SendAmountPresenter: NSObject {
     
     // preliminary data
     private var binaryData : BinaryData?
-    private var addressData : Dictionary<String, Any>?
+    private var addressData : Dictionary<String, Any>? {
+        didSet {
+            guard addressData != nil else {
+                return
+            }
+            
+            if blockchain == BLOCKCHAIN_BITCOIN {
+                transactionDTO.BTCDTO!.newChangeAddress = addressData?["address"] as? String
+            }
+        }
+    }
     var linkedWallet: UserWalletRLM? // for multisig wallets
     
     var cryptoName: String {
@@ -52,16 +62,6 @@ class SendAmountPresenter: NSObject {
         }
     }
     
-    var isDonationEnable = false {
-        didSet {
-            if oldValue != isDonationEnable {
-                if isDonationEnable && donationAmount == nil {
-                    donationAmount = BigInt.zero()
-                }
-            }
-        }
-    }
-    
     var isCrypto = true {
         didSet {
             if oldValue != isCrypto {
@@ -80,44 +80,40 @@ class SendAmountPresenter: NSObject {
     
     var sendAmountString = "0" {
         didSet {
-            var sendAmountStringForDouble = sendAmountString
-            if sendAmountString.last == "," {
-                sendAmountStringForDouble.removeLast()
-            }
-            
-            sendAmount = sendAmountStringForDouble.doubleValue
+            vc?.updateUI()
         }
     }
     
     var convertedAmountString = "0" {
         didSet {
-            convertedAmount = convertedAmountString.doubleValue
-        }
-    }
-    
-    private var convertedAmount : Double = 0
-    
-    private var sendAmount : Double = 0 {
-        didSet {
-            updateTotalSumInCrypto()
+            vc?.updateUI()
         }
     }
     
     private var donationAmount : BigInt? {
-        didSet {
-            updateTotalSumInCrypto()
+        get {
+            return transactionDTO.donationAmount
         }
     }
     private var feeEstimationInCrypto : BigInt? {
         didSet {
-            updateTotalSumInCrypto()
+            if blockchain != BLOCKCHAIN_BITCOIN {
+                updateTotalSumInCrypto()
+            }
         }
     }
     
-    private var sendAmountInMinimalUnits: BigInt {
+    private var sendAmountInCryptoMinimalUnits = BigInt.zero() {
+        didSet {
+            if sendAmountInCryptoMinimalUnits != oldValue {
+                updateTotalSumInCrypto()
+            }
+        }
+    }
+    
+    private var sendAmountInCrypto: Double {
         get {
-            let sendAmountInCrypto = isCrypto ? sendAmount : sendAmount / exchangeCourse
-            return String(format: "%f", sendAmountInCrypto).convertCryptoAmountStringToMinimalUnits(in: blockchain!)
+            return isCrypto ? sendAmountForDoubleString().doubleValue : sendAmountForDoubleString().doubleValue / exchangeCourse
         }
     }
     
@@ -144,7 +140,7 @@ class SendAmountPresenter: NSObject {
     
     private var availableSumInCrypto: BigInt {
         get {
-            return transactionDTO.choosenWallet!.availableBalance
+            return transactionDTO.choosenWallet!.availableAmount
         }
     }
     
@@ -177,7 +173,7 @@ class SendAmountPresenter: NSObject {
                 result = result - feeEstimationInCrypto!
             }
             
-            if isDonationEnable && donationAmount != nil {
+            if donationAmount != nil {
                 result = result - donationAmount!
             }
             
@@ -233,7 +229,8 @@ class SendAmountPresenter: NSObject {
     }
     
     private func assembleTransaction() {
-        transactionDTO.sendAmount = isCrypto ? sendAmount : convertedAmount
+        let sendAmountString = sendAmountForDoubleString()
+        transactionDTO.sendAmount = isCrypto ? sendAmountString.doubleValue : convertedAmountString.doubleValue
         transactionDTO.feeEstimation = feeEstimationInCrypto
         transactionDTO.rawValue = rawTransaction
     }
@@ -249,6 +246,14 @@ class SendAmountPresenter: NSObject {
                 feeEstimationInCrypto = transactionDTO.ETHDTO?.feeAmount
             }
         }
+    }
+    
+    private func sendAmountForDoubleString() -> String {
+        var result = sendAmountString
+        if result.last == "," {
+            result.removeLast()
+        }
+        return result
     }
     
     private func createPreliminaryData() {
@@ -279,8 +284,8 @@ class SendAmountPresenter: NSObject {
     
     func changeSendAmountString(_ toAmount: String) {
         sendAmountString = toAmount
-        let convertedAmount = isCrypto ? sendAmount * exchangeCourse : sendAmount / exchangeCourse
-        let convertedAmountInMinimalUnits = String(format: "%f", convertedAmount).convertCryptoAmountStringToMinimalUnits(in: blockchain!)
+        sendAmountInCryptoMinimalUnits = "\(sendAmountInCrypto)".convertCryptoAmountStringToMinimalUnits(in: blockchain!)
+        let convertedAmountInMinimalUnits = isCrypto ? sendAmountInCryptoMinimalUnits * exchangeCourse : sendAmountInCryptoMinimalUnits
         
         convertedAmountString = isCrypto ? convertedAmountInMinimalUnits.fiatValueString(for: blockchain!) : convertedAmountInMinimalUnits.cryptoValueString(for: blockchain!)
         vc?.updateUI()
@@ -288,7 +293,9 @@ class SendAmountPresenter: NSObject {
     
     func setSumToMaxAllowed() {
         payForCommission = false
-        changeSendAmountString(maxAllowedToSpendInChoosenCurrencyString)
+        sendAmountInCryptoMinimalUnits = maxAllowedToSpendInCrypto
+        sendAmountString = isCrypto ? sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchain!) : (sendAmountInCryptoMinimalUnits * exchangeCourse).fiatValueString(for: blockchain!)
+        convertedAmountString = isCrypto ? (sendAmountInCryptoMinimalUnits * exchangeCourse).fiatValueString(for: blockchain!) : sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchain!)
     }
     
     func resetAmount() {
@@ -315,28 +322,10 @@ class SendAmountPresenter: NSObject {
     func updateTotalSumInCrypto() {
         var result = BigInt.zero()
         let isTxValid = estimateTransactionAndValidation()
-        if isTxValid {
-            result = sendAmountInMinimalUnits
-            
-            if payForCommission {
-                if feeEstimationInCrypto != nil {
-                    result = result + feeEstimationInCrypto!
-                    
-                    if isDonationEnable && donationAmount != nil {
-                        result = isCrypto ? (result + donationAmount!) : (result + donationAmount! / exchangeCourse)
-                    }
-                }
-            }
-            
-            if result > availableSumInCrypto {
-                result = availableSumInCrypto
-            }
-            
-            totalSumInCrypto = result
-        } else {
+        if !isTxValid {
             var message = rawTransaction
             
-            if message.count > 0, vc != nil, transactionDTO.choosenWallet != nil {
+            if message.count > 0, vc != nil, transactionDTO.choosenWallet != nil && sendAmountInCryptoMinimalUnits > BigInt.zero() {
                 if message.hasPrefix("BigInt value is not representable as") {
                     message = vc!.localize(string: Constants.youEnteredTooSmallAmountString)
                 } else if message.hasPrefix("Transaction is trying to spend more than available in inputs") {
@@ -349,8 +338,28 @@ class SendAmountPresenter: NSObject {
                 
                 totalSumInCrypto = BigInt.zero()
                 vc!.sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(transactionDTO.choosenWallet!.chain)", eventName: transactionErr)
+                
+                return
             }
         }
+        
+        result = sendAmountInCryptoMinimalUnits
+        
+        if payForCommission {
+            if feeEstimationInCrypto != nil {
+                result = result + feeEstimationInCrypto!
+                
+                if donationAmount != nil {
+                    result = result + donationAmount!
+                }
+            }
+        }
+        
+        if result > availableSumInCrypto {
+            result = availableSumInCrypto
+        }
+        
+        totalSumInCrypto = result
     }
     
     func swapCurrencies() {
@@ -406,17 +415,17 @@ extension CreateTransactionDelegate {
         
         let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                          sendAddress: transactionDTO.sendAddress!,
-                                                                         sendAmountString: sendAmountInMinimalUnits.cryptoValueString(for: blockchain!),
+                                                                         sendAmountString: sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchain!),
                                                                          feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
-            isDonationExists: transactionDTO.donationAmount != nil && transactionDTO.donationAmount! != BigInt.zero(),
-            donationAmount: transactionDTO.donationAmount?.stringValue ?? BigInt.zero().stringValue,
+            isDonationExists: transactionDTO.donationAmount != nil && !transactionDTO.donationAmount!.isZero,
+            donationAmount: transactionDTO.donationAmount?.cryptoValueString(for: blockchain!) ?? BigInt.zero().stringValue,
             isPayCommission: payForCommission,
             wallet: transactionDTO.choosenWallet!,
             binaryData: &binaryData!,
             inputs: transactionDTO.choosenWallet!.addresses)
         
-        rawTransaction = trData.0
         feeEstimationInCrypto = BigInt(trData.2)
+        rawTransaction = trData.0
         
         return trData.1 >= 0
     }
@@ -424,13 +433,13 @@ extension CreateTransactionDelegate {
     func estimateETHTransactionAndValidation() -> Bool {
         var sendAmount = BigInt.zero()
         if payForCommission {
-            sendAmount = sendAmountInMinimalUnits
+            sendAmount = sendAmountInCryptoMinimalUnits
         } else {
             if transactionDTO.choosenWallet!.isMultiSig {
-                sendAmount = sendAmountInMinimalUnits
+                sendAmount = sendAmountInCryptoMinimalUnits
             } else {
-                if sendAmountInMinimalUnits.isNonZero {
-                    sendAmount = sendAmountInMinimalUnits - feeEstimationInCrypto
+                if sendAmountInCryptoMinimalUnits.isNonZero {
+                    sendAmount = sendAmountInCryptoMinimalUnits - feeEstimationInCrypto
                 } else {
                     return true
                 }
