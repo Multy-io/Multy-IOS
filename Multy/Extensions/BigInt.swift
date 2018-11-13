@@ -218,6 +218,12 @@ class BigInt: NSObject {
         return stringValue.appendDelimeter(at: blockchain.maxPrecision).showString(8)
     }
     
+    func cryptoValueString(for token: TokenRLM?) -> String {
+        let precision = token == nil ? 0 : token!.decimals.intValue
+        
+        return stringValue.appendDelimeter(at: precision).showString(8)
+    }
+    
     deinit {
         free_big_int(valuePointer.pointee)
         valuePointer.deallocate()

@@ -66,7 +66,7 @@ extension DataManager {
                         }
                         
                         //lock access to newTokenInfo
-                        objc_sync_enter(newTokenInfo)
+//                        objc_sync_enter(newTokenInfo)
                         
                         newTokenInfo.append(newToken)
                         print("newTokenInfo: \(newTokenInfo.count)")
@@ -76,7 +76,7 @@ extension DataManager {
                                 self.realmManager.updateErc20Tokens(tokens: newTokenInfo)
                             }
                         }
-                        objc_sync_exit(newTokenInfo)
+//                        objc_sync_exit(newTokenInfo)
                     }
                 }
             }

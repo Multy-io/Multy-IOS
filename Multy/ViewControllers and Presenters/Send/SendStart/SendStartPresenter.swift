@@ -95,7 +95,7 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
         switch transactionDTO.blockchainType!.blockchain {
         case BLOCKCHAIN_BITCOIN:
             return "sendBTCDetailsVC"
-        case BLOCKCHAIN_ETHEREUM:
+        case BLOCKCHAIN_ETHEREUM, BLOCKCHAIN_ERC20:
             return "sendETHDetailsVC"
         default:
             return ""

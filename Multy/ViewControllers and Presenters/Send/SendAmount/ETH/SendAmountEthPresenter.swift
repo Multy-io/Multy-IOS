@@ -15,15 +15,21 @@ class SendAmountEthPresenter: NSObject {
             blockedAmount = transactionDTO.choosenWallet!.blockedAmount
             exchangeCourse = transactionDTO.choosenWallet!.exchangeCourse
             
-            blockchain = BlockchainType.create(wallet: transactionDTO.choosenWallet!).blockchain
+            var blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
+            
+            if blockchainType.blockchain == BLOCKCHAIN_ERC20 {
+                blockchainType.blockchain = BLOCKCHAIN_ETHEREUM
+            }
+            
+            self.blockchainType = blockchainType
+            self.blockchain = blockchainType.blockchain
             
             if transactionDTO.sendAmountString != nil {
                 sumInCrypto = transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(in: blockchain)
                 sumInFiat = sumInCrypto * exchangeCourse
             }
             transactionObj = transactionDTO.transaction!.transactionRLM
-            cryptoName = transactionDTO.blockchainType!.shortName
-            
+            cryptoName = blockchainType.shortName
             
             if transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt != nil {
                 let limit = transactionDTO.choosenWallet!.isMultiSig ? "400000" : "40000"
@@ -33,13 +39,21 @@ class SendAmountEthPresenter: NSObject {
             
             availableSumInCrypto = transactionDTO.choosenWallet!.availableAmount
             
-            maxLengthForSum = transactionDTO.choosenWallet!.blockchainType.blockchain.maxLengthForSum
-            maxPrecision = transactionDTO.choosenWallet!.blockchainType.blockchain.maxPrecision
+            maxLengthForSum = blockchainType.blockchain.maxLengthForSum
+            
+            if BlockchainType.create(wallet: transactionDTO.choosenWallet!).blockchain == BLOCKCHAIN_ERC20 {
+                let address = transactionDTO.choosenWallet!.address
+                let token = DataManager.shared.getToken(address: address)
+                maxPrecision = token == nil ? 0 : ((token!.decimals.intValue == -1) ? 0 : token!.decimals.intValue)
+            } else {
+                maxPrecision = transactionDTO.choosenWallet!.blockchainType.blockchain.maxPrecision
+            }
         }
     }
     
     var availableWalletAmount = BigInt.zero()
     
+    var blockchainType = BlockchainType(blockchain: BLOCKCHAIN_BITCOIN, net_type: 0)
     var blockchain: Blockchain = BLOCKCHAIN_BITCOIN
     
     var account = DataManager.shared.realmManager.account
@@ -100,7 +114,7 @@ class SendAmountEthPresenter: NSObject {
         binaryData = account!.binaryDataString.createBinaryData()!
         
         if !wallet.isImported  {
-            addressData = core.createAddress(blockchainType:    transactionDTO.blockchainType!,
+            addressData = core.createAddress(blockchainType:blockchainType,
                                              walletID:      wallet.walletID.uint32Value,
                                              addressID:     wallet.changeAddressIndex,
                                              binaryData:    &binaryData!)
@@ -330,7 +344,7 @@ class SendAmountEthPresenter: NSObject {
 
 extension CreateTransactionDelegate {
     func estimateBTCTransactionAndValidation() -> Bool {
-        if transactionDTO.blockchainType!.blockchain != BLOCKCHAIN_BITCOIN {
+        if blockchainType.blockchain != BLOCKCHAIN_BITCOIN {
             print("\n\n\nnot right screen\n\n\n")
         }
         
@@ -365,7 +379,6 @@ extension CreateTransactionDelegate {
         }
         let pointer: UnsafeMutablePointer<OpaquePointer?>?
         if !transactionDTO.choosenWallet!.importedPrivateKey.isEmpty {
-            let blockchainType = transactionDTO.blockchainType!
             let privatekey = transactionDTO.choosenWallet!.importedPrivateKey
             let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
             switch walletInfo {
@@ -405,7 +418,7 @@ extension CreateTransactionDelegate {
                                                                                   sendAmountString: sendAmount.stringValue,
                                                                                   nonce: transactionDTO.choosenWallet!.ethWallet!.nonce.intValue,
                                                                                   balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
-                ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
+                ethereumChainID: UInt32(blockchainType.net_type),
                 gasPrice: transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
                 gasLimit: transactionDTO.transaction!.customGAS!.gasLimit.stringValue)
             

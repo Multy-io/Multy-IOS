@@ -68,7 +68,7 @@ extension DataManager {
                 }
                 
                 if let erc20Info = answerDict!["erc20tokenlist"] as? NSArray {
-                    let tokens = TokenRLM.initArrayWithArray(tokensArray: erc20Info, blockchainType: BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 1))
+                    let tokens = TokenRLM.initArrayWithArray(tokensArray: erc20Info, blockchainType: BlockchainType(blockchain: BLOCKCHAIN_ERC20, net_type: 1))
                     DataManager.shared.realmManager.updateErc20Tokens(tokens: tokens)
                 }
                 
@@ -263,7 +263,7 @@ extension DataManager {
 //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
                 
 //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
-                
+                UserWalletRLM.checkMissingTokens(array: [wallet])
                 completion(wallet, nil)
             } else {
                 completion(nil, error)
@@ -280,7 +280,7 @@ extension DataManager {
                 //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
                 
                 //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
-                
+                UserWalletRLM.checkMissingTokens(array: [wallet])
                 completion(wallet, nil)
             } else {
                 completion(nil, error)
@@ -297,7 +297,7 @@ extension DataManager {
                 //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
                 
                 //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
-                
+                UserWalletRLM.checkMissingTokens(array: [wallet])
                 completion(wallet, nil)
             } else {
                 completion(nil, error)

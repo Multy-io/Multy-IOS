@@ -35,7 +35,7 @@ extension Blockchain {
             switch self {
             case BLOCKCHAIN_BITCOIN:
                 return Constants.BigIntSwift.oneCentiBitcoinInSatoshiKey
-            case BLOCKCHAIN_ETHEREUM:
+            case BLOCKCHAIN_ETHEREUM, BLOCKCHAIN_ERC20:
                 return Constants.BigIntSwift.oneHundredFinneyKey
             default:
                 return BigInt("0")

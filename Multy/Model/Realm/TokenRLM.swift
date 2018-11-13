@@ -23,6 +23,12 @@ class TokenRLM: Object {
         }
     }
     
+    var isUpdated: Bool {
+        get {
+            return decimals.intValue != -1
+        }
+    }
+    
     //func makeIcon by address for example or ticker
     
     public class func initArrayWithArray(tokensArray: NSArray, blockchainType: BlockchainType) -> [TokenRLM] {
@@ -87,5 +93,3 @@ class TokenRLM: Object {
         }
     }
 }
-
-

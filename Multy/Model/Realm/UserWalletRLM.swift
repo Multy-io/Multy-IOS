@@ -9,13 +9,14 @@ import RealmSwift
 private typealias WalletUpdateRLM = UserWalletRLM
 private typealias ETHWalletRLM = UserWalletRLM
 
-enum WalletBrokenState: Int {
+//enum ahould be without gaps
+enum WalletBrokenState: Int, CaseIterable {
     case
     normal              = 0,
-    fixedPrivateKey       = 1
+    fixedPrivateKey     = 1
     
     init!(_ value: Int) {
-        if 0 <= value && value < 2 {
+        if 0 <= value && value < WalletBrokenState.allCases.count {
             self.init(rawValue: value)!
         } else {
             self.init(rawValue: 0)
@@ -116,7 +117,6 @@ class UserWalletRLM: Object {
     
     //available part
     var availableAmount: BigInt {
-        
         get {
             var result = BigInt.zero()
             
@@ -125,6 +125,8 @@ class UserWalletRLM: Object {
                 result = BigInt(sumInCryptoString.convertToSatoshiAmountString()) - blockedAmount
             case BLOCKCHAIN_ETHEREUM:
                 result = availableBalance
+            case BLOCKCHAIN_ERC20:
+                result = BigInt(ethWallet!.balance)
             default:
                 break
             }
@@ -135,7 +137,11 @@ class UserWalletRLM: Object {
     
     var availableAmountString: String {
         get {
-            return availableAmount.cryptoValueString(for: blockchain)
+            if blockchain == BLOCKCHAIN_ERC20 {
+                return availableAmount.cryptoValueString(for: token)
+            } else {
+                return availableAmount.cryptoValueString(for: blockchain)
+            }
         }
     }
     
@@ -286,6 +292,11 @@ class UserWalletRLM: Object {
     @objc dynamic var ethWallet: ETHWallet?
     @objc dynamic var btcWallet: BTCWallet?
     @objc dynamic var multisigWallet: MultisigWallet?
+    var token: TokenRLM? {
+        get {
+            return DataManager.shared.realmManager.erc20Tokens[address] ?? nil
+        }
+    }
 
     var exchangeCourse: Double {
         get {
@@ -309,22 +320,24 @@ class UserWalletRLM: Object {
         }
     }
     
-    fileprivate class func checkMissingTokens(array: List<UserWalletRLM>) {
+    class func checkMissingTokens(array: List<UserWalletRLM>) {
         var addressesSet = Set<TokenRLM>()
         array.forEach { wallet in
             if let tokenArray = wallet.ethWallet?.erc20Tokens {
-                tokenArray.forEach { if $0.token == nil { addressesSet.insert(TokenRLM.createWith($0.address, blockchainType: wallet.blockchainType)) } }
+                let blockchainType = BlockchainType(blockchain: BLOCKCHAIN_ERC20, net_type: wallet.blockchainType.net_type)
+                tokenArray.forEach { if $0.token == nil { addressesSet.insert(TokenRLM.createWith($0.address, blockchainType: blockchainType)) } }
             }
         }
         
         DataManager.shared.updateTokensInfo(Array(addressesSet))
     }
     
-    fileprivate class func checkMissingTokens(array: [UserWalletRLM]) {
+    class func checkMissingTokens(array: [UserWalletRLM]) {
         var addressesSet = Set<TokenRLM>()
         array.forEach { wallet in
             if let tokenArray = wallet.ethWallet?.erc20Tokens {
-                tokenArray.forEach{ if $0.token == nil { addressesSet.insert(TokenRLM.createWith($0.address, blockchainType: wallet.blockchainType)) } }
+                let blockchainType = BlockchainType(blockchain: BLOCKCHAIN_ERC20, net_type: wallet.blockchainType.net_type)
+                tokenArray.forEach{ if $0.token == nil { addressesSet.insert(TokenRLM.createWith($0.address, blockchainType: blockchainType)) } }
             }
         }
         

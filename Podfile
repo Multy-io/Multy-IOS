@@ -32,6 +32,7 @@ target 'Multy' do
   pod 'Hash2Pics'
   pod 'Web3'
   pod 'Web3/ContractABI'
+  pod 'moa', '~> 10.0'
 #  pod 'MultyCoreLibrary'#, '0.1.7'
 
   #dapp
