@@ -81,9 +81,9 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
     func minimalUnit() -> BigInt {
         switch presenter.blockchainType?.blockchain {
         case BLOCKCHAIN_BITCOIN:
-            return BigInt("\(Constants.CustomFee.defaultBTCCustomFeeKey)")
+            return Constants.CustomFee.defaultBTCCustomFeeKey
         case BLOCKCHAIN_ETHEREUM:
-            return BigInt("\(Constants.CustomFee.defaultETHCustomFeeKey)")
+            return Constants.CustomFee.defaultETHCustomFeeKey
         default:
             return BigInt("1")
         }
