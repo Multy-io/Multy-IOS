@@ -140,10 +140,10 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                     self.presentUpdateAlert(idOfAlert: 0)
                     completion(false)
                 } else if buildVersion < softVersion! {
-                    self.presenter.presentSoftUpdate()
+                    self.presenter.presentSoftUpdate(completion: completion)
                     completion(true)
                 } else if softVersion! > hardVersion! && softVersion! > buildVersion {
-                    self.presenter.presentSoftUpdate()
+                    self.presenter.presentSoftUpdate(completion: completion)
                 } else {
                     completion(true)
                 }
