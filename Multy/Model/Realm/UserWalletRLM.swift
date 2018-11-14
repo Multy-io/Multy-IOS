@@ -292,9 +292,10 @@ class UserWalletRLM: Object {
     @objc dynamic var ethWallet: ETHWallet?
     @objc dynamic var btcWallet: BTCWallet?
     @objc dynamic var multisigWallet: MultisigWallet?
+    
     var token: TokenRLM? {
         get {
-            return DataManager.shared.realmManager.erc20Tokens[address] ?? nil
+            return DataManager.shared.realmManager.erc20Tokens[address]
         }
     }
 

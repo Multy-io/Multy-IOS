@@ -159,15 +159,15 @@ var isViewPresented = false
 
 var isDebug: Bool {
     #if DEBUG
-    return true
+        return true
     #else
-    return false
+        return false
     #endif
 }
 
 func sync(lock: NSObject, closure: @escaping () -> Void) {
     objc_sync_enter(lock)
-    closure()
+        closure()
     objc_sync_exit(lock)
 }
 
