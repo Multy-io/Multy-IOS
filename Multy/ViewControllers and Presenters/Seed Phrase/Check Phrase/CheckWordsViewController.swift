@@ -38,7 +38,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         
         loader.show(customTitle: localize(string: Constants.restoringWalletsString))
         self.view.addSubview(loader)

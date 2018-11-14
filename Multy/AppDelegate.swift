@@ -143,7 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
         sendStartVC.presenter.transactionDTO.sendAmountString = amountFromLink
         switch chainNameFromLink {
         case "ethereum":
-            sendStartVC.presenter.transactionDTO.blockchainType?.blockchain = BLOCKCHAIN_ETHEREUM
+            sendStartVC.presenter.transactionDTO.blockchain = BLOCKCHAIN_ETHEREUM
         default: break   //by default create tr for bitcoin
         }
         ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
@@ -305,9 +305,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                     receiveVC.amountTF.becomeFirstResponder()
                 } else if let amountVC = vcOnScren as? SendAmountViewController {
                     amountVC.amountTF.becomeFirstResponder()
-                } else if let amountVC = vcOnScren as? SendAmountEthViewController {
-                    amountVC.amountTF.becomeFirstResponder()
-                }
+                } 
             }
             isActiveFirstTime = false
         }

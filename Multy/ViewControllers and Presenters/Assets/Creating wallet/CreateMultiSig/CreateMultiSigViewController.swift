@@ -31,7 +31,7 @@ class CreateMultiSigViewController: UIViewController, AnalyticsProtocol {
         
         presenter.mainVC = self
         hideKeyboardWhenTappedAround()
-        swipeToBack()
+        enableSwipeToBack()
         tableView.tableFooterView = nil
         loader.show(customTitle: localize(string: Constants.creatingWalletString))
         self.view.addSubview(loader)
