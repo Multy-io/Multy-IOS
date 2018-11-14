@@ -347,7 +347,7 @@ extension DonationSendViewController: UITableViewDelegate, UITableViewDataSource
 //            customVC.presenter.chainId = self.presenter.transactionDTO.choosenWallet!.chain
             customVC.presenter.blockchainType = BlockchainType(blockchain: BLOCKCHAIN_BITCOIN, net_type: 0)
             customVC.delegate = self.presenter
-            customVC.rate = Int(self.presenter.customFee)
+            customVC.rate = BigInt("\(self.presenter.customFee)")
             self.presenter.selectedIndexOfSpeed = indexPath.row
             self.navigationController?.pushViewController(customVC, animated: true)
             

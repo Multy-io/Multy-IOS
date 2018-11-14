@@ -21,7 +21,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
     
     weak var delegate: CustomFeeRateProtocol?
     
-    var rate = 0
+    var rate = BigInt.zero()
     var previousSelected: Int?
     
     override func viewDidLoad() {
@@ -50,14 +50,14 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
             self.topNameLbl.text = localize(string: Constants.satoshiPerByteString)
             self.topPriceTF.placeholder = localize(string: Constants.enterSatoshiPerByte)
             self.topPriceTF.placeholder = "0"
-            if self.rate != 0 {
-                self.topPriceTF.text = "\(rate)"
+            if rate.isNonZero {
+                self.topPriceTF.text = rate.stringValue
             }
         case BLOCKCHAIN_ETHEREUM:
             self.botNameLbl.isHidden = true
             self.botLimitTf.isHidden = true
-            if self.rate != 0 {
-                self.topPriceTF.text = "\(rate / 1000000000)"
+            if rate.isNonZero {
+                self.topPriceTF.text = presenter.textForRate(rate)
             }
             self.viewHeightConstraint.constant = viewHeightConstraint.constant / 2
         default: return
@@ -78,21 +78,21 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func minimalUnit() -> Int {
+    func minimalUnit() -> BigInt {
         switch presenter.blockchainType?.blockchain {
         case BLOCKCHAIN_BITCOIN:
-            return Constants.CustomFee.defaultBTCCustomFeeKey
+            return BigInt("\(Constants.CustomFee.defaultBTCCustomFeeKey)")
         case BLOCKCHAIN_ETHEREUM:
-            return Constants.CustomFee.defaultETHCustomFeeKey
+            return BigInt("\(Constants.CustomFee.defaultETHCustomFeeKey)")
         default:
-            return 1
+            return BigInt("1")
         }
     }
     
     @objc func done() {
         let defaultCustomFee = minimalUnit()
         
-        if topPriceTF.text == nil || (topPriceTF.text! as NSString).intValue < defaultCustomFee {
+        if topPriceTF.text == nil || BigInt(topPriceTF.text!) < defaultCustomFee {
             switch presenter.blockchainType!.blockchain {
             case BLOCKCHAIN_BITCOIN:
                 let message = "\(localize(string: Constants.feeRateLessThenString)) \(defaultCustomFee) \(localize(string: Constants.satoshiPerByteString))"
@@ -113,7 +113,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
             default: return
             }
         } else {
-            self.delegate?.customFeeData(firstValue: presenter.rateForText(topPriceTF.text!), secValue: (self.botLimitTf.text! as NSString).integerValue)
+            self.delegate?.customFeeData(firstValue: presenter.rateForText(topPriceTF.text!), secValue: nil)
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -125,7 +125,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
         
         let endString = textField.text! + string
         if UInt64(endString)! > 3000 {
-            let message = localize(string: Constants.feeRateLessThenString)
+            let message = localize(string: Constants.feeTooHighString)
             let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
                 self.topPriceTF.becomeFirstResponder()

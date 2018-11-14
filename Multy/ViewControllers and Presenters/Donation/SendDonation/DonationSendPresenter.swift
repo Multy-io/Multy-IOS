@@ -27,15 +27,15 @@ class DonationSendPresenter: NSObject, CustomFeeRateProtocol, SendWalletProtocol
         }
     }
     
-    func customFeeData(firstValue: Int?, secValue: Int?) {
+    func customFeeData(firstValue: BigInt?, secValue: BigInt?) {
         if selectedIndexOfSpeed != 5 {
             selectedIndexOfSpeed = 2
         }
         let cell = self.mainVC?.tableView.cellForRow(at: [0, selectedIndexOfSpeed!]) as! CustomTrasanctionFeeTableViewCell
-        cell.value = UInt64(firstValue!)
+        cell.value = UInt64(firstValue!.stringValue)!
         cell.setupUIFor(gasPrice: nil, gasLimit: nil)
         self.mainVC?.isTransactionSelected = true
-        self.customFee = UInt64(firstValue!)
+        self.customFee = UInt64(firstValue!.stringValue)!
         self.mainVC?.tableView.reloadData()
         self.mainVC?.makeSendAvailable(isAvailable: true)
     }

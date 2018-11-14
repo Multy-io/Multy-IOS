@@ -91,7 +91,7 @@ extension WalletChooseViewController: UITableViewDelegate, UITableViewDataSource
         }
         
         if presenter.transactionDTO.sendAmountString != nil {
-            if !presenter.filteredWalletArray[indexPath.row].isThereEnoughAmount(String(format: "%f", presenter.transactionDTO.sendAmountString!)) {
+            if !presenter.filteredWalletArray[indexPath.row].isThereEnoughAmount(presenter.transactionDTO.sendAmountString!) {
                 presenter.presentAlert(message: nil, blockchain: presenter.filteredWalletArray[indexPath.row].blockchain)
                 
                 return

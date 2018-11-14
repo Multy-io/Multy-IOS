@@ -95,8 +95,8 @@ class SendFinishPresenter: NSObject {
                                                                                   nonce: updatedWallet!.ethWallet!.nonce.intValue,  //new nonce
                 balanceAmount: "\(self.transactionDTO.choosenWallet!.ethWallet!.balance)",
                 ethereumChainID: UInt32(self.transactionDTO.choosenWallet!.blockchainType.net_type),
-                gasPrice: (self.transactionDTO as! ETHTransactionDTO).gasPrice != nil ? (self.transactionDTO as! ETHTransactionDTO).gasPrice!.stringValue : "0",
-                gasLimit: (self.transactionDTO as! ETHTransactionDTO).gasLimit != nil ? (self.transactionDTO as! ETHTransactionDTO).gasLimit!.stringValue : "0")
+                gasPrice: self.transactionDTO.ETHDTO!.gasPrice != nil ? self.transactionDTO.ETHDTO!.gasPrice!.stringValue : "0",
+                gasLimit: self.transactionDTO.ETHDTO!.gasLimit != nil ? self.transactionDTO.ETHDTO!.gasLimit!.stringValue : "0")
             
             self.transactionDTO.rawValue = trData.message
         }

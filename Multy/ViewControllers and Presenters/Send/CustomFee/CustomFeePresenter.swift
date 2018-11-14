@@ -11,10 +11,10 @@ class CustomFeePresenter: NSObject {
     
     var blockchainType: BlockchainType?
     
-    let weiToGweiMultiplier = 1_000_000_000
+    let weiToGweiMultiplier = BigInt("\(1_000_000_000)")
     
-    func rateForText(_ text: String) -> Int {
-        var rate = Int(text)!
+    func rateForText(_ text: String) -> BigInt {
+        var rate = BigInt(text)
         switch blockchainType?.blockchain {
         case BLOCKCHAIN_BITCOIN:
             break
@@ -27,4 +27,19 @@ class CustomFeePresenter: NSObject {
         return rate
     }
     
+    
+    func textForRate(_ rate: BigInt) -> String {
+        var result = "0"
+        switch blockchainType?.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            result = rate.stringValue
+            break
+        case BLOCKCHAIN_ETHEREUM:
+            result = (rate / weiToGweiMultiplier).stringValue
+        default:
+            break
+        }
+        
+        return result
+    }
 }

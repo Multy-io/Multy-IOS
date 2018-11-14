@@ -144,7 +144,7 @@ class SendDetailsPresenter: NSObject {
     func requestFee() {
         DataManager.shared.getFeeRate(currencyID: transactionDTO.choosenWallet!.chain.uint32Value,
                                       networkID: transactionDTO.choosenWallet!.chainType.uint32Value,
-                                      ethAddress: transactionDTO.sendAddress,
+                                      ethAddress: transactionDTO.blockchain == BLOCKCHAIN_ETHEREUM ? transactionDTO.sendAddress : nil,
                                       completion: { [weak self] (dict, error) in
                                         guard self != nil else {
                                             return
@@ -235,12 +235,12 @@ extension LocalizeDelegate: Localizable {
 }
 
 extension CustomFeeRateDelegate: CustomFeeRateProtocol {
-    func customFeeData(firstValue: Int?, secValue: Int?) {
+    func customFeeData(firstValue: BigInt?, secValue: BigInt?) {
         guard firstValue != nil else {
             return
         }
         
-        customFee = BigInt("\(firstValue!)")
+        customFee = firstValue!
         vc?.sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(transactionDTO.choosenWallet!.chain)", eventName: customFeeSetuped)
     }
 
