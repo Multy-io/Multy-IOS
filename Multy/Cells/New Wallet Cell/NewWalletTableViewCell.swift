@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -47,6 +47,7 @@ class NewWalletTableViewCell: UITableViewCell {
     }
     
     func hideAll(flag: Bool) {
+        self.topLineView.isHidden = flag
         self.cellNameLbl.isHidden = flag
         self.rigthSmallImage.isHidden = flag
         self.content.backgroundColor = UIColor(red: 236/255, green: 238/255, blue: 247/255, alpha: 1.0)

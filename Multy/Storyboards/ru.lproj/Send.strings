@@ -1,6 +1,6 @@
 
 /* Class = "UILabel"; text = "Transaction Fee"; ObjectID = "0ZI-tj-Idl"; */
-"0ZI-tj-Idl.text" = "Комиссия за перевод";
+"0ZI-tj-Idl.text" = "Комиссия";//"Комиссия за перевод";
 
 /* Class = "UILabel"; text = "1.1234 BTC / 1 123 USD"; ObjectID = "31h-f9-3fx"; */
 "31h-f9-3fx.text" = "1.1234 BTC / 1 123 USD";
@@ -57,7 +57,7 @@
 "Cg1-VD-fBS.text" = "Далее";
 
 /* Class = "UILabel"; text = "Transaction Fee"; ObjectID = "CmP-mh-W1O"; */
-"CmP-mh-W1O.text" = "Комиссия за перевод";
+"CmP-mh-W1O.text" = "Комиссия";//"Комиссия за перевод";
 
 /* Class = "UILabel"; text = "Scan\nQR"; ObjectID = "Cmu-SL-LS1"; */
 "Cmu-SL-LS1.text" = "Скан\nQR";
@@ -117,7 +117,7 @@
 "VW7-w3-CZx.text" = "Платить комиссию        ";
 
 /* Class = "UILabel"; text = "Send Amount"; ObjectID = "VhT-01-bTB"; */
-"VhT-01-bTB.text" = "Отправить сумму";
+"VhT-01-bTB.text" = "Сумма";//"Отправить сумму";
 
 /* Class = "UILabel"; text = "MAX"; ObjectID = "Xhi-Qs-0Ca"; */
 "Xhi-Qs-0Ca.text" = "ВСЁ";
@@ -198,7 +198,7 @@
 "lXZ-a8-UvA.text" = "Совершая пожертвование Multy, Вы оказываете поддержку и уважение продукту. Мы являемся проектом с открытым исходным кодом и ваше пожертвование является для нас единственным источником прибыли.";
 
 /* Class = "UILabel"; text = "Slide to Send"; ObjectID = "m0G-xr-zmf"; */
-"m0G-xr-zmf.text" = "Слайд для отправки";
+"m0G-xr-zmf.text" = "Подтвердить";//"Слайд для отправки";
 
 /* Class = "UILabel"; text = "USD"; ObjectID = "mEs-GB-5Is"; */
 "mEs-GB-5Is.text" = "USD";
@@ -240,7 +240,7 @@
 "uaU-U0-1YQ.text" = "(в разработке)";
 
 /* Class = "UILabel"; text = "Send Amount"; ObjectID = "vsy-Hb-OWB"; */
-"vsy-Hb-OWB.text" = "Отправить сумму";
+"vsy-Hb-OWB.text" = "Сумма";//"Отправить сумму";
 
 /* Class = "UILabel"; text = "Donate to Multy"; ObjectID = "wCG-9b-EeH"; */
 "wCG-9b-EeH.text" = "Пожертвовать Multy";

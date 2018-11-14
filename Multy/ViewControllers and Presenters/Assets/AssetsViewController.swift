@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -6,6 +6,7 @@ import UIKit
 import RealmSwift
 import Alamofire
 import CryptoSwift
+//import MultyCoreLibrary
 //import BiometricAuthentication
 
 private typealias ScrollViewDelegate = AssetsViewController
@@ -20,7 +21,7 @@ private typealias LocalizeDelegate = AssetsViewController
 private typealias PushTxDelegate = AssetsViewController
 private typealias SendWalletsDelegate = AssetsViewController
 
-class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol, BlockchainTransferProtocol {
+class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol, BlockchainTransferProtocol, DeepLinksProtocol {
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
@@ -311,7 +312,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         }
         
         let view = UIView()
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             view.frame = CGRect(x: 16, y: 50, width: screenWidth - 32, height: Constants.AssetsScreen.backupButtonHeight)
         } else {
             view.frame = CGRect(x: 16, y: 25, width: screenWidth - 32, height: Constants.AssetsScreen.backupButtonHeight)
@@ -332,6 +333,9 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         chevronImg.image = #imageLiteral(resourceName: "chevron__")
         let btn = UIButton()
         btn.frame = CGRect(x: 50, y: 0, width: chevronImg.frame.origin.x - 50, height: view.frame.height)
+        if screenHeight <= heightOfFive {
+            btn.frame = CGRect(x: 50, y: -3, width: chevronImg.frame.origin.x - 50, height: view.frame.height)
+        }
         btn.setTitle(localize(string: Constants.backupNeededString), for: .normal)
         btn.setTitleColor(.white, for: .normal)
         btn.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -349,7 +353,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     func setupStatusBar() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             statusView.frame.size.height = 44
         }
         let colorTop = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.8).cgColor
@@ -466,7 +470,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         let result = DataManager.shared.checkTermsOfService()
         if !result {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let termsVC = storyBoard.instantiateViewController(withIdentifier: "termsVC")
+            let termsVC = storyBoard.instantiateViewController(withIdentifier: "termsVC") as! TermsOfServiceViewController
+            termsVC.sendDeepLinksDelegate = self
             self.present(termsVC, animated: true, completion: nil)
         }
         return !result
@@ -535,6 +540,25 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     
     func setBlockchain(blockchain: BlockchainType) {
         blockchainForTansfer = blockchain
+    }
+    
+    func sendDeepLinksParams(params: DragonDLObj) {
+        loader.show(customTitle: "Creating")
+        let isNeedEthTest: Bool = params.chaintType == 4 ? true : false
+        createFirstWallets(isNeedEthTest: isNeedEthTest) { (error) in
+            if error == nil {
+                self.loader.hide()
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.openBrowserWith(params: params)
+            }
+        }
+    }
+    
+    func sendDL(params: NSDictionary) {
+        presenter.magicReceiveParams = params
+        createFirstWallets(isNeedEthTest: false) { (error) in
+            
+        }
     }
 }
 
@@ -637,13 +661,13 @@ extension TableViewDelegate : UITableViewDelegate {
             if self.presenter.account == nil {
                 sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
 //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
-                self.presenter.makeAuth { [unowned self] (answer) in
-                    self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
-                        self.presenter.createFirstWallets(blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
-                            self.presenter.getWalletsVerbose(completion: { (complete) in
-                            })
-                        })
-                    })
+                self.view.isUserInteractionEnabled = false
+                createFirstWallets(isNeedEthTest: false) { [unowned self] (error) in
+                    self.view.isUserInteractionEnabled = true
+                    
+                    if error == nil {
+                        print("Wallets created")
+                    }
                 }
             } else {
                 if self.presenter.isWalletExist() {
@@ -671,6 +695,33 @@ extension TableViewDelegate : UITableViewDelegate {
         }
     }
     
+    func createFirstWallets(isNeedEthTest: Bool, completion: @escaping(_ error: String?) -> ()) {
+        self.presenter.makeAuth { [unowned self] (answer) in
+            self.presenter.createFirstWallets(walletName: nil, blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
+                self.presenter.createFirstWallets(walletName: nil, blockchianType: BlockchainType.create(currencyID: 60, netType: 1), completion: { [unowned self] (answer, err) in
+                    if isNeedEthTest {
+                        self.presenter.createFirstWallets(walletName: nil, blockchianType: BlockchainType.create(currencyID: 60, netType: 4), completion: { [unowned self] (answer, err) in
+                            //FIXME: possibly unused request
+                            self.presenter.getWalletsVerbose(completion: { (complete) in
+                                if self.presenter.magicReceiveParams != nil {
+                                    self.presenter.openMagicReceiveWith(params: self.presenter.magicReceiveParams!)
+                                }
+                                completion(nil)
+                            })
+                        })
+                    } else {
+                        self.presenter.getWalletsVerbose(completion: { (complete) in
+                            if self.presenter.magicReceiveParams != nil {
+                                self.presenter.openMagicReceiveWith(params: self.presenter.magicReceiveParams!)
+                            }
+                            completion(nil)
+                        })
+                    }
+                })
+            })
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath {
         case [0,0]:         // PORTFOLIO CELL  or LOGO
@@ -679,9 +730,11 @@ extension TableViewDelegate : UITableViewDelegate {
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
 //                    return 340
-                    return 290
+                    return screenHeight == heightOfFive ? 270 : 340
                 } else {
-                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+//                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 340
+                    return heightConstant + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
@@ -716,7 +769,8 @@ extension TableViewDelegate : UITableViewDelegate {
                 if presenter.account!.isSeedPhraseSaved() {
                     return 340
                 } else {
-                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+//                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+                    return 100 + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
@@ -849,7 +903,12 @@ extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout 
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: screenWidth, height: 277 /* (screenWidth / 375.0)*/)
+        var height: CGFloat = 277
+        if screenHeight == heightOfFive {
+            height = 250.0
+        }
+//        return CGSize(width: screenWidth, height: 277 /* (screenWidth / 375.0)*/)
+        return CGSize(width: screenWidth, height: height /* (screenWidth / 375.0)*/)
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -867,16 +926,24 @@ extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout 
 
 extension CollectionViewDelegate : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        if indexPath.row == 0 {
+//
+//            let customTab = tabBarController as! CustomTabBarViewController
+//            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
+//        } else {
         unowned let weakSelf =  self
         makeIdForInAppBigBy(indexPath: indexPath)
         makeIdForInAppBy(indexPath: indexPath)
         self.presentDonationAlertVC(from: weakSelf, with: stringIdForInAppBig)
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         logAnalytics(indexPath: indexPath)
+//        }
     }
     
     func makeIdForInAppBy(indexPath: IndexPath) {
         switch indexPath.row {
+//        case 1: stringIdForInApp = "io.multy.addingPortfolio5"
+//        case 2: stringIdForInApp = "io.multy.addingCharts5"
         case 0: stringIdForInApp = "io.multy.addingPortfolio5"
         case 1: stringIdForInApp = "io.multy.addingCharts5"
         default: break
@@ -885,6 +952,8 @@ extension CollectionViewDelegate : UICollectionViewDelegate {
     
     func makeIdForInAppBigBy(indexPath: IndexPath) {
         switch indexPath.row {
+//        case 1: stringIdForInAppBig = "io.multy.addingPortfolio50"
+//        case 2: stringIdForInAppBig = "io.multy.addingCharts50"
         case 0: stringIdForInAppBig = "io.multy.addingPortfolio50"
         case 1: stringIdForInAppBig = "io.multy.addingCharts50"
         default: break
@@ -892,8 +961,15 @@ extension CollectionViewDelegate : UICollectionViewDelegate {
     }
     
     func logAnalytics(indexPath: IndexPath) {
-        let eventCode = indexPath.row == 0 ? donationForPortfolioSC : donationForChartsSC
-        sendDonationAlertScreenPresentedAnalytics(code: eventCode)
+//        var eventCode = 0
+        switch indexPath.row {
+//        case 0: sendAnalyticsEvent(screenName: screenMain, eventName: "Dragon_Banner_Clicked")
+        case 0: sendDonationAlertScreenPresentedAnalytics(code: donationForPortfolioSC)
+        case 1: sendDonationAlertScreenPresentedAnalytics(code: donationForChartsSC)
+        default: break
+        }
+//        let eventCode = indexPath.row == 0 ? donationForPortfolioSC : donationForChartsSC
+//        sendDonationAlertScreenPresentedAnalytics(code: eventCode)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

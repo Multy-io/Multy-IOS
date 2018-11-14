@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -20,7 +20,7 @@ class ActivityViewController: UIViewController, CancelProtocol, AnalyticsProtoco
         presenter.mainVC = self
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        sendAnalyticsEvent(screenName: screenActivity, eventName: screenActivity)
+        sendAnalyticsEvent(screenName: screenBrowser, eventName: screenBrowser)
         
         newsView.layer.shadowColor = #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.3)
         newsView.layer.shadowOpacity = 1

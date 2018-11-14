@@ -5,6 +5,7 @@
 import UIKit
 import Lottie
 import UPCarouselFlowLayout
+//import MultyCoreLibrary
 
 enum SendMode {
     case searching
@@ -200,7 +201,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     func fixUIForX() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             activeRequestsAmountTopConstraint.constant = activeRequestsAmountTopConstraint.constant + 20
             self.view.layoutIfNeeded()
         }
@@ -310,7 +311,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     
     func backUIToSearching(_ completion : (() -> Swift.Void)? = nil) {
         // Set constraints for presenting active requests amount
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             activeRequestsAmountTopConstraint.constant = 55
         } else {
             activeRequestsAmountTopConstraint.constant = 35
@@ -427,7 +428,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         let exchangeCourse = DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
         
         let sumInCrypto = "\(presenter.transaction!.sendAmount!) \(blockchainType.shortName)"
-        let sumInFiat = "\(presenter.transaction!.sendAmount! * exchangeCourse) \(presenter.transaction!.choosenWallet!.fiatName)"
+        let sumInFiat = "\((presenter.transaction!.sendAmount!.convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain) * exchangeCourse).fiatValueString(for: blockchainType.blockchain)) \(presenter.transaction!.choosenWallet!.fiatName)"
         
         let txTokenImageSide : CGFloat = 46
         txTokenImageView = UIImageView(frame: CGRect(x: (walletsClonesHolderView.center.x - txTokenImageSide/2), y: (walletsClonesHolderView.frame.origin.y + walletsClonesHolderView.frame.size.height - txTokenImageSide), width: txTokenImageSide, height: txTokenImageSide))
@@ -515,16 +516,17 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     func removeClonesViews() {
+        if selectedRequestAmountCloneLabel != nil {
         selectedRequestAmountCloneLabel?.removeFromSuperview()
         selectedRequestAmountCloneLabel = nil
         selectedRequestAddressCloneLabel?.removeFromSuperview()
         selectedRequestAddressCloneLabel = nil
         cloneNameLabel?.removeFromSuperview()
-        
         cloneNameLabel = nil
         
         removeWalletsCellsClones()
         removeActiveRequestsCellsClones()
+        }
     }
     
     func prepareWalletsCellsClones() {

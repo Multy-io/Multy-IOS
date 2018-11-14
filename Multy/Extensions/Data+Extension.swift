@@ -1,8 +1,9 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import Foundation
+//import MultyCoreLibrary
 
 extension Data {
     var bytes : [UInt8] {

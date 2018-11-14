@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -9,6 +9,7 @@ import FirebaseMessaging
 import Branch
 import UserNotifications
 import SwiftyStoreKit
+//import MultyCoreLibrary
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
@@ -55,10 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
             registerPush()
         }
         
-        let filePathOpt = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
-        if let filePath = filePathOpt, let options = FirebaseOptions(contentsOfFile: filePath) {
-            FirebaseApp.configure(options: options)
-        }
+        configureFirebaseApp()
         
 
         if let option = launchOptions {
@@ -72,6 +70,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
 
         
         return true
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Device Token: \(deviceToken)")
+    }
+    
+    func configureFirebaseApp() {
+        if FirebaseApp.app() != nil { return }
+        
+        let filePathOpt = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
+        if let filePath = filePathOpt, let options = FirebaseOptions(contentsOfFile: filePath) {
+            FirebaseApp.configure(options: options)
+        }
     }
 
     func performFirstSegue(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
@@ -91,36 +102,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                 Branch.getInstance().initSession(launchOptions: launchOptions) { [weak self] (params, error) in
                     if error == nil {
                         let dictFormLink = params! as NSDictionary
-                        if (dictFormLink["address"] != nil) {
-                            if acc == nil {
-                                return
-                            }
-                            
-                            //FIXME: amountFromLink pass as String
-                            var amountFromLink: String?
-                            let deepLinkAddressInfoArray = (dictFormLink["address"] as! String).split(separator: ":")
-                            
-                            let chainNameFromLink = deepLinkAddressInfoArray.first
-                            let addressFromLink = deepLinkAddressInfoArray.last
-                            if let amount = dictFormLink["amount"] as? String {
-                                amountFromLink = amount
-                            } else if let number = dictFormLink["amount"] as? NSNumber {
-                                amountFromLink = "\(number)"
-                            } else {
-                                print("\n\n\nAmount from deepLink not parsed!\n\n\n")
-                            }
-                            
-                            let storyboard = UIStoryboard(name: "Send", bundle: nil)
-                            let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
-                            sendStartVC.presenter.transactionDTO.sendAddress = "\(addressFromLink ?? "")"
-                            sendStartVC.presenter.transactionDTO.sendAmount = amountFromLink != nil ? amountFromLink!.doubleValue : 0
-                            switch chainNameFromLink {
-                            case "ethereum":
-                                sendStartVC.presenter.transactionDTO.blockchain = BLOCKCHAIN_ETHEREUM
-                            default: break   //by default create tr for bitcoin
-                            }
-                            ((self!.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
-                            sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
+                        if (dictFormLink["address"] != nil) {  //deep link for send
+                            self!.openSendFlow(acc: acc, dictFormLink: dictFormLink)
+                        } else if dictFormLink["deepLinkIDstring"] as? String == dappDLTitle {   //dapp dragon testNet
+                            self!.openDragonsFlow(acc: acc, params: dictFormLink)
+                        } else if dictFormLink["deepLinkIDstring"] as? String == magicReceiveDL {
+                            self!.magicReceiveFlow(acc: acc, params: dictFormLink)
                         }
                     }
                 }
@@ -128,6 +115,78 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                 let appDel = UIApplication.shared.delegate as! AppDelegate
                 appDel.authorization(isNeedToPresentBiometric: true)
             })
+        }
+    }
+    
+    func openSendFlow(acc: AccountRLM?, dictFormLink: NSDictionary) {
+        if acc == nil {
+            return
+        }
+        
+        //FIXME: amountFromLink pass as String
+        var amountFromLink: String?
+        let deepLinkAddressInfoArray = (dictFormLink["address"] as! String).split(separator: ":")
+        
+        let chainNameFromLink = deepLinkAddressInfoArray.first
+        let addressFromLink = deepLinkAddressInfoArray.last
+        if let amount = dictFormLink["amount"] as? String {
+            amountFromLink = amount
+        } else if let number = dictFormLink["amount"] as? NSNumber {
+            amountFromLink = "\(number)"
+        } else {
+            print("\n\n\nAmount from deepLink not parsed!\n\n\n")
+        }
+        
+        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+        let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+        sendStartVC.presenter.transactionDTO.sendAddress = "\(addressFromLink ?? "")"
+        sendStartVC.presenter.transactionDTO.sendAmount = amountFromLink
+        switch chainNameFromLink {
+        case "ethereum":
+            sendStartVC.presenter.transactionDTO.blockchain = BLOCKCHAIN_ETHEREUM
+        default: break   //by default create tr for bitcoin
+        }
+        ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
+        sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
+    }
+    
+    func openDragonsFlow(acc: AccountRLM?, params: NSDictionary) {
+        let dragonDL = DragonDLObj()
+        dragonDL.chainID = Int(params["chainID"] as! String)!
+        dragonDL.chaintType = Int(params["chainType"] as! String)!
+        dragonDL.browserURL = params["dappURL"] as! String
+        if acc == nil && self.window?.rootViewController?.topMostViewController().className  == TermsOfServiceViewController.className {
+            let termsVC = self.window?.rootViewController?.topMostViewController() as! TermsOfServiceViewController
+            termsVC.dragonDLObj = dragonDL
+        } else {
+            openBrowserWith(params: dragonDL)
+        }
+    }
+    
+    func openBrowserWith(params: DragonDLObj) {
+        let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+        tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 1)
+        let browserVC = tabBar.childViewControllers[1].childViewControllers[0] as! DappBrowserViewController
+        browserVC.presenter.dragonDLObj = params
+    }
+    
+    func magicReceiveFlow(acc: AccountRLM?, params: NSDictionary) {
+        if acc == nil && self.window?.rootViewController?.topMostViewController().className  == TermsOfServiceViewController.className {
+            let termsVC = self.window?.rootViewController?.topMostViewController() as! TermsOfServiceViewController
+            termsVC.magicLinkParams = params
+        } else if acc == nil && self.window?.rootViewController?.topMostViewController().className == AssetsViewController.className {
+            let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+            tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 0)
+            let assetsVC = tabBar.childViewControllers[0].childViewControllers[0] as! AssetsViewController
+            assetsVC.presenter.magicReceiveParams = params
+            assetsVC.createFirstWallets(isNeedEthTest: false) { (str) in
+                
+            }
+        } else {
+            let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+            tabBar.setSelectIndex(from: tabBar.selectedIndex, to: 0)
+            let assetsVC = tabBar.childViewControllers[0].childViewControllers[0] as! AssetsViewController
+            assetsVC.presenter.magicReceiveParams = params
         }
     }
     
@@ -177,7 +236,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
             let storyboard = UIStoryboard(name: "Send", bundle: nil)
             let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
             sendStartVC.presenter.transactionDTO.sendAddress = "\(addressStr)"
-            sendStartVC.presenter.transactionDTO.sendAmount = amountFromQr != nil ? amountFromQr!.doubleValue : 0
+            sendStartVC.presenter.transactionDTO.sendAmount = amountFromQr
             ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
             sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
         })
@@ -244,6 +303,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                     seedVC.pinTF.becomeFirstResponder()
                 } else if let receiveVC = vcOnScren as? ReceiveAmountViewController {
                     receiveVC.amountTF.becomeFirstResponder()
+                } else if let amountVC = vcOnScren as? SendAmountViewController {
+                    amountVC.amountTF.becomeFirstResponder()
                 } 
             }
             isActiveFirstTime = false
@@ -397,7 +458,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
 //        let token = Messaging.messaging().fcmToken
         print("FCM token: \(fcmToken)")
-        ApiManager.shared.pushToken = fcmToken
         
         DataManager.shared.isFCMSubscribed() ? DataManager.shared.subscribeToFirebaseMessaging() : DataManager.shared.unsubscribeToFirebaseMessaging()
     }
@@ -453,8 +513,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
             self.application!.registerUserNotificationSettings(settings)
         }
         self.application!.registerForRemoteNotifications()
-        if Messaging.messaging().fcmToken != nil {
-            ApiManager.shared.pushToken = Messaging.messaging().fcmToken!
+        
+        if Messaging.messaging().fcmToken == nil {
+            configureFirebaseApp()
         }
     }
 }

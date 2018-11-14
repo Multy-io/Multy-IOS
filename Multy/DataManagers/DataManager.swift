@@ -1,10 +1,11 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import RealmSwift
 import FirebaseMessaging
+//import MultyCoreLibrary
 
 private typealias FCMDelegate = DataManager
 private typealias UserDefaultsDelegate = DataManager
@@ -142,6 +143,10 @@ class DataManager: NSObject {
 }
 
 extension UserDefaultsDelegate {
+    var shouldCheckWalletsPrivateKeys : Bool {
+        return UserPreferences.shared.getDBPrivateKeyFixValue() == false
+    }
+    
     func getBTCDonationAddressesFromUserDerfaults() -> Dictionary<Int, String> {
         let donationData  = UserDefaults.standard.object(forKey: Constants.UserDefaults.btcDonationAddressesKey) as! Data
         let decodedDonationAddresses = NSKeyedUnarchiver.unarchiveObject(with: donationData) as! Dictionary<Int, String>

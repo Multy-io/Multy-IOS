@@ -12,6 +12,12 @@ class TermsOfServiceViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var spiner: UIActivityIndicatorView!
     @IBOutlet weak var agreeTextLabel: UILabel!
     
+    var dragonDLObj: DragonDLObj?
+    
+    var sendDeepLinksDelegate: DeepLinksProtocol?
+    
+    var magicLinkParams: NSDictionary?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
@@ -46,6 +52,11 @@ class TermsOfServiceViewController: UIViewController, UIWebViewDelegate {
         
         UserDefaults.standard.set(true, forKey: "isTermsAccept")
         UserDefaults.standard.set(true, forKey: "isFCMAccepted")
+        if dragonDLObj != nil {
+            sendDeepLinksDelegate?.sendDeepLinksParams(params: dragonDLObj!)
+        } else if magicLinkParams != nil {
+            sendDeepLinksDelegate?.sendDL(params: magicLinkParams!)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

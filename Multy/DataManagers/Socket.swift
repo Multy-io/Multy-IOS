@@ -1,10 +1,11 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import SocketIO
 import AVFoundation
+//import MultyCoreLibrary
 
 private typealias MessageHandler = Socket
 
@@ -53,8 +54,8 @@ class Socket: NSObject {
 //                print("-----exchangeAll: \(data)")
             }
 
+            self.socket.on("exchangePoloniex") {data, ack in
             let dataManager = DataManager.shared
-            self.socket.on("exchangeGdax") { [unowned dataManager] (data, ack) in
                 if !(data is NSNull) {
                     dataManager.currencyExchange.update(exchangeDict: data[0] as! NSDictionary)
                 }

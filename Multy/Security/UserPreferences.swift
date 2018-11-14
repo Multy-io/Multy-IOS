@@ -289,4 +289,13 @@ class UserPreferences : NSObject {
         aes = nil
         generateAES()
     }
+    
+    // not ciphered data
+    func writeDBPrivateKeyFixValue(_ isUpdatedBD: Bool) {
+        UserDefaults.standard.set(isUpdatedBD, forKey: "DBPrivateKeyFixKey")
+    }
+    
+    func getDBPrivateKeyFixValue() -> Bool {
+        return UserDefaults.standard.bool(forKey: "DBPrivateKeyFixKey")
+    }
 }

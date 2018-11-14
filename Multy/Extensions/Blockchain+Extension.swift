@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import Foundation
+//import MultyCoreLibrary
 
 extension Blockchain {
     static func blockchainFromString(_ string: String) -> Blockchain {

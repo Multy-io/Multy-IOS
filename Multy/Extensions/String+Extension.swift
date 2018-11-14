@@ -1,9 +1,10 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import Foundation
 import UIKit
+//import MultyCoreLibrary
 
 typealias Wireless = String
 
@@ -38,7 +39,8 @@ extension String {
         }
     }
     
-    //temporaty usage // FIXME: address blockchain
+    //temporaty usage
+    //FIXME: address blockchain
     var addressBlockchainValue: Blockchain {
         get {
             if hasPrefix("0x") {

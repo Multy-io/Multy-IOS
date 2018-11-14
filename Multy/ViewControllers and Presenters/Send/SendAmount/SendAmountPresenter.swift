@@ -111,12 +111,6 @@ class SendAmountPresenter: NSObject {
         }
     }
     
-    private var sendAmountInCrypto: Double {
-        get {
-            return isCrypto ? sendAmountForDoubleString().doubleValue : sendAmountForDoubleString().doubleValue / exchangeCourse
-        }
-    }
-    
     private var totalSumInCrypto = BigInt.zero() {
         didSet {
             vc?.updateUI()
@@ -230,7 +224,7 @@ class SendAmountPresenter: NSObject {
     
     private func assembleTransaction() {
         let sendAmountString = sendAmountForDoubleString()
-        transactionDTO.sendAmount = isCrypto ? sendAmountString.doubleValue : convertedAmountString.doubleValue
+        transactionDTO.sendAmount = isCrypto ? sendAmountString : convertedAmountString
         transactionDTO.feeEstimation = feeEstimationInCrypto
         transactionDTO.rawValue = rawTransaction
     }
@@ -262,7 +256,7 @@ class SendAmountPresenter: NSObject {
         binaryData = account!.binaryDataString.createBinaryData()!
         
         if !wallet.isImported  {
-            addressData = core.createAddress(blockchainType:    transactionDTO.choosenWallet!.blockchainType,
+            addressData = core.createAddress(blockchainType:    wallet.blockchainType,
                                              walletID:      wallet.walletID.uint32Value,
                                              addressID:     wallet.changeAddressIndex,
                                              binaryData:    &binaryData!)
@@ -284,7 +278,7 @@ class SendAmountPresenter: NSObject {
     
     func changeSendAmountString(_ toAmount: String) {
         sendAmountString = toAmount
-        sendAmountInCryptoMinimalUnits = "\(sendAmountInCrypto)".convertCryptoAmountStringToMinimalUnits(in: blockchain!)
+        sendAmountInCryptoMinimalUnits = isCrypto ? sendAmountForDoubleString().convertCryptoAmountStringToMinimalUnits(in: blockchain!) : sendAmountForDoubleString().convertCryptoAmountStringToMinimalUnits(in: blockchain!) / exchangeCourse
         let convertedAmountInMinimalUnits = isCrypto ? sendAmountInCryptoMinimalUnits * exchangeCourse : sendAmountInCryptoMinimalUnits
         
         convertedAmountString = isCrypto ? convertedAmountInMinimalUnits.fiatValueString(for: blockchain!) : convertedAmountInMinimalUnits.cryptoValueString(for: blockchain!)
@@ -345,21 +339,25 @@ class SendAmountPresenter: NSObject {
         
         result = sendAmountInCryptoMinimalUnits
         
-        if payForCommission {
-            if feeEstimationInCrypto != nil {
-                result = result + feeEstimationInCrypto!
-                
-                if donationAmount != nil {
-                    result = result + donationAmount!
+        if result.isZero {
+            totalSumInCrypto = BigInt.zero()
+        } else {
+            if payForCommission {
+                if feeEstimationInCrypto != nil {
+                    result = result + feeEstimationInCrypto!
+                    
+                    if donationAmount != nil {
+                        result = result + donationAmount!
+                    }
                 }
             }
+            
+            if result > availableSumInCrypto {
+                result = availableSumInCrypto
+            }
+            
+            totalSumInCrypto = result
         }
-        
-        if result > availableSumInCrypto {
-            result = availableSumInCrypto
-        }
-        
-        totalSumInCrypto = result
     }
     
     func swapCurrencies() {
@@ -438,10 +436,11 @@ extension CreateTransactionDelegate {
             if transactionDTO.choosenWallet!.isMultiSig {
                 sendAmount = sendAmountInCryptoMinimalUnits
             } else {
-                if sendAmountInCryptoMinimalUnits.isNonZero {
+                if sendAmountInCryptoMinimalUnits > feeEstimationInCrypto {
                     sendAmount = sendAmountInCryptoMinimalUnits - feeEstimationInCrypto
                 } else {
-                    return true
+                    rawTransaction = "Amount too low!"
+                    return false
                 }
             }
         }

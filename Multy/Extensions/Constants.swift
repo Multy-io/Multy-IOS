@@ -1,8 +1,9 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = Constants
 
@@ -65,6 +66,10 @@ struct Constants {
             BlockchainType.create(currencyID: BLOCKCHAIN_ETHEREUM_CLASSIC.rawValue, netType: 0),
 //            BlockchainType.create(currencyID: BLOCKCHAIN_ERC20.rawValue,            netType: 0),
         ]
+        
+        struct RealmManager {
+            static let leastSchemaVersionAfterCoreLibPrivateKeyFix = 31
+        }
     }
     
     struct BigIntSwift {
@@ -126,6 +131,7 @@ let screenWidth = UIScreen.main.bounds.size.width
 let screenHeight = UIScreen.main.bounds.size.height
 
 //Devices Heights
+let heightOfXSMax    : CGFloat = 896.0
 let heightOfX        : CGFloat = 812.0
 let heightOfPlus     : CGFloat = 736.0
 let heightOfStandard : CGFloat = 667.0
@@ -231,7 +237,7 @@ enum SocketMessageType : Int {
         multisigTxIncoming =        10,
         multisigTxConfirm =         11,
         multisigTxRevoke =          12,
-        resyncCompleted =            13
+        resyncCompleted =           13
 }
 
 enum Result<Value, Error: StringProtocol> {
@@ -259,7 +265,8 @@ enum MultisigOwnerTxStatus: Int {
 let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for available donation
 let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 
-let plainTxGasLimit : UInt64 = 21000
+let plainTxGasLimit : UInt64 = 42000
+let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 16.10.2018
 
 //API REST constants
 //let apiUrl = "http://88.198.47.112:2278/"//"http://192.168.0.121:7778/"
@@ -294,3 +301,5 @@ let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 let inviteCodeCount = 45
 
 let exchangeCourseDefault : Double = 1.0
+let dappDLTitle = "Dragonereum"
+let magicReceiveDL = "magicReceive"

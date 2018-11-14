@@ -1,8 +1,9 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = TransactionViewController
 private typealias PickerContactsDelegate = TransactionViewController
@@ -455,6 +456,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             } else if presenter.isDonationExist {
                 result = result + 300
             }
+        } else {
+            
         }
         
         return result

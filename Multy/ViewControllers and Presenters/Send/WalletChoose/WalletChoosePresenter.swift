@@ -1,9 +1,10 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import RealmSwift
+//import MultyCoreLibrary
 
 class WalletChoosePresenter: NSObject {
 
@@ -48,7 +49,7 @@ class WalletChoosePresenter: NSObject {
     func presentAlert(message : String?, blockchain: Blockchain) {
         var alertMessage = String()
         if message == nil {
-            alertMessage = walletChoooseVC!.localize(string: Constants.notEnoughAmountString) +  " \(transactionDTO.sendAmount ?? 0.0) \(blockchain.shortName)"
+            alertMessage = walletChoooseVC!.localize(string: Constants.notEnoughAmountString) +  " \(transactionDTO.sendAmount ?? "0.0") \(blockchain.shortName)"
         } else {
             alertMessage = message!
         }

@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -21,7 +21,13 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     
     weak var sendWalletDelegate: SendWalletProtocol?
     
-    var whereFrom: UIViewController?
+    var whereFrom: UIViewController? {
+        didSet {
+            if whereFrom?.className == CreateMultiSigViewController.className {
+                presenter.isNeedSort = true
+            }
+        }
+    }
     
     let loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
     
@@ -115,9 +121,14 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell
         walletCell.arrowImage.image = nil
-        walletCell.wallet = self.presenter.walletsArr[indexPath.row]
+        let wallet = self.presenter.walletsArr[indexPath.row]
+        walletCell.wallet = wallet
         walletCell.fillInCell()
-        
+        if presenter.preselectedWallet != nil && presenter.preselectedWallet!.address == wallet.address {
+            walletCell.arrowImage.image = UIImage(named: "checkmark")
+        } else {
+            walletCell.arrowImage.image = nil
+        }
         return walletCell
     }
     

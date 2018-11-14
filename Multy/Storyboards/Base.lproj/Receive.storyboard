@@ -34,14 +34,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EY0-Gq-gbn">
-                                <rect key="frame" x="0.0" y="29" width="59" height="30"/>
+                                <rect key="frame" x="0.0" y="29" width="52" height="30"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <action selector="cancelAction:" destination="x6R-t5-dzo" eventType="touchUpInside" id="4pT-7S-oCE"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="Ice-ba-dkQ">
-                                <rect key="frame" x="16" y="33" width="13" height="21"/>
+                                <rect key="frame" x="9" y="33" width="13" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="13" id="ULR-2h-9oo"/>
                                     <constraint firstAttribute="height" constant="21" id="xXa-vV-0hy"/>
@@ -126,7 +126,7 @@ You can create one by tapping "+"  at the top right.</string>
                             <constraint firstItem="RHs-Mt-eGo" firstAttribute="leading" secondItem="LGI-Wi-zI2" secondAttribute="leading" constant="36" id="Wgx-uX-Hon"/>
                             <constraint firstItem="OTf-rE-tjL" firstAttribute="centerY" secondItem="Ice-ba-dkQ" secondAttribute="centerY" id="XBa-Eq-rJp"/>
                             <constraint firstItem="lpd-w8-Ylh" firstAttribute="centerX" secondItem="LGI-Wi-zI2" secondAttribute="centerX" id="b9n-iC-KN5"/>
-                            <constraint firstItem="Ice-ba-dkQ" firstAttribute="leading" secondItem="LGI-Wi-zI2" secondAttribute="leading" constant="16" id="cTi-aA-Zd5"/>
+                            <constraint firstItem="Ice-ba-dkQ" firstAttribute="leading" secondItem="LGI-Wi-zI2" secondAttribute="leading" constant="9" id="cTi-aA-Zd5"/>
                             <constraint firstItem="EY0-Gq-gbn" firstAttribute="top" secondItem="CaU-QW-SxE" secondAttribute="bottom" constant="9" id="cki-4A-miH"/>
                             <constraint firstItem="K4L-VM-xBr" firstAttribute="top" secondItem="39R-Mj-hYl" secondAttribute="bottom" id="dnx-Ln-dnH"/>
                             <constraint firstItem="idE-bb-nma" firstAttribute="centerX" secondItem="LGI-Wi-zI2" secondAttribute="centerX" id="fCj-o7-oXe"/>
@@ -358,7 +358,7 @@ You can create one by tapping "+"  at the top right.</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UQf-gq-ib1">
-                                        <rect key="frame" x="-0.5" y="26.5" width="59.5" height="30"/>
+                                        <rect key="frame" x="-0.5" y="26.5" width="52.5" height="30"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="backAction:" destination="Ci5-VC-rpK" eventType="touchUpInside" id="Kme-CE-sYX"/>
@@ -627,7 +627,7 @@ You can create one by tapping "+"  at the top right.</string>
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="bRa-jb-oib">
-                                        <rect key="frame" x="16" y="31" width="13" height="21"/>
+                                        <rect key="frame" x="9" y="31" width="13" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="4IB-bT-PIQ"/>
                                             <constraint firstAttribute="width" constant="13" id="sw7-yY-1Gb"/>
@@ -667,7 +667,7 @@ You can create one by tapping "+"  at the top right.</string>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="hSx-Am-TJ1" firstAttribute="top" secondItem="dWs-Iy-4aG" secondAttribute="topMargin" constant="1.5" id="6af-gd-bWk"/>
-                                    <constraint firstItem="bRa-jb-oib" firstAttribute="leading" secondItem="dWs-Iy-4aG" secondAttribute="leading" constant="16" id="7vF-I1-3Wt"/>
+                                    <constraint firstItem="bRa-jb-oib" firstAttribute="leading" secondItem="dWs-Iy-4aG" secondAttribute="leading" constant="9" id="7vF-I1-3Wt"/>
                                     <constraint firstItem="UQf-gq-ib1" firstAttribute="leading" secondItem="WdU-vV-Cb8" secondAttribute="leading" constant="-16" id="9ep-9n-Fma"/>
                                     <constraint firstAttribute="trailing" secondItem="7Et-dH-d2P" secondAttribute="trailing" constant="16" id="BH6-A0-4at"/>
                                     <constraint firstItem="WdU-vV-Cb8" firstAttribute="leading" secondItem="dWs-Iy-4aG" secondAttribute="leading" constant="15.5" id="CkE-pr-ZEY"/>
@@ -837,14 +837,14 @@ You can create one by tapping "+"  at the top right.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="1L7-H1-E5D">
-                                <rect key="frame" x="16" y="33" width="13" height="21"/>
+                                <rect key="frame" x="9" y="33" width="13" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="Vqn-pJ-nh6"/>
                                     <constraint firstAttribute="width" constant="13" id="gSJ-fN-HWE"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Egj-4Y-5Va">
-                                <rect key="frame" x="0.0" y="33" width="79" height="30"/>
+                                <rect key="frame" x="0.0" y="33" width="72" height="30"/>
                                 <connections>
                                     <action selector="cancelAction:" destination="ci5-kk-bB9" eventType="touchUpInside" id="iEh-yf-4IV"/>
                                 </connections>
@@ -890,7 +890,7 @@ You can create one by tapping "+"  at the top right.</string>
                             <constraint firstItem="lXp-WU-5ec" firstAttribute="centerX" secondItem="Ehy-SB-2yj" secondAttribute="centerX" id="elb-Xo-Glo"/>
                             <constraint firstItem="Egj-4Y-5Va" firstAttribute="top" secondItem="hbS-jX-vva" secondAttribute="bottom" constant="13" id="ixx-p4-Tof"/>
                             <constraint firstItem="F0n-7y-x9F" firstAttribute="leading" secondItem="eGl-ZA-fcR" secondAttribute="trailing" constant="2" id="kEo-qG-zoz"/>
-                            <constraint firstItem="1L7-H1-E5D" firstAttribute="leading" secondItem="h8C-J7-PWy" secondAttribute="leading" constant="16" id="ln2-QI-ab3"/>
+                            <constraint firstItem="1L7-H1-E5D" firstAttribute="leading" secondItem="h8C-J7-PWy" secondAttribute="leading" constant="9" id="ln2-QI-ab3"/>
                             <constraint firstItem="lXp-WU-5ec" firstAttribute="trailing" secondItem="VeI-na-O7A" secondAttribute="trailing" constant="30" id="n16-cL-JQf"/>
                             <constraint firstItem="Egj-4Y-5Va" firstAttribute="trailing" secondItem="1L7-H1-E5D" secondAttribute="trailing" constant="50" id="uAv-xr-zVb"/>
                             <constraint firstItem="qZH-gm-lpy" firstAttribute="centerX" secondItem="h8C-J7-PWy" secondAttribute="centerX" id="uff-va-fne"/>

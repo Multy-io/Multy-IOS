@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -142,7 +142,7 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
             }
         }
         
-        fixUI()
+//        fixUI()
     }
     
     func registerCells() {
@@ -256,9 +256,9 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
     }
     
     func fixUI() {
-        if screenHeight == heightOfX {
-            self.nextBtn.frame.origin = CGPoint(x: 0, y: 714)
-        }
+//        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
+//            self.nextBtn.frame.origin = CGPoint(x: 0, y: 714)
+//        }
     }
     
     func updateTVAndNextButton(with address: String) {

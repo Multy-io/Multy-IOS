@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -45,7 +45,9 @@ class MasterKeyGenerator : NSObject {
         let device = UIDevice.current
         InstanceID.instanceID().getID { [unowned self] (instanceString, error) in
             if let instanceID = instanceString {
+                #if DEBUG
                 print("instanceIDToken: \(instanceID)")
+                #endif
                 
                 DispatchQueue.main.async { [unowned self, unowned device] in
                     let key = self.sha512(instanceID + device.identifierForVendor!.uuidString + self.localPasswordString)

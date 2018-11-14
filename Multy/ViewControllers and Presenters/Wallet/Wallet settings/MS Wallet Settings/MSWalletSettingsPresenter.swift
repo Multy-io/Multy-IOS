@@ -8,5 +8,6 @@ class MSWalletSettingsPresenter: NSObject {
 
     var mainVC: MSWalletSettingsViewController?
     var wallet: UserWalletRLM?
+    var acc: AccountRLM?
     
 }

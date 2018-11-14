@@ -1,9 +1,10 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import RealmSwift
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = ReceiveStartPresenter
 
@@ -12,21 +13,27 @@ class ReceiveStartPresenter: NSObject {
     var receiveStartVC: ReceiveStartViewController?
     
     var isNeedToPop = false
-    
+        
     var selectedIndexPath: IndexPath? = nil
     
 //    var walletsArr = [UserWalletRLM?]()
     var walletsArr = Array<UserWalletRLM>()
     
     var selectedIndex: Int?
+    var preselectedWallet: UserWalletRLM?
     
     var displayedBlockchainOnly: BlockchainType?
+    var isMultisigAllowed = true
     
     var isForMultisig = false
     var inviteCode = ""
     var blockchainForSort: BlockchainType?
     
     var titleTextKey = Constants.receiveString
+    
+    var account: AccountRLM?
+    
+    var isNeedSort = false
     
     //test func
 //    func createWallets() {
@@ -68,6 +75,15 @@ class ReceiveStartPresenter: NSObject {
 //            }
 //        }
         blockUI()
+        if receiveStartVC?.whereFrom?.className == DappBrowserViewController.className ||
+           receiveStartVC?.whereFrom?.className == CreateMultiSigViewController.className {
+            fromDB(isNeedToSortByChain: isNeedSort)
+        } else {
+            fromVerbose()
+        }
+    }
+    
+    func fromVerbose() {
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             self.unlockUI()
             if err != nil {
@@ -78,8 +94,13 @@ class ReceiveStartPresenter: NSObject {
                 
                 if let blockchainType = self.displayedBlockchainOnly {
                     walletsArray = walletsArray.filter{ blockchainType == $0.blockchainType }
-                    if self.isForMultisig {
-                        walletsArray = walletsArray.filter{ $0.multisigWallet == nil }
+                    
+                    if self.isForMultisig || self.isMultisigAllowed == false {
+                        walletsArray = walletsArray.filter{ $0.isMultiSig == false }
+                    }
+                } else if self.displayedBlockchainOnly == nil {
+                    if self.isForMultisig || self.isMultisigAllowed == false {
+                        walletsArray = walletsArray.filter{ $0.isMultiSig == false }
                     }
                 }
                 
@@ -88,6 +109,25 @@ class ReceiveStartPresenter: NSObject {
                 self.walletsArr = walletsArray.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
                 self.receiveStartVC?.updateUI()
             }
+        }
+    }
+    
+    func fromDB(isNeedToSortByChain: Bool) {
+        DataManager.shared.realmManager.getAllWallets { (allWallets, error) in
+            self.unlockUI()
+            if error != nil {
+                //print something
+            }
+            
+            var nonMSwallets = allWallets!.filter{ $0.isMultiSig == false }
+            nonMSwallets = nonMSwallets.filter{ $0.isImportedHasKey }
+            
+            if isNeedToSortByChain {
+                nonMSwallets = nonMSwallets.filter{ self.displayedBlockchainOnly == $0.blockchainType }
+            }
+            
+            self.walletsArr = nonMSwallets.sorted(by: { $0.availableSumInCrypto > $1.availableSumInCrypto })
+            self.receiveStartVC?.updateUI()
         }
     }
     
@@ -160,10 +200,16 @@ class ReceiveStartPresenter: NSObject {
 //        }
         
         DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
-//            self.assetsVC?.loader.hide()
             if error == nil {
 //                self.assetsVC!.sendAnalyticsEvent(screenName: screenCreateWallet, eventName: cancelTap)
-                completion("ok", nil)
+                DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
+                    self.unlockUI()
+                    let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
+                    DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { [unowned self] (acc, err) in
+                        self.account = acc
+                        completion("ok", nil)
+                    })
+                }
             } else {
 //                self.assetsVC?.presentAlert(with: self.assetsVC!.localize(string: Constants.errorWhileCreatingWalletString))
                 completion(nil, nil)

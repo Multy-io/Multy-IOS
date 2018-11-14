@@ -21,59 +21,55 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N4e-sp-CyH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="103.5"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7NZ-TM-DTv">
-                                <rect key="frame" x="25" y="20" width="325" height="63.5"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="srv-bR-zld">
-                                <rect key="frame" x="16" y="6" width="343" height="91.5"/>
+                                <rect key="frame" x="16" y="6.5" width="343" height="90.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC ∙ Personal" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pYm-cg-fCJ">
-                                        <rect key="frame" x="58" y="10" width="104.5" height="22"/>
+                                        <rect key="frame" x="58" y="9.5" width="104.5" height="22"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                                         <color key="textColor" red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MS Status Lbl" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gSM-u4-t8a">
-                                        <rect key="frame" x="58" y="30" width="220" height="22"/>
+                                        <rect key="frame" x="58" y="29.5" width="220" height="22"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                         <color key="textColor" red="0.53722298145294189" green="0.6389540433883667" blue="0.78011840581893921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4q-xh-0f4">
-                                        <rect key="frame" x="130" y="32" width="38" height="28"/>
+                                        <rect key="frame" x="130" y="31.5" width="38" height="28"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                         <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 233 $" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wjl-lP-yts">
-                                        <rect key="frame" x="58" y="60" width="51" height="21"/>
+                                        <rect key="frame" x="58" y="59.5" width="51" height="21"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                         <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron" translatesAutoresizingMaskIntoConstraints="NO" id="Vd1-0D-jGB">
-                                        <rect key="frame" x="315" y="38.5" width="15" height="15"/>
+                                        <rect key="frame" x="315" y="38" width="15" height="15"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="0ip-OU-Bfm"/>
                                             <constraint firstAttribute="width" constant="15" id="ik2-ni-OEE"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1234" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Msb-b9-SS7">
-                                        <rect key="frame" x="58" y="32" width="67" height="28"/>
+                                        <rect key="frame" x="58" y="31.5" width="67" height="28"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btcMediumIcon" translatesAutoresizingMaskIntoConstraints="NO" id="bGK-TI-pDK">
-                                        <rect key="frame" x="6" y="23" width="46" height="46"/>
+                                        <rect key="frame" x="6" y="22.5" width="46" height="46"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="46" id="Hkl-wf-pZm"/>
                                             <constraint firstAttribute="height" constant="46" id="I8U-Cl-77I"/>
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pending" translatesAutoresizingMaskIntoConstraints="NO" id="fKf-uC-vtg">
-                                        <rect key="frame" x="288" y="35" width="22" height="22"/>
+                                        <rect key="frame" x="288" y="34.5" width="22" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="fKf-uC-vtg" secondAttribute="height" multiplier="1:1" id="PJa-z9-J2q"/>
                                             <constraint firstAttribute="width" constant="22" id="gD3-Gz-2rC"/>
@@ -95,6 +91,7 @@ Wallet is resyncing</string>
                                 <constraints>
                                     <constraint firstItem="bGK-TI-pDK" firstAttribute="centerY" secondItem="srv-bR-zld" secondAttribute="centerY" id="0Ym-P2-81O"/>
                                     <constraint firstAttribute="trailing" secondItem="Vd1-0D-jGB" secondAttribute="trailing" constant="13" id="2Ov-Ph-ySE"/>
+                                    <constraint firstAttribute="width" secondItem="srv-bR-zld" secondAttribute="height" multiplier="49:13" priority="750" id="5Y5-KM-bXQ"/>
                                     <constraint firstItem="gSM-u4-t8a" firstAttribute="top" secondItem="pYm-cg-fCJ" secondAttribute="bottom" constant="-2" id="GKt-5L-uKf"/>
                                     <constraint firstItem="dSJ-UU-BM0" firstAttribute="centerY" secondItem="srv-bR-zld" secondAttribute="centerY" id="Gtj-7v-5X2"/>
                                     <constraint firstItem="gSM-u4-t8a" firstAttribute="leading" secondItem="pYm-cg-fCJ" secondAttribute="leading" id="Hzl-bU-syv"/>
@@ -131,14 +128,10 @@ Wallet is resyncing</string>
                             <bool key="isElement" value="YES"/>
                         </accessibility>
                         <constraints>
-                            <constraint firstItem="srv-bR-zld" firstAttribute="top" secondItem="N4e-sp-CyH" secondAttribute="top" constant="6" id="G10-OS-B7q"/>
                             <constraint firstItem="srv-bR-zld" firstAttribute="leading" secondItem="N4e-sp-CyH" secondAttribute="leading" constant="16" id="Gtk-5N-ZGx"/>
-                            <constraint firstAttribute="bottom" secondItem="srv-bR-zld" secondAttribute="bottom" constant="6" id="HtO-bf-FQB"/>
-                            <constraint firstAttribute="trailing" secondItem="7NZ-TM-DTv" secondAttribute="trailing" constant="25" id="cwq-lt-Nza"/>
-                            <constraint firstAttribute="bottom" secondItem="7NZ-TM-DTv" secondAttribute="bottom" constant="20" id="dSN-ps-k6o"/>
-                            <constraint firstAttribute="trailing" secondItem="srv-bR-zld" secondAttribute="trailing" constant="16" id="dXY-kw-94B"/>
-                            <constraint firstItem="7NZ-TM-DTv" firstAttribute="leading" secondItem="N4e-sp-CyH" secondAttribute="leading" constant="25" id="dar-ed-Bec"/>
-                            <constraint firstItem="7NZ-TM-DTv" firstAttribute="top" secondItem="N4e-sp-CyH" secondAttribute="top" constant="20" id="zev-0n-swW"/>
+                            <constraint firstItem="srv-bR-zld" firstAttribute="top" relation="greaterThanOrEqual" secondItem="N4e-sp-CyH" secondAttribute="top" constant="6.5" id="Sqh-Us-ezi"/>
+                            <constraint firstItem="srv-bR-zld" firstAttribute="centerY" secondItem="N4e-sp-CyH" secondAttribute="centerY" id="oh8-bT-JtU"/>
+                            <constraint firstItem="srv-bR-zld" firstAttribute="centerX" secondItem="N4e-sp-CyH" secondAttribute="centerX" id="vZP-u7-NJz"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -155,17 +148,18 @@ Wallet is resyncing</string>
             <connections>
                 <outlet property="arrowImage" destination="Vd1-0D-jGB" id="RYb-7g-dGS"/>
                 <outlet property="backView" destination="srv-bR-zld" id="GGo-Cl-nqM"/>
+                <outlet property="backViewLeadingConstraint" destination="Gtk-5N-ZGx" id="RfT-7N-mYt"/>
                 <outlet property="cryptoNameLbl" destination="d4q-xh-0f4" id="9vi-lM-CFw"/>
                 <outlet property="cryptoSumLbl" destination="Msb-b9-SS7" id="bxP-YK-Yum"/>
                 <outlet property="fiatSumLbl" destination="wjl-lP-yts" id="PSd-wZ-4bQ"/>
                 <outlet property="msStatusLbl" destination="gSM-u4-t8a" id="R4f-9S-sSu"/>
                 <outlet property="nameYConstraint" destination="JCA-ck-fXq" id="lKP-3Z-frv"/>
+                <outlet property="selectedView" destination="N4e-sp-CyH" id="DXQ-AH-ffW"/>
                 <outlet property="statusImage" destination="fKf-uC-vtg" id="bxK-1y-nU3"/>
                 <outlet property="tokenImage" destination="bGK-TI-pDK" id="YHq-jz-AuX"/>
-                <outlet property="viewForShadow" destination="7NZ-TM-DTv" id="yXu-Xx-rvc"/>
                 <outlet property="walletNameLbl" destination="pYm-cg-fCJ" id="6sb-yS-ylc"/>
             </connections>
-            <point key="canvasLocation" x="-183.5" y="2"/>
+            <point key="canvasLocation" x="-183.19999999999999" y="13.493253373313344"/>
         </tableViewCell>
     </objects>
     <resources>

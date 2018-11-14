@@ -1,9 +1,10 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import ZFRippleButton
+//import MultyCoreLibrary
 
 private typealias LocalizeDelegate = ReceiveAmountViewController
 
@@ -226,6 +227,8 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     func fixForIpad() {
         if screenHeight == heightOfiPad {
             self.btnTopConstraint.constant = 10
+        } else if screenHeight == heightOfFive {
+            self.btnTopConstraint.constant = 60
         }
     }
 }

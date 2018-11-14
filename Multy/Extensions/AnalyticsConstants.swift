@@ -61,7 +61,8 @@ let backupSeedTap            = "Button_Backup_Seed"
 
 //              new screen  8
 
-let screenActivity           = "Screen_Activity"
+let screenBrowser           = "Screen_Browser"
+let browserTx               = "Browser_Transaction"
 //let closeTap                = "Button_Close"                  //cancel or back
 
 //              new screen  9

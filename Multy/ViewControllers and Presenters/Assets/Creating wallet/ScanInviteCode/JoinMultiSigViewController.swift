@@ -172,7 +172,7 @@ class JoinMultiSigViewController: UIViewController, AVCaptureMetadataOutputObjec
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let inset : UIEdgeInsets = UIEdgeInsetsMake(64, 0, keyboardSize.height, 0)
             bottomConstraint.constant = inset.bottom + 16
-            if screenHeight == heightOfX {
+            if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                 bottomConstraint.constant = inset.bottom - 19 //def is 35 but it for top of keyboard
             }
             

@@ -87,7 +87,9 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         }
         
         let contentHeight = feeRateDescriptionView.frame.maxY + donationHolderTopConstraint.constant + donationHeightConstraint.constant + 25 + nextBtn.frame.height
-        nextButtonTopConstraint.constant = contentHeight < view.frame.size.height ? ((view.frame.size.height - nextBtn.frame.size.height - bottomLayoutGuide.length - topLayoutGuide.length) - (feeRateDescriptionView.frame.maxY + donationHolderTopConstraint.constant + donationHeightConstraint.constant)) : 25
+        let nextButtonContentInBoundTopConstant = (view.frame.size.height - nextBtn.frame.size.height - bottomLayoutGuide.length - topLayoutGuide.length) - (feeRateDescriptionView.frame.maxY + donationHolderTopConstraint.constant + donationHeightConstraint.constant)
+        let nextButtonContentOutOfBoundTopConstant : CGFloat = 25 
+        nextButtonTopConstraint.constant = contentHeight < view.frame.size.height ? nextButtonContentInBoundTopConstant : nextButtonContentOutOfBoundTopConstant
         view.layoutIfNeeded()
     }
     

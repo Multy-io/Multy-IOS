@@ -1,10 +1,11 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import SwiftyContacts
 import Contacts
+//import MultyCoreLibrary
 
 private typealias TableViewDelegate = BTCWalletViewController
 private typealias ScrollViewDelegate = BTCWalletViewController
@@ -223,7 +224,7 @@ class BTCWalletViewController: UIViewController, AnalyticsProtocol {
     func checkVisibleCellsWithHetight() {
         if screenHeight == heightOfStandard {
             visibleCells = 5
-        } else if screenHeight == heightOfPlus || screenHeight == heightOfX {
+        } else if screenHeight == heightOfPlus || screenHeight == heightOfX || screenHeight == heightOfXSMax {
             visibleCells = 7
         }
     }
@@ -407,7 +408,7 @@ class BTCWalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func fixForX() {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             self.bottomView.frame.size.height = 83
 //            self.heightOfBottomBar.constant = 83
             self.bottomConstraint.constant = 30
@@ -582,7 +583,7 @@ extension TableViewDataSource: UITableViewDataSource {
                 return countOfHistObjects
             }
         } else {
-            if screenHeight == heightOfX {
+            if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                 return 13
             }
             return 10

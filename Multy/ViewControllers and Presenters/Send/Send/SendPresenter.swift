@@ -4,6 +4,7 @@
 
 import UIKit
 import RealmSwift
+//import MultyCoreLibrary
 
 private typealias CreateTransactionDelegate = SendPresenter
 
@@ -299,7 +300,7 @@ class SendPresenter: NSObject {
             transaction = TransactionDTO()
             let request = activeRequestsArr[selectedActiveRequestIndex!]
             //FIXME:
-            transaction!.sendAmount = request.sendAmount.doubleValue
+            transaction!.sendAmount = request.sendAmount
             transaction!.sendAddress = request.sendAddress
             transaction!.choosenWallet = filteredWalletArray[selectedWalletIndex!]
         }
@@ -455,7 +456,7 @@ class SendPresenter: NSObject {
                         return
                     }
                     
-                    let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? (self.transaction as! BTCTransactionDTO).newChangeAddress! : ""
+                    let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? self.addressData!["address"] as! String : ""
                     
                     let newAddressParams = [
                         "walletindex"   : wallet.walletID.intValue,

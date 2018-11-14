@@ -1,10 +1,11 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import RealmSwift
 import Realm
+//import MultyCoreLibrary
 
 private typealias RealmMigrationManager = RealmManager
 private typealias RecentAddressManager = RealmManager
@@ -17,10 +18,14 @@ class RealmManager: NSObject {
     static let shared = RealmManager()
     
     private var realm : Realm? = nil
-    let schemaVersion : UInt64 = 30
+    let schemaVersion : UInt64 = 31
     
     var account: AccountRLM?
     var config: Realm.Configuration?
+    
+    var schemaversion : UInt64 {
+        return realm!.configuration.schemaVersion
+    }
     
     private override init() {
         super.init()
@@ -133,6 +138,9 @@ class RealmManager: NSObject {
                                                     if oldSchemaVersion <= 30 {
                                                         self.migrateFrom29To30(with: migration)
                                                     }
+                                                    if oldSchemaVersion <= 31 {
+                                                        self.migrateFrom30To31(with: migration)
+                                                    }
             })
             
             self.config = realmConfig
@@ -228,7 +236,9 @@ class RealmManager: NSObject {
                     
                     completion(accountRLM, nil)
                     
+                    #if DEBUG
                     print("Successful writing account: \(accountRLM)")
+                    #endif
                 }
             } else {
                 print("Error fetching realm:\(#function)")
@@ -534,6 +544,9 @@ extension WalletManager {
                             if modifiedWallet != nil {
                                 modifiedWallet?.importedPublicKey = wallet.importedPublicKey
                                 modifiedWallet!.importedPrivateKey = wallet.importedPrivateKey
+                                
+                                //FIXME: check brokenState
+                                modifiedWallet?.brokenState = wallet.brokenState
                             }
                         }
                     }
@@ -567,6 +580,7 @@ extension WalletManager {
                                 modifiedWallet!.multisigWallet =    wallet.multisigWallet
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
+                                modifiedWallet?.brokenState =       wallet.brokenState
                                 
                                 newWallets.append(modifiedWallet!)
                             } else {
@@ -638,6 +652,29 @@ extension WalletManager {
         }
     }
     
+    func getAllWallets(completion: @escaping(_ wallets: [UserWalletRLM]?,_ error: Error?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let wallets = realm.objects(UserWalletRLM.self)
+                completion(Array(wallets), nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func updateImportedWallet(wallet: UserWalletRLM, impPK: String, impPubK: String) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                try! realm.write {
+                    wallet.importedPublicKey = impPubK
+                    wallet.importedPrivateKey = impPK
+                    realm.add(wallet, update: true)
+                }
+            }
+        }
+    }
+    
     func spendableOutput(addresses: List<AddressRLM>) -> [SpendableOutputRLM] {
         let ouputs = List<SpendableOutputRLM>()
         
@@ -649,7 +686,7 @@ extension WalletManager {
             }
         }
         
-        let results = ouputs.sorted(by: { (out1, out2) -> Bool in
+        let results = ouputs .sorted(by: { (out1, out2) -> Bool in
             out1.transactionOutAmount.uint64Value > out2.transactionOutAmount.int64Value
         })
         
@@ -1068,6 +1105,10 @@ extension RealmMigrationManager {
         migration.enumerateObjects(ofType: MultisigWallet.className()) { (_, msWallet) in
             msWallet?["isActivePaymentRequest"] = Bool()
         }
+    }
+    
+    func migrateFrom30To31(with migration: Migration) {
+        UserPreferences.shared.writeDBPrivateKeyFixValue(false)
     }
 }
 

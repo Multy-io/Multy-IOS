@@ -1,9 +1,10 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import Alamofire
+//import MultyCoreLibrary
 
 class WalletAddresessViewController: UIViewController,AnalyticsProtocol {
     

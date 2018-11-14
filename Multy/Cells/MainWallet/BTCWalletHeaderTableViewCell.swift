@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -54,7 +54,7 @@ class BTCWalletHeaderTableViewCell: UITableViewCell, UICollectionViewDelegate {
         if wallet != nil {
             self.titleLbl.text = wallet?.name
             self.collectionView.reloadData()
-            if screenHeight == heightOfX {
+            if screenHeight == heightOfX || screenHeight == heightOfXSMax {
                 self.topConstraint.constant = 50
             }
 //            self.pageControll.numberOfPages = (self.wallet?.addresses.count)!

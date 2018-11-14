@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -122,5 +122,24 @@ extension DataManager {
     
     func getWallet(primaryKey: String, completion: @escaping(_ result: Result<UserWalletRLM, String>) -> ()) {
         realmManager.getWallet(primaryKey: primaryKey) { completion($0) }
+    }
+    
+    func update(wallet: UserWalletRLM, impPK: String, impPubK: String) {
+        realmManager.updateImportedWallet(wallet: wallet, impPK: impPK, impPubK: impPubK)
+    }
+    
+    func getWalletWith(name: String, chain: NSNumber, chainType: NSNumber , completion: @escaping (_ wallet: UserWalletRLM?) -> ()) {
+        realmManager.getAllWallets { (allWallets, err) in
+            if err != nil {
+                completion(nil)
+            }
+            var walletToReturn: UserWalletRLM?
+            for wallet in allWallets! {
+                if wallet.name == name && wallet.chain == chain && wallet.chainType == chainType {
+                    walletToReturn = wallet
+                }
+            }
+            completion(walletToReturn)
+        }
     }
 }

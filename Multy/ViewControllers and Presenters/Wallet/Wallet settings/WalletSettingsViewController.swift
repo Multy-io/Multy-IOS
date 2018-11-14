@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -11,6 +11,9 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     @IBOutlet weak var walletNameTF: UITextField!
     @IBOutlet weak var resyncBlockView: UIView!
     @IBOutlet weak var resyncBlockHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var importedWalletUIView: UIView!
+    @IBOutlet weak var importedWalletHeightConstraint: NSLayoutConstraint!
     
     let presenter = WalletSettingsPresenter()
     
@@ -42,6 +45,10 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     
     func updateUI() {
         self.walletNameTF.text = self.presenter.wallet?.name
+        
+        let isWalletFixed = (WalletBrokenState(presenter.wallet!.brokenState.intValue) == .fixedPrivateKey)
+        importedWalletUIView.isHidden = !isWalletFixed
+        importedWalletHeightConstraint.constant = isWalletFixed ? 170.0 : 0
     }
     
     @IBAction func deleteAction(_ sender: Any) {

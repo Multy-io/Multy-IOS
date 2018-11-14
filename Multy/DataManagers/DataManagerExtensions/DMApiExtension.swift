@@ -1,10 +1,11 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import Foundation
 import RealmSwift
 import Alamofire
+//import MultyCoreLibrary
 
 extension DataManager {
     
@@ -70,6 +71,19 @@ extension DataManager {
                     self.saveMultisigFactories(multisigFactoriesInfo)
                 }
                 
+                if let browserDefaults = answerDict!["browserdefault"] as? NSDictionary {
+                    let currencyID = browserDefaults["currencyid"] as! Int
+                    userDefaults.set(currencyID, forKey: "browserCurrencyID")
+                    
+                    let networkID = browserDefaults["networkid"] as! Int
+                    userDefaults.set(networkID, forKey: "browserNetworkID")
+                    
+                    let browserURL = browserDefaults["url"] as! String
+                    userDefaults.set(browserURL, forKey: "browserDefURL")
+                    // Check this, you can change link
+//                    userDefaults.set("https://www.onliner.by/", forKey: "browserDefURL")
+                }
+                
                 userDefaults.synchronize()
                 
                 completion(hardVersion, softVersion, nil)
@@ -130,7 +144,10 @@ extension DataManager {
                         let hexBinData = self.coreLibManager.createSeedBinaryData(from: rootKey!)?.convertToHexString()
                         paramsDict["binaryData"] = hexBinData
                         paramsDict["backupSeedPhrase"] = rootKey
+                        
+                        #if DEBUG
                         print(paramsDict)
+                        #endif
                         
                         self.apiManager.userID = params["userID"] as! String
                     }
@@ -451,6 +468,20 @@ extension DataManager {
             apiManager.deleteImportedWallet(currencyID: wallet.chain, networkID: wallet.chainType, address: wallet.address, completion: completion)
         } else {
             apiManager.deleteCreatedWallet(currencyID: wallet.chain, networkID: wallet.chainType, walletIndex: wallet.walletID, completion: completion)
+        }
+    }
+    
+    func convertToBroken(currencyID: NSNumber, networkID: NSNumber, walletID: NSNumber, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        apiManager.convertToBroken(currencyID: currencyID, networkID: networkID, walletID: walletID) {
+            completion($0)
+        }
+    }
+    
+    func convertToBroken(_ addresses: [String], completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        if addresses.isEmpty == false {
+            apiManager.convertToBroken(addresses) {
+                completion($0)
+            }
         }
     }
 }

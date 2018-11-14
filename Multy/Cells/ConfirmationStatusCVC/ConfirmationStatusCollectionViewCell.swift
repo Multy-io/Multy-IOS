@@ -54,6 +54,9 @@ class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
     
     private func checkedStatusesString(_ status: ConfirmationStatus, memberName: String? = nil, date: Date) -> NSMutableAttributedString {
         let dateFormatter = Date.defaultGMTDateFormatter()
+        if screenHeight <= heightOfFive {
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+        }
         let dateString = dateFormatter.string(from: date)
         let result = NSMutableAttributedString(string: "· \(dateString)", attributes: [
             .font: UIFont(name: "AvenirNext-Regular", size: 12.0)!,

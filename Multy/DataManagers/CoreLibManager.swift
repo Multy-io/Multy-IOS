@@ -1,9 +1,10 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import RealmSwift
+//import MultyCoreLibrary
 
 private typealias TestCoreLibManager = CoreLibManager
 private typealias BigIntCoreLibManager = CoreLibManager
@@ -150,12 +151,15 @@ class CoreLibManager: NSObject {
         }
         
         walletDict["pointer"] = newAccountPointer
+        walletDict["addressPointer"] = newAccountPointer
         
         return Result.success(walletDict)
     }
     
     func createSeedBinaryData(from phrase: String) -> BinaryData? {
+        #if DEBUG
         print("seed phrase: \(phrase)")
+        #endif
         let stringPointer = phrase.UTF8CStringPointer
         
         let binaryDataPointer = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
@@ -199,7 +203,10 @@ class CoreLibManager: NSObject {
         _ = errorString(from: mki, mask: "make_key_id")
         
         let extendedKey = String(cString: extendedKeyPointer.pointee!)
+        
+        #if DEBUG
         print("extended key: \(extendedKey)")
+        #endif
         
         return extendedKey
     }
@@ -476,6 +483,149 @@ class CoreLibManager: NSObject {
         let privateKeyString = String(cString: privateKeyStringPointer.pointee!)
 
         return privateKeyString
+    }
+    
+    func findPrivateKey(for address: String, blockchainType: BlockchainType, walletID: UInt32, binaryData: inout BinaryData) -> Dictionary<String, Any>? {
+        let binaryDataPointer = UnsafeMutablePointer(mutating: &binaryData)
+        let masterKeyPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        
+        //HD Account
+        let newAccountPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        
+        //New address
+        let newAddressPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let newAddressStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
+        
+        //Private
+        let addressPrivateKeyPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let privateKeyStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
+        
+        //Public
+        let addressPublicKeyPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
+        let publicKeyStringPointer = UnsafeMutablePointer<UnsafePointer<Int8>?>.allocate(capacity: 1)
+        
+        
+        //placed here since we have multiple return
+        defer {
+            free_extended_key(masterKeyPointer.pointee)
+            free_hd_account(newAccountPointer.pointee)
+            
+            //will be free later
+            //            free_account(newAddressPointer.pointee)
+            
+            masterKeyPointer.deallocate()
+            newAccountPointer.deallocate()
+            //            newAddressPointer.deallocate()
+        }
+        
+        let mmk = make_master_key(binaryDataPointer, masterKeyPointer)
+        if mmk != nil {
+            _ = errorString(from: mmk, mask: "make_master_key")
+        }
+        
+        let mHDa = make_hd_account(masterKeyPointer.pointee, blockchainType, ACCOUNT_TYPE_DEFAULT.rawValue, walletID, newAccountPointer)
+        if mHDa != nil {
+            _ = errorString(from: mHDa!, mask: "make_hd_account")
+            
+            return nil
+        }
+        
+        let mHDla = make_hd_leaf_account(newAccountPointer.pointee, ADDRESS_EXTERNAL, 0, newAddressPointer)
+        if mHDla != nil {
+            _ = errorString(from: mHDa!, mask: "make_hd_leaf_account")
+            
+            return nil
+        }
+        
+        //Create wallet
+        var addressDict = Dictionary<String, Any>()
+        addressDict["currencyID"] = blockchainType.blockchain.rawValue
+        addressDict["walletIndex"] = walletID
+        addressDict["addressIndex"] = 0
+        addressDict["addressPointer"] = newAddressPointer
+        
+        var newAddressString : String?
+        
+        for offset in 0..<(16 * 16) {
+            let acpk = account_change_private_key(newAddressPointer.pointee!, -1, UInt8(offset))
+            if acpk != nil {
+                _ = errorString(from: acpk, mask: "account_change_private_key")
+                
+                continue
+            }
+            
+            let agas = account_get_address_string(newAddressPointer.pointee, newAddressStringPointer)
+            if agas != nil {
+                _ = errorString(from: acpk, mask: "account_get_address_string")
+                
+                continue
+            }
+            
+            if agas != nil {
+                _ = errorString(from: agas, mask: "account_get_address_string")
+                
+                continue
+            } else {
+                newAddressString = String(cString: newAddressStringPointer.pointee!)
+                print("addressString: \(newAddressString!)")
+            }
+            
+            if newAddressString == address {
+                addressDict["address"] = newAddressString!
+            } else {
+                continue
+            }
+            
+            let gakPRIV = account_get_key(newAddressPointer.pointee, KEY_TYPE_PRIVATE, addressPrivateKeyPointer)
+            _ = errorString(from: gakPRIV, mask: "account_get_key:KEY_TYPE_PRIVATE")
+            let gakPUBL = account_get_key(newAddressPointer.pointee, KEY_TYPE_PUBLIC, addressPublicKeyPointer)
+            _ = errorString(from: gakPUBL, mask: "account_get_key:KEY_TYPE_PUBLIC")
+            
+            let ktsPRIV = key_to_string(addressPrivateKeyPointer.pointee, privateKeyStringPointer)
+            _ = errorString(from: ktsPRIV, mask: "key_to_string:KEY_TYPE_PRIVATE")
+            let ktsPUBL = key_to_string(addressPublicKeyPointer.pointee, publicKeyStringPointer)
+            _ = errorString(from: ktsPUBL, mask: "key_to_string:KEY_TYPE_PUBLIC")
+            
+            var privateKeyString : String?
+            var publicKeyString : String?
+            
+            if ktsPRIV != nil {
+                return nil
+            } else {
+                privateKeyString = String(cString: privateKeyStringPointer.pointee!)
+                addressDict["privateKey"] = privateKeyString!
+            }
+            
+            if ktsPUBL != nil {
+                return nil
+            } else {
+                publicKeyString = String(cString: publicKeyStringPointer.pointee!)
+                addressDict["publicKey"] = publicKeyString!
+                
+            }
+            
+            
+            //FIXME: split into pieces according continue cases
+            defer {
+                free_string(newAddressStringPointer.pointee)
+                
+                free_key(addressPrivateKeyPointer.pointee)
+                free_string(privateKeyStringPointer.pointee)
+                
+                free_key(addressPublicKeyPointer.pointee)
+                free_string(publicKeyStringPointer.pointee)
+                
+                newAddressStringPointer.deallocate()
+                addressPrivateKeyPointer.deallocate()
+                privateKeyStringPointer.deallocate()
+                addressPublicKeyPointer.deallocate()
+                publicKeyStringPointer.deallocate()
+            }
+            
+            return addressDict
+        }
+        
+        return nil
     }
     
     func createAddress(blockchainType: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> Dictionary<String, Any>? {
@@ -892,7 +1042,9 @@ class CoreLibManager: NSObject {
         
         let errorString = String(cString: pointer.pointee.message)
         
+        #if DEBUG
         print("\(mask): \(errorString))")
+        #endif
         
         return errorString
     }
@@ -958,7 +1110,9 @@ extension TestCoreLibManager {
         
         let phrase = String(cString: mnemo.pointee!)
         
+        #if DEBUG
         print("seed phrase: \(phrase)")
+        #endif
         
         let stringPointer = phrase.UTF8CStringPointer
         let binaryDataPointer = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
@@ -977,7 +1131,9 @@ extension TestCoreLibManager {
         print("make_key_id: \(String(describing: mki))")
         
         let extendedKey = String(cString: extendedKeyPointer.pointee!)
+        #if DEBUG
         print("extended key: \(extendedKey)")
+        #endif
         
         //HD Account
         

@@ -1,4 +1,4 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -38,6 +38,7 @@ class WalletSettingsPresenter: NSObject {
                                                     })
                                                     break
                                                 case .failure(let error):
+                                                    self.walletSettingsVC?.loader.hide()
                                                     self.walletSettingsVC?.presentAlert(with: error)
                                                     break
                                                 }
@@ -82,7 +83,7 @@ class WalletSettingsPresenter: NSObject {
         } else {
             DataManager.shared.realmManager.getAccount { (acc, err) in
                 if acc != nil {
-                    if (acc!.wallets.filter{$0.multisigWallet != nil && $0.multisigWallet!.linkedWalletAddress == self.wallet!.address && $0.multisigWallet!.chainType == self.wallet?.chainType}.count > 0) {
+                    if (acc!.wallets.filter{$0.multisigWallet != nil && $0.multisigWallet!.linkedWalletAddress == self.wallet!.address && $0.multisigWallet!.chainType == self.wallet!.chainType}.count > 0) {
                         let message = Constants.deleteLinkedWalletFailedString
                         completion(false, message)
                     }

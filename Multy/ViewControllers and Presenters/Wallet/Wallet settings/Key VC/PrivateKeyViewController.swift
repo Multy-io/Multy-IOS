@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+//import MultyCoreLibrary
 
 class PrivateKeyViewController: UIViewController {
 
@@ -68,7 +69,7 @@ class PrivateKeyViewController: UIViewController {
     }
     
     func makePrivateKey() -> String {
-        if wallet!.isImported {
+        if wallet!.isImportedForPrimaryKey {
             return wallet!.importedPrivateKey
         } else {
             var binaryData = account!.binaryDataString.createBinaryData()!

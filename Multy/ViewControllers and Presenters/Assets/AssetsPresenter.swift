@@ -1,16 +1,17 @@
-//Copyright 2017 Idealnaya rabota LLC
+//Copyright 2018 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
 import UIKit
 import RealmSwift
+//import MultyCoreLibrary
 
 class AssetsPresenter: NSObject {
 
     var assetsVC: AssetsViewController?
     
     var tabBarFrame: CGRect {
-        if screenHeight == heightOfX {
+        if screenHeight == heightOfX || screenHeight == heightOfXSMax{
             return account != nil ? CGRect(x: 0, y: screenHeight - 85, width: screenWidth, height: 85) : CGRect(x: 0, y: 0, width: 0, height: 0)
         } else {
             return account != nil ? CGRect(x: 0, y: screenHeight - 49, width: screenWidth, height: 49) : CGRect(x: 0, y: 0, width: 0, height: 0)
@@ -51,13 +52,21 @@ class AssetsPresenter: NSObject {
                 self.assetsVC?.view.isUserInteractionEnabled = true
                 
             } else {
-                
                 assetsVC!.tableView.frame.size.height = screenHeight
             }
             
             if !isSocketInitiateUpdating && self.assetsVC!.tabBarController!.viewControllers![0].childViewControllers.count == 1 {
                 assetsVC?.updateUI()
             }
+        }
+    }
+    
+    var magicReceiveParams: NSDictionary? {
+        didSet {
+            if self.account == nil {
+                return
+            }
+            openMagicReceiveWith(params: magicReceiveParams!)
         }
     }
     
@@ -136,6 +145,8 @@ class AssetsPresenter: NSObject {
             }
         }
         
+        let fileteredWallets = result.filter{ $0.blockchain == BLOCKCHAIN_ETHEREUM }
+
         return result
     }
     
@@ -324,7 +335,7 @@ class AssetsPresenter: NSObject {
         }
     }
     
-    func createFirstWallets(blockchianType: BlockchainType, completion: @escaping (_ answer: String?,_ error: Error?) -> ()) {
+    func createFirstWallets(walletName: String?, blockchianType: BlockchainType, completion: @escaping (_ answer: String?,_ error: Error?) -> ()) {
         var binData : BinaryData = account!.binaryDataString.createBinaryData()!
         let createdWallet = UserWalletRLM()
         //MARK: topIndex
@@ -341,7 +352,7 @@ class AssetsPresenter: NSObject {
         
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
-        createdWallet.name = "My First \(blockchianType.shortName) Wallet"
+        createdWallet.name = walletName == nil ? "My First \(blockchianType.shortName) Wallet" : walletName!
         createdWallet.walletID = NSNumber(value: Int32(dict!["walletID"] as! UInt32))
         createdWallet.addressID = NSNumber(value: Int32(dict!["addressID"] as! UInt32))
         createdWallet.address = dict!["address"] as! String
@@ -401,6 +412,20 @@ class AssetsPresenter: NSObject {
     func modifyImportedWallets(_ array: List<UserWalletRLM>, completion: @escaping(_ error: NSError?)->()) {
         var modifiedWallets = List<UserWalletRLM>()
         
+        if DataManager.shared.shouldCheckWalletsPrivateKeys {
+            let convertedWallets = DataManager.shared.checkWallets(array)
+            
+            if convertedWallets.count > 0 {
+                if importedWalletsInDB == nil {
+                    importedWalletsInDB = convertedWallets
+                } else {
+                    importedWalletsInDB!.append(contentsOf: convertedWallets)
+                }
+            }
+            
+            UserPreferences.shared.writeDBPrivateKeyFixValue(true)
+        }
+        
         if importedWalletsInDB != nil {
             for wallet in importedWalletsInDB! {
                 let ethWallet = array.filter { $0.address == wallet.address && $0.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM && $0.chainType == wallet.chainType }.first
@@ -428,5 +453,40 @@ class AssetsPresenter: NSObject {
         } else {
             completion(nil)
         }
+    }
+    
+    func openMagicReceiveWith(params: NSDictionary) {
+        let walletName = params["walletName"] as! String
+        let chainId = UInt32(params["chainID"] as! String)
+        let chainType = UInt32(params["chainType"] as! String)
+        let blockchainType = BlockchainType(blockchain: Blockchain(rawValue: chainId!), net_type: Int(params["chainType"] as! String)!)
+        DataManager.shared.getWalletWith(name: walletName, chain: chainId! as NSNumber, chainType: chainType! as NSNumber) { (wallet) in
+            if wallet != nil {
+                self.openMagicReceive(wallet: wallet!, dlParams: params)
+            } else {
+                self.createFirstWallets(walletName: walletName, blockchianType: blockchainType, completion: { [unowned self] (answer, err) in
+                    let walletID = self.account!.topIndexes.filter("currencyID = \(chainId!) AND networkID == \(chainType!)").first
+                    print(answer)
+                    print(walletID)
+                    DataManager.shared.apiManager.getOneCreatedWalletVerbose(walletID: walletID!.topIndex, blockchain: blockchainType, completion: { (dict, err) in
+                        print(dict)
+                        if ((dict as! NSDictionary)["code"] as! NSNumber) == 400 {
+                            self.assetsVC?.presentAlert(with: "Sorry Error")
+                            return
+                        }
+                        let wallet = UserWalletRLM.initWithInfo(walletInfo: (dict!["wallet"] as! NSArray)[0] as! NSDictionary)
+                        self.openMagicReceive(wallet: wallet, dlParams: params)
+                    })
+                })
+            }
+        }  
+    }
+    
+    func openMagicReceive(wallet: UserWalletRLM, dlParams: NSDictionary) {
+        let receiveVC = viewControllerFrom("Receive", "receiveDetails") as! ReceiveAllDetailsViewController
+        receiveVC.presenter.wallet = wallet
+        receiveVC.presenter.dlParams = dlParams
+        receiveVC.presenter.isOpenByDL = true
+        self.assetsVC?.navigationController?.pushViewController(receiveVC, animated: true)
     }
 }

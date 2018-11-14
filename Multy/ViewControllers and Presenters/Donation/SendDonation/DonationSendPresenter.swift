@@ -80,7 +80,7 @@ class DonationSendPresenter: NSObject, CustomFeeRateProtocol, SendWalletProtocol
         let transaction = TransactionDTO()
         transaction.choosenWallet = self.walletPayFrom
         transaction.sendAddress = donationAddress
-        transaction.sendAmount = self.mainVC?.donationTF.text?.convertStringWithCommaToDouble()
+        transaction.sendAmount = self.mainVC?.donationTF.text
         transaction.feeRate = BigInt("\(self.customFee)")
         
         DataManager.shared.createAndSendDonationTransaction(transactionDTO: transaction) { [unowned self] (answer, err) in
@@ -104,10 +104,10 @@ class DonationSendPresenter: NSObject, CustomFeeRateProtocol, SendWalletProtocol
                 self.mainVC!.sendDonationSuccessAnalytics()
             }
             
-            if transaction.sendAmount! < minSatoshiToDonate.btcValue {
-                self.mainVC!.presentWarning(message: "Too low donation amount")
-                return
-            }
+//            if transaction.sendAmount! < minSatoshiToDonate.btcValue {
+//                self.mainVC!.presentWarning(message: "Too low donation amount")
+//                return
+//            }
             
             let storyboard = UIStoryboard(name: "Send", bundle: nil)
             let sendSuccessVC = storyboard.instantiateViewController(withIdentifier: "SuccessSendVC") as! SendingAnimationViewController

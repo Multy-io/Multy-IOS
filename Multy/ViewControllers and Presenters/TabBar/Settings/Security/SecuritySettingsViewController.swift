@@ -102,11 +102,12 @@ class SecuritySettingsViewController: UIViewController, AnalyticsProtocol, Cance
         RealmManager.shared.clearRealm { (ok, err) in
             DataManager.shared.finishRealmSession()
             
-            UserDefaults.standard.removeObject(forKey: "databasePassword")
-            UserDefaults.standard.removeObject(forKey: "isFirstLaunch")
-            UserDefaults.standard.removeObject(forKey: "pin")
-            UserDefaults.standard.removeObject(forKey: "isTermsAccept")
-            UserDefaults.standard.removeObject(forKey: "isFCMAccepted")
+            self.clearUserDefaults()
+//            UserDefaults.standard.removeObject(forKey: "databasePassword")
+//            UserDefaults.standard.removeObject(forKey: "isFirstLaunch")
+//            UserDefaults.standard.removeObject(forKey: "pin")
+//            UserDefaults.standard.removeObject(forKey: "isTermsAccept")
+//            UserDefaults.standard.removeObject(forKey: "isFCMAccepted")
             UserPreferences.shared.resetUserPreferences()
             
             DataManager.shared.clearDB { (err) in
@@ -134,6 +135,12 @@ class SecuritySettingsViewController: UIViewController, AnalyticsProtocol, Cance
 //                }
 //            }
 //        }
+    }
+    
+    func clearUserDefaults() {
+        let domain = Bundle.main.bundleIdentifier!
+        UserDefaults.standard.removePersistentDomain(forName: domain)
+        UserDefaults.standard.synchronize()
     }
     
     func presentNoInternet() {
