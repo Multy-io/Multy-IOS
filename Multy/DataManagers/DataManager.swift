@@ -93,7 +93,8 @@ class DataManager: NSObject {
             return self.currencyExchange.ethToUSD
         case BLOCKCHAIN_ERC20:
             return self.currencyExchange.ethToUSD
-        default: return 1.0
+        default:
+            return 1.0
         }
     }
     

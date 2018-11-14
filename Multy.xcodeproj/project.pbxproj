@@ -69,6 +69,7 @@
 		448C38D12165603500D83D02 /* WKWebViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C38892165603400D83D02 /* WKWebViewConfiguration.swift */; };
 		448C38D32165603500D83D02 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C388B2165603400D83D02 /* Bundle.swift */; };
 		448C38D52165603500D83D02 /* ScriptMessageMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C388D2165603400D83D02 /* ScriptMessageMediator.swift */; };
+		448D9939219AD72F000BAE00 /* UserWalletRLM+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448D9938219AD72F000BAE00 /* UserWalletRLM+Extension.swift */; };
 		448F8327218B578600B734F3 /* libjsoncpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 448F8326218B578600B734F3 /* libjsoncpp.a */; };
 		449151402049764D0028195F /* MultyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491513F2049764D0028195F /* MultyUITests.swift */; };
 		4491514E204976600028195F /* MultyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4491514D204976600028195F /* MultyTests.swift */; };
@@ -535,6 +536,7 @@
 		448C38892165603400D83D02 /* WKWebViewConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewConfiguration.swift; sourceTree = "<group>"; };
 		448C388B2165603400D83D02 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		448C388D2165603400D83D02 /* ScriptMessageMediator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptMessageMediator.swift; sourceTree = "<group>"; };
+		448D9938219AD72F000BAE00 /* UserWalletRLM+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserWalletRLM+Extension.swift"; sourceTree = "<group>"; };
 		448F8325218B56E500B734F3 /* json_api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = json_api.h; sourceTree = "<group>"; };
 		448F8326218B578600B734F3 /* libjsoncpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjsoncpp.a; sourceTree = "<group>"; };
 		4491513D2049764D0028195F /* MultyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1462,6 +1464,7 @@
 				854C748A20C56C6900CBAFE9 /* Utilities.swift */,
 				4448DCC620C8333100CE80CB /* LocalLanguage.swift */,
 				445D150F20DAB089002F6747 /* CNContact+Extension.swift */,
+				448D9938219AD72F000BAE00 /* UserWalletRLM+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2828,6 +2831,7 @@
 				FA58DF661FDC403E00C45303 /* WrongSeedPhraseViewController.swift in Sources */,
 				45090AE01FE95E7700019D00 /* BackupSeedPhraseView.swift in Sources */,
 				85DE62DF20AB003A00423D89 /* SendPresenter.swift in Sources */,
+				448D9939219AD72F000BAE00 /* UserWalletRLM+Extension.swift in Sources */,
 				45B0B0ED1FEBF2CF005BB1C0 /* ContactsViewController.swift in Sources */,
 				45AC1622204820BC00E75BD6 /* CurrencyToConvertViewController.swift in Sources */,
 				45E215E21FD16AA70078945A /* GoToQrProtocol.swift in Sources */,

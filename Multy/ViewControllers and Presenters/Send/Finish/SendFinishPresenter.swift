@@ -105,7 +105,7 @@ class SendFinishPresenter: NSObject {
             }
             self.pointer = self.addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
             
-            let amount = self.transactionDTO.sendAmountString?.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM)
+            let amount = self.transactionDTO.sendAmountString?.convertCryptoAmountStringToMinimalUnits(for: BLOCKCHAIN_ETHEREUM)
             
             let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: self.pointer!,
                                                                                   sendAddress: self.transactionDTO.sendAddress!,

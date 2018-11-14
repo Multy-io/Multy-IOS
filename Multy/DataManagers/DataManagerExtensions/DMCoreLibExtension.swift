@@ -180,16 +180,15 @@ extension CoreLibInfoManager {
         }
         
         if wallet.isImported {
-            if wallet.privateKey.isEmpty {
+            if wallet.importedPrivateKey.isEmpty {
                 return nil
             } else {
-                switch coreLibManager.createPublicInfo(blockchainType: wallet.blockchainType, privateKey: wallet.privateKey) {
+                switch coreLibManager.createPublicInfo(blockchainType: wallet.blockchainType, privateKey: wallet.importedPrivateKey) {
                 case .success(let info):
                     return info
                 case .failure(_):
                     return nil
                 }
-                
             }
         } else if wallet.isMultiSig {
             return nil

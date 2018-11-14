@@ -243,7 +243,7 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
             }
         }
         
-        if (string != "," && string != ".") && presenter.maxAllowedToSpend < (self.topSumLbl.text! + string).convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_BITCOIN) {
+        if (string != "," && string != ".") && presenter.maxAllowedToSpend < (self.topSumLbl.text! + string).convertCryptoAmountStringToMinimalUnits(for: BLOCKCHAIN_BITCOIN) {
             if string != "" {
                 presentWarning(message: localize(string: Constants.moreThenYouHaveString))
                 

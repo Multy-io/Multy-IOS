@@ -16,7 +16,7 @@ class SendAmountPresenter: NSObject {
             availableSumInFiat = availableSumInCrypto * exchangeCourse
             
             if transactionDTO.sendAmount != nil {
-                sumInCrypto = transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_BITCOIN)
+                sumInCrypto = transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(for: BLOCKCHAIN_BITCOIN)
             }
             transactionObj = transactionDTO.transaction!.transactionRLM
             cryptoName = transactionDTO.blockchainType!.shortName
@@ -228,7 +228,7 @@ class SendAmountPresenter: NSObject {
     
     func saveTfValue() {
         if isCrypto {
-            sumInCrypto = sendAmountVC!.topSumLbl.text!.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_BITCOIN)
+            sumInCrypto = sendAmountVC!.topSumLbl.text!.convertCryptoAmountStringToMinimalUnits(for: BLOCKCHAIN_BITCOIN)
             sumInFiat = sumInCrypto * exchangeCourse
 
             if sumInFiat > availableSumInFiat {

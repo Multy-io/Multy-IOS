@@ -20,12 +20,24 @@ class TransactionDTO: NSObject {
         }
     }
     
+    var assetsWallet: UserWalletRLM {
+        return choosenWallet!.blockchain == BLOCKCHAIN_ERC20 ? tokenHolderWallet! : choosenWallet!
+    }
+    
+    var tokenWallet: UserWalletRLM? {
+        return choosenWallet!.blockchain == BLOCKCHAIN_ERC20 ? choosenWallet! : nil
+    }
+    
     var blockchainType: BlockchainType? {
         didSet {
             if blockchainType != nil {
                 blockchain = blockchainType!.blockchain
             }
         }
+    }
+    
+    var sumInCrypto: BigInt {
+        return choosenWallet!.convertCryptoAmountStringToMinimalUnits(amountString: sendAmountString!)
     }
     
     var blockchain: Blockchain?

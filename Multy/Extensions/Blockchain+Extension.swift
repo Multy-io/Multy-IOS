@@ -168,7 +168,7 @@ extension Blockchain {
         case BLOCKCHAIN_BITSHARES:
             maxLenght = 0
         case BLOCKCHAIN_ERC20:
-            maxLenght = 0
+            maxLenght = 12
         default:
             maxLenght = 0
         }
