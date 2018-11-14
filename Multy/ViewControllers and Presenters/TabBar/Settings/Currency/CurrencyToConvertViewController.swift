@@ -12,7 +12,7 @@ class CurrencyToConvertViewController: UIViewController, CancelProtocol, Analyti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.registerCell()
     }
     

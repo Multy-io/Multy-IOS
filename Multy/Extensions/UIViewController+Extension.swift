@@ -23,6 +23,10 @@ private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, origin
 
 extension Localizable where Self: UIViewController, Self: Localizable {
 
+    func presentWarning(message: String) {
+        presentAlert(withTitle: localize(string: Constants.warningString), andMessage: message)
+    }
+    
     func presentAlert(with message: String?) {        
         presentAlert(withTitle: localize(string: Constants.errorString), andMessage: message)
     }
@@ -237,7 +241,7 @@ extension UIViewController {
         appDelegate.presentedVC = self
     }
     
-    func swipeToBack() {
+    func enableSwipeToBack() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }

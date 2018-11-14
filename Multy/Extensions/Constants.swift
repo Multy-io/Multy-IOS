@@ -86,9 +86,10 @@ struct Constants {
     }
     
     struct CustomFee {
-        static let defaultBTCCustomFeeKey = 2
-        static let defaultETHCustomFeeKey = 1 // in GWei
+        static let defaultBTCCustomFeeKey = BigInt("2")
+        static let defaultETHCustomFeeKey = BigInt("1") // in GWei
     }
+    
 }
 
 extension LocalizeDelegate: Localizable {
@@ -96,6 +97,32 @@ extension LocalizeDelegate: Localizable {
         return "Assets"
     }
 }
+
+enum DefaultFeeRates: Hashable {
+    case eth
+    case btc
+    
+    public var feeValue: NSDictionary {
+        switch self {
+        case .eth:
+            return ["VeryFast" : 32,
+                    "Fast" : 16,
+                    "Medium" : 8,
+                    "Slow" : 4,
+                    "VerySlow" : 2,
+            ]
+        case .btc:
+            return ["VeryFast" : 5,
+                    "Fast" : 4,
+                    "Medium" : 3,
+                    "Slow" : 2,
+                    "VerySlow" : 1,
+            ]
+        }
+    }
+}
+
+let minBTCDonationAmount = 0.0001
 
 let defaultDelimeter = "," as Character
 
@@ -238,6 +265,7 @@ enum MultisigOwnerTxStatus: Int {
 let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for available donation
 let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 
+let plainTxGasLimit : UInt64 = 42000
 let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 16.10.2018
 
 //API REST constants
@@ -248,9 +276,9 @@ let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 1
 //let apiUrl = "https://\(shortURL)/"
 //let socketUrl = "wss://\(shortURL)/"
 
-let shortURL = "api.multy.io"
-let apiUrl = "https://\(shortURL)/"
-let socketUrl = "wss://\(shortURL)/"
+let shortURL = "test.multy.io"
+let apiUrl = "http://\(shortURL)/"
+let socketUrl = "ws://\(shortURL)/"
 
 //stage
 //let shortURL = "148.251.42.107/"
@@ -272,5 +300,6 @@ let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 
 let inviteCodeCount = 45
 
+let exchangeCourseDefault : Double = 1.0
 let dappDLTitle = "Dragonereum"
 let magicReceiveDL = "magicReceive"

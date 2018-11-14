@@ -38,7 +38,7 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.presenter.sendStartVC = self
         sendAnalyticsEvent(screenName: screenSendTo, eventName: screenSendTo)
         setupUI()
@@ -164,7 +164,7 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
         if self.presenter.transactionDTO.choosenWallet == nil {
             self.performSegue(withIdentifier: "chooseWalletVC", sender: sender)
         } else {
-            self.performSegue(withIdentifier: presenter.destinationSegueString(), sender: sender)
+            self.performSegue(withIdentifier: "sendDetailsVC", sender: sender)
         }
 //        let storyboard = UIStoryboard(name: "Send", bundle: nil)
 //        let doubleSlideVC = storyboard.instantiateViewController(withIdentifier: "doubleSlideView")
@@ -216,11 +216,8 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
         case "qrCamera"?:
             let qrScanerVC = segue.destination as! QrScannerViewController
             qrScanerVC.qrDelegate = presenter
-        case "sendBTCDetailsVC"?:
+        case "sendDetailsVC"?:
             let sendDetailsVC = segue.destination as! SendDetailsViewController
-            sendDetailsVC.presenter.transactionDTO = presenter.transactionDTO
-        case "sendETHDetailsVC"?:
-            let sendDetailsVC = segue.destination as! EthSendDetailsViewController
             sendDetailsVC.presenter.transactionDTO = presenter.transactionDTO
         default:
             break
@@ -255,7 +252,7 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
     }
     
     func presentNoInternet() {
-        
+
     }
     
     func fixUI() {
