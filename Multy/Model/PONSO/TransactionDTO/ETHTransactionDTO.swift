@@ -5,14 +5,11 @@
 import Foundation
 
 class ETHTransactionDTO: NSObject {
-    var gasLimit: BigInt?
-    var gasPrice: BigInt?
+    var gasLimit = BigInt.zero()
+    var gasPrice =  BigInt.zero()
     
     var feeAmount: BigInt? {
-        if gasLimit != nil && gasPrice != nil {
-            return gasLimit! * gasPrice!
-        }
         
-        return nil
+        return gasPrice * gasLimit
     }
 }

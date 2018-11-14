@@ -297,7 +297,7 @@ class SendAmountPresenter: NSObject {
     }
     
     func goToFinish() {
-        if estimateTransactionAndValidation() {
+        if estimateTransactionAndValidation() && sendAmountInCryptoMinimalUnits.isNonZero {
             assembleTransaction()
             vc?.segueToFinish()
         }
@@ -479,8 +479,8 @@ extension CreateTransactionDelegate {
                                                              sendAmountString: sendAmount.stringValue,
                                                              sendToAddress: transactionDTO.sendAddress!,
                                                              msWalletBalance: transactionDTO.choosenWallet!.availableAmount.stringValue,
-                                                             gasPriceString: transactionDTO.ETHDTO?.gasPrice?.stringValue ?? "0",
-                                                             gasLimitString: transactionDTO.ETHDTO?.gasLimit?.stringValue ?? "0")
+                                                             gasPriceString: transactionDTO.ETHDTO!.gasPrice.stringValue,
+                                                             gasLimitString: transactionDTO.ETHDTO!.gasLimit.stringValue)
             
             rawTransaction = trData.message
             
@@ -496,8 +496,8 @@ extension CreateTransactionDelegate {
                                                                                   nonce: transactionDTO.choosenWallet!.ethWallet!.nonce.intValue,
                                                                                   balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
                 ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
-                gasPrice: transactionDTO.ETHDTO?.gasPrice?.stringValue ?? "0",
-                gasLimit: transactionDTO.ETHDTO?.gasLimit?.stringValue ?? "0")
+                gasPrice: transactionDTO.ETHDTO!.gasPrice.stringValue,
+                gasLimit: transactionDTO.ETHDTO!.gasLimit.stringValue)
             
             rawTransaction = trData.message
             
