@@ -7,7 +7,7 @@ import RealmSwift
 
 class TransactionDTO: NSObject {
     var sendAddress : String?
-    var sendAmount: String?
+    var sendAmountString: String?
     var requestedAmount: Double?
     
     var blockchain: Blockchain? {
@@ -73,7 +73,7 @@ class TransactionDTO: NSObject {
             let blockchainName = array[0]
             sendAddress = array[1]
             let sendAmountString = array[3]
-            sendAmount = sendAmountString
+            self.sendAmountString = sendAmountString
             blockchain = Blockchain.blockchainFromString(blockchainName)
         default:
             return

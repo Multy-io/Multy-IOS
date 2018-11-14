@@ -140,7 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
         sendStartVC.presenter.transactionDTO.sendAddress = "\(addressFromLink ?? "")"
-        sendStartVC.presenter.transactionDTO.sendAmount = amountFromLink
+        sendStartVC.presenter.transactionDTO.sendAmountString = amountFromLink
         switch chainNameFromLink {
         case "ethereum":
             sendStartVC.presenter.transactionDTO.blockchain = BLOCKCHAIN_ETHEREUM
@@ -236,7 +236,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
             let storyboard = UIStoryboard(name: "Send", bundle: nil)
             let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
             sendStartVC.presenter.transactionDTO.sendAddress = "\(addressStr)"
-            sendStartVC.presenter.transactionDTO.sendAmount = amountFromQr
+            sendStartVC.presenter.transactionDTO.sendAmountString = amountFromQr
             ((self.window?.rootViewController as! CustomTabBarViewController).selectedViewController as! UINavigationController).pushViewController(sendStartVC, animated: false)
             sendStartVC.performSegue(withIdentifier: "chooseWalletVC", sender: (Any).self)
         })

@@ -71,7 +71,7 @@ extension DataManager {
         
         let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                          sendAddress: transactionDTO.sendAddress!,
-                                                                         sendAmountString: String(format: "%f", transactionDTO.sendAmount!),
+                                                                         sendAmountString: transactionDTO.sendAmountString!,
                                                                          feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
                                                                          isDonationExists: false,
                                                                          donationAmount: "0",

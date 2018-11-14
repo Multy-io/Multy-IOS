@@ -42,7 +42,7 @@ class SendFinishPresenter: NSObject {
     func makeEndSum() {
         //        switch isCrypto {
         //        case true:
-        sumInCrypto = "\(transactionDTO.sendAmount!)".convertCryptoAmountStringToMinimalUnits(in: transactionDTO.blockchain!)
+        sumInCrypto = transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(in: transactionDTO.blockchain!)
         sumInCryptoString = sumInCrypto!.cryptoValueString(for: transactionDTO.blockchain!)
         sumInFiatString = (sumInCrypto! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.blockchain!)
         sumInFiat = sumInFiatString.doubleValue
@@ -87,7 +87,7 @@ class SendFinishPresenter: NSObject {
             }
             self.pointer = self.addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
             
-            let amount = String(format: "%f", self.transactionDTO.sendAmount!).convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM)
+            let amount = self.transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM)
             
             let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: self.pointer!,
                                                                                   sendAddress: self.transactionDTO.sendAddress!,

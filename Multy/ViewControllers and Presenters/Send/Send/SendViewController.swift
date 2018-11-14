@@ -427,8 +427,8 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         let blockchainType = BlockchainType.create(wallet: presenter.transaction!.choosenWallet!)
         let exchangeCourse = DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
         
-        let sumInCrypto = "\(presenter.transaction!.sendAmount!) \(blockchainType.shortName)"
-        let sumInFiat = "\((presenter.transaction!.sendAmount!.convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain) * exchangeCourse).fiatValueString(for: blockchainType.blockchain)) \(presenter.transaction!.choosenWallet!.fiatName)"
+        let sumInCrypto = "\(presenter.transaction!.sendAmountString!) \(blockchainType.shortName)"
+        let sumInFiat = "\((presenter.transaction!.sendAmountString!.convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain) * exchangeCourse).fiatValueString(for: blockchainType.blockchain)) \(presenter.transaction!.choosenWallet!.fiatName)"
         
         let txTokenImageSide : CGFloat = 46
         txTokenImageView = UIImageView(frame: CGRect(x: (walletsClonesHolderView.center.x - txTokenImageSide/2), y: (walletsClonesHolderView.frame.origin.y + walletsClonesHolderView.frame.size.height - txTokenImageSide), width: txTokenImageSide, height: txTokenImageSide))

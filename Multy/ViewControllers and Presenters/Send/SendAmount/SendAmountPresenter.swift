@@ -224,7 +224,7 @@ class SendAmountPresenter: NSObject {
     
     private func assembleTransaction() {
         let sendAmountString = sendAmountForDoubleString()
-        transactionDTO.sendAmount = isCrypto ? sendAmountString : convertedAmountString
+        transactionDTO.sendAmountString = isCrypto ? sendAmountString : convertedAmountString
         transactionDTO.feeEstimation = feeEstimationInCrypto
         transactionDTO.rawValue = rawTransaction
     }
@@ -232,8 +232,8 @@ class SendAmountPresenter: NSObject {
     private func disassembleTransaction() {
         exchangeCourse = transactionDTO.choosenWallet != nil ? transactionDTO.choosenWallet!.exchangeCourse : exchangeCourseDefault
         if blockchain != nil {
-            if transactionDTO.sendAmount != nil {
-                changeSendAmountString(String(format: "%f", transactionDTO.sendAmount!))
+            if transactionDTO.sendAmountString != nil {
+                changeSendAmountString(transactionDTO.sendAmountString!)
             }
             
             if blockchain == BLOCKCHAIN_ETHEREUM {
@@ -309,7 +309,7 @@ class SendAmountPresenter: NSObject {
             sendAmountStringForDouble.removeLast()
         }
         
-        let amountInMinimalUnits = isCrypto ? sendAmountStringForDouble.convertCryptoAmountStringToMinimalUnits(in: blockchain!) : String(format: "%f", (sendAmountStringForDouble.doubleValue / exchangeCourse)).convertCryptoAmountStringToMinimalUnits(in: blockchain!)
+        let amountInMinimalUnits = isCrypto ? sendAmountStringForDouble.convertCryptoAmountStringToMinimalUnits(in: blockchain!) : sendAmountStringForDouble.convertCryptoAmountStringToMinimalUnits(in: blockchain!) / exchangeCourse
         return amountInMinimalUnits <= maxAllowedToSpendInCrypto
     }
     
