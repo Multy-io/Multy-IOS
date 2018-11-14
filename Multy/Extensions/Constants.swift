@@ -112,6 +112,10 @@ let heightOfFive     : CGFloat = 568.0
 let heightOfiPad     : CGFloat = 480.0
 //
 
+let widthOfSmall    : CGFloat = 320
+let widthOfNormal   : CGFloat = 375
+let widthOfBig      : CGFloat = 414
+
 let infoPlist = Bundle.main.infoDictionary!
 
 //createWallet, WalletSettingd
