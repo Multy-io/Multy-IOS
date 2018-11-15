@@ -145,5 +145,5 @@ extension Constants {
     static let browserTxAlertSring = "BROWSER ALERT FOR TX"
     static let confirmString = "CONFIRM"
     static let denyString = "DENY"
-    static let walletString = "WALLET"
+    static let walletString = "WALLETS"
 }

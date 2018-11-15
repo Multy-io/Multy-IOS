@@ -140,10 +140,10 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                     self.presentUpdateAlert(idOfAlert: 0)
                     completion(false)
                 } else if buildVersion < softVersion! {
-                    self.presenter.presentSoftUpdate()
+                    self.presenter.presentSoftUpdate(completion: completion)
                     completion(true)
                 } else if softVersion! > hardVersion! && softVersion! > buildVersion {
-                    self.presenter.presentSoftUpdate()
+                    self.presenter.presentSoftUpdate(completion: completion)
                 } else {
                     completion(true)
                 }
@@ -903,9 +903,11 @@ extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout 
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        var height: CGFloat = 277
-        if screenHeight == heightOfFive {
+        var height: CGFloat = 277  //widthOfNormal
+        if screenWidth == widthOfSmall {
             height = 250.0
+        } else if screenWidth == widthOfBig {
+            height = 297.0
         }
 //        return CGSize(width: screenWidth, height: 277 /* (screenWidth / 375.0)*/)
         return CGSize(width: screenWidth, height: height /* (screenWidth / 375.0)*/)

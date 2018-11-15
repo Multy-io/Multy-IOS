@@ -23,6 +23,8 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
     var netType = 1 //main test
     var sendWalletsDelegate: SendArrayOfWallets?
     
+    var loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.importVC = self
@@ -37,6 +39,7 @@ class ImportMSViewController: UIViewController, UITextViewDelegate {
     func setupUI() {
         msTopLbl.isHidden = !presenter.isForMS
         msAddressView.isHidden = !presenter.isForMS
+        view.addSubview(loader)
     }
     
     @IBAction func cancelAction(_ sender: Any) {
