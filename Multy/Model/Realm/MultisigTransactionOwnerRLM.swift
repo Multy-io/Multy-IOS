@@ -8,7 +8,7 @@ import RealmSwift
 class MultisigTransactionOwnerRLM: Object {
     @objc dynamic var address = String()
     @objc dynamic var confirmationTx = String()
-    @objc dynamic var confirmationStatus = NSNumber(value: 0) // 0 - waiting, 1 - viewed, 2 - confirmed, 3 - declined
+    @objc dynamic var confirmationStatus = NSNumber(value: 0) // 0 - waiting, 1 - viewed, 2 - confirmed, 3 - declined, 4 - revoke
     @objc dynamic var confirmationTime = NSNumber(value: 0)
     @objc dynamic var viewTime = NSNumber(value: 0)
     

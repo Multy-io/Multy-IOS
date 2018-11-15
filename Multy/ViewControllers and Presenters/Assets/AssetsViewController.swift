@@ -730,7 +730,7 @@ extension TableViewDelegate : UITableViewDelegate {
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
 //                    return 340
-                    return screenHeight == heightOfFive ? 270 : 340
+                    return screenHeight == heightOfFive ? 270 : 320
                 } else {
 //                    return 340 + Constants.AssetsScreen.backupAssetsOffset
                     let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 340

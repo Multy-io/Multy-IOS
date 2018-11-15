@@ -314,13 +314,28 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
                 self.blockchainInfoViewHeightConstraint.constant = 104
                 self.numberOfConfirmationLbl.text = makeConfirmationText()
             } else {
-                self.dateLbl.text = localize(string: Constants.waitingConfirmationsString)
-                
-                self.blockchainInfoView.isHidden = true
-                self.blockchainInfoViewHeightConstraint.constant = 8
-                
-                if presenter.linkedWallet != nil {
-                    noBalanceAddress.text = presenter.linkedWallet!.address
+                if presenter.histObj.multisig?.confirmed == 1 {
+                    if presenter.histObj.txStatus.intValue == TxStatus.MempoolIncoming.rawValue ||
+                        presenter.histObj.txStatus.intValue == TxStatus.MempoolOutcoming.rawValue ||
+                        presenter.histObj.txStatus.intValue == TxStatus.Rejected.rawValue ||
+                        presenter.histObj.txStatus.intValue == TxStatus.BlockMethodInvocationFail.rawValue {
+                        self.dateLbl.text = dateFormatter.string(from: presenter.histObj.mempoolTime)
+                    } else {
+                        self.dateLbl.text = dateFormatter.string(from: presenter.histObj.blockTime)
+                    }
+                    
+                    self.blockchainInfoView.isHidden = false
+                    self.blockchainInfoViewHeightConstraint.constant = 104
+                    self.numberOfConfirmationLbl.text = makeConfirmationText()
+                } else {
+                    self.dateLbl.text = localize(string: Constants.waitingConfirmationsString)
+                    
+                    self.blockchainInfoView.isHidden = true
+                    self.blockchainInfoViewHeightConstraint.constant = 8
+                    
+                    if presenter.linkedWallet != nil {
+                        noBalanceAddress.text = presenter.linkedWallet!.address
+                    }
                 }
             }
             
@@ -636,7 +651,7 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
                 break
             case .viewed:
                 date = Date(timeIntervalSince1970: owner.viewTime.doubleValue)
-            case .confirmed, .declined:
+            case .confirmed, .declined, .revoke:
                 date = Date(timeIntervalSince1970: owner.confirmationTime.doubleValue)
             }
             
