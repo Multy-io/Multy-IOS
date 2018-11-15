@@ -21,7 +21,13 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     
     weak var sendWalletDelegate: SendWalletProtocol?
     
-    var whereFrom: UIViewController?
+    var whereFrom: UIViewController? {
+        didSet {
+            if whereFrom?.className == CreateMultiSigViewController.className {
+                presenter.isNeedSort = true
+            }
+        }
+    }
     
     let loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
     
@@ -29,7 +35,7 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
         super.viewDidLoad()
         self.presenter.receiveStartVC = self
         view.addSubview(loader)
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
 //        self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)

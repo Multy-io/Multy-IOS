@@ -10,6 +10,7 @@ class TransactionDTO: NSObject {
     var sendAddress : String?
     var sendAmount: Double?
     var sendAmountString: String?
+    var tokenHolderWallet: UserWalletRLM?
     var choosenWallet: UserWalletRLM? {
         didSet {
             if choosenWallet != nil {
@@ -26,6 +27,7 @@ class TransactionDTO: NSObject {
             }
         }
     }
+    
     var blockchain: Blockchain?
     
     var currencyID : NSNumber? {

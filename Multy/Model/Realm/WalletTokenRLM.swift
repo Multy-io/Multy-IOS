@@ -11,6 +11,12 @@ class WalletTokenRLM: Object {
     @objc dynamic var name = String()
     @objc dynamic var balance = String()
     
+    var token: TokenRLM? {
+        get {
+            return DataManager.shared.realmManager.erc20Tokens[address]
+        }
+    }
+    
     
     var balanceBigInt: BigInt {
         get {

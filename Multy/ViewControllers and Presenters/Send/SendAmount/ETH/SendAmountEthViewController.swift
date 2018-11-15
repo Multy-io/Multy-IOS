@@ -57,6 +57,14 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
         presenter.getData()
         sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)")
         sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: payForCommissionEnabled)
+        
+        if presenter.transactionDTO.tokenHolderWallet != nil {
+            commissionSwitch.isUserInteractionEnabled = false
+            swapBtn.disableView()
+            maxBtn.disableView()
+            bottomSumLbl.isHidden = true
+            bottomCurrencyLbl.isHidden = true
+        }
     }
     
     override func viewDidLayoutSubviews() {

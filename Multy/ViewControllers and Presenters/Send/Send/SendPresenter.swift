@@ -148,6 +148,10 @@ class SendPresenter: NSObject {
     }
     
     func filterArray() {
+        filteredWalletArray = walletsArr.filter {
+            $0.isImported == false || $0.isImportedHasKey
+        }
+        
         if selectedActiveRequestIndex != nil  {
             let request = activeRequestsArr[selectedActiveRequestIndex!]
             
@@ -155,14 +159,14 @@ class SendPresenter: NSObject {
             let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain)
 //            let address = request.sendAddress
             
-            filteredWalletArray = walletsArr.filter {
+            filteredWalletArray = filteredWalletArray.filter {
                 $0.blockchainType == blockchainType && $0.availableAmount > sendAmount
             }
 
 //            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: address, for: $0).isValid && $0.availableAmount > sendAmount}
         } else {
             
-            filteredWalletArray = walletsArr.filter {
+            filteredWalletArray = filteredWalletArray.filter {
                 $0.availableAmount > BigInt.zero()
             }
         }
@@ -300,7 +304,7 @@ class SendPresenter: NSObject {
             transaction = TransactionDTO()
             let request = activeRequestsArr[selectedActiveRequestIndex!]
             //FIXME:
-            transaction!.sendAmount = request.sendAmount.doubleValue
+            transaction!.sendAmountString = request.sendAmount
             transaction!.sendAddress = request.sendAddress
             transaction!.choosenWallet = filteredWalletArray[selectedWalletIndex!]
         }

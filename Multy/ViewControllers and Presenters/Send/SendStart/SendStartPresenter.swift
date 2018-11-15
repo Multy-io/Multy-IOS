@@ -90,18 +90,7 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
     func isTappedDisabledNextButton(gesture: UITapGestureRecognizer) -> Bool {
         return sendStartVC!.nextBtn.frame.minY < gesture.location(in: gesture.view!).y
     }
-    
-    func destinationSegueString() -> String {
-        switch transactionDTO.blockchainType!.blockchain {
-        case BLOCKCHAIN_BITCOIN:
-            return "sendBTCDetailsVC"
-        case BLOCKCHAIN_ETHEREUM:
-            return "sendETHDetailsVC"
-        default:
-            return ""
-        }
-    }
-    
+
     func getAddresses() {
         if transactionDTO.choosenWallet == nil {
             RealmManager.shared.getRecentAddresses(for: nil, netType: nil) { (addresses, err) in

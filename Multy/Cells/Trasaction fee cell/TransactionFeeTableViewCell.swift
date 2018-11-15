@@ -34,15 +34,12 @@ class TransactionFeeTableViewCell: UITableViewCell {
     }
     
     func constructString(from rate: Int) -> String {
-//        let sumInCrypto = (Double(rate) / 100000000.0)
-//        let sumInFiat = sumInCrypto * DataManager.shared.makeExchangeFor(blockchainType: blockchainType!)
-//        return "~ " + "\(sumInCrypto.fixedFraction(digits: 8)) BTC / \(sumInFiat.fixedFraction(digits: 2)) USD"
-//        return "~ " + "\(sumInCrypto.fixedFraction(digits: 8)) BTC"
-        if blockchainType?.blockchain == BLOCKCHAIN_BITCOIN {
+        switch blockchainType?.blockchain {
+        case BLOCKCHAIN_BITCOIN:
             return "\(rate) " + localize(string: Constants.satoshiPerByteShortString)
-        } else if blockchainType?.blockchain == BLOCKCHAIN_ETHEREUM {
+        case BLOCKCHAIN_ETHEREUM, BLOCKCHAIN_ERC20:
             return "\(rate / 1000000000)" + " GWei/Gas"
-        } else {
+        default:
             return ""
         }
     }

@@ -6,11 +6,17 @@ import UIKit
 import RealmSwift
 //import MultyCoreLibrary
 
+enum WalletRepresentingMode {
+    case allInfo
+    case tokenInfo
+    case txInfo
+}
+
 class WalletPresenter: NSObject {
 
     var walletVC: WalletViewController?
     
-    var tokenHolderWallet = UserWalletRLM()
+    var tokenHolderWallet: UserWalletRLM?
     var wallet : UserWalletRLM? {
         didSet {
             walletVC?.titleLbl.text = wallet?.name
@@ -18,7 +24,7 @@ class WalletPresenter: NSObject {
 //                importedPrivateKey = wallet!.importedPrivateKey
 //                importedPublicKey = wallet!.importedPublicKey
 //            }
-            assetsDataSource = Array(wallet!.ethWallet!.erc20Tokens)
+            prepareAssetsData(array: wallet!.ethWallet?.erc20Tokens)
             updateUI()
             walletVC?.setupUI()
         }
@@ -62,7 +68,33 @@ class WalletPresenter: NSObject {
     
     var isSocketInitiateUpdating = false
     
-    var isToken = false
+    var walletRepresentingMode = WalletRepresentingMode.allInfo
+    
+    var ethToken: WalletTokenRLM {
+        get {
+            let token = WalletTokenRLM()
+            
+            token.name = "Ethereum"
+            token.ticker = "ETH"
+            token.address = "ethereum"
+            token.balance = wallet!.ethWallet!.balance
+            
+            return token
+        }
+    }
+    
+    func prepareAssetsData(array: List<WalletTokenRLM>?) {
+        if walletRepresentingMode != .allInfo || wallet!.blockchain != BLOCKCHAIN_ETHEREUM {
+            return
+        }
+        
+        let array = Array(array ?? List<WalletTokenRLM>())
+        assetsDataSource = array.sorted(by: { return $0.name < $1.name })
+        
+        if assetsDataSource.count > 0 {
+            assetsDataSource = [ethToken] + assetsDataSource
+        }
+    }
     
     func updateUI() {
         if walletVC == nil {
@@ -90,8 +122,17 @@ class WalletPresenter: NSObject {
         walletVC!.showHidePendingSection(true)
         
         walletVC!.amountCryptoLbl.text = wallet!.availableAmountString
-        walletVC!.nameCryptoLbl.text = isToken ? wallet!.cryptoName : wallet!.blockchain.shortName
-        walletVC!.fiatAmountLbl.text = fiatSymbol + wallet!.availableAmountInFiatString
+        
+        switch walletRepresentingMode {
+        case .allInfo, .txInfo:
+            walletVC!.nameCryptoLbl.text = wallet!.blockchain.shortName
+            walletVC!.fiatAmountLbl.text = fiatSymbol + wallet!.availableAmountInFiatString
+            walletVC!.fiatAmountLbl.enableView()
+        case .tokenInfo:
+            walletVC!.nameCryptoLbl.text = wallet!.cryptoName
+            walletVC!.fiatAmountLbl.disableView()
+        }
+        
         walletVC!.titleLbl.text = wallet!.name
         
         if wallet!.isThereBlockedAmount {
@@ -155,7 +196,7 @@ class WalletPresenter: NSObject {
     }
     
     func sendTestToken() {
-        let info = DataManager.shared.privateInfo(for: tokenHolderWallet)
+        let info = DataManager.shared.privateInfo(for: tokenHolderWallet!)
         if info == nil { return }
 
         var txInfo = Dictionary<String, Any>()
@@ -177,7 +218,7 @@ class WalletPresenter: NSObject {
         builderDict["type"] = "erc20"
         builderDict["action"] = "transfer"
         //payload
-        payloadDict["balance_eth"] = tokenHolderWallet.availableBalance.stringValue
+        payloadDict["balance_eth"] = tokenHolderWallet!.availableBalance.stringValue
         payloadDict["contract_address"] = wallet!.address
         payloadDict["balance_token"] = wallet!.ethWallet!.balance
         payloadDict["transfer_amount_token"] = "1"
@@ -186,7 +227,7 @@ class WalletPresenter: NSObject {
         txInfo["builder"] = builderDict
         
         //transaction
-        txDict["nonce"] = tokenHolderWallet.ethWallet!.nonce
+        txDict["nonce"] = tokenHolderWallet!.ethWallet!.nonce
         feeDict["gas_price"] = "1000000000"
         feeDict["gas_limit"] = "\(3_000_000)"
         txDict["fee"] = feeDict
@@ -199,17 +240,17 @@ class WalletPresenter: NSObject {
             print(rawTX)
             
             let newAddressParams = [
-                "walletindex"   : tokenHolderWallet.walletID.intValue,
-                "address"       : tokenHolderWallet.address,
+                "walletindex"   : tokenHolderWallet!.walletID.intValue,
+                "address"       : tokenHolderWallet!.address,
                 "addressindex"  : 0,
                 "transaction"   : txString,
-                "ishd"          : tokenHolderWallet.shouldCreateNewAddressAfterTransaction
+                "ishd"          : tokenHolderWallet!.shouldCreateNewAddressAfterTransaction
                 ] as [String : Any]
             
             let params = [
-                "currencyid": tokenHolderWallet.chain,
+                "currencyid": tokenHolderWallet!.chain,
                 /*"JWT"       : jwtToken,*/
-                "networkid" : tokenHolderWallet.chainType,
+                "networkid" : tokenHolderWallet!.chainType,
                 "payload"   : newAddressParams
                 ] as [String : Any]
             
@@ -230,7 +271,7 @@ class WalletPresenter: NSObject {
             return
         }
         
-        if isToken {
+        if walletRepresentingMode != .allInfo {
 //            sendTestToken()
             
             return
@@ -239,7 +280,7 @@ class WalletPresenter: NSObject {
         DataManager.shared.getOneWalletVerbose(wallet: wallet!) { [unowned self] (updatedWallet, error) in
             if updatedWallet != nil {
                 self.wallet = updatedWallet
-                self.assetsDataSource = Array(self.wallet!.ethWallet!.erc20Tokens)
+                self.prepareAssetsData(array: updatedWallet?.ethWallet?.erc20Tokens)
             }
             
             self.getHistory()
@@ -264,6 +305,9 @@ class WalletPresenter: NSObject {
 
                 return firstDate > secondDate
             })
+            
+            self.prepareAssetsData(array: self.wallet!.ethWallet?.erc20Tokens)
+            
             self.isSocketInitiateUpdating = false
             
             self.updateHeader()
@@ -294,15 +338,16 @@ class WalletPresenter: NSObject {
     
     func makeWalletFrom(token: WalletTokenRLM) -> UserWalletRLM {
         let tokenWallet = UserWalletRLM()
+        
         tokenWallet.address = token.address
-        tokenWallet.name = token.name//self.wallet!.name
-        tokenWallet.chain = self.wallet!.chain
-        tokenWallet.chainType = self.wallet!.chainType
+        tokenWallet.name = token.name
+        tokenWallet.chain = NSNumber(value: token.token?.blockchainType.blockchain.rawValue ?? 0)
+        tokenWallet.chainType = wallet!.chainType
         tokenWallet.cryptoName = token.ticker
-        tokenWallet.importedPrivateKey = self.wallet!.importedPrivateKey
-        tokenWallet.importedPublicKey = self.wallet!.importedPublicKey
-        tokenWallet.fiatName = self.wallet!.fiatName
-        tokenWallet.fiatSymbol = self.wallet!.fiatSymbol
+//        tokenWallet.importedPrivateKey = self.wallet!.importedPrivateKey
+//        tokenWallet.importedPublicKey = self.wallet!.importedPublicKey
+//        tokenWallet.fiatName = self.wallet!.fiatName
+//        tokenWallet.fiatSymbol = self.wallet!.fiatSymbol
         tokenWallet.ethWallet = ETHWallet()
         tokenWallet.ethWallet!.balance = token.balance
         

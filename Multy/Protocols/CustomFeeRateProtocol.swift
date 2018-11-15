@@ -5,6 +5,6 @@
 import Foundation
 
 protocol CustomFeeRateProtocol: class {
-    func customFeeData(firstValue: Int?, secValue: Int?)
+    func customFeeData(firstValue: BigInt?, secValue: BigInt?)
     func setPreviousSelected(index: Int?)
 }

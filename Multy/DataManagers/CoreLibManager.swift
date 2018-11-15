@@ -1057,7 +1057,13 @@ class CoreLibManager: NSObject {
     
     func isAddressValid(_ address: String, for blockchainType: BlockchainType) -> (Bool, String?) {
         let addressUTF8 = address.UTF8CStringPointer
-        let error = validate_address(blockchainType, addressUTF8)
+        
+        var blockchainTypeLocal = blockchainType
+        if blockchainType.blockchain == BLOCKCHAIN_ERC20 {
+            blockchainTypeLocal.blockchain = BLOCKCHAIN_ETHEREUM
+        }
+        
+        let error = validate_address(blockchainTypeLocal, addressUTF8)
         
         let errorString = self.errorString(from: error, mask: "isAddressValid")
         
@@ -1085,6 +1091,7 @@ class CoreLibManager: NSObject {
 extension BigIntCoreLibManager {
     
 }
+
 ////////////////////////////////////
 extension TestCoreLibManager {
     func startSwiftTest() {

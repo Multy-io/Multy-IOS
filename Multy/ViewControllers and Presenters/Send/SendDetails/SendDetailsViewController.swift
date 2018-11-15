@@ -1,4 +1,4 @@
-//Copyright 2018 Idealnaya rabota LLC
+//Copyright 2017 Idealnaya rabota LLC
 //Licensed under Multy.io license.
 //See LICENSE for details
 
@@ -22,51 +22,31 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     @IBOutlet weak var donationFiatNameLbl: UILabel!
     @IBOutlet weak var donationCryptoNameLbl: UILabel!
     @IBOutlet weak var isDonateAvailableSW: UISwitch!
+    @IBOutlet weak var feeRateDescriptionView: UILabel!
     
-    @IBOutlet weak var constraintDonationHeight: NSLayoutConstraint!
+    @IBOutlet weak var donationHolderView: UIView!
     @IBOutlet weak var nextBtn: ZFRippleButton!
     
     @IBOutlet weak var bottomBtnConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nextButtonTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var donationHolderTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var donationHeightConstraint: NSLayoutConstraint!
     
     
     let presenter = SendDetailsPresenter()
     
     var maxLengthForSum = 12
     
-    var isCustom = false
-//    let progressHUD = ProgressHUD(text: "Updating fee rates...")
     let loader = PreloaderView(frame: HUDFrame, text: "Updating rates", image: #imageLiteral(resourceName: "walletHuge"))
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(loader)
-        loader.show(customTitle: localize(string: Constants.updatingString)) // "Updating rates"
-        self.swipeToBack()
-        self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        self.hideKeyboardWhenTappedAround()
-        self.presenter.sendDetailsVC = self
-        self.registerCells()
-        self.registerNotificationFromKeyboard()
-        self.setupShadow()
-        self.setupDonationUI()
         
-        if self.presenter.selectedIndexOfSpeed == nil {
-            presenter.selectedIndexOfSpeed = 2
-            tableView.reloadData()
-//            self.tableView.selectRow(at: [0,2], animated: false, scrollPosition: .none)
-//            self.tableView.delegate?.tableView!(self.tableView, didSelectRowAt: [0,2])
-        }
-        
-        presenter.feeRate = ["VeryFast" : 32,
-                        "Fast" : 16,
-                        "Medium" : 8,
-                        "Slow" : 4,
-                        "VerySlow" : 2,
-        ]
-        
-        presenter.requestFee()
-        
-        presenter.getData()
+        presenter.vc = self
+        presenter.vcViewDidLoad()
         
         sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)")
         sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: donationEnableTap)
@@ -79,17 +59,38 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
                                                  UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
                                    gradientOrientation: .horizontal)
         
-        let firstCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TransactionFeeTableViewCell
-        firstCell.setCornersForFirstCell()
+        let firstCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TransactionFeeTableViewCell
+        if firstCell != nil {
+            firstCell!.setCornersForFirstCell()
+        }
+        
+        updateConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.presenter.nullifyDonation()
-        
-        if screenHeight == heightOfX || screenHeight == heightOfXSMax {
-            bottomBtnConstraint.constant = 0
+        presenter.vcViewWillAppear()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presenter.vcViewWillDisappear()
+    }
+    
+    func updateConstraints() {
+        if presenter.isDonationAvailable {
+            donationHolderTopConstraint.constant = 39
+            donationHeightConstraint.constant = presenter.isDonationSwitchedOn! ? 267 : 193
+        } else {
+            donationHolderTopConstraint.constant = -267
+            donationHeightConstraint.constant = 267
         }
+        
+        let contentHeight = feeRateDescriptionView.frame.maxY + donationHolderTopConstraint.constant + donationHeightConstraint.constant + 25 + nextBtn.frame.height
+        let nextButtonContentInBoundTopConstant = (view.frame.size.height - nextBtn.frame.size.height - bottomLayoutGuide.length - topLayoutGuide.length) - (feeRateDescriptionView.frame.maxY + donationHolderTopConstraint.constant + donationHeightConstraint.constant)
+        let nextButtonContentOutOfBoundTopConstant : CGFloat = 25 
+        nextButtonTopConstraint.constant = contentHeight < view.frame.size.height ? nextButtonContentInBoundTopConstant : nextButtonContentOutOfBoundTopConstant
+        view.layoutIfNeeded()
     }
     
     func setupShadow() {
@@ -98,11 +99,67 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         donationView.setShadow(with: myColor)
     }
     
+    func setupUI() {
+        view.addSubview(loader)
+        tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        enableSwipeToBack()
+        hideKeyboardWhenTappedAround()
+        registerCells()
+        setupShadow()
+        setupDonationUI()
+        
+        if presenter.selectedIndexOfSpeed == nil {
+            presenter.selectedIndexOfSpeed = 2
+            tableView.reloadData()
+        }
+    }
+    
     func setupDonationUI() {
-        let exchangeCourse = presenter.transactionDTO.choosenWallet!.exchangeCourse
-        self.donationTF.text = "\((self.presenter.donationInCrypto ?? 0.0).fixedFraction(digits: 8))"
-        self.presenter.donationInFiat = self.presenter.donationInCrypto! * exchangeCourse
-        self.donationFiatSumLbl.text = "\(self.presenter.donationInFiat?.fixedFraction(digits: 2) ?? "0.00")"
+        if presenter.isDonationAvailable {
+            donationHolderView.isHidden = false
+            presenter.isDonationSwitchedOn = true
+            
+            self.donationTF.text = presenter.donationInCryptoString ?? BigInt.zero().stringValue
+            self.donationFiatSumLbl.text = presenter.donationInFiatString ?? BigInt.zero().stringValue
+        } else {
+            donationHolderView.isHidden = true
+        }
+    }
+    
+    func updateDonationUI() {
+        if presenter.isDonationAvailable {
+            donationHolderView.isHidden = false
+            
+            if presenter.isDonationSwitchedOn! {
+                donationSeparatorView.isHidden = false
+                
+                self.donationTF.text = presenter.donationInCryptoString != nil ? presenter.donationInCryptoString! :  BigInt.zero().stringValue
+                self.donationFiatSumLbl.text = presenter.donationInFiatString != nil ? presenter.donationInFiatString! : BigInt.zero().stringValue
+                
+            } else {
+                if donationTF.isFirstResponder {
+                    donationTF.resignFirstResponder()
+                }
+            }            
+        } else {
+            donationHolderView.isHidden = true
+        }
+        
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            guard self != nil else {
+                return
+            }
+            
+            self!.updateConstraints()
+        }) { [weak self] (success) in
+            guard self != nil else {
+                return
+            }
+            
+            if !self!.presenter.isDonationSwitchedOn! {
+                self!.donationSeparatorView.isHidden = true
+            }
+        }
     }
     
     func registerCells() {
@@ -114,10 +171,6 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     }
     
     @IBAction func backAction(_ sender: Any) {
-        presenter.transactionDTO.transaction!.donationDTO = nil
-        presenter.transactionDTO.transaction!.transactionRLM = nil
-        presenter.transactionDTO.transaction?.customFee = presenter.customFee
-        
         navigationController?.popViewController(animated: true)
         sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: closeTap)
     }
@@ -131,11 +184,7 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         self.view.endEditing(true)
         
         if self.presenter.selectedIndexOfSpeed != nil {
-            if isDonateAvailableSW.isOn {
-                self.presenter.createDonation()
-            }
-            self.presenter.createTransaction(index: self.presenter.selectedIndexOfSpeed!)
-            self.presenter.checkMaxAvailable()
+            presenter.segueToAmount()
         } else {
             let alert = UIAlertController(title: localize(string: Constants.pleaseChooseFeeRate), message: localize(string: Constants.predefinedValueMessageString), preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
@@ -144,18 +193,23 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     }
     
     //MARK: Keyboard to scrollview
-    func registerNotificationFromKeyboard() {
+    func addNotificationsObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(SendDetailsViewController.keyboardWillShow),
                                                name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SendDetailsViewController.keyboardWillHide),
                                                name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    func removeNotificationsObservers() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+    
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if self.view.frame.origin.y == 0{
                 self.view.frame.origin.y -= keyboardSize.height
-                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
+                if screenHeight == heightOfX {
                     bottomBtnConstraint.constant -= 35
                 }
             }
@@ -166,7 +220,7 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if self.view.frame.origin.y != 0{
                 self.view.frame.origin.y += keyboardSize.height
-                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
+                if screenHeight == heightOfX {
                     bottomBtnConstraint.constant = 0
                 }
             }
@@ -176,43 +230,9 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     
     //MARK: donationSwitch actions
     @IBAction func switchDonationAction(_ sender: Any) {
-        var offset = scrollView.contentOffset
-        let exchangeCourse = presenter.transactionDTO.choosenWallet!.exchangeCourse
-        
-        if !self.isDonateAvailableSW.isOn {
-            self.donationTF.resignFirstResponder()
-            self.presenter.donationInCrypto = 0.0
-            self.presenter.donationInFiat = 0.0
-            self.constraintDonationHeight.constant = self.constraintDonationHeight.constant / 2
-            self.scrollView.contentSize.height = self.scrollView.contentSize.height - self.constraintDonationHeight.constant
-            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: donationDisabledTap)
-        } else {
-            self.donationTF.becomeFirstResponder()
-            self.presenter.donationInCrypto = (self.donationTF.text! as NSString).doubleValue
-            self.presenter.donationInFiat = self.presenter.donationInCrypto! * exchangeCourse
-            self.constraintDonationHeight.constant = self.constraintDonationHeight.constant * 2
-            self.scrollView.contentSize.height = self.scrollView.contentSize.height + self.constraintDonationHeight.constant
-            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: donationEnableTap)
-        }
-        self.hideOrShowDonationBottom()
-//        self.scrollView.scrollRectToVisible(self.nextBtn.frame, animated: true)
-        
-        offset.y = scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.bounds.size.height - 75
-        if !self.isDonateAvailableSW.isOn {
-            offset.y += 74
-        }
-        scrollView.setContentOffset(offset, animated: true)
+        presenter.isDonationSwitchedOn = isDonateAvailableSW.isOn
     }
-    
-    func hideOrShowDonationBottom() {
-        self.donationSeparatorView.isHidden = !self.isDonateAvailableSW.isOn
-        self.donationTF.isHidden = !self.isDonateAvailableSW.isOn
-        self.donationFiatSumLbl.isHidden = !self.isDonateAvailableSW.isOn
-        self.donationFiatNameLbl.isHidden = !self.isDonateAvailableSW.isOn
-        self.donationCryptoNameLbl.isHidden = !self.isDonateAvailableSW.isOn
-        self.donationTitleLbl.isHidden = !self.isDonateAvailableSW.isOn
-    }
-    //end
+
     
     //MARK: TextField delegates
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -236,74 +256,85 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if (string != "," || string != ".") && ((self.donationTF.text! + string) as NSString).doubleValue > presenter.transactionDTO.choosenWallet!.sumInCrypto {
-            if string != "" {
-                self.presentWarning(message: localize(string: Constants.moreThenYouHaveString))
-                return false
+        guard var prevAmount = textField.text else { return true }
+        
+        let changeSymbol = string
+        
+        if prevAmount == "0" && changeSymbol != "," && changeSymbol != "." && !changeSymbol.isEmpty {
+            prevAmount = ""
+        } else if prevAmount.isEmpty && (changeSymbol == "," || changeSymbol == ".") {
+            return false
+        }
+
+        if (changeSymbol == "," || changeSymbol == ".") && prevAmount == "" {
+            prevAmount = "0"
+        }
+        
+        if changeSymbol == "" {
+            prevAmount.removeLast()
+            if prevAmount == "" {
+                prevAmount = "0"
             }
         }
         
-        guard let text = textField.text else { return true }
-        
-        if text == "0" && string != "," && string != "." && !string.isEmpty {
-            return false
-        }
-        
-        let newLength = text.count + string.count - range.length
-
-        if (string == "," || string == ".") && self.donationTF.text == "" {
-            self.donationTF.text = "0\(string)"
-        }
-        
-        if string == "" {
-            self.donationTF.text?.removeLast()
-            self.saveDonationSum(string: "")
-            return false
-        }
+        let newLength = prevAmount.count + changeSymbol.count - range.length
         
         if newLength <= self.maxLengthForSum {
-            self.donationTF.text = self.donationTF.text?.replacingOccurrences(of: ",", with: ".")
-            if string == "," && (self.donationTF.text?.contains("."))!{
-                return false
-            }
-            if (self.donationTF.text?.contains("."))! && string != "" {
-                let strAfterDot: [String?] = (self.donationTF.text?.components(separatedBy: "."))!
-                if strAfterDot[1]?.count == 8 {
+            var donation = prevAmount + changeSymbol
+            
+            if (changeSymbol != "," || changeSymbol != ".") && !presenter.isPossibleToDonate(donation) {
+                if string != "" {
+                    self.presentWarning(message: localize(string: Constants.moreThenYouHaveString))
                     return false
                 }
             }
-            self.saveDonationSum(string: string)
+            
+            donation = donation.replacingOccurrences(of: ",", with: ".")
+            if string == "," && prevAmount.contains(".") {
+                return false
+            }
+            if donation.contains(".") && string != "" {
+                let strAfterDot: [String] = donation.components(separatedBy: ".")
+                if strAfterDot[1].count >= 8 {
+                    return false
+                }
+            }
+            
+            presenter.changeDonationString(donation)
         }
         sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: donationChanged)
         
-        return newLength <= self.maxLengthForSum
+        return false
     }
     
-    func saveDonationSum(string: String) {
-        let exchangeCourse = presenter.transactionDTO.choosenWallet!.exchangeCourse
-        if string == "" && self.donationTF.text == "" {
-            self.presenter.donationInCrypto = 0.0
-            self.presenter.donationInFiat = 0.0
-            self.donationFiatSumLbl.text = "\((self.presenter.donationInFiat ?? 0.0).fixedFraction(digits: 2))"
-        } else {
-            self.presenter.donationInCrypto = (self.donationTF.text! + string as NSString).doubleValue
-            self.presenter.donationInFiat = self.presenter.donationInCrypto! * exchangeCourse
-            self.presenter.donationInFiat = Double(round(100*self.presenter.donationInFiat!)/100)
-            self.donationFiatSumLbl.text = "\((self.presenter.donationInFiat ?? 0.0).fixedFraction(digits: 2))"
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "sendAmountVC" {
+            let sendAmountVC = segue.destination as! SendAmountViewController
+            sendAmountVC.presenter.transactionDTO = presenter.transactionDTO
         }
     }
     
-    //end
+    func updateCellsVisibility () {
+        let cells = tableView.visibleCells
+        
+        guard presenter.selectedIndexOfSpeed != nil && presenter.selectedIndexOfSpeed! < cells.count else {
+            return
+        }
+        
+        for cell in cells {
+            updateCellVisibility(cell)
+        }
+    }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sendEthVC" {
-            let sendAmountVC = segue.destination as! SendAmountEthViewController
-            
-            presenter.transactionDTO.transaction!.donationDTO = presenter.donationObj
-            presenter.transactionDTO.transaction!.transactionRLM = presenter.transactionObj
-            presenter.transactionDTO.transaction!.customFee = presenter.customFee
-            
-            sendAmountVC.presenter.transactionDTO = presenter.transactionDTO
+    func updateCellVisibility(_ cell: UITableViewCell) {
+        let index = tableView.indexPathForRow(at: cell.center)?.row
+        guard index != nil && presenter.selectedIndexOfSpeed != nil else {
+            return
+        }
+        
+        cell.alpha = index! == presenter.selectedIndexOfSpeed! ? 1.0 : 0.3
+        if !cell.isKind(of: CustomTrasanctionFeeTableViewCell.self) {
+            (cell as! TransactionFeeTableViewCell).checkMarkImage.isHidden = index! != presenter.selectedIndexOfSpeed!
         }
     }
 }
@@ -330,20 +361,16 @@ extension TableViewDelegate: UITableViewDelegate {
         default : break
         }
         
-        if indexPath.row != 5 {
-            presenter.selectedIndexOfSpeed = indexPath.row
-            presenter.updateCellsVisibility()
-        } else {
-            isCustom = true
+        presenter.selectedIndexOfSpeed = indexPath.row
+        if indexPath.row == 5 {
             let storyboard = UIStoryboard(name: "Send", bundle: nil)
             let customVC = storyboard.instantiateViewController(withIdentifier: "customVC") as! CustomFeeViewController
             customVC.presenter.blockchainType = self.presenter.transactionDTO.choosenWallet!.blockchainType
             customVC.delegate = presenter
-            customVC.rate = Int(presenter.customFee)
+            customVC.rate = presenter.customFee != nil ? presenter.customFee! : BigInt.zero()
             customVC.previousSelected = presenter.selectedIndexOfSpeed
-            presenter.selectedIndexOfSpeed = indexPath.row
             navigationController?.pushViewController(customVC, animated: true)
-        }
+        } 
     }
 }
 
@@ -359,19 +386,24 @@ extension TableViewDataSource: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row != 5 {
             let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell") as! TransactionFeeTableViewCell
-            transactionCell.feeRate = presenter.feeRate
-            transactionCell.blockchainType = self.presenter.transactionDTO.blockchainType
+            transactionCell.feeRate = presenter.feeRates
+            transactionCell.blockchainType = BlockchainType.create(wallet: self.presenter.transactionDTO.choosenWallet!)
             transactionCell.makeCellBy(indexPath: indexPath)
             
             return transactionCell
         } else {
             let customFeeCell = tableView.dequeueReusableCell(withIdentifier: "customFeeCell") as! CustomTrasanctionFeeTableViewCell
-            customFeeCell.blockchainType = presenter.transactionDTO.blockchainType
-            customFeeCell.value = UInt64(presenter.customFee)
+            customFeeCell.blockchainType = BlockchainType.create(wallet: self.presenter.transactionDTO.choosenWallet!)
+            let fee = presenter.customFee?.stringValue ?? BigInt.zero().stringValue
+            customFeeCell.value = UInt64(fee)!
             customFeeCell.setupUI()
-
+            
             return customFeeCell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        updateCellVisibility(cell)
     }
 }
 
