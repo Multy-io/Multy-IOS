@@ -12,11 +12,12 @@ class WalletTokenRLM: Object {
     @objc dynamic var balance = String()
     
     var token: TokenRLM? {
-        get {
-            return DataManager.shared.realmManager.erc20Tokens[address]
-        }
+        return DataManager.shared.realmManager.erc20Tokens[address]
     }
     
+    var tokenImageURLString: String {
+        return "https://raw.githubusercontent.com/TrustWallet/tokens/master/images/\(address).png"
+    }
     
     var balanceBigInt: BigInt {
         get {

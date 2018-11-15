@@ -32,15 +32,11 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     @IBOutlet weak var donationHolderTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var donationHeightConstraint: NSLayoutConstraint!
     
-    
     let presenter = SendDetailsPresenter()
     
     var maxLengthForSum = 12
     
     let loader = PreloaderView(frame: HUDFrame, text: "Updating rates", image: #imageLiteral(resourceName: "walletHuge"))
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,8 +44,8 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         presenter.vc = self
         presenter.vcViewDidLoad()
         
-        sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)")
-        sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: donationEnableTap)
+        sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)", eventName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)")
+        sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)", eventName: donationEnableTap)
     }
     
     override func viewDidLayoutSubviews() {
@@ -88,7 +84,7 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         
         let contentHeight = feeRateDescriptionView.frame.maxY + donationHolderTopConstraint.constant + donationHeightConstraint.constant + 25 + nextBtn.frame.height
         let nextButtonContentInBoundTopConstant = (view.frame.size.height - nextBtn.frame.size.height - bottomLayoutGuide.length - topLayoutGuide.length) - (feeRateDescriptionView.frame.maxY + donationHolderTopConstraint.constant + donationHeightConstraint.constant)
-        let nextButtonContentOutOfBoundTopConstant : CGFloat = 25 
+        let nextButtonContentOutOfBoundTopConstant : CGFloat = 25
         nextButtonTopConstraint.constant = contentHeight < view.frame.size.height ? nextButtonContentInBoundTopConstant : nextButtonContentOutOfBoundTopConstant
         view.layoutIfNeeded()
     }
@@ -172,7 +168,7 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     
     @IBAction func backAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)
-        sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: closeTap)
+        sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(presenter.transactionDTO.assetsWallet.chain)", eventName: closeTap)
     }
     
     @IBAction func cancelAction(_ sender: Any) {
@@ -302,7 +298,7 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
             
             presenter.changeDonationString(donation)
         }
-        sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: donationChanged)
+        sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)", eventName: donationChanged)
         
         return false
     }
@@ -347,17 +343,17 @@ extension TableViewDelegate: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: veryFastTap)
+            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)", eventName: veryFastTap)
         case 1:
-            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: fastTap)
+            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)", eventName: fastTap)
         case 2:
-            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: mediumTap)
+            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)", eventName: mediumTap)
         case 3:
-            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: slowTap)
+            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)", eventName: slowTap)
         case 4:
-            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: verySlowTap)
+            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)", eventName: verySlowTap)
         case 5:
-            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: customTap)
+            sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(self.presenter.transactionDTO.assetsWallet.chain)", eventName: customTap)
         default : break
         }
         
@@ -365,9 +361,9 @@ extension TableViewDelegate: UITableViewDelegate {
         if indexPath.row == 5 {
             let storyboard = UIStoryboard(name: "Send", bundle: nil)
             let customVC = storyboard.instantiateViewController(withIdentifier: "customVC") as! CustomFeeViewController
-            customVC.presenter.blockchainType = self.presenter.transactionDTO.choosenWallet!.blockchainType
+            customVC.presenter.blockchainType = self.presenter.transactionDTO.assetsWallet.blockchainType
             customVC.delegate = presenter
-            customVC.rate = presenter.customFee != nil ? presenter.customFee! : BigInt.zero()
+            customVC.rate = presenter.customFee
             customVC.previousSelected = presenter.selectedIndexOfSpeed
             navigationController?.pushViewController(customVC, animated: true)
         } 
@@ -387,14 +383,14 @@ extension TableViewDataSource: UITableViewDataSource {
         if indexPath.row != 5 {
             let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell") as! TransactionFeeTableViewCell
             transactionCell.feeRate = presenter.feeRates
-            transactionCell.blockchainType = BlockchainType.create(wallet: self.presenter.transactionDTO.choosenWallet!)
+            transactionCell.blockchainType = BlockchainType.create(wallet: self.presenter.transactionDTO.assetsWallet)
             transactionCell.makeCellBy(indexPath: indexPath)
             
             return transactionCell
         } else {
             let customFeeCell = tableView.dequeueReusableCell(withIdentifier: "customFeeCell") as! CustomTrasanctionFeeTableViewCell
-            customFeeCell.blockchainType = BlockchainType.create(wallet: self.presenter.transactionDTO.choosenWallet!)
-            let fee = presenter.customFee?.stringValue ?? BigInt.zero().stringValue
+            customFeeCell.blockchainType = BlockchainType.create(wallet: self.presenter.transactionDTO.assetsWallet)
+            let fee = presenter.customFee.stringValue
             customFeeCell.value = UInt64(fee)!
             customFeeCell.setupUI()
             

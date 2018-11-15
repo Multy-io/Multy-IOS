@@ -52,6 +52,8 @@ class UserWalletRLM: Object {
                 return UInt32(addresses.count)
             case BLOCKCHAIN_ETHEREUM:
                 return 0
+            case BLOCKCHAIN_ERC20:
+                return 0
             default:
                 return 0
             }
@@ -77,140 +79,122 @@ class UserWalletRLM: Object {
     }
     
     var sumInCryptoString: String {
-        get {
-            switch blockchainType.blockchain {
-            case BLOCKCHAIN_BITCOIN:
-                return sumInCrypto.fixedFraction(digits: 8)
-            case BLOCKCHAIN_ETHEREUM:
-                return allETHBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
-            default:
-                return ""
-            }
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            return sumInCrypto.fixedFraction(digits: 8)
+        case BLOCKCHAIN_ETHEREUM:
+            return allETHBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
+        case BLOCKCHAIN_ERC20:
+            return availableAmount.cryptoValueString(for: token)
+        default:
+            return ""
         }
     }
     
     var sumInFiatString: String {
-        get {
-            if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
-                return sumInFiat.fixedFraction(digits: 2)
-            } else {
-                return (allETHBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
-            }
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            return sumInFiat.fixedFraction(digits: 2)
+        case BLOCKCHAIN_ETHEREUM:
+            return (allETHBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
+        case BLOCKCHAIN_ERC20:
+            return "0"
+        default:
+            return "0"
         }
     }
     
     var sumInFiat: Double {
-        get {
-            if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
-                return sumInCrypto * exchangeCourse
-            } else {
-                return Double((allETHBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM).replacingOccurrences(of: ",", with: "."))!
-            }
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            return sumInCrypto * exchangeCourse
+        case BLOCKCHAIN_ETHEREUM:
+            return Double((allETHBalance * exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM).replacingOccurrences(of: ",", with: "."))!
+        case BLOCKCHAIN_ERC20:
+            return 0
+        default:
+            return 0
         }
     }
     
     var isThereBlockedAmount: Bool {
-        get {
-            return isTherePendingTx.boolValue
-        }
+        return isTherePendingTx.boolValue
     }
     
     //available part
     var availableAmount: BigInt {
-        get {
-            var result = BigInt.zero()
-            
-            switch blockchainType.blockchain {
-            case BLOCKCHAIN_BITCOIN:
-                result = BigInt(sumInCryptoString.convertToSatoshiAmountString()) - blockedAmount
-            case BLOCKCHAIN_ETHEREUM:
-                result = availableBalance
-            case BLOCKCHAIN_ERC20:
-                result = BigInt(ethWallet!.balance)
-            default:
-                break
-            }
-            
-            return result
+        var result = BigInt.zero()
+        
+        switch blockchainType.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            result = BigInt(sumInCryptoString.convertToSatoshiAmountString()) - blockedAmount
+        case BLOCKCHAIN_ETHEREUM:
+            result = availableBalance
+        case BLOCKCHAIN_ERC20:
+            result = BigInt(ethWallet!.balance)
+        default:
+            break
         }
+        
+        return result
     }
     
     var availableAmountString: String {
-        get {
-            if blockchain == BLOCKCHAIN_ERC20 {
-                return availableAmount.cryptoValueString(for: token)
-            } else {
-                return availableAmount.cryptoValueString(for: blockchain)
-            }
+        if blockchain == BLOCKCHAIN_ERC20 {
+            return availableAmount.cryptoValueString(for: token)
+        } else {
+            return availableAmount.cryptoValueString(for: blockchain)
         }
     }
     
     var availableAmountInFiat: BigInt {
-        get {
-            return availableAmount * exchangeCourse
-        }
+        return availableAmount * exchangeCourse
     }
     
     var availableAmountInFiatString: String {
-        get {
-            return availableAmountInFiat.fiatValueString(for: blockchain)
-        }
+        return availableAmountInFiat.fiatValueString(for: blockchain)
     }
     
     //blocked part
     var blockedAmount: BigInt {
-        get {
-            switch blockchainType.blockchain {
-            case BLOCKCHAIN_BITCOIN:
-                return BigInt("\(calculateBlockedAmount())")
-            case BLOCKCHAIN_ETHEREUM:
-                return ethWallet!.pendingBalance
-            default:
-                return BigInt("0")
-            }
+        switch blockchainType.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            return BigInt("\(calculateBlockedAmount())")
+        case BLOCKCHAIN_ETHEREUM:
+            return ethWallet!.pendingBalance
+        default:
+            return BigInt("0")
         }
     }
     
     var blockedAmountString: String {
-        get {
-            return blockedAmount.cryptoValueString(for: blockchain)
-        }
+        return blockedAmount.cryptoValueString(for: blockchain)
     }
     
     var blolckedInFiat: BigInt {
-        get {
-            return blockedAmount * exchangeCourse
-        }
+        return blockedAmount * exchangeCourse
     }
     
     var blolckedInFiatString: String {
-        get {
-            return blolckedInFiat.fiatValueString(for: blockchain)
-        }
+        return blolckedInFiat.fiatValueString(for: blockchain)
     }
     
     //////////////////////////////////////
     //not unified
     
     var blockchainType: BlockchainType {
-        get {
-            return BlockchainType.create(wallet: self)
-        }
+        return BlockchainType.create(wallet: self)
     }
 
     var blockchain: Blockchain {
-        get {
-            return blockchainType.blockchain
-        }
+        return blockchainType.blockchain
     }
     
     var availableSumInCrypto: Double {
-        get {
-            if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
-                return availableAmount.cryptoValueString(for: BLOCKCHAIN_BITCOIN).stringWithDot.doubleValue
-            } else {
-                return 0
-            }
+        if self.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
+            return availableAmount.cryptoValueString(for: BLOCKCHAIN_BITCOIN).stringWithDot.doubleValue
+        } else {
+            return 0
         }
     }
     
@@ -294,15 +278,11 @@ class UserWalletRLM: Object {
     @objc dynamic var multisigWallet: MultisigWallet?
     
     var token: TokenRLM? {
-        get {
-            return DataManager.shared.realmManager.erc20Tokens[address]
-        }
+        return DataManager.shared.realmManager.erc20Tokens[address]
     }
 
     var exchangeCourse: Double {
-        get {
-            return DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
-        }
+        return DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
     }
     
     var addresses = List<AddressRLM>() {
@@ -514,7 +494,7 @@ class UserWalletRLM: Object {
     func isThereEnoughAmount(_ amount: String) -> Bool {
         switch blockchainType.blockchain {
         case BLOCKCHAIN_BITCOIN:
-            return amount.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_BITCOIN) < Constants.BigIntSwift.oneBTCInSatoshiKey * sumInCrypto
+            return amount.convertCryptoAmountStringToMinimalUnits(for: BLOCKCHAIN_BITCOIN) < Constants.BigIntSwift.oneBTCInSatoshiKey * sumInCrypto
         case BLOCKCHAIN_ETHEREUM:
             return availableBalance > (Constants.BigIntSwift.oneETHInWeiKey * amount.stringWithDot.doubleValue)
         default:

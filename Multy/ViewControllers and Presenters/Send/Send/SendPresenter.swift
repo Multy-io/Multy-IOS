@@ -156,7 +156,7 @@ class SendPresenter: NSObject {
             let request = activeRequestsArr[selectedActiveRequestIndex!]
             
             let blockchainType = BlockchainType.create(currencyID: UInt32(request.currencyID), netType: UInt32(request.networkID))
-            let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain)
+            let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain)
 //            let address = request.sendAddress
             
             filteredWalletArray = filteredWalletArray.filter {
@@ -751,7 +751,7 @@ extension CreateTransactionDelegate {
         let request = activeRequestsArr[requestIndex]
         let wallet = filteredWalletArray[walletIndex]
         
-        let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(in: wallet.blockchainType.blockchain).stringValue
+        let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: wallet.blockchainType.blockchain).stringValue
         
         let pointer: UnsafeMutablePointer<OpaquePointer?>?
         if !wallet.importedPrivateKey.isEmpty {

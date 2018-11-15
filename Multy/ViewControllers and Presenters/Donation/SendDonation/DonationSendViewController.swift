@@ -47,6 +47,11 @@ class DonationSendViewController: UIViewController, UITextFieldDelegate, Analyti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let wallet = presenter.walletPayFrom {
+            presenter.feeRate = DefaultFeeRates.feeValues(for: wallet.blockchain)
+        }
+        
         self.enableSwipeToBack()
         loader.setupUI(text: localize(string: Constants.sendingString), image: #imageLiteral(resourceName: "walletHuge"))
         self.view.addSubview(loader)

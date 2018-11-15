@@ -8,8 +8,7 @@ class ETHTransactionDTO: NSObject {
     var gasLimit = BigInt.zero()
     var gasPrice =  BigInt.zero()
     
-    var feeAmount: BigInt? {
-        
+    var feeAmount: BigInt {
         return gasPrice * gasLimit
     }
 }

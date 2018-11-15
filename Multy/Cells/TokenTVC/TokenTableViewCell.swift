@@ -47,7 +47,7 @@ class TokenTableViewCell: UITableViewCell {
         fiatAmountLbl.isHidden = true
         
         tokenImg.image = UIImage(named: "chainEth")
-        tokenImg.moa.url = "https://raw.githubusercontent.com/TrustWallet/tokens/master/images/\(tokenObj.address).png"
+        tokenImg.moa.url = tokenObj.tokenImageURLString
         
 //        let fiatBalance = ethBalance * exchangeCourse
 //        fiatAmountLbl.text = "\(fiatBalance.fiatValueString(for: BLOCKCHAIN_ETHEREUM)) USD"

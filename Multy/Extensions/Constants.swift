@@ -120,6 +120,17 @@ enum DefaultFeeRates: Hashable {
             ]
         }
     }
+    
+    static func feeValues(for blockchain: Blockchain) -> NSDictionary {
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            return DefaultFeeRates.btc.feeValue
+        case BLOCKCHAIN_ETHEREUM:
+            return DefaultFeeRates.eth.feeValue
+        default:
+            return NSDictionary()
+        }
+    }
 }
 
 let minBTCDonationAmount = 0.0001

@@ -110,7 +110,7 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func doneAction(_ sender: Any) {
-        if sumInCryptoString.convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain) == Int64(0) {
+        if sumInCryptoString.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain) == Int64(0) {
             presentAlert(with: localize(string: Constants.enterNonZeroAmountString))
             
             return

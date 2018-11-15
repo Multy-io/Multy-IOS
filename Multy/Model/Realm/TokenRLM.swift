@@ -17,6 +17,10 @@ class TokenRLM: Object {
         return "contractAddress"
     }
     
+    var precision: Int {
+        return decimals.intValue == -1 ? 0 : decimals.intValue
+    }
+    
     var blockchainType: BlockchainType {
         get {
             return BlockchainType(blockchain: Blockchain(currencyID.uint32Value), net_type: netType.intValue)

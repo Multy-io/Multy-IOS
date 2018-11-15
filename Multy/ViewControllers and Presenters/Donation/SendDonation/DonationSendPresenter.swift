@@ -21,7 +21,7 @@ class DonationSendPresenter: NSObject, CustomFeeRateProtocol, SendWalletProtocol
     var donationAddress = ""
     var btcWallets = [UserWalletRLM]()
     
-    var feeRate: NSDictionary? {
+    var feeRate = NSDictionary() {
         didSet {
             mainVC?.tableView.reloadData()
         }
