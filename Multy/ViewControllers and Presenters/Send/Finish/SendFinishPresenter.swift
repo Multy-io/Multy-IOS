@@ -42,13 +42,14 @@ class SendFinishPresenter: NSObject {
     func makeEndSum() {
         //        switch isCrypto {
         //        case true:
-        sumInCrypto = transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(in: transactionDTO.blockchain!)
-        sumInCryptoString = sumInCrypto!.cryptoValueString(for: transactionDTO.blockchain!)
+        sumInCrypto = transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(for: transactionDTO.blockchainObject)
+        sumInCryptoString = sumInCrypto!.cryptoValueString(for: transactionDTO.blockchainObject)
+        
         sumInFiatString = (sumInCrypto! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.blockchain!)
         sumInFiat = sumInFiatString.doubleValue
         
-        feeAmountInCryptoString = (transactionDTO.feeEstimation ?? BigInt.zero()).cryptoValueString(for: transactionDTO.blockchain!)
-        feeAmountInFiatString = transactionDTO.feeEstimation != nil ? (transactionDTO.feeEstimation! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.blockchain!) : BigInt.zero().stringValue
+        feeAmountInCryptoString = (transactionDTO.feeEstimation ?? BigInt.zero()).cryptoValueString(for: transactionDTO.blockchainObject)
+        feeAmountInFiatString = transactionDTO.feeEstimation != nil ? (transactionDTO.feeEstimation! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.assetsBlockchain) : BigInt.zero().stringValue
     }
     
     func makeFrameForSlider() -> CGRect {
@@ -87,7 +88,7 @@ class SendFinishPresenter: NSObject {
             }
             self.pointer = self.addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
             
-            let amount = self.transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM)
+            let amount = self.transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(for: BLOCKCHAIN_ETHEREUM)
             
             let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: self.pointer!,
                                                                                   sendAddress: self.transactionDTO.sendAddress!,
@@ -100,7 +101,6 @@ class SendFinishPresenter: NSObject {
             
             self.transactionDTO.rawValue = trData.message
         }
-        
     }
     
     func getOneVerbose(completion: @escaping (_ updatedWallet: UserWalletRLM?,_ error: Error?) -> ()) {

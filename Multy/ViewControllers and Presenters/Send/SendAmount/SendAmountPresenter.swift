@@ -5,6 +5,11 @@
 import UIKit
 import RealmSwift
 
+enum SendTXMode {
+    case crypto
+    case erc20
+}
+
 private typealias CreateTransactionDelegate = SendAmountPresenter
 
 class SendAmountPresenter: NSObject {
@@ -14,8 +19,48 @@ class SendAmountPresenter: NSObject {
     
     var transactionDTO = TransactionDTO() {
         didSet {
+            
+            
+            assetsWallet = transactionDTO.assetsWallet
+            
+            if transactionDTO.isTokenTransfer {
+                sendTXMode = SendTXMode.erc20
+                tokenWallet = transactionDTO.choosenWallet
+            }
+            
+            blockchainType = transactionDTO.blockchainType!
+            blockchain = blockchainType.blockchain
+            
+            blockchainObject = (sendTXMode == SendTXMode.crypto) ? blockchain : tokenWallet!.token
+            
+            exchangeCourse = transactionDTO.choosenWallet!.exchangeCourse
+            
+            sendCryptoBlockchainType = (blockchain == BLOCKCHAIN_ERC20) ? BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: blockchainType.net_type) : blockchainType
+            sendCryptoBlockchain = sendCryptoBlockchainType.blockchain
+            
+            cryptoName = transactionDTO.choosenWallet!.assetShortName
+            
+            maxPrecision = transactionDTO.choosenWallet!.assetPrecision
+            
             disassembleTransaction()
         }
+    }
+    
+    var assetsWallet = UserWalletRLM()
+    var tokenWallet: UserWalletRLM?
+    var sendTXMode = SendTXMode.crypto
+    var blockchainObject: Any?
+    
+    var sendCryptoBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_BITCOIN, net_type: 0)
+    var sendCryptoBlockchain = BLOCKCHAIN_BITCOIN
+    
+    var maxPrecision = 0
+    
+    var estimationInfo: NSDictionary?
+    
+    func getEstimation(for operation: String) -> String {
+        let value = self.estimationInfo?[operation] as? NSNumber
+        return value == nil ? "\(400_000)" : "\(value!)"
     }
     
     // preliminary data
@@ -33,12 +78,7 @@ class SendAmountPresenter: NSObject {
     }
     var linkedWallet: UserWalletRLM? // for multisig wallets
     
-    var cryptoName: String {
-        get {
-            let result = transactionDTO.blockchain?.shortName
-            return result != nil ? result! : ""
-        }
-    }
+    var cryptoName = String()
     
     var fiatName: String {
         get {
@@ -47,12 +87,8 @@ class SendAmountPresenter: NSObject {
         }
     }
     
-    var blockchain: Blockchain? {
-        get {
-            let result = transactionDTO.blockchain
-            return result
-        }
-    }
+    var blockchainType = BlockchainType(blockchain: BLOCKCHAIN_BITCOIN, net_type: 0)
+    var blockchain = BLOCKCHAIN_BITCOIN
     
     var exchangeCourse = exchangeCourseDefault {
         didSet {
@@ -118,7 +154,7 @@ class SendAmountPresenter: NSObject {
     }
     
     var totalSumInCryptoString: String {
-        return totalSumInCrypto.cryptoValueString(for: blockchain!)
+        return totalSumInCrypto.cryptoValueString(for: blockchainObject)
     }
     
     private var totalSumInFiat: BigInt {
@@ -129,7 +165,7 @@ class SendAmountPresenter: NSObject {
     }
     
     var totalSumInFiatString: String {
-        return totalSumInFiat.fiatValueString(for: blockchain!)
+        return totalSumInFiat.fiatValueString(for: blockchain)
     }
     
     private var availableSumInCrypto: BigInt {
@@ -140,19 +176,19 @@ class SendAmountPresenter: NSObject {
     
     var availableSumInCryptoString: String {
         get {
-            return blockchain != nil ? availableSumInCrypto.cryptoValueString(for: blockchain!) : "0"
+            return blockchain != nil ? availableSumInCrypto.cryptoValueString(for: blockchainObject) : "0"
         }
     }
     
     var availableSumInFiatString: String {
         get {
-            return blockchain != nil ? (availableSumInCrypto * exchangeCourse).fiatValueString(for: blockchain!) : "0"
+            return blockchain != nil ? (availableSumInCrypto * exchangeCourse).fiatValueString(for: blockchain) : "0"
         }
     }
     
     var maxAllowedToSpendInChoosenCurrencyString: String {
         get {
-            return isCrypto ? maxAllowedToSpendInCrypto.cryptoValueString(for: blockchain!) : maxAllowedToSpendInFiat.fiatValueString(for: blockchain!)
+            return isCrypto ? maxAllowedToSpendInCrypto.cryptoValueString(for: blockchainObject) : maxAllowedToSpendInFiat.fiatValueString(for: blockchain)
         }
     }
     
@@ -231,14 +267,12 @@ class SendAmountPresenter: NSObject {
     
     private func disassembleTransaction() {
         exchangeCourse = transactionDTO.choosenWallet != nil ? transactionDTO.choosenWallet!.exchangeCourse : exchangeCourseDefault
-        if blockchain != nil {
-            if transactionDTO.sendAmountString != nil {
-                changeSendAmountString(transactionDTO.sendAmountString!)
-            }
-            
-            if blockchain == BLOCKCHAIN_ETHEREUM {
-                feeEstimationInCrypto = transactionDTO.ETHDTO?.feeAmount
-            }
+        if transactionDTO.sendAmountString != nil {
+            changeSendAmountString(transactionDTO.sendAmountString!)
+        }
+        
+        if blockchain == BLOCKCHAIN_ETHEREUM || blockchain == BLOCKCHAIN_ERC20  {
+            feeEstimationInCrypto = transactionDTO.ETHDTO?.feeAmount
         }
     }
     
@@ -252,18 +286,32 @@ class SendAmountPresenter: NSObject {
     
     private func createPreliminaryData() {
         let core = DataManager.shared.coreLibManager
-        let wallet = transactionDTO.choosenWallet!
         binaryData = account!.binaryDataString.createBinaryData()!
         
-        if !wallet.isImported  {
-            addressData = core.createAddress(blockchainType:    wallet.blockchainType,
-                                             walletID:      wallet.walletID.uint32Value,
-                                             addressID:     wallet.changeAddressIndex,
+        if !assetsWallet.isImported  {
+            addressData = core.createAddress(blockchainType:sendCryptoBlockchainType,
+                                             walletID:      assetsWallet.walletID.uint32Value,
+                                             addressID:     assetsWallet.changeAddressIndex,
                                              binaryData:    &binaryData!)
         }
         
         if transactionDTO.choosenWallet!.isMultiSig {
-            DataManager.shared.getWallet(primaryKey: transactionDTO.choosenWallet!.multisigWallet!.linkedWalletID) { [unowned self] in
+            DataManager.shared.estimation(for: assetsWallet.address) { [unowned self] in
+                switch $0 {
+                case .success(let value):
+                    self.estimationInfo = value
+                    
+                    let limit = self.getEstimation(for: "submitTransaction")
+                    self.transactionDTO.ETHDTO?.gasLimit = BigInt(limit)
+                    
+                    break
+                case .failure(let error):
+                    print(error)
+                    break
+                }
+            }
+            
+            DataManager.shared.getWallet(primaryKey: assetsWallet.multisigWallet!.linkedWalletID) { [unowned self] in
                 switch $0 {
                 case .success(let wallet):
                     self.linkedWallet = wallet
@@ -278,18 +326,18 @@ class SendAmountPresenter: NSObject {
     
     func changeSendAmountString(_ toAmount: String) {
         sendAmountString = toAmount
-        sendAmountInCryptoMinimalUnits = isCrypto ? sendAmountForDoubleString().convertCryptoAmountStringToMinimalUnits(in: blockchain!) : sendAmountForDoubleString().convertCryptoAmountStringToMinimalUnits(in: blockchain!) / exchangeCourse
+        sendAmountInCryptoMinimalUnits = isCrypto ? sendAmountForDoubleString().convertCryptoAmountStringToMinimalUnits(for: blockchainObject) : sendAmountForDoubleString().convertCryptoAmountStringToMinimalUnits(for: blockchainObject) / exchangeCourse
         let convertedAmountInMinimalUnits = isCrypto ? sendAmountInCryptoMinimalUnits * exchangeCourse : sendAmountInCryptoMinimalUnits
         
-        convertedAmountString = isCrypto ? convertedAmountInMinimalUnits.fiatValueString(for: blockchain!) : convertedAmountInMinimalUnits.cryptoValueString(for: blockchain!)
+        convertedAmountString = isCrypto ? convertedAmountInMinimalUnits.fiatValueString(for: blockchain) : convertedAmountInMinimalUnits.cryptoValueString(for: blockchainObject)
         vc?.updateUI()
     }
     
     func setSumToMaxAllowed() {
         payForCommission = false
         sendAmountInCryptoMinimalUnits = maxAllowedToSpendInCrypto
-        sendAmountString = isCrypto ? sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchain!) : (sendAmountInCryptoMinimalUnits * exchangeCourse).fiatValueString(for: blockchain!)
-        convertedAmountString = isCrypto ? (sendAmountInCryptoMinimalUnits * exchangeCourse).fiatValueString(for: blockchain!) : sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchain!)
+        sendAmountString = isCrypto ? sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchainObject) : (sendAmountInCryptoMinimalUnits * exchangeCourse).fiatValueString(for: blockchain)
+        convertedAmountString = isCrypto ? (sendAmountInCryptoMinimalUnits * exchangeCourse).fiatValueString(for: blockchain) : sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchainObject)
     }
     
     func resetAmount() {
@@ -309,7 +357,7 @@ class SendAmountPresenter: NSObject {
             sendAmountStringForDouble.removeLast()
         }
         
-        let amountInMinimalUnits = isCrypto ? sendAmountStringForDouble.convertCryptoAmountStringToMinimalUnits(in: blockchain!) : sendAmountStringForDouble.convertCryptoAmountStringToMinimalUnits(in: blockchain!) / exchangeCourse
+        let amountInMinimalUnits = isCrypto ? sendAmountStringForDouble.convertCryptoAmountStringToMinimalUnits(for: blockchainObject) : sendAmountStringForDouble.convertCryptoAmountStringToMinimalUnits(for: blockchainObject) / exchangeCourse
         return amountInMinimalUnits <= maxAllowedToSpendInCrypto
     }
     
@@ -342,18 +390,22 @@ class SendAmountPresenter: NSObject {
         if result.isZero {
             totalSumInCrypto = BigInt.zero()
         } else {
-            if payForCommission {
-                if feeEstimationInCrypto != nil {
-                    result = result + feeEstimationInCrypto!
-                    
-                    if donationAmount != nil {
-                        result = result + donationAmount!
+            if sendTXMode != .erc20 {
+                if payForCommission {
+                    if feeEstimationInCrypto != nil {
+                        result = result + feeEstimationInCrypto!
+                        
+                        if donationAmount != nil {
+                            result = result + donationAmount!
+                        }
                     }
                 }
-            }
-            
-            if result > availableSumInCrypto {
-                result = availableSumInCrypto
+                
+                if result > availableSumInCrypto {
+                    result = availableSumInCrypto
+                }
+            } else {
+                //erc20 section
             }
             
             totalSumInCrypto = result
@@ -370,7 +422,8 @@ class SendAmountPresenter: NSObject {
             return estimateBTCTransactionAndValidation()
         case BLOCKCHAIN_ETHEREUM:
             return estimateETHTransactionAndValidation()
-            
+        case BLOCKCHAIN_ERC20:
+            return estimateTokenTransactionAndValidation()
         default:
             return false
         }
@@ -413,10 +466,10 @@ extension CreateTransactionDelegate {
         
         let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                          sendAddress: transactionDTO.sendAddress!,
-                                                                         sendAmountString: sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchain!),
+                                                                         sendAmountString: sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchainObject),
                                                                          feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
             isDonationExists: transactionDTO.donationAmount != nil && !transactionDTO.donationAmount!.isZero,
-            donationAmount: transactionDTO.donationAmount?.cryptoValueString(for: blockchain!) ?? BigInt.zero().stringValue,
+            donationAmount: transactionDTO.donationAmount?.cryptoValueString(for: blockchainObject) ?? BigInt.zero().stringValue,
             isPayCommission: payForCommission,
             wallet: transactionDTO.choosenWallet!,
             binaryData: &binaryData!,
@@ -503,5 +556,90 @@ extension CreateTransactionDelegate {
             
             return trData.isTransactionCorrect
         }
+    }
+    
+    func estimateTokenTransactionAndValidation() -> Bool {
+        let info = DataManager.shared.privateInfo(for: assetsWallet)
+        if info == nil {
+            return false
+        }
+        
+        var txInfo = Dictionary<String, Any>()
+        var accountDict = Dictionary<String, Any>()
+        var builderDict = Dictionary<String, Any>()
+        var payloadDict = Dictionary<String, Any>()
+        var txDict = Dictionary<String, Any>()
+        var feeDict = Dictionary<String, Any>()
+        
+        txInfo["blockchain"] =          assetsWallet.blockchain.fullName
+        txInfo["net_type"] =            assetsWallet.blockchainType.net_type
+        
+        //account
+        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
+        accountDict["private_key"] =    info!["privateKey"] as! String
+        txInfo["account"] =             accountDict
+        
+        //builder
+        builderDict["type"] =           "erc20"
+        builderDict["action"] =         "transfer"
+        //payload
+        payloadDict["balance_eth"] =            assetsWallet.availableBalance.stringValue
+        payloadDict["contract_address"] =       tokenWallet!.address
+        payloadDict["balance_token"] =          tokenWallet!.ethWallet!.balance
+        payloadDict["transfer_amount_token"] =  totalSumInCrypto.stringValue
+        payloadDict["destination_address"] =    transactionDTO.sendAddress!
+        builderDict["payload"] =                payloadDict
+        txInfo["builder"] =                     builderDict
+        
+        //transaction
+        txDict["nonce"] =               assetsWallet.ethWallet!.nonce
+        feeDict["gas_price"] =          transactionDTO.ETHDTO!.gasPrice.stringValue
+        feeDict["gas_limit"] =          transactionDTO.ETHDTO!.gasLimit.stringValue
+        txDict["fee"] =                 feeDict
+        txInfo["transaction"] =         txDict
+        
+        let rawTX = DataManager.shared.makeTX(from: txInfo)
+        
+        switch rawTX {
+        case .success(let txString):
+            rawTransaction = txString
+            
+            return true
+        case .failure(let error):
+            rawTransaction = error
+            
+            return false
+        }
+        
+        
+        //        switch rawTX {
+        //        case .success(let txString):
+        //            print(rawTX)
+        //
+        //            let newAddressParams = [
+        //                "walletindex"   : tokenHolderWallet!.walletID.intValue,
+        //                "address"       : tokenHolderWallet!.address,
+        //                "addressindex"  : 0,
+        //                "transaction"   : txString,
+        //                "ishd"          : tokenHolderWallet!.shouldCreateNewAddressAfterTransaction
+        //                ] as [String : Any]
+        //
+        //            let params = [
+        //                "currencyid": tokenHolderWallet!.chain,
+        //                /*"JWT"       : jwtToken,*/
+        //                "networkid" : tokenHolderWallet!.chainType,
+        //                "payload"   : newAddressParams
+        //                ] as [String : Any]
+        //
+        //            DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
+        //                if dict != nil {
+        //                    print(dict)
+        //                } else {
+        //                    print(error)
+        //                }
+        //            }
+        //        case .failure(let error):
+        //            break
+        //        }
     }
 }

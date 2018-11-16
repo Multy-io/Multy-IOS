@@ -13,9 +13,9 @@ class SendDetailsPresenter: NSObject {
     var vc: SendDetailsViewController?
     var transactionDTO = TransactionDTO() {
         didSet {
-            availableSumInCrypto = transactionDTO.choosenWallet!.availableAmount
-            availableSumInFiat = transactionDTO.choosenWallet!.availableAmountInFiat
-            cryptoName = transactionDTO.blockchain!.shortName
+            availableSumInCrypto = transactionDTO.assetsWallet.availableAmount
+            availableSumInFiat = transactionDTO.assetsWallet.availableAmountInFiat
+            cryptoName = transactionDTO.assetsWallet.assetShortName
             fiatName = transactionDTO.choosenWallet!.fiatName
             feeRates = defaultFeeRates()
            
@@ -39,6 +39,8 @@ class SendDetailsPresenter: NSObject {
                 } else {
                     transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainTxGasLimit)")
                 }
+            } else if transactionDTO.blockchain == BLOCKCHAIN_ERC20 {
+                transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainERC20TxGasLimit)")
             }
         }
     }
@@ -59,7 +61,7 @@ class SendDetailsPresenter: NSObject {
     var isDonationSwitchedOn : Bool? {
         didSet {
             if isDonationSwitchedOn != nil {
-                changeDonationString(isDonationSwitchedOn! ? "\(minBTCDonationAmount)".convertCryptoAmountStringToMinimalUnits(in: transactionDTO.choosenWallet!.blockchain).cryptoValueString(for: transactionDTO.choosenWallet!.blockchain) : BigInt.zero().stringValue)
+                changeDonationString(isDonationSwitchedOn! ? "\(minBTCDonationAmount)".convertCryptoAmountStringToMinimalUnits(for: transactionDTO.choosenWallet!.blockchain).cryptoValueString(for: transactionDTO.choosenWallet!.blockchain) : BigInt.zero().stringValue)
             } else {
                 changeDonationString(nil)
             }
@@ -77,7 +79,7 @@ class SendDetailsPresenter: NSObject {
                     donationStringForDouble.removeLast()
                 }
                 
-                donationInCrypto = donationStringForDouble.convertCryptoAmountStringToMinimalUnits(in: transactionDTO.choosenWallet!.blockchain)
+                donationInCrypto = donationStringForDouble.convertCryptoAmountStringToMinimalUnits(for: transactionDTO.choosenWallet!.blockchain)
             }
         }
     }
@@ -104,7 +106,7 @@ class SendDetailsPresenter: NSObject {
     var cryptoName = ""
     var fiatName = ""
     
-    var customFee: BigInt? {
+    var customFee = BigInt("0") {
         didSet {
             if oldValue != customFee {
                 updateTransaction()
@@ -113,8 +115,12 @@ class SendDetailsPresenter: NSObject {
         }
     }
     
-    var feeRates : NSDictionary? {
+    var feeRates = NSDictionary() {
         didSet {
+            if feeRates.count > 0 {
+                customFee = BigInt("\(feeRates["VerySlow"]!)")
+            }
+            
             updateTransaction()
             vc?.tableView.reloadData()
         }
@@ -122,7 +128,7 @@ class SendDetailsPresenter: NSObject {
     
     var isDonationAvailable : Bool {
         get {
-            let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
+            let blockchainType = transactionDTO.assetsWallet.blockchainType
             return blockchainType.blockchain == BLOCKCHAIN_BITCOIN
         }
     }
@@ -142,9 +148,9 @@ class SendDetailsPresenter: NSObject {
     }
     
     func requestFee() {
-        DataManager.shared.getFeeRate(currencyID: transactionDTO.choosenWallet!.chain.uint32Value,
-                                      networkID: transactionDTO.choosenWallet!.chainType.uint32Value,
-                                      ethAddress: transactionDTO.blockchain == BLOCKCHAIN_ETHEREUM ? transactionDTO.sendAddress : nil,
+        DataManager.shared.getFeeRate(currencyID: transactionDTO.assetsWallet.chain.uint32Value,
+                                      networkID: transactionDTO.assetsWallet.chainType.uint32Value,
+                                      ethAddress: transactionDTO.assetsWallet.blockchain == BLOCKCHAIN_ETHEREUM ? transactionDTO.sendAddress : nil,
                                       completion: { [weak self] (dict, error) in
                                         guard self != nil else {
                                             return
@@ -152,8 +158,8 @@ class SendDetailsPresenter: NSObject {
                                         
                                         self!.vc?.loader.hide()
                                         
-                                        if dict != nil {
-                                            self!.feeRates = dict!["speeds"] as? NSDictionary
+                                        if dict != nil, let fees = dict!["speeds"] as? NSDictionary {
+                                            self!.feeRates = fees
                                         } else {
                                             print("Did failed getting feeRate")
                                         }
@@ -161,23 +167,23 @@ class SendDetailsPresenter: NSObject {
     }
     
     func defaultFeeRates() -> NSDictionary {
-        return transactionDTO.blockchain == BLOCKCHAIN_BITCOIN ? DefaultFeeRates.btc.feeValue : DefaultFeeRates.eth.feeValue
+        return transactionDTO.assetsWallet.blockchain == BLOCKCHAIN_BITCOIN ? DefaultFeeRates.btc.feeValue : DefaultFeeRates.eth.feeValue
     }
     
     func feeRateForIndex(_ index: Int) -> (name: String, value: BigInt) {
         switch index {
         case 0:
-            return (localize(string: Constants.veryFastString), BigInt("\(feeRates!["VeryFast"])"))
+            return (localize(string: Constants.veryFastString), BigInt("\(feeRates["VeryFast"])"))
         case 1:
-            return (localize(string: Constants.fastString), BigInt("\(feeRates!["Fast"]!)"))
+            return (localize(string: Constants.fastString), BigInt("\(feeRates["Fast"]!)"))
         case 2:
-            return (localize(string: Constants.mediumString), BigInt("\(feeRates!["Medium"]!)"))
+            return (localize(string: Constants.mediumString), BigInt("\(feeRates["Medium"]!)"))
         case 3:
-            return (localize(string: Constants.slowString), BigInt("\(feeRates!["Slow"]!)"))
+            return (localize(string: Constants.slowString), BigInt("\(feeRates["Slow"]!)"))
         case 4:
-            return (localize(string: Constants.verySlowString), BigInt("\(feeRates!["VerySlow"]!)"))
+            return (localize(string: Constants.verySlowString), BigInt("\(feeRates["VerySlow"]!)"))
         case 5:
-            return (localize(string: Constants.customString), customFee ?? BigInt.zero())
+            return (localize(string: Constants.customString), customFee)
         default:
             return ("", BigInt.zero())
         }
@@ -219,7 +225,7 @@ class SendDetailsPresenter: NSObject {
             donationStringForDouble.removeLast()
         }
         
-        let donationInMinimalUnits = donationStringForDouble.convertCryptoAmountStringToMinimalUnits(in: transactionDTO.choosenWallet!.blockchain)
+        let donationInMinimalUnits = donationStringForDouble.convertCryptoAmountStringToMinimalUnits(for: transactionDTO.choosenWallet!.blockchain)
         return donationInMinimalUnits <= availableSumInCrypto!
     }
     
