@@ -99,6 +99,7 @@ extension Constants {
     static let noFundsString = "NO FUNDS"
     static let noLinkedFundsString = "NO LINKED FUNDS"
     static let errorWhileCreatingWalletString = "ERROR WHILE CREATING WALLET"
+    static let maxEmptyWAlletsString = "MAXIMUM EMPTY WALLETS"
     static let youCantSpendMoreThanFeeAndDonationString = "YOU CANT SPEND MORE THEN FEE AND DONATION"
     static let youCantSpendMoreThanFeeString = "YOU CANT SPEND MORE THEN FEE"
     static let andDonationString = "AND DONATION "
@@ -146,4 +147,5 @@ extension Constants {
     static let confirmString = "CONFIRM"
     static let denyString = "DENY"
     static let walletString = "WALLETS"
+    static let wrongMSaddressString = "NOT CORRECT MS ADDRESS"
 }

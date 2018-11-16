@@ -102,6 +102,10 @@ class CreateWalletPresenter: NSObject {
                 self!.mainVC!.sendAnalyticsEvent(screenName: screenCreateWallet, eventName: cancelTap)
                 self!.mainVC!.openNewlyCreatedWallet()
             } else {
+                if (error!.localizedDescription.range(of: "406")) != nil {
+                    self!.mainVC?.presentAlert(with: self!.localize(string: Constants.maxEmptyWAlletsString))
+                    return
+                }
                 self!.mainVC?.presentAlert(with: self!.localize(string: Constants.errorWhileCreatingWalletString))
             }
         }

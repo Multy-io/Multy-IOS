@@ -40,3 +40,5 @@
 "PLEASE WAIT MULTISIG CONFIRMATION" = "Please, wait confirmation of wallet's creation!";
 "PLEASE WAIT SYNCING" = "Please, wait. Synchronization in progress.";
 "WRONG KEY" = "Looks like you are trying to import by not private key string";
+"NOT CORRECT MS ADDRESS" = "You are trying to import not valid MultiSig address";
+"MAXIMUM EMPTY WALLETS" = "Maximum number of empty wallets created";
