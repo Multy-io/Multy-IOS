@@ -58,7 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
         
         configureFirebaseApp()
         
-
         if let option = launchOptions {
             let notification = option[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any]
             if notification != nil {
@@ -68,7 +67,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
 
         performFirstSegue(launchOptions: launchOptions)
 
-        
         return true
     }
     

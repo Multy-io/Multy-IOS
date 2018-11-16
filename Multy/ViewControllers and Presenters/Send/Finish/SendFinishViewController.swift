@@ -3,7 +3,7 @@
 //See LICENSE for details
 
 import UIKit
-//import MultyCoreLibrary
+import Alamofire
 
 private typealias LocalizeDelegate = SendFinishViewController
 private typealias PickerContactsDelegate = SendFinishViewController
@@ -77,20 +77,28 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
         topView.setShadow(with: shadowColor)
         middle.setShadow(with: shadowColor)
         bottom.setShadow(with: shadowColor)
-        let blockchainType = BlockchainType.create(wallet: presenter.transactionDTO.choosenWallet!)
+        
+        let blockchainType = BlockchainType.create(wallet: presenter.transactionDTO.assetsWallet)
         cryptoImage.image = UIImage(named: blockchainType.iconString)
+        cryptoImage.moa.url = presenter.transactionDTO.choosenWallet!.token?.tokenImageURLString
         
         cryptoSumLbl.text = presenter.sumInCryptoString
-        cryptoNamelbl.text = presenter.cryptoName
-        fiatSumAndCurrancyLbl.text = "\(presenter.sumInFiatString) \(presenter.fiatName)"
+        cryptoNamelbl.text = presenter.transactionDTO.choosenWallet!.assetShortName
+        
+        if presenter.transactionDTO.isTokenTransfer {
+            fiatSumAndCurrancyLbl.isHidden = true
+        } else {
+            fiatSumAndCurrancyLbl.text = "\(presenter.sumInFiatString) \(presenter.fiatName)"
+        }
+        
         addressLbl.text = presenter.transactionDTO.sendAddress
-        walletNameLbl.text = presenter.transactionDTO.choosenWallet?.name
+        walletNameLbl.text = presenter.transactionDTO.choosenWallet!.name
         
         
         walletsAddressesLbl.text = presenter.transactionDTO.choosenWallet!.stringAddressesWithSpendableOutputs()
-        let fiatSum = presenter.transactionDTO.choosenWallet!.sumInFiatString
-        walletFiatSumAndCurrencyLbl.text = "\(presenter.transactionDTO.choosenWallet!.sumInCryptoString) \(presenter.transactionDTO.choosenWallet!.cryptoName)" + " / " + "\(fiatSum) \(presenter.transactionDTO.choosenWallet!.fiatName)"
-        transactionFeeCostLbl.text = "\(presenter.feeAmountInCryptoString) \(presenter.cryptoName)/\(presenter.feeAmountInFiatString) \(presenter.fiatName)"
+        let fiatSum = presenter.transactionDTO.assetsWallet.sumInFiatString
+        walletFiatSumAndCurrencyLbl.text = "\(presenter.transactionDTO.assetsWallet.sumInCryptoString) \(presenter.transactionDTO.assetsWallet.cryptoName)" + " / " + "\(fiatSum) \(presenter.transactionDTO.assetsWallet.fiatName)"
+        transactionFeeCostLbl.text = "\(presenter.feeAmountInCryptoString) \(presenter.transactionDTO.assetsWallet.cryptoName)/\(presenter.feeAmountInFiatString) \(presenter.fiatName)"
         transactionSpeedNameLbl.text = "\(presenter.transactionDTO.feeRateName ?? "") "
 //        transactionSpeedTimeLbl.text =  "\(presenter.transactionDTO.transaction?.transactionRLM?.speedTimeString ?? "")"
         
@@ -250,22 +258,8 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func nextAction(_ sender: Any) {
         self.createRecentAddress()
-        let wallet = presenter.transactionDTO.choosenWallet!
-        let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? presenter.transactionDTO.BTCDTO!.newChangeAddress! : ""
         
-        let newAddressParams = [
-            "walletindex"   : wallet.walletID.intValue,
-            "address"       : newAddress,
-            "addressindex"  : wallet.addresses.count,
-            "transaction"   : presenter.transactionDTO.rawValue!,
-            "ishd"          : NSNumber(booleanLiteral: wallet.shouldCreateNewAddressAfterTransaction)
-            ] as [String : Any]
-        
-        let params = [
-            "currencyid": wallet.chain,
-            "networkid" : wallet.chainType,
-            "payload"   : newAddressParams
-            ] as [String : Any]
+        let params = createTXParameters()
         
         DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
             print("---------\(dict)")
@@ -289,6 +283,28 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
                 self.presenter.makeNewTx()
             }
         }
+    }
+    
+    func createTXParameters() -> Parameters {
+        let wallet = presenter.transactionDTO.assetsWallet
+        let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? presenter.transactionDTO.BTCDTO!.newChangeAddress! : ""
+        let addressIndex = wallet.blockchain == BLOCKCHAIN_ETHEREUM ? 0 : wallet.addresses.count
+        
+        let newAddressParams = [
+            "walletindex"   : wallet.walletID.intValue,
+            "address"       : newAddress,
+            "addressindex"  : addressIndex,
+            "transaction"   : presenter.transactionDTO.rawValue!,
+            "ishd"          : NSNumber(booleanLiteral: wallet.shouldCreateNewAddressAfterTransaction)
+            ] as [String : Any]
+        
+        let params = [
+            "currencyid": wallet.chain,
+            "networkid" : wallet.chainType,
+            "payload"   : newAddressParams
+            ] as [String : Any]
+        
+        return params
     }
 
     func createRecentAddress() {

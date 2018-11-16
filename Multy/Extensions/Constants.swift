@@ -291,6 +291,7 @@ let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for 
 let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 
 let plainTxGasLimit : UInt64 = 42000
+let plainERC20TxGasLimit : UInt64 = 400000
 let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 16.10.2018
 
 //API REST constants

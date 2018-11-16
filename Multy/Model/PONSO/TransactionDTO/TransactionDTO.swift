@@ -35,6 +35,14 @@ class TransactionDTO: NSObject {
         }
     }
     
+    var isTokenTransfer: Bool {
+        return blockchain == BLOCKCHAIN_ERC20
+    }
+    
+    var blockchainObject: Any? {
+        return choosenWallet!.blockchain == BLOCKCHAIN_ERC20 ? choosenWallet!.token : blockchain
+    }
+    
     var assetsWallet: UserWalletRLM {
         return choosenWallet!.blockchain == BLOCKCHAIN_ERC20 ? tokenHolderWallet! : choosenWallet!
     }
@@ -56,7 +64,7 @@ class TransactionDTO: NSObject {
                 return
             }
             
-            if blockchain != nil && blockchain! == BLOCKCHAIN_ETHEREUM {
+            if blockchain != nil && (blockchain! == BLOCKCHAIN_ETHEREUM || blockchain! == BLOCKCHAIN_ERC20) {
                 ETHDTO?.gasPrice = feeRate!
             } else {
                 BTCDTO?.feePerByte = feeRate!
@@ -93,5 +101,9 @@ class TransactionDTO: NSObject {
         default:
             return
         }
+    }
+    
+    override var description: String {
+        return "sendAddress: \(sendAddress!)\nsendAmountString: \(sendAmountString!)\nfeeEstimation: \(feeEstimation!)"
     }
 }

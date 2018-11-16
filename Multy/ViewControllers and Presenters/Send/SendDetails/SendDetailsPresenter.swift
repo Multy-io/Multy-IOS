@@ -39,6 +39,8 @@ class SendDetailsPresenter: NSObject {
                 } else {
                     transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainTxGasLimit)")
                 }
+            } else if transactionDTO.blockchain == BLOCKCHAIN_ERC20 {
+                transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainERC20TxGasLimit)")
             }
         }
     }

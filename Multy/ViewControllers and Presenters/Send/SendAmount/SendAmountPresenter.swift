@@ -19,10 +19,11 @@ class SendAmountPresenter: NSObject {
     
     var transactionDTO = TransactionDTO() {
         didSet {
-            disassembleTransaction()
+            
             
             assetsWallet = transactionDTO.assetsWallet
-            if transactionDTO.choosenWallet!.blockchain == BLOCKCHAIN_ERC20 {
+            
+            if transactionDTO.isTokenTransfer {
                 sendTXMode = SendTXMode.erc20
                 tokenWallet = transactionDTO.choosenWallet
             }
@@ -40,6 +41,8 @@ class SendAmountPresenter: NSObject {
             cryptoName = transactionDTO.choosenWallet!.assetShortName
             
             maxPrecision = transactionDTO.choosenWallet!.assetPrecision
+            
+            disassembleTransaction()
         }
     }
     
@@ -268,7 +271,7 @@ class SendAmountPresenter: NSObject {
             changeSendAmountString(transactionDTO.sendAmountString!)
         }
         
-        if blockchain == BLOCKCHAIN_ETHEREUM {
+        if blockchain == BLOCKCHAIN_ETHEREUM || blockchain == BLOCKCHAIN_ERC20  {
             feeEstimationInCrypto = transactionDTO.ETHDTO?.feeAmount
         }
     }
@@ -568,32 +571,32 @@ extension CreateTransactionDelegate {
         var txDict = Dictionary<String, Any>()
         var feeDict = Dictionary<String, Any>()
         
-        txInfo["blockchain"] = assetsWallet.blockchain.fullName
-        txInfo["net_type"] = assetsWallet.blockchainType.net_type
+        txInfo["blockchain"] =          assetsWallet.blockchain.fullName
+        txInfo["net_type"] =            assetsWallet.blockchainType.net_type
         
         //account
-        accountDict["type"] = ACCOUNT_TYPE_DEFAULT.rawValue
-        accountDict["private_key"] = info!["privateKey"] as! String
-        txInfo["account"] = accountDict
+        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
+        accountDict["private_key"] =    info!["privateKey"] as! String
+        txInfo["account"] =             accountDict
         
         //builder
-        builderDict["type"] = "erc20"
-        builderDict["action"] = "transfer"
+        builderDict["type"] =           "erc20"
+        builderDict["action"] =         "transfer"
         //payload
-        payloadDict["balance_eth"] = assetsWallet.availableBalance.stringValue
-        payloadDict["contract_address"] = assetsWallet.address
-        payloadDict["balance_token"] = transactionDTO.choosenWallet!.ethWallet!.balance
-        payloadDict["transfer_amount_token"] = totalSumInCrypto.stringValue
-        payloadDict["destination_address"] = transactionDTO.sendAddress!
-        builderDict["payload"] = payloadDict
-        txInfo["builder"] = builderDict
+        payloadDict["balance_eth"] =            assetsWallet.availableBalance.stringValue
+        payloadDict["contract_address"] =       tokenWallet!.address
+        payloadDict["balance_token"] =          tokenWallet!.ethWallet!.balance
+        payloadDict["transfer_amount_token"] =  totalSumInCrypto.stringValue
+        payloadDict["destination_address"] =    transactionDTO.sendAddress!
+        builderDict["payload"] =                payloadDict
+        txInfo["builder"] =                     builderDict
         
         //transaction
-        txDict["nonce"] = assetsWallet.ethWallet!.nonce
-        feeDict["gas_price"] = transactionDTO.ETHDTO!.gasPrice.stringValue
-        feeDict["gas_limit"] = transactionDTO.ETHDTO!.gasLimit.stringValue
-        txDict["fee"] = feeDict
-        txInfo["transaction"] = txDict
+        txDict["nonce"] =               assetsWallet.ethWallet!.nonce
+        feeDict["gas_price"] =          transactionDTO.ETHDTO!.gasPrice.stringValue
+        feeDict["gas_limit"] =          transactionDTO.ETHDTO!.gasLimit.stringValue
+        txDict["fee"] =                 feeDict
+        txInfo["transaction"] =         txDict
         
         let rawTX = DataManager.shared.makeTX(from: txInfo)
         

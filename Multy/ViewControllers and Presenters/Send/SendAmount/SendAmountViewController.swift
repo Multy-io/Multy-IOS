@@ -65,7 +65,7 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         enableSwipeToBack()
         numberFormatter.numberStyle = .decimal
         commissionSwitch.setOn(presenter.payForCommission, animated: false)
-        
+//
         commissionSwitch.isUserInteractionEnabled = false
         swapBtn.isUserInteractionEnabled = false
     }
