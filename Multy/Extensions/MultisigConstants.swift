@@ -9,7 +9,8 @@ enum ConfirmationStatus : Int {
     waiting = 0,
     viewed = 1,
     confirmed = 2,
-    declined = 3
+    declined = 3,
+    revoke = 4
 }
 
 enum DeployStatus : Int {
