@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import moa
 
 class TokenTableViewCell: UITableViewCell {
 
@@ -33,12 +34,23 @@ class TokenTableViewCell: UITableViewCell {
     
     func fillingCell(tokenObj: WalletTokenRLM) {
         //set token img
-        //FIXME: Token balance .cryptoValue balance delimeter
-        tokenName.text = tokenObj.name
         let ethBalance = tokenObj.balanceBigInt
-        cryptoAmountLbl.text = "\(ethBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)) ETH"
-        let fiatBalance = ethBalance * exchangeCourse
-        fiatAmountLbl.text = "\(fiatBalance.fiatValueString(for: BLOCKCHAIN_ETHEREUM)) USD"
+        
+        if let token = tokenObj.token, token.isUpdated {
+            tokenName.text = token.name
+            cryptoAmountLbl.text = ethBalance.cryptoValueString(for: token) + " " + token.ticker
+        } else {
+            tokenName.text = tokenObj.name
+            cryptoAmountLbl.text = ethBalance.cryptoValueString(for: BLOCKCHAIN_ETHEREUM) + " " + tokenObj.ticker
+        }
+        
+        fiatAmountLbl.isHidden = true
+        
+        tokenImg.image = UIImage(named: "chainEth")
+        tokenImg.moa.url = tokenObj.tokenImageURLString
+        
+//        let fiatBalance = ethBalance * exchangeCourse
+//        fiatAmountLbl.text = "\(fiatBalance.fiatValueString(for: BLOCKCHAIN_ETHEREUM)) USD"
     }
     
 }

@@ -207,9 +207,28 @@ extension String {
         }
     }
     
-    func convertCryptoAmountStringToMinimalUnits(in blockchain: Blockchain) -> BigInt {
+    func convertCryptoAmountStringToMinimalUnits(for object: Any?) -> BigInt {
+        switch object {
+        case let blockchain as Blockchain:
+            return convertCryptoAmountStringToMinimalUnits(for: blockchain)
+        case let token as TokenRLM:
+            return convertCryptoAmountStringToMinimalUnits(for: token)
+        default:
+            return BigInt("0")
+        }
+    }
+    
+    func convertCryptoAmountStringToMinimalUnits(for blockchain: Blockchain) -> BigInt {
 //        return blockchain.multiplyerToMinimalUnits * (Double(self.stringWithDot) ?? 0)
         var stringAmount = toStringWithZeroes(precision: blockchain.maxPrecision).replacingOccurrences(of: ".", with: "")
+        stringAmount = stringAmount.replacingOccurrences(of: ",", with: "")
+        
+        return BigInt(stringAmount.stringWithoutZeroesFromStart())
+    }
+    
+    func convertCryptoAmountStringToMinimalUnits(for token: TokenRLM?) -> BigInt {
+        //        return blockchain.multiplyerToMinimalUnits * (Double(self.stringWithDot) ?? 0)
+        var stringAmount = toStringWithZeroes(precision: token == nil ? 0 : token!.precision).replacingOccurrences(of: ".", with: "")
         stringAmount = stringAmount.replacingOccurrences(of: ",", with: "")
         
         return BigInt(stringAmount.stringWithoutZeroesFromStart())
@@ -226,7 +245,7 @@ extension String {
     func fiatValueString(for blockchainType: BlockchainType) -> String {
         let exchangeCourse = DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
         
-        return (convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain) * exchangeCourse).fiatValueString(for: blockchainType.blockchain)
+        return (convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain) * exchangeCourse).fiatValueString(for: blockchainType.blockchain)
     }
     
     func showString(_ precision: Int) -> String {

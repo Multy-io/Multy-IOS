@@ -17,9 +17,23 @@ class TokenRLM: Object {
         return "contractAddress"
     }
     
+    var tokenImageURLString: String {
+        return "https://raw.githubusercontent.com/TrustWallet/tokens/master/images/\(contractAddress).png"
+    }
+    
+    var precision: Int {
+        return decimals.intValue == -1 ? 0 : decimals.intValue
+    }
+    
     var blockchainType: BlockchainType {
         get {
             return BlockchainType(blockchain: Blockchain(currencyID.uint32Value), net_type: netType.intValue)
+        }
+    }
+    
+    var isUpdated: Bool {
+        get {
+            return decimals.intValue != -1
         }
     }
     
@@ -34,6 +48,16 @@ class TokenRLM: Object {
         }
         
         return tokens
+    }
+    
+    public class func createWith(_ address: String, blockchainType: BlockchainType) -> TokenRLM {
+        let erc20token = TokenRLM()
+        
+        erc20token.contractAddress  = address
+        erc20token.currencyID       = NSNumber(value: blockchainType.blockchain.rawValue)
+        erc20token.netType          = NSNumber(value: blockchainType.net_type)
+        
+        return erc20token
     }
     
     public class func initWithInfo(tokensInfo: NSDictionary, blockchainType: BlockchainType) -> TokenRLM {
@@ -59,5 +83,21 @@ class TokenRLM: Object {
         erc20token.netType = NSNumber(value: blockchainType.net_type)
         
         return erc20token
+    }
+    
+    override var hash: Int {
+        return contractAddress.hash
+    }
+    
+    override var hashValue: Int {
+        return contractAddress.hashValue
+    }
+    
+    public override func isEqual(_ object: Any?) -> Bool {
+        if let token = object as? TokenRLM {
+            return self.hash == token.hash
+        } else {
+            return super.isEqual(object)
+        }
     }
 }

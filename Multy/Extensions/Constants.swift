@@ -86,9 +86,10 @@ struct Constants {
     }
     
     struct CustomFee {
-        static let defaultBTCCustomFeeKey = 2
-        static let defaultETHCustomFeeKey = 1 // in GWei
+        static let defaultBTCCustomFeeKey = BigInt("2")
+        static let defaultETHCustomFeeKey = BigInt("1") // in GWei
     }
+    
 }
 
 extension LocalizeDelegate: Localizable {
@@ -96,6 +97,43 @@ extension LocalizeDelegate: Localizable {
         return "Assets"
     }
 }
+
+enum DefaultFeeRates: Hashable {
+    case eth
+    case btc
+    
+    public var feeValue: NSDictionary {
+        switch self {
+        case .eth:
+            return ["VeryFast" : 32,
+                    "Fast" : 16,
+                    "Medium" : 8,
+                    "Slow" : 4,
+                    "VerySlow" : 2,
+            ]
+        case .btc:
+            return ["VeryFast" : 5,
+                    "Fast" : 4,
+                    "Medium" : 3,
+                    "Slow" : 2,
+                    "VerySlow" : 1,
+            ]
+        }
+    }
+    
+    static func feeValues(for blockchain: Blockchain) -> NSDictionary {
+        switch blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            return DefaultFeeRates.btc.feeValue
+        case BLOCKCHAIN_ETHEREUM:
+            return DefaultFeeRates.eth.feeValue
+        default:
+            return NSDictionary()
+        }
+    }
+}
+
+let minBTCDonationAmount = 0.0001
 
 let defaultDelimeter = "," as Character
 
@@ -129,6 +167,20 @@ let statuses = ["createdTx", "fromSocketTx", "incoming in mempool", "spend in me
 
 var isNeedToAutorise = false
 var isViewPresented = false
+
+var isDebug: Bool {
+    #if DEBUG
+        return true
+    #else
+        return false
+    #endif
+}
+
+func sync(lock: NSObject, closure: @escaping () -> Void) {
+    objc_sync_enter(lock)
+        closure()
+    objc_sync_exit(lock)
+}
 
 func convertSatoshiToBTCString(sum: UInt64) -> String {
     return (Double(sum) / pow(10, 8)).fixedFraction(digits: 8) + " BTC"
@@ -238,6 +290,8 @@ enum MultisigOwnerTxStatus: Int {
 let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for available donation
 let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 
+let plainTxGasLimit : UInt64 = 42000
+let plainERC20TxGasLimit : UInt64 = 5_000_000
 let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 16.10.2018
 
 //API REST constants
@@ -275,5 +329,6 @@ let inviteCodeCount = 45
 
 var currentStatusStyle = UIStatusBarStyle.default
 var isServerConnectionExist = true
+let exchangeCourseDefault : Double = 1.0
 let dappDLTitle = "Dragonereum"
 let magicReceiveDL = "magicReceive"

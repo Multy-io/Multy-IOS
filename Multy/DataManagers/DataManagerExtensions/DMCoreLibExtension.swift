@@ -65,16 +65,16 @@ extension DataManager {
         let wallet = transactionDTO.choosenWallet!
         var binaryData = DataManager.shared.realmManager.account!.binaryDataString.createBinaryData()!
         
-        
-        let addressData = core.createAddress(blockchainType: transactionDTO.blockchainType!,
+        let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
+        let addressData = core.createAddress(blockchainType: blockchainType,
                                              walletID: transactionDTO.choosenWallet!.walletID.uint32Value,
                                              addressID: UInt32(transactionDTO.choosenWallet!.addresses.count),
                                              binaryData: &binaryData)
         
         let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                                          sendAddress: transactionDTO.sendAddress!,
-                                                                         sendAmountString: transactionDTO.sendAmount!.fixedFraction(digits: 8),
-                                                                         feePerByteAmount: "\(transactionDTO.transaction!.customFee!)",
+                                                                         sendAmountString: transactionDTO.sendAmountString!,
+                                                                         feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
                                                                          isDonationExists: false,
                                                                          donationAmount: "0",
                                                                          isPayCommission: false,
@@ -180,16 +180,15 @@ extension CoreLibInfoManager {
         }
         
         if wallet.isImported {
-            if wallet.privateKey.isEmpty {
+            if wallet.importedPrivateKey.isEmpty {
                 return nil
             } else {
-                switch coreLibManager.createPublicInfo(blockchainType: wallet.blockchainType, privateKey: wallet.privateKey) {
+                switch coreLibManager.createPublicInfo(blockchainType: wallet.blockchainType, privateKey: wallet.importedPrivateKey) {
                 case .success(let info):
                     return info
                 case .failure(_):
                     return nil
                 }
-                
             }
         } else if wallet.isMultiSig {
             return nil

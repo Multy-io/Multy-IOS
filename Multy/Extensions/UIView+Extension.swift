@@ -14,6 +14,19 @@ extension UIView {
         }
     }
     
+    func disableView() {
+        viewShouldDisabled(true)
+    }
+    
+    func enableView() {
+        viewShouldDisabled(false)
+    }
+    
+    func viewShouldDisabled(_ disabled: Bool) {
+        isHidden = disabled
+        isUserInteractionEnabled = !disabled
+    }
+    
     func setRounded(radius : CGFloat) {
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true

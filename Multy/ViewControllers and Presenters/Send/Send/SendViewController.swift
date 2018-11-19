@@ -336,13 +336,20 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         UIView.animate(withDuration: ANIMATION_DURATION, animations: {
             self.hideTxInfo()
             self.animationHolderView.layoutIfNeeded()
-        }) { (succeeded) in
-            self.bluetoothEnabledContentView.isHidden = false
-            self.removeClonesViews()
-            self.dismissTxInfo()
-            self.sendMode = .searching
+        }) { [weak self] (succeeded) in
+            guard self != nil else {
+                if completion != nil {
+                    completion!()
+                }
+                return
+            }
             
-            self.presenter.cancelPrepareSending()
+            self!.bluetoothEnabledContentView.isHidden = false
+            self!.removeClonesViews()
+            self!.dismissTxInfo()
+            self!.sendMode = .searching
+            
+            self!.presenter.cancelPrepareSending()
             if completion != nil {
                 completion!()
             }
@@ -387,21 +394,33 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                 doneAnimationView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
                 
                 self.view.addSubview(doneAnimationView)
-                doneAnimationView.play{[unowned self] (finished) in
+                doneAnimationView.play{[weak self] (finished) in
                     UIView.animate(withDuration: 0.6, animations: {
                         doneAnimationView.transform = CGAffineTransform(scaleX: 10.0, y: 10.0)
                         doneAnimationView.alpha = 0.0
-                    }) { [unowned self] (succeeded) in
-
+                    }) { [weak self] (succeeded) in
+                        
                         doneAnimationView.removeFromSuperview()
-                        self.backUIToSearching({ [unowned self] in
-                            self.close()
+                        guard self != nil else {
+                            return
+                        }
+                        
+                        self!.backUIToSearching({ [weak self] in
+                            guard self != nil else {
+                                return
+                            }
+                            
+                            self!.close()
                         })
                     }
                 }
             } else {
-                backUIToSearching({ [unowned self] in
-                    self.presenter.sendAnimationComplete()})
+                backUIToSearching({ [weak self] in
+                    guard self != nil else {
+                        return
+                    }
+                    
+                    self!.presenter.sendAnimationComplete()})
 
                 presentSendingErrorAlert()
             }
@@ -412,8 +431,8 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         let blockchainType = BlockchainType.create(wallet: presenter.transaction!.choosenWallet!)
         let exchangeCourse = DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
         
-        let sumInCrypto = "\(presenter.transaction!.sendAmount!.fixedFraction(digits: 8)) \(blockchainType.shortName)"
-        let sumInFiat = "\((presenter.transaction!.sendAmount! * exchangeCourse).fixedFraction(digits: 2)) $"
+        let sumInCrypto = "\(presenter.transaction!.sendAmountString!) \(blockchainType.shortName)"
+        let sumInFiat = "\((presenter.transaction!.sendAmountString!.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain) * exchangeCourse).fiatValueString(for: blockchainType.blockchain)) \(presenter.transaction!.choosenWallet!.fiatName)"
         
         let txTokenImageSide : CGFloat = 46
         txTokenImageView = UIImageView(frame: CGRect(x: (walletsClonesHolderView.center.x - txTokenImageSide/2), y: (walletsClonesHolderView.frame.origin.y + walletsClonesHolderView.frame.size.height - txTokenImageSide), width: txTokenImageSide, height: txTokenImageSide))
@@ -506,7 +525,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         selectedRequestAmountCloneLabel = nil
         selectedRequestAddressCloneLabel?.removeFromSuperview()
         selectedRequestAddressCloneLabel = nil
-            cloneNameLabel?.removeFromSuperview()
+        cloneNameLabel?.removeFromSuperview()
         cloneNameLabel = nil
         
         removeWalletsCellsClones()

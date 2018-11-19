@@ -23,9 +23,9 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     let presenter = ReceiveAmountPresenter()
     
 //    var sumInCrypto = 0.0
-    var sumInCryptoString = "0.0"
+    var sumInCryptoString = "0"
 //    var sumInFiat = 0.0
-    var sumInFiatString = "0.0"
+    var sumInFiatString = "0"
     
     var blockchainType = BlockchainType.create(currencyID: 0, netType: 0)
     
@@ -40,7 +40,7 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        swipeToBack()
+        enableSwipeToBack()
         presenter.receiveAmountVC = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)),
@@ -110,7 +110,7 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func doneAction(_ sender: Any) {
-        if sumInCryptoString.convertCryptoAmountStringToMinimalUnits(in: blockchainType.blockchain) == Int64(0) {
+        if sumInCryptoString.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain) == Int64(0) {
             presentAlert(with: localize(string: Constants.enterNonZeroAmountString))
             
             return
@@ -196,6 +196,9 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
                     self.sumLbl.text = self.amountTF.text! + string
                 } else {
                     self.sumLbl.text?.removeLast()
+                    if self.sumLbl.text == "" {
+                        self.sumLbl.text = "0"
+                    }
                 }
             }
             self.saveTfValue()
@@ -224,6 +227,8 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     func fixForIpad() {
         if screenHeight == heightOfiPad {
             self.btnTopConstraint.constant = 10
+        } else if screenHeight == heightOfFive {
+            self.btnTopConstraint.constant = 60
         }
     }
 }

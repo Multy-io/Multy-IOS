@@ -18,7 +18,16 @@ private typealias TokensManager = RealmManager
 class RealmManager: NSObject {
     static let shared = RealmManager()
     
-    private var realm : Realm? = nil
+    private var realm : Realm? = nil {
+        didSet {
+            if realm != nil {
+                tokensLinkedInfo { [unowned self] in
+                    self.erc20Tokens = $0
+                }
+            }
+        }
+    }
+    
     let schemaVersion : UInt64 = 32
     
     var account: AccountRLM?
@@ -1248,6 +1257,23 @@ extension TokensManager {
             if let realm = realmOpt {
                 completion(realm.object(ofType: TokenRLM.self, forPrimaryKey: address)!)
             }
+        }
+    }
+    
+    func getTokens(completion: @escaping(_ token: [TokenRLM]) -> ()) {
+        getRealm { (realmOpt, err) in
+            if let realm = realmOpt {
+                let tokens = Array(realm.objects(TokenRLM.self))
+                completion(tokens)
+            }
+        }
+    }
+    
+    func tokensLinkedInfo(completion: @escaping(_ tokensInfo: Dictionary<String, TokenRLM>) -> ()) {
+        var info = Dictionary<String, TokenRLM>()
+        getTokens {
+            $0.forEach{ info[$0.contractAddress] = $0 }
+            completion(info)
         }
     }
 }

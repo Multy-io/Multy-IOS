@@ -211,11 +211,32 @@ class BigInt: NSObject {
     }
     
     func fiatValueString(for blockchain: Blockchain) -> String {
+        if blockchain == BLOCKCHAIN_ERC20 {
+            return "0"
+        }
+        
         return (self / blockchain.dividerFromCryptoToFiat).stringValue.appendDelimeter(at: 2)
+    }
+    
+    func cryptoValueString(for object: Any?) -> String {
+        switch object {
+        case let blockchain as Blockchain:
+            return cryptoValueString(for: blockchain)
+        case let token as TokenRLM:
+            return cryptoValueString(for: token)
+        default:
+            return "0"
+        }
     }
     
     func cryptoValueString(for blockchain: Blockchain) -> String {
         return stringValue.appendDelimeter(at: blockchain.maxPrecision).showString(8)
+    }
+    
+    func cryptoValueString(for token: TokenRLM?) -> String {
+        let precision = token == nil ? 0 : token!.decimals.intValue
+        
+        return stringValue.appendDelimeter(at: precision).showString(8)
     }
     
     deinit {

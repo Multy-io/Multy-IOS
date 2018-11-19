@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -40,7 +40,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.001 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d7M-nG-J6f">
-                        <rect key="frame" x="282" y="13" width="77" height="22"/>
+                        <rect key="frame" x="282" y="21" width="77" height="22"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -54,7 +54,6 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="WK0-Ru-Jh9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="2c5-bC-bah"/>
-                    <constraint firstItem="d7M-nG-J6f" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="7bG-GA-yNx"/>
                     <constraint firstItem="3ej-zT-ELu" firstAttribute="leading" secondItem="WK0-Ru-Jh9" secondAttribute="trailing" constant="16" id="C4o-Gw-fWB"/>
                     <constraint firstAttribute="bottom" secondItem="3ej-zT-ELu" secondAttribute="bottom" id="Cbx-fU-ONy"/>
                     <constraint firstAttribute="trailing" secondItem="d7M-nG-J6f" secondAttribute="trailing" constant="16" id="Cdj-a2-XrD"/>
@@ -63,8 +62,14 @@
                     <constraint firstAttribute="trailing" secondItem="3ej-zT-ELu" secondAttribute="trailing" id="WOh-hh-4lU"/>
                     <constraint firstItem="se4-pX-ooN" firstAttribute="centerY" secondItem="WK0-Ru-Jh9" secondAttribute="centerY" id="cWJ-Xg-PPu"/>
                     <constraint firstItem="FhL-al-Uuc" firstAttribute="trailing" secondItem="d7M-nG-J6f" secondAttribute="trailing" id="mRU-Wm-FPQ"/>
+                    <constraint firstItem="d7M-nG-J6f" firstAttribute="centerY" secondItem="se4-pX-ooN" secondAttribute="centerY" id="unq-2h-ZmL"/>
                     <constraint firstItem="se4-pX-ooN" firstAttribute="leading" secondItem="3ej-zT-ELu" secondAttribute="leading" id="yv4-CC-yd6"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="subviews">
+                        <exclude reference="FhL-al-Uuc"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>

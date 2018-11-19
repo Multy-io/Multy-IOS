@@ -158,7 +158,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         presenter.registerCells()
         addGestureRecognizers()
         
-        if presenter.isToken {
+        if presenter.walletRepresentingMode == .tokenInfo {
             setupUIForToken()
         }
     }
@@ -487,7 +487,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     @IBAction func backAction(_ sender: Any) {
         assetsTableTrailingConstraint.constant = 0
-        backAction(isToken: presenter.isToken)
+        backAction(isToken: presenter.walletRepresentingMode != .allInfo)
     }
     
     func backAction(isToken: Bool) {
@@ -543,6 +543,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             self.presentAlert(with: localize(string: Constants.noFundsString))
             
             return
+        } else if let tokenWallet = presenter.tokenHolderWallet, tokenWallet.availableAmount.isZero {
+            self.presentAlert(with: localize(string: Constants.noFundsString))
+            
+            return
         }
         
         if presenter.canSendMinimumAmount() == false {
@@ -566,11 +570,12 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+        sendStartVC.presenter.transactionDTO.tokenHolderWallet = self.presenter.tokenHolderWallet
         sendStartVC.presenter.transactionDTO.choosenWallet = self.presenter.wallet
-//        if presenter.importedPrivateKey != nil && presenter.importedPublicKey != nil {
-//            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPrivateKey = presenter.importedPrivateKey!
-//            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPublicKey = presenter.importedPublicKey!
-//        }
+        //        if presenter.importedPrivateKey != nil && presenter.importedPublicKey != nil {
+        //            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPrivateKey = presenter.importedPrivateKey!
+        //            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPublicKey = presenter.importedPublicKey!
+        //        }
         sendStartVC.presenter.isFromWallet = true
         self.navigationController?.pushViewController(sendStartVC, animated: true)
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(sendWithChainTap)\(presenter.wallet!.chain)")
@@ -667,13 +672,24 @@ extension TableViewDelegate: UITableViewDelegate {
             self.navigationController?.pushViewController(transactionVC, animated: true)
             sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(transactionWithChainTap)\(presenter.wallet!.chain)")
         } else {
+            let tokensCount = presenter.assetsDataSource.count
+            if indexPath.row >= tokensCount && tokensCount <= visibleCells {
+                return
+            }
+            
             //open
             tableView.deselectRow(at: indexPath, animated: true)
             let walletVC = viewControllerFrom("Wallet", "newWallet") as! WalletViewController
-            walletVC.presenter.isToken = true
+            walletVC.presenter.walletRepresentingMode = .tokenInfo
             walletVC.presenter.account = presenter.account
-            walletVC.presenter.tokenHolderWallet = presenter.wallet!
-            walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.wallet!.ethWallet!.erc20Tokens[indexPath.row])
+            
+            if indexPath.row == 0 {
+                walletVC.presenter.wallet = presenter.wallet
+            } else {
+                walletVC.presenter.tokenHolderWallet = presenter.wallet!
+                walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.assetsDataSource[indexPath.row])
+            }
+            
             navigationController?.pushViewController(walletVC, animated: true)
         }
     }
@@ -731,8 +747,8 @@ extension TableViewDataSource: UITableViewDataSource {
                 return transactionCell
             }
         } else {
-            let countOfTokens = presenter.wallet?.ethWallet?.erc20Tokens.count
-            if indexPath.row < countOfTokens ?? 0 {
+            let countOfTokens = presenter.assetsDataSource.count
+            if indexPath.row < countOfTokens {
                 let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
                 tokenCell.fillingCell(tokenObj: presenter.assetsDataSource[indexPath.row])
                 return tokenCell
@@ -765,23 +781,22 @@ extension TableViewDataSource: UITableViewDataSource {
                 return 10
             }
         } else {
-            if let countOfErc20Tokens = presenter.wallet?.ethWallet?.erc20Tokens.count {
-                if countOfErc20Tokens > 0 {
-                    hideEmptyLbls()
-                    tableView.isScrollEnabled = true
-                    if countOfErc20Tokens < 10 {
-                        return 10
-                    } else {
-                        return countOfErc20Tokens
-                    }
-                } else {
-                    if screenHeight == heightOfX || screenHeight == heightOfXSMax {
-                        return 13
-                    }
+            let countOfErc20Tokens = presenter.assetsDataSource.count
+
+            if countOfErc20Tokens > 0 {
+                hideEmptyLbls()
+                tableView.isScrollEnabled = true
+                if countOfErc20Tokens < 10 {
                     return 10
+                } else {
+                    return countOfErc20Tokens
                 }
+            } else {
+                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
+                    return 13
+                }
+                return 10
             }
-            return 10
         }
     }
 }

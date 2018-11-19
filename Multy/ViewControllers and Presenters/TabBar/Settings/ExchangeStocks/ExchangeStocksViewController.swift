@@ -15,7 +15,7 @@ class ExchangeStocksViewController: UIViewController, CancelProtocol, AnalyticsP
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.presenter.mainVC = self
         
         self.presenter.createStocks()

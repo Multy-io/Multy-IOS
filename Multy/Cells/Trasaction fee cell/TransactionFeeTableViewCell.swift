@@ -18,11 +18,7 @@ class TransactionFeeTableViewCell: UITableViewCell {
     
     var blockchainType: BlockchainType?
     
-    var feeRate: NSDictionary? {
-        didSet {
-            print(feeRate)
-        }
-    }
+    var feeRate: NSDictionary = DefaultFeeRates.btc.feeValue
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,15 +30,12 @@ class TransactionFeeTableViewCell: UITableViewCell {
     }
     
     func constructString(from rate: Int) -> String {
-//        let sumInCrypto = (Double(rate) / 100000000.0)
-//        let sumInFiat = sumInCrypto * DataManager.shared.makeExchangeFor(blockchainType: blockchainType!)
-//        return "~ " + "\(sumInCrypto.fixedFraction(digits: 8)) BTC / \(sumInFiat.fixedFraction(digits: 2)) USD"
-//        return "~ " + "\(sumInCrypto.fixedFraction(digits: 8)) BTC"
-        if blockchainType?.blockchain == BLOCKCHAIN_BITCOIN {
+        switch blockchainType?.blockchain {
+        case BLOCKCHAIN_BITCOIN:
             return "\(rate) " + localize(string: Constants.satoshiPerByteShortString)
-        } else if blockchainType?.blockchain == BLOCKCHAIN_ETHEREUM {
+        case BLOCKCHAIN_ETHEREUM, BLOCKCHAIN_ERC20:
             return "\(rate / 1000000000)" + " GWei/Gas"
-        } else {
+        default:
             return ""
         }
     }
@@ -59,7 +52,7 @@ class TransactionFeeTableViewCell: UITableViewCell {
             self.speedLbl.text = localize(string: Constants.veryFastString)
             self.timeLbl.text = "∙ 10 minutes"
             
-            if let rate = feeRate?["VeryFast"] as? Int {
+            if let rate = feeRate["VeryFast"] as? Int {
                 self.sumLbl.text = constructString(from: rate)
             }
 //            self.sumLbl.text = "" //example: 0.0001 BTC / 0.77 USD
@@ -69,7 +62,7 @@ class TransactionFeeTableViewCell: UITableViewCell {
             self.speedLbl.text = localize(string: Constants.fastString)
             self.timeLbl.text = "∙ 6 hour"
             
-            if let rate = feeRate?["Fast"] as? Int {
+            if let rate = feeRate["Fast"] as? Int {
                 self.sumLbl.text = constructString(from: rate)
             }
 //            self.sumLbl.text = "" //example: 0.0001 BTC / 0.77 USD
@@ -79,7 +72,7 @@ class TransactionFeeTableViewCell: UITableViewCell {
             self.speedLbl.text = localize(string: Constants.mediumString)
             self.timeLbl.text = "∙ 5 days"
             
-            if let rate = feeRate?["Medium"] as? Int {
+            if let rate = feeRate["Medium"] as? Int {
                 self.sumLbl.text = constructString(from: rate)
             }
 //            self.sumLbl.text = "" //example: 0.0001 BTC / 0.77 USD
@@ -89,7 +82,7 @@ class TransactionFeeTableViewCell: UITableViewCell {
             self.speedLbl.text = localize(string: Constants.slowString)
             self.timeLbl.text = "∙ 1 week"
             
-            if let rate = feeRate?["Slow"] as? Int {
+            if let rate = feeRate["Slow"] as? Int {
                 self.sumLbl.text = constructString(from: rate)
             }
 //            self.sumLbl.text = "" //example: 0.0001 BTC / 0.77 USD
@@ -99,7 +92,7 @@ class TransactionFeeTableViewCell: UITableViewCell {
             self.speedLbl.text = localize(string: Constants.verySlowString)
             self.timeLbl.text = "∙ 2 weeks"
             
-            if let rate = feeRate?["VerySlow"] as? Int {
+            if let rate = feeRate["VerySlow"] as? Int {
                 self.sumLbl.text = constructString(from: rate)
             }
 //            self.sumLbl.text = "" //example: 0.0001 BTC / 0.77 USD

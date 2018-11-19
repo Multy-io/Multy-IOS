@@ -10,7 +10,8 @@ class SendFinishPresenter: NSObject {
     var sendFinishVC: SendFinishViewController?
     var transactionDTO = TransactionDTO() {
         didSet {
-            cryptoName = transactionDTO.blockchainType!.shortName
+            let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
+            cryptoName = blockchainType.shortName
         }
     }
     
@@ -18,7 +19,7 @@ class SendFinishPresenter: NSObject {
     
     var selectedSpeedIndex: Int?
     
-    var sumInCrypto: Double?
+    var sumInCrypto: BigInt?
     var sumInCryptoString = String()
     var sumInFiat: Double?
     var sumInFiatString = String()
@@ -39,35 +40,16 @@ class SendFinishPresenter: NSObject {
     var updatedWallet: UserWalletRLM?
     
     func makeEndSum() {
-//        switch isCrypto {
-//        case true:
-            if transactionDTO.choosenWallet!.blockchainType.blockchain == BLOCKCHAIN_BITCOIN {
-                sumInCrypto = transactionDTO.sendAmountString?.stringWithDot.doubleValue
-                sumInCryptoString = sumInCrypto!.fixedFraction(digits: 8)
-                sumInFiat = sumInCrypto! * transactionDTO.choosenWallet!.exchangeCourse
-                sumInFiatString = sumInFiat!.fixedFraction(digits: 2)
-                
-                feeAmountInCryptoString = (transactionDTO.transaction?.transactionRLM?.sumInCrypto ?? 0.0).fixedFraction(digits: 8)
-                feeAmountInFiatString = (transactionDTO.transaction?.transactionRLM?.sumInFiat ?? 0.0).fixedFraction(digits: 2)
-            } else if transactionDTO.choosenWallet!.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
-                sumInCryptoString = transactionDTO.sendAmountString!
-                if isCrypto {
-                    sumInFiatString = (transactionDTO.transaction!.endSumBigInt! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
-                } else {
-                    sumInFiatString = (transactionDTO.transaction!.endSumBigInt!).fiatValueString(for: BLOCKCHAIN_ETHEREUM)
-                }
-                
-                
-                let feeAmount = transactionDTO.transaction!.feeAmount
-                let feeAmountInWei = feeAmount * transactionDTO.choosenWallet!.exchangeCourse
-                feeAmountInCryptoString = feeAmount.cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
-                feeAmountInFiatString = feeAmountInWei.fiatValueString(for: BLOCKCHAIN_ETHEREUM)
-            }
-//        case false:
-//            self.sumInFiat = transactionDTO.transaction?.endSum
-//
-//            self.sumInCrypto = self.sumInFiat!
-//        }
+        //        switch isCrypto {
+        //        case true:
+        sumInCrypto = transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(for: transactionDTO.blockchainObject)
+        sumInCryptoString = sumInCrypto!.cryptoValueString(for: transactionDTO.blockchainObject)
+        
+        sumInFiatString = (sumInCrypto! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.blockchain!)
+        sumInFiat = sumInFiatString.doubleValue
+        
+        feeAmountInCryptoString = (transactionDTO.feeEstimation ?? BigInt.zero()).cryptoValueString(for: transactionDTO.blockchainObject)
+        feeAmountInFiatString = transactionDTO.feeEstimation != nil ? (transactionDTO.feeEstimation! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.assetsBlockchain) : BigInt.zero().stringValue
     }
     
     func makeFrameForSlider() -> CGRect {
@@ -98,27 +80,27 @@ class SendFinishPresenter: NSObject {
             self.binaryData = self.account!.binaryDataString.createBinaryData()!
             
             if !wallet.isImported  {
-                self.addressData = core.createAddress(blockchainType:    self.transactionDTO.blockchainType!,
+                let blockchainType = BlockchainType.create(wallet: self.transactionDTO.choosenWallet!)
+                self.addressData = core.createAddress(blockchainType: blockchainType,
                                                  walletID:      wallet.walletID.uint32Value,
                                                  addressID:     wallet.changeAddressIndex,
                                                  binaryData:    &self.binaryData!)
             }
             self.pointer = self.addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
             
-            let amount = self.transactionDTO.sendAmountString?.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_ETHEREUM)
+            let amount = self.transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(for: BLOCKCHAIN_ETHEREUM)
             
             let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: self.pointer!,
                                                                                   sendAddress: self.transactionDTO.sendAddress!,
-                                                                                  sendAmountString: amount!.stringValue,
+                                                                                  sendAmountString: amount.stringValue,
                                                                                   nonce: updatedWallet!.ethWallet!.nonce.intValue,  //new nonce
                 balanceAmount: "\(self.transactionDTO.choosenWallet!.ethWallet!.balance)",
                 ethereumChainID: UInt32(self.transactionDTO.choosenWallet!.blockchainType.net_type),
-                gasPrice: self.transactionDTO.transaction?.transactionRLM?.sumInCryptoBigInt.stringValue ?? "0",
-                gasLimit: self.transactionDTO.transaction!.customGAS!.gasLimit.stringValue)
+                gasPrice: self.transactionDTO.ETHDTO!.gasPrice.stringValue,
+                gasLimit: self.transactionDTO.ETHDTO!.gasLimit.stringValue)
             
-            self.transactionDTO.transaction?.rawTransaction = trData.message
+            self.transactionDTO.rawValue = trData.message
         }
-        
     }
     
     func getOneVerbose(completion: @escaping (_ updatedWallet: UserWalletRLM?,_ error: Error?) -> ()) {

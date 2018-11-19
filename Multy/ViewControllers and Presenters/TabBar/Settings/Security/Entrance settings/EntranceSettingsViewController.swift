@@ -20,7 +20,7 @@ class EntranceSettingsViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.presenter.entranceVC = self
 //        backupView.isHidden = true
 //        topPassConstraint.constant = 20
