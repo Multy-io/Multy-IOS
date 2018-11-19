@@ -543,6 +543,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             self.presentAlert(with: localize(string: Constants.noFundsString))
             
             return
+        } else if let tokenWallet = presenter.tokenHolderWallet, tokenWallet.availableAmount.isZero {
+            self.presentAlert(with: localize(string: Constants.noFundsString))
+            
+            return
         }
         
         if presenter.canSendMinimumAmount() == false {
@@ -668,13 +672,24 @@ extension TableViewDelegate: UITableViewDelegate {
             self.navigationController?.pushViewController(transactionVC, animated: true)
             sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(transactionWithChainTap)\(presenter.wallet!.chain)")
         } else {
+            let tokensCount = presenter.assetsDataSource.count
+            if indexPath.row >= tokensCount && tokensCount <= visibleCells {
+                return
+            }
+            
             //open
             tableView.deselectRow(at: indexPath, animated: true)
             let walletVC = viewControllerFrom("Wallet", "newWallet") as! WalletViewController
             walletVC.presenter.walletRepresentingMode = .tokenInfo
             walletVC.presenter.account = presenter.account
-            walletVC.presenter.tokenHolderWallet = presenter.wallet!
-            walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.assetsDataSource[indexPath.row])
+            
+            if indexPath.row == 0 {
+                walletVC.presenter.wallet = presenter.wallet
+            } else {
+                walletVC.presenter.tokenHolderWallet = presenter.wallet!
+                walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.assetsDataSource[indexPath.row])
+            }
+            
             navigationController?.pushViewController(walletVC, animated: true)
         }
     }
@@ -733,7 +748,7 @@ extension TableViewDataSource: UITableViewDataSource {
             }
         } else {
             let countOfTokens = presenter.assetsDataSource.count
-            if indexPath.row < countOfTokens ?? 0 {
+            if indexPath.row < countOfTokens {
                 let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
                 tokenCell.fillingCell(tokenObj: presenter.assetsDataSource[indexPath.row])
                 return tokenCell

@@ -21,7 +21,7 @@ class RealmManager: NSObject {
     private var realm : Realm? = nil {
         didSet {
             if realm != nil {
-                tokesLinkedInfo { [unowned self] in
+                tokensLinkedInfo { [unowned self] in
                     self.erc20Tokens = $0
                 }
             }
@@ -1269,7 +1269,7 @@ extension TokensManager {
         }
     }
     
-    func tokesLinkedInfo(completion: @escaping(_ tokensInfo: Dictionary<String, TokenRLM>) -> ()) {
+    func tokensLinkedInfo(completion: @escaping(_ tokensInfo: Dictionary<String, TokenRLM>) -> ()) {
         var info = Dictionary<String, TokenRLM>()
         getTokens {
             $0.forEach{ info[$0.contractAddress] = $0 }

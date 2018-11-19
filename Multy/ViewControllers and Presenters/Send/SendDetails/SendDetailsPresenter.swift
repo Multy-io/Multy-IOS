@@ -173,7 +173,7 @@ class SendDetailsPresenter: NSObject {
     func feeRateForIndex(_ index: Int) -> (name: String, value: BigInt) {
         switch index {
         case 0:
-            return (localize(string: Constants.veryFastString), BigInt("\(feeRates["VeryFast"])"))
+            return (localize(string: Constants.veryFastString), BigInt("\(feeRates["VeryFast"]!)"))
         case 1:
             return (localize(string: Constants.fastString), BigInt("\(feeRates["Fast"]!)"))
         case 2:
