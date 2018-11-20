@@ -707,8 +707,8 @@ extension TableViewDelegate : UITableViewDelegate {
                     return
                 }
                 
-                //GO TO IMPORT METAMASK
-                
+                let importMetaMaskVC = viewControllerFrom("SeedPhrase", "ImportMetaMask") as! ImportMetaMaskInfoViewController
+                self.navigationController?.pushViewController(importMetaMaskVC, animated: true)
 //                sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: restoreMultyTap)
 //                let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
 //                let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController

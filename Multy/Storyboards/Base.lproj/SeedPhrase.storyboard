@@ -144,10 +144,10 @@
             </objects>
             <point key="canvasLocation" x="1948" y="2662.2188905547227"/>
         </scene>
-        <!--View Controller-->
+        <!--Import Meta Mask Info View Controller-->
         <scene sceneID="mtx-l6-BfL">
             <objects>
-                <viewController id="goH-wX-Zqg" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImportMetaMask" id="goH-wX-Zqg" customClass="ImportMetaMaskInfoViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Vus-z5-R7O"/>
                         <viewControllerLayoutGuide type="bottom" id="Ybn-6K-hoG"/>
@@ -177,8 +177,11 @@ MetaMask</string>
                                     <constraint firstAttribute="width" constant="60" id="XXX-8m-bFM"/>
                                     <constraint firstAttribute="height" constant="45" id="kWJ-bD-5NQ"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="closeBtn:" destination="goH-wX-Zqg" eventType="touchUpInside" id="rvO-0S-GA5"/>
+                                </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image21" translatesAutoresizingMaskIntoConstraints="NO" id="FXD-9J-427">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="metamaskLogo1" translatesAutoresizingMaskIntoConstraints="NO" id="FXD-9J-427">
                                 <rect key="frame" x="123.5" y="104.5" width="128" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="128" id="7nj-i5-YgS"/>
@@ -208,6 +211,20 @@ MetaMask</string>
                                 <state key="normal" title="Continue">
                                     <color key="titleColor" red="0.97647058819999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="continueAction:" destination="goH-wX-Zqg" eventType="touchUpInside" id="Hsh-hT-qgm"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlA-Sh-a2q">
+                                <rect key="frame" x="16" y="32" width="54" height="36"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelAction:" destination="wqv-j7-zb4" eventType="touchUpInside" id="JeM-h4-kV8"/>
+                                    <action selector="closeBtnAction:" destination="goH-wX-Zqg" eventType="touchUpInside" id="u7L-i1-kXb"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058823529409" green="0.98039215686274506" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -223,7 +240,9 @@ MetaMask</string>
                             <constraint firstAttribute="trailing" secondItem="810-r6-QuG" secondAttribute="trailing" constant="16" id="XI5-NQ-ehS"/>
                             <constraint firstItem="twe-Qb-JI2" firstAttribute="top" secondItem="Vus-z5-R7O" secondAttribute="bottom" constant="5" id="Z17-Nf-HVC"/>
                             <constraint firstItem="Hh8-KJ-6Hv" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" id="Zu0-Pf-6pl"/>
+                            <constraint firstItem="rlA-Sh-a2q" firstAttribute="centerY" secondItem="twe-Qb-JI2" secondAttribute="centerY" id="a9U-kx-O1l"/>
                             <constraint firstItem="FXD-9J-427" firstAttribute="centerX" secondItem="avC-Tn-2fx" secondAttribute="centerX" id="bYB-Gm-LI6"/>
+                            <constraint firstItem="rlA-Sh-a2q" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" constant="16" id="cC6-sF-yRf"/>
                             <constraint firstItem="FXD-9J-427" firstAttribute="top" secondItem="twe-Qb-JI2" secondAttribute="bottom" constant="30" id="fEt-l3-mG5"/>
                             <constraint firstItem="Ybn-6K-hoG" firstAttribute="top" secondItem="Hh8-KJ-6Hv" secondAttribute="bottom" id="jjq-Gj-x6F"/>
                             <constraint firstAttribute="trailing" secondItem="Hh8-KJ-6Hv" secondAttribute="trailing" id="vNx-7l-021"/>
@@ -231,6 +250,9 @@ MetaMask</string>
                             <constraint firstAttribute="trailing" secondItem="VWE-W7-MnC" secondAttribute="trailing" constant="16" id="xCs-au-uPW"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="continueBtn" destination="Hh8-KJ-6Hv" id="4U1-qx-CER"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rf1-sP-VUM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -811,8 +833,8 @@ Seed Phrase!</string>
         <image name="done" width="133" height="133"/>
         <image name="error" width="133" height="133"/>
         <image name="errorSeed" width="271" height="31"/>
-        <image name="image21" width="128" height="128"/>
         <image name="infoIconRed" width="24" height="24"/>
+        <image name="metamaskLogo1" width="96" height="96"/>
         <image name="remove_cross_alt" width="14" height="14"/>
         <image name="snapShot" width="62" height="62"/>
         <image name="spyCam" width="62" height="62"/>
