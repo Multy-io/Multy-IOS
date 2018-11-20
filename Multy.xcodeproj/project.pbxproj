@@ -255,6 +255,7 @@
 		45DCF9D31FE16874005A9896 /* WalletAddresessPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DCF9D21FE16874005A9896 /* WalletAddresessPresenter.swift */; };
 		45DCF9D71FE19AFD005A9896 /* CustomFeePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DCF9D61FE19AFD005A9896 /* CustomFeePresenter.swift */; };
 		45DCF9D91FE19B33005A9896 /* CustomFeeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DCF9D81FE19B33005A9896 /* CustomFeeViewController.swift */; };
+		45DD9A1621A4102900B8F8AD /* ImportMetaMaskInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DD9A1521A4102800B8F8AD /* ImportMetaMaskInfoViewController.swift */; };
 		45E148A8204553AF006BD4D1 /* DonationAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E148A7204553AF006BD4D1 /* DonationAlertViewController.swift */; };
 		45E148AA204553C8006BD4D1 /* DonationAlertPrsenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E148A9204553C8006BD4D1 /* DonationAlertPrsenter.swift */; };
 		45E148AC204553E4006BD4D1 /* DonationSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E148AB204553E4006BD4D1 /* DonationSendViewController.swift */; };
@@ -761,6 +762,7 @@
 		45DCF9D21FE16874005A9896 /* WalletAddresessPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddresessPresenter.swift; sourceTree = "<group>"; };
 		45DCF9D61FE19AFD005A9896 /* CustomFeePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeePresenter.swift; sourceTree = "<group>"; };
 		45DCF9D81FE19B33005A9896 /* CustomFeeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeeViewController.swift; sourceTree = "<group>"; };
+		45DD9A1521A4102800B8F8AD /* ImportMetaMaskInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportMetaMaskInfoViewController.swift; sourceTree = "<group>"; };
 		45E148A7204553AF006BD4D1 /* DonationAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationAlertViewController.swift; sourceTree = "<group>"; };
 		45E148A9204553C8006BD4D1 /* DonationAlertPrsenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationAlertPrsenter.swift; sourceTree = "<group>"; };
 		45E148AB204553E4006BD4D1 /* DonationSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationSendViewController.swift; sourceTree = "<group>"; };
@@ -1314,6 +1316,7 @@
 		457569301FBDBB7500FDEE20 /* Seed Phrase */ = {
 			isa = PBXGroup;
 			children = (
+				45DD9A1421A4102800B8F8AD /* MetaMaskInfo */,
 				457569371FBDC2FE00FDEE20 /* SeedPhraseAbout */,
 				457569381FBDC34700FDEE20 /* Phrase Word */,
 				4575693D1FBDD65500FDEE20 /* Backup Phrase */,
@@ -1878,6 +1881,14 @@
 				45DCF9D61FE19AFD005A9896 /* CustomFeePresenter.swift */,
 			);
 			path = CustomFee;
+			sourceTree = "<group>";
+		};
+		45DD9A1421A4102800B8F8AD /* MetaMaskInfo */ = {
+			isa = PBXGroup;
+			children = (
+				45DD9A1521A4102800B8F8AD /* ImportMetaMaskInfoViewController.swift */,
+			);
+			path = MetaMaskInfo;
 			sourceTree = "<group>";
 		};
 		45E148A420455341006BD4D1 /* Donation */ = {
@@ -2795,6 +2806,7 @@
 				44AAAE1020E13BFC00A481A4 /* SavedAddressesRLM.swift in Sources */,
 				45AC163020484F1900E75BD6 /* BlockchainsPresenter.swift in Sources */,
 				45E215DB1FD15D5F0078945A /* DonationDTO.swift in Sources */,
+				45DD9A1621A4102900B8F8AD /* ImportMetaMaskInfoViewController.swift in Sources */,
 				451B98651FD94ADC00DC64A5 /* CustomTabBarPresenter.swift in Sources */,
 				444066D82059342E00342046 /* Bool+Extantion.swift in Sources */,
 				459A0B3420F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift in Sources */,

@@ -36,6 +36,11 @@ class CreateOrRestoreBtnTableViewCell: UITableViewCell {
         self.mainLabel.text = localize(string: Constants.restoreMultyString)
     }
     
+    func makeMetaMaskCell() {
+        self.leftImage.image = #imageLiteral(resourceName: "maskGroup2")
+        self.mainLabel.text = localize(string: Constants.importMetaMaskString)
+    }
+    
     func setupShadow() {
         shadowView.setShadow(with: UIColor.gray)
     }
