@@ -51,6 +51,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
             wordTF.font?.withSize(50.0)
         }
         
+        wordCounterLbl.text = "\(currentWordNumber) \(localize(string: Constants.from15String)) \(presenter.maxWordsInPhrase)"
         bricksView.addSubview(BricksView(with: bricksView.bounds, and: 0))
         
         self.presenter.checkWordsVC = self
@@ -82,7 +83,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         }
         if self.isNeedToClean {
             self.currentWordNumber = 1
-            self.wordCounterLbl.text = "\(self.currentWordNumber) \(localize(string: Constants.from15String))"
+            self.wordCounterLbl.text = "\(self.currentWordNumber) \(localize(string: Constants.from15String)) \(presenter.maxWordsInPhrase)"
             self.view.isUserInteractionEnabled = true
             self.presenter.phraseArr.removeAll()
             bricksView.subviews.forEach({ $0.removeFromSuperview() })
@@ -100,7 +101,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
     }
     
     @IBAction func nextWordAndContinueAction(_ sender: Any) {
-        if self.presenter.phraseArr.count == 15 {
+        if self.presenter.phraseArr.count == presenter.maxWordsInPhrase {
             self.presenter.auth(seedString: self.presenter.phraseArr.joined(separator: " "))
             
             return
@@ -143,13 +144,13 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         bricksView.subviews.forEach({ $0.removeFromSuperview() })
         bricksView.addSubview(BricksView(with: bricksView.bounds, and: currentWordNumber))
         
-        if self.currentWordNumber == 15 {
+        if self.currentWordNumber == presenter.maxWordsInPhrase {
             self.nextWordOrContinue.setTitle(localize(string: Constants.continueString), for: .normal)
         }
         
-        if self.currentWordNumber < 15 {
+        if self.currentWordNumber < presenter.maxWordsInPhrase {
             self.currentWordNumber += 1
-            self.wordCounterLbl.text = "\(self.currentWordNumber) \(localize(string: Constants.from15String))"
+            self.wordCounterLbl.text = "\(self.currentWordNumber) \(localize(string: Constants.from15String)) \(presenter.maxWordsInPhrase)"
         } else {
             if self.isRestore {
                 self.presenter.auth(seedString: self.presenter.phraseArr.joined(separator: " "))
@@ -203,7 +204,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if self.presenter.phraseArr.count == 15 {
+        if self.presenter.phraseArr.count == presenter.maxWordsInPhrase {
             return false
         }
 //        if string == "" {

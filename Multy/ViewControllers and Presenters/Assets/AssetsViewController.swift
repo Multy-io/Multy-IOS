@@ -694,6 +694,7 @@ extension TableViewDelegate : UITableViewDelegate {
                 let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
                 let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
                 backupSeedVC.isRestore = true
+                backupSeedVC.presenter.multyBricksSetup()
                 self.navigationController?.pushViewController(backupSeedVC, animated: true)
             } else {
                 if self.presenter.isWalletExist() {

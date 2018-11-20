@@ -12,6 +12,8 @@ class CheckWordsPresenter: NSObject {
     var phraseArr = [String]()
     var originalSeedPhrase = String()
     
+    var maxWordsInPhrase = 15 //multy seed  //12 for metamask
+    
     func isSeedPhraseCorrect() -> Bool {
         return originalSeedPhrase.utf8CString == phraseArr.joined(separator: " ").utf8CString
     }
@@ -62,6 +64,24 @@ class CheckWordsPresenter: NSObject {
             DataManager.shared.socketManager.start()
             DataManager.shared.subscribeToFirebaseMessaging()
         }
+    }
+    
+    func metaMaskSetup() {
+        maxWordsInPhrase = 12
+        
+        segmentsCountUp = metsmaskSegmentsCountUp
+        segmentsCountDown = metamaskSegmentsCountDown
+        upperSizes = metamskUpperSizes
+        downSizes = metamaskDownSizes
+    }
+    
+    func multyBricksSetup() {
+        maxWordsInPhrase = 15
+        
+        segmentsCountUp = multySegmentsCountUp
+        segmentsCountDown = multySegmentsCountDown
+        upperSizes = multyUpperSizes
+        downSizes = multyDownSizes
     }
 }
 
