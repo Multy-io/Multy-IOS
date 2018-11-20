@@ -357,43 +357,50 @@ extension BrowserViewController {
     }
     
     func signTx(for object: OperationObject) {
-        let account = DataManager.shared.realmManager.account
-        let core = DataManager.shared.coreLibManager
-        var binaryData = account!.binaryDataString.createBinaryData()!
+//        let account = DataManager.shared.realmManager.account
+//        let core = DataManager.shared.coreLibManager
+//        var binaryData = account!.binaryDataString.createBinaryData()!
         
-        var addressData = Dictionary<String, Any>()
-        
-        if wallletFromDB.isImportedForPrimaryKey {
-            if wallletFromDB.importedPrivateKey.isEmpty == false {
-                let data = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: wallletFromDB.blockchainType, privateKey: wallletFromDB.importedPrivateKey)
-                switch data {
-                case .success(let dict):
-                    addressData = dict
-                case .failure(let error):
-                    //FIXME: add ALERT
-                    break
-                }
-            } else {
-                //FIXME: add ALERT
-            }
-        } else {
-            addressData = core.createAddress(blockchainType:    wallet.blockchainType,
-                                             walletID:          wallet.walletID.uint32Value,
-                                             addressID:         wallet.changeAddressIndex,
-                                             binaryData:        &binaryData)!
-        }
+//        var addressData = Dictionary<String, Any>()
+//
+//        if wallletFromDB.isImportedForPrimaryKey {
+//            if wallletFromDB.importedPrivateKey.isEmpty == false {
+//                let data = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: wallletFromDB.blockchainType, privateKey: wallletFromDB.importedPrivateKey)
+//                switch data {
+//                case .success(let dict):
+//                    addressData = dict
+//                case .failure(let error):
+//                    //FIXME: add ALERT
+//                    break
+//                }
+//            } else {
+//                //FIXME: add ALERT
+//            }
+//        } else {
+//            addressData = core.createAddress(blockchainType:    wallet.blockchainType,
+//                                             walletID:          wallet.walletID.uint32Value,
+//                                             addressID:         wallet.changeAddressIndex,
+//                                             binaryData:        &binaryData)!
+//        }
         
         let dappPayload = object.hexData
         
-        let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                              sendAddress: object.toAddress,
-                                                                              sendAmountString: object.value,
-                                                                              nonce: wallet.ethWallet!.nonce.intValue,
-                                                                              balanceAmount: wallet.ethWallet!.balance,
-                                                                              ethereumChainID: UInt32(wallet.blockchainType.net_type),
-                                                                              gasPrice: "\(object.gasPrice)",
-                                                                              gasLimit: "\(object.gasLimit)",
-                                                                              payload: dappPayload)
+        let trData = DataManager.shared.createETHTransaction(wallet: wallet,
+                                                             sendAmountString: object.value,
+                                                             destinationAddress: object.toAddress,
+                                                             gasPriceAmountString: "\(object.gasPrice)",
+                                                             gasLimitAmountString: "\(object.gasLimit)",
+                                                             payload: dappPayload)
+        
+//        let trData2 = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: addressData["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+//                                                                              sendAddress: object.toAddress,
+//                                                                              sendAmountString: object.value,
+//                                                                              nonce: wallet.ethWallet!.nonce.intValue,
+//                                                                              balanceAmount: wallet.ethWallet!.balance,
+//                                                                              ethereumChainID: UInt32(wallet.blockchainType.net_type),
+//                                                                              gasPrice: "\(object.gasPrice)",
+//                                                                              gasLimit: "\(object.gasLimit)",
+//                                                                              payload: dappPayload)
         let rawTransaction = trData.message
         
         guard trData.isTransactionCorrect else {

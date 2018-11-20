@@ -1326,7 +1326,7 @@ extension EthereumCoreLibManager {
         let tgp = transaction_get_properties(transactionPointer.pointee!, accountProperties)
         
         setAmountValue(key: "nonce", value: "\(nonce)", pointer: accountProperties.pointee!)
-        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
+//        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
         
         //balance
         let transactionSource = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)

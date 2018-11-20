@@ -87,6 +87,12 @@ extension DataManager {
 //        
 //    }
     
+    func createPublicInfo(blockchainType: BlockchainType, privateKey: String) -> Result<Dictionary<String, Any>, String> {
+        let localBlockchainType = self.localBlockchainType(blockchainType: blockchainType)
+        
+        return coreLibManager.createPublicInfo(blockchainType: localBlockchainType, privateKey: privateKey)
+    }
+    
     func createAddress(blockchainType: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> Dictionary<String, Any>? {
         let localBlockchainType = self.localBlockchainType(blockchainType: blockchainType)
         let localWalletID = self.localWalletID(blockchainType: blockchainType, walletID: walletID)
@@ -243,7 +249,8 @@ extension CoreLibETHManager {
                               sendAmountString: String,
                               destinationAddress: String,
                               gasPriceAmountString: String,
-                              gasLimitAmountString: String) -> (isTransactionCorrect: Bool, message: String) {
+                              gasLimitAmountString: String,
+                              payload: String = "") -> (isTransactionCorrect: Bool, message: String) {
         let info = DataManager.shared.privateInfo(for: wallet)
         if info == nil {
             return (false, "Error")
@@ -270,6 +277,11 @@ extension CoreLibETHManager {
         payloadDict["balance"] =                wallet.availableBalance.stringValue
         payloadDict["destination_amount"] =     sendAmountString
         payloadDict["destination_address"] =    destinationAddress
+        if payload.isEmpty == false {
+            payloadDict["destination_address"] =    payload
+        }
+        
+        
         builderDict["payload"] =                payloadDict
         txInfo["builder"] =                     builderDict
         
@@ -301,7 +313,7 @@ extension CoreLibInfoManager {
             if wallet.importedPrivateKey.isEmpty {
                 return nil
             } else {
-                switch coreLibManager.createPublicInfo(blockchainType: wallet.blockchainType, privateKey: wallet.importedPrivateKey) {
+                switch createPublicInfo(blockchainType: wallet.blockchainType, privateKey: wallet.importedPrivateKey) {
                 case .success(let info):
                     return info
                 case .failure(_):
