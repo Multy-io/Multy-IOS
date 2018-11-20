@@ -211,7 +211,7 @@ class CoreLibManager: NSObject {
         return extendedKey
     }
     
-    func createWallet(from binaryData: inout BinaryData, blockchain: BlockchainType, walletID: UInt32) -> Dictionary<String, Any>? {
+    func createWallet(from binaryData: inout BinaryData, blockchain: BlockchainType, walletID: UInt32, addressID: UInt32) -> Dictionary<String, Any>? {
         let binaryDataPointer = UnsafeMutablePointer(mutating: &binaryData)
         let masterKeyPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
         
@@ -267,7 +267,7 @@ class CoreLibManager: NSObject {
             return nil
         }
         
-        let mHDla = make_hd_leaf_account(newAccountPointer.pointee, ADDRESS_EXTERNAL, 0, newAddressPointer)
+        let mHDla = make_hd_leaf_account(newAccountPointer.pointee, ADDRESS_EXTERNAL, addressID, newAddressPointer)
         if mHDla != nil {
             _ = errorString(from: mHDla!, mask: "make_hd_leaf_account")
             
@@ -278,7 +278,7 @@ class CoreLibManager: NSObject {
         var walletDict = Dictionary<String, Any>()
         walletDict["currency"] = blockchain.blockchain.rawValue
         walletDict["walletID"] = walletID
-        walletDict["addressID"] = UInt32(0)
+        walletDict["addressID"] = addressID
         
         let agas = account_get_address_string(newAddressPointer.pointee, newAddressStringPointer)
         var addressString : String? = nil
@@ -1326,7 +1326,7 @@ extension EthereumCoreLibManager {
         let tgp = transaction_get_properties(transactionPointer.pointee!, accountProperties)
         
         setAmountValue(key: "nonce", value: "\(nonce)", pointer: accountProperties.pointee!)
-//        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
+        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
         
         //balance
         let transactionSource = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)

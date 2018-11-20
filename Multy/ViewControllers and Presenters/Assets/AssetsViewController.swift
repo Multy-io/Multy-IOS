@@ -694,6 +694,11 @@ extension TableViewDelegate : UITableViewDelegate {
                 let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
                 let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
                 backupSeedVC.isRestore = true
+                
+                let walletType = AccountType.metamask
+                DataManager.shared.accountTypeID = walletType
+                backupSeedVC.presenter.wordsCount = walletType.seedPhraseWordsCount
+                
                 self.navigationController?.pushViewController(backupSeedVC, animated: true)
             } else {
                 if self.presenter.isWalletExist() {

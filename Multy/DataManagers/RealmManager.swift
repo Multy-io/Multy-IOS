@@ -28,7 +28,7 @@ class RealmManager: NSObject {
         }
     }
     
-    let schemaVersion : UInt64 = 32
+    let schemaVersion : UInt64 = 33
     
     var account: AccountRLM?
     var config: Realm.Configuration?
@@ -153,8 +153,11 @@ class RealmManager: NSObject {
                                                     if oldSchemaVersion <= 31 {
                                                         self.migrateFrom30To31(with: migration)
                                                     }
-                                                    if oldSchemaVersion <= 31 {
+                                                    if oldSchemaVersion <= 32 {
                                                         self.migrateFrom31To32(with: migration)
+                                                    }
+                                                    if oldSchemaVersion <= 33 {
+                                                        self.migrateFrom32To33(with: migration)
                                                     }
             })
             
@@ -220,6 +223,10 @@ class RealmManager: NSObject {
                     
                     if accountDict["binaryData"] != nil {
                         accountRLM.binaryDataString = accountDict["binaryData"] as! String
+                    }
+                    
+                    if let accountTypeID = DataManager.shared.accountTypeID {
+                        accountRLM.accountTypeID = NSNumber(integerLiteral: accountTypeID.rawValue)
                     }
                     
                     if accountDict["topindexes"] != nil {
@@ -1140,11 +1147,18 @@ extension RealmMigrationManager {
     func migrateFrom30To31(with migration: Migration) {
         UserPreferences.shared.writeDBPrivateKeyFixValue(false)
     }
+    
     func migrateFrom31To32(with migration: Migration) {
         migration.enumerateObjects(ofType: TokenRLM.className()) { (_, token) in
             token?["decimals"] = Int(-1)
             token?["currencyID"] = UInt32(0)
             token?["netType"] = Int(0)
+        }
+    }
+    
+    func migrateFrom32To33(with migration: Migration) {
+        migration.enumerateObjects(ofType: AccountRLM.className()) { (_, account) in
+            account?["accountTypeID"] = NSNumber(integerLiteral: 0)
         }
     }
 }

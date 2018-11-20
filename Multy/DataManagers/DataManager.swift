@@ -27,6 +27,8 @@ class DataManager: NSObject {
     var currencyExchange = CurrencyExchange()
     var savedAddresses = [String: String]()
     
+    var accountTypeID: AccountType?
+    
     override init() {
         super.init()
         

@@ -11,6 +11,11 @@ class CheckWordsPresenter: NSObject {
     var checkWordsVC: CheckWordsViewController?
     var phraseArr = [String]()
     var originalSeedPhrase = String()
+    var wordsCount = 15
+    
+    func isSeedPhraseFull() -> Bool {
+        return phraseArr.count == wordsCount
+    }
     
     func isSeedPhraseCorrect() -> Bool {
         return originalSeedPhrase.utf8CString == phraseArr.joined(separator: " ").utf8CString

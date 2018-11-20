@@ -38,14 +38,69 @@ extension DataManager {
         
     }
     
+    func localBlockchainType(blockchainType: BlockchainType) -> BlockchainType {
+        if DataManager.shared.realmManager.account!.accountType != .metamask {
+            return blockchainType
+        }
+        
+        if blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
+            if blockchainType.net_type == Int(ETHEREUM_CHAIN_ID_RINKEBY.rawValue) {
+                var localBlockchainType = blockchainType
+                localBlockchainType.net_type = 1
+                
+                return localBlockchainType
+            } else {
+                return blockchainType
+            }
+        } else {
+            return blockchainType
+        }
+    }
+    
+    func localWalletID(blockchainType: BlockchainType, walletID: UInt32) -> UInt32 {
+        if DataManager.shared.realmManager.account!.accountType != .metamask {
+            return walletID
+        }
+        
+        if blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
+            return 0
+        } else {
+            return walletID
+        }
+    }
+    
+    func localAddressID(blockchainType: BlockchainType, walletID: UInt32, addressID: UInt32) -> UInt32 {
+        if DataManager.shared.realmManager.account!.accountType != .metamask {
+            return addressID
+        }
+        
+        if blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
+            return walletID
+        } else {
+            return addressID
+        }
+    }
+    
 //    func createWallet(from seedPhrase: String, currencyID : UInt32, walletID : UInt32, addressID: UInt32) -> Dictionary<String, Any>? {
 //        var binaryData = coreLibManager.createSeedBinaryData(from: seedPhrase)
 //        
 //        
 //    }
     
+    func createAddress(blockchainType: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> Dictionary<String, Any>? {
+        let localBlockchainType = self.localBlockchainType(blockchainType: blockchainType)
+        let localWalletID = self.localWalletID(blockchainType: blockchainType, walletID: walletID)
+        let localAddressID = self.localAddressID(blockchainType: blockchainType, walletID: walletID, addressID: addressID)
+        
+        return coreLibManager.createAddress(blockchainType: localBlockchainType, walletID: localWalletID, addressID: localAddressID, binaryData: &binaryData)
+    }
+    
     func createNewWallet(for binaryData: inout BinaryData, blockchain: BlockchainType, walletID: UInt32) -> Dictionary<String, Any>? {
-        return coreLibManager.createWallet(from: &binaryData,blockchain: blockchain, walletID: walletID)
+        let localBlockchainType = self.localBlockchainType(blockchainType: blockchain)
+        let localWalletID = self.localWalletID(blockchainType: blockchain, walletID: walletID)
+        let localAddressID = self.localAddressID(blockchainType: blockchain, walletID: walletID, addressID: 0)
+        
+        return coreLibManager.createWallet(from: &binaryData,blockchain: localBlockchainType, walletID: localWalletID, addressID: localAddressID)
     }
     
     func importWalletBy(privateKey: String, blockchain: BlockchainType, walletID: Int32) -> Dictionary<String, Any>? {
@@ -122,9 +177,15 @@ extension DataManager {
     
     func createEtherTx(binaryData: inout BinaryData, wallet: UserWalletRLM, sendAddress: String, sendAmountString: String, gasPriceString: String, gasLimitString: String) {
         let blockchain = BlockchainType.create(wallet: wallet)
-        let addressData = self.coreLibManager.createAddress(blockchainType: blockchain, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
         
-        let _ = self.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+        let localBlockchainType = self.localBlockchainType(blockchainType: blockchain)
+        let localWalletID = self.localWalletID(blockchainType: blockchain, walletID: wallet.walletID.uint32Value)
+        let localAddressID = self.localAddressID(blockchainType: blockchain, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value)
+        
+        
+        let addressData = self.coreLibManager.createAddress(blockchainType: localBlockchainType, walletID: localWalletID, addressID: localAddressID, binaryData: &binaryData)
+        
+        let tx = self.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                            sendAddress: sendAddress,
                                                            sendAmountString: sendAmountString,
                                                            nonce: wallet.ethWallet!.nonce.intValue,
@@ -132,10 +193,16 @@ extension DataManager {
                                                            ethereumChainID: UInt32(4), //RINKEBY
                                                            gasPrice: gasPriceString,
                                                            gasLimit: gasLimitString)
+        
+//        tx
     }
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
-        return coreLibManager.privateKeyString(blockchain: blockchain, walletID: walletID, addressID: addressID, binaryData: &binaryData)
+        let localBlockchainType = self.localBlockchainType(blockchainType: blockchain)
+        let localWalletID = self.localWalletID(blockchainType: blockchain, walletID: walletID)
+        let localAddressID = self.localAddressID(blockchainType: blockchain, walletID: walletID, addressID: addressID)
+        
+        return coreLibManager.privateKeyString(blockchain: localBlockchainType, walletID: localWalletID, addressID: localAddressID, binaryData: &binaryData)
     }
 }
 
@@ -153,7 +220,7 @@ extension CoreLibETHManager {
                     let info = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
                     
                     if let tx = info?["transaction"] as? Dictionary<String, String> {
-                        if let serialized = tx["serialized"] as? String {
+                        if let serialized = tx["serialized"] {
                             return Result.success(serialized)
                         } else {
                             return Result.failure("cannot get serialized")
@@ -170,6 +237,57 @@ extension CoreLibETHManager {
         }
         
         return Result.failure("Error")
+    }
+    
+    func createETHTransaction(wallet: UserWalletRLM,
+                              sendAmountString: String,
+                              destinationAddress: String,
+                              gasPriceAmountString: String,
+                              gasLimitAmountString: String) -> (isTransactionCorrect: Bool, message: String) {
+        let info = DataManager.shared.privateInfo(for: wallet)
+        if info == nil {
+            return (false, "Error")
+        }
+        
+        var txInfo = Dictionary<String, Any>()
+        var accountDict = Dictionary<String, Any>()
+        var builderDict = Dictionary<String, Any>()
+        var payloadDict = Dictionary<String, Any>()
+        var txDict = Dictionary<String, Any>()
+        var feeDict = Dictionary<String, Any>()
+        
+        txInfo["blockchain"] =          wallet.blockchain.fullName
+        txInfo["net_type"] =            wallet.blockchainType.net_type
+        
+        //account
+        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
+        accountDict["private_key"] =    info!["privateKey"] as! String
+        txInfo["account"] =             accountDict
+        
+        //builder
+        builderDict["type"] =           "basic"
+        //payload
+        payloadDict["balance"] =                wallet.availableBalance.stringValue
+        payloadDict["destination_amount"] =     sendAmountString
+        payloadDict["destination_address"] =    destinationAddress
+        builderDict["payload"] =                payloadDict
+        txInfo["builder"] =                     builderDict
+        
+        //transaction
+        txDict["nonce"] =               wallet.ethWallet!.nonce
+        feeDict["gas_price"] =          gasPriceAmountString
+        feeDict["gas_limit"] =          gasLimitAmountString
+        txDict["fee"] =                 feeDict
+        txInfo["transaction"] =         txDict
+        
+        let rawTX = makeTX(from: txInfo)
+        
+        switch rawTX {
+        case .success(let txString):
+            return (true, txString)
+        case .failure(let error):
+            return (false, error)
+        }
     }
 }
 
@@ -195,7 +313,7 @@ extension CoreLibInfoManager {
         } else {
             var binData = realmManager.account!.binaryDataString.createBinaryData()!
             
-            return coreLibManager.createAddress(blockchainType: wallet.blockchainType, walletID: wallet.walletID.uint32Value, addressID: 0, binaryData: &binData)
+            return createAddress(blockchainType: wallet.blockchainType, walletID: wallet.walletID.uint32Value, addressID: 0, binaryData: &binData)
         }
     }
 }
@@ -215,7 +333,7 @@ extension CoreLibPrivateKeyFixManager  {
             
             var binaryData = realmManager.account!.binaryDataString.createBinaryData()!
             
-            let addressData = coreLibManager.createWallet(from: &binaryData, blockchain: wallet.blockchainType, walletID: wallet.walletID.uint32Value)
+            let addressData = createNewWallet(for: &binaryData, blockchain: wallet.blockchainType, walletID: wallet.walletID.uint32Value)
             
             if addressData == nil {
                 continue

@@ -62,6 +62,7 @@ extension Constants {
     static let continueString = "CONTINUE"
     static let nextWordString = "NEXT WORD"
     static let from15String = "FROM 15"
+    static let fromString = "FROM"
     static let orString = "OR"
     static let wantToCancelString = "WANT TO CANCEL"
     static let repeatPINCodeString = "REPEAT PIN-CODE"
