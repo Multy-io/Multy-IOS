@@ -66,8 +66,8 @@ class CreateWalletPresenter: NSObject {
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
         createdWallet.name = cell.walletNameTF.text ?? "Wallet"
-        createdWallet.walletID = NSNumber(value: Int32(dict!["walletID"] as! UInt32))
-        createdWallet.addressID = NSNumber(value: Int32(dict!["addressID"] as! UInt32))
+        createdWallet.walletID = currentTopIndex!.topIndex
+        createdWallet.addressID = 0
         createdWallet.address = dict!["address"] as! String
         
         if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {

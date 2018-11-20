@@ -71,33 +71,45 @@ class SendFinishPresenter: NSObject {
             return
         }
         
-        getOneVerbose { (updatedWallet, err) in
+        getOneVerbose { [unowned self] (updatedWallet, err) in
             if updatedWallet == nil {
                 //error
             }
-            let core = DataManager.shared.coreLibManager
-            let wallet = self.transactionDTO.choosenWallet!
-            self.binaryData = self.account!.binaryDataString.createBinaryData()!
+//            let core = DataManager.shared.coreLibManager
+//            let wallet = self.transactionDTO.choosenWallet!
+//            self.binaryData = self.account!.binaryDataString.createBinaryData()!
             
-            if !wallet.isImported  {
-                let blockchainType = BlockchainType.create(wallet: self.transactionDTO.choosenWallet!)
-                self.addressData = core.createAddress(blockchainType: blockchainType,
-                                                 walletID:      wallet.walletID.uint32Value,
-                                                 addressID:     wallet.changeAddressIndex,
-                                                 binaryData:    &self.binaryData!)
+//            if !wallet.isImported  {
+//                let blockchainType = BlockchainType.create(wallet: self.transactionDTO.choosenWallet!)
+//                self.addressData = core.createAddress(blockchainType: blockchainType,
+//                                                 walletID:      wallet.walletID.uint32Value,
+//                                                 addressID:     wallet.changeAddressIndex,
+//                                                 binaryData:    &self.binaryData!)
+//            }
+            
+            if updatedWallet == nil {
+                return
             }
-            self.pointer = self.addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
+            
+//            self.addressData = DataManager.shared.privateInfo(for: updatedWallet!)
+//            self.pointer = self.addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
             
             let amount = self.transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(for: BLOCKCHAIN_ETHEREUM)
             
-            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: self.pointer!,
-                                                                                  sendAddress: self.transactionDTO.sendAddress!,
-                                                                                  sendAmountString: amount.stringValue,
-                                                                                  nonce: updatedWallet!.ethWallet!.nonce.intValue,  //new nonce
-                balanceAmount: "\(self.transactionDTO.choosenWallet!.ethWallet!.balance)",
-                ethereumChainID: UInt32(self.transactionDTO.choosenWallet!.blockchainType.net_type),
-                gasPrice: self.transactionDTO.ETHDTO!.gasPrice.stringValue,
-                gasLimit: self.transactionDTO.ETHDTO!.gasLimit.stringValue)
+            let trData = DataManager.shared.createETHTransaction(wallet: updatedWallet!,
+                                                                 sendAmountString: amount.stringValue,
+                                                                 destinationAddress: self.transactionDTO.sendAddress!,
+                                                                 gasPriceAmountString: self.transactionDTO.ETHDTO!.gasPrice.stringValue,
+                                                                 gasLimitAmountString: self.transactionDTO.ETHDTO!.gasLimit.stringValue)
+            
+//            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: self.pointer!,
+//                                                                                  sendAddress: self.transactionDTO.sendAddress!,
+//                                                                                  sendAmountString: amount.stringValue,
+//                                                                                  nonce: updatedWallet!.ethWallet!.nonce.intValue,  //new nonce
+//                balanceAmount: "\(self.transactionDTO.choosenWallet!.ethWallet!.balance)",
+//                ethereumChainID: UInt32(self.transactionDTO.choosenWallet!.blockchainType.net_type),
+//                gasPrice: self.transactionDTO.ETHDTO!.gasPrice.stringValue,
+//                gasLimit: self.transactionDTO.ETHDTO!.gasLimit.stringValue)
             
             self.transactionDTO.rawValue = trData.message
         }
@@ -114,6 +126,9 @@ class SendFinishPresenter: NSObject {
                     DataManager.shared.getOneWalletVerbose(wallet: walletForUpdate!) { (updatedWallet, error) in
                         self.unlockUI()
                         if updatedWallet != nil {
+                            updatedWallet!.importedPublicKey = walletForUpdate!.importedPublicKey
+                            updatedWallet!.importedPrivateKey = walletForUpdate!.importedPrivateKey
+                            
                             completion(updatedWallet, nil)
                         }
                     }
@@ -127,6 +142,9 @@ class SendFinishPresenter: NSObject {
             DataManager.shared.getOneWalletVerbose(wallet: walletForUpdate!) { (updatedWallet, error) in
                 self.unlockUI()
                 if updatedWallet != nil {
+                    updatedWallet!.importedPublicKey = walletForUpdate!.importedPublicKey
+                    updatedWallet!.importedPrivateKey = walletForUpdate!.importedPrivateKey
+                    
                     completion(updatedWallet, nil)
                 }
             }

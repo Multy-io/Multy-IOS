@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import Foundation
 
 class BricksView: UIView {
     var currentCheckedWordCounter : Int = 3;
@@ -19,6 +20,10 @@ class BricksView: UIView {
     
     // here we draw green and red bricks depending the current state (segmentsCountUp and segmentsCountDown)
     override func draw(_ rect: CGRect) {
+        let segmentsCountUp = DataManager.shared.accountType!.segmentsCountUp
+        let segmentsCountDown = DataManager.shared.accountType!.segmentsCountDown
+        let upperSizes = DataManager.shared.accountType!.upperSizes
+        let downSizes = DataManager.shared.accountType!.downSizes
         
         for index in 0..<segmentsCountUp + segmentsCountDown {
             let widthUp = CGFloat((rect.size.width - 6 * 2) / 253.0)

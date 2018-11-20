@@ -790,14 +790,20 @@ extension CreateTransactionDelegate {
             
             return trData.isTransactionCorrect
         } else {
-            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
-                                                                                  sendAddress: request.sendAddress,
-                                                                                  sendAmountString: sendAmount,
-                                                                                  nonce: wallet.ethWallet!.nonce.intValue,
-                                                                                  balanceAmount: wallet.ethWallet!.balance,
-                                                                                  ethereumChainID: UInt32(wallet.blockchainType.net_type),
-                                                                                  gasPrice: feeRate,
-                                                                                  gasLimit: "40000")
+            let trData = DataManager.shared.createETHTransaction(wallet: wallet,
+                                                                 sendAmountString: sendAmount,
+                                                                 destinationAddress: request.sendAddress,
+                                                                 gasPriceAmountString: feeRate,
+                                                                 gasLimitAmountString: "40000")
+            
+//            let trData1 = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
+//                                                                                  sendAddress: request.sendAddress,
+//                                                                                  sendAmountString: sendAmount,
+//                                                                                  nonce: wallet.ethWallet!.nonce.intValue,
+//                                                                                  balanceAmount: wallet.ethWallet!.balance,
+//                                                                                  ethereumChainID: UInt32(wallet.blockchainType.net_type),
+//                                                                                  gasPrice: feeRate,
+//                                                                                  gasLimit: "40000")
             
             rawTransaction = trData.message
             

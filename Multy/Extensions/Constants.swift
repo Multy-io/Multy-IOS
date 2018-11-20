@@ -155,23 +155,6 @@ let infoPlist = Bundle.main.infoDictionary!
 //createWallet, WalletSettingd
 let maxNameLength = 25
 
-//brick view
-var segmentsCountUp : Int  = multySegmentsCountUp
-var segmentsCountDown : Int  = multySegmentsCountDown
-var upperSizes : [CGFloat] = multyUpperSizes
-var downSizes : [CGFloat] = multyDownSizes
-
-let multySegmentsCountUp : Int  = 7
-let multySegmentsCountDown : Int  = 8
-let multyUpperSizes : [CGFloat] = [0, 35, 79, 107, 151, 183, 218, 253]
-let multyDownSizes : [CGFloat] = [0, 23, 40, 53, 81, 136, 153, 197, 249]
-
-
-let metsmaskSegmentsCountUp : Int  = 6
-let metamaskSegmentsCountDown : Int  = 6
-let metamskUpperSizes : [CGFloat] = [0, 35, 79, 107, 151, 218, 253]
-let metamaskDownSizes : [CGFloat] = [0, 23, 40, 81, 153, 197, 252]
-
 let nanosecondsInOneSecond = 1000000000.0
 
 let statuses = ["createdTx", "fromSocketTx", "incoming in mempool", "spend in mempool", "incoming in block", "spend in block", "in block confirmed", "rejected block"]
