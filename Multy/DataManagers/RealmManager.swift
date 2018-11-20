@@ -225,8 +225,8 @@ class RealmManager: NSObject {
                         accountRLM.binaryDataString = accountDict["binaryData"] as! String
                     }
                     
-                    if let accountTypeID = DataManager.shared.accountTypeID {
-                        accountRLM.accountTypeID = NSNumber(integerLiteral: accountTypeID.rawValue)
+                    if let accountType = DataManager.shared.accountType {
+                        accountRLM.accountTypeID = NSNumber(integerLiteral: accountType.rawValue)
                     }
                     
                     if accountDict["topindexes"] != nil {

@@ -5,29 +5,6 @@
 import Foundation
 import RealmSwift
 
-enum AccountType: Int, CaseIterable {
-    case
-        multy =     0,
-        metamask =  1
-    
-    init(typeID: Int) {
-        if typeID >= AccountType.allCases.count || typeID < 0 {
-            self = .multy
-        } else {
-            self = AccountType(rawValue: typeID)!
-        }
-    }
-    
-    var seedPhraseWordsCount: Int {
-        switch self {
-        case .multy:
-            return 15
-        case .metamask:
-            return 12
-        }
-    }
-}
-
 class AccountRLM: Object {
     @objc dynamic var seedPhrase = String() {
         didSet {

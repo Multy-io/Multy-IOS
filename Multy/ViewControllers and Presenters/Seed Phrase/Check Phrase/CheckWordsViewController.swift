@@ -40,6 +40,8 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         super.viewDidLoad()
         self.enableSwipeToBack()
         
+        presenter.accountType = DataManager.shared.accountType!
+        
         loader.show(customTitle: localize(string: Constants.restoringWalletsString))
         self.view.addSubview(loader)
         loader.hide()
@@ -205,6 +207,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if presenter.isSeedPhraseFull() {
+
             return false
         }
 //        if string == "" {
