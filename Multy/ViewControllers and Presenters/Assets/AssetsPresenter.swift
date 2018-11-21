@@ -489,4 +489,14 @@ class AssetsPresenter: NSObject {
         receiveVC.presenter.isOpenByDL = true
         self.assetsVC?.navigationController?.pushViewController(receiveVC, animated: true)
     }
+    
+    func countFiatMoney() -> String {
+        var fiatSum = 0.0
+        for wallet in wallets! {
+            if wallet.blockchainType.isMainnet {
+                fiatSum += wallet.sumInFiat
+            }
+        }
+        return fiatSum.fixedFraction(digits: 2)
+    }
 }
