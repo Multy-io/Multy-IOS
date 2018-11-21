@@ -24,6 +24,7 @@ class AccountRLM: Object {
     @objc dynamic var expireDateString = String()
     @objc dynamic var token = String()
     @objc dynamic var id: NSNumber = 1
+    @objc dynamic var accountTypeID: NSNumber = 0
     
     var topIndexes = List<TopIndexRLM>()
     
@@ -41,5 +42,9 @@ class AccountRLM: Object {
     
     override class func primaryKey() -> String? {
         return "id"
+    }
+    
+    var accountType: AccountType {
+        return AccountType(typeID: accountTypeID.intValue)
     }
 }

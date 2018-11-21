@@ -40,6 +40,8 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         super.viewDidLoad()
         self.enableSwipeToBack()
         
+        presenter.accountType = DataManager.shared.restoreAccountType!
+        
         loader.show(customTitle: localize(string: Constants.restoringWalletsString))
         self.view.addSubview(loader)
         loader.hide()
@@ -51,7 +53,6 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
             wordTF.font?.withSize(50.0)
         }
         
-        wordCounterLbl.text = "\(currentWordNumber) \(localize(string: Constants.from15String)) \(presenter.maxWordsInPhrase)"
         bricksView.addSubview(BricksView(with: bricksView.bounds, and: 0))
         
         self.presenter.checkWordsVC = self
@@ -64,6 +65,8 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         NotificationCenter.default.addObserver(self, selector: #selector(self.hideKeyboard(_:)), name: Notification.Name("hideKeyboard"), object: nil)
         (self.tabBarController as! CustomTabBarViewController).menuButton.isHidden = true
         sendAnalyticsEvent(screenName: screenRestoreSeed, eventName: screenRestoreSeed)
+        
+        wordCounterLbl.text = "\(self.currentWordNumber) \(localize(string: Constants.fromString))" + " \(presenter.wordsCount)"
     }
     
     override func viewDidLayoutSubviews() {
@@ -83,7 +86,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         }
         if self.isNeedToClean {
             self.currentWordNumber = 1
-            self.wordCounterLbl.text = "\(self.currentWordNumber) \(localize(string: Constants.from15String)) \(presenter.maxWordsInPhrase)"
+            self.wordCounterLbl.text = "\(self.currentWordNumber) \(localize(string: Constants.fromString))" + " \(presenter.wordsCount)"
             self.view.isUserInteractionEnabled = true
             self.presenter.phraseArr.removeAll()
             bricksView.subviews.forEach({ $0.removeFromSuperview() })
@@ -101,17 +104,17 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
     }
     
     @IBAction func nextWordAndContinueAction(_ sender: Any) {
-        if self.presenter.phraseArr.count == presenter.maxWordsInPhrase {
-            self.presenter.auth(seedString: self.presenter.phraseArr.joined(separator: " "))
+        if presenter.isSeedPhraseFull() {
+            presenter.auth(seedString: presenter.phraseArr.joined(separator: " "))
             
             return
         }
         
-        if self.wordTF.text == nil {
+        if wordTF.text == nil {
             return
         }
         
-        if self.wordTF.text!.count < 3 && wordArray.count != 1 {
+        if wordTF.text!.count < 3 && wordArray.count != 1 {
             return
         }
         
@@ -126,9 +129,9 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
             return
         }
         
-        if !self.wordTF.text!.isEmpty {
-            self.presenter.phraseArr.append(wordArray.first!)
-            self.nextWordOrContinue.setTitle(localize(string: Constants.nextWordString), for: .normal)
+        if !wordTF.text!.isEmpty {
+            presenter.phraseArr.append(wordArray.first!)
+            nextWordOrContinue.setTitle(localize(string: Constants.nextWordString), for: .normal)
             
             wordTF.text = wordArray.first!
             nextWordOrContinue.isUserInteractionEnabled = false
@@ -144,25 +147,24 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         bricksView.subviews.forEach({ $0.removeFromSuperview() })
         bricksView.addSubview(BricksView(with: bricksView.bounds, and: currentWordNumber))
         
-        if self.currentWordNumber == presenter.maxWordsInPhrase {
-            self.nextWordOrContinue.setTitle(localize(string: Constants.continueString), for: .normal)
+        if currentWordNumber == presenter.wordsCount {
+            nextWordOrContinue.setTitle(localize(string: Constants.continueString), for: .normal)
         }
         
-        if self.currentWordNumber < presenter.maxWordsInPhrase {
-            self.currentWordNumber += 1
-            self.wordCounterLbl.text = "\(self.currentWordNumber) \(localize(string: Constants.from15String)) \(presenter.maxWordsInPhrase)"
+        if currentWordNumber < presenter.wordsCount {
+            currentWordNumber += 1
+            wordCounterLbl.text = "\(currentWordNumber) \(localize(string: Constants.fromString))" + " \(presenter.wordsCount)"
         } else {
-            if self.isRestore {
-                self.presenter.auth(seedString: self.presenter.phraseArr.joined(separator: " "))
+            if isRestore {
+                presenter.auth(seedString: presenter.phraseArr.joined(separator: " "))
                 
                 return
             }
-            let isPhraseCorrect = presenter.isSeedPhraseCorrect()
             
-            if isPhraseCorrect {
-                self.performSegue(withIdentifier: "greatVC", sender: UIButton.self)
+            if presenter.isSeedPhraseCorrect() {
+                performSegue(withIdentifier: "greatVC", sender: UIButton.self)
             } else {
-                self.performSegue(withIdentifier: "wrongVC", sender: UIButton.self)
+                performSegue(withIdentifier: "wrongVC", sender: UIButton.self)
             }
         }
     }
@@ -204,7 +206,8 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if self.presenter.phraseArr.count == presenter.maxWordsInPhrase {
+        if presenter.isSeedPhraseFull() {
+
             return false
         }
 //        if string == "" {

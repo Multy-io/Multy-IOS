@@ -23,7 +23,7 @@ class ImportMetaMaskInfoViewController: UIViewController {
     
     @IBAction func continueAction(_ sender: Any) {
         let checkWordsVC = viewControllerFrom("SeedPhrase", "backupSeed") as! CheckWordsViewController
-        checkWordsVC.presenter.metaMaskSetup()
+        checkWordsVC.isRestore = true
         navigationController?.pushViewController(checkWordsVC, animated: true)
     }
     

@@ -694,7 +694,9 @@ extension TableViewDelegate : UITableViewDelegate {
                 let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
                 let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
                 backupSeedVC.isRestore = true
-                backupSeedVC.presenter.multyBricksSetup()
+                
+                DataManager.shared.restoreAccountType = .multy
+                
                 self.navigationController?.pushViewController(backupSeedVC, animated: true)
             } else {
                 if self.presenter.isWalletExist() {
@@ -707,6 +709,8 @@ extension TableViewDelegate : UITableViewDelegate {
                     checkServerConnection()
                     return
                 }
+                
+                DataManager.shared.restoreAccountType = .metamask
                 
                 let importMetaMaskVC = viewControllerFrom("SeedPhrase", "ImportMetaMask") as! ImportMetaMaskInfoViewController
                 self.navigationController?.pushViewController(importMetaMaskVC, animated: true)
