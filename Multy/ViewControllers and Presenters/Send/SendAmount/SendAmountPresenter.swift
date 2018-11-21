@@ -526,14 +526,22 @@ extension CreateTransactionDelegate {
                 return false
             }
             
-            let trData = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
-                                                             wallet: linkedWallet!,
+            let trData = DataManager.shared.createMultiSigTx(wallet: linkedWallet!,
                                                              sendFromAddress: transactionDTO.choosenWallet!.address,
                                                              sendAmountString: sendAmount.stringValue,
                                                              sendToAddress: transactionDTO.sendAddress!,
                                                              msWalletBalance: transactionDTO.choosenWallet!.availableAmount.stringValue,
                                                              gasPriceString: transactionDTO.ETHDTO!.gasPrice.stringValue,
                                                              gasLimitString: transactionDTO.ETHDTO!.gasLimit.stringValue)
+            
+//            let trData2 = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
+//                                                             wallet: linkedWallet!,
+//                                                             sendFromAddress: transactionDTO.choosenWallet!.address,
+//                                                             sendAmountString: sendAmount.stringValue,
+//                                                             sendToAddress: transactionDTO.sendAddress!,
+//                                                             msWalletBalance: transactionDTO.choosenWallet!.availableAmount.stringValue,
+//                                                             gasPriceString: transactionDTO.ETHDTO!.gasPrice.stringValue,
+//                                                             gasLimitString: transactionDTO.ETHDTO!.gasLimit.stringValue)
             
             rawTransaction = trData.message
             

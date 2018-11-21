@@ -777,14 +777,22 @@ extension CreateTransactionDelegate {
                 return false
             }
             
-            let trData = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
-                                                             wallet: self.linkedWallet!,
+            let trData = DataManager.shared.createMultiSigTx(wallet: self.linkedWallet!,
                                                              sendFromAddress: wallet.address,
                                                              sendAmountString: sendAmount,
                                                              sendToAddress: request.sendAddress,
                                                              msWalletBalance: wallet.availableAmount.stringValue,
                                                              gasPriceString: feeRate,
                                                              gasLimitString: submitEstimation)
+            
+//            let trData = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
+//                                                             wallet: self.linkedWallet!,
+//                                                             sendFromAddress: wallet.address,
+//                                                             sendAmountString: sendAmount,
+//                                                             sendToAddress: request.sendAddress,
+//                                                             msWalletBalance: wallet.availableAmount.stringValue,
+//                                                             gasPriceString: feeRate,
+//                                                             gasLimitString: submitEstimation)
             
             rawTransaction = trData.message
             

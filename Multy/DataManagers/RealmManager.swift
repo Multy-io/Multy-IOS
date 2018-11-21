@@ -225,7 +225,7 @@ class RealmManager: NSObject {
                         accountRLM.binaryDataString = accountDict["binaryData"] as! String
                     }
                     
-                    if let accountType = DataManager.shared.accountType {
+                    if let accountType = DataManager.shared.restoreAccountType {
                         accountRLM.accountTypeID = NSNumber(integerLiteral: accountType.rawValue)
                     }
                     

@@ -32,6 +32,15 @@ enum AccountType: Int, CaseIterable {
             return 12
         }
     }
+    
+    var seedPhraseScreens: Int {
+        switch self {
+        case .multy:
+            return 5
+        case .metamask:
+            return 4
+        }
+    }
 }
 
 extension BricksViewInfoDelegate {

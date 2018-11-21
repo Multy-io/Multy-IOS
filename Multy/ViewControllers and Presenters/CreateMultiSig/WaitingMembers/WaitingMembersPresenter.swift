@@ -184,7 +184,7 @@ class WaitingMembersPresenter: NSObject {
     }
     
     func createAndSendMSTransaction(linkedWallet: UserWalletRLM) {
-        var binData = account!.binaryDataString.createBinaryData()!
+//        var binData = account!.binaryDataString.createBinaryData()!
         let ownersString = createOwnersString()
         let gasLimitForDeployMS = getEstimation(for: "deployMultisig")
         
@@ -194,13 +194,20 @@ class WaitingMembersPresenter: NSObject {
             return
         }
         
-        let result = DataManager.shared.createMultiSigWallet(binaryData: &binData,
-                                                             wallet: linkedWallet,
+        let result = DataManager.shared.createMultiSigWallet(wallet: linkedWallet,
                                                              creationPriceString: "\(estimationInfo!["priceOfCreation"] as! NSNumber)",
                                                              gasPriceString: fastGasPriceRate,
                                                              gasLimitString: gasLimitForDeployMS,
                                                              owners: ownersString,
-                                                             confirmationsCount: UInt32(wallet.multisigWallet!.signaturesRequiredCount))
+                                                             confirmationsCount: wallet.multisigWallet!.signaturesRequiredCount)
+        
+//        let result2 = DataManager.shared.createMultiSigWallet(binaryData: &binData,
+//                                                             wallet: linkedWallet,
+//                                                             creationPriceString: "\(estimationInfo!["priceOfCreation"] as! NSNumber)",
+//                                                             gasPriceString: fastGasPriceRate,
+//                                                             gasLimitString: gasLimitForDeployMS,
+//                                                             owners: ownersString,
+//                                                             confirmationsCount: UInt32(wallet.multisigWallet!.signaturesRequiredCount))
         if result.isTransactionCorrect {
             let newAddressParams = [
                 "walletindex"   : linkedWallet.walletID.intValue,

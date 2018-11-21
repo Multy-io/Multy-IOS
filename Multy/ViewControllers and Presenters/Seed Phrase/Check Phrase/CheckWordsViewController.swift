@@ -40,7 +40,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         super.viewDidLoad()
         self.enableSwipeToBack()
         
-        presenter.accountType = DataManager.shared.accountType!
+        presenter.accountType = DataManager.shared.restoreAccountType!
         
         loader.show(customTitle: localize(string: Constants.restoringWalletsString))
         self.view.addSubview(loader)
