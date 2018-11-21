@@ -464,16 +464,16 @@ extension CreateTransactionDelegate {
             return false
         }
         
-        let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                         sendAddress: transactionDTO.sendAddress!,
-                                                                         sendAmountString: sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchainObject),
-                                                                         feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
-            isDonationExists: transactionDTO.donationAmount != nil && !transactionDTO.donationAmount!.isZero,
-            donationAmount: transactionDTO.donationAmount?.cryptoValueString(for: blockchainObject) ?? BigInt.zero().stringValue,
-            isPayCommission: payForCommission,
-            wallet: transactionDTO.choosenWallet!,
-            binaryData: &binaryData!,
-            inputs: transactionDTO.choosenWallet!.addresses)
+        let trData = DataManager.shared.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                          sendAddress: transactionDTO.sendAddress!,
+                                                          sendAmountString: sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchainObject),
+                                                          feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
+                                                          isDonationExists: transactionDTO.donationAmount != nil && !transactionDTO.donationAmount!.isZero,
+                                                          donationAmount: transactionDTO.donationAmount?.cryptoValueString(for: blockchainObject) ?? BigInt.zero().stringValue,
+                                                          isPayCommission: payForCommission,
+                                                          wallet: transactionDTO.choosenWallet!,
+                                                          binaryData: &binaryData!,
+                                                          inputs: transactionDTO.choosenWallet!.addresses)
         
         feeEstimationInCrypto = BigInt(trData.2)
         rawTransaction = trData.0
@@ -496,23 +496,6 @@ extension CreateTransactionDelegate {
                     return false
                 }
             }
-        }
-        
-        let pointer: UnsafeMutablePointer<OpaquePointer?>?
-        if transactionDTO.choosenWallet!.isImported {
-            let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
-            let privatekey = transactionDTO.choosenWallet!.importedPrivateKey
-            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
-            switch walletInfo {
-            case .success(let value):
-                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
-            case .failure(let error):
-                print(error)
-                
-                return false
-            }
-        } else {
-            pointer = addressData?["addressPointer"] as? UnsafeMutablePointer<OpaquePointer?>
         }
         
         if transactionDTO.choosenWallet!.isMultiSig {
@@ -547,7 +530,7 @@ extension CreateTransactionDelegate {
             
             return trData.isTransactionCorrect
         } else {
-            guard pointer != nil, transactionDTO.sendAddress != nil, transactionDTO.choosenWallet != nil, transactionDTO.choosenWallet!.ethWallet != nil else {
+            guard transactionDTO.sendAddress != nil, transactionDTO.choosenWallet != nil, transactionDTO.choosenWallet!.ethWallet != nil else {
                 return false
             }
             
