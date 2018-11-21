@@ -16,6 +16,17 @@ enum AccountType: Int, CaseIterable {
     multy =     0,
     metamask =  1
     
+    init(wordsCount: Int) {
+        switch wordsCount {
+        case 12:
+            self = .metamask
+        case 15:
+            self = .multy
+        default:
+            self = .multy
+        }
+    }
+    
     init(typeID: Int) {
         if typeID >= AccountType.allCases.count || typeID < 0 {
             self = .multy
@@ -39,6 +50,15 @@ enum AccountType: Int, CaseIterable {
             return 5
         case .metamask:
             return 4
+        }
+    }
+    
+    var stringValue: String {
+        switch self {
+        case .multy:
+            return "Multy"
+        case .metamask:
+            return "Metamask"
         }
     }
 }

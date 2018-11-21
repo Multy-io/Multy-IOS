@@ -15,10 +15,6 @@ extension DataManager {
 //        return coreLibManager.isDeviceJailbroken()
 //    }
     
-    var accountType: AccountType {
-        return realmManager.account!.accountType
-    }
-    
     func getMnenonicAllWords() -> Array<String> {
         return coreLibManager.mnemonicAllWords()
     }

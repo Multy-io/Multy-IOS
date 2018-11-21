@@ -87,6 +87,7 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
         if segue.identifier == "checkPhraseVC" {
             let nextVC = segue.destination as! CheckWordsViewController
             nextVC.isRestore = self.isRestore
+            nextVC.presenter.accountType = DataManager.shared.accountType
             nextVC.whereFrom = self.whereFrom
         }
     }

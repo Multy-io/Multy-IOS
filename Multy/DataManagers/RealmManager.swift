@@ -219,14 +219,12 @@ class RealmManager: NSObject {
                     
                     if accountDict["backupSeedPhrase"] != nil {
                         accountRLM.backupSeedPhrase = accountDict["backupSeedPhrase"] as! String
+                        
+                        accountRLM.accountTypeID = AccountType(wordsCount: accountRLM.backupSeedPhrase.split(separator: " ").count).rawValue as NSNumber
                     }
                     
                     if accountDict["binaryData"] != nil {
                         accountRLM.binaryDataString = accountDict["binaryData"] as! String
-                    }
-                    
-                    if let accountType = DataManager.shared.restoreAccountType {
-                        accountRLM.accountTypeID = NSNumber(integerLiteral: accountType.rawValue)
                     }
                     
                     if accountDict["topindexes"] != nil {
