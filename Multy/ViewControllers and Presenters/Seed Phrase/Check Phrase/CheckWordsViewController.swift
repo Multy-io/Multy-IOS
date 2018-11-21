@@ -53,7 +53,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
             wordTF.font?.withSize(50.0)
         }
         
-        bricksView.addSubview(BricksView(with: bricksView.bounds, and: 0))
+        bricksView.addSubview(BricksView(with: bricksView.bounds, and: 0, color: brickColorSelectedGreen))
         
         self.presenter.checkWordsVC = self
         self.presenter.getSeedPhrase()
@@ -90,7 +90,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
             self.view.isUserInteractionEnabled = true
             self.presenter.phraseArr.removeAll()
             bricksView.subviews.forEach({ $0.removeFromSuperview() })
-            bricksView.addSubview(BricksView(with: bricksView.bounds, and: 0))
+            bricksView.addSubview(BricksView(with: bricksView.bounds, and: 0, color: brickColorSelectedGreen))
         }
     }
     
@@ -145,7 +145,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         }
         
         bricksView.subviews.forEach({ $0.removeFromSuperview() })
-        bricksView.addSubview(BricksView(with: bricksView.bounds, and: currentWordNumber))
+        bricksView.addSubview(BricksView(with: bricksView.bounds, and: currentWordNumber, color: brickColorSelectedGreen))
         
         if currentWordNumber == presenter.wordsCount {
             nextWordOrContinue.setTitle(localize(string: Constants.continueString), for: .normal)

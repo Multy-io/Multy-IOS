@@ -345,13 +345,23 @@ MetaMask</string>
                                     <action selector="cancelAction:" destination="6Mb-pe-tcp" eventType="touchUpInside" id="7E2-Vq-4tZ"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-g6-RwA">
+                                <rect key="frame" x="52" y="115" width="271" height="42"/>
+                                <color key="backgroundColor" red="0.97619837519999997" green="0.98009961840000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="4Bh-Nf-sS8"/>
+                                    <constraint firstAttribute="width" secondItem="zNg-g6-RwA" secondAttribute="height" multiplier="271:42" id="UrJ-mb-iQU"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.9762609601020813" green="0.98015815019607544" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="c9c-ez-t3y" firstAttribute="leading" secondItem="Jdv-JE-OjU" secondAttribute="leading" constant="9" id="2JL-2f-73C"/>
+                            <constraint firstItem="zNg-g6-RwA" firstAttribute="width" secondItem="zNg-g6-RwA" secondAttribute="height" multiplier="271:42" id="5Yi-Cv-Cea"/>
                             <constraint firstItem="PTy-g3-ygX" firstAttribute="top" secondItem="aAL-4L-Z3p" secondAttribute="bottom" constant="165" id="7yB-zN-yZO"/>
                             <constraint firstItem="1yU-t2-w7N" firstAttribute="top" secondItem="wpE-FL-wp8" secondAttribute="bottom" id="8SY-dV-vhz"/>
                             <constraint firstItem="lZP-BZ-7Xv" firstAttribute="top" secondItem="PTy-g3-ygX" secondAttribute="bottom" constant="20" id="CnU-9i-oKx"/>
+                            <constraint firstItem="zNg-g6-RwA" firstAttribute="top" secondItem="aAL-4L-Z3p" secondAttribute="bottom" constant="8" id="DcE-f6-9GG"/>
                             <constraint firstItem="rvu-Av-A9m" firstAttribute="centerX" secondItem="lZP-BZ-7Xv" secondAttribute="centerX" id="EWs-KU-LHW"/>
                             <constraint firstItem="PTy-g3-ygX" firstAttribute="centerX" secondItem="aAL-4L-Z3p" secondAttribute="centerX" id="F8w-Tu-eA1"/>
                             <constraint firstItem="rvu-Av-A9m" firstAttribute="top" secondItem="lZP-BZ-7Xv" secondAttribute="bottom" constant="20" id="Ggw-6r-6L5"/>
@@ -361,6 +371,7 @@ MetaMask</string>
                             <constraint firstItem="pgs-ef-H1K" firstAttribute="top" secondItem="aAL-4L-Z3p" secondAttribute="bottom" constant="8" id="ghp-ip-1SF"/>
                             <constraint firstItem="aAL-4L-Z3p" firstAttribute="centerX" secondItem="Jdv-JE-OjU" secondAttribute="centerX" id="jlg-9u-YcP"/>
                             <constraint firstAttribute="trailing" secondItem="wpE-FL-wp8" secondAttribute="trailing" id="lyY-gE-vT6"/>
+                            <constraint firstItem="zNg-g6-RwA" firstAttribute="centerX" secondItem="Jdv-JE-OjU" secondAttribute="centerX" id="prf-gQ-fCs"/>
                             <constraint firstItem="wpE-FL-wp8" firstAttribute="leading" secondItem="Jdv-JE-OjU" secondAttribute="leading" id="sDF-xb-wXC"/>
                             <constraint firstItem="wTi-w9-E0X" firstAttribute="top" secondItem="cV0-jC-Rin" secondAttribute="bottom" constant="13" id="u26-gp-nAb"/>
                             <constraint firstItem="c9c-ez-t3y" firstAttribute="top" secondItem="cV0-jC-Rin" secondAttribute="bottom" constant="20" id="vUo-90-atC"/>
@@ -370,6 +381,7 @@ MetaMask</string>
                     <connections>
                         <outlet property="blocksImage" destination="pgs-ef-H1K" id="P0X-cj-u6C"/>
                         <outlet property="bottomWord" destination="rvu-Av-A9m" id="SvZ-XR-AN2"/>
+                        <outlet property="bricksView" destination="zNg-g6-RwA" id="e6U-O1-3wC"/>
                         <outlet property="constraintTopBricks" destination="7yB-zN-yZO" id="8Mc-hd-iig"/>
                         <outlet property="mediumWordLbl" destination="lZP-BZ-7Xv" id="LQN-Xj-cJe"/>
                         <outlet property="nextWordBtn" destination="wpE-FL-wp8" id="ZF0-hF-00L"/>
