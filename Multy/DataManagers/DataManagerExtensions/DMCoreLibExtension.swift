@@ -15,6 +15,10 @@ extension DataManager {
 //        return coreLibManager.isDeviceJailbroken()
 //    }
     
+    var accountType: AccountType {
+        return realmManager.account!.accountType
+    }
+    
     func getMnenonicAllWords() -> Array<String> {
         return coreLibManager.mnemonicAllWords()
     }
@@ -39,7 +43,7 @@ extension DataManager {
     }
     
     func localBlockchainType(blockchainType: BlockchainType) -> BlockchainType {
-        if DataManager.shared.realmManager.account!.accountType != .metamask {
+        if accountType != .metamask {
             return blockchainType
         }
         
@@ -58,7 +62,7 @@ extension DataManager {
     }
     
     func localWalletID(blockchainType: BlockchainType, walletID: UInt32) -> UInt32 {
-        if DataManager.shared.realmManager.account!.accountType != .metamask {
+        if accountType != .metamask {
             return walletID
         }
         
@@ -70,7 +74,7 @@ extension DataManager {
     }
     
     func localAddressID(blockchainType: BlockchainType, walletID: UInt32, addressID: UInt32) -> UInt32 {
-        if DataManager.shared.realmManager.account!.accountType != .metamask {
+        if accountType != .metamask {
             return addressID
         }
         
@@ -181,27 +185,27 @@ extension DataManager {
         }
     }
     
-    func createEtherTx(binaryData: inout BinaryData, wallet: UserWalletRLM, sendAddress: String, sendAmountString: String, gasPriceString: String, gasLimitString: String) {
-        let blockchain = BlockchainType.create(wallet: wallet)
-        
-        let localBlockchainType = self.localBlockchainType(blockchainType: blockchain)
-        let localWalletID = self.localWalletID(blockchainType: blockchain, walletID: wallet.walletID.uint32Value)
-        let localAddressID = self.localAddressID(blockchainType: blockchain, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value)
-        
-        
-        let addressData = self.coreLibManager.createAddress(blockchainType: localBlockchainType, walletID: localWalletID, addressID: localAddressID, binaryData: &binaryData)
-        
-        let tx = self.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                           sendAddress: sendAddress,
-                                                           sendAmountString: sendAmountString,
-                                                           nonce: wallet.ethWallet!.nonce.intValue,
-                                                           balanceAmount: wallet.availableAmount.stringValue,
-                                                           ethereumChainID: UInt32(4), //RINKEBY
-                                                           gasPrice: gasPriceString,
-                                                           gasLimit: gasLimitString)
-        
-//        tx
-    }
+//    func createEtherTx(binaryData: inout BinaryData, wallet: UserWalletRLM, sendAddress: String, sendAmountString: String, gasPriceString: String, gasLimitString: String) {
+//        let blockchain = BlockchainType.create(wallet: wallet)
+//        
+//        let localBlockchainType = self.localBlockchainType(blockchainType: blockchain)
+//        let localWalletID = self.localWalletID(blockchainType: blockchain, walletID: wallet.walletID.uint32Value)
+//        let localAddressID = self.localAddressID(blockchainType: blockchain, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value)
+//        
+//        
+//        let addressData = self.coreLibManager.createAddress(blockchainType: localBlockchainType, walletID: localWalletID, addressID: localAddressID, binaryData: &binaryData)
+//        
+//        let tx = self.coreLibManager.createEtherTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+//                                                           sendAddress: sendAddress,
+//                                                           sendAmountString: sendAmountString,
+//                                                           nonce: wallet.ethWallet!.nonce.intValue,
+//                                                           balanceAmount: wallet.availableAmount.stringValue,
+//                                                           ethereumChainID: UInt32(4), //RINKEBY
+//                                                           gasPrice: gasPriceString,
+//                                                           gasLimit: gasLimitString)
+//        
+////        tx
+//    }
     
     func privateKeyString(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> String {
         let localBlockchainType = self.localBlockchainType(blockchainType: blockchain)
@@ -392,137 +396,307 @@ extension CoreLibPrivateKeyFixManager  {
 }
 
 extension MultisigManager {
-    func createMultiSigWallet(binaryData: inout BinaryData,
-                              wallet: UserWalletRLM,
+    func createMultiSigWallet(wallet: UserWalletRLM,
                               creationPriceString: String,
                               gasPriceString: String,
                               gasLimitString: String,
                               owners: String,
-                              confirmationsCount: UInt32) -> (message: String, isTransactionCorrect: Bool) {
-        let blockchainType = BlockchainType.create(wallet: wallet)
-        var pointer : UnsafeMutablePointer<OpaquePointer?>?
-        if wallet.isImported {
-            let blockchainType = wallet.blockchainType
-            let privatekey = wallet.importedPrivateKey
-            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
-            switch walletInfo {
-            case .success(let value):
-                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
-            case .failure(let error):
-                print(error)
-                
-                return (error, false)
-            }
-        } else {
-            let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
-            pointer = addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
+                              confirmationsCount: Int) -> (isTransactionCorrect: Bool, message: String) {
+        let info = privateInfo(for: wallet)
+        if info == nil {
+            return (false, "Error")
         }
-        let factoryAddress = multisigFactory(for: blockchainType)
+        
+        let factoryAddress = multisigFactory(for: wallet.blockchainType)
         
         if factoryAddress == nil || factoryAddress!.isEmpty {
-            return ("Missed factory address", false)
+            return (false, "Missed factory address")
         }
         
-        let multiSigWalletCreationInfo = coreLibManager.createMutiSigWallet(addressPointer: pointer!,
-                                                                            creationPriceString: creationPriceString,
-                                                                            factoryAddress: factoryAddress!,
-                                                                            owners: owners,
-                                                                            confirmationsCount: confirmationsCount,
-                                                                            nonce: wallet.ethWallet!.nonce.intValue,
-                                                                            balanceAmountString: wallet.availableAmount.stringValue,
-                                                                            gasPriceString: gasPriceString,
-                                                                            gasLimitString: gasLimitString)
+        var txInfo = Dictionary<String, Any>()
+        var accountDict = Dictionary<String, Any>()
+        var builderDict = Dictionary<String, Any>()
+        var payloadDict = Dictionary<String, Any>()
+        var txDict = Dictionary<String, Any>()
+        var feeDict = Dictionary<String, Any>()
         
-        return multiSigWalletCreationInfo
+        txInfo["blockchain"] =          wallet.blockchain.fullName
+        txInfo["net_type"] =            wallet.blockchainType.net_type
+        
+        //account
+        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
+        accountDict["private_key"] =    info!["privateKey"] as! String
+        txInfo["account"] =             accountDict
+        
+        //builder
+        builderDict["type"] =           "multisig"
+        builderDict["action"] =         "new_wallet"
+        //payload
+        payloadDict["balance"] =                wallet.availableBalance.stringValue
+        payloadDict["price"] =                  creationPriceString
+        payloadDict["factory_address"] =        factoryAddress!
+        payloadDict["owners"] =                 owners
+        payloadDict["confirmations"] =          confirmationsCount
+        builderDict["payload"] =                payloadDict
+        txInfo["builder"] =                     builderDict
+        
+        //transaction
+        txDict["nonce"] =               wallet.ethWallet!.nonce
+        feeDict["gas_price"] =          gasPriceString
+        feeDict["gas_limit"] =          gasLimitString
+        txDict["fee"] =                 feeDict
+        txInfo["transaction"] =         txDict
+        
+        let rawTX = makeTX(from: txInfo)
+        
+        switch rawTX {
+        case .success(let txString):
+            return (true, txString)
+        case .failure(let error):
+            return (false, error)
+        }
     }
     
-    func createMultiSigTx(binaryData: inout BinaryData,
-                          wallet: UserWalletRLM,
+    func createMultiSigTx(wallet: UserWalletRLM,
                           sendFromAddress: String,
                           sendAmountString: String,
                           sendToAddress: String,
                           msWalletBalance: String,
                           gasPriceString: String,
-                          gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
-        let blockchainType = BlockchainType.create(wallet: wallet)
-        
-        var addressData: Dictionary<String, Any>?
-        
-        if wallet.isImported {
-            let accountDataResult = coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: wallet.importedPrivateKey)
-            
-            switch accountDataResult {
-            case .failure(let error):
-                break
-            case .success(let accountData):
-                addressData = ["addressPointer" : accountData["pointer"] as? UnsafeMutablePointer<OpaquePointer?>]
-                break
-            }
-        } else {
-            addressData = coreLibManager.createAddress(blockchainType: blockchainType,
-                                                       walletID: wallet.walletID.uint32Value,
-                                                       addressID: wallet.addressID.uint32Value,
-                                                       binaryData: &binaryData)
+                          gasLimitString: String) -> (isTransactionCorrect: Bool, message: String) {
+        let info = privateInfo(for: wallet)
+        if info == nil {
+            return (false, "Error")
         }
         
-        if addressData == nil {
-            return ("Error", false)
+        var txInfo = Dictionary<String, Any>()
+        var accountDict = Dictionary<String, Any>()
+        var builderDict = Dictionary<String, Any>()
+        var payloadDict = Dictionary<String, Any>()
+        var txDict = Dictionary<String, Any>()
+        var feeDict = Dictionary<String, Any>()
+        
+        txInfo["blockchain"] =          wallet.blockchain.fullName
+        txInfo["net_type"] =            wallet.blockchainType.net_type
+        
+        //account
+        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
+        accountDict["private_key"] =    info!["privateKey"] as! String
+        txInfo["account"] =             accountDict
+        
+        //builder
+        builderDict["type"] =           "multisig"
+        builderDict["action"] =         "new_request"
+        //payload
+        payloadDict["balance"] =                msWalletBalance
+        payloadDict["amount"] =                 sendAmountString
+        payloadDict["wallet_address"] =         sendFromAddress
+        payloadDict["dest_address"] =           sendToAddress
+        builderDict["payload"] =                payloadDict
+        txInfo["builder"] =                     builderDict
+        
+        //transaction
+        txDict["nonce"] =               wallet.ethWallet!.nonce
+        feeDict["gas_price"] =          gasPriceString
+        feeDict["gas_limit"] =          gasLimitString
+        txDict["fee"] =                 feeDict
+        txInfo["transaction"] =         txDict
+        
+        let rawTX = makeTX(from: txInfo)
+        
+        switch rawTX {
+        case .success(let txString):
+            return (true, txString)
+        case .failure(let error):
+            return (false, error)
         }
-        
-        let multiSigTxCreationInfo = coreLibManager.createMultiSigTx(addressPointer:    addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                     sendFromAddress:   sendFromAddress,
-                                                                     sendAmountString:  sendAmountString,
-                                                                     sendToAddress:     sendToAddress,
-                                                                     nonce:             wallet.ethWallet!.nonce.intValue,
-                                                                     balanceAmountString: msWalletBalance,
-                                                                     gasPriceString:    gasPriceString,
-                                                                     gasLimitString:    gasLimitString)
-        
-        return multiSigTxCreationInfo
     }
     
-    func confirmMultiSigTx(binaryData: inout BinaryData,
-                           wallet: UserWalletRLM,
-                           balanceAmountString: String,
+    func confirmMultiSigTx(wallet: UserWalletRLM,
                            sendFromAddress: String,
-                           nonce: Int,
                            nonceMultiSigTx: Int,
                            gasPriceString: String,
-                           gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
-        let blockchainType = BlockchainType.create(wallet: wallet)
-        
-        var addressData: Dictionary<String, Any>?
-        
-//        if wallet.isImported {
-        if wallet.isImportedForPrimaryKey {
-            let accountDataResult = coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: wallet.importedPrivateKey)
-            
-            switch accountDataResult {
-            case .failure(let error):
-                break
-            case .success(let accountData):
-                addressData = ["addressPointer" : accountData["pointer"] as? UnsafeMutablePointer<OpaquePointer?>]
-                break
-            }
-        } else {
-            addressData = coreLibManager.createAddress(blockchainType: blockchainType,
-                                                           walletID: wallet.walletID.uint32Value,
-                                                           addressID: wallet.addressID.uint32Value,
-                                                           binaryData: &binaryData)
+                           gasLimitString: String) -> (isTransactionCorrect: Bool, message: String) {
+        let info = privateInfo(for: wallet)
+        if info == nil {
+            return (false, "Error")
         }
         
-        if addressData == nil {
-            return ("Error", false)
+        var txInfo = Dictionary<String, Any>()
+        var accountDict = Dictionary<String, Any>()
+        var builderDict = Dictionary<String, Any>()
+        var payloadDict = Dictionary<String, Any>()
+        var txDict = Dictionary<String, Any>()
+        var feeDict = Dictionary<String, Any>()
+        
+        txInfo["blockchain"] =          wallet.blockchain.fullName
+        txInfo["net_type"] =            wallet.blockchainType.net_type
+        
+        //account
+        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
+        accountDict["private_key"] =    info!["privateKey"] as! String
+        txInfo["account"] =             accountDict
+        
+        //builder
+        builderDict["type"] =           "multisig"
+        builderDict["action"] =         "request"
+        //payload
+        payloadDict["balance"] =                wallet.availableAmount.stringValue
+        payloadDict["wallet_address"] =         sendFromAddress
+        payloadDict["request_id"] =             nonceMultiSigTx
+        payloadDict["action"] =                 "confirm"
+        builderDict["payload"] =                payloadDict
+        txInfo["builder"] =                     builderDict
+        
+        //transaction
+        txDict["nonce"] =               wallet.ethWallet!.nonce
+        feeDict["gas_price"] =          gasPriceString
+        feeDict["gas_limit"] =          gasLimitString
+        txDict["fee"] =                 feeDict
+        txInfo["transaction"] =         txDict
+        
+        let rawTX = makeTX(from: txInfo)
+        
+        switch rawTX {
+        case .success(let txString):
+            return (true, txString)
+        case .failure(let error):
+            return (false, error)
         }
-        
-        let multiSigTxConfirmInfo = coreLibManager.confirmMultiSigTx(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                     sendFromAddress: sendFromAddress,
-                                                                     nonce: nonce,
-                                                                     nonceMultiSigTx: nonceMultiSigTx,
-                                                                     balanceAmountString: balanceAmountString,
-                                                                     gasPriceString: gasPriceString,
-                                                                     gasLimitString: gasLimitString)
-        
-        return multiSigTxConfirmInfo
+
     }
+
+//    func createMultiSigWallet(binaryData: inout BinaryData,
+//                              wallet: UserWalletRLM,
+//                              creationPriceString: String,
+//                              gasPriceString: String,
+//                              gasLimitString: String,
+//                              owners: String,
+//                              confirmationsCount: UInt32) -> (message: String, isTransactionCorrect: Bool) {
+//        let blockchainType = BlockchainType.create(wallet: wallet)
+//        var pointer : UnsafeMutablePointer<OpaquePointer?>?
+//        if wallet.isImported {
+//            let blockchainType = wallet.blockchainType
+//            let privatekey = wallet.importedPrivateKey
+//            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
+//            switch walletInfo {
+//            case .success(let value):
+//                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
+//            case .failure(let error):
+//                print(error)
+//                
+//                return (error, false)
+//            }
+//        } else {
+//            let addressData = coreLibManager.createAddress(blockchainType: blockchainType, walletID: wallet.walletID.uint32Value, addressID: wallet.addressID.uint32Value, binaryData: &binaryData)
+//            pointer = addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
+//        }
+//        let factoryAddress = multisigFactory(for: blockchainType)
+//        
+//        if factoryAddress == nil || factoryAddress!.isEmpty {
+//            return ("Missed factory address", false)
+//        }
+//        
+//        let multiSigWalletCreationInfo = coreLibManager.createMutiSigWallet(addressPointer: pointer!,
+//                                                                            creationPriceString: creationPriceString,
+//                                                                            factoryAddress: factoryAddress!,
+//                                                                            owners: owners,
+//                                                                            confirmationsCount: confirmationsCount,
+//                                                                            nonce: wallet.ethWallet!.nonce.intValue,
+//                                                                            balanceAmountString: wallet.availableAmount.stringValue,
+//                                                                            gasPriceString: gasPriceString,
+//                                                                            gasLimitString: gasLimitString)
+//        
+//        return multiSigWalletCreationInfo
+//    }
+    
+//    func createMultiSigTx(binaryData: inout BinaryData,
+//                          wallet: UserWalletRLM,
+//                          sendFromAddress: String,
+//                          sendAmountString: String,
+//                          sendToAddress: String,
+//                          msWalletBalance: String,
+//                          gasPriceString: String,
+//                          gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
+//        let blockchainType = BlockchainType.create(wallet: wallet)
+//
+//        var addressData: Dictionary<String, Any>?
+//
+//        if wallet.isImported {
+//            let accountDataResult = coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: wallet.importedPrivateKey)
+//
+//            switch accountDataResult {
+//            case .failure(let error):
+//                break
+//            case .success(let accountData):
+//                addressData = ["addressPointer" : accountData["pointer"] as? UnsafeMutablePointer<OpaquePointer?>]
+//                break
+//            }
+//        } else {
+//            addressData = coreLibManager.createAddress(blockchainType: blockchainType,
+//                                                       walletID: wallet.walletID.uint32Value,
+//                                                       addressID: wallet.addressID.uint32Value,
+//                                                       binaryData: &binaryData)
+//        }
+//
+//        if addressData == nil {
+//            return ("Error", false)
+//        }
+//
+//        let multiSigTxCreationInfo = coreLibManager.createMultiSigTx(addressPointer:    addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+//                                                                     sendFromAddress:   sendFromAddress,
+//                                                                     sendAmountString:  sendAmountString,
+//                                                                     sendToAddress:     sendToAddress,
+//                                                                     nonce:             wallet.ethWallet!.nonce.intValue,
+//                                                                     balanceAmountString: msWalletBalance,
+//                                                                     gasPriceString:    gasPriceString,
+//                                                                     gasLimitString:    gasLimitString)
+//
+//        return multiSigTxCreationInfo
+//    }
+    
+//    func confirmMultiSigTx(binaryData: inout BinaryData,
+//                           wallet: UserWalletRLM,
+//                           balanceAmountString: String,
+//                           sendFromAddress: String,
+//                           nonce: Int,
+//                           nonceMultiSigTx: Int,
+//                           gasPriceString: String,
+//                           gasLimitString: String) -> (message: String, isTransactionCorrect: Bool) {
+//        let blockchainType = BlockchainType.create(wallet: wallet)
+//
+//        var addressData: Dictionary<String, Any>?
+//
+////        if wallet.isImported {
+//        if wallet.isImportedForPrimaryKey {
+//            let accountDataResult = coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: wallet.importedPrivateKey)
+//
+//            switch accountDataResult {
+//            case .failure(let error):
+//                break
+//            case .success(let accountData):
+//                addressData = ["addressPointer" : accountData["pointer"] as? UnsafeMutablePointer<OpaquePointer?>]
+//                break
+//            }
+//        } else {
+//            addressData = coreLibManager.createAddress(blockchainType: blockchainType,
+//                                                           walletID: wallet.walletID.uint32Value,
+//                                                           addressID: wallet.addressID.uint32Value,
+//                                                           binaryData: &binaryData)
+//        }
+//
+//        if addressData == nil {
+//            return ("Error", false)
+//        }
+//
+//        let multiSigTxConfirmInfo = coreLibManager.confirmMultiSigTx(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+//                                                                     sendFromAddress: sendFromAddress,
+//                                                                     nonce: nonce,
+//                                                                     nonceMultiSigTx: nonceMultiSigTx,
+//                                                                     balanceAmountString: balanceAmountString,
+//                                                                     gasPriceString: gasPriceString,
+//                                                                     gasLimitString: gasLimitString)
+//
+//        return multiSigTxConfirmInfo
+//    }
 }

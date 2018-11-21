@@ -8,7 +8,7 @@ private typealias LocalizeDelegate = SeedPhraseWordPresenter
 
 class SeedPhraseWordPresenter: NSObject {
     var mainVC : SeedPhraseWordViewController?
-    
+    var lastScreenposition = DataManager.shared.accountType.seedPhraseScreens - 1
     var countOfTaps = -1
     var mnemonicPhraseArray = [String]() {
         didSet {
@@ -28,7 +28,7 @@ class SeedPhraseWordPresenter: NSObject {
     func getSeedFromAcc() {
 //        mnemonicPhraseArray = DataManager.shared.getMnenonicArray()
         DataManager.shared.getAccount { (acc, err) in
-            if acc!.seedPhrase != nil && acc!.seedPhrase != "" {
+            if acc!.seedPhrase.isEmpty == false {
                 self.mnemonicPhraseArray = (acc?.seedPhrase.components(separatedBy: " "))!
             } else {
                 self.mnemonicPhraseArray = (acc?.backupSeedPhrase.components(separatedBy: " "))!
@@ -37,7 +37,7 @@ class SeedPhraseWordPresenter: NSObject {
     }
     
     func presentNextTripleOrContinue() {
-        if self.countOfTaps == 3 {
+        if self.countOfTaps == lastScreenposition - 1 {
             self.mainVC?.nextWordBtn.setTitle(localize(string: Constants.continueString), for: .normal)
         }
         
@@ -48,13 +48,13 @@ class SeedPhraseWordPresenter: NSObject {
         } else if self.countOfTaps == 2 {
             self.mainVC?.blocksImage.image = #imageLiteral(resourceName: "04")
         } else
-            if self.countOfTaps == 3 {
+            if self.countOfTaps == lastScreenposition - 1 {
                 self.mainVC?.nextWordBtn.setTitle(localize(string: Constants.continueString), for: .normal)
                 self.mainVC?.blocksImage.image = #imageLiteral(resourceName: "05")
         }
         
         //getNextWords
-        if self.countOfTaps < 4 {
+        if self.countOfTaps < lastScreenposition {
             self.countOfTaps += 1
             
             self.mainVC?.topWordLbl.text = mnemonicPhraseArray[3 * countOfTaps]

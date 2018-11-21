@@ -695,7 +695,7 @@ extension TableViewDelegate : UITableViewDelegate {
                 let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
                 backupSeedVC.isRestore = true
                 
-                DataManager.shared.accountType = .multy
+                DataManager.shared.restoreAccountType = .multy
                 
                 self.navigationController?.pushViewController(backupSeedVC, animated: true)
             } else {
@@ -710,7 +710,7 @@ extension TableViewDelegate : UITableViewDelegate {
                     return
                 }
                 
-                DataManager.shared.accountType = .metamask
+                DataManager.shared.restoreAccountType = .metamask
                 
                 let importMetaMaskVC = viewControllerFrom("SeedPhrase", "ImportMetaMask") as! ImportMetaMaskInfoViewController
                 self.navigationController?.pushViewController(importMetaMaskVC, animated: true)
