@@ -32,6 +32,9 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
                     switch $0 {
                     case .success(let wallet):
                         self.wallletFromDB = wallet
+                        
+                        self.wallet.importedPrivateKey = self.wallletFromDB.importedPrivateKey
+                        self.wallet.importedPublicKey = self.wallletFromDB.importedPublicKey
                     case .failure(_):
                         break
                     }

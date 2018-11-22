@@ -556,87 +556,15 @@ extension CreateTransactionDelegate {
     }
     
     func estimateTokenTransactionAndValidation() -> Bool {
-        let info = DataManager.shared.privateInfo(for: assetsWallet)
-        if info == nil {
-            return false
-        }
+        let rawTX = DataManager.shared.createERC20TokenTransaction(wallet: assetsWallet,
+                                                                   tokenWallet: tokenWallet!,
+                                                                   sendTokenAmountString: totalSumInCrypto.stringValue,
+                                                                   destinationAddress: transactionDTO.sendAddress!,
+                                                                   gasPriceAmountString: transactionDTO.ETHDTO!.gasPrice.stringValue,
+                                                                   gasLimitAmountString: transactionDTO.ETHDTO!.gasLimit.stringValue)
         
-        var txInfo = Dictionary<String, Any>()
-        var accountDict = Dictionary<String, Any>()
-        var builderDict = Dictionary<String, Any>()
-        var payloadDict = Dictionary<String, Any>()
-        var txDict = Dictionary<String, Any>()
-        var feeDict = Dictionary<String, Any>()
+        rawTransaction = rawTX.message
         
-        txInfo["blockchain"] =          assetsWallet.blockchain.fullName
-        txInfo["net_type"] =            assetsWallet.blockchainType.net_type
-        
-        //account
-        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
-        accountDict["private_key"] =    info!["privateKey"] as! String
-        txInfo["account"] =             accountDict
-        
-        //builder
-        builderDict["type"] =           "erc20"
-        builderDict["action"] =         "transfer"
-        //payload
-        payloadDict["balance_eth"] =            assetsWallet.availableBalance.stringValue
-        payloadDict["contract_address"] =       tokenWallet!.address
-        payloadDict["balance_token"] =          tokenWallet!.ethWallet!.balance
-        payloadDict["transfer_amount_token"] =  totalSumInCrypto.stringValue
-        payloadDict["destination_address"] =    transactionDTO.sendAddress!
-        builderDict["payload"] =                payloadDict
-        txInfo["builder"] =                     builderDict
-        
-        //transaction
-        txDict["nonce"] =               assetsWallet.ethWallet!.nonce
-        feeDict["gas_price"] =          transactionDTO.ETHDTO!.gasPrice.stringValue
-        feeDict["gas_limit"] =          transactionDTO.ETHDTO!.gasLimit.stringValue
-        txDict["fee"] =                 feeDict
-        txInfo["transaction"] =         txDict
-        
-        let rawTX = DataManager.shared.makeTX(from: txInfo)
-        
-        switch rawTX {
-        case .success(let txString):
-            rawTransaction = txString
-            
-            return true
-        case .failure(let error):
-            rawTransaction = error
-            
-            return false
-        }
-        
-        
-        //        switch rawTX {
-        //        case .success(let txString):
-        //            print(rawTX)
-        //
-        //            let newAddressParams = [
-        //                "walletindex"   : tokenHolderWallet!.walletID.intValue,
-        //                "address"       : tokenHolderWallet!.address,
-        //                "addressindex"  : 0,
-        //                "transaction"   : txString,
-        //                "ishd"          : tokenHolderWallet!.shouldCreateNewAddressAfterTransaction
-        //                ] as [String : Any]
-        //
-        //            let params = [
-        //                "currencyid": tokenHolderWallet!.chain,
-        //                /*"JWT"       : jwtToken,*/
-        //                "networkid" : tokenHolderWallet!.chainType,
-        //                "payload"   : newAddressParams
-        //                ] as [String : Any]
-        //
-        //            DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
-        //                if dict != nil {
-        //                    print(dict)
-        //                } else {
-        //                    print(error)
-        //                }
-        //            }
-        //        case .failure(let error):
-        //            break
-        //        }
+        return rawTX.isTransactionCorrect
     }
 }

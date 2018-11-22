@@ -114,6 +114,7 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
         if urlString != nil && urlString!.count > 0 {
             presenter.loadPageWithURLString(urlString!)
         }
+        
         return true
     }
     

@@ -149,7 +149,9 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         clear(cache: true, cookies: true)
         
         DispatchQueue.main.async { [unowned self] in
-            self.browserCoordinator = BrowserCoordinator(wallet: self.wallet!, urlString: self.defaultURLString)
+            let loadUrl = self.mainVC!.urlTextField.text!.isEmpty ? self.defaultURLString : self.mainVC!.urlTextField.text!
+            
+            self.browserCoordinator = BrowserCoordinator(wallet: self.wallet!, urlString: loadUrl)
             self.browserCoordinator!.delegate = self
             self.mainVC!.childViewControllers.last?.remove()
             self.mainVC!.add(self.browserCoordinator!.browserViewController, to: self.mainVC!.browserView)

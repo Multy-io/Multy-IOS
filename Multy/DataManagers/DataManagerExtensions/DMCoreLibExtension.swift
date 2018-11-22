@@ -309,10 +309,65 @@ extension CoreLibETHManager {
         payloadDict["destination_amount"] =     sendAmountString
         payloadDict["destination_address"] =    destinationAddress
         if payload.isEmpty == false {
-            payloadDict["destination_address"] =    payload
+            payloadDict["payload"] =    payload
         }
         
         
+        builderDict["payload"] =                payloadDict
+        txInfo["builder"] =                     builderDict
+        
+        //transaction
+        txDict["nonce"] =               wallet.ethWallet!.nonce
+        feeDict["gas_price"] =          gasPriceAmountString
+        feeDict["gas_limit"] =          gasLimitAmountString
+        txDict["fee"] =                 feeDict
+        txInfo["transaction"] =         txDict
+        
+        let rawTX = makeTX(from: txInfo)
+        
+        switch rawTX {
+        case .success(let txString):
+            return (true, txString)
+        case .failure(let error):
+            return (false, error)
+        }
+    }
+    
+    func createERC20TokenTransaction(wallet: UserWalletRLM,
+                                     tokenWallet: UserWalletRLM,
+                                     sendTokenAmountString: String,
+                                     destinationAddress: String,
+                                     gasPriceAmountString: String,
+                                     gasLimitAmountString: String) -> (isTransactionCorrect: Bool, message: String) {
+        let info = privateInfo(for: wallet)
+        if info == nil {
+            return (false, "Error")
+        }
+        
+        var txInfo = Dictionary<String, Any>()
+        var accountDict = Dictionary<String, Any>()
+        var builderDict = Dictionary<String, Any>()
+        var payloadDict = Dictionary<String, Any>()
+        var txDict = Dictionary<String, Any>()
+        var feeDict = Dictionary<String, Any>()
+        
+        txInfo["blockchain"] =          wallet.blockchain.fullName
+        txInfo["net_type"] =            wallet.blockchainType.net_type
+        
+        //account
+        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
+        accountDict["private_key"] =    info!["privateKey"] as! String
+        txInfo["account"] =             accountDict
+        
+        //builder
+        builderDict["type"] =           "erc20"
+        builderDict["action"] =         "transfer"
+        //payload
+        payloadDict["balance_eth"] =            wallet.availableBalance.stringValue
+        payloadDict["contract_address"] =       tokenWallet.address
+        payloadDict["balance_token"] =          tokenWallet.ethWallet!.balance
+        payloadDict["transfer_amount_token"] =  sendTokenAmountString
+        payloadDict["destination_address"] =    destinationAddress
         builderDict["payload"] =                payloadDict
         txInfo["builder"] =                     builderDict
         

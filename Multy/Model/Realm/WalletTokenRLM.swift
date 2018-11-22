@@ -16,7 +16,7 @@ class WalletTokenRLM: Object {
     }
     
     var tokenImageURLString: String {
-        return "https://raw.githubusercontent.com/TrustWallet/tokens/master/images/\(address).png"
+        return "https://raw.githubusercontent.com/Multy-io/tokens/master/images/\(address).png"
     }
     
     var balanceBigInt: BigInt {
