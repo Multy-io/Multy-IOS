@@ -379,10 +379,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     func updateReceiverUI() {
-        let bannerCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? BannerTableViewCell
-        if bannerCell != nil {
-            bannerCell!.collectionView.reloadData()
-        }
+        guard let bannerCell = self.tableView.cellForRow(at: [0,0]) as? BannerTableViewCell else { return }
+        bannerCell.collectionView!.reloadData()
     }
     
     func setupStatusBar() {
