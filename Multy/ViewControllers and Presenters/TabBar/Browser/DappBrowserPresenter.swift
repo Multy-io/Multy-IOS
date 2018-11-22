@@ -180,13 +180,14 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
             currentTopIndex = TopIndexRLM.createDefaultIndex(currencyID: NSNumber(value: currencyID), networkID: NSNumber(value: networkID), topIndex: NSNumber(value: 0))
         }
         
-        let dict = DataManager.shared.createNewWallet(for: &binData, blockchain: blockchianType, walletID: currentTopIndex!.topIndex.uint32Value)
+        let walletID = currentTopIndex!.topIndex.uint32Value
+        let dict = DataManager.shared.createNewWallet(for: &binData, blockchain: blockchianType, walletID: walletID)
         
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
-        createdWallet.name = "Dragonereum Wallet"
-        createdWallet.walletID = NSNumber(value: Int32(dict!["walletID"] as! UInt32))
-        createdWallet.addressID = NSNumber(value: Int32(dict!["addressID"] as! UInt32))
+        createdWallet.name = "Wallet"
+        createdWallet.walletID = walletID as NSNumber
+        createdWallet.addressID = 0
         createdWallet.address = dict!["address"] as! String
         
         if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
