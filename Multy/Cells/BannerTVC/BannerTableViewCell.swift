@@ -4,8 +4,7 @@
 
 import UIKit
 
-class PortfolioTableViewCell: UITableViewCell, UIScrollViewDelegate {
-    
+class BannerTableViewCell: UITableViewCell {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
     
@@ -51,11 +50,4 @@ class PortfolioTableViewCell: UITableViewCell, UIScrollViewDelegate {
         
         collectionView.setContentOffset(CGPoint(x: x,y :0), animated: true)
     }
-    
-//    func changePageControl(currentPage: Int) {
-//        self.pageControl.currentPage = currentPage
-//        self.pageControl.defersCurrentPageDisplay = true
-//        self.pageControl.updateCurrentPageDisplay()
-//    }
 }
-

@@ -4,7 +4,10 @@
 
 import UIKit
 import RealmSwift
+import Hash2Pics
+
 //import MultyCoreLibrary
+
 
 class AssetsPresenter: NSObject {
 
@@ -24,6 +27,22 @@ class AssetsPresenter: NSObject {
     var isSocketInitiateUpdating = false
     
     var contentOffset = CGPoint.zero
+    
+    var isBluetoothReachable = false {
+        didSet {
+            if oldValue != isBluetoothReachable {
+                updateReceiverActivity()
+            }
+        }
+    }
+    
+    var isRecevingStarted = false {
+        didSet {
+            if oldValue != isRecevingStarted {
+                assetsVC?.updateReceiverUI()
+            }
+        }
+    }
     
     var account : AccountRLM? {
         didSet {
@@ -61,6 +80,12 @@ class AssetsPresenter: NSObject {
         }
     }
     
+    var requestImage : UIImage? {
+        get {
+            return account != nil ? PictureConstructor().createPicture(diameter: 200, seed: account!.userID.convertToUserCode!) : nil
+        }
+    }
+    
     var magicReceiveParams: NSDictionary? {
         didSet {
             if self.account == nil {
@@ -70,7 +95,14 @@ class AssetsPresenter: NSObject {
         }
     }
     
-    var wallets: [UserWalletRLM]?
+    var wallets: [UserWalletRLM]? {
+        didSet {
+            if oldValue != wallets {
+                updateReceiverActivity()
+            }
+        }
+    }
+    
     var importedWalletsInDB: [UserWalletRLM]?
     
     @objc func updateExchange() {
@@ -490,6 +522,7 @@ class AssetsPresenter: NSObject {
         self.assetsVC?.navigationController?.pushViewController(receiveVC, animated: true)
     }
     
+
     func countFiatMoney() -> String {
         var fiatSum = 0.0
         for wallet in wallets! {
@@ -498,5 +531,81 @@ class AssetsPresenter: NSObject {
             }
         }
         return fiatSum.fixedFraction(digits: 2)
+    }
+    
+    // MARK: Receiving
+    func updateBluetoothReachability() {
+        let reachability = BLEManager.shared.reachability
+        isBluetoothReachable = reachability == .reachable
+    }
+    
+    private func updateReceiverActivity() {
+        if isBluetoothReachable && !isRecevingStarted {
+            let _ = startReceiverActivity()
+        } else if !isBluetoothReachable && isRecevingStarted {
+            stopReceiverActivity()
+        }
+    }
+    
+    private func startReceiverActivity() -> (Bool, String?) {
+        let userID = account?.userID
+        let userCode = userID?.convertToUserCode
+        guard userCode != nil && userID != nil else {
+            return (false, "No account")
+        }
+        
+        guard isBluetoothReachable else {
+            return (false, "Bluetooth connection is not reachable")
+        }
+        
+        becomeReceiver(userID: userID!, userCode: userCode!)
+        shareUserCode(code: userCode!)
+        
+        isRecevingStarted = true
+        return (true, nil)
+    }
+    
+    private func stopReceiverActivity() {
+        cancelBecomeReceiver()
+        stopSharingUserCode()
+        isRecevingStarted = false
+    }
+    
+    func changeReceivingEnabling(_ enable: Bool) {
+        if enable == true {
+            let _ = startReceiverActivity()
+        } else {
+            stopReceiverActivity()
+        }
+    }
+    
+    private func becomeReceiver(userID : String, userCode : String) {
+//        guard self.wallet != nil else {
+//            return
+//        }
+//
+//        let blockchainType = BlockchainType.create(wallet: self.wallet!)
+//        let currencyID = self.wallet!.chain
+//        let networkID = blockchainType.net_type
+//        let address = walletAddress
+//        let amount = cryptoSum != nil ? cryptoSum!.convertCryptoAmountStringToMinimalUnits(for: Blockchain.init(rawValue: currencyID.uint32Value)).stringValue : "0"
+//
+//        DataManager.shared.socketManager.becomeReceiver(receiverID: userID, userCode: userCode, currencyID: currencyID.intValue, networkID: networkID, address: address, amount: amount)
+    }
+    
+    private func cancelBecomeReceiver() {
+//        DataManager.shared.socketManager.stopReceive()
+    }
+    
+    private func shareUserCode(code : String) {
+        if !BLEManager.shared.isAdvertising {
+            BLEManager.shared.advertise(userId: code)
+        }
+    }
+    
+    private func stopSharingUserCode() {
+        if BLEManager.shared.isAdvertising {
+            BLEManager.shared.stopAdvertising()
+        }
     }
 }

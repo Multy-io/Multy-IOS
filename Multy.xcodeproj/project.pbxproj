@@ -279,6 +279,8 @@
 		45F8CD49208F393C00DEB495 /* TermsOfServicePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8CD48208F393C00DEB495 /* TermsOfServicePresenter.swift */; };
 		45FE5A72217F651100C1539E /* DeepLinksProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE5A71217F651100C1539E /* DeepLinksProtocol.swift */; };
 		50D1AA3CFDA9BDFA53D3B9D0 /* Pods_MultyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */; };
+		85122C4E21A5908E00C73153 /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */; };
+		85122C5221A591FE00C73153 /* BannerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85122C5121A591FE00C73153 /* BannerTableViewCell.xib */; };
 		8540152B218AEBB800B20C7B /* BTCTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152A218AEBB800B20C7B /* BTCTransactionDTO.swift */; };
 		8540152D218AEC3200B20C7B /* ETHTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152C218AEC3200B20C7B /* ETHTransactionDTO.swift */; };
 		854C748B20C56C6900CBAFE9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854C748A20C56C6900CBAFE9 /* Utilities.swift */; };
@@ -315,6 +317,8 @@
 		85DE62E920AC1CE100423D89 /* ActiveRequestCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85DE62E720AC1CE100423D89 /* ActiveRequestCollectionViewCell.xib */; };
 		85DE62ED20AC4E4C00423D89 /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62EC20AC4E4C00423D89 /* PaymentRequest.swift */; };
 		85DE62F320AF188B00423D89 /* Check Mark Success Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 85DE62F220AF188B00423D89 /* Check Mark Success Data.json */; };
+		85EBF54221A5A2000001B70C /* MagicReceiverCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EBF54121A5A2000001B70C /* MagicReceiverCollectionViewCell.swift */; };
+		85EBF54421A5A2170001B70C /* MagicReceiverCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85EBF54321A5A2170001B70C /* MagicReceiverCollectionViewCell.xib */; };
 		BA3449F966752EDDC53A2B0D /* Pods_Multy_MultyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572DB9D15F9362827245CF67 /* Pods_Multy_MultyUITests.framework */; };
 		FA0B618D1FEBC1DD00ED0CE6 /* RecentAddressesRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0B618C1FEBC1DD00ED0CE6 /* RecentAddressesRLM.swift */; };
 		FA4125DF2004C0FD00DF9AC3 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA4125DE2004C0FD00DF9AC3 /* libstdc++.tbd */; };
@@ -790,6 +794,8 @@
 		572DB9D15F9362827245CF67 /* Pods_Multy_MultyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy_MultyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		647A035491B0F1BEBEB72A55 /* Pods-MultyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultyTests/Pods-MultyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7304C17824311A19240183E0 /* Pods_Multy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
+		85122C5121A591FE00C73153 /* BannerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerTableViewCell.xib; sourceTree = "<group>"; };
 		853C41B9217A0E3700155B84 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
 		853C41BA217A0E3700155B84 /* ccan_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccan_config.h; sourceTree = "<group>"; };
 		853C41BC217A0E3800155B84 /* compiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compiler.h; sourceTree = "<group>"; };
@@ -836,6 +842,8 @@
 		85DE62E720AC1CE100423D89 /* ActiveRequestCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActiveRequestCollectionViewCell.xib; sourceTree = "<group>"; };
 		85DE62EC20AC4E4C00423D89 /* PaymentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequest.swift; sourceTree = "<group>"; };
 		85DE62F220AF188B00423D89 /* Check Mark Success Data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Check Mark Success Data.json"; sourceTree = "<group>"; };
+		85EBF54121A5A2000001B70C /* MagicReceiverCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicReceiverCollectionViewCell.swift; sourceTree = "<group>"; };
+		85EBF54321A5A2170001B70C /* MagicReceiverCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MagicReceiverCollectionViewCell.xib; sourceTree = "<group>"; };
 		B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MultyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4F4E06236FA82100FA1DF80 /* Pods-Multy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Multy.release.xcconfig"; path = "Pods/Target Support Files/Pods-Multy/Pods-Multy.release.xcconfig"; sourceTree = "<group>"; };
 		F845D6707FC4D00A317BC418 /* Pods-Multy-MultyUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Multy-MultyUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Multy-MultyUITests/Pods-Multy-MultyUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1799,6 +1807,8 @@
 		45B9CB041FBB4B6600AA2A31 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				85122C4C21A5907C00C73153 /* BannerTVC */,
+				85122C4721A5861E00C73153 /* MagicReceiverCVC */,
 				452ED152216E02C800B86A67 /* TokenTVC */,
 				859C7B1020F4D3A8002EA215 /* ConfirmationStatusCVC */,
 				44AAAE1120E258BA00A481A4 /* ContactCell */,
@@ -1972,6 +1982,24 @@
 				45F8CD48208F393C00DEB495 /* TermsOfServicePresenter.swift */,
 			);
 			path = TermsOfService;
+			sourceTree = "<group>";
+		};
+		85122C4721A5861E00C73153 /* MagicReceiverCVC */ = {
+			isa = PBXGroup;
+			children = (
+				85EBF54121A5A2000001B70C /* MagicReceiverCollectionViewCell.swift */,
+				85EBF54321A5A2170001B70C /* MagicReceiverCollectionViewCell.xib */,
+			);
+			path = MagicReceiverCVC;
+			sourceTree = "<group>";
+		};
+		85122C4C21A5907C00C73153 /* BannerTVC */ = {
+			isa = PBXGroup;
+			children = (
+				85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */,
+				85122C5121A591FE00C73153 /* BannerTableViewCell.xib */,
+			);
+			path = BannerTVC;
 			sourceTree = "<group>";
 		};
 		85401529218AEB2000B20C7B /* TransactionDTO */ = {
@@ -2401,6 +2429,7 @@
 				44CBAB9F20BEEC8A005F04C6 /* EthWalletHeaderTableViewCell.xib in Resources */,
 				445B128E20BC1CC800FD0D33 /* CreateOrRestoreBtnTableViewCell.xib in Resources */,
 				4477264920BECAA5006BF4A7 /* Seed.strings in Resources */,
+				85EBF54421A5A2170001B70C /* MagicReceiverCollectionViewCell.xib in Resources */,
 				45B9CB081FBB51AE00AA2A31 /* WalletTableViewCell.xib in Resources */,
 				4474C5B720BFE76800EA8B01 /* Activty.strings in Resources */,
 				445B128220BC1C7600FD0D33 /* MainWalletCollectionViewCell.xib in Resources */,
@@ -2414,6 +2443,7 @@
 				445B129420BC1CE700FD0D33 /* TransactionFeeTableViewCell.xib in Resources */,
 				45ECDBD7203D9E77009FD339 /* LICENSE in Resources */,
 				445B127920BC1BD900FD0D33 /* Send.storyboard in Resources */,
+				85122C5221A591FE00C73153 /* BannerTableViewCell.xib in Resources */,
 				445B128820BC1CA600FD0D33 /* LogoTableViewCell.xib in Resources */,
 				45ECDBD8203D9E77009FD339 /* README.md in Resources */,
 				859C7B0620EE66F0002EA215 /* CreateMultiSig.strings in Resources */,
@@ -2815,6 +2845,7 @@
 				459A0B3420F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift in Sources */,
 				45A949571FC6DF5F003C3A23 /* CustomTrasanctionFeeTableViewCell.swift in Sources */,
 				45C738C320358D56005AB761 /* AnalyticsProtocol.swift in Sources */,
+				85EBF54221A5A2000001B70C /* MagicReceiverCollectionViewCell.swift in Sources */,
 				4575694B1FBDEDE300FDEE20 /* BackupFinishViewController.swift in Sources */,
 				FA8C8783200E65E900F8D5D9 /* Date+Extension.swift in Sources */,
 				FA4D43EC1FC5CEE0003C7117 /* BTCWalletHeaderTableViewCell.swift in Sources */,
@@ -2988,6 +3019,7 @@
 				451ED793207CD88D00542F00 /* UITextField+Extensions.swift in Sources */,
 				FA4D43E11FC5895D003C7117 /* String+Extension.swift in Sources */,
 				4563174020D2A994004D29C6 /* WalletViewController.swift in Sources */,
+				85122C4E21A5908E00C73153 /* BannerTableViewCell.swift in Sources */,
 				4558F41920C03F87003D7C7A /* PreloaderView.swift in Sources */,
 				45A949271FC2EE68003C3A23 /* ReceiveAmountViewController.swift in Sources */,
 				454094502033236B00603DB5 /* ResetAllDataViewController.swift in Sources */,

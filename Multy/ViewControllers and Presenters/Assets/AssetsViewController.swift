@@ -20,6 +20,7 @@ private typealias CreateWalletDelegate = AssetsViewController
 private typealias LocalizeDelegate = AssetsViewController
 private typealias PushTxDelegate = AssetsViewController
 private typealias SendWalletsDelegate = AssetsViewController
+private typealias BannersExtension = AssetsViewController
 
 class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol, BlockchainTransferProtocol, DeepLinksProtocol {
     @IBOutlet weak var statusView: UIView!
@@ -52,9 +53,10 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         
         return refreshControl
     }()
-
+    
     var stringIdForInApp = ""
     var stringIdForInAppBig = ""
+    
     var blockchainForTansfer: BlockchainType?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -202,6 +204,10 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("walletDeleted"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("resyncCompleted"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(bluetoothReachabilityChangedNotificationName), object: nil)
+        
+        presenter.changeReceivingEnabling(false)
         
         super.viewWillDisappear(animated)
     }
@@ -215,6 +221,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleWalletUpdatedNotification(notification:)), name: NSNotification.Name("msWalletUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleResyncCompleteNotification(notification:)), name: NSNotification.Name("resyncCompleted"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: NSNotification.Name.UIApplicationWillEnterForeground, object:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.applicationDidBecomeActive(notification:)), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didChangedBluetoothReachability(notification:)), name: Notification.Name(bluetoothReachabilityChangedNotificationName), object: nil)
         
         super.viewWillAppear(animated)
         
@@ -223,6 +231,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         }
         
         self.isFirstLaunch = false
+        presenter.isBluetoothReachable = BLEManager.shared.reachability == .reachable
+        presenter.changeReceivingEnabling(true)
         
         self.updateUI()
         
@@ -293,6 +303,18 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         }
     }
     
+    @objc private func didChangedBluetoothReachability(notification: Notification) {
+        DispatchQueue.main.async { [unowned self] in
+            self.presenter.updateBluetoothReachability()
+        }
+    }
+    
+    @objc private func applicationDidBecomeActive(notification: Notification) {
+        DispatchQueue.main.async { [unowned self] in
+            self.presenter.updateBluetoothReachability()
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         tabBarController?.tabBar.frame = presenter.tabBarFrame
         tableView.frame.size.height = screenHeight - presenter.tabBarFrame.height
@@ -356,6 +378,13 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         view.isUserInteractionEnabled = false
     }
     
+    func updateReceiverUI() {
+        let bannerCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? BannerTableViewCell
+        if bannerCell != nil {
+            bannerCell!.collectionView.reloadData()
+        }
+    }
+    
     func setupStatusBar() {
         if screenHeight == heightOfX || screenHeight == heightOfXSMax {
             statusView.frame.size.height = 44
@@ -398,8 +427,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         let walletCell = UINib.init(nibName: "WalletTableViewCell", bundle: nil)
         self.tableView.register(walletCell, forCellReuseIdentifier: "walletCell")
         
-        let portfolioCell = UINib.init(nibName: "PortfolioTableViewCell", bundle: nil)
-        self.tableView.register(portfolioCell, forCellReuseIdentifier: "portfolioCell")
+        let bannerCell = UINib.init(nibName: "BannerTableViewCell", bundle: nil)
+        self.tableView.register(bannerCell, forCellReuseIdentifier: "bannerCellReuseID")
         
         let newWalletCell = UINib.init(nibName: "NewWalletTableViewCell", bundle: nil)
         self.tableView.register(newWalletCell, forCellReuseIdentifier: "newWalletCell")
@@ -884,12 +913,17 @@ extension TableViewDataSource : UITableViewDataSource {
                 let logoCell = self.tableView.dequeueReusableCell(withIdentifier: "logoCell") as! LogoTableViewCell
                 return logoCell
             } else {
-                let portfolioCell = self.tableView.dequeueReusableCell(withIdentifier: "portfolioCell") as! PortfolioTableViewCell
-                portfolioCell.mainVC = self
-                portfolioCell.delegate = self
-                print(presenter.countFiatMoney())
+//                let portfolioCell = self.tableView.dequeueReusableCell(withIdentifier: "portfolioCell") as! PortfolioTableViewCell
+//                portfolioCell.mainVC = self
+//                portfolioCell.delegate = self
+//                print(presenter.countFiatMoney())
+
+                let bannerCell = self.tableView.dequeueReusableCell(withIdentifier: "bannerCellReuseID") as! BannerTableViewCell
+                bannerCell.mainVC = self
+                bannerCell.delegate = self
+                bannerCell.dataSource = self
                 
-                return portfolioCell
+                return bannerCell
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
             let newWalletCell = self.tableView.dequeueReusableCell(withIdentifier: "newWalletCell") as! NewWalletTableViewCell
@@ -995,67 +1029,6 @@ extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout 
     }
 }
 
-extension CollectionViewDelegate : UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if indexPath.row == 0 {
-//
-//            let customTab = tabBarController as! CustomTabBarViewController
-//            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
-//        } else {
-        unowned let weakSelf =  self
-        makeIdForInAppBigBy(indexPath: indexPath)
-        makeIdForInAppBy(indexPath: indexPath)
-        self.presentDonationAlertVC(from: weakSelf, with: stringIdForInAppBig)
-        (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
-        logAnalytics(indexPath: indexPath)
-//        }
-    }
-    
-    func makeIdForInAppBy(indexPath: IndexPath) {
-        switch indexPath.row {
-//        case 1: stringIdForInApp = "io.multy.addingPortfolio5"
-//        case 2: stringIdForInApp = "io.multy.addingCharts5"
-        case 0: stringIdForInApp = "io.multy.addingPortfolio5"
-        case 1: stringIdForInApp = "io.multy.addingCharts5"
-        default: break
-        }
-    }
-    
-    func makeIdForInAppBigBy(indexPath: IndexPath) {
-        switch indexPath.row {
-//        case 1: stringIdForInAppBig = "io.multy.addingPortfolio50"
-//        case 2: stringIdForInAppBig = "io.multy.addingCharts50"
-        case 0: stringIdForInAppBig = "io.multy.addingPortfolio50"
-        case 1: stringIdForInAppBig = "io.multy.addingCharts50"
-        default: break
-        }
-    }
-    
-    func logAnalytics(indexPath: IndexPath) {
-//        var eventCode = 0
-        switch indexPath.row {
-//        case 0: sendAnalyticsEvent(screenName: screenMain, eventName: "Dragon_Banner_Clicked")
-        case 0: sendDonationAlertScreenPresentedAnalytics(code: donationForPortfolioSC)
-        case 1: sendDonationAlertScreenPresentedAnalytics(code: donationForChartsSC)
-        default: break
-        }
-//        let eventCode = indexPath.row == 0 ? donationForPortfolioSC : donationForChartsSC
-//        sendDonationAlertScreenPresentedAnalytics(code: eventCode)
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
-        let firstCellCollectionView = firstCell.collectionView!
-        firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
-    }
-    
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
-        let firstCellCollectionView = firstCell.collectionView!
-        firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
-    }
-}
-
 extension PushTxDelegate {
     func openTxFromPush() {
         let app = UIApplication.shared.delegate as? AppDelegate
@@ -1127,5 +1100,86 @@ extension SendWalletsDelegate: SendArrayOfWallets {
 extension LocalizeDelegate: Localizable {
     var tableName: String {
         return "Assets"
+    }
+}
+
+extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if indexPath.item == 0 {
+            let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
+            
+            let requestImage = presenter.requestImage
+            magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
+            
+            return magicReceiverCell
+        }
+        
+        let donatCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
+        donatCell.makeCellBy(index: indexPath.row)
+        
+        return donatCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //        if indexPath.row == 0 {
+        //
+        //            let customTab = tabBarController as! CustomTabBarViewController
+        //            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
+        //        } else {
+        if indexPath.row == 1 {
+            unowned let weakSelf =  self
+            makeIdForInAppBigBy(indexPath: indexPath)
+            makeIdForInAppBy(indexPath: indexPath)
+            presentDonationAlertVC(from: weakSelf, with: stringIdForInAppBig)
+            (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
+            logAnalytics(indexPath: indexPath)
+        }
+        //        }
+    }
+    
+    func makeIdForInAppBy(indexPath: IndexPath) {
+        switch indexPath.row {
+            //        case 1: stringIdForInApp = "io.multy.addingPortfolio5"
+        //        case 2: stringIdForInApp = "io.multy.addingCharts5"
+        case 0: stringIdForInApp = "io.multy.addingPortfolio5"
+        case 1: stringIdForInApp = "io.multy.addingCharts5"
+        default: break
+        }
+    }
+    
+    func makeIdForInAppBigBy(indexPath: IndexPath) {
+        switch indexPath.row {
+            //        case 1: stringIdForInAppBig = "io.multy.addingPortfolio50"
+        //        case 2: stringIdForInAppBig = "io.multy.addingCharts50"
+        case 0: stringIdForInAppBig = "io.multy.addingPortfolio50"
+        case 1: stringIdForInAppBig = "io.multy.addingCharts50"
+        default: break
+        }
+    }
+    
+    func logAnalytics(indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0: sendDonationAlertScreenPresentedAnalytics(code: donationForPortfolioSC)
+        case 1: sendDonationAlertScreenPresentedAnalytics(code: donationForChartsSC)
+        default: break
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
+        let firstCellCollectionView = firstCell.collectionView!
+        firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
+        let firstCellCollectionView = firstCell.collectionView!
+        firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
     }
 }
