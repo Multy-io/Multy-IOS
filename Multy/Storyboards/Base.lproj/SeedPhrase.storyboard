@@ -345,7 +345,7 @@ MetaMask</string>
                                     <action selector="cancelAction:" destination="6Mb-pe-tcp" eventType="touchUpInside" id="7E2-Vq-4tZ"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-g6-RwA">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-g6-RwA">
                                 <rect key="frame" x="52" y="115" width="271" height="42"/>
                                 <color key="backgroundColor" red="0.97619837519999997" green="0.98009961840000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -474,6 +474,14 @@ MetaMask</string>
                                     <constraint firstAttribute="width" constant="270" id="76C-oU-Quk"/>
                                 </constraints>
                             </imageView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l8R-vR-vbq">
+                                <rect key="frame" x="52" y="139" width="271" height="42"/>
+                                <color key="backgroundColor" red="0.97619837519999997" green="0.98009961840000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="h9c-xf-lLA"/>
+                                    <constraint firstAttribute="width" secondItem="l8R-vR-vbq" secondAttribute="height" multiplier="271:42" id="qIY-u4-EDO"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.9762609601020813" green="0.98015815019607544" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -484,6 +492,8 @@ MetaMask</string>
                             <constraint firstItem="S8x-qS-O85" firstAttribute="bottom" secondItem="Pwe-Ye-XS2" secondAttribute="bottom" id="33l-qW-Ty8"/>
                             <constraint firstItem="J88-uo-8qz" firstAttribute="top" secondItem="Pwe-Ye-XS2" secondAttribute="bottom" constant="40" id="6Hu-31-tdB"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Iur-Vu-aWk" secondAttribute="trailing" constant="61" id="6rw-n8-amc"/>
+                            <constraint firstItem="l8R-vR-vbq" firstAttribute="top" secondItem="0Ht-P3-d6D" secondAttribute="bottom" constant="34" id="7GE-et-jDp"/>
+                            <constraint firstItem="l8R-vR-vbq" firstAttribute="width" secondItem="l8R-vR-vbq" secondAttribute="height" multiplier="271:42" id="AEM-cL-KWZ"/>
                             <constraint firstAttribute="trailing" secondItem="hhR-En-7a2" secondAttribute="trailing" constant="50" id="BRp-5d-Cxn"/>
                             <constraint firstItem="hhR-En-7a2" firstAttribute="top" secondItem="Iur-Vu-aWk" secondAttribute="bottom" constant="18" id="D2P-cS-iGa"/>
                             <constraint firstItem="Iur-Vu-aWk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ORl-dC-9Jg" secondAttribute="leading" constant="20" id="E8T-0h-nJe"/>
@@ -496,7 +506,9 @@ MetaMask</string>
                             <constraint firstItem="VoS-64-Gwe" firstAttribute="centerX" secondItem="ORl-dC-9Jg" secondAttribute="centerX" id="PmR-Br-VcR"/>
                             <constraint firstItem="piY-bH-vcx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hhR-En-7a2" secondAttribute="bottom" constant="10" id="VWS-z8-zHw"/>
                             <constraint firstItem="VoS-64-Gwe" firstAttribute="top" secondItem="0Ht-P3-d6D" secondAttribute="bottom" constant="34" id="YHs-ne-8Er"/>
+                            <constraint firstItem="l8R-vR-vbq" firstAttribute="width" secondItem="l8R-vR-vbq" secondAttribute="height" multiplier="271:42" id="aFC-88-IDv"/>
                             <constraint firstItem="S8x-qS-O85" firstAttribute="top" secondItem="piY-bH-vcx" secondAttribute="top" id="aUQ-du-Yvq"/>
+                            <constraint firstItem="l8R-vR-vbq" firstAttribute="centerX" secondItem="ORl-dC-9Jg" secondAttribute="centerX" id="c3g-bn-xUd"/>
                             <constraint firstItem="Iur-Vu-aWk" firstAttribute="centerX" secondItem="0Ht-P3-d6D" secondAttribute="centerX" id="c6f-Sa-GYQ"/>
                             <constraint firstItem="S8x-qS-O85" firstAttribute="leading" secondItem="piY-bH-vcx" secondAttribute="leading" id="mME-96-2AT"/>
                             <constraint firstItem="Iur-Vu-aWk" firstAttribute="top" secondItem="VoS-64-Gwe" secondAttribute="bottom" constant="50" id="tes-Cn-Vta"/>
@@ -507,6 +519,7 @@ MetaMask</string>
                     <connections>
                         <outlet property="bottomConstraint" destination="6Hu-31-tdB" id="To6-IX-vfY"/>
                         <outlet property="bricksConstraint" destination="YHs-ne-8Er" id="ebz-hL-7HA"/>
+                        <outlet property="bricksView" destination="l8R-vR-vbq" id="oDS-hB-iua"/>
                         <outlet property="continueBtn" destination="J88-uo-8qz" id="PNq-Q0-SCE"/>
                         <outlet property="firstLblConstraint" destination="tes-Cn-Vta" id="Gbh-Lj-wHC"/>
                         <outlet property="infoIconImg" destination="Pwe-Ye-XS2" id="be0-Ff-r4N"/>

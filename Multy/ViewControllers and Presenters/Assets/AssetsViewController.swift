@@ -887,6 +887,7 @@ extension TableViewDataSource : UITableViewDataSource {
                 let portfolioCell = self.tableView.dequeueReusableCell(withIdentifier: "portfolioCell") as! PortfolioTableViewCell
                 portfolioCell.mainVC = self
                 portfolioCell.delegate = self
+                print(presenter.countFiatMoney())
                 
                 return portfolioCell
             }
