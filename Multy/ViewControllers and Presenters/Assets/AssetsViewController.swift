@@ -1122,13 +1122,13 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
+        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? BannerTableViewCell else { return }
         let firstCellCollectionView = firstCell.collectionView!
         firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
+        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? BannerTableViewCell else { return }
         let firstCellCollectionView = firstCell.collectionView!
         firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
     }
