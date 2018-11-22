@@ -80,9 +80,6 @@ class HistoryRLM: Object {
     public class func initWithInfo(historyDict: NSDictionary) -> HistoryRLM {
         let hist = HistoryRLM()
         
-//        if let address = txHistory["address"] {
-//            txHist.address = address as! String
-//        }
         if let addresses = historyDict["addresses"] {
             hist.addresses = (addresses as! NSArray).componentsJoined(by: " ")
         }
@@ -97,15 +94,20 @@ class HistoryRLM: Object {
         
         if let blocktime = historyDict["blocktime"] as? TimeInterval {
             hist.blockTime = NSDate(timeIntervalSince1970: blocktime) as Date
+            
+            // in some cases mempool time equals 1 January 1970
+            if hist.blockTime.timeIntervalSince1970 == 0 {
+                hist.mempoolTime = Date()
+            } else {
+                hist.mempoolTime = hist.blockTime
+            }
         }
         
         if hist.blockHeight == -1 {
             hist.blockTime = Date()
         }
         
-        if let mempoolTime = historyDict["mempooltime"] as? TimeInterval {
-            hist.mempoolTime = NSDate(timeIntervalSince1970: mempoolTime) as Date
-        }
+        
         
         if let txfee = historyDict["txfee"] {
             hist.txFee = txfee as! NSNumber
