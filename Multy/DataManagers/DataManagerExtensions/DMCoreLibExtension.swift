@@ -15,10 +15,6 @@ extension DataManager {
 //        return coreLibManager.isDeviceJailbroken()
 //    }
     
-    var accountType: AccountType {
-        return realmManager.account!.accountType
-    }
-    
     func getMnenonicAllWords() -> Array<String> {
         return coreLibManager.mnemonicAllWords()
     }
@@ -113,6 +109,37 @@ extension DataManager {
         return coreLibManager.createWallet(from: &binaryData,blockchain: localBlockchainType, walletID: localWalletID, addressID: localAddressID)
     }
     
+    func createPrivateKey(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> UnsafeMutablePointer<OpaquePointer?>? {
+        let localBlockchainType = self.localBlockchainType(blockchainType: blockchain)
+        let localWalletID = self.localWalletID(blockchainType: blockchain, walletID: walletID)
+        let localAddressID = self.localAddressID(blockchainType: blockchain, walletID: walletID, addressID: 0)
+        
+        return coreLibManager.createPrivateKey(blockchain: localBlockchainType, walletID: localWalletID, addressID: localAddressID, binaryData: &binaryData)
+    }
+    
+    func createTransaction(addressPointer: UnsafeMutablePointer<OpaquePointer?>,
+                           sendAddress: String,
+                           sendAmountString: String,
+                           feePerByteAmount: String,
+                           isDonationExists: Bool,
+                           donationAmount: String,
+                           isPayCommission: Bool,
+                           wallet: UserWalletRLM,
+                           binaryData: inout BinaryData,
+                           inputs: List<AddressRLM>) -> (String, Double, String) {
+        
+        return coreLibManager.createTransaction(addressPointer: addressPointer,
+                                                sendAddress: sendAddress,
+                                                sendAmountString: sendAmountString,
+                                                feePerByteAmount: feePerByteAmount,
+                                                isDonationExists: isDonationExists,
+                                                donationAmount: donationAmount,
+                                                isPayCommission: isPayCommission,
+                                                wallet: wallet,
+                                                binaryData: &binaryData,
+                                                inputs: inputs)
+    }
+    
     func importWalletBy(privateKey: String, blockchain: BlockchainType, walletID: Int32) -> Dictionary<String, Any>? {
         return coreLibManager.importWallet(blockchain: blockchain, walletID: walletID, privateKey: privateKey)
     }
@@ -136,16 +163,16 @@ extension DataManager {
                                              addressID: UInt32(transactionDTO.choosenWallet!.addresses.count),
                                              binaryData: &binaryData)
         
-        let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                         sendAddress: transactionDTO.sendAddress!,
-                                                                         sendAmountString: transactionDTO.sendAmountString!,
-                                                                         feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
-                                                                         isDonationExists: false,
-                                                                         donationAmount: "0",
-                                                                         isPayCommission: false,
-                                                                         wallet: transactionDTO.choosenWallet!,
-                                                                         binaryData: &binaryData,
-                                                                         inputs: transactionDTO.choosenWallet!.addresses)
+        let trData = DataManager.shared.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                          sendAddress: transactionDTO.sendAddress!,
+                                                          sendAmountString: transactionDTO.sendAmountString!,
+                                                          feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
+                                                          isDonationExists: false,
+                                                          donationAmount: "0",
+                                                          isPayCommission: false,
+                                                          wallet: transactionDTO.choosenWallet!,
+                                                          binaryData: &binaryData,
+                                                          inputs: transactionDTO.choosenWallet!.addresses)
         
         if trData.1 < 0 {
             completion(trData.0, NSError(domain: "", code: 400, userInfo: nil))

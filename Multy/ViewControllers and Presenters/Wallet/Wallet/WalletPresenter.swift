@@ -300,10 +300,7 @@ class WalletPresenter: NSObject {
         self.walletVC?.isCanUpdate = true
         if error == nil && historyArray != nil {
             self.transactionDataSource = historyArray!.sorted(by: {
-                let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.blockTime : $0.mempoolTime
-                let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.blockTime : $1.mempoolTime
-
-                return firstDate > secondDate
+                $0.mempoolTime > $1.mempoolTime
             })
             
             self.prepareAssetsData(array: self.wallet!.ethWallet?.erc20Tokens)

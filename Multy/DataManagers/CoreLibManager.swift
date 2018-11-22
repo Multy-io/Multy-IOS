@@ -157,9 +157,10 @@ class CoreLibManager: NSObject {
     }
     
     func createSeedBinaryData(from phrase: String) -> BinaryData? {
-        #if DEBUG
-        print("seed phrase: \(phrase)")
-        #endif
+        if isDebug {
+            print("seed phrase: \(phrase)")
+        }
+        
         let stringPointer = phrase.UTF8CStringPointer
         
         let binaryDataPointer = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
@@ -204,9 +205,9 @@ class CoreLibManager: NSObject {
         
         let extendedKey = String(cString: extendedKeyPointer.pointee!)
         
-        #if DEBUG
-        print("extended key: \(extendedKey)")
-        #endif
+        if isDebug {
+            print("extended key: \(extendedKey)")
+        }
         
         return extendedKey
     }
@@ -1311,71 +1312,71 @@ extension EthereumCoreLibManager {
 //                                gasPrice: String,
 //                                gasLimit: String,
 //                                payload: String = "") -> (message: String, isTransactionCorrect: Bool) {
-//        
+//
 //        //create transaction
 //        let transactionPointer = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
-//        
+//
 //        let mt = make_transaction(addressPointer.pointee, transactionPointer)
 //        defer { free_transaction(transactionPointer.pointee) }
 //        if mt != nil {
 //            _ = errorString(from: mt!, mask: "make_transaction")
 //        }
-//        
+//
 //        //properties
 //        let accountProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
 //        let tgp = transaction_get_properties(transactionPointer.pointee!, accountProperties)
-//        
+//
 //        setAmountValue(key: "nonce", value: "\(nonce)", pointer: accountProperties.pointee!)
 ////        setIntValue(key: "chain_id", value: ethereumChainID, pointer: accountProperties.pointee!)
-//        
+//
 //        //balance
 //        let transactionSource = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
 //        let tas = transaction_add_source(transactionPointer.pointee, transactionSource)
 //        setAmountValue(key: "amount", value: balanceAmount, pointer: transactionSource.pointee!)
-//        
+//
 //        //destination
 //        let transactionDestination = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
 //        let tas2 = transaction_add_destination(transactionPointer.pointee, transactionDestination)
 //        setAmountValue(key: "amount", value: sendAmountString, pointer: transactionDestination.pointee!)
 //        setStringValue(key: "address", value: sendAddress, pointer: transactionDestination.pointee!)
 ////        setBinaryDataValue(key: "address", value: sendAddress, pointer: transactionDestination.pointee!)
-//        
+//
 //        //fee
 //        let feeProperties = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: 1)
 //        let tgpfp = transaction_get_fee(transactionPointer.pointee!, feeProperties)
 //        setAmountValue(key: "gas_price", value: gasPrice, pointer: feeProperties.pointee!)
 //        setAmountValue(key: "gas_limit", value: gasLimit, pointer: feeProperties.pointee!)
-//        
+//
 //        //payload section
 //        if payload.isEmpty == false {
 //            let dataPointer = payload.createBinaryDataPointer()
 //            transaction_set_message(transactionPointer.pointee!, UnsafePointer<BinaryData>(dataPointer))
 //        }
-//        
+//
 //        //final
 //        let serializedTransaction = UnsafeMutablePointer<UnsafeMutablePointer<BinaryData>?>.allocate(capacity: 1)
 //        let tSer = transaction_serialize(transactionPointer.pointee, serializedTransaction)
-//        
+//
 //        if tSer != nil {
 //            let pointer = UnsafeMutablePointer<MultyError>(tSer)
 //            let errrString = String(cString: pointer!.pointee.message)
-//            
+//
 //            print("tSer: \(errrString))")
-//            
+//
 //            defer { pointer?.deallocate() }
-//            
+//
 //            return (errrString, false)
 //        }
-//        
+//
 //        defer {
 //            free_binarydata(serializedTransaction.pointee)
 //        }
-//        
+//
 //        let data = serializedTransaction.pointee!.pointee.convertToData()
 //        let str = "0x" + data.hexEncodedString()
-//        
+//
 //        print("end transaction: \(str)")
-//        
+//
 //        return (str, true)
 //    }
 }

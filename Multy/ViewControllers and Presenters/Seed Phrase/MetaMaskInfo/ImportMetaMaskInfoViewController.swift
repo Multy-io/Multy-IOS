@@ -24,6 +24,7 @@ class ImportMetaMaskInfoViewController: UIViewController {
     @IBAction func continueAction(_ sender: Any) {
         let checkWordsVC = viewControllerFrom("SeedPhrase", "backupSeed") as! CheckWordsViewController
         checkWordsVC.isRestore = true
+        checkWordsVC.presenter.accountType = .metamask
         navigationController?.pushViewController(checkWordsVC, animated: true)
     }
     
