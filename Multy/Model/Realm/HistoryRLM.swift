@@ -107,8 +107,6 @@ class HistoryRLM: Object {
             hist.blockTime = Date()
         }
         
-        
-        
         if let txfee = historyDict["txfee"] {
             hist.txFee = txfee as! NSNumber
         }
