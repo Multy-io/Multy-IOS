@@ -83,6 +83,9 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         self.wordTF.becomeFirstResponder()
         if self.isRestore {
             self.titleLbl.text = localize(string: Constants.restoreMultyString)
+            if presenter.accountType == .metamask {
+                self.titleLbl.text = localize(string: Constants.restoreMetamaskString)
+            }
         }
         if self.isNeedToClean {
             self.currentWordNumber = 1

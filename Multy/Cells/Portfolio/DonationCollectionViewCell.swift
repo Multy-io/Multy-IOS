@@ -12,13 +12,14 @@ class DonationCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var midLbl: UILabel!
     @IBOutlet weak var botView: UIView!
     @IBOutlet weak var bannerImg: UIImageView!
+    @IBOutlet weak var assetsView: UIView!
+    @IBOutlet weak var assetsSumLbl: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
     
-    func makeCellBy(index: Int) {
+    func makeCellBy(index: Int, assetsInfo: String?) {
         switch index {
         case 0:
             // First Banner
@@ -36,6 +37,10 @@ class DonationCollectionViewCell: UICollectionViewCell {
             self.midLbl.text = localize(string: Constants.currenciesChartsString)
             self.bannerImg.isHidden = true
             self.setupUIfor(view: botView, color: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.6))
+        case 2:
+            assetsView.isHidden = false
+            assetsSumLbl.text = "$ \(assetsInfo!)"
+            setupUIfor(view: botView, color: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.6))
         default: break
         }
     }

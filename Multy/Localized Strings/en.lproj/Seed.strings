@@ -2,7 +2,7 @@
 //Licensed under Multy.io license.
 //See LICENSE for detailss
 
-"RESTORE MULTY" = "Восстановить Multy";
+"RESTORE MULTY" = "Restore Multy";
 "WARNING" = "Warning";
 "CANCEL" = "Cancel";
 "ERROR" = "Error";
@@ -18,3 +18,5 @@
 "LOADING" = "Loading";
 "RESTORING WALLETS" = "Restoring Wallets";
 "WRONG SEED" = "Seed phrase is too short";
+"ENTER IN METAMASK" = "Enter MetaMask Seed Phrase";
+

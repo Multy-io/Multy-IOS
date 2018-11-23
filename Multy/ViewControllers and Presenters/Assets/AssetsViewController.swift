@@ -1106,7 +1106,7 @@ extension LocalizeDelegate: Localizable {
 extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -1120,8 +1120,14 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
             return magicReceiverCell
         }
         
+        if indexPath.item == 2 {
+            let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
+            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
+            return assetsCell
+        }
+        
         let donatCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
-        donatCell.makeCellBy(index: indexPath.row)
+        donatCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
         
         return donatCell
     }
