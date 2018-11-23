@@ -238,7 +238,12 @@ class WaitingMembersPresenter: NSObject {
                 } else {
                     if error != nil {
                         self.viewController!.sendAnalyticsEvent(screenName: self.className, eventName: (error! as NSError).userInfo.debugDescription)
-                        self.viewController?.presentAlert(with: error?.localizedDescription)
+                        let errStringFromServer = error?.localizedDescription
+                        if errStringFromServer!.range(of: "spend more") != nil {
+                            self.viewController?.presentAlert(with: self.viewController?.localize(string: Constants.youTryingSpendMoreThenHaveString))
+                        } else {
+                            self.viewController?.presentAlert(with: error?.localizedDescription)
+                        }
                     } else {
                         self.viewController?.presentAlert(with: self.viewController?.localize(string: Constants.somethingWentWrongString))
                     }

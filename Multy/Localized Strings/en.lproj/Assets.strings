@@ -42,4 +42,6 @@
 "WRONG KEY" = "Looks like you are trying to import by not private key string";
 "SERVER OFF TITLE" = "Multy is temporary unavailable";
 "SERVER OFF MESSAGE" = "Wallet is in readonly mode, most functions are unavailable during this time. We are sorry for inconvinience and doing our best to solve this problem. Please come back later.";
-"IMPORT METAMASK" = "Import MetaMask";
+"IMPORT METAMASK" = "Enter in MetaMask";
+"NOT CORRECT MS ADDRESS" = "You are trying to import not valid MultiSig address";
+"MAXIMUM EMPTY WALLETS" = "Maximum number of empty wallets created";

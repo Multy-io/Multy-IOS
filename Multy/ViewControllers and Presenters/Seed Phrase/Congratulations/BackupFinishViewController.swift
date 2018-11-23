@@ -19,7 +19,7 @@ class BackupFinishViewController: UIViewController, AnalyticsProtocol {
         super.viewDidLoad()
         
         bricksView.subviews.forEach({ $0.removeFromSuperview() })
-        bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: accountType, and: 15))
+        bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: accountType, color: brickColorSelectedGreen, and: 15))
         sendAnalyticsEvent(screenName: screenSuccessRestore, eventName: screenSuccessRestore)
         sendAnalyticsEvent(screenName: screenSuccessRestore, eventName: seedBackuped)
     }

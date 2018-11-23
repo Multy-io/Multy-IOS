@@ -304,7 +304,6 @@ class WalletPresenter: NSObject {
             })
             
             self.prepareAssetsData(array: self.wallet!.ethWallet?.erc20Tokens)
-            
             self.isSocketInitiateUpdating = false
             
             self.updateHeader()

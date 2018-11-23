@@ -10,6 +10,7 @@ class SeedPhraseWordViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var nextWordBtn: ZFRippleButton!
     
     @IBOutlet weak var blocksImage: UIImageView!
+    @IBOutlet weak var bricksView: UIView!
     
     @IBOutlet weak var topWordLbl: LTMorphingLabel!
     @IBOutlet weak var mediumWordLbl: LTMorphingLabel!
@@ -24,6 +25,7 @@ class SeedPhraseWordViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bricksView.isHidden = true
         self.enableSwipeToBack()
         if screenWidth < 325 {
             constraintTopBricks.constant = 90
@@ -40,12 +42,21 @@ class SeedPhraseWordViewController: UIViewController, AnalyticsProtocol {
         presenter.getSeedFromAcc()
         presenter.presentNextTripleOrContinue()
         sendAnalyticsEvent(screenName: screenViewPhrase, eventName: screenViewPhrase)
+//        setupBricks()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         self.nextWordBtn.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)), UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))], gradientOrientation: .horizontal)
+    }
+    
+    func setupBricks() {
+//        if DataManager.shared.accountType == .metamask {
+//            bricksView.isHidden = false
+//            bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, color: brickColorSelectedGreen, and: 3))
+//            bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: accountType,color: brickColorSelectedBlue, and: 3))
+//        }
     }
 
     @IBAction func nextWordAndContinueAction(_ sender: Any) {

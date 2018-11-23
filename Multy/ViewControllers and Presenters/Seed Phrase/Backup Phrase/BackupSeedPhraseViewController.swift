@@ -11,6 +11,7 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var restartBtn: UIButton!
     @IBOutlet weak var restartLbl: UILabel!
     @IBOutlet weak var infoIconImg: UIImageView!
+    @IBOutlet weak var bricksView: UIView!
     
     @IBOutlet weak var bricksConstraint: NSLayoutConstraint!    //
     @IBOutlet weak var firstLblConstraint: NSLayoutConstraint!  // ipad
@@ -19,6 +20,7 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
     
     @IBOutlet weak var middleText: UILabel!
     
+    var accountType = DataManager.shared.accountType
     var isRestore = false
     
     var whereFrom: UIViewController?
@@ -26,6 +28,10 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        if DataManager.shared.restoreAccountType == .metamask {
+            bricksView.isHidden = false
+            bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: accountType, color: brickColorSelectedBlue, and: accountType.seedPhraseWordsCount))
+//        }
         self.enableSwipeToBack()
         self.fixForiPad()
         sendAnalyticsEvent(screenName: screenViewPhrase, eventName: screenViewPhrase)

@@ -51,7 +51,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
             wordTF.font?.withSize(50.0)
         }
         
-        bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, and: 0))
+        bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, color: brickColorSelectedGreen, and: 0))
         
         self.presenter.checkWordsVC = self
         self.presenter.getSeedPhrase()
@@ -81,6 +81,9 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         self.wordTF.becomeFirstResponder()
         if self.isRestore {
             self.titleLbl.text = localize(string: Constants.restoreMultyString)
+            if presenter.accountType == .metamask {
+                self.titleLbl.text = localize(string: Constants.restoreMetamaskString)
+            }
         }
         if self.isNeedToClean {
             self.currentWordNumber = 1
@@ -88,7 +91,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
             self.view.isUserInteractionEnabled = true
             self.presenter.phraseArr.removeAll()
             bricksView.subviews.forEach({ $0.removeFromSuperview() })
-            bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, and: 0))
+            bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, color: brickColorSelectedGreen, and: 0))
         }
     }
     
@@ -143,7 +146,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         }
         
         bricksView.subviews.forEach({ $0.removeFromSuperview() })
-        bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, and: currentWordNumber))
+        bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, color: brickColorSelectedGreen, and: currentWordNumber))
         
         if currentWordNumber == presenter.wordsCount {
             nextWordOrContinue.setTitle(localize(string: Constants.continueString), for: .normal)

@@ -150,9 +150,17 @@ let heightOfFive     : CGFloat = 568.0
 let heightOfiPad     : CGFloat = 480.0
 //
 
+
+let brickColorSelectedGreen = UIColor(redInt: 95, greenInt: 204, blueInt: 125, alpha: 1.0)
+let brickColorUnSelected =  UIColor(redInt: 239, greenInt: 239, blueInt: 244, alpha: 1.0)
+let brickColorSelectedBlue = UIColor(redInt: 3, greenInt: 122, blueInt: 255, alpha: 1.0)
+let brickColorBorderGreen = UIColor(redInt: 95, greenInt: 204, blueInt: 125, alpha: 1.0).cgColor
+let brickColorBorderBlue = UIColor(redInt: 3, greenInt: 122, blueInt: 255, alpha: 1.0).cgColor
+
 let widthOfSmall    : CGFloat = 320
 let widthOfNormal   : CGFloat = 375
 let widthOfBig      : CGFloat = 414
+
 
 let infoPlist = Bundle.main.infoDictionary!
 

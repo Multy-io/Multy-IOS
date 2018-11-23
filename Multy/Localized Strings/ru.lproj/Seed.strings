@@ -18,3 +18,4 @@
 "LOADING" = "Загрузка";
 "RESTORING WALLETS" = "Восстановление кошельков";
 "WRONG SEED" = "Сид фраза слишком короткая";
+"ENTER IN METAMASK" = "Ввод MetaMask Сид Фразы";
