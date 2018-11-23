@@ -299,26 +299,12 @@ class WalletPresenter: NSObject {
         self.walletVC?.spiner.stopAnimating()
         self.walletVC?.isCanUpdate = true
         if error == nil && historyArray != nil {
-<<<<<<< HEAD
-            let arr = historyArray!.sorted(by: {
-                $0.blockTime > $1.blockTime
-//                let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.mempoolTime : $0.blockTime
-//                let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.mempoolTime : $1.blockTime
-//
-//                return firstDate > secondDate
-            })
-            
-            let arr2 = arr.sorted(by: { $0.mempoolTime > $1.mempoolTime })
-            
-            self.transactionDataSource = arr2
-=======
             self.transactionDataSource = historyArray!.sorted(by: {
                 $0.mempoolTime > $1.mempoolTime
             })
             
             self.prepareAssetsData(array: self.wallet!.ethWallet?.erc20Tokens)
             
->>>>>>> 2e2abc7a42fd934ddcc53e74ced67f379dc1af0c
             self.isSocketInitiateUpdating = false
             
             self.updateHeader()
