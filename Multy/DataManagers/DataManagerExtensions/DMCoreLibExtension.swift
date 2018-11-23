@@ -438,7 +438,7 @@ extension CoreLibInfoManager {
             addressInfo["walletIndex"] = UInt32($0)
             addressInfo["addressIndex"] = 0
             addressInfo["address"] = info!["address"] ?? ""
-            addressInfo["walletName"] = "Account " + "\($0)"
+            addressInfo["walletName"] = "Account " + "\($0 + 1)"
             
             addressesInfo.append(addressInfo)
         }
