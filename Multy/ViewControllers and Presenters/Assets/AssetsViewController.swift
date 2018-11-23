@@ -1001,6 +1001,15 @@ extension TableViewDataSource : UITableViewDataSource {
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
     }
+    
+    func blockCollection(block: Bool) {
+        tableView.cellForRow(at: [0,0])?.isUserInteractionEnabled = !block
+        if block == false {
+            tableView.scrollToTop()
+        }
+//        self.view.isUserInteractionEnabled = !block
+    }
+    
 }
 
 extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout {
@@ -1108,25 +1117,26 @@ extension LocalizeDelegate: Localizable {
 extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+//        return 3
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if indexPath.item == 0 {
-            let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
-            
-            let requestImage = presenter.requestImage
-            magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
-            
-            return magicReceiverCell
-        }
-        
-        if indexPath.item == 2 {
-            let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
-            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
-            return assetsCell
-        }
+//        if indexPath.item == 0 {
+//            let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
+//            
+//            let requestImage = presenter.requestImage
+//            magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
+//            
+//            return magicReceiverCell
+//        }
+//        
+//        if indexPath.item == 2 {
+//            let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
+//            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
+//            return assetsCell
+//        }
         
         let donatCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
         donatCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
@@ -1140,14 +1150,14 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
         //            let customTab = tabBarController as! CustomTabBarViewController
         //            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
         //        } else {
-        if indexPath.row == 1 {
+//        if indexPath.row == 1 {
             unowned let weakSelf =  self
             makeIdForInAppBigBy(indexPath: indexPath)
             makeIdForInAppBy(indexPath: indexPath)
             presentDonationAlertVC(from: weakSelf, with: stringIdForInAppBig)
             (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
             logAnalytics(indexPath: indexPath)
-        }
+//        }
         //        }
     }
     

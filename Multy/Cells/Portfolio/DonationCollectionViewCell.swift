@@ -24,7 +24,7 @@ class DonationCollectionViewCell: UICollectionViewCell {
         case 0:
             // First Banner
 //            self.bannerImg.isHidden = false
-//            self.bannerImg.image = UIImage(named: "multy-dragon-banner382")
+//            self.bannerImg.image = UIImage(named: "dragonereumAppBanner900X6001001")
 //            self.bannerImg.layer.masksToBounds = true
 //            self.setupUIfor(view: botView, color: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 1))
             

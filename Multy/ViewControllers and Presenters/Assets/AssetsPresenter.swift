@@ -234,6 +234,7 @@ class AssetsPresenter: NSObject {
 //    }
     
     func updateWalletsInfo(isInternetAvailable: Bool) {
+        self.assetsVC!.blockCollection(block: true)
         DataManager.shared.getAccount { [unowned self] (acc, err) in
             self.account = acc
             
@@ -346,6 +347,7 @@ class AssetsPresenter: NSObject {
         assetsVC?.tableView.isUserInteractionEnabled = true
 //        assetsVC?.tabBarController?.view.isUserInteractionEnabled = true
         assetsVC?.refreshControl.endRefreshing()
+        assetsVC!.blockCollection(block: false)
     }
     
     func makeAuth(completion: @escaping (_ answer: String) -> ()) {

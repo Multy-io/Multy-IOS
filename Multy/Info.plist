@@ -36,11 +36,11 @@
 	<key>CFBundleVersion</key>
 	<string>75</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>Metamask-functionality</string>
+	<string>Tokens</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>00dbec23</string>
+	<string>357538c4</string>
 	<key>GIT_TAG_NAME</key>
-	<string>RELEASE_1.3.1_73_WebSummitDL-dirty</string>
+	<string>RELEASE_1.3.3_75_ImportMS-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
