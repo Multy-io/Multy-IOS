@@ -11,6 +11,16 @@ class CheckWordsPresenter: NSObject {
     var checkWordsVC: CheckWordsViewController?
     var phraseArr = [String]()
     var originalSeedPhrase = String()
+    var accountType: AccountType = .multy {
+        didSet {
+            wordsCount = accountType.seedPhraseWordsCount
+        }
+    }
+    var wordsCount = 15
+    
+    func isSeedPhraseFull() -> Bool {
+        return phraseArr.count == wordsCount
+    }
     
     func isSeedPhraseCorrect() -> Bool {
         return originalSeedPhrase.utf8CString == phraseArr.joined(separator: " ").utf8CString
@@ -63,6 +73,20 @@ class CheckWordsPresenter: NSObject {
             DataManager.shared.subscribeToFirebaseMessaging()
         }
     }
+    
+//    func metaMaskSetup() {
+//        segmentsCountUp = metsmaskSegmentsCountUp
+//        segmentsCountDown = metamaskSegmentsCountDown
+//        upperSizes = metamskUpperSizes
+//        downSizes = metamaskDownSizes
+//    }
+//
+//    func multyBricksSetup() {
+//        segmentsCountUp = multySegmentsCountUp
+//        segmentsCountDown = multySegmentsCountDown
+//        upperSizes = multyUpperSizes
+//        downSizes = multyDownSizes
+//    }
 }
 
 extension LocalizeDelegate: Localizable {

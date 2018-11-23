@@ -7,6 +7,10 @@ import RealmSwift
 import Realm
 
 extension DataManager {
+    func getToken(address: String) -> TokenRLM? {
+        return realmManager.erc20Tokens[address]
+    }
+    
     func writeSeedPhrase(_ seedPhrase : String, completion: @escaping (_ error: NSError?) -> ()) {
         realmManager.writeSeedPhrase(seedPhrase) { (error) in
             completion(error)

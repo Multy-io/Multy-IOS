@@ -18,7 +18,7 @@ class WalletAddresessViewController: UIViewController,AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.presenter.addressesVC = self
         self.registerCell()
         

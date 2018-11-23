@@ -13,15 +13,27 @@ private typealias CurrencyExchangeManager = RealmManager
 private typealias WalletManager = RealmManager
 private typealias LegacyCodeManager = RealmManager
 private typealias SeedPhraseManager = RealmManager
+private typealias TokensManager = RealmManager
 
 class RealmManager: NSObject {
     static let shared = RealmManager()
     
-    private var realm : Realm? = nil
-    let schemaVersion : UInt64 = 31
+    private var realm : Realm? = nil {
+        didSet {
+            if realm != nil {
+                tokensLinkedInfo { [unowned self] in
+                    self.erc20Tokens = $0
+                }
+            }
+        }
+    }
+    
+    let schemaVersion : UInt64 = 33
     
     var account: AccountRLM?
     var config: Realm.Configuration?
+    
+    var erc20Tokens = Dictionary<String, TokenRLM>()
     
     var schemaversion : UInt64 {
         return realm!.configuration.schemaVersion
@@ -141,6 +153,12 @@ class RealmManager: NSObject {
                                                     if oldSchemaVersion <= 31 {
                                                         self.migrateFrom30To31(with: migration)
                                                     }
+                                                    if oldSchemaVersion <= 32 {
+                                                        self.migrateFrom31To32(with: migration)
+                                                    }
+                                                    if oldSchemaVersion <= 33 {
+                                                        self.migrateFrom32To33(with: migration)
+                                                    }
             })
             
             self.config = realmConfig
@@ -148,6 +166,7 @@ class RealmManager: NSObject {
             do {
                 let realm = try Realm(configuration: self.config!)
                 self.realm = realm
+                
                 
                 completion(realm, nil)
             } catch let error as NSError {
@@ -204,6 +223,10 @@ class RealmManager: NSObject {
                     
                     if accountDict["binaryData"] != nil {
                         accountRLM.binaryDataString = accountDict["binaryData"] as! String
+                    }
+                    
+                    if let accountType = DataManager.shared.restoreAccountType {
+                        accountRLM.accountTypeID = NSNumber(integerLiteral: accountType.rawValue)
                     }
                     
                     if accountDict["topindexes"] != nil {
@@ -572,12 +595,27 @@ extension WalletManager {
                         
                         try! realm.write {
                             if modifiedWallet != nil {
-                                modifiedWallet?.name =              wallet.name
+                                modifiedWallet!.name =              wallet.name
                                 modifiedWallet!.addresses =         wallet.addresses
                                 modifiedWallet!.isTherePendingTx =  wallet.isTherePendingTx
                                 modifiedWallet!.btcWallet =         wallet.btcWallet
-                                modifiedWallet!.ethWallet =         wallet.ethWallet
-                                modifiedWallet!.multisigWallet =    wallet.multisigWallet
+                                
+                                let delETH = modifiedWallet?.ethWallet
+                                let delM = modifiedWallet?.multisigWallet
+                                
+                                modifiedWallet?.ethWallet       = wallet.ethWallet
+                                modifiedWallet!.multisigWallet  = wallet.multisigWallet
+                                
+                                if delETH != nil {
+                                    realm.delete(delETH!.erc20Tokens)
+                                    realm.delete(delETH!)
+                                }
+                                
+                                if delM != nil {
+                                    realm.delete(delM!.owners)
+                                    realm.delete(delM!)
+                                }
+
                                 modifiedWallet?.lastActivityTimestamp = wallet.lastActivityTimestamp
                                 modifiedWallet?.isSyncing =         wallet.isSyncing
                                 modifiedWallet?.brokenState =       wallet.brokenState
@@ -1106,9 +1144,22 @@ extension RealmMigrationManager {
             msWallet?["isActivePaymentRequest"] = Bool()
         }
     }
-    
     func migrateFrom30To31(with migration: Migration) {
         UserPreferences.shared.writeDBPrivateKeyFixValue(false)
+    }
+    
+    func migrateFrom31To32(with migration: Migration) {
+        migration.enumerateObjects(ofType: TokenRLM.className()) { (_, token) in
+            token?["decimals"] = Int(-1)
+            token?["currencyID"] = UInt32(0)
+            token?["netType"] = Int(0)
+        }
+    }
+    
+    func migrateFrom32To33(with migration: Migration) {
+        migration.enumerateObjects(ofType: AccountRLM.className()) { (_, account) in
+            account?["accountTypeID"] = NSNumber(integerLiteral: 0)
+        }
     }
 }
 
@@ -1163,5 +1214,80 @@ extension LegacyCodeManager {
         }
         
         return sum
+    }
+}
+
+extension TokensManager {
+    func updateErc20Tokens(tokens: [TokenRLM]) {
+        //tokens need to be updated iff token.decimals missing iff token.decimals = -1
+        // after update this value will be non-negative
+        getRealm { [unowned self] (realmOpt, error) in
+            if let realm = realmOpt {
+                var neededUpdateArray = [TokenRLM]()
+                
+                try! realm.write {
+                    for token in tokens {
+                        let object = realm.object(ofType: TokenRLM.self, forPrimaryKey: token.contractAddress)
+                        
+                        if let oldToken = object {
+                            oldToken.name       = token.name
+                            oldToken.ticker     = token.ticker
+                            
+                            //decimals
+                            if oldToken.decimals == -1 {//case: there was no info
+                                oldToken.decimals = token.decimals
+                            } else if token.decimals != -1 {//case: there is correct value of decimals (that maybe changed)
+                                oldToken.decimals   = token.decimals
+                            }
+                            
+                            if oldToken.decimals == -1 {
+                                neededUpdateArray.append(oldToken)
+                            }
+                            
+                            realm.add(oldToken, update: true)
+                        } else {
+                            if token.decimals == -1 {
+                                neededUpdateArray.append(token)
+                            }
+                            
+                            realm.add(token, update: true)
+                        }
+                    }
+                }
+                
+                let tokens = realm.objects(TokenRLM.self)
+                self.erc20Tokens.removeAll()
+                tokens.forEach{ self.erc20Tokens[$0.contractAddress] = $0 }
+                
+                if neededUpdateArray.isEmpty == false {
+                    DataManager.shared.updateTokensInfo(neededUpdateArray)
+                }
+            }
+        }
+    }
+    
+    func getErc20TokenBy(address: String, completion: @escaping(_ token: TokenRLM) -> ()) {
+        getRealm { (realmOpt, err) in
+            if let realm = realmOpt {
+                completion(realm.object(ofType: TokenRLM.self, forPrimaryKey: address)!)
+            }
+        }
+    }
+    
+    func getTokens(completion: @escaping(_ token: [TokenRLM]) -> ()) {
+        getRealm { (realmOpt, err) in
+            if let realm = realmOpt {
+                let tokens = Array(realm.objects(TokenRLM.self))
+                completion(tokens)
+            }
+        }
+    }
+    
+    func tokensLinkedInfo(completion: @escaping(_ tokensInfo: Dictionary<String, TokenRLM>) -> ()) {
+        var info = Dictionary<String, TokenRLM>()
+        getTokens {
+            $0.forEach{ info[$0.contractAddress] = $0 }
+            completion(info)
+        }
     }
 }

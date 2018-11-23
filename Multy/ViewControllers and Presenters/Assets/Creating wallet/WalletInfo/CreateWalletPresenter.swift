@@ -66,8 +66,8 @@ class CreateWalletPresenter: NSObject {
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
         createdWallet.name = cell.walletNameTF.text ?? "Wallet"
-        createdWallet.walletID = NSNumber(value: Int32(dict!["walletID"] as! UInt32))
-        createdWallet.addressID = NSNumber(value: Int32(dict!["addressID"] as! UInt32))
+        createdWallet.walletID = currentTopIndex!.topIndex
+        createdWallet.addressID = 0
         createdWallet.address = dict!["address"] as! String
         
         if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
@@ -102,6 +102,10 @@ class CreateWalletPresenter: NSObject {
                 self!.mainVC!.sendAnalyticsEvent(screenName: screenCreateWallet, eventName: cancelTap)
                 self!.mainVC!.openNewlyCreatedWallet()
             } else {
+                if (error!.localizedDescription.range(of: "406")) != nil {
+                    self!.mainVC?.presentAlert(with: self!.localize(string: Constants.maxEmptyWAlletsString))
+                    return
+                }
                 self!.mainVC?.presentAlert(with: self!.localize(string: Constants.errorWhileCreatingWalletString))
             }
         }

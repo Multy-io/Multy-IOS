@@ -17,14 +17,25 @@ class PortfolioTableViewCell: UITableViewCell, UIScrollViewDelegate {
         }
     }
     
+    weak var dataSource: UICollectionViewDataSource? {
+        didSet {
+            self.collectionView.dataSource = dataSource
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
+        
         let portfolioCollectionCell = UINib.init(nibName: "PortfolioCollectionViewCell", bundle: nil)
         self.collectionView.register(portfolioCollectionCell, forCellWithReuseIdentifier: "portfolioCollectionCell")
         
         let donationCell = UINib.init(nibName: "DonationCollectionViewCell", bundle: nil)
         self.collectionView.register(donationCell, forCellWithReuseIdentifier: "donatCell")
+        
+        let magicReceiverCell = UINib.init(nibName: "MagicReceiverCollectionViewCell", bundle: nil)
+        self.collectionView.register(magicReceiverCell, forCellWithReuseIdentifier: "magicReceiverCVCReuseID")
+        
         pageControl.addTarget(self, action: #selector(self.changePage(sender:)), for: UIControlEvents.valueChanged)
     }
     
@@ -46,25 +57,5 @@ class PortfolioTableViewCell: UITableViewCell, UIScrollViewDelegate {
 //        self.pageControl.defersCurrentPageDisplay = true
 //        self.pageControl.updateCurrentPageDisplay()
 //    }
-}
-
-extension PortfolioTableViewCell: UICollectionViewDataSource {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let donatCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
-        donatCell.makeCellBy(index: indexPath.row)
-        
-        return donatCell
-    }
-    
-    
 }
 

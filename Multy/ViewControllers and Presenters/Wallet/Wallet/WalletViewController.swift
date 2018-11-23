@@ -3,6 +3,7 @@
 //See LICENSE for details
 
 import UIKit
+import Web3
 //import MultyCoreLibrary
 
 private typealias TableViewDelegate = WalletViewController
@@ -33,6 +34,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var pendingAmountFiatLbl: UILabel!
         //
     //
+    @IBOutlet weak var settingsImg: UIImageView!
+    @IBOutlet weak var settingsBtn: UIButton!
     
     @IBOutlet weak var adressWithBtnView: UIView!
     @IBOutlet weak var addressButtonsStackView: UIStackView!
@@ -144,12 +147,20 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent//currentStatusStyle
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         presenter.walletVC = self
         presenter.registerCells()
         addGestureRecognizers()
+        
+        if presenter.walletRepresentingMode == .tokenInfo {
+            setupUIForToken()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -184,10 +195,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         if !isViewDidAppear {
             setupUI()
         }
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     private func addGestureRecognizers() {
@@ -244,10 +251,14 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     func setupUI() {
         checkConstraints()
         makeGradientForBottom()
-        setupTransactionAssetsBtns(false)
+        
         
         //------------  WARNING  ------------//
-        setTransactionsTableFirst()  // if wallet tokens == nil // ONLY TRANSACTIONS
+//        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
+//        if presenter.wallet!.isTokenExist == false {
+            setTransactionsTableFirst(hide: !presenter.wallet!.isTokenExist)  // if wallet tokens == nil // ONLY TRANSACTIONS
+        setupTransactionAssetsBtns(false)
+//        }
         // ------------  WARNING  ------------
        
         setupAddressBtns()
@@ -312,15 +323,22 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
-    func setTransactionsTableFirst() {
-        hideAssetsBtn()
-        assetsTableTrailingConstraint.constant = -screenWidth
+    func setTransactionsTableFirst(hide: Bool) {
+        hideAssetsBtn(bool: hide)
+        assetsTableTrailingConstraint.constant = hide ? -screenWidth : 0
         view.layoutIfNeeded()
     }
     
-    func hideAssetsBtn() {
-        assetsTransactionsBtnsView.isHidden = true
-        assetsTansactionsHeightConstraint.constant = 0
+    func hideAssetsBtn(bool: Bool) {
+        if bool {
+            assetsTransactionsBtnsView.isHidden = true
+            assetsTansactionsHeightConstraint.constant = 0
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.assetsTransactionsBtnsView.isHidden = false
+                self.assetsTansactionsHeightConstraint.constant = 50
+            }
+        }
     }
     
     func hideBackup() {
@@ -455,6 +473,12 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         presenter.getHistoryAndWallet()
     }
     
+    func setupUIForToken() {
+        settingsImg.isHidden = true
+        settingsBtn.isHidden = true
+//        presenter.isToken = true
+    }
+    
     @IBAction func titleAction(_ sender: Any) {
         if tableHolderViewHeight == tablesHolderTopEdge {
             setInitialTableHolderPosition()
@@ -463,11 +487,18 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     @IBAction func backAction(_ sender: Any) {
         assetsTableTrailingConstraint.constant = 0
-//        self.navigationController?.popViewController(animated: true)
-        if navigationController?.childViewControllers.count == 4 {
+        backAction(isToken: presenter.walletRepresentingMode != .allInfo)
+    }
+    
+    func backAction(isToken: Bool) {
+        if isToken {
             navigationController?.popViewController(animated: true)
-        } else {
-            navigationController?.popToRootViewController(animated: true)
+        } else { //default
+            if navigationController?.childViewControllers.count == 4 {
+                navigationController?.popViewController(animated: true)
+            } else {
+                navigationController?.popToRootViewController(animated: true)
+            }
         }
     }
     
@@ -512,6 +543,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             self.presentAlert(with: localize(string: Constants.noFundsString))
             
             return
+        } else if let tokenWallet = presenter.tokenHolderWallet, tokenWallet.availableAmount.isZero {
+            self.presentAlert(with: localize(string: Constants.noFundsString))
+            
+            return
         }
         
         if presenter.canSendMinimumAmount() == false {
@@ -535,11 +570,12 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
+        sendStartVC.presenter.transactionDTO.tokenHolderWallet = self.presenter.tokenHolderWallet
         sendStartVC.presenter.transactionDTO.choosenWallet = self.presenter.wallet
-//        if presenter.importedPrivateKey != nil && presenter.importedPublicKey != nil {
-//            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPrivateKey = presenter.importedPrivateKey!
-//            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPublicKey = presenter.importedPublicKey!
-//        }
+        //        if presenter.importedPrivateKey != nil && presenter.importedPublicKey != nil {
+        //            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPrivateKey = presenter.importedPrivateKey!
+        //            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPublicKey = presenter.importedPublicKey!
+        //        }
         sendStartVC.presenter.isFromWallet = true
         self.navigationController?.pushViewController(sendStartVC, animated: true)
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(sendWithChainTap)\(presenter.wallet!.chain)")
@@ -636,7 +672,25 @@ extension TableViewDelegate: UITableViewDelegate {
             self.navigationController?.pushViewController(transactionVC, animated: true)
             sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(transactionWithChainTap)\(presenter.wallet!.chain)")
         } else {
+            let tokensCount = presenter.assetsDataSource.count
+            if indexPath.row >= tokensCount && tokensCount <= visibleCells {
+                return
+            }
             
+            //open
+            tableView.deselectRow(at: indexPath, animated: true)
+            let walletVC = viewControllerFrom("Wallet", "newWallet") as! WalletViewController
+            walletVC.presenter.walletRepresentingMode = .tokenInfo
+            walletVC.presenter.account = presenter.account
+            
+            if indexPath.row == 0 {
+                walletVC.presenter.wallet = presenter.wallet
+            } else {
+                walletVC.presenter.tokenHolderWallet = presenter.wallet!
+                walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.assetsDataSource[indexPath.row])
+            }
+            
+            navigationController?.pushViewController(walletVC, animated: true)
         }
     }
     
@@ -683,7 +737,8 @@ extension TableViewDataSource: UITableViewDataSource {
                         transactionCell.wallet = presenter.wallet!
                         transactionCell.fillCell()
                         transactionCell.changeState(isEmpty: false)
-                        hideEmptyLbls()                    }
+                        hideEmptyLbls()
+                    }
                 } else {
                     transactionCell.changeState(isEmpty: true)
                     //                    fixForiPad()
@@ -692,8 +747,10 @@ extension TableViewDataSource: UITableViewDataSource {
                 return transactionCell
             }
         } else {
-            if indexPath.row < 3 {
+            let countOfTokens = presenter.assetsDataSource.count
+            if indexPath.row < countOfTokens {
                 let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
+                tokenCell.fillingCell(tokenObj: presenter.assetsDataSource[indexPath.row])
                 return tokenCell
             } else {
                 let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
@@ -724,7 +781,22 @@ extension TableViewDataSource: UITableViewDataSource {
                 return 10
             }
         } else {
-            return 10
+            let countOfErc20Tokens = presenter.assetsDataSource.count
+
+            if countOfErc20Tokens > 0 {
+                hideEmptyLbls()
+                tableView.isScrollEnabled = true
+                if countOfErc20Tokens < 10 {
+                    return 10
+                } else {
+                    return countOfErc20Tokens
+                }
+            } else {
+                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
+                    return 13
+                }
+                return 10
+            }
         }
     }
 }

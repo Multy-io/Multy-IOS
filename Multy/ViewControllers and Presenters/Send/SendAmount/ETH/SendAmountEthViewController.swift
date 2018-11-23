@@ -57,6 +57,14 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
         presenter.getData()
         sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)")
         sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: payForCommissionEnabled)
+        
+        if presenter.sendTXMode == .erc20 {
+            commissionSwitch.disableView()
+            swapBtn.disableView()
+            maxBtn.disableView()
+            bottomSumLbl.isHidden = true
+            bottomCurrencyLbl.isHidden = true
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -252,7 +260,7 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
             }
         }
         
-        if (string != "," && string != ".") && self.presenter.maxAllowedToSpend < (self.topSumLbl.text! + string).convertCryptoAmountStringToMinimalUnits(in: presenter.blockchain)  {
+        if (string != "," && string != ".") && self.presenter.maxAllowedToSpend < (self.topSumLbl.text! + string).convertCryptoAmountStringToMinimalUnits(for: presenter.blockchain)  {
             if string != "" {
                 self.presentWarning(message: localize(string: Constants.moreThenYouHaveString))
                 
@@ -315,7 +323,7 @@ class SendAmountEthViewController: UIViewController, UITextFieldDelegate, Analyt
     @objc func changeSum() {
         let sumForBtn = presenter.getNextBtnSum()
         if presenter.isCrypto {
-            btnSumLbl.text = sumForBtn.cryptoValueString(for: presenter.blockchain) + " " + presenter.cryptoName
+            btnSumLbl.text = sumForBtn.cryptoValueString(for: presenter.blockchainObject) + " " + presenter.cryptoName
         } else {
             btnSumLbl.text = sumForBtn.fiatValueString(for: presenter.blockchain) + " " + presenter.fiatName
         }

@@ -12,8 +12,10 @@
 "CONTINUE" = "Далі";
 "NEXT WORD" = "Наступне слово";
 "FROM 15" = "з 15";
+"FROM" = "з";
 "OR" = "або";
 "WANT TO CANCEL" = "Ви дійсно хочете скасувати?";
 "LOADING" = "Завантаження";
 "RESTORING WALLETS" = "Відновлення гаманці";
 "WRONG SEED" = "Сід фраза занадто коротка";
+"ENTER IN METAMASK" = "Введення MetaMask Сід Фрази";

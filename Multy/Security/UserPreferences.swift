@@ -91,7 +91,9 @@ class UserPreferences : NSObject {
         let cipheredPass = try! aes!.encrypt(generatedPass.bytes)
         let cipheredData = cipheredPass.nsData
         
-        loggingPrint(print("writeCiperedDatabasePassword:\n\n\(generatedPass.base64EncodedString())\n\n\(cipheredData.base64EncodedString())"))
+        if isDebug {
+            loggingPrint(print("writeCiperedDatabasePassword:\n\n\(generatedPass.base64EncodedString())\n\n\(cipheredData.base64EncodedString())"))
+        }
         
         UserDefaults.standard.set(cipheredData, forKey: "databasePassword")
     }
@@ -111,8 +113,11 @@ class UserPreferences : NSObject {
         }
         
         let originalArrayData = try! aes?.decrypt(cipheredData!.bytes)
-        loggingPrint("getAndDecryptDatabasePassword:\n\n\(cipheredData!.base64EncodedString())\n\n\(originalArrayData!.data.base64EncodedString())\n\n\(originalArrayData!.data.count)")
         
+        if isDebug {
+            loggingPrint("getAndDecryptDatabasePassword:\n\n\(cipheredData!.base64EncodedString())\n\n\(originalArrayData!.data.base64EncodedString())\n\n\(originalArrayData!.data.count)")
+        }
+         
         completion(originalArrayData!.data, nil)
     }
     

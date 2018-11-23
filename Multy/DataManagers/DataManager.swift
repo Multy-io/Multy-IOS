@@ -27,6 +27,8 @@ class DataManager: NSObject {
     var currencyExchange = CurrencyExchange()
     var savedAddresses = [String: String]()
     
+    var restoreAccountType: AccountType?
+    
     override init() {
         super.init()
         
@@ -91,7 +93,10 @@ class DataManager: NSObject {
             return self.currencyExchange.btcToUSD
         case BLOCKCHAIN_ETHEREUM:
             return self.currencyExchange.ethToUSD
-        default: return 1.0
+        case BLOCKCHAIN_ERC20:
+            return self.currencyExchange.ethToUSD
+        default:
+            return 1.0
         }
     }
     

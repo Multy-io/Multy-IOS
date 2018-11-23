@@ -33,13 +33,16 @@ class ApiManager: NSObject, RequestRetrier {
             self.requestManager.adapter = AccessTokenAdapter(accessToken: token)
         }
     }
-    var userID = String()
+    var userID = String()    
     var pushToken: String {
         get {
             return Messaging.messaging().fcmToken ?? ""
         }
     }
-
+    
+    var topVC: UIViewController?
+    var noConnectionView: UIView?
+    
     override init() {
         super.init()
         
@@ -61,6 +64,10 @@ class ApiManager: NSObject, RequestRetrier {
         
         requestManager.retrier = self
         requestManager.adapter = AccessTokenAdapter(accessToken: token)
+        
+        let currentTabIndex = (UIApplication.shared.keyWindow?.rootViewController as? CustomTabBarViewController)?.selectedIndex
+        topVC = UIApplication.shared.keyWindow?.rootViewController?.childViewControllers[currentTabIndex!].childViewControllers.last
+        noConnectionView = topVC?.noConnectionView()
     }
     
 //    func adapt(_ urlRequest: URLRequest) throws -> URLRequest {
@@ -76,6 +83,7 @@ class ApiManager: NSObject, RequestRetrier {
         
         getServerConfig { (answer, error) in
             if answer != nil && error == nil {
+                self.topVC?.removeNoConnection(view: self.noConnectionView!)
                 if let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 {
                     if self.userID.isEmpty {
                         DispatchQueue.main.async {
@@ -114,24 +122,65 @@ class ApiManager: NSObject, RequestRetrier {
     
     func presentServerOff() {
         let currentTabIndex = (UIApplication.shared.keyWindow?.rootViewController as? CustomTabBarViewController)?.selectedIndex
-        let topVC = UIApplication.shared.keyWindow?.rootViewController?.childViewControllers[currentTabIndex!].childViewControllers.last
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let slpashScreen = storyboard.instantiateViewController(withIdentifier: "splash") as! SplashViewController
-        slpashScreen.isJailAlert = 2
-        slpashScreen.parentVC = topVC
-        slpashScreen.modalPresentationStyle = .overCurrentContext
-        topVC!.present(slpashScreen, animated: true, completion: nil)
+        topVC = UIApplication.shared.keyWindow?.rootViewController?.childViewControllers[currentTabIndex!]//.childViewControllers.last
+        noConnectionView = topVC?.noConnectionView()
+        noConnectionView?.alpha = 0
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let slpashScreen = storyboard.instantiateViewController(withIdentifier: "splash") as! SplashViewController
+//        slpashScreen.isJailAlert = 2
+//        slpashScreen.parentVC = topVC
+//        slpashScreen.modalPresentationStyle = .overCurrentContext
+//        topVC!.present(slpashScreen, animated: true, completion: nil)
+        if topVC != nil && topVC!.isNoConnectionOnScreen() {
+            return
+        }
+        currentStatusStyle = .lightContent
+        topVC!.setNeedsStatusBarAppearanceUpdate()
+        topVC!.view.addSubview(noConnectionView!)
+        UIView.animate(withDuration: 0.5) {
+            self.noConnectionView?.alpha = 1.0
+        }
+        autoConnect()
+    }
+    
+    var timer = Timer()
+    
+    func autoConnect() {
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.reconnect), userInfo: nil, repeats: true)
+    }
+    
+    @objc func reconnect() {
+        getServerConfig(completion: { (nsd, error) in
+            if error == nil {
+                self.timer.invalidate()
+                self.removeNoConnection()
+            }
+        })
+    }
+    
+    func removeNoConnection() {
+        if topVC!.isNoConnectionOnScreen() {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.noConnectionView?.alpha = 0.0
+            }) { (ended) in
+                currentStatusStyle = .default
+                self.topVC!.removeNoConnection(view: self.noConnectionView!)
+            }
+        }
     }
     
     func getServerConfig(completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
         requestManager.request("\(apiUrl)server/config", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
+                print("\n\nXXXXXX\nGETING SERVER CONFIG\nXXXXXXX\nTRUE")
+                isServerConnectionExist = true
                 if response.result.value != nil {
                     completion(response.result.value as? NSDictionary, nil)
                 }
             case .failure(_):
+                print("\n\nXXXXXX\nGETING SERVER CONFIG\nXXXXXXX\nFALSE")
+                isServerConnectionExist = false
                 completion(nil, response.result.error)
                 break
             }
@@ -151,6 +200,7 @@ class ApiManager: NSObject, RequestRetrier {
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
+                    isServerConnectionExist = true
                     if let token = (response.result.value as! NSDictionary)["token"] as? String {
                         DataManager.shared.updateToken(token)
                         self!.token = token
@@ -158,6 +208,7 @@ class ApiManager: NSObject, RequestRetrier {
                     completion((response.result.value as! NSDictionary), nil)
                 }
             case .failure(_):
+                isServerConnectionExist = false
                 completion(nil, response.result.error)
                 break
             }
@@ -341,6 +392,11 @@ class ApiManager: NSObject, RequestRetrier {
                     completion((response.result.value as! NSDictionary), nil)
                 }
             case .failure(_):
+                if let data = response.data {
+                    if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: Any] {
+                        print(json)
+                    }
+                }
                 completion(nil, response.result.error)
                 break
             }

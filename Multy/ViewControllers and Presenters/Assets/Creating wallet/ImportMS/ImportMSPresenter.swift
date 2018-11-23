@@ -113,7 +113,12 @@ class ImportMSPresenter: NSObject {
                 self.importMultiSig(contractAddress: self.importVC!.msAddressTextView.text!,
                                     linkedWalletAddress: address,
                                     completion: { (answer, err) in
-                                        self.sendImportedWalletByDelegateAndExit()
+                                        if err == nil {
+                                            self.sendImportedWalletByDelegateAndExit()
+                                        } else {
+                                            let message = Constants.wrongMSaddressString
+                                            self.importVC!.presentAlert(with: self.importVC!.localize(string: message))
+                                        }
                 })
             }
         } else {
@@ -224,6 +229,7 @@ class ImportMSPresenter: NSObject {
                 print(dict!)
                 completion(dict!, nil)
             } else {
+                completion(nil, error)
                 print("fail")
             }
         }
