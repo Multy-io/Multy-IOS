@@ -41,8 +41,8 @@ class SendDetailsPresenter: NSObject {
                                 return
                             }
                             
-                            let limit = value["submitTransaction"] as! String
-                            self!.transactionDTO.ETHDTO!.gasLimit = BigInt(limit)
+                            let limit = value["submitTransaction"] as! NSNumber
+                            self!.transactionDTO.ETHDTO!.gasLimit = BigInt("\(limit)")
                             break
                         case .failure(let error):
                             print(error)
