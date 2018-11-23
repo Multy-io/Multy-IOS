@@ -42,7 +42,7 @@ class SeedPhraseWordViewController: UIViewController, AnalyticsProtocol {
         presenter.getSeedFromAcc()
         presenter.presentNextTripleOrContinue()
         sendAnalyticsEvent(screenName: screenViewPhrase, eventName: screenViewPhrase)
-        setupBricks()
+//        setupBricks()
     }
     
     override func viewDidLayoutSubviews() {
@@ -52,10 +52,11 @@ class SeedPhraseWordViewController: UIViewController, AnalyticsProtocol {
     }
     
     func setupBricks() {
-        if DataManager.shared.restoreAccountType == .metamask {
-            bricksView.isHidden = false
-            bricksView.addSubview(BricksView(with: bricksView.bounds, and: 3, color: brickColorSelectedBlue))
-        }
+//        if DataManager.shared.accountType == .metamask {
+//            bricksView.isHidden = false
+//            bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, color: brickColorSelectedGreen, and: 3))
+//            bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: accountType,color: brickColorSelectedBlue, and: 3))
+//        }
     }
 
     @IBAction func nextWordAndContinueAction(_ sender: Any) {

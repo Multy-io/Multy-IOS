@@ -725,16 +725,16 @@ extension CreateTransactionDelegate {
         let request = activeRequestsArr[requestIndex]
         let wallet = filteredWalletArray[walletIndex]
         //      let jwtToken = DataManager.shared.realmManager.account!.token
-        let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                         sendAddress: request.sendAddress,
-                                                                         sendAmountString: request.sendAmount,
-                                                                         feePerByteAmount: feeRate,
-                                                                         isDonationExists: false,
-                                                                         donationAmount: "0",
-                                                                         isPayCommission: true,
-                                                                         wallet: wallet,
-                                                                         binaryData: &binaryData!,
-                                                                         inputs: wallet.addresses)
+        let trData = DataManager.shared.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                          sendAddress: request.sendAddress,
+                                                          sendAmountString: request.sendAmount,
+                                                          feePerByteAmount: feeRate,
+                                                          isDonationExists: false,
+                                                          donationAmount: "0",
+                                                          isPayCommission: true,
+                                                          wallet: wallet,
+                                                          binaryData: &binaryData!,
+                                                          inputs: wallet.addresses)
         
         rawTransaction = trData.0
         rawTransactionEstimation = trData.1
@@ -752,23 +752,6 @@ extension CreateTransactionDelegate {
         let wallet = filteredWalletArray[walletIndex]
         
         let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: wallet.blockchainType.blockchain).stringValue
-        
-        let pointer: UnsafeMutablePointer<OpaquePointer?>?
-        if !wallet.importedPrivateKey.isEmpty {
-            let blockchainType = wallet.blockchainType
-            let privatekey = wallet.importedPrivateKey
-            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
-            switch walletInfo {
-            case .success(let value):
-                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
-            case .failure(let error):
-                print(error)
-                
-                return false
-            }
-        } else {
-            pointer = addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
-        }
         
         if wallet.isMultiSig {
             if self.linkedWallet == nil {

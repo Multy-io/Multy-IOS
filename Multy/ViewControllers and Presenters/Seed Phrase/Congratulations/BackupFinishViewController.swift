@@ -11,6 +11,7 @@ class BackupFinishViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var bricksView: UIView!
     
     var isRestore = false
+    var accountType = AccountType.multy
     
     var seedString = ""
     
@@ -18,7 +19,7 @@ class BackupFinishViewController: UIViewController, AnalyticsProtocol {
         super.viewDidLoad()
         
         bricksView.subviews.forEach({ $0.removeFromSuperview() })
-        bricksView.addSubview(BricksView(with: bricksView.bounds, and: 15, color: brickColorSelectedGreen))
+        bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: accountType, color: brickColorSelectedGreen, and: 15))
         sendAnalyticsEvent(screenName: screenSuccessRestore, eventName: screenSuccessRestore)
         sendAnalyticsEvent(screenName: screenSuccessRestore, eventName: seedBackuped)
     }
@@ -37,6 +38,7 @@ class BackupFinishViewController: UIViewController, AnalyticsProtocol {
 //        DataManager.shared.auth(rootKey: DataManager.shared.getRootString(from: self.seedString).0) { (acc, err) in
 //            print(acc ?? "")
         DataManager.shared.realmManager.clearSeedPhraseInAcc()
+        
         self.navigationController?.popToRootViewController(animated: true)
     }
 

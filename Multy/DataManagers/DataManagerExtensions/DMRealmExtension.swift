@@ -7,6 +7,10 @@ import RealmSwift
 import Realm
 
 extension DataManager {
+    var accountType: AccountType {
+        return realmManager.account!.accountType
+    }
+    
     func getToken(address: String) -> TokenRLM? {
         return realmManager.erc20Tokens[address]
     }

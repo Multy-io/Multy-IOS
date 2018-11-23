@@ -345,9 +345,16 @@ class SendAmountPresenter: NSObject {
     }
     
     func goToFinish() {
-        if estimateTransactionAndValidation() && sendAmountInCryptoMinimalUnits.isNonZero {
+        let isvalid = estimateTransactionAndValidation()
+        if isvalid && sendAmountInCryptoMinimalUnits.isNonZero {
             assembleTransaction()
             vc?.segueToFinish()
+        } else {
+            if isvalid == false {
+                vc!.presentAlert(with: rawTransaction)
+            } else {
+                vc!.presentAlert(with: vc!.localize(string: Constants.enterNonZeroAmountString))
+            }
         }
     }
     
@@ -371,6 +378,8 @@ class SendAmountPresenter: NSObject {
                 if message.hasPrefix("BigInt value is not representable as") {
                     message = vc!.localize(string: Constants.youEnteredTooSmallAmountString)
                 } else if message.hasPrefix("Transaction is trying to spend more than available in inputs") {
+                    message = vc!.localize(string: Constants.youTryingSpendMoreThenHaveString)
+                } else if message.hasPrefix("Transaction is trying to spend more than available") {
                     message = vc!.localize(string: Constants.youTryingSpendMoreThenHaveString)
                 }
                 
@@ -464,16 +473,16 @@ extension CreateTransactionDelegate {
             return false
         }
         
-        let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                         sendAddress: transactionDTO.sendAddress!,
-                                                                         sendAmountString: sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchainObject),
-                                                                         feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
-            isDonationExists: transactionDTO.donationAmount != nil && !transactionDTO.donationAmount!.isZero,
-            donationAmount: transactionDTO.donationAmount?.cryptoValueString(for: blockchainObject) ?? BigInt.zero().stringValue,
-            isPayCommission: payForCommission,
-            wallet: transactionDTO.choosenWallet!,
-            binaryData: &binaryData!,
-            inputs: transactionDTO.choosenWallet!.addresses)
+        let trData = DataManager.shared.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                          sendAddress: transactionDTO.sendAddress!,
+                                                          sendAmountString: sendAmountInCryptoMinimalUnits.cryptoValueString(for: blockchainObject),
+                                                          feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
+                                                          isDonationExists: transactionDTO.donationAmount != nil && !transactionDTO.donationAmount!.isZero,
+                                                          donationAmount: transactionDTO.donationAmount?.cryptoValueString(for: blockchainObject) ?? BigInt.zero().stringValue,
+                                                          isPayCommission: payForCommission,
+                                                          wallet: transactionDTO.choosenWallet!,
+                                                          binaryData: &binaryData!,
+                                                          inputs: transactionDTO.choosenWallet!.addresses)
         
         feeEstimationInCrypto = BigInt(trData.2)
         rawTransaction = trData.0
@@ -496,23 +505,6 @@ extension CreateTransactionDelegate {
                     return false
                 }
             }
-        }
-        
-        let pointer: UnsafeMutablePointer<OpaquePointer?>?
-        if transactionDTO.choosenWallet!.isImported {
-            let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
-            let privatekey = transactionDTO.choosenWallet!.importedPrivateKey
-            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
-            switch walletInfo {
-            case .success(let value):
-                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
-            case .failure(let error):
-                print(error)
-                
-                return false
-            }
-        } else {
-            pointer = addressData?["addressPointer"] as? UnsafeMutablePointer<OpaquePointer?>
         }
         
         if transactionDTO.choosenWallet!.isMultiSig {
@@ -547,7 +539,7 @@ extension CreateTransactionDelegate {
             
             return trData.isTransactionCorrect
         } else {
-            guard pointer != nil, transactionDTO.sendAddress != nil, transactionDTO.choosenWallet != nil, transactionDTO.choosenWallet!.ethWallet != nil else {
+            guard transactionDTO.sendAddress != nil, transactionDTO.choosenWallet != nil, transactionDTO.choosenWallet!.ethWallet != nil else {
                 return false
             }
             
@@ -573,87 +565,15 @@ extension CreateTransactionDelegate {
     }
     
     func estimateTokenTransactionAndValidation() -> Bool {
-        let info = DataManager.shared.privateInfo(for: assetsWallet)
-        if info == nil {
-            return false
-        }
+        let rawTX = DataManager.shared.createERC20TokenTransaction(wallet: assetsWallet,
+                                                                   tokenWallet: tokenWallet!,
+                                                                   sendTokenAmountString: totalSumInCrypto.stringValue,
+                                                                   destinationAddress: transactionDTO.sendAddress!,
+                                                                   gasPriceAmountString: transactionDTO.ETHDTO!.gasPrice.stringValue,
+                                                                   gasLimitAmountString: transactionDTO.ETHDTO!.gasLimit.stringValue)
         
-        var txInfo = Dictionary<String, Any>()
-        var accountDict = Dictionary<String, Any>()
-        var builderDict = Dictionary<String, Any>()
-        var payloadDict = Dictionary<String, Any>()
-        var txDict = Dictionary<String, Any>()
-        var feeDict = Dictionary<String, Any>()
+        rawTransaction = rawTX.message
         
-        txInfo["blockchain"] =          assetsWallet.blockchain.fullName
-        txInfo["net_type"] =            assetsWallet.blockchainType.net_type
-        
-        //account
-        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
-        accountDict["private_key"] =    info!["privateKey"] as! String
-        txInfo["account"] =             accountDict
-        
-        //builder
-        builderDict["type"] =           "erc20"
-        builderDict["action"] =         "transfer"
-        //payload
-        payloadDict["balance_eth"] =            assetsWallet.availableBalance.stringValue
-        payloadDict["contract_address"] =       tokenWallet!.address
-        payloadDict["balance_token"] =          tokenWallet!.ethWallet!.balance
-        payloadDict["transfer_amount_token"] =  totalSumInCrypto.stringValue
-        payloadDict["destination_address"] =    transactionDTO.sendAddress!
-        builderDict["payload"] =                payloadDict
-        txInfo["builder"] =                     builderDict
-        
-        //transaction
-        txDict["nonce"] =               assetsWallet.ethWallet!.nonce
-        feeDict["gas_price"] =          transactionDTO.ETHDTO!.gasPrice.stringValue
-        feeDict["gas_limit"] =          transactionDTO.ETHDTO!.gasLimit.stringValue
-        txDict["fee"] =                 feeDict
-        txInfo["transaction"] =         txDict
-        
-        let rawTX = DataManager.shared.makeTX(from: txInfo)
-        
-        switch rawTX {
-        case .success(let txString):
-            rawTransaction = txString
-            
-            return true
-        case .failure(let error):
-            rawTransaction = error
-            
-            return false
-        }
-        
-        
-        //        switch rawTX {
-        //        case .success(let txString):
-        //            print(rawTX)
-        //
-        //            let newAddressParams = [
-        //                "walletindex"   : tokenHolderWallet!.walletID.intValue,
-        //                "address"       : tokenHolderWallet!.address,
-        //                "addressindex"  : 0,
-        //                "transaction"   : txString,
-        //                "ishd"          : tokenHolderWallet!.shouldCreateNewAddressAfterTransaction
-        //                ] as [String : Any]
-        //
-        //            let params = [
-        //                "currencyid": tokenHolderWallet!.chain,
-        //                /*"JWT"       : jwtToken,*/
-        //                "networkid" : tokenHolderWallet!.chainType,
-        //                "payload"   : newAddressParams
-        //                ] as [String : Any]
-        //
-        //            DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
-        //                if dict != nil {
-        //                    print(dict)
-        //                } else {
-        //                    print(error)
-        //                }
-        //            }
-        //        case .failure(let error):
-        //            break
-        //        }
+        return rawTX.isTransactionCorrect
     }
 }
