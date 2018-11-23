@@ -70,6 +70,8 @@ enum ErrorScope
     ERROR_SCOPE_TRANSACTION_FEE             = 19,
     ERROR_SCOPE_TRANSACTION_PAYLOAD         = 20,
     ERROR_SCOPE_TRANSACTION_BUILDER         = 32,
+
+    ERROR_SCOPE_JSON_API_TRANSACTION        = 64,
 };
 
 #define MULTY_SCOPE_ERROR_BASE(scope) ((scope) << MULTY_ERROR_SCOPE_SHIFT)
@@ -89,6 +91,9 @@ enum ErrorCode
     ERROR_INVALID_ADDRESS,                      // blockhain account address is invalid
 
     ERROR_NOT_ALL_REQUIRED_PROPERTIES_SET,
+    ERROR_INVALID_TIME_STRING,
+
+    // NOTE: ^^^ Add new generic error codes above this line. ^^^
 
     // Scope-specific error codes
 

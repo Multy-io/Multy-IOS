@@ -17,6 +17,7 @@
 #import "error.h"
 #import "ethereum.h"
 #import "golos.h"
+#import "json_api.h"
 #import "key.h"
 #import "mnemonic.h"
 #import "properties.h"

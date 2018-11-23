@@ -57,10 +57,14 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     var stringIdForInAppBig = ""
     var blockchainForTansfer: BlockchainType?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentStatusStyle
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setpuUI()
-
+        
         let dm = DataManager.shared
         let mkg = MasterKeyGenerator.shared
         self.performFirstEnterFlow { [unowned self, unowned dm, unowned mkg] (succeeded) in
@@ -86,7 +90,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                 self.tableView.frame.size.height = screenHeight - self.tabBarController!.tabBar.frame.height
             }
             dm.socketManager.start()
-            dm.subscribeToFirebaseMessaging()
+            dm.subscribeToFirebaseMessaging() 
             
             //FIXME: add later or refactor
             
@@ -128,7 +132,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
                 self.loader.hide()
                 
                 if hardVersion == nil || softVersion == nil {
-                    self.presentUpdateAlert(idOfAlert: 2)
+//                    self.presentUpdateAlert(idOfAlert: 2)
                     completion(true)
                     return
                 }
@@ -602,7 +606,7 @@ extension CancelDelegate: CancelProtocol {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
     
-        func donate50(idOfProduct: String) {
+    func donate50(idOfProduct: String) {
         self.makePurchaseFor(productId: idOfProduct)
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: presenter.account == nil)
     }
@@ -659,14 +663,18 @@ extension TableViewDelegate : UITableViewDelegate {
             break
         case [0,2]:
             if self.presenter.account == nil {
-                sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
-//                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
-                self.view.isUserInteractionEnabled = false
-                createFirstWallets(isNeedEthTest: false) { [unowned self] (error) in
-                    self.view.isUserInteractionEnabled = true
-                    
-                    if error == nil {
-                        print("Wallets created")
+                if isServerConnectionExist == false {
+                    checkServerConnection()
+                } else {
+                    sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
+                    //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
+                    self.view.isUserInteractionEnabled = false
+                    createFirstWallets(isNeedEthTest: false) { [unowned self] (error) in
+                        self.view.isUserInteractionEnabled = true
+                        
+                        if error == nil {
+                            print("Wallets created")
+                        }
                     }
                 }
             } else {
@@ -678,11 +686,36 @@ extension TableViewDelegate : UITableViewDelegate {
             }
         case [0,3]:
             if self.presenter.account == nil {
+                if isServerConnectionExist == false {
+                    checkServerConnection()
+                    return
+                }
                 sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: restoreMultyTap)
                 let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
                 let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
                 backupSeedVC.isRestore = true
+                backupSeedVC.presenter.accountType = .multy
+                
                 self.navigationController?.pushViewController(backupSeedVC, animated: true)
+            } else {
+                if self.presenter.isWalletExist() {
+                    goToWalletVC(indexPath: indexPath)
+                }
+            }
+        case [0,4]:
+            if self.presenter.account == nil {
+                if isServerConnectionExist == false {
+                    checkServerConnection()
+                    return
+                }
+                
+                let importMetaMaskVC = viewControllerFrom("SeedPhrase", "ImportMetaMask") as! ImportMetaMaskInfoViewController
+                self.navigationController?.pushViewController(importMetaMaskVC, animated: true)
+//                sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: restoreMultyTap)
+//                let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
+//                let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
+//                backupSeedVC.isRestore = true
+//                self.navigationController?.pushViewController(backupSeedVC, animated: true)
             } else {
                 if self.presenter.isWalletExist() {
                     goToWalletVC(indexPath: indexPath)
@@ -695,6 +728,19 @@ extension TableViewDelegate : UITableViewDelegate {
         }
     }
     
+
+    func checkServerConnection() {
+        loader.show(customTitle: "Connecting")
+        DataManager.shared.getServerConfig { (hard, soft, err) in
+            self.loader.hide()
+            if err != nil {
+                self.presentAlert(withTitle: self.localize(string: Constants.serverOffTitle), andMessage: self.localize(string: Constants.serverOffMessage))
+            }
+        }
+    }
+    
+   
+
     func createFirstWallets(isNeedEthTest: Bool, completion: @escaping(_ error: String?) -> ()) {
         self.presenter.makeAuth { [unowned self] (answer) in
             self.presenter.createFirstWallets(walletName: nil, blockchianType: BlockchainType.create(currencyID: 0, netType: 0), completion: { [unowned self] (answer, err) in
@@ -738,6 +784,9 @@ extension TableViewDelegate : UITableViewDelegate {
                 }
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
+            if presenter.account == nil {
+                return 10
+            }
             return 75
         case [0,2]:
             if self.presenter.account != nil {
@@ -774,6 +823,9 @@ extension TableViewDelegate : UITableViewDelegate {
                 }
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
+            if presenter.account == nil {
+                return 10
+            }
             return 75
         case [0,2]:
             if self.presenter.account != nil {
@@ -818,7 +870,7 @@ extension TableViewDataSource : UITableViewDataSource {
                 return 3                                     // logo / new wallet / text cell
             }
         } else {
-            return 4                                         // logo / empty cell / create wallet / restore
+            return 5                                         // logo / empty cell / create wallet / restore / restore metamask
         }
     }
     
@@ -881,6 +933,21 @@ extension TableViewDataSource : UITableViewDataSource {
                 restoreCell.makeRestoreCell()
                 
                 return restoreCell
+            }
+        case [0,4]:
+            if self.presenter.account != nil {
+                let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell
+                //                walletCell.makeshadow()
+                walletCell.wallet = presenter.wallets?[indexPath.row - 2]
+                walletCell.accessibilityIdentifier = "\(indexPath.row - 2)"
+                walletCell.fillInCell()
+                
+                return walletCell
+            } else {
+                let importMetamaskCell = self.tableView.dequeueReusableCell(withIdentifier: "createOrRestoreCell") as! CreateOrRestoreBtnTableViewCell
+                importMetamaskCell.makeMetaMaskCell()
+                
+                return importMetamaskCell
             }
         default:
             let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell

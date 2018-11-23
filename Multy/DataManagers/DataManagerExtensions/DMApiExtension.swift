@@ -67,6 +67,11 @@ extension DataManager {
                     userDefaults.set(encodedData, forKey: Constants.UserDefaults.btcDonationAddressesKey)
                 }
                 
+                if let erc20Info = answerDict!["erc20tokenlist"] as? NSArray {
+                    let tokens = TokenRLM.initArrayWithArray(tokensArray: erc20Info, blockchainType: BlockchainType(blockchain: BLOCKCHAIN_ERC20, net_type: 1))
+                    DataManager.shared.realmManager.updateErc20Tokens(tokens: tokens)
+                }
+                
                 if let multisigFactoriesInfo = answerDict!["multisigfactory"] as? Dictionary<String,  String> {
                     self.saveMultisigFactories(multisigFactoriesInfo)
                 }
@@ -80,8 +85,6 @@ extension DataManager {
                     
                     let browserURL = browserDefaults["url"] as! String
                     userDefaults.set(browserURL, forKey: "browserDefURL")
-                    // Check this, you can change link
-//                    userDefaults.set("https://www.onliner.by/", forKey: "browserDefURL")
                 }
                 
                 userDefaults.synchronize()
@@ -92,6 +95,21 @@ extension DataManager {
                 //do it something
                 completion(nil, nil, err)
                 break
+            }
+        }
+    }
+    
+    func restoreMetamaskWallets(seedPhrase: String, completion: @escaping(_ isSucces: Bool?) -> ()) {
+        let info = metamaskWalletsInfoForRestore(seedPhrase: seedPhrase, isMainnet: true)
+        let info2 = metamaskWalletsInfoForRestore(seedPhrase: seedPhrase, isMainnet: false)
+        
+        apiManager.restoreMemamaskWallets(walletsInfo: info) { [unowned self] in
+            if $0 {
+                self.apiManager.restoreMemamaskWallets(walletsInfo: info2) {
+                    completion($0)
+                }
+            } else {
+                completion(false)
             }
         }
     }
@@ -260,7 +278,7 @@ extension DataManager {
 //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
                 
 //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
-                
+                UserWalletRLM.checkMissingTokens(array: [wallet])
                 completion(wallet, nil)
             } else {
                 completion(nil, error)
@@ -277,7 +295,7 @@ extension DataManager {
                 //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
                 
                 //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
-                
+                UserWalletRLM.checkMissingTokens(array: [wallet])
                 completion(wallet, nil)
             } else {
                 completion(nil, error)
@@ -294,7 +312,7 @@ extension DataManager {
                 //                let addressesInfo = ((dict!["wallet"] as! NSArray)[0] as! NSDictionary)["addresses"]!
                 
                 //                let addresses = AddressRLM.initWithArray(addressesInfo: addressesInfo as! NSArray)
-                
+                UserWalletRLM.checkMissingTokens(array: [wallet])
                 completion(wallet, nil)
             } else {
                 completion(nil, error)

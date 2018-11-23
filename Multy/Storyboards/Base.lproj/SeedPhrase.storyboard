@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -143,6 +143,120 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YY2-Zf-kL8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1948" y="2662.2188905547227"/>
+        </scene>
+        <!--Import Meta Mask Info View Controller-->
+        <scene sceneID="mtx-l6-BfL">
+            <objects>
+                <viewController storyboardIdentifier="ImportMetaMask" id="goH-wX-Zqg" customClass="ImportMetaMaskInfoViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Vus-z5-R7O"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ybn-6K-hoG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="avC-Tn-2fx">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twe-Qb-JI2">
+                                <rect key="frame" x="144.5" y="25" width="86" height="49.5"/>
+                                <string key="text">Import
+MetaMask</string>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="remove_cross_alt" translatesAutoresizingMaskIntoConstraints="NO" id="9X3-Mc-Hv5">
+                                <rect key="frame" x="340" y="40.5" width="19" height="19"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="9X3-Mc-Hv5" secondAttribute="height" multiplier="1:1" id="4t1-5I-bre"/>
+                                    <constraint firstAttribute="width" constant="19" id="BbV-ef-dpO"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GL4-Oe-0iF">
+                                <rect key="frame" x="315" y="20" width="60" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="XXX-8m-bFM"/>
+                                    <constraint firstAttribute="height" constant="45" id="kWJ-bD-5NQ"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="closeBtn:" destination="goH-wX-Zqg" eventType="touchUpInside" id="rvO-0S-GA5"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="metamaskLogo1" translatesAutoresizingMaskIntoConstraints="NO" id="FXD-9J-427">
+                                <rect key="frame" x="123.5" y="104.5" width="128" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="128" id="7nj-i5-YgS"/>
+                                    <constraint firstAttribute="width" secondItem="FXD-9J-427" secondAttribute="height" multiplier="1:1" id="CA4-Ez-QLl"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your seed phrase (12 fancy words) to use your Metamask wallets with Multy. " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="810-r6-QuG">
+                                <rect key="frame" x="16" y="262.5" width="343" height="49.5"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWE-W7-MnC">
+                                <rect key="frame" x="16" y="342" width="343" height="96"/>
+                                <string key="text">We do not store your seed in plain text and do not transfer it, nor any private and public keys of your wallets anywhere, they stay on the device encrypted and safe and only used to sign transactions you explicitly request Multy to perform. </string>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hh8-KJ-6Hv" customClass="ZFRippleButton" customModule="ZFRippleButton">
+                                <rect key="frame" x="0.0" y="603" width="375" height="64"/>
+                                <color key="backgroundColor" red="0.0" green="0.69803921570000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="odx-3Y-UcA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
+                                <state key="normal" title="Continue">
+                                    <color key="titleColor" red="0.97647058819999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="continueAction:" destination="goH-wX-Zqg" eventType="touchUpInside" id="Hsh-hT-qgm"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlA-Sh-a2q">
+                                <rect key="frame" x="16" y="32" width="54" height="36"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelAction:" destination="wqv-j7-zb4" eventType="touchUpInside" id="JeM-h4-kV8"/>
+                                    <action selector="closeBtnAction:" destination="goH-wX-Zqg" eventType="touchUpInside" id="u7L-i1-kXb"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.97647058823529409" green="0.98039215686274506" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="810-r6-QuG" firstAttribute="top" secondItem="FXD-9J-427" secondAttribute="bottom" constant="30" id="8RT-Uh-bW3"/>
+                            <constraint firstItem="GL4-Oe-0iF" firstAttribute="top" secondItem="Vus-z5-R7O" secondAttribute="bottom" id="929-bj-wG6"/>
+                            <constraint firstItem="9X3-Mc-Hv5" firstAttribute="centerY" secondItem="twe-Qb-JI2" secondAttribute="centerY" id="AfP-l7-m9g"/>
+                            <constraint firstItem="810-r6-QuG" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" constant="16" id="IGF-lV-BcN"/>
+                            <constraint firstAttribute="trailing" secondItem="GL4-Oe-0iF" secondAttribute="trailing" id="Igg-YA-EKz"/>
+                            <constraint firstAttribute="trailing" secondItem="9X3-Mc-Hv5" secondAttribute="trailing" constant="16" id="Muz-eQ-wC4"/>
+                            <constraint firstItem="twe-Qb-JI2" firstAttribute="centerX" secondItem="avC-Tn-2fx" secondAttribute="centerX" id="QG4-wM-WGW"/>
+                            <constraint firstItem="VWE-W7-MnC" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" constant="16" id="R4U-re-wkQ"/>
+                            <constraint firstAttribute="trailing" secondItem="810-r6-QuG" secondAttribute="trailing" constant="16" id="XI5-NQ-ehS"/>
+                            <constraint firstItem="twe-Qb-JI2" firstAttribute="top" secondItem="Vus-z5-R7O" secondAttribute="bottom" constant="5" id="Z17-Nf-HVC"/>
+                            <constraint firstItem="Hh8-KJ-6Hv" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" id="Zu0-Pf-6pl"/>
+                            <constraint firstItem="rlA-Sh-a2q" firstAttribute="centerY" secondItem="twe-Qb-JI2" secondAttribute="centerY" id="a9U-kx-O1l"/>
+                            <constraint firstItem="FXD-9J-427" firstAttribute="centerX" secondItem="avC-Tn-2fx" secondAttribute="centerX" id="bYB-Gm-LI6"/>
+                            <constraint firstItem="rlA-Sh-a2q" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" constant="16" id="cC6-sF-yRf"/>
+                            <constraint firstItem="FXD-9J-427" firstAttribute="top" secondItem="twe-Qb-JI2" secondAttribute="bottom" constant="30" id="fEt-l3-mG5"/>
+                            <constraint firstItem="Ybn-6K-hoG" firstAttribute="top" secondItem="Hh8-KJ-6Hv" secondAttribute="bottom" id="jjq-Gj-x6F"/>
+                            <constraint firstAttribute="trailing" secondItem="Hh8-KJ-6Hv" secondAttribute="trailing" id="vNx-7l-021"/>
+                            <constraint firstItem="VWE-W7-MnC" firstAttribute="top" secondItem="810-r6-QuG" secondAttribute="bottom" constant="30" id="wsg-Np-kWd"/>
+                            <constraint firstAttribute="trailing" secondItem="VWE-W7-MnC" secondAttribute="trailing" constant="16" id="xCs-au-uPW"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="continueBtn" destination="Hh8-KJ-6Hv" id="4U1-qx-CER"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rf1-sP-VUM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1948" y="3434.9325337331338"/>
         </scene>
         <!--Seed Phrase Word View Controller-->
         <scene sceneID="yGr-L9-98S">
@@ -720,6 +834,8 @@ Seed Phrase!</string>
         <image name="error" width="133" height="133"/>
         <image name="errorSeed" width="271" height="31"/>
         <image name="infoIconRed" width="24" height="24"/>
+        <image name="metamaskLogo1" width="96" height="96"/>
+        <image name="remove_cross_alt" width="14" height="14"/>
         <image name="snapShot" width="62" height="62"/>
         <image name="spyCam" width="62" height="62"/>
         <image name="spyIcon" width="62" height="62"/>

@@ -26,7 +26,7 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.fixForiPad()
         sendAnalyticsEvent(screenName: screenViewPhrase, eventName: screenViewPhrase)
     }
@@ -87,6 +87,7 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
         if segue.identifier == "checkPhraseVC" {
             let nextVC = segue.destination as! CheckWordsViewController
             nextVC.isRestore = self.isRestore
+            nextVC.presenter.accountType = DataManager.shared.accountType
             nextVC.whereFrom = self.whereFrom
         }
     }

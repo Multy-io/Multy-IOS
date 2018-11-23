@@ -35,7 +35,7 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
         super.viewDidLoad()
         self.presenter.receiveStartVC = self
         view.addSubview(loader)
-        self.swipeToBack()
+        self.enableSwipeToBack()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
 //        self.tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
@@ -124,11 +124,12 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
         let wallet = self.presenter.walletsArr[indexPath.row]
         walletCell.wallet = wallet
         walletCell.fillInCell()
-        if presenter.preselectedWallet != nil && presenter.preselectedWallet!.address == wallet.address {
+        if presenter.preselectedWallet != nil && presenter.preselectedWallet!.id == wallet.id {
             walletCell.arrowImage.image = UIImage(named: "checkmark")
         } else {
             walletCell.arrowImage.image = nil
         }
+        
         return walletCell
     }
     
