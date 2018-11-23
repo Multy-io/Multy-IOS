@@ -379,6 +379,8 @@ class SendAmountPresenter: NSObject {
                     message = vc!.localize(string: Constants.youEnteredTooSmallAmountString)
                 } else if message.hasPrefix("Transaction is trying to spend more than available in inputs") {
                     message = vc!.localize(string: Constants.youTryingSpendMoreThenHaveString)
+                } else if message.hasPrefix("Transaction is trying to spend more than available") {
+                    message = vc!.localize(string: Constants.youTryingSpendMoreThenHaveString)
                 }
                 
                 let alert = UIAlertController(title: vc!.localize(string: Constants.errorString), message: message, preferredStyle: .alert)
