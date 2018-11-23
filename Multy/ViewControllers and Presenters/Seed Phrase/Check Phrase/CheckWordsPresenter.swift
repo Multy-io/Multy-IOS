@@ -62,16 +62,25 @@ class CheckWordsPresenter: NSObject {
         checkWordsVC?.nextWordOrContinue.isEnabled = false
         checkWordsVC?.loader.show(customTitle: localize(string: Constants.restoreMultyString))
         
-        DataManager.shared.auth(rootKey: seedString) { (acc, err) in
-//            print(acc ?? "")
-            self.checkWordsVC?.wordTF.resignFirstResponder()
-            self.checkWordsVC?.navigationController?.popToRootViewController(animated: true)
-            self.checkWordsVC?.view.isUserInteractionEnabled = true
-            self.checkWordsVC?.loader.hide()
-            
-            DataManager.shared.socketManager.start()
-            DataManager.shared.subscribeToFirebaseMessaging()
+        DataManager.shared.auth(rootKey: seedString) { [unowned self] (acc, err) in
+            if self.accountType == .metamask {
+                DataManager.shared.restoreMetamaskWallets(seedPhrase: seedString, completion: { [unowned self] (bool) in
+                    self.toMainScreen()
+                })
+            } else {
+                self.toMainScreen()
+            }
         }
+    }
+    
+    func toMainScreen() {
+        checkWordsVC?.wordTF.resignFirstResponder()
+        checkWordsVC?.navigationController?.popToRootViewController(animated: true)
+        checkWordsVC?.view.isUserInteractionEnabled = true
+        checkWordsVC?.loader.hide()
+        
+        DataManager.shared.socketManager.start()
+        DataManager.shared.subscribeToFirebaseMessaging()
     }
     
 //    func metaMaskSetup() {

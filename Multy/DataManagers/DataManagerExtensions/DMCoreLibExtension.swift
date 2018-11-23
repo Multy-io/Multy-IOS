@@ -4,6 +4,7 @@
 
 import Foundation
 import RealmSwift
+import Alamofire
 
 private typealias MultisigManager = DataManager
 private typealias CoreLibPrivateKeyFixManager = DataManager
@@ -413,6 +414,36 @@ extension CoreLibInfoManager {
             
             return createAddress(blockchainType: wallet.blockchainType, walletID: wallet.walletID.uint32Value, addressID: 0, binaryData: &binData)
         }
+    }
+    
+    func metamaskWalletsInfoForRestore(seedPhrase: String, isMainnet: Bool) -> Parameters {
+        var params = Parameters()
+        
+        params["currencyID"] = 60
+        params["networkId"] = isMainnet ? ETHEREUM_CHAIN_ID_MAINNET.rawValue : ETHEREUM_CHAIN_ID_RINKEBY.rawValue
+        
+        params["addresses"] = generateMetamaskAddressesInfo(seedPhrase: seedPhrase, isMainnet: isMainnet)
+        
+        return params
+    }
+    
+    func generateMetamaskAddressesInfo(seedPhrase: String, isMainnet: Bool) -> Array<Parameters> {
+        var binData = coreLibManager.createSeedBinaryData(from: seedPhrase)!
+        var addressesInfo = Array<Parameters>()
+        let blockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MAINNET.rawValue))
+        (0..<10).forEach {
+            var addressInfo = Parameters()
+            let info = coreLibManager.createAddress(blockchainType: blockchainType, walletID: 0, addressID: UInt32($0), binaryData: &binData)
+            
+            addressInfo["walletIndex"] = UInt32($0)
+            addressInfo["addressIndex"] = 0
+            addressInfo["address"] = info!["address"] ?? ""
+            addressInfo["walletName"] = "Account " + "\($0)"
+            
+            addressesInfo.append(addressInfo)
+        }
+        
+        return addressesInfo
     }
 }
 

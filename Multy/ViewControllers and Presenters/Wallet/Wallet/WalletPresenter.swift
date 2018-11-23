@@ -322,6 +322,7 @@ class WalletPresenter: NSObject {
             
             return false
         }
+        
         return true
     }
     

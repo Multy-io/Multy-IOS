@@ -180,7 +180,11 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
         self.view.endEditing(true)
         
         if self.presenter.selectedIndexOfSpeed != nil {
-            presenter.segueToAmount()
+            if presenter.isWalletAmountEnough() {
+                presenter.segueToAmount()
+            } else {
+                presentAlert(with: localize(string: Constants.youTryingSpendMoreThenHaveString))
+            }
         } else {
             let alert = UIAlertController(title: localize(string: Constants.pleaseChooseFeeRate), message: localize(string: Constants.predefinedValueMessageString), preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))

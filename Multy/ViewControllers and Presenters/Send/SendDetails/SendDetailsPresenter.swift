@@ -7,6 +7,7 @@ import RealmSwift
 
 private typealias LocalizeDelegate = SendDetailsPresenter
 private typealias CustomFeeRateDelegate = SendDetailsPresenter
+private typealias CreateTransactionDelegate = SendDetailsPresenter
 
 class SendDetailsPresenter: NSObject {
     
@@ -18,7 +19,19 @@ class SendDetailsPresenter: NSObject {
             cryptoName = transactionDTO.assetsWallet.assetShortName
             fiatName = transactionDTO.choosenWallet!.fiatName
             feeRates = defaultFeeRates()
+            
+            if transactionDTO.isTokenTransfer {
+                sendTXMode = SendTXMode.erc20
+                tokenWallet = transactionDTO.choosenWallet
+            }
            
+            assetsWallet = transactionDTO.assetsWallet
+            blockchainType = transactionDTO.blockchainType!
+            blockchain = blockchainType.blockchain
+            blockchainObject = (sendTXMode == SendTXMode.crypto) ? blockchain : tokenWallet!.token
+            sendCryptoBlockchainType = (blockchain == BLOCKCHAIN_ERC20) ? BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: blockchainType.net_type) : blockchainType
+            sendCryptoBlockchain = sendCryptoBlockchainType.blockchain
+            
             if transactionDTO.blockchain == BLOCKCHAIN_ETHEREUM {
                 if transactionDTO.choosenWallet!.isMultiSig {
                     DataManager.shared.estimation(for: transactionDTO.choosenWallet!.address) { [weak self] in
@@ -47,6 +60,19 @@ class SendDetailsPresenter: NSObject {
     
     var availableSumInCrypto    : BigInt?
     var availableSumInFiat      : BigInt?
+    
+    var assetsWallet = UserWalletRLM()
+    private var addressData : Dictionary<String, Any>?
+    private var binaryData : BinaryData?
+    var blockchainObject: Any?
+    var sendTXMode = SendTXMode.crypto
+    var tokenWallet: UserWalletRLM?
+    var blockchainType = BlockchainType(blockchain: BLOCKCHAIN_BITCOIN, net_type: 0)
+    var blockchain = BLOCKCHAIN_BITCOIN
+    var sendCryptoBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_BITCOIN, net_type: 0)
+    var sendCryptoBlockchain = BLOCKCHAIN_BITCOIN
+    private var rawTransaction = String()
+    var linkedWallet: UserWalletRLM? // for multisig wallets
     
     var selectedIndexOfSpeed: Int? {
         didSet {
@@ -232,6 +258,34 @@ class SendDetailsPresenter: NSObject {
     func changeDonationString(_ toAmount: String?) {
         donationInCryptoString = toAmount
     }
+    
+    func isWalletAmountEnough() -> Bool {
+        return estimateTransactionAndValidationResult()
+    }
+    
+    private func estimateTransactionAndValidationResult() -> Bool {
+        let dm = DataManager.shared
+        binaryData = dm.realmManager.account!.binaryDataString.createBinaryData()!
+        
+        if !assetsWallet.isImported  {
+            addressData = dm.createAddress(blockchainType:sendCryptoBlockchainType,
+                                           walletID:      assetsWallet.walletID.uint32Value,
+                                           addressID:     assetsWallet.changeAddressIndex,
+                                           binaryData:    &binaryData!)
+        }
+
+        
+        switch transactionDTO.assetsWallet.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            return estimateBTCTransactionAndValidation()
+        case BLOCKCHAIN_ETHEREUM:
+            return estimateETHTransactionAndValidation()
+        case BLOCKCHAIN_ERC20:
+            return estimateTokenTransactionAndValidation()
+        default:
+            return false
+        }
+    }
 }
 
 extension LocalizeDelegate: Localizable {
@@ -255,5 +309,109 @@ extension CustomFeeRateDelegate: CustomFeeRateProtocol {
         self.vc?.tableView.selectRow(at: [0,index!], animated: false, scrollPosition: .none)
         self.vc?.tableView.delegate?.tableView!(self.vc!.tableView, didSelectRowAt: [0,index!])
         self.selectedIndexOfSpeed = index!
+    }
+}
+
+//FIXME: combine this extension with analogous from SendAmountPresenter
+extension CreateTransactionDelegate {
+    func estimateBTCTransactionAndValidation() -> Bool {
+        let blockchaintType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
+        
+        if blockchaintType.blockchain != BLOCKCHAIN_BITCOIN {
+            print("\n\n\nnot right screen\n\n\n")
+        }
+        
+        let pointer = addressData?["addressPointer"] as? UnsafeMutablePointer<OpaquePointer?>
+        
+        guard pointer != nil, transactionDTO.sendAddress != nil, transactionDTO.BTCDTO != nil, transactionDTO.BTCDTO!.feePerByte != nil, transactionDTO.choosenWallet != nil, binaryData != nil else {
+            return false
+        }
+        
+        let trData = DataManager.shared.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                          sendAddress: transactionDTO.sendAddress!,
+                                                          sendAmountString: "0",
+                                                          feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
+                                                          isDonationExists: transactionDTO.donationAmount != nil && !transactionDTO.donationAmount!.isZero,
+                                                          donationAmount: transactionDTO.donationAmount?.cryptoValueString(for: blockchainObject) ?? BigInt.zero().stringValue,
+                                                          isPayCommission: true,
+                                                          wallet: transactionDTO.choosenWallet!,
+                                                          binaryData: &binaryData!,
+                                                          inputs: transactionDTO.choosenWallet!.addresses)
+        
+//        feeEstimationInCrypto = BigInt(trData.2)
+        rawTransaction = trData.0
+        
+        return trData.1 >= 0
+    }
+    
+    func estimateETHTransactionAndValidation() -> Bool {
+        if transactionDTO.choosenWallet!.isMultiSig {
+            if linkedWallet == nil {
+                rawTransaction = "Error"
+                
+                return false
+            }
+            
+            guard binaryData != nil,  linkedWallet != nil, transactionDTO.choosenWallet != nil, transactionDTO.sendAddress != nil else {
+                return false
+            }
+            
+            let trData = DataManager.shared.createMultiSigTx(wallet: linkedWallet!,
+                                                             sendFromAddress: transactionDTO.choosenWallet!.address,
+                                                             sendAmountString: "0",
+                                                             sendToAddress: transactionDTO.sendAddress!,
+                                                             msWalletBalance: transactionDTO.choosenWallet!.availableAmount.stringValue,
+                                                             gasPriceString: transactionDTO.ETHDTO!.gasPrice.stringValue,
+                                                             gasLimitString: transactionDTO.ETHDTO!.gasLimit.stringValue)
+            
+            //            let trData2 = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
+            //                                                             wallet: linkedWallet!,
+            //                                                             sendFromAddress: transactionDTO.choosenWallet!.address,
+            //                                                             sendAmountString: sendAmount.stringValue,
+            //                                                             sendToAddress: transactionDTO.sendAddress!,
+            //                                                             msWalletBalance: transactionDTO.choosenWallet!.availableAmount.stringValue,
+            //                                                             gasPriceString: transactionDTO.ETHDTO!.gasPrice.stringValue,
+            //                                                             gasLimitString: transactionDTO.ETHDTO!.gasLimit.stringValue)
+            
+            rawTransaction = trData.message
+            
+            return trData.isTransactionCorrect
+        } else {
+            guard transactionDTO.sendAddress != nil, transactionDTO.choosenWallet != nil, transactionDTO.choosenWallet!.ethWallet != nil else {
+                return false
+            }
+            
+            let trData = DataManager.shared.createETHTransaction(wallet: assetsWallet,
+                                                                 sendAmountString: "0",
+                                                                 destinationAddress: transactionDTO.sendAddress!,
+                                                                 gasPriceAmountString: transactionDTO.ETHDTO!.gasPrice.stringValue,
+                                                                 gasLimitAmountString: transactionDTO.ETHDTO!.gasLimit.stringValue)
+            
+            //            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
+            //                                                                                  sendAddress: transactionDTO.sendAddress!,
+            //                                                                                  sendAmountString: sendAmount.stringValue,
+            //                                                                                  nonce: transactionDTO.choosenWallet!.ethWallet!.nonce.intValue,
+            //                                                                                  balanceAmount: "\(transactionDTO.choosenWallet!.ethWallet!.balance)",
+            //                ethereumChainID: UInt32(transactionDTO.choosenWallet!.blockchainType.net_type),
+            //                gasPrice: transactionDTO.ETHDTO!.gasPrice.stringValue,
+            //                gasLimit: "21000") // transactionDTO.ETHDTO!.gasLimit.stringValue)
+            
+            rawTransaction = trData.message
+            
+            return trData.isTransactionCorrect
+        }
+    }
+    
+    func estimateTokenTransactionAndValidation() -> Bool {
+        let rawTX = DataManager.shared.createERC20TokenTransaction(wallet: assetsWallet,
+                                                                   tokenWallet: tokenWallet!,
+                                                                   sendTokenAmountString: "0",
+                                                                   destinationAddress: transactionDTO.sendAddress!,
+                                                                   gasPriceAmountString: transactionDTO.ETHDTO!.gasPrice.stringValue,
+                                                                   gasLimitAmountString: transactionDTO.ETHDTO!.gasLimit.stringValue)
+        
+        rawTransaction = rawTX.message
+        
+        return rawTX.isTransactionCorrect
     }
 }

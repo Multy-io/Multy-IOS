@@ -345,9 +345,16 @@ class SendAmountPresenter: NSObject {
     }
     
     func goToFinish() {
-        if estimateTransactionAndValidation() && sendAmountInCryptoMinimalUnits.isNonZero {
+        let isvalid = estimateTransactionAndValidation()
+        if isvalid && sendAmountInCryptoMinimalUnits.isNonZero {
             assembleTransaction()
             vc?.segueToFinish()
+        } else {
+            if isvalid == false {
+                vc!.presentAlert(with: rawTransaction)
+            } else {
+                vc!.presentAlert(with: vc!.localize(string: Constants.enterNonZeroAmountString))
+            }
         }
     }
     

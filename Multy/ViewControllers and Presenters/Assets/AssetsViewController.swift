@@ -64,7 +64,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setpuUI()
-
+        
         let dm = DataManager.shared
         let mkg = MasterKeyGenerator.shared
         self.performFirstEnterFlow { [unowned self, unowned dm, unowned mkg] (succeeded) in
