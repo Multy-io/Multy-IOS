@@ -138,7 +138,7 @@ class HistoryRLM: Object {
         if let txoutamount = historyDict["txoutamount"] as? NSNumber {
             hist.txOutAmount = txoutamount
         } else if let txOutAmountString = historyDict["txoutamount"] as? String {
-            hist.txOutAmountString = txOutAmountString
+            hist.txOutAmountString = txOutAmountString == "" ? "0" : txOutAmountString
         }
         
         if let gasPrice = historyDict["gasprice"] as? NSNumber {

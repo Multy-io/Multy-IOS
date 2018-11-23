@@ -80,11 +80,11 @@ class ImportMSPresenter: NSObject {
         let primaryKey = DataManager.shared.generateImportedWalletPrimaryKey(currencyID: selectedBlockchainType.blockchain.rawValue,
                                                                              networkID: UInt32(selectedBlockchainType.net_type),
                                                                              address: generatedAddress)
+        blockUI()
         DataManager.shared.getWallet(primaryKey: primaryKey) { [unowned self] in
             switch $0 {
             case .success(let wallet):
-                if wallet.isImported && wallet.privateKey.isEmpty {
-//                    self.importWallets(address: generatedAddress, pubKey: generatedPublic)
+                if wallet.isImported && wallet.importedPrivateKey.isEmpty {
                     DataManager.shared.update(wallet: wallet, impPK: privateKey, impPubK: generatedPublic)
                     self.importMSWallet(address: generatedAddress)
                 } else {
@@ -113,7 +113,12 @@ class ImportMSPresenter: NSObject {
                 self.importMultiSig(contractAddress: self.importVC!.msAddressTextView.text!,
                                     linkedWalletAddress: address,
                                     completion: { (answer, err) in
-                                        self.sendImportedWalletByDelegateAndExit()
+                                        if err == nil {
+                                            self.sendImportedWalletByDelegateAndExit()
+                                        } else {
+                                            let message = Constants.wrongMSaddressString
+                                            self.importVC!.presentAlert(with: self.importVC!.localize(string: message))
+                                        }
                 })
             }
         } else {
@@ -170,6 +175,7 @@ class ImportMSPresenter: NSObject {
             completion([:])
         } else {
             DataManager.shared.importWallet(params: params) { [unowned self] (dict, error) in
+                self.unlockUI()
                 if error == nil {
                     self.createImportedWalletInDB(params: params as NSDictionary, privateKey: self.importVC!.privateKeyTextView.text!, publicKey: publicKey)
                     print(dict!)
@@ -217,13 +223,25 @@ class ImportMSPresenter: NSObject {
         ] as [String : Any]
         
         DataManager.shared.importWallet(params: params) { [unowned self] (dict, error) in
+            self.unlockUI()
             if error == nil {
                 print("success")
                 print(dict!)
                 completion(dict!, nil)
             } else {
+                completion(nil, error)
                 print("fail")
             }
         }
+    }
+    
+    func blockUI() {
+        importVC!.view.isUserInteractionEnabled = false
+        importVC!.loader.show(customTitle: importVC?.localize(string: Constants.loadingString))
+    }
+    
+    func unlockUI() {
+        importVC!.view.isUserInteractionEnabled = true
+        importVC!.loader.hide()
     }
 }
