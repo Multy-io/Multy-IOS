@@ -174,7 +174,7 @@ class BrowserViewController: UIViewController, AnalyticsProtocol {
             }
             
             if txID == self.lastTxID {
-//                self.webView.reload()
+                self.webView.reload()
                 self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
             }
             
@@ -325,7 +325,7 @@ extension BrowserViewController {
     func refreshWalletAndSendTx(for object: OperationObject) {
         DataManager.shared.getOneWalletVerbose(wallet: wallet) { [unowned self] (wallet, error) in
             if error != nil {
-//                self.webView.reload()
+                self.webView.reload()
                 self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
                 self.presentAlert(for: "") // default message
             } else {
@@ -345,7 +345,7 @@ extension BrowserViewController {
         
         alert.addAction(UIAlertAction(title: localize(string: Constants.denyString), style: .default, handler: { [weak self] (action) in
             if self != nil {
-//                self!.webView.reload()
+                self!.webView.reload()
                 self!.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
             }
         }))
@@ -407,7 +407,7 @@ extension BrowserViewController {
         let rawTransaction = trData.message
         
         guard trData.isTransactionCorrect else {
-//            self.webView.reload()
+            self.webView.reload()
             self.presentAlert(for: rawTransaction)
             
             return
@@ -433,7 +433,7 @@ extension BrowserViewController {
                 self.saveLastTXID(from:  dict!)
                 
                 self.showSuccessAlert()
-//                self.webView.reload()
+                self.webView.reload()
                 self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
                 
                 let amountString = BigInt("\(object.value)").cryptoValueString(for: self.wallet.blockchain)
@@ -443,7 +443,7 @@ extension BrowserViewController {
                                                                                                contractMethod: String(dappPayload.prefix(8))))
             } else {
                 self.presentAlert(for: "")
-//                self.webView.reload()
+                self.webView.reload()
                 self.webView.scrollView.setContentOffset(CGPoint.zero, animated: true)
             }
         }
