@@ -187,21 +187,10 @@ class SettingsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         let appURL = NSURL(string: "tg://resolve?domain=multy_io")!
         let webURL = NSURL(string: "https://t.me/multy_io")!
         if UIApplication.shared.canOpenURL(appURL as URL) {
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(appURL as URL, options: [:], completionHandler: nil)
-            }
-            else {
-                UIApplication.shared.openURL(appURL as URL)
-            }
-        }
-        else {
+            UIApplication.shared.openURL(appURL as URL)
+        } else {
             //redirect to safari because the user doesn't have Telegram
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(webURL as URL, options: [:], completionHandler: nil)
-            }
-            else {
-                UIApplication.shared.openURL(webURL as URL)
-            }
+            UIApplication.shared.open(webURL as URL, options: [:], completionHandler: nil)
         }
     }
     
