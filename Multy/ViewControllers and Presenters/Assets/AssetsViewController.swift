@@ -698,7 +698,6 @@ extension TableViewDelegate : UITableViewDelegate {
                     sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
                     //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
                     self.view.isUserInteractionEnabled = false
-                    DataManager.shared.restoreAccountType = .multy
                     createFirstWallets(isNeedEthTest: false) { [unowned self] (error) in
                         self.view.isUserInteractionEnabled = true
                         
