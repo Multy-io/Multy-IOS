@@ -40,8 +40,6 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         super.viewDidLoad()
         self.enableSwipeToBack()
         
-        presenter.accountType = DataManager.shared.restoreAccountType ?? DataManager.shared.accountType
-        
         loader.show(customTitle: localize(string: Constants.restoringWalletsString))
         self.view.addSubview(loader)
         loader.hide()
@@ -53,7 +51,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
             wordTF.font?.withSize(50.0)
         }
         
-        bricksView.addSubview(BricksView(with: bricksView.bounds, and: 0, color: brickColorSelectedGreen))
+        bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, color: brickColorSelectedGreen, and: 0))
         
         self.presenter.checkWordsVC = self
         self.presenter.getSeedPhrase()
@@ -93,7 +91,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
             self.view.isUserInteractionEnabled = true
             self.presenter.phraseArr.removeAll()
             bricksView.subviews.forEach({ $0.removeFromSuperview() })
-            bricksView.addSubview(BricksView(with: bricksView.bounds, and: 0, color: brickColorSelectedGreen))
+            bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, color: brickColorSelectedGreen, and: 0))
         }
     }
     
@@ -148,7 +146,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         }
         
         bricksView.subviews.forEach({ $0.removeFromSuperview() })
-        bricksView.addSubview(BricksView(with: bricksView.bounds, and: currentWordNumber, color: brickColorSelectedGreen))
+        bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, color: brickColorSelectedGreen, and: currentWordNumber))
         
         if currentWordNumber == presenter.wordsCount {
             nextWordOrContinue.setTitle(localize(string: Constants.continueString), for: .normal)

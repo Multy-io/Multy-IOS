@@ -4,6 +4,7 @@
 
 import Foundation
 import RealmSwift
+import Alamofire
 
 private typealias MultisigManager = DataManager
 private typealias CoreLibPrivateKeyFixManager = DataManager
@@ -14,10 +15,6 @@ extension DataManager {
 //    func isDeviceJailbroken() -> Bool {
 //        return coreLibManager.isDeviceJailbroken()
 //    }
-    
-    var accountType: AccountType {
-        return realmManager.account!.accountType
-    }
     
     func getMnenonicAllWords() -> Array<String> {
         return coreLibManager.mnemonicAllWords()
@@ -113,6 +110,37 @@ extension DataManager {
         return coreLibManager.createWallet(from: &binaryData,blockchain: localBlockchainType, walletID: localWalletID, addressID: localAddressID)
     }
     
+    func createPrivateKey(blockchain: BlockchainType, walletID: UInt32, addressID: UInt32, binaryData: inout BinaryData) -> UnsafeMutablePointer<OpaquePointer?>? {
+        let localBlockchainType = self.localBlockchainType(blockchainType: blockchain)
+        let localWalletID = self.localWalletID(blockchainType: blockchain, walletID: walletID)
+        let localAddressID = self.localAddressID(blockchainType: blockchain, walletID: walletID, addressID: 0)
+        
+        return coreLibManager.createPrivateKey(blockchain: localBlockchainType, walletID: localWalletID, addressID: localAddressID, binaryData: &binaryData)
+    }
+    
+    func createTransaction(addressPointer: UnsafeMutablePointer<OpaquePointer?>,
+                           sendAddress: String,
+                           sendAmountString: String,
+                           feePerByteAmount: String,
+                           isDonationExists: Bool,
+                           donationAmount: String,
+                           isPayCommission: Bool,
+                           wallet: UserWalletRLM,
+                           binaryData: inout BinaryData,
+                           inputs: List<AddressRLM>) -> (String, Double, String) {
+        
+        return coreLibManager.createTransaction(addressPointer: addressPointer,
+                                                sendAddress: sendAddress,
+                                                sendAmountString: sendAmountString,
+                                                feePerByteAmount: feePerByteAmount,
+                                                isDonationExists: isDonationExists,
+                                                donationAmount: donationAmount,
+                                                isPayCommission: isPayCommission,
+                                                wallet: wallet,
+                                                binaryData: &binaryData,
+                                                inputs: inputs)
+    }
+    
     func importWalletBy(privateKey: String, blockchain: BlockchainType, walletID: Int32) -> Dictionary<String, Any>? {
         return coreLibManager.importWallet(blockchain: blockchain, walletID: walletID, privateKey: privateKey)
     }
@@ -136,16 +164,16 @@ extension DataManager {
                                              addressID: UInt32(transactionDTO.choosenWallet!.addresses.count),
                                              binaryData: &binaryData)
         
-        let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                         sendAddress: transactionDTO.sendAddress!,
-                                                                         sendAmountString: transactionDTO.sendAmountString!,
-                                                                         feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
-                                                                         isDonationExists: false,
-                                                                         donationAmount: "0",
-                                                                         isPayCommission: false,
-                                                                         wallet: transactionDTO.choosenWallet!,
-                                                                         binaryData: &binaryData,
-                                                                         inputs: transactionDTO.choosenWallet!.addresses)
+        let trData = DataManager.shared.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                          sendAddress: transactionDTO.sendAddress!,
+                                                          sendAmountString: transactionDTO.sendAmountString!,
+                                                          feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
+                                                          isDonationExists: false,
+                                                          donationAmount: "0",
+                                                          isPayCommission: false,
+                                                          wallet: transactionDTO.choosenWallet!,
+                                                          binaryData: &binaryData,
+                                                          inputs: transactionDTO.choosenWallet!.addresses)
         
         if trData.1 < 0 {
             completion(trData.0, NSError(domain: "", code: 400, userInfo: nil))
@@ -282,10 +310,65 @@ extension CoreLibETHManager {
         payloadDict["destination_amount"] =     sendAmountString
         payloadDict["destination_address"] =    destinationAddress
         if payload.isEmpty == false {
-            payloadDict["destination_address"] =    payload
+            payloadDict["payload"] =    payload
         }
         
         
+        builderDict["payload"] =                payloadDict
+        txInfo["builder"] =                     builderDict
+        
+        //transaction
+        txDict["nonce"] =               wallet.ethWallet!.nonce
+        feeDict["gas_price"] =          gasPriceAmountString
+        feeDict["gas_limit"] =          gasLimitAmountString
+        txDict["fee"] =                 feeDict
+        txInfo["transaction"] =         txDict
+        
+        let rawTX = makeTX(from: txInfo)
+        
+        switch rawTX {
+        case .success(let txString):
+            return (true, txString)
+        case .failure(let error):
+            return (false, error)
+        }
+    }
+    
+    func createERC20TokenTransaction(wallet: UserWalletRLM,
+                                     tokenWallet: UserWalletRLM,
+                                     sendTokenAmountString: String,
+                                     destinationAddress: String,
+                                     gasPriceAmountString: String,
+                                     gasLimitAmountString: String) -> (isTransactionCorrect: Bool, message: String) {
+        let info = privateInfo(for: wallet)
+        if info == nil {
+            return (false, "Error")
+        }
+        
+        var txInfo = Dictionary<String, Any>()
+        var accountDict = Dictionary<String, Any>()
+        var builderDict = Dictionary<String, Any>()
+        var payloadDict = Dictionary<String, Any>()
+        var txDict = Dictionary<String, Any>()
+        var feeDict = Dictionary<String, Any>()
+        
+        txInfo["blockchain"] =          wallet.blockchain.fullName
+        txInfo["net_type"] =            wallet.blockchainType.net_type
+        
+        //account
+        accountDict["type"] =           ACCOUNT_TYPE_DEFAULT.rawValue
+        accountDict["private_key"] =    info!["privateKey"] as! String
+        txInfo["account"] =             accountDict
+        
+        //builder
+        builderDict["type"] =           "erc20"
+        builderDict["action"] =         "transfer"
+        //payload
+        payloadDict["balance_eth"] =            wallet.availableBalance.stringValue
+        payloadDict["contract_address"] =       tokenWallet.address
+        payloadDict["balance_token"] =          tokenWallet.ethWallet!.balance
+        payloadDict["transfer_amount_token"] =  sendTokenAmountString
+        payloadDict["destination_address"] =    destinationAddress
         builderDict["payload"] =                payloadDict
         txInfo["builder"] =                     builderDict
         
@@ -331,6 +414,36 @@ extension CoreLibInfoManager {
             
             return createAddress(blockchainType: wallet.blockchainType, walletID: wallet.walletID.uint32Value, addressID: 0, binaryData: &binData)
         }
+    }
+    
+    func metamaskWalletsInfoForRestore(seedPhrase: String, isMainnet: Bool) -> Parameters {
+        var params = Parameters()
+        
+        params["currencyID"] = 60
+        params["networkId"] = isMainnet ? ETHEREUM_CHAIN_ID_MAINNET.rawValue : ETHEREUM_CHAIN_ID_RINKEBY.rawValue
+        
+        params["addresses"] = generateMetamaskAddressesInfo(seedPhrase: seedPhrase, isMainnet: isMainnet)
+        
+        return params
+    }
+    
+    func generateMetamaskAddressesInfo(seedPhrase: String, isMainnet: Bool) -> Array<Parameters> {
+        var binData = coreLibManager.createSeedBinaryData(from: seedPhrase)!
+        var addressesInfo = Array<Parameters>()
+        let blockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: Int(ETHEREUM_CHAIN_ID_MAINNET.rawValue))
+        (0..<10).forEach {
+            var addressInfo = Parameters()
+            let info = coreLibManager.createAddress(blockchainType: blockchainType, walletID: 0, addressID: UInt32($0), binaryData: &binData)
+            
+            addressInfo["walletIndex"] = UInt32($0)
+            addressInfo["addressIndex"] = 0
+            addressInfo["address"] = info!["address"] ?? ""
+            addressInfo["walletName"] = "Account " + "\($0 + 1)"
+            
+            addressesInfo.append(addressInfo)
+        }
+        
+        return addressesInfo
     }
 }
 

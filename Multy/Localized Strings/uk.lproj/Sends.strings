@@ -53,3 +53,4 @@
 "AND DONATION " = ",\nпожертвування - ";
 "ADD TO CONTACTS" = "Додати в контакт";
 "ENTERED INVALID SUM" = "Введена невірна сума";
+"ENTER NON-ZERO AMOUNT" = "Будь ласка, введіть ненульову кількість!";

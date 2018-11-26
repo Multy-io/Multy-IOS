@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>CFBundleDisplayName</key>
-	<string>metamask</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -36,9 +34,9 @@
 	<key>CFBundleVersion</key>
 	<string>75</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>Tokens</string>
+	<string>master</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>357538c4</string>
+	<string>0bd9ad0f</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_1.3.3_75_ImportMS-dirty</string>
 	<key>LSRequiresIPhoneOS</key>

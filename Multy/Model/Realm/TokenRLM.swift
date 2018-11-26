@@ -18,7 +18,7 @@ class TokenRLM: Object {
     }
     
     var tokenImageURLString: String {
-        return "https://raw.githubusercontent.com/TrustWallet/tokens/master/images/\(contractAddress).png"
+        return "https://raw.githubusercontent.com/Multy-io/tokens/master/images/\(contractAddress).png"
     }
     
     var precision: Int {

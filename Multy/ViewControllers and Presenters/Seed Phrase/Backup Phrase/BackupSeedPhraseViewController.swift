@@ -20,6 +20,7 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
     
     @IBOutlet weak var middleText: UILabel!
     
+    var accountType = DataManager.shared.accountType
     var isRestore = false
     
     var whereFrom: UIViewController?
@@ -27,10 +28,10 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if DataManager.shared.restoreAccountType == .metamask {
+//        if DataManager.shared.restoreAccountType == .metamask {
             bricksView.isHidden = false
-            bricksView.addSubview(BricksView(with: bricksView.bounds, and: 12, color: brickColorSelectedBlue))
-        }
+            bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: accountType, color: brickColorSelectedBlue, and: accountType.seedPhraseWordsCount))
+//        }
         self.enableSwipeToBack()
         self.fixForiPad()
         sendAnalyticsEvent(screenName: screenViewPhrase, eventName: screenViewPhrase)
@@ -92,6 +93,7 @@ class BackupSeedPhraseViewController: UIViewController, AnalyticsProtocol {
         if segue.identifier == "checkPhraseVC" {
             let nextVC = segue.destination as! CheckWordsViewController
             nextVC.isRestore = self.isRestore
+            nextVC.presenter.accountType = DataManager.shared.accountType
             nextVC.whereFrom = self.whereFrom
         }
     }

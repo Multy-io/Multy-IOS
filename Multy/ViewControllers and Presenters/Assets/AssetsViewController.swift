@@ -66,7 +66,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setpuUI()
-
+        
         let dm = DataManager.shared
         let mkg = MasterKeyGenerator.shared
         self.performFirstEnterFlow { [unowned self, unowned dm, unowned mkg] (succeeded) in
@@ -698,7 +698,6 @@ extension TableViewDelegate : UITableViewDelegate {
                     sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
                     //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
                     self.view.isUserInteractionEnabled = false
-                    DataManager.shared.restoreAccountType = .multy
                     createFirstWallets(isNeedEthTest: false) { [unowned self] (error) in
                         self.view.isUserInteractionEnabled = true
                         
@@ -724,8 +723,7 @@ extension TableViewDelegate : UITableViewDelegate {
                 let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
                 let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
                 backupSeedVC.isRestore = true
-                
-                DataManager.shared.restoreAccountType = .multy
+                backupSeedVC.presenter.accountType = .multy
                 
                 self.navigationController?.pushViewController(backupSeedVC, animated: true)
             } else {
@@ -739,8 +737,6 @@ extension TableViewDelegate : UITableViewDelegate {
                     checkServerConnection()
                     return
                 }
-                
-                DataManager.shared.restoreAccountType = .metamask
                 
                 let importMetaMaskVC = viewControllerFrom("SeedPhrase", "ImportMetaMask") as! ImportMetaMaskInfoViewController
                 self.navigationController?.pushViewController(importMetaMaskVC, animated: true)

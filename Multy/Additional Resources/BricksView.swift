@@ -7,13 +7,16 @@ import Foundation
 
 class BricksView: UIView {
     var currentCheckedWordCounter : Int = 3;
+    var accountType = AccountType.multy
     var brickColor = UIColor()
     
-    init(with rect : CGRect, and currentWordCounter: Int, color: UIColor) {
-        brickColor = color
+    init(with rect : CGRect, accountType: AccountType, color: UIColor, and currentWordCounter: Int) {
         super.init(frame: rect)
+        
+        brickColor = color
         backgroundColor = UIColor(red: 249.0/255.0, green: 250.0/255.0, blue: 1.0, alpha: 1.0)
         currentCheckedWordCounter = currentWordCounter
+        self.accountType = accountType
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -22,10 +25,10 @@ class BricksView: UIView {
     
     // here we draw green and red bricks depending the current state (segmentsCountUp and segmentsCountDown)
     override func draw(_ rect: CGRect) {
-        let segmentsCountUp = DataManager.shared.restoreAccountType!.segmentsCountUp
-        let segmentsCountDown = DataManager.shared.restoreAccountType!.segmentsCountDown
-        let upperSizes = DataManager.shared.restoreAccountType!.upperSizes
-        let downSizes = DataManager.shared.restoreAccountType!.downSizes
+        let segmentsCountUp = accountType.segmentsCountUp
+        let segmentsCountDown = accountType.segmentsCountDown
+        let upperSizes = accountType.upperSizes
+        let downSizes = accountType.downSizes
         
         for index in 0..<segmentsCountUp + segmentsCountDown {
             let widthUp = CGFloat((rect.size.width - 6 * 2) / 253.0)
