@@ -199,6 +199,10 @@ class SendAmountPresenter: NSObject {
     private var maxAllowedToSpendInCrypto: BigInt {
         get {
             var result = availableSumInCrypto
+            if sendTXMode == .erc20 {
+                return result
+            }
+            
             if payForCommission && feeEstimationInCrypto != nil {
                 result = result - feeEstimationInCrypto!
             }

@@ -83,6 +83,10 @@ class WalletPresenter: NSObject {
         }
     }
     
+    var isTokenDisplayed: Bool {
+        return walletRepresentingMode == .allInfo && wallet!.isTokenExist
+    }
+    
     func prepareAssetsData(array: List<WalletTokenRLM>?) {
         if walletRepresentingMode != .allInfo || wallet!.blockchain != BLOCKCHAIN_ETHEREUM {
             return
@@ -268,11 +272,15 @@ class WalletPresenter: NSObject {
     
     func getHistoryAndWallet() {
         if walletVC?.isCanUpdate == false {
+            self.walletVC?.spiner.stopAnimating()
+            self.walletVC?.isCanUpdate = true
+            
             return
         }
         
-        if walletRepresentingMode != .allInfo {
-//            sendTestToken()
+        if walletRepresentingMode == .tokenInfo {
+            self.walletVC?.spiner.stopAnimating()
+            self.walletVC?.isCanUpdate = true
             
             return
         }
