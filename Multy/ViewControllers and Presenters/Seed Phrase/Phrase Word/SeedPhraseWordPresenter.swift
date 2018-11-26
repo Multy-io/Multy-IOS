@@ -46,7 +46,7 @@ class SeedPhraseWordPresenter: NSObject {
         
 //        if DataManager.shared.restoreAccountType == .metamask {
             mainVC?.bricksView.isHidden = false
-            mainVC?.bricksView.subviews.forEach({ $0.removeFromSuperview() })
+            mainVC?.bricksView.subviews.forEach{ $0.removeFromSuperview() }
 
 //            if self.countOfTaps == 0 {
                 mainVC!.bricksView.addSubview(BricksView(with: mainVC!.bricksView.bounds, accountType: accountType, color: brickColorSelectedBlue, and: 3 * (countOfTaps + 1)))

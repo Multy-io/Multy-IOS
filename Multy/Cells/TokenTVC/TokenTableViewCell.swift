@@ -48,6 +48,8 @@ class TokenTableViewCell: UITableViewCell {
         
         tokenImg.image = UIImage(named: "chainEth")
         tokenImg.moa.url = tokenObj.tokenImageURLString
+        tokenImg.layer.cornerRadius = 15
+        tokenImg.clipsToBounds = true
         
 //        let fiatBalance = ethBalance * exchangeCourse
 //        fiatAmountLbl.text = "\(fiatBalance.fiatValueString(for: BLOCKCHAIN_ETHEREUM)) USD"
