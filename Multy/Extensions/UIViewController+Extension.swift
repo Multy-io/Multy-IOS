@@ -374,6 +374,17 @@ extension UIViewController {
         }
         
         return self
-
+    }
+    
+    func presentPrivateKeyView(wallet: UserWalletRLM, addressIndex: Int) {
+        let privateKeyVC = viewControllerFrom("Wallet", "privateKey") as! PrivateKeyViewController
+        privateKeyVC.modalPresentationStyle = .overCurrentContext
+        
+        DataManager.shared.getAccount(completion: { (acc, err) in
+            privateKeyVC.account = acc
+            privateKeyVC.wallet = wallet
+            privateKeyVC.addressID = addressIndex
+            self.present(privateKeyVC, animated: true, completion: nil)
+        })
     }
 }

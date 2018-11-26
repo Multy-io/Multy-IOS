@@ -69,7 +69,8 @@
 "wpE-FL-wp8.normalTitle" = "Continue";
 
 "twe-Qb-JI2.text" = "Enter in MetaMask";
-"rlA-Sh-a2q.text" = "Cancel";
+//"rlA-Sh-a2q.normalTitle" = "Cancel";
+
 "810-r6-QuG.text" = "Enter your seed phrase (12 fancy words) to use your Metamask wallets with Multy. ";
 "VWE-W7-MnC.text" = "We do not store your seed in plain text and do not transfer it, nor any private and public keys of your wallets anywhere, they stay on the device encrypted and safe and only used to sign transactions you explicitly request Multy to perform.";
 "Hh8-KJ-6Hv.normalTitle" = "Continue";
