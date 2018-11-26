@@ -256,7 +256,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         //------------  WARNING  ------------//
 //        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
 //        if presenter.wallet!.isTokenExist == false {
-            setTransactionsTableFirst(hide: !presenter.wallet!.isTokenExist)  // if wallet tokens == nil // ONLY TRANSACTIONS
+        setTransactionsTableFirst(hide: !presenter.isTokenDisplayed)  // if wallet tokens == nil // ONLY TRANSACTIONS
         setupTransactionAssetsBtns(false)
 //        }
         // ------------  WARNING  ------------
@@ -680,12 +680,13 @@ extension TableViewDelegate: UITableViewDelegate {
             //open
             tableView.deselectRow(at: indexPath, animated: true)
             let walletVC = viewControllerFrom("Wallet", "newWallet") as! WalletViewController
-            walletVC.presenter.walletRepresentingMode = .tokenInfo
             walletVC.presenter.account = presenter.account
             
             if indexPath.row == 0 {
+                walletVC.presenter.walletRepresentingMode = .txInfo
                 walletVC.presenter.wallet = presenter.wallet
             } else {
+                walletVC.presenter.walletRepresentingMode = .tokenInfo
                 walletVC.presenter.tokenHolderWallet = presenter.wallet!
                 walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.assetsDataSource[indexPath.row])
             }
