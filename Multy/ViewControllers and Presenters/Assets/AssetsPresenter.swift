@@ -234,7 +234,7 @@ class AssetsPresenter: NSObject {
 //    }
     
     func updateWalletsInfo(isInternetAvailable: Bool) {
-        self.assetsVC!.blockCollection(block: true)
+//        self.assetsVC!.blockCollection(block: true, isNeedToScroll: false)
         DataManager.shared.getAccount { [unowned self] (acc, err) in
             self.account = acc
             
@@ -244,7 +244,24 @@ class AssetsPresenter: NSObject {
 //                    self.unlockUI()
                 }
                 self.getWalletsVerbose(completion: { [unowned self] (_) in
-                    self.unlockUI()
+                    self.unlockUI(isNeedToScroll: false)
+                })
+            }
+        }
+    }
+    
+    func updateWalletsInfoByRefresh(isInternetAvailable: Bool, completion: @escaping(_ isEnd: Bool) -> ()) {
+//        self.assetsVC!.blockCollection(block: true, isNeedToScroll: false)
+        DataManager.shared.getAccount { [unowned self] (acc, err) in
+            self.account = acc
+            
+            if acc != nil {
+                //                self.blockUI()
+                if isInternetAvailable == false {
+                    //                    self.unlockUI()
+                }
+                self.getWalletsVerbose(completion: { [unowned self] (_) in
+                    completion(true)
                 })
             }
         }
@@ -341,13 +358,13 @@ class AssetsPresenter: NSObject {
 //        assetsVC?.tabBarController?.view.isUserInteractionEnabled = false
     }
     
-    func unlockUI() {
+    func unlockUI(isNeedToScroll: Bool) {
 //        assetsVC!.loader.hide()
 //        assetsVC!.progressHUD.unblockUIandHideProgressHUD()
         assetsVC?.tableView.isUserInteractionEnabled = true
 //        assetsVC?.tabBarController?.view.isUserInteractionEnabled = true
         assetsVC?.refreshControl.endRefreshing()
-        assetsVC!.blockCollection(block: false)
+//        assetsVC!.blockCollection(block: false, isNeedToScroll: isNeedToScroll)
     }
     
     func makeAuth(completion: @escaping (_ answer: String) -> ()) {

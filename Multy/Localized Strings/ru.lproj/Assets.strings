@@ -45,3 +45,4 @@
 "IMPORT METAMASK" = "Войти в MetaMask";
 "NOT CORRECT MS ADDRESS" = "Вы пытаетесь импортировать некорректный MultiSig адрес";
 "MAXIMUM EMPTY WALLETS" = "Создано максимальное количество пустых кошельков";
+"CREATE FIRST WALLET" = "Создать Первый Кошелек";
