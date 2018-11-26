@@ -206,6 +206,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(bluetoothReachabilityChangedNotificationName), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(socketManagerStatusChangedNotificationName), object: nil)
         
         presenter.changeReceivingEnabling(false)
         
@@ -223,7 +224,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: NSNotification.Name.UIApplicationWillEnterForeground, object:nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.applicationDidBecomeActive(notification:)), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.didChangedBluetoothReachability(notification:)), name: Notification.Name(bluetoothReachabilityChangedNotificationName), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didChangedSocketManagerStatus(notification:)), name: NSNotification.Name(socketManagerStatusChangedNotificationName), object: nil)
         super.viewWillAppear(animated)
         
         if !self.isFirstLaunch || !self.isInternetAvailable {
@@ -306,6 +307,12 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     @objc private func didChangedBluetoothReachability(notification: Notification) {
         DispatchQueue.main.async { [unowned self] in
             self.presenter.updateBluetoothReachability()
+        }
+    }
+    
+    @objc private func didChangedSocketManagerStatus(notification: Notification) {
+        DispatchQueue.main.async { [unowned self] in
+            self.presenter.updateSocketManagerStatus()
         }
     }
     

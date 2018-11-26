@@ -155,14 +155,15 @@ class SendPresenter: NSObject {
         if selectedActiveRequestIndex != nil  {
             let request = activeRequestsArr[selectedActiveRequestIndex!]
             
-            let blockchainType = BlockchainType.create(currencyID: UInt32(request.currencyID), netType: UInt32(request.networkID))
-            let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain)
-//            let address = request.sendAddress
-            
-            filteredWalletArray = filteredWalletArray.filter {
-                $0.blockchainType == blockchainType && $0.availableAmount > sendAmount
+            if request.requester == .wallet {
+                let blockchainType = BlockchainType.create(currencyID: UInt32(truncating: request.choosenAddress!.currencyID), netType: UInt32(truncating: request.choosenAddress!.networkID))
+                let sendAmount = request.choosenAddress!.amount.stringValue.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain)
+                //            let address = request.sendAddress
+                
+                filteredWalletArray = filteredWalletArray.filter {
+                    $0.blockchainType == blockchainType && $0.availableAmount > sendAmount
+                }
             }
-
 //            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: address, for: $0).isValid && $0.availableAmount > sendAmount}
         } else {
             
@@ -300,13 +301,15 @@ class SendPresenter: NSObject {
     
     
     private func createTransactionDTO() {
-        if isSendingAvailable && selectedWalletIndex != nil && filteredWalletArray.count > selectedWalletIndex!  {
-            transaction = TransactionDTO()
-            let request = activeRequestsArr[selectedActiveRequestIndex!]
-            //FIXME:
-            transaction!.sendAmountString = request.sendAmount
-            transaction!.sendAddress = request.sendAddress
-            transaction!.choosenWallet = filteredWalletArray[selectedWalletIndex!]
+        if isSendingAvailable && filteredWalletArray.count > selectedWalletIndex!  {
+            let activeRequest = activeRequestsArr[selectedActiveRequestIndex!]
+            if activeRequest.requester == .wallet {
+                transaction = TransactionDTO()
+                //FIXME:
+                transaction!.sendAmountString = activeRequest.choosenAddress!.amountString
+                transaction!.sendAddress = activeRequest.choosenAddress!.address
+                transaction!.choosenWallet = filteredWalletArray[selectedWalletIndex!]
+            }
         }
     }
     
@@ -726,8 +729,8 @@ extension CreateTransactionDelegate {
         let wallet = filteredWalletArray[walletIndex]
         //      let jwtToken = DataManager.shared.realmManager.account!.token
         let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                         sendAddress: request.sendAddress,
-                                                                         sendAmountString: request.sendAmount,
+                                                                         sendAddress: request.choosenAddress!.address,
+                                                                         sendAmountString: request.choosenAddress!.amountString,
                                                                          feePerByteAmount: feeRate,
                                                                          isDonationExists: false,
                                                                          donationAmount: "0",
@@ -751,7 +754,7 @@ extension CreateTransactionDelegate {
         let request = activeRequestsArr[requestIndex]
         let wallet = filteredWalletArray[walletIndex]
         
-        let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: wallet.blockchainType.blockchain).stringValue
+        let sendAmount = request.choosenAddress!.amountString.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: wallet.blockchainType.blockchain).stringValue
         
         let pointer: UnsafeMutablePointer<OpaquePointer?>?
         if !wallet.importedPrivateKey.isEmpty {
@@ -781,7 +784,7 @@ extension CreateTransactionDelegate {
                                                              wallet: self.linkedWallet!,
                                                              sendFromAddress: wallet.address,
                                                              sendAmountString: sendAmount,
-                                                             sendToAddress: request.sendAddress,
+                                                             sendToAddress: request.choosenAddress!.address,
                                                              msWalletBalance: wallet.availableAmount.stringValue,
                                                              gasPriceString: feeRate,
                                                              gasLimitString: submitEstimation)
@@ -791,7 +794,7 @@ extension CreateTransactionDelegate {
             return trData.isTransactionCorrect
         } else {
             let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
-                                                                                  sendAddress: request.sendAddress,
+                                                                                  sendAddress: request.choosenAddress!.address,
                                                                                   sendAmountString: sendAmount,
                                                                                   nonce: wallet.ethWallet!.nonce.intValue,
                                                                                   balanceAmount: wallet.ethWallet!.balance,

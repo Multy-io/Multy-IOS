@@ -332,3 +332,4 @@ var isServerConnectionExist = true
 let exchangeCourseDefault : Double = 1.0
 let dappDLTitle = "Dragonereum"
 let magicReceiveDL = "magicReceive"
+let socketManagerStatusChangedNotificationName = "socketManagerStatusChangedNotification"

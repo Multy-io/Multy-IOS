@@ -43,12 +43,15 @@ class Socket: NSObject {
             
             self.socket.on(clientEvent: .connect) { [unowned self] (data, ack) in
                 print("socket connected")
+                NotificationCenter.default.post(name: NSNotification.Name.init(socketManagerStatusChangedNotificationName), object: nil)
                 self.getExchangeReq()
             }
             
-//            self.socket.on(clientEvent: .disconnect) {data, ack in
-//                print("socket disconnected")
-//            }
+            self.socket.on(clientEvent: .disconnect) {data, ack in
+                NotificationCenter.default.post(name: NSNotification.Name.init(socketManagerStatusChangedNotificationName), object: nil)
+                print("socket disconnected")
+                
+            }
             
             self.socket.on("exchangeAll") { (data, ack) in
 //                print("-----exchangeAll: \(data)")
@@ -115,14 +118,29 @@ class Socket: NSObject {
     
     func becomeReceiver(receiverID : String, userCode : String, currencyID : Int, networkID : Int, address : String, amount : String) {
         print("becomeReceiver: userCode = \(userCode)\nreceiverID = \(receiverID)\ncurrencyID = \(currencyID)\nnetworkID = \(networkID)\naddress = \(address)\namount = \(amount)")
+        
+        let receiverData : [String : Any] = ["userid" : receiverID,
+                            "usercode" : userCode,
+                            "currencyid" : currencyID,
+                            "networkid" : networkID,
+                            "address" : address,
+                            "amount" : amount]
+        
         socket.emitWithAck("event:receiver:on",
-                           with: [["userid" : receiverID,
-                                   "usercode" : userCode,
-                                   "currencyid" : currencyID,
-                                   "networkid" : networkID,
-                                   "address" : address,
-                                   "amount" : amount ]]).timingOut(after: 1) { data in
+                           with: [receiverData]).timingOut(after: 1) { data in
             print(data)
+        }
+    }
+    
+    func becomeMultiReceiver(receiverID : String, userCode : String) {
+        print("becomeMultiReceiver: userCode = \(userCode)\nreceiverID = \(receiverID)")
+        
+        let receiverData : [String : Any] = ["userid" : receiverID,
+                                             "usercode" : userCode]
+        
+        socket.emitWithAck("event:startup:receiver:on",
+                           with: [receiverData]).timingOut(after: 1) { data in
+                            print(data)
         }
     }
     
@@ -143,6 +161,10 @@ class Socket: NSObject {
             }
         }
 
+        socket.emitWithAck("event:startup:receiver:available", with: [["ids" : nearIDs]]).timingOut(after: 1) { data in
+            print(data)
+        }
+        
         socket.emitWithAck("event:sender:check", with: [["ids" : nearIDs]]).timingOut(after: 1) { data in
             print(data)
 
@@ -161,13 +183,18 @@ class Socket: NSObject {
                     
                     let userID = dataDict["userid"] as! String
                     let userCode = dataDict["usercode"] as! String
-                    let currencyID = dataDict["currencyid"] as! Int
-                    let networkID = dataDict["networkid"] as! Int
-                    let address = dataDict["address"] as! String
+                    let currencyID = dataDict["currencyid"] as! UInt32
+                    let networkID = dataDict["networkid"] as! UInt32
+                    let addressString = dataDict["address"] as! String
                     let amount = dataDict["amount"] as! String
                     let blockchain = Blockchain.init(rawValue: UInt32(currencyID))
-
-                    let paymentRequest = PaymentRequest(sendAddress: address, userCode : userCode, currencyID: currencyID, sendAmount: BigInt(amount).cryptoValueString(for: blockchain), networkID: networkID, userID : userID)
+                    
+                    let address : [String : Any] = ["currencyID" : currencyID,
+                                   "networkID"  : networkID,
+                                   "address"    : addressString,
+                                   "amount"     : BigInt(amount).cryptoValueString(for: blockchain)]
+                    let requestData = ["supportedAddresses" : [address]]
+                    let paymentRequest = PaymentRequest(requester: .wallet, userID: userID, userCode : userCode, requestData: requestData as NSDictionary)
 
                     newRequests.append(paymentRequest)
                     print(dataDict)
@@ -186,6 +213,7 @@ class Socket: NSObject {
             print(data)
         }
     }
+    
     
     
     // ================================== MULTI SIG TEST =================================================== //

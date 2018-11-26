@@ -375,13 +375,19 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             if presenter.numberOfActiveRequests() > 0 {
                 
                 let selectedRequest = presenter.activeRequestsArr[presenter.selectedActiveRequestIndex!]
-                selectedRequestAmountLabel.isHidden = false
-                selectedRequestAddressLabel.isHidden = false
-                let blockchainType = BlockchainType.create(currencyID: UInt32(selectedRequest.currencyID), netType: 0)
-                let fiatAmount = selectedRequest.sendAmount.doubleValue * DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
-                selectedRequestAmountLabel.text = "\(selectedRequest.sendAmount) \(blockchainType.shortName)  / \(fiatAmount.fixedFraction(digits: 2)) USD"
-                selectedRequestAddressLabel.text = selectedRequest.sendAddress
-                presenter.changeNameLabelVisibility(false)
+                if selectedRequest.requester == .wallet {
+                    selectedRequestAmountLabel.isHidden = false
+                    selectedRequestAddressLabel.isHidden = false
+                    let blockchainType = BlockchainType.create(currencyID: UInt32(truncating: selectedRequest.choosenAddress!.currencyID), netType: 0)
+                    let fiatAmount = selectedRequest.choosenAddress!.amountString.doubleValue * DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
+                    selectedRequestAmountLabel.text = "\(selectedRequest.choosenAddress!.amountString) \(blockchainType.shortName)  / \(fiatAmount.fixedFraction(digits: 2)) USD"
+                    selectedRequestAddressLabel.text = selectedRequest.choosenAddress!.address
+                    presenter.changeNameLabelVisibility(false)
+                } else {
+                    selectedRequestAmountLabel.isHidden = true
+                    selectedRequestAddressLabel.isHidden = true
+                    presenter.changeNameLabelVisibility(true)
+                }
             }
         }
     }
