@@ -10,7 +10,7 @@ class SeedPhraseWordPresenter: NSObject {
     var mainVC : SeedPhraseWordViewController?
     var countOfTaps = -1
     var accountType = DataManager.shared.accountType
-    var lastScreenposition = DataManager.shared.accountType.seedPhraseScreens - 1
+    var lastScreenposition = DataManager.shared.accountType.seedPhraseScreens
     var mnemonicPhraseArray = [String]() {
         didSet {
             if mnemonicPhraseArray.count > 0 && DataManager.shared.realmManager.account?.seedPhrase != ""/*&& mainVC?.isNeedToBackup == nil*/ {
@@ -40,7 +40,7 @@ class SeedPhraseWordPresenter: NSObject {
     func presentNextTripleOrContinue() {
         self.countOfTaps += 1
         
-        if self.countOfTaps == lastScreenposition - 1 {
+        if self.countOfTaps == lastScreenposition {
             self.mainVC?.nextWordBtn.setTitle(localize(string: Constants.continueString), for: .normal)
         }
         
