@@ -31,6 +31,11 @@ class CreateOrRestoreBtnTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
+    func makeCreateCell() {
+        self.leftImage.image = #imageLiteral(resourceName: "walletCreateNewBigger")
+        self.mainLabel.text = localize(string: Constants.createFirstWalletString)
+    }
+    
     func makeRestoreCell() {
         self.leftImage.image = #imageLiteral(resourceName: "restoreMulty")
         self.mainLabel.text = localize(string: Constants.restoreMultyString)

@@ -157,7 +157,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twe-Qb-JI2">
-                                <rect key="frame" x="144.5" y="25" width="86" height="49.5"/>
+                                <rect key="frame" x="144.5" y="26" width="86" height="49.5"/>
                                 <string key="text">Enter in
 MetaMask</string>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
@@ -165,20 +165,20 @@ MetaMask</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="metamaskLogo1" translatesAutoresizingMaskIntoConstraints="NO" id="FXD-9J-427">
-                                <rect key="frame" x="67.5" y="104.5" width="96" height="96"/>
+                                <rect key="frame" x="67.5" y="105.5" width="96" height="96"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="96" id="7nj-i5-YgS"/>
                                     <constraint firstAttribute="width" secondItem="FXD-9J-427" secondAttribute="height" multiplier="1:1" id="CA4-Ez-QLl"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your seed phrase (12 fancy words) to use your Metamask wallets with Multy. " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="810-r6-QuG">
-                                <rect key="frame" x="16" y="230.5" width="343" height="49.5"/>
+                                <rect key="frame" x="16" y="231.5" width="343" height="49.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWE-W7-MnC">
-                                <rect key="frame" x="16" y="310" width="343" height="96"/>
+                                <rect key="frame" x="16" y="311" width="343" height="96"/>
                                 <string key="text">We do not store your seed in plain text and do not transfer it, nor any private and public keys of your wallets anywhere, they stay on the device encrypted and safe and only used to sign transactions you explicitly request Multy to perform. </string>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
                                 <nil key="textColor"/>
@@ -198,10 +198,20 @@ MetaMask</string>
                                     <action selector="continueAction:" destination="goH-wX-Zqg" eventType="touchUpInside" id="Hsh-hT-qgm"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGrey" translatesAutoresizingMaskIntoConstraints="NO" id="8ML-hQ-qmB">
+                                <rect key="frame" x="9" y="40" width="12" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="12" id="D2Z-aN-hRj"/>
+                                    <constraint firstAttribute="height" constant="21" id="hZd-RE-JB8"/>
+                                </constraints>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlA-Sh-a2q">
-                                <rect key="frame" x="16" y="32" width="54" height="36"/>
+                                <rect key="frame" x="0.0" y="32.5" width="60" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="VSg-XN-zpW"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                                <state key="normal" title="Cancel">
+                                <state key="normal">
                                     <color key="titleColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -210,14 +220,14 @@ MetaMask</string>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group19" translatesAutoresizingMaskIntoConstraints="NO" id="YLt-iX-WnU">
-                                <rect key="frame" x="211.5" y="120.5" width="105" height="64"/>
+                                <rect key="frame" x="211.5" y="121.5" width="105" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="105" id="cJj-EA-5NT"/>
                                     <constraint firstAttribute="height" constant="64" id="xPm-C9-0zN"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vyr-yo-GI4">
-                                <rect key="frame" x="179.5" y="136.5" width="16" height="33"/>
+                                <rect key="frame" x="179.5" y="137.5" width="16" height="33"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="24"/>
                                 <color key="textColor" red="0.5293813943862915" green="0.63111037015914917" blue="0.77227652072906494" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -225,16 +235,17 @@ MetaMask</string>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058823529409" green="0.98039215686274506" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="8ML-hQ-qmB" firstAttribute="top" secondItem="Vus-z5-R7O" secondAttribute="bottom" constant="20" id="092-mY-nP9"/>
                             <constraint firstItem="810-r6-QuG" firstAttribute="top" secondItem="FXD-9J-427" secondAttribute="bottom" constant="30" id="8RT-Uh-bW3"/>
+                            <constraint firstItem="twe-Qb-JI2" firstAttribute="centerY" secondItem="8ML-hQ-qmB" secondAttribute="centerY" id="8yX-A6-XQw"/>
                             <constraint firstItem="810-r6-QuG" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" constant="16" id="IGF-lV-BcN"/>
                             <constraint firstItem="vyr-yo-GI4" firstAttribute="centerX" secondItem="avC-Tn-2fx" secondAttribute="centerX" id="IIp-vH-mDk"/>
                             <constraint firstItem="twe-Qb-JI2" firstAttribute="centerX" secondItem="avC-Tn-2fx" secondAttribute="centerX" id="QG4-wM-WGW"/>
                             <constraint firstItem="VWE-W7-MnC" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" constant="16" id="R4U-re-wkQ"/>
                             <constraint firstAttribute="trailing" secondItem="810-r6-QuG" secondAttribute="trailing" constant="16" id="XI5-NQ-ehS"/>
-                            <constraint firstItem="twe-Qb-JI2" firstAttribute="top" secondItem="Vus-z5-R7O" secondAttribute="bottom" constant="5" id="Z17-Nf-HVC"/>
                             <constraint firstItem="Hh8-KJ-6Hv" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" id="Zu0-Pf-6pl"/>
-                            <constraint firstItem="rlA-Sh-a2q" firstAttribute="centerY" secondItem="twe-Qb-JI2" secondAttribute="centerY" id="a9U-kx-O1l"/>
-                            <constraint firstItem="rlA-Sh-a2q" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" constant="16" id="cC6-sF-yRf"/>
+                            <constraint firstItem="rlA-Sh-a2q" firstAttribute="centerY" secondItem="twe-Qb-JI2" secondAttribute="centerY" id="bw7-Jh-ANV"/>
+                            <constraint firstItem="rlA-Sh-a2q" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" id="cC6-sF-yRf"/>
                             <constraint firstItem="810-r6-QuG" firstAttribute="top" secondItem="vyr-yo-GI4" secondAttribute="bottom" constant="61" id="dxz-yG-CNW"/>
                             <constraint firstItem="vyr-yo-GI4" firstAttribute="leading" secondItem="FXD-9J-427" secondAttribute="trailing" constant="16" id="euz-hP-TnS"/>
                             <constraint firstItem="FXD-9J-427" firstAttribute="top" secondItem="twe-Qb-JI2" secondAttribute="bottom" constant="30" id="fEt-l3-mG5"/>
@@ -243,6 +254,7 @@ MetaMask</string>
                             <constraint firstAttribute="trailing" secondItem="Hh8-KJ-6Hv" secondAttribute="trailing" id="vNx-7l-021"/>
                             <constraint firstItem="VWE-W7-MnC" firstAttribute="top" secondItem="810-r6-QuG" secondAttribute="bottom" constant="30" id="wsg-Np-kWd"/>
                             <constraint firstAttribute="trailing" secondItem="VWE-W7-MnC" secondAttribute="trailing" constant="16" id="xCs-au-uPW"/>
+                            <constraint firstItem="8ML-hQ-qmB" firstAttribute="leading" secondItem="avC-Tn-2fx" secondAttribute="leading" constant="9" id="xjr-Uw-XO0"/>
                             <constraint firstItem="YLt-iX-WnU" firstAttribute="centerY" secondItem="FXD-9J-427" secondAttribute="centerY" id="z3D-Lo-M4P"/>
                         </constraints>
                     </view>
@@ -580,11 +592,12 @@ MetaMask</string>
                                             <action selector="cancelAction:" destination="wqv-j7-zb4" eventType="touchUpInside" id="z0j-TG-JoT"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phrase Validation" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YXe-ZO-gQe">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phrase Validation" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YXe-ZO-gQe">
                                         <rect key="frame" x="70" y="48" width="235" height="36"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="26"/>
                                         <color key="textColor" red="0.20392156859999999" green="0.20392156859999999" blue="0.20392156859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <size key="shadowOffset" width="0.0" height="0.0"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r6a-Cd-LKS">
                                         <rect key="frame" x="52" y="104" width="271" height="42"/>
@@ -625,6 +638,7 @@ MetaMask</string>
                                     <constraint firstAttribute="trailing" secondItem="827-G2-PrD" secondAttribute="trailing" constant="20" id="lzu-q6-CvY"/>
                                     <constraint firstItem="ubW-0G-FDq" firstAttribute="top" secondItem="zUn-jC-J1k" secondAttribute="top" constant="10" id="nlU-4x-DK0"/>
                                     <constraint firstItem="827-G2-PrD" firstAttribute="top" secondItem="r6a-Cd-LKS" secondAttribute="bottom" constant="20" id="tyK-Cv-ouH"/>
+                                    <constraint firstAttribute="trailing" secondItem="YXe-ZO-gQe" secondAttribute="trailing" constant="70" id="vkN-1y-PV2"/>
                                     <constraint firstItem="ubW-0G-FDq" firstAttribute="leading" secondItem="zUn-jC-J1k" secondAttribute="leading" id="x6W-Gn-37Z"/>
                                     <constraint firstItem="YXe-ZO-gQe" firstAttribute="leading" secondItem="zUn-jC-J1k" secondAttribute="leading" constant="70" id="zeg-To-cVT"/>
                                 </constraints>

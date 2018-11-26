@@ -122,6 +122,10 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     }
     
     @IBAction func myPrivateAction(_ sender: Any) {
+        if presenter.wallet?.blockchain == BLOCKCHAIN_ETHEREUM {
+            presentPrivateKeyView(wallet: presenter.wallet!, addressIndex: 0) //0 for eth
+            return
+        }
         let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
         let adressesVC = storyboard.instantiateViewController(withIdentifier: "walletAddresses") as! WalletAddresessViewController
         adressesVC.presenter.wallet = self.presenter.wallet

@@ -698,6 +698,7 @@ extension TableViewDelegate : UITableViewDelegate {
                     sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: createFirstWalletTap)
                     //                self.performSegue(withIdentifier: "createWalletVC", sender: Any.self)
                     self.view.isUserInteractionEnabled = false
+                    DataManager.shared.restoreAccountType = .multy
                     createFirstWallets(isNeedEthTest: false) { [unowned self] (error) in
                         self.view.isUserInteractionEnabled = true
                         
@@ -951,7 +952,7 @@ extension TableViewDataSource : UITableViewDataSource {
                 }
             } else {   // acc == nil
                 let createCell = self.tableView.dequeueReusableCell(withIdentifier: "createOrRestoreCell") as! CreateOrRestoreBtnTableViewCell
-                
+                createCell.makeCreateCell()
                 return createCell
             }
         case [0,3]:
@@ -997,11 +998,14 @@ extension TableViewDataSource : UITableViewDataSource {
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
+//        presenter.updateWalletsInfoByRefresh(isInternetAvailable: isInternetAvailable) { (isEnd) in
+//            self.presenter.unlockUI(isNeedToScroll: true)
+//        }
     }
     
-    func blockCollection(block: Bool) {
+    func blockCollection(block: Bool, isNeedToScroll: Bool) {
         tableView.cellForRow(at: [0,0])?.isUserInteractionEnabled = !block
-        if block == false {
+        if isNeedToScroll == true {
             tableView.scrollToTop()
         }
 //        self.view.isUserInteractionEnabled = !block

@@ -13,6 +13,7 @@ extension Constants {
     static let jailbrokenDeviceWarningString = "JAILBROKEN DEVICE ALERT MESSAGE"
     static let backupNeededString = "BACKUP IS NEEDED"
     static let restoreMultyString = "RESTORE MULTY"
+    static let createFirstWalletString = "CREATE FIRST WALLET"
     static let restoreMetamaskString = "ENTER IN METAMASK"
     static let importMetaMaskString = "IMPORT METAMASK"
     static let gettingWalletString = "GETTING WALLET"

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1481,13 +1481,13 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         <rect key="frame" x="0.0" y="217" width="343" height="296"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY PRIVATE KEY:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xI1-Qo-90r">
-                                                <rect key="frame" x="123" y="20" width="97" height="17"/>
+                                                <rect key="frame" x="123" y="15" width="97" height="17"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                                 <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6o-9x-tsS">
-                                                <rect key="frame" x="20" y="43" width="303" height="66"/>
+                                                <rect key="frame" x="20" y="38" width="303" height="66"/>
                                                 <string key="text">83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L83T28WCp4Cu5LQiddJnDJJmKWvmmXJSP9L</string>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                                 <color key="textColor" red="0.21176470588235294" green="0.21176470588235294" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
@@ -1564,7 +1564,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <constraint firstItem="k4a-bD-22T" firstAttribute="leading" secondItem="QPb-nk-2ek" secondAttribute="leading" id="bSk-dE-PxT"/>
                                             <constraint firstItem="jhS-TU-GFq" firstAttribute="top" secondItem="k4a-bD-22T" secondAttribute="bottom" id="bh6-8d-zrJ"/>
                                             <constraint firstAttribute="bottom" secondItem="ZiB-8K-BTa" secondAttribute="bottom" id="eSw-c3-T20"/>
-                                            <constraint firstItem="OSe-nt-KE0" firstAttribute="top" secondItem="a6o-9x-tsS" secondAttribute="bottom" constant="10" id="eer-Xa-AoY"/>
+                                            <constraint firstItem="OSe-nt-KE0" firstAttribute="top" secondItem="a6o-9x-tsS" secondAttribute="bottom" constant="15" id="eer-Xa-AoY"/>
                                             <constraint firstItem="ZiB-8K-BTa" firstAttribute="top" secondItem="jhS-TU-GFq" secondAttribute="bottom" id="f3b-Y8-TPg"/>
                                             <constraint firstAttribute="bottom" secondItem="jhS-TU-GFq" secondAttribute="bottom" constant="57" id="fba-vz-du5"/>
                                             <constraint firstItem="5Ai-kQ-3aX" firstAttribute="leading" secondItem="QPb-nk-2ek" secondAttribute="leading" id="fxP-J3-wW0"/>
@@ -1574,7 +1574,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                             <constraint firstItem="k4a-bD-22T" firstAttribute="top" secondItem="tSD-Ha-0mh" secondAttribute="bottom" id="vVM-4a-cpb"/>
                                             <constraint firstItem="jhS-TU-GFq" firstAttribute="leading" secondItem="QPb-nk-2ek" secondAttribute="leading" id="vXG-ZV-y5y"/>
                                             <constraint firstAttribute="trailing" secondItem="tSD-Ha-0mh" secondAttribute="trailing" id="wvM-X4-2AA"/>
-                                            <constraint firstItem="xI1-Qo-90r" firstAttribute="top" secondItem="QPb-nk-2ek" secondAttribute="top" constant="20" id="xi0-oh-P3V"/>
+                                            <constraint firstItem="xI1-Qo-90r" firstAttribute="top" secondItem="QPb-nk-2ek" secondAttribute="top" constant="15" id="xi0-oh-P3V"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pay attention!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqL-rh-vBW">
