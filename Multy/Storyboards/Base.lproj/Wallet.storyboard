@@ -1446,6 +1446,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                     <connections>
                         <outlet property="importedWalletHeightConstraint" destination="gdb-VP-afS" id="pcJ-Do-nFW"/>
                         <outlet property="importedWalletUIView" destination="oMj-a1-eF4" id="KyQ-Wu-S5G"/>
+                        <outlet property="keysLbl" destination="a8G-dc-Q0i" id="mva-J0-Lgw"/>
                         <outlet property="resyncBlockHeightConstraint" destination="6Gk-JQ-RUN" id="0xp-xp-4ia"/>
                         <outlet property="resyncBlockView" destination="yPy-8a-e2h" id="j0D-K6-gBy"/>
                         <outlet property="walletNameTF" destination="ygK-hr-LcL" id="x1c-sO-Bxd"/>

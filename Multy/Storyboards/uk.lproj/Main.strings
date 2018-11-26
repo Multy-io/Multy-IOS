@@ -192,7 +192,7 @@
 "xU0-fA-viF.text" = "Проголосувати за події";
 
 /* Class = "UILabel"; text = "About Multy"; ObjectID = "xfR-da-DhP"; */
-"xfR-da-DhP.text" = "О Multy";
+"xfR-da-DhP.text" = "Зв'язатися з нами";
 
 /* Class = "UITextField"; placeholder = "Wallet name"; ObjectID = "yYM-Z4-2M4"; */
 "yYM-Z4-2M4.placeholder" = "Назва Гаманця";
