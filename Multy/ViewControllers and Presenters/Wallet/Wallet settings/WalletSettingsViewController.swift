@@ -9,6 +9,7 @@ private typealias LocalizeDelegate = WalletSettingsViewController
 class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
     
     @IBOutlet weak var walletNameTF: UITextField!
+    @IBOutlet weak var keysLbl: UILabel!
     @IBOutlet weak var resyncBlockView: UIView!
     @IBOutlet weak var resyncBlockHeightConstraint: NSLayoutConstraint!
     
@@ -49,6 +50,7 @@ class WalletSettingsViewController: UIViewController,AnalyticsProtocol {
         let isWalletFixed = (WalletBrokenState(presenter.wallet!.brokenState.intValue) == .fixedPrivateKey)
         importedWalletUIView.isHidden = !isWalletFixed
         importedWalletHeightConstraint.constant = isWalletFixed ? 170.0 : 0
+        keysLbl.text = presenter.wallet!.blockchain == BLOCKCHAIN_ETHEREUM ? localize(string: Constants.showKeyString) : localize(string: Constants.showKeySString)
     }
     
     @IBAction func deleteAction(_ sender: Any) {

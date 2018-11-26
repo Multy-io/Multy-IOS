@@ -86,7 +86,7 @@ class SettingsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
     func setupForNotImplementedViews() {
 //        self.pushView.alpha = opacityForNotImplementedView
 //        self.defFiatView.alpha = opacityForNotImplementedView
-        self.aboutView.alpha = opacityForNotImplementedView
+//        self.aboutView.alpha = opacityForNotImplementedView
         self.feedbackView.alpha = opacityForNotImplementedView
     }
     
@@ -181,6 +181,28 @@ class SettingsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC")
         self.navigationController?.pushViewController(exchangeVC, animated: true)
+    }
+    
+    @IBAction func contactUsAction(_ sender: Any) {
+        let appURL = NSURL(string: "tg://resolve?domain=multy_io")!
+        let webURL = NSURL(string: "https://t.me/multy_io")!
+        if UIApplication.shared.canOpenURL(appURL as URL) {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(appURL as URL, options: [:], completionHandler: nil)
+            }
+            else {
+                UIApplication.shared.openURL(appURL as URL)
+            }
+        }
+        else {
+            //redirect to safari because the user doesn't have Telegram
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(webURL as URL, options: [:], completionHandler: nil)
+            }
+            else {
+                UIApplication.shared.openURL(webURL as URL)
+            }
+        }
     }
     
     func cancelAction() {
