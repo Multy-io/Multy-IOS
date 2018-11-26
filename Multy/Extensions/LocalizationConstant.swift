@@ -154,4 +154,6 @@ extension Constants {
     static let denyString = "DENY"
     static let walletString = "WALLETS"
     static let wrongMSaddressString = "NOT CORRECT MS ADDRESS"
+    static let showKeySString = "SHOW KEYS"
+    static let showKeyString = "SHOW KEY"
 }
