@@ -125,23 +125,27 @@ class SendPresenter: NSObject {
 //    var priceForSubmit = "\(1_000_000_000)"
     
     
-    func getFeeRate(_ blockchainType: BlockchainType, completion: @escaping (_ feeRateDict: String) -> ()) {
+    func getFeeRate(_ blockchainType: BlockchainType, address: String?, completion: @escaping (_ feeRateDict: String, _ gasLimit: String?) -> ()) {
         DataManager.shared.getFeeRate(currencyID: blockchainType.blockchain.rawValue,
                                       networkID: UInt32(blockchainType.net_type),
-                                      ethAddress: nil,
+                                      ethAddress: address,
                                       completion: { (dict, error) in
                                         print(dict)
-                                        if let feeRates = dict!["speeds"] as? NSDictionary, let feeRate = feeRates["Fast"] as? UInt64 {
-                                            completion("\(feeRate)")
+                                        if let feeRates = dict!["speeds"] as? NSDictionary, let fastFeeRate = feeRates["Fast"] as? UInt64 {
+                                            if let gasLimitForMS = dict!["gaslimit"] as? String {
+                                                completion("\(fastFeeRate)", gasLimitForMS)
+                                            } else {
+                                                completion("\(fastFeeRate)", nil)
+                                            }
                                         } else {
                                             //default values
                                             switch blockchainType.blockchain {
                                             case BLOCKCHAIN_BITCOIN:
-                                                return completion("10")
+                                                return completion("10", nil)
                                             case BLOCKCHAIN_ETHEREUM:
-                                                return completion("1000000000")
+                                                return completion("1000000000", nil)
                                             default:
-                                                return completion("1")
+                                                return completion("1", nil)
                                             }
                                         }
         })
@@ -507,20 +511,17 @@ class SendPresenter: NSObject {
     func createTransaction(completion: @escaping (_ feeRateDict: Bool) -> ()) {
         let wallet = filteredWalletArray[selectedWalletIndex!]
         
-        getFeeRate(wallet.blockchainType) { [unowned self] (feeRate) in
-            DispatchQueue.main.async {
-                self.feeRate = feeRate
-                print(feeRate)
+        
                 switch wallet.blockchainType.blockchain {
                 case BLOCKCHAIN_BITCOIN:
                     completion(self.createBTCTransaction())
                 case BLOCKCHAIN_ETHEREUM:
-                    completion(self.createETHTransaction())
+                    createETHTransaction { completion($0) }
                 default:
                     completion(false)
                 }
-            }
-        }
+//            }
+//        }
     }
     
     func sendAnimationComplete() {
@@ -743,13 +744,18 @@ extension CreateTransactionDelegate {
         return trData.1 >= 0
     }
     
-    func createETHTransaction() -> Bool {
-        guard let requestIndex = selectedActiveRequestIndex, let walletIndex = selectedWalletIndex else {
-            return false
+    
+    
+    func createETHTransaction(completion: @escaping(_ isTXCorrect: Bool) -> ()) {
+        let requestIndex = selectedActiveRequestIndex
+        let walletIndex = selectedWalletIndex
+        
+        if requestIndex == nil || walletIndex == nil {
+            completion(false)
         }
         
-        let request = activeRequestsArr[requestIndex]
-        let wallet = filteredWalletArray[walletIndex]
+        let request = activeRequestsArr[requestIndex!]
+        let wallet = filteredWalletArray[walletIndex!]
         
         let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: wallet.blockchainType.blockchain).stringValue
         
@@ -757,7 +763,7 @@ extension CreateTransactionDelegate {
             if self.linkedWallet == nil {
                 rawTransaction = "Error"
                 
-                return false
+                completion(false)
             }
             
             let trData = DataManager.shared.createMultiSigTx(wallet: self.linkedWallet!,
@@ -779,26 +785,25 @@ extension CreateTransactionDelegate {
             
             rawTransaction = trData.message
             
-            return trData.isTransactionCorrect
+            completion(trData.isTransactionCorrect)
         } else {
-            let trData = DataManager.shared.createETHTransaction(wallet: wallet,
-                                                                 sendAmountString: sendAmount,
-                                                                 destinationAddress: request.sendAddress,
-                                                                 gasPriceAmountString: feeRate,
-                                                                 gasLimitAmountString: "40000")
+            getFeeRate(wallet.blockchainType, address: request.sendAddress) { [unowned self] (fastGasPrice, gasLimit) in
+                DispatchQueue.main.async {
+                    let gasLimitEnd = gasLimit ?? "21000" //for non ms address
+                    self.feeRate = fastGasPrice
+                    
+                    let trData = DataManager.shared.createETHTransaction(wallet: wallet,
+                                                                         sendAmountString: sendAmount,
+                                                                         destinationAddress: request.sendAddress,
+                                                                         gasPriceAmountString: self.feeRate,
+                                                                         gasLimitAmountString: gasLimitEnd)
+                    
+                    self.rawTransaction = trData.message
+                    
+                    completion(trData.isTransactionCorrect)
+                }
+            }
             
-//            let trData1 = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
-//                                                                                  sendAddress: request.sendAddress,
-//                                                                                  sendAmountString: sendAmount,
-//                                                                                  nonce: wallet.ethWallet!.nonce.intValue,
-//                                                                                  balanceAmount: wallet.ethWallet!.balance,
-//                                                                                  ethereumChainID: UInt32(wallet.blockchainType.net_type),
-//                                                                                  gasPrice: feeRate,
-//                                                                                  gasLimit: "40000")
-            
-            rawTransaction = trData.message
-            
-            return trData.isTransactionCorrect
         }
     }
 }

@@ -99,18 +99,20 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
                 
                 return
             } else {
-                let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
+//                let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
+                let walletsArray = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
 
                 let wallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType && $0.isMultiSig == false }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
-                
-                DispatchQueue.main.async { [unowned self] in
-                    if wallet == nil {
-                        self.createFirstWalletAndLoadBrowser()
-                    } else {
-                        self.isWalletsLoading = false
-                        self.wallet = wallet
+                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArray, completion: { [unowned self] (acc, err) in
+                    DispatchQueue.main.async { [unowned self] in
+                        if wallet == nil {
+                            self.createFirstWalletAndLoadBrowser()
+                        } else {
+                            self.isWalletsLoading = false
+                            self.wallet = wallet
+                        }
                     }
-                }
+                })
             }
         }
     }
