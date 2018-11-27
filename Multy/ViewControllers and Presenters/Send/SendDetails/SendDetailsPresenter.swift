@@ -329,7 +329,7 @@ extension CreateTransactionDelegate {
         
         let trData = DataManager.shared.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
                                                           sendAddress: transactionDTO.sendAddress!,
-                                                          sendAmountString: "0",
+                                                          sendAmountString: "0,00000548",
                                                           feePerByteAmount: transactionDTO.BTCDTO!.feePerByte!.stringValue,
                                                           isDonationExists: transactionDTO.donationAmount != nil && !transactionDTO.donationAmount!.isZero,
                                                           donationAmount: transactionDTO.donationAmount?.cryptoValueString(for: blockchainObject) ?? BigInt.zero().stringValue,
