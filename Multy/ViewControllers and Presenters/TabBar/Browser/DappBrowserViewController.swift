@@ -24,6 +24,8 @@ class DappBrowserViewController: UIViewController, UITextFieldDelegate, Analytic
     @IBOutlet weak var walletBalanceLabel: UILabel!
     @IBOutlet weak var walletNameLabel: UILabel!
     
+    var loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

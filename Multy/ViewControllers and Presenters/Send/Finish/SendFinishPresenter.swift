@@ -48,8 +48,8 @@ class SendFinishPresenter: NSObject {
         sumInFiatString = (sumInCrypto! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.blockchain!)
         sumInFiat = sumInFiatString.doubleValue
         
-        feeAmountInCryptoString = (transactionDTO.feeEstimation ?? BigInt.zero()).cryptoValueString(for: transactionDTO.blockchainObject)
-        feeAmountInFiatString = transactionDTO.feeEstimation != nil ? (transactionDTO.feeEstimation! * transactionDTO.choosenWallet!.exchangeCourse).fiatValueString(for: transactionDTO.assetsBlockchain) : BigInt.zero().stringValue
+        feeAmountInCryptoString = (transactionDTO.feeEstimation ?? BigInt.zero()).cryptoValueString(for: transactionDTO.assetsBlockchain)
+        feeAmountInFiatString = transactionDTO.feeEstimation != nil ? (transactionDTO.feeEstimation! * transactionDTO.assetsWallet.exchangeCourse).fiatValueString(for: transactionDTO.assetsBlockchain) : BigInt.zero().stringValue
     }
     
     func makeFrameForSlider() -> CGRect {
