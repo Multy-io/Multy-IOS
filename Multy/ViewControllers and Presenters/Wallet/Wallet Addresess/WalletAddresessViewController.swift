@@ -100,16 +100,7 @@ extension WalletAddresessViewController: UITableViewDelegate, UITableViewDataSou
                 self.navigationController?.popViewController(animated: true)
                 return
             }
-            let privateKeyVC = storyboard.instantiateViewController(withIdentifier: "privateKey") as! PrivateKeyViewController
-            privateKeyVC.modalPresentationStyle = .overCurrentContext
-            
-            DataManager.shared.getAccount(completion: { (acc, err) in
-                privateKeyVC.account = acc
-                privateKeyVC.wallet = self.presenter.wallet
-                privateKeyVC.addressID = indexPath.row
-                
-                self.present(privateKeyVC, animated: true, completion: nil)
-            })
+            presentPrivateKeyView(wallet: presenter.wallet!, addressIndex: indexPath.row)
         }
         self.tableView.deselectRow(at: indexPath, animated: true)
 

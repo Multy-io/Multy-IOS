@@ -236,6 +236,26 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
+    func restoreMemamaskWallets(walletsInfo: Parameters, completion: @escaping (_ isSuccess: Bool) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/discover/wallets", method: .post, parameters: walletsInfo, encoding: JSONEncoding.default, headers: header).debugLog().validate().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.error == nil {
+                    completion(true)
+                } else {
+                    completion(false)
+                }
+            case .failure(_):
+                completion(false)
+            }
+        }
+    }
+    
     func getTransactionInfo(transactionString: String, completion: @escaping (_ answer: HistoryRLM?,_ error: Error?) -> ()) {
         
         let header: HTTPHeaders = [

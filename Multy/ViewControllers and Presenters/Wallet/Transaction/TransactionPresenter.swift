@@ -113,14 +113,20 @@ class TransactionPresenter: NSObject {
                             return
                         }
                         
-                        let trData = DataManager.shared.confirmMultiSigTx(binaryData: &self.binaryData!,
-                                                                          wallet: linkedWallet,
-                                                                          balanceAmountString: linkedWallet.availableAmount.stringValue,
+                        let trData = DataManager.shared.confirmMultiSigTx(wallet: linkedWallet,
                                                                           sendFromAddress: self.wallet.address,
-                                                                          nonce: linkedWallet.ethWallet!.nonce.intValue,
                                                                           nonceMultiSigTx: self.histObj.multisig!.index.intValue,
                                                                           gasPriceString: self.priceForConfirm,
                                                                           gasLimitString: gasLimit!.stringValue)
+                        
+//                        let trData2 = DataManager.shared.confirmMultiSigTx(binaryData: &self.binaryData!,
+//                                                                          wallet: linkedWallet,
+//                                                                          balanceAmountString: linkedWallet.availableAmount.stringValue,
+//                                                                          sendFromAddress: self.wallet.address,
+//                                                                          nonce: linkedWallet.ethWallet!.nonce.intValue,
+//                                                                          nonceMultiSigTx: self.histObj.multisig!.index.intValue,
+//                                                                          gasPriceString: self.priceForConfirm,
+//                                                                          gasLimitString: gasLimit!.stringValue)
                         
                         let newAddressParams = [
                             "walletindex"   : linkedWallet.walletID.intValue,

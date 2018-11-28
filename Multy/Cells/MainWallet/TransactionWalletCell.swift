@@ -75,7 +75,11 @@ class TransactionWalletCell: UITableViewCell {
         if histObj.txStatus.intValue < 0 /* rejected tx*/ {
             self.timeLabel.text = localize(string: Constants.unableToSendString)
         } else {
-            self.timeLabel.text = dateFormatter.string(from: histObj.blockTime)
+            if histObj.confirmations > 0 { //if confirmed tx
+                self.timeLabel.text = dateFormatter.string(from: histObj.blockTime)
+            } else {
+                self.timeLabel.text = dateFormatter.string(from: histObj.mempoolTime)
+            }
         }
         
         fillSpecificData()

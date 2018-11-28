@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wmS-tA-24k">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wmS-tA-24k">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -2902,6 +2902,7 @@ correctly</string>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5kJ-Pl-Xr7">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <connections>
                                                             <action selector="goToSecuritySettingsAction:" destination="iYV-U9-fj0" eventType="touchUpInside" id="Frm-wk-fhR"/>
                                                         </connections>
@@ -2976,17 +2977,17 @@ correctly</string>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sd1-gT-DhV">
                                                 <rect key="frame" x="0.0" y="256" width="375" height="63"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Multy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfR-da-DhP">
-                                                        <rect key="frame" x="66" y="20.5" width="91.5" height="22"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfR-da-DhP">
+                                                        <rect key="frame" x="66" y="20.5" width="80" height="22"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                         <color key="textColor" red="0.21176470589999999" green="0.21176470589999999" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settingsAbout" translatesAutoresizingMaskIntoConstraints="NO" id="VPI-rs-tdt">
-                                                        <rect key="frame" x="20" y="16" width="35" height="35"/>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tgIcon" translatesAutoresizingMaskIntoConstraints="NO" id="VPI-rs-tdt">
+                                                        <rect key="frame" x="24" y="20" width="27" height="27"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="35" id="FIM-Cf-g7W"/>
-                                                            <constraint firstAttribute="width" constant="35" id="qQM-X0-Peb"/>
+                                                            <constraint firstAttribute="height" constant="27" id="FIM-Cf-g7W"/>
+                                                            <constraint firstAttribute="width" constant="27" id="qQM-X0-Peb"/>
                                                         </constraints>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron" translatesAutoresizingMaskIntoConstraints="NO" id="V98-sO-KVt">
@@ -2998,6 +2999,9 @@ correctly</string>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3D-po-IWE">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
+                                                        <connections>
+                                                            <action selector="contactUsAction:" destination="iYV-U9-fj0" eventType="touchUpInside" id="hiJ-b8-am5"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3007,7 +3011,7 @@ correctly</string>
                                                     <constraint firstAttribute="trailing" secondItem="V98-sO-KVt" secondAttribute="trailing" constant="16" id="WHy-gQ-Stc"/>
                                                     <constraint firstItem="n3D-po-IWE" firstAttribute="leading" secondItem="sd1-gT-DhV" secondAttribute="leading" id="geU-vO-1Gh"/>
                                                     <constraint firstItem="xfR-da-DhP" firstAttribute="centerY" secondItem="sd1-gT-DhV" secondAttribute="centerY" id="mN7-OE-cEQ"/>
-                                                    <constraint firstItem="VPI-rs-tdt" firstAttribute="leading" secondItem="sd1-gT-DhV" secondAttribute="leading" constant="20" id="tQZ-lE-oGs"/>
+                                                    <constraint firstItem="VPI-rs-tdt" firstAttribute="leading" secondItem="sd1-gT-DhV" secondAttribute="leading" constant="24" id="tQZ-lE-oGs"/>
                                                     <constraint firstItem="n3D-po-IWE" firstAttribute="top" secondItem="sd1-gT-DhV" secondAttribute="top" id="thZ-sf-Eqv"/>
                                                     <constraint firstItem="VPI-rs-tdt" firstAttribute="centerY" secondItem="sd1-gT-DhV" secondAttribute="centerY" constant="2" id="ude-DE-fXq"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xfR-da-DhP" secondAttribute="trailing" constant="20" symbolic="YES" id="wbk-ry-8b2"/>
@@ -3824,13 +3828,13 @@ correctly</string>
         <image name="invalidName" width="9" height="36"/>
         <image name="noInternetConnection" width="123" height="104"/>
         <image name="qrIcon" width="22" height="22"/>
-        <image name="settingsAbout" width="37" height="37"/>
         <image name="settingsAboutGrey" width="31" height="31"/>
         <image name="settingsChange" width="37" height="37"/>
         <image name="settingsFeedback" width="37" height="37"/>
         <image name="settingsFiat" width="37" height="37"/>
         <image name="settingsNotifications" width="37" height="37"/>
         <image name="settingsSecurity" width="37" height="37"/>
+        <image name="tgIcon" width="48" height="48"/>
         <image name="walletIcon" width="62" height="62"/>
         <image name="walletTab" width="20" height="19"/>
     </resources>

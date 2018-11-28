@@ -3,14 +3,20 @@
 //See LICENSE for details
 
 import UIKit
+import Foundation
 
 class BricksView: UIView {
     var currentCheckedWordCounter : Int = 3;
+    var accountType = AccountType.multy
+    var brickColor = UIColor()
     
-    init(with rect : CGRect, and currentWordCounter: Int) {
+    init(with rect : CGRect, accountType: AccountType, color: UIColor, and currentWordCounter: Int) {
         super.init(frame: rect)
+        
+        brickColor = color
         backgroundColor = UIColor(red: 249.0/255.0, green: 250.0/255.0, blue: 1.0, alpha: 1.0)
         currentCheckedWordCounter = currentWordCounter
+        self.accountType = accountType
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -19,6 +25,10 @@ class BricksView: UIView {
     
     // here we draw green and red bricks depending the current state (segmentsCountUp and segmentsCountDown)
     override func draw(_ rect: CGRect) {
+        let segmentsCountUp = accountType.segmentsCountUp
+        let segmentsCountDown = accountType.segmentsCountDown
+        let upperSizes = accountType.upperSizes
+        let downSizes = accountType.downSizes
         
         for index in 0..<segmentsCountUp + segmentsCountDown {
             let widthUp = CGFloat((rect.size.width - 6 * 2) / 253.0)
@@ -37,11 +47,13 @@ class BricksView: UIView {
             let newRect = UIView(frame: CGRect(x: xCoord, y: yCoord, width: width, height: 20))
             
             newRect.backgroundColor = index < currentCheckedWordCounter ?
-                UIColor(redInt: 95, greenInt: 204, blueInt: 125, alpha: 1.0) :
-                UIColor(redInt: 239, greenInt: 239, blueInt: 244, alpha: 1.0)
+//                UIColor(redInt: 95, greenInt: 204, blueInt: 125, alpha: 1.0) :
+                brickColor : brickColorUnSelected
+//                UIColor(redInt: 239, greenInt: 239, blueInt: 244, alpha: 1.0)
+            
             
             if index == currentCheckedWordCounter {
-                newRect.layer.borderColor = UIColor(redInt: 95, greenInt: 204, blueInt: 125, alpha: 1.0).cgColor
+                newRect.layer.borderColor = brickColor == brickColorSelectedGreen ? brickColorBorderGreen : brickColorBorderBlue //UIColor(redInt: 95, greenInt: 204, blueInt: 125, alpha: 1.0).cgColor
                 newRect.layer.borderWidth = 1.0;
             }
             newRect.setRounded(radius: 5)

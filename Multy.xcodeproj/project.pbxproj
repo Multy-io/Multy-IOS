@@ -12,6 +12,8 @@
 		44089D15205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */; };
 		4409E40120DD047900ADBE42 /* LocalizationConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4409E40020DD047900ADBE42 /* LocalizationConstant.swift */; };
 		440AD8D22020D1220015AEF1 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */; };
+		4410425121A44619007135B6 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4410425021A44619007135B6 /* AccountType.swift */; };
+		441606AC21AEDE33005F94B7 /* sendTipAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 441606AB21AEDE33005F94B7 /* sendTipAnimation.json */; };
 		442B94AD216B6E1700D1A402 /* DappOperationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */; };
 		4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4430569D20C1627600E5415A /* TransactionPendingCell.xib */; };
 		4436123020B56F000095F3C6 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436122F20B56F000095F3C6 /* UITableView+Extension.swift */; };
@@ -255,6 +257,7 @@
 		45DCF9D31FE16874005A9896 /* WalletAddresessPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DCF9D21FE16874005A9896 /* WalletAddresessPresenter.swift */; };
 		45DCF9D71FE19AFD005A9896 /* CustomFeePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DCF9D61FE19AFD005A9896 /* CustomFeePresenter.swift */; };
 		45DCF9D91FE19B33005A9896 /* CustomFeeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DCF9D81FE19B33005A9896 /* CustomFeeViewController.swift */; };
+		45DD9A1621A4102900B8F8AD /* ImportMetaMaskInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DD9A1521A4102800B8F8AD /* ImportMetaMaskInfoViewController.swift */; };
 		45E148A8204553AF006BD4D1 /* DonationAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E148A7204553AF006BD4D1 /* DonationAlertViewController.swift */; };
 		45E148AA204553C8006BD4D1 /* DonationAlertPrsenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E148A9204553C8006BD4D1 /* DonationAlertPrsenter.swift */; };
 		45E148AC204553E4006BD4D1 /* DonationSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E148AB204553E4006BD4D1 /* DonationSendViewController.swift */; };
@@ -279,7 +282,6 @@
 		50D1AA3CFDA9BDFA53D3B9D0 /* Pods_MultyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */; };
 		85122C4E21A5908E00C73153 /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */; };
 		85122C5221A591FE00C73153 /* BannerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85122C5121A591FE00C73153 /* BannerTableViewCell.xib */; };
-		8519658F21AD37720023EC84 /* sendTipAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8519658E21AD37720023EC84 /* sendTipAnimation.json */; };
 		8540152B218AEBB800B20C7B /* BTCTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152A218AEBB800B20C7B /* BTCTransactionDTO.swift */; };
 		8540152D218AEC3200B20C7B /* ETHTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152C218AEC3200B20C7B /* ETHTransactionDTO.swift */; };
 		854C748B20C56C6900CBAFE9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854C748A20C56C6900CBAFE9 /* Utilities.swift */; };
@@ -403,6 +405,8 @@
 		44089D14205FD12000E2534C /* CreateWalletBlockchainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletBlockchainTableViewCell.swift; sourceTree = "<group>"; };
 		4409E40020DD047900ADBE42 /* LocalizationConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstant.swift; sourceTree = "<group>"; };
 		440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
+		4410425021A44619007135B6 /* AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
+		441606AB21AEDE33005F94B7 /* sendTipAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sendTipAnimation.json; sourceTree = "<group>"; };
 		442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappOperationTypes.swift; sourceTree = "<group>"; };
 		4430569C20C1627600E5415A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TransactionPendingCell.xib; sourceTree = "<group>"; };
 		4430569F20C1627C00E5415A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransactionPendingCell.strings; sourceTree = "<group>"; };
@@ -766,6 +770,7 @@
 		45DCF9D21FE16874005A9896 /* WalletAddresessPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddresessPresenter.swift; sourceTree = "<group>"; };
 		45DCF9D61FE19AFD005A9896 /* CustomFeePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeePresenter.swift; sourceTree = "<group>"; };
 		45DCF9D81FE19B33005A9896 /* CustomFeeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeeViewController.swift; sourceTree = "<group>"; };
+		45DD9A1521A4102800B8F8AD /* ImportMetaMaskInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportMetaMaskInfoViewController.swift; sourceTree = "<group>"; };
 		45E148A7204553AF006BD4D1 /* DonationAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationAlertViewController.swift; sourceTree = "<group>"; };
 		45E148A9204553C8006BD4D1 /* DonationAlertPrsenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationAlertPrsenter.swift; sourceTree = "<group>"; };
 		45E148AB204553E4006BD4D1 /* DonationSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationSendViewController.swift; sourceTree = "<group>"; };
@@ -793,7 +798,6 @@
 		7304C17824311A19240183E0 /* Pods_Multy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
 		85122C5121A591FE00C73153 /* BannerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerTableViewCell.xib; sourceTree = "<group>"; };
-		8519658E21AD37720023EC84 /* sendTipAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sendTipAnimation.json; path = ../../../../../../../Downloads/sendTipAnimation.json; sourceTree = "<group>"; };
 		853C41B9217A0E3700155B84 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
 		853C41BA217A0E3700155B84 /* ccan_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccan_config.h; sourceTree = "<group>"; };
 		853C41BC217A0E3800155B84 /* compiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compiler.h; sourceTree = "<group>"; };
@@ -1324,6 +1328,7 @@
 		457569301FBDBB7500FDEE20 /* Seed Phrase */ = {
 			isa = PBXGroup;
 			children = (
+				45DD9A1421A4102800B8F8AD /* MetaMaskInfo */,
 				457569371FBDC2FE00FDEE20 /* SeedPhraseAbout */,
 				457569381FBDC34700FDEE20 /* Phrase Word */,
 				4575693D1FBDD65500FDEE20 /* Backup Phrase */,
@@ -1462,6 +1467,7 @@
 				4448DCC620C8333100CE80CB /* LocalLanguage.swift */,
 				445D150F20DAB089002F6747 /* CNContact+Extension.swift */,
 				448D9938219AD72F000BAE00 /* UserWalletRLM+Extension.swift */,
+				4410425021A44619007135B6 /* AccountType.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1892,6 +1898,14 @@
 			path = CustomFee;
 			sourceTree = "<group>";
 		};
+		45DD9A1421A4102800B8F8AD /* MetaMaskInfo */ = {
+			isa = PBXGroup;
+			children = (
+				45DD9A1521A4102800B8F8AD /* ImportMetaMaskInfoViewController.swift */,
+			);
+			path = MetaMaskInfo;
+			sourceTree = "<group>";
+		};
 		45E148A420455341006BD4D1 /* Donation */ = {
 			isa = PBXGroup;
 			children = (
@@ -2093,7 +2107,7 @@
 		85DE62F120AF187F00423D89 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
-				8519658E21AD37720023EC84 /* sendTipAnimation.json */,
+				441606AB21AEDE33005F94B7 /* sendTipAnimation.json */,
 				44BF10DF20C971C4009E3E22 /* magicSend.json */,
 				854EF14920C06DA4000C2247 /* tx_success_animation.json */,
 				85741D8420B45E8A0093933B /* circle_grow.json */,
@@ -2459,9 +2473,9 @@
 				445B128520BC1C9300FD0D33 /* TextTableViewCell.xib in Resources */,
 				445D150B20DA8513002F6747 /* EPContactCell.xib in Resources */,
 				4477261720BDA1F2006BF4A7 /* Assets.strings in Resources */,
+				441606AC21AEDE33005F94B7 /* sendTipAnimation.json in Resources */,
 				45A9493B1FC59E51003C3A23 /* RecentAddressTableViewCell.xib in Resources */,
 				85741D8520B45E8B0093933B /* circle_grow.json in Resources */,
-				8519658F21AD37720023EC84 /* sendTipAnimation.json in Resources */,
 				44A5BB0320F64282007FBB68 /* MultiSig.strings in Resources */,
 				44A5BB0820F644C4007FBB68 /* CreateMultiSigWallet.storyboard in Resources */,
 				4583AC931FBC7122001991AA /* PortfolioTableViewCell.xib in Resources */,
@@ -2829,6 +2843,7 @@
 				44AAAE1020E13BFC00A481A4 /* SavedAddressesRLM.swift in Sources */,
 				45AC163020484F1900E75BD6 /* BlockchainsPresenter.swift in Sources */,
 				45E215DB1FD15D5F0078945A /* DonationDTO.swift in Sources */,
+				45DD9A1621A4102900B8F8AD /* ImportMetaMaskInfoViewController.swift in Sources */,
 				451B98651FD94ADC00DC64A5 /* CustomTabBarPresenter.swift in Sources */,
 				444066D82059342E00342046 /* Bool+Extantion.swift in Sources */,
 				459A0B3420F0EC1A0076D10C /* MultiSigPendingTableViewCell.swift in Sources */,
@@ -3076,6 +3091,7 @@
 				45C8D143200780CF00F5994E /* SplashViewController.swift in Sources */,
 				45B5CCA21FDA90DF0069BD46 /* NoInternetConnectionViewController.swift in Sources */,
 				85DE62E320AB077B00423D89 /* WalletCollectionViewCell.swift in Sources */,
+				4410425121A44619007135B6 /* AccountType.swift in Sources */,
 				4454BAC22191C90800BC06B3 /* DMTokenExtension.swift in Sources */,
 				455EA8761FD842610093F69D /* CustomTabBarViewController.swift in Sources */,
 				FA4D43FB1FC6C760003C7117 /* BTCWalletPresenter.swift in Sources */,
@@ -3704,7 +3720,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.test;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.metamask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3745,7 +3761,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.test;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.metamask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";

@@ -11,3 +11,4 @@
 "BROWSER ALERT FOR TX" = "You are going to spend %@ ETH (and %@ ETH in fees) from wallet \"%@\"";
 "CONFIRM" = "Confirm";
 "DENY" = "Deny";
+"LOADING" = "Loading";

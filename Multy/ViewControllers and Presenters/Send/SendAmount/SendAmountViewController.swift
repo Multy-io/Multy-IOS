@@ -65,9 +65,11 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         enableSwipeToBack()
         numberFormatter.numberStyle = .decimal
         commissionSwitch.setOn(presenter.payForCommission, animated: false)
-//
-        commissionSwitch.isUserInteractionEnabled = false
-        swapBtn.isUserInteractionEnabled = false
+        
+        if presenter.tokenWallet != nil {
+            commissionSwitch.isUserInteractionEnabled = false
+            swapBtn.isUserInteractionEnabled = false
+        }
     }
     
     func updateUI() {
@@ -79,8 +81,9 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         amountTF.text = presenter.sendAmountString
         topSumLbl.text = presenter.sendAmountString
         topCurrencyNameLbl.text = presenter.isCrypto ? " " + presenter.cryptoName : " " + presenter.fiatName
-        bottomSumLbl.text = presenter.convertedAmountString
-        bottomCurrencyLbl.text = presenter.isCrypto ? " " + presenter.fiatName : " " + presenter.cryptoName
+        bottomSumLbl.text = presenter.sendTXMode == .erc20 ? "" : presenter.convertedAmountString
+        bottomCurrencyLbl.text = presenter.sendTXMode == .erc20 ? "" : (presenter.isCrypto ? " " + presenter.fiatName : " " + presenter.cryptoName)
+        
         spendableSumAndCurrencyLbl.text = presenter.isCrypto ? presenter.maxAllowedToSpendInChoosenCurrencyString + " " + presenter.cryptoName : presenter.availableSumInFiatString + " " + presenter.fiatName
         
         btnSumLbl.text = presenter.isCrypto ? presenter.totalSumInCryptoString + " " + presenter.cryptoName : presenter.totalSumInFiatString + " " + presenter.fiatName
@@ -228,7 +231,10 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     }
     
     @IBAction func sendAllAction(_ sender: Any) {
-        commissionSwitch.isOn = false
+        if presenter.sendTXMode != .erc20 {
+            commissionSwitch.isOn = false
+        }
+        
         presenter.setSumToMaxAllowed()
         
         sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: payMaxTap)

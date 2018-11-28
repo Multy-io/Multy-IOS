@@ -83,6 +83,10 @@ class WalletPresenter: NSObject {
         }
     }
     
+    var isTokenDisplayed: Bool {
+        return walletRepresentingMode == .allInfo && wallet!.isTokenExist
+    }
+    
     func prepareAssetsData(array: List<WalletTokenRLM>?) {
         if walletRepresentingMode != .allInfo || wallet!.blockchain != BLOCKCHAIN_ETHEREUM {
             return
@@ -268,11 +272,15 @@ class WalletPresenter: NSObject {
     
     func getHistoryAndWallet() {
         if walletVC?.isCanUpdate == false {
+            self.walletVC?.spiner.stopAnimating()
+            self.walletVC?.isCanUpdate = true
+            
             return
         }
         
-        if walletRepresentingMode != .allInfo {
-//            sendTestToken()
+        if walletRepresentingMode == .tokenInfo {
+            self.walletVC?.spiner.stopAnimating()
+            self.walletVC?.isCanUpdate = true
             
             return
         }
@@ -300,14 +308,10 @@ class WalletPresenter: NSObject {
         self.walletVC?.isCanUpdate = true
         if error == nil && historyArray != nil {
             self.transactionDataSource = historyArray!.sorted(by: {
-                let firstDate = $0.mempoolTime.timeIntervalSince1970 == 0 ? $0.blockTime : $0.mempoolTime
-                let secondDate = $1.mempoolTime.timeIntervalSince1970 == 0 ? $1.blockTime : $1.mempoolTime
-
-                return firstDate > secondDate
+                $0.mempoolTime > $1.mempoolTime
             })
             
             self.prepareAssetsData(array: self.wallet!.ethWallet?.erc20Tokens)
-            
             self.isSocketInitiateUpdating = false
             
             self.updateHeader()
@@ -325,6 +329,7 @@ class WalletPresenter: NSObject {
             
             return false
         }
+        
         return true
     }
     

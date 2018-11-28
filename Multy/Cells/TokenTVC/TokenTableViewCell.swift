@@ -46,8 +46,10 @@ class TokenTableViewCell: UITableViewCell {
         
         fiatAmountLbl.isHidden = true
         
-        tokenImg.image = UIImage(named: "chainEth")
+        tokenImg.image = UIImage(named: tokenObj.name == "Ethereum" ? "chainEth" : "erc20Token")
         tokenImg.moa.url = tokenObj.tokenImageURLString
+        tokenImg.layer.cornerRadius = 15
+        tokenImg.clipsToBounds = true
         
 //        let fiatBalance = ethBalance * exchangeCourse
 //        fiatAmountLbl.text = "\(fiatBalance.fiatValueString(for: BLOCKCHAIN_ETHEREUM)) USD"

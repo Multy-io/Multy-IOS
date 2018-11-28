@@ -139,23 +139,27 @@ class SendPresenter: NSObject {
 //    var priceForSubmit = "\(1_000_000_000)"
     
     
-    func getFeeRate(_ blockchainType: BlockchainType, completion: @escaping (_ feeRateDict: String) -> ()) {
+    func getFeeRate(_ blockchainType: BlockchainType, address: String?, completion: @escaping (_ feeRateDict: String, _ gasLimit: String?) -> ()) {
         DataManager.shared.getFeeRate(currencyID: blockchainType.blockchain.rawValue,
                                       networkID: UInt32(blockchainType.net_type),
-                                      ethAddress: nil,
+                                      ethAddress: address,
                                       completion: { (dict, error) in
                                         print(dict)
-                                        if let feeRates = dict!["speeds"] as? NSDictionary, let feeRate = feeRates["Fast"] as? UInt64 {
-                                            completion("\(feeRate)")
+                                        if let feeRates = dict!["speeds"] as? NSDictionary, let fastFeeRate = feeRates["Fast"] as? UInt64 {
+                                            if let gasLimitForMS = dict!["gaslimit"] as? String {
+                                                completion("\(fastFeeRate)", gasLimitForMS)
+                                            } else {
+                                                completion("\(fastFeeRate)", nil)
+                                            }
                                         } else {
                                             //default values
                                             switch blockchainType.blockchain {
                                             case BLOCKCHAIN_BITCOIN:
-                                                return completion("10")
+                                                return completion("10", nil)
                                             case BLOCKCHAIN_ETHEREUM:
-                                                return completion("1000000000")
+                                                return completion("1000000000", nil)
                                             default:
-                                                return completion("1")
+                                                return completion("1", nil)
                                             }
                                         }
         })
@@ -553,20 +557,17 @@ class SendPresenter: NSObject {
     func createTransaction(completion: @escaping (_ feeRateDict: Bool) -> ()) {
         let wallet = filteredWalletArray[selectedWalletIndex!]
         
-        getFeeRate(wallet.blockchainType) { [unowned self] (feeRate) in
-            DispatchQueue.main.async {
-                self.feeRate = feeRate
-                print(feeRate)
+        
                 switch wallet.blockchainType.blockchain {
                 case BLOCKCHAIN_BITCOIN:
                     completion(self.createBTCTransaction())
                 case BLOCKCHAIN_ETHEREUM:
-                    completion(self.createETHTransaction())
+                    createETHTransaction { completion($0) }
                 default:
                     completion(false)
                 }
-            }
-        }
+//            }
+//        }
     }
     
     func sendAnimationComplete() {
@@ -783,16 +784,16 @@ extension CreateTransactionDelegate {
         let request = activeRequestsArr[requestIndex]
         let wallet = filteredWalletArray[walletIndex]
         //      let jwtToken = DataManager.shared.realmManager.account!.token
-        let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                         sendAddress: request.choosenAddress!.address,
-                                                                         sendAmountString: request.choosenAddress!.amountString,
-                                                                         feePerByteAmount: feeRate,
-                                                                         isDonationExists: false,
-                                                                         donationAmount: "0",
-                                                                         isPayCommission: true,
-                                                                         wallet: wallet,
-                                                                         binaryData: &binaryData!,
-                                                                         inputs: wallet.addresses)
+        let trData = DataManager.shared.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                          sendAddress: request.choosenAddress!.address,
+                                                          sendAmountString: request.choosenAddress!.amountString,
+                                                          feePerByteAmount: feeRate,
+                                                          isDonationExists: false,
+                                                          donationAmount: "0",
+                                                          isPayCommission: true,
+                                                          wallet: wallet,
+                                                          binaryData: &binaryData!,
+                                                          inputs: wallet.addresses)
         
         rawTransaction = trData.0
         rawTransactionEstimation = trData.1
@@ -801,42 +802,29 @@ extension CreateTransactionDelegate {
         return trData.1 >= 0
     }
     
-    func createETHTransaction() -> Bool {
-        guard let requestIndex = selectedActiveRequestIndex, let walletIndex = selectedWalletIndex else {
-            return false
+    
+    
+    func createETHTransaction(completion: @escaping(_ isTXCorrect: Bool) -> ()) {
+        let requestIndex = selectedActiveRequestIndex
+        let walletIndex = selectedWalletIndex
+        
+        if requestIndex == nil || walletIndex == nil {
+            completion(false)
         }
         
-        let request = activeRequestsArr[requestIndex]
-        let wallet = filteredWalletArray[walletIndex]
+        let request = activeRequestsArr[requestIndex!]
+        let wallet = filteredWalletArray[walletIndex!]
         
         let sendAmount = request.choosenAddress!.amountString.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: wallet.blockchainType.blockchain).stringValue
-        
-        let pointer: UnsafeMutablePointer<OpaquePointer?>?
-        if !wallet.importedPrivateKey.isEmpty {
-            let blockchainType = wallet.blockchainType
-            let privatekey = wallet.importedPrivateKey
-            let walletInfo = DataManager.shared.coreLibManager.createPublicInfo(blockchainType: blockchainType, privateKey: privatekey)
-            switch walletInfo {
-            case .success(let value):
-                pointer = value["pointer"] as? UnsafeMutablePointer<OpaquePointer?>
-            case .failure(let error):
-                print(error)
-                
-                return false
-            }
-        } else {
-            pointer = addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
-        }
         
         if wallet.isMultiSig {
             if self.linkedWallet == nil {
                 rawTransaction = "Error"
                 
-                return false
+                completion(false)
             }
             
-            let trData = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
-                                                             wallet: self.linkedWallet!,
+            let trData = DataManager.shared.createMultiSigTx(wallet: self.linkedWallet!,
                                                              sendFromAddress: wallet.address,
                                                              sendAmountString: sendAmount,
                                                              sendToAddress: request.choosenAddress!.address,
@@ -844,22 +832,35 @@ extension CreateTransactionDelegate {
                                                              gasPriceString: feeRate,
                                                              gasLimitString: submitEstimation)
             
+//            let trData = DataManager.shared.createMultiSigTx(binaryData: &binaryData!,
+//                                                             wallet: self.linkedWallet!,
+//                                                             sendFromAddress: wallet.address,
+//                                                             sendAmountString: sendAmount,
+//                                                             sendToAddress: request.sendAddress,
+//                                                             msWalletBalance: wallet.availableAmount.stringValue,
+//                                                             gasPriceString: feeRate,
+//                                                             gasLimitString: submitEstimation)
+            
             rawTransaction = trData.message
             
-            return trData.isTransactionCorrect
+            completion(trData.isTransactionCorrect)
         } else {
-            let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
-                                                                                  sendAddress: request.choosenAddress!.address,
-                                                                                  sendAmountString: sendAmount,
-                                                                                  nonce: wallet.ethWallet!.nonce.intValue,
-                                                                                  balanceAmount: wallet.ethWallet!.balance,
-                                                                                  ethereumChainID: UInt32(wallet.blockchainType.net_type),
-                                                                                  gasPrice: feeRate,
-                                                                                  gasLimit: "40000")
-            
-            rawTransaction = trData.message
-            
-            return trData.isTransactionCorrect
+            getFeeRate(wallet.blockchainType, address: request.choosenAddress!.address) { [unowned self] (fastGasPrice, gasLimit) in
+                DispatchQueue.main.async {
+                    let gasLimitEnd = gasLimit ?? "21000" //for non ms address
+                    self.feeRate = fastGasPrice
+                    
+                    let trData = DataManager.shared.createETHTransaction(wallet: wallet,
+                                                                         sendAmountString: sendAmount,
+                                                                         destinationAddress: request.choosenAddress!.address,
+                                                                         gasPriceAmountString: self.feeRate,
+                                                                         gasLimitAmountString: gasLimitEnd)
+                    
+                    self.rawTransaction = trData.message
+                    
+                    completion(trData.isTransactionCorrect)
+                }
+            }
         }
     }
 }
