@@ -1128,23 +1128,25 @@ extension LocalizeDelegate: Localizable {
 extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 3
-        return 2
+        return 3
+//        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if indexPath.item == 0 {
-            //            let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
-            //
-            //            let requestImage = presenter.requestImage
-            //            magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
-            //
-            //            return magicReceiverCell
+            let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
+            
+            let requestImage = presenter.requestImage
+            magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
+            
+            return magicReceiverCell
+        } else if indexPath.item == 1 {
             let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
             assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
             return assetsCell
         } else {
+            
             let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
 //            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
             assetsCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
