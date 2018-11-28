@@ -79,6 +79,20 @@ class SendPresenter: NSObject {
                 
                 sendVC?.scrollToRequest(selectedActiveRequestIndex!)
             }
+            
+            sendVC?.updateUI()
+        }
+    }
+    
+    var walletsRequestsArr = [PaymentRequest]() {
+        didSet {
+            self.updateActiveRequests()
+        }
+    }
+    
+    var usersRequestsArr = [PaymentRequest]() {
+        didSet {
+            self.updateActiveRequests()
         }
     }
     
@@ -155,14 +169,19 @@ class SendPresenter: NSObject {
         if selectedActiveRequestIndex != nil  {
             let request = activeRequestsArr[selectedActiveRequestIndex!]
             
-            let blockchainType = BlockchainType.create(currencyID: UInt32(request.currencyID), netType: UInt32(request.networkID))
-            let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain)
-//            let address = request.sendAddress
-            
-            filteredWalletArray = filteredWalletArray.filter {
-                $0.blockchainType == blockchainType && $0.availableAmount > sendAmount
+            if request.requester == .wallet {
+                let blockchainType = BlockchainType.create(currencyID: UInt32(truncating: request.choosenAddress!.currencyID), netType: UInt32(truncating: request.choosenAddress!.networkID))
+                let sendAmount = request.choosenAddress!.amount.stringValue.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain)
+                //            let address = request.sendAddress
+                
+                filteredWalletArray = filteredWalletArray.filter {
+                    $0.blockchainType == blockchainType && $0.availableAmount > sendAmount
+                }
+            } else {
+                filteredWalletArray = filteredWalletArray.filter {
+                    $0.availableAmount > BigInt.zero()
+                }
             }
-
 //            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: address, for: $0).isValid && $0.availableAmount > sendAmount}
         } else {
             
@@ -196,6 +215,7 @@ class SendPresenter: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(self.didDiscoverNewAd(notification:)), name: Notification.Name(didDiscoverNewAdvertisementNotificationName), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.didChangedBluetoothReachability(notification:)), name: Notification.Name(bluetoothReachabilityChangedNotificationName), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.didReceiveNewRequests(notification:)), name: Notification.Name("newReceiver"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didReceiveNewMultiReceiversRequests(notification:)), name: Notification.Name("newMultiReceiver"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets), name: NSNotification.Name("transactionUpdated"), object: nil)
     }
     
@@ -218,6 +238,7 @@ class SendPresenter: NSObject {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(bluetoothReachabilityChangedNotificationName), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name("newReceiver"), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name("transactionUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("newMultiReceiver"), object: nil)
     }
     
     func numberOfWallets() -> Int {
@@ -300,16 +321,41 @@ class SendPresenter: NSObject {
     
     
     private func createTransactionDTO() {
-        if isSendingAvailable && selectedWalletIndex != nil && filteredWalletArray.count > selectedWalletIndex!  {
+        if isSendingAvailable && filteredWalletArray.count > selectedWalletIndex!  {
+            let activeRequest = activeRequestsArr[selectedActiveRequestIndex!]
             transaction = TransactionDTO()
-            let request = activeRequestsArr[selectedActiveRequestIndex!]
-            //FIXME:
-            transaction!.sendAmountString = request.sendAmount
-            transaction!.sendAddress = request.sendAddress
-            transaction!.choosenWallet = filteredWalletArray[selectedWalletIndex!]
+            if activeRequest.requester == .wallet {
+                //FIXME:
+                transaction!.sendAmountString = activeRequest.choosenAddress!.amountString
+                transaction!.sendAddress = activeRequest.choosenAddress!.address
+                transaction!.choosenWallet = filteredWalletArray[selectedWalletIndex!]
+            } else {
+                transaction = TransactionDTO()
+                let selectedWallet = filteredWalletArray[selectedWalletIndex!]
+                transaction!.choosenWallet = selectedWallet
+                let walletBlockchainType = BlockchainType.create(wallet: selectedWallet)
+                if activeRequest.supportedAddresses.count > 0 {
+                    for address in activeRequest.supportedAddresses {
+                        let blockchain = Blockchain(rawValue: address.currencyID.uint32Value)
+                        let requestAddressBlockchainType = BlockchainType.init(blockchain: blockchain, net_type: address.networkID.intValue)
+                        if requestAddressBlockchainType == walletBlockchainType {
+                            transaction!.sendAddress = address.address
+                            break
+                        }
+                    }
+                }
+            }
         }
     }
     
+    func goToEnterAmount() {
+        if transaction != nil {
+            let storyboard = UIStoryboard.init(name: "Send", bundle: nil)
+            let sendAmountVC = storyboard.instantiateViewController(withIdentifier: "sendAmountVC") as! SendAmountViewController
+            sendAmountVC.presenter.transactionDTO = transaction!
+            sendVC?.navigationController?.pushViewController(sendAmountVC, animated: true)
+        }
+    }
     
     @objc private func didDiscoverNewAd(notification: Notification) {
         DispatchQueue.main.async {
@@ -545,19 +591,31 @@ class SendPresenter: NSObject {
             let requests = notification.userInfo!["paymentRequests"] as! [PaymentRequest]
             
             if self != nil {
-                self!.updateActiveRequests(requests)
+                self!.walletsRequestsArr = requests
                 self!.sendVC?.updateUI()
             }
         }
     }
     
-    func updateActiveRequests(_ newRequests : [PaymentRequest]) {
+    @objc private func didReceiveNewMultiReceiversRequests(notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            let requests = notification.userInfo!["paymentRequests"] as! [PaymentRequest]
+            
+            if self != nil {
+                self!.usersRequestsArr = requests
+                self!.sendVC?.updateUI()
+            }
+        }
+    }
+    
+    func updateActiveRequests() {
+        let newRequests = walletsRequestsArr + usersRequestsArr
         var filteredRequestArray = newRequests.filter{ _ in true } //BigInt($0.sendAmount.convertCryptoAmountStringToMinimalUnits(in: BLOCKCHAIN_BITCOIN).stringValue) > Int64(0) }
         
         if selectedActiveRequestIndex != nil {
             // active request already exists
             let activeRequest = activeRequestsArr[selectedActiveRequestIndex!]
-            let newActiveRequest = filteredRequestArray.filter{ $0.userCode == activeRequest.userCode}.first
+            let newActiveRequest = filteredRequestArray.filter{ $0.userID == activeRequest.userID}.first
             
             if newActiveRequest != nil {
                 // there is new request with same userCode as userCode of active request
@@ -726,8 +784,8 @@ extension CreateTransactionDelegate {
         let wallet = filteredWalletArray[walletIndex]
         //      let jwtToken = DataManager.shared.realmManager.account!.token
         let trData = DataManager.shared.coreLibManager.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
-                                                                         sendAddress: request.sendAddress,
-                                                                         sendAmountString: request.sendAmount,
+                                                                         sendAddress: request.choosenAddress!.address,
+                                                                         sendAmountString: request.choosenAddress!.amountString,
                                                                          feePerByteAmount: feeRate,
                                                                          isDonationExists: false,
                                                                          donationAmount: "0",
@@ -751,7 +809,7 @@ extension CreateTransactionDelegate {
         let request = activeRequestsArr[requestIndex]
         let wallet = filteredWalletArray[walletIndex]
         
-        let sendAmount = request.sendAmount.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: wallet.blockchainType.blockchain).stringValue
+        let sendAmount = request.choosenAddress!.amountString.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: wallet.blockchainType.blockchain).stringValue
         
         let pointer: UnsafeMutablePointer<OpaquePointer?>?
         if !wallet.importedPrivateKey.isEmpty {
@@ -781,7 +839,7 @@ extension CreateTransactionDelegate {
                                                              wallet: self.linkedWallet!,
                                                              sendFromAddress: wallet.address,
                                                              sendAmountString: sendAmount,
-                                                             sendToAddress: request.sendAddress,
+                                                             sendToAddress: request.choosenAddress!.address,
                                                              msWalletBalance: wallet.availableAmount.stringValue,
                                                              gasPriceString: feeRate,
                                                              gasLimitString: submitEstimation)
@@ -791,7 +849,7 @@ extension CreateTransactionDelegate {
             return trData.isTransactionCorrect
         } else {
             let trData = DataManager.shared.coreLibManager.createEtherTransaction(addressPointer: pointer!,
-                                                                                  sendAddress: request.sendAddress,
+                                                                                  sendAddress: request.choosenAddress!.address,
                                                                                   sendAmountString: sendAmount,
                                                                                   nonce: wallet.ethWallet!.nonce.intValue,
                                                                                   balanceAmount: wallet.ethWallet!.balance,

@@ -36,6 +36,14 @@ class AssetsPresenter: NSObject {
         }
     }
     
+    var isSocketManagerConnected = false {
+        didSet {
+            if oldValue != isSocketManagerConnected {
+                updateReceiverActivity()
+            }
+        }
+    }
+    
     var isRecevingStarted = false {
         didSet {
             if oldValue != isRecevingStarted {
@@ -82,7 +90,7 @@ class AssetsPresenter: NSObject {
     
     var requestImage : UIImage? {
         get {
-            return account != nil ? PictureConstructor().createPicture(diameter: 200, seed: account!.userID.convertToUserCode!) : nil
+            return account != nil ? PictureConstructor().createPicture(diameter: 200, seed: account!.userID.md5()) : nil
         }
     }
     
@@ -529,17 +537,21 @@ class AssetsPresenter: NSObject {
         isBluetoothReachable = reachability == .reachable
     }
     
+    func updateSocketManagerStatus() {
+        isSocketManagerConnected = DataManager.shared.socketManager.isStarted
+    }
+    
     private func updateReceiverActivity() {
-        if isBluetoothReachable && !isRecevingStarted {
+        if isBluetoothReachable && isSocketManagerConnected && !isRecevingStarted {
             let _ = startReceiverActivity()
-        } else if !isBluetoothReachable && isRecevingStarted {
+        } else if (!isBluetoothReachable || !isSocketManagerConnected) && isRecevingStarted {
             stopReceiverActivity()
         }
     }
     
     private func startReceiverActivity() -> (Bool, String?) {
         let userID = account?.userID
-        let userCode = userID?.convertToUserCode
+        let userCode = userID?.md5().convertToUserCode
         guard userCode != nil && userID != nil else {
             return (false, "No account")
         }
@@ -570,21 +582,11 @@ class AssetsPresenter: NSObject {
     }
     
     private func becomeReceiver(userID : String, userCode : String) {
-//        guard self.wallet != nil else {
-//            return
-//        }
-//
-//        let blockchainType = BlockchainType.create(wallet: self.wallet!)
-//        let currencyID = self.wallet!.chain
-//        let networkID = blockchainType.net_type
-//        let address = walletAddress
-//        let amount = cryptoSum != nil ? cryptoSum!.convertCryptoAmountStringToMinimalUnits(for: Blockchain.init(rawValue: currencyID.uint32Value)).stringValue : "0"
-//
-//        DataManager.shared.socketManager.becomeReceiver(receiverID: userID, userCode: userCode, currencyID: currencyID.intValue, networkID: networkID, address: address, amount: amount)
+        DataManager.shared.socketManager.becomeMultiReceiver(receiverID: userID, userCode: userCode)
     }
     
     private func cancelBecomeReceiver() {
-//        DataManager.shared.socketManager.stopReceive()
+        DataManager.shared.socketManager.stopReceive()
     }
     
     private func shareUserCode(code : String) {
