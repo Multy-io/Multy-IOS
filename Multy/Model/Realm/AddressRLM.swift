@@ -43,9 +43,13 @@ class AddressRLM: Object {
             addressRLM.addressID = NSNumber(value: addressID as! Int32)
         }
         
-//        if let currencyID = addressInfo["currencyID"]  {
-//            addressRLM.currencyID = NSNumber(value: currencyID as! UInt32)
-//        }
+        if let currencyID = addressInfo["currencyID"]  {
+            addressRLM.currencyID = NSNumber(value: currencyID as! UInt32)
+        }
+        
+        if let networkID = addressInfo["networkID"] {
+            addressRLM.networkID = NSNumber(value: networkID as! UInt32)
+        }
         
 //        if let walletID = addressInfo["walletID"]  {
 //            addressRLM.walletID = NSNumber(value: walletID as! UInt32)

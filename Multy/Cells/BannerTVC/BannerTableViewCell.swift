@@ -34,20 +34,5 @@ class BannerTableViewCell: UITableViewCell {
         
         let magicReceiverCell = UINib.init(nibName: "MagicReceiverCollectionViewCell", bundle: nil)
         self.collectionView.register(magicReceiverCell, forCellWithReuseIdentifier: "magicReceiverCVCReuseID")
-        
-        pageControl.addTarget(self, action: #selector(self.changePage(sender:)), for: UIControlEvents.valueChanged)
-    }
-    
-    @objc fileprivate func changePage(sender: AnyObject) -> () {
-        var x = CGFloat(0)
-        
-        switch pageControl.currentPage {
-        case 1:
-            x = screenWidth
-        default:
-            x = 0
-        }
-        
-        collectionView.setContentOffset(CGPoint(x: x,y :0), animated: true)
     }
 }

@@ -59,6 +59,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     
     func vcViewDidLoad() {
         tabBarFrame = mainVC?.tabBarController?.tabBar.frame
+        mainVC!.view.addSubview(mainVC!.loader)
 
         if dragonDLObj == nil {
             dragonDLObj = mainVC!.make()
@@ -93,9 +94,11 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         
         isWalletsLoading = true
         
+        self.mainVC!.loader.showAndLock(customTitle: self.localize(string: Constants.loadingString))
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             if err != nil {
                 self.isWalletsLoading = false
+                self.mainVC!.loader.hideAndUnlock()
                 
                 return
             } else {
@@ -110,6 +113,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
                         } else {
                             self.isWalletsLoading = false
                             self.wallet = wallet
+                            self.mainVC!.loader.hideAndUnlock()
                         }
                     }
                 })
@@ -212,6 +216,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         
         DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
             self.isWalletsLoading = false
+            self.mainVC!.loader.hideAndUnlock()
             
             if error == nil {
                 self.loadETHWallets()
