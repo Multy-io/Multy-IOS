@@ -64,7 +64,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
                 info = notification!
             }
         }
-
+        
+        let _ = BLEManager.shared
+        
         performFirstSegue(launchOptions: launchOptions)
 
         return true

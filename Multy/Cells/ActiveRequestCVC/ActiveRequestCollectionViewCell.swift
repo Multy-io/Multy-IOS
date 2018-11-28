@@ -24,7 +24,8 @@ class ActiveRequestCollectionViewCell: UICollectionViewCell {
     var request : PaymentRequest!
     
     func fillInCell() {
-        requestImage.image  = PictureConstructor().createPicture(diameter: requestImage.frame.size.width, seed: request!.sendAddress)
+        let seed = request!.requester == .wallet ? request!.choosenAddress!.address : request.userID.md5()
+        requestImage.image  = PictureConstructor().createPicture(diameter: requestImage.frame.size.width, seed: seed)
         satisfiedImage.isHidden = !self.request.satisfied
     }
 }
