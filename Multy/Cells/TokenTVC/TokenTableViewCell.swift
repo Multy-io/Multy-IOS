@@ -46,7 +46,7 @@ class TokenTableViewCell: UITableViewCell {
         
         fiatAmountLbl.isHidden = true
         
-        tokenImg.image = UIImage(named: "chainEth")
+        tokenImg.image = UIImage(named: "chainErc20")
         tokenImg.moa.url = tokenObj.tokenImageURLString
         tokenImg.layer.cornerRadius = 15
         tokenImg.clipsToBounds = true
