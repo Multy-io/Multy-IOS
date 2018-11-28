@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,18 +30,18 @@
                         </collectionViewFlowLayout>
                     </collectionView>
                     <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="60N-Eg-tcs">
-                        <rect key="frame" x="176" y="307.5" width="23" height="37"/>
+                        <rect key="frame" x="176" y="302.5" width="23" height="37"/>
                         <color key="pageIndicatorTintColor" red="0.83393996950000004" green="0.86599963899999999" blue="0.92358797790000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="currentPageIndicatorTintColor" red="0.52471911910000002" green="0.62955904009999997" blue="0.76947301629999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </pageControl>
                 </subviews>
                 <color key="backgroundColor" red="0.92549019610000005" green="0.93333333330000001" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="60N-Eg-tcs" secondAttribute="bottom" constant="-5" id="Jtn-1U-1Yg"/>
+                    <constraint firstAttribute="bottom" secondItem="60N-Eg-tcs" secondAttribute="bottom" id="Jtn-1U-1Yg"/>
                     <constraint firstItem="1a8-bQ-2ZS" firstAttribute="leading" secondItem="zSn-lx-bLZ" secondAttribute="leading" id="KYS-XU-mtr"/>
                     <constraint firstAttribute="trailing" secondItem="1a8-bQ-2ZS" secondAttribute="trailing" id="eN4-Vh-3gy"/>
                     <constraint firstItem="1a8-bQ-2ZS" firstAttribute="height" secondItem="zSn-lx-bLZ" secondAttribute="height" multiplier="280/339" id="xeH-n5-dx2"/>
-                    <constraint firstItem="60N-Eg-tcs" firstAttribute="top" secondItem="1a8-bQ-2ZS" secondAttribute="bottom" constant="-5" id="yLW-zE-Vyz"/>
+                    <constraint firstItem="60N-Eg-tcs" firstAttribute="top" secondItem="1a8-bQ-2ZS" secondAttribute="bottom" constant="-10" id="yLW-zE-Vyz"/>
                     <constraint firstItem="60N-Eg-tcs" firstAttribute="centerX" secondItem="zSn-lx-bLZ" secondAttribute="centerX" id="zEM-QP-9Mq"/>
                 </constraints>
             </tableViewCellContentView>

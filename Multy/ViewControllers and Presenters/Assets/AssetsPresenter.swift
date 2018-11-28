@@ -545,6 +545,9 @@ class AssetsPresenter: NSObject {
 
     func countFiatMoney() -> String {
         var fiatSum = 0.0
+        if wallets == nil {
+            return "0"
+        }
         for wallet in wallets! {
             if wallet.blockchainType.isMainnet {
                 fiatSum += wallet.sumInFiat
