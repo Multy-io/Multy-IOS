@@ -31,30 +31,6 @@ class SendDetailsPresenter: NSObject {
             blockchainObject = (sendTXMode == SendTXMode.crypto) ? blockchain : tokenWallet!.token
             sendCryptoBlockchainType = (blockchain == BLOCKCHAIN_ERC20) ? BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: blockchainType.net_type) : blockchainType
             sendCryptoBlockchain = sendCryptoBlockchainType.blockchain
-            
-            if transactionDTO.blockchain == BLOCKCHAIN_ETHEREUM {
-                if transactionDTO.choosenWallet!.isMultiSig {
-                    DataManager.shared.estimation(for: transactionDTO.choosenWallet!.address) { [weak self] in
-                        switch $0 {
-                        case .success(let value):
-                            guard self != nil else {
-                                return
-                            }
-                            
-                            let limit = value["submitTransaction"] as! NSNumber
-                            self!.transactionDTO.ETHDTO!.gasLimit = BigInt("\(limit)")
-                            break
-                        case .failure(let error):
-                            print(error)
-                            break
-                        }
-                    }
-                } else {
-                    transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainTxGasLimit)")
-                }
-            } else if transactionDTO.blockchain == BLOCKCHAIN_ERC20 {
-                transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainERC20TxGasLimit)")
-            }
         }
     }
     
@@ -162,7 +138,19 @@ class SendDetailsPresenter: NSObject {
     
     func vcViewDidLoad() {
         vc?.setupUI()
+        
         requestFee()
+        
+        if transactionDTO.choosenWallet!.isMultiSig {
+            DataManager.shared.getWallet(primaryKey: transactionDTO.choosenWallet!.multisigWallet!.linkedWalletID) { (result) in
+                switch result {
+                case .success(let linkedWallet):
+                    self.linkedWallet = linkedWallet
+                case .failure:
+                    print("error while getting linked wallet")
+                }
+            }
+        }
     }
     
     func vcViewWillAppear() {
@@ -186,8 +174,6 @@ class SendDetailsPresenter: NSObject {
                                         
                                         if let gasLimitForMS = dict!["gaslimit"] as? String {
                                             self!.transactionDTO.ETHDTO!.gasLimit = BigInt(gasLimitForMS)
-                                        } else {
-                                            self!.transactionDTO.ETHDTO!.gasLimit = BigInt("\(21_000)")
                                         }
                                         
                                         if dict != nil, let fees = dict!["speeds"] as? NSDictionary {
@@ -195,7 +181,33 @@ class SendDetailsPresenter: NSObject {
                                         } else {
                                             print("Did failed getting feeRate")
                                         }
+                                        
+                                        
         })
+        
+        if transactionDTO.blockchain == BLOCKCHAIN_ERC20 {
+            transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainERC20TxGasLimit)")
+        } else if transactionDTO.blockchain == BLOCKCHAIN_ETHEREUM {
+            if transactionDTO.choosenWallet!.isMultiSig {
+                DataManager.shared.estimation(for: transactionDTO.choosenWallet!.address) { [weak self] in
+                    switch $0 {
+                    case .success(let value):
+                        guard self != nil else {
+                            return
+                        }
+                        
+                        let limit = value["submitTransaction"] as! NSNumber
+                        self!.transactionDTO.ETHDTO!.gasLimit = BigInt("\(limit)")
+                        break
+                    case .failure(let error):
+                        print(error)
+                        break
+                    }
+                }
+            } else {
+                transactionDTO.ETHDTO!.gasLimit = BigInt("\(21_000)")
+            }
+        }
     }
     
     func defaultFeeRates() -> NSDictionary {
