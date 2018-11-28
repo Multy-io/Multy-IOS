@@ -184,6 +184,12 @@ class SendDetailsPresenter: NSObject {
                                         
                                         self!.vc?.loader.hide()
                                         
+                                        if let gasLimitForMS = dict!["gaslimit"] as? String {
+                                            self!.transactionDTO.ETHDTO!.gasLimit = BigInt(gasLimitForMS)
+                                        } else {
+                                            self!.transactionDTO.ETHDTO!.gasLimit = BigInt("\(21_000)")
+                                        }
+                                        
                                         if dict != nil, let fees = dict!["speeds"] as? NSDictionary {
                                             self!.feeRates = fees
                                         } else {
