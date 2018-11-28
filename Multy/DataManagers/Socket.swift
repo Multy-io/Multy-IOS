@@ -157,16 +157,48 @@ class Socket: NSObject {
         self.socket.on("event:new:receiver") { (data, ack) in
             print(data)
             if data.first != nil {
-
+                
             }
         }
 
         socket.emitWithAck("event:startup:receiver:available", with: [["ids" : nearIDs]]).timingOut(after: 1) { data in
-            print(data)
+            print("multi \(data)")
+            
+            if data.first != nil {
+                if let _ = data.first! as? String {
+                    print("Error case")
+                    
+                    return
+                }
+                
+                let requestsData = data.first! as! [Dictionary<String, AnyObject>]
+                
+                var newRequests = [PaymentRequest]()
+                for requestData in requestsData {
+                    let userID = requestData["userid"] as! String
+//                    let userCode = requestData["usercode"] as? String
+                    let supportedAddresses = requestData["supportedAddresses"] as? [NSDictionary]
+                    var addresses : [[String : Any]] = []
+                    if supportedAddresses != nil && supportedAddresses!.count > 0 {
+                        for supportedAddress in supportedAddresses! {
+                            let address : [String : Any] = ["currencyID" : supportedAddress["currencyid"] ?? 0,
+                                                            "networkID"  : supportedAddress["networkid"] ?? 0,
+                                                            "address"    : supportedAddress["address"] ?? ""]
+                            addresses.append(address)
+                        }
+                    }
+                    let requestData = ["supportedAddresses" : addresses]
+                    let paymentRequest = PaymentRequest(requester: .user, userID: userID, requestData: requestData as NSDictionary)
+                    newRequests.append(paymentRequest)
+                }
+                
+                let userInfo = ["paymentRequests" : newRequests]
+                NotificationCenter.default.post(name: NSNotification.Name("newMultiReceiver"), object: nil, userInfo: userInfo)
+            }
         }
         
         socket.emitWithAck("event:sender:check", with: [["ids" : nearIDs]]).timingOut(after: 1) { data in
-            print(data)
+            print("plain \(data)")
 
             if data.first != nil {
                 if let _ = data.first! as? String {
@@ -182,7 +214,6 @@ class Socket: NSObject {
                     let dataDict = requestData
                     
                     let userID = dataDict["userid"] as! String
-                    let userCode = dataDict["usercode"] as! String
                     let currencyID = dataDict["currencyid"] as! UInt32
                     let networkID = dataDict["networkid"] as! UInt32
                     let addressString = dataDict["address"] as! String
@@ -194,7 +225,7 @@ class Socket: NSObject {
                                    "address"    : addressString,
                                    "amount"     : BigInt(amount).cryptoValueString(for: blockchain)]
                     let requestData = ["supportedAddresses" : [address]]
-                    let paymentRequest = PaymentRequest(requester: .wallet, userID: userID, userCode : userCode, requestData: requestData as NSDictionary)
+                    let paymentRequest = PaymentRequest(requester: .wallet, userID: userID, requestData: requestData as NSDictionary)
 
                     newRequests.append(paymentRequest)
                     print(dataDict)

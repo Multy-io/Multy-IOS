@@ -279,6 +279,7 @@
 		50D1AA3CFDA9BDFA53D3B9D0 /* Pods_MultyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */; };
 		85122C4E21A5908E00C73153 /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */; };
 		85122C5221A591FE00C73153 /* BannerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85122C5121A591FE00C73153 /* BannerTableViewCell.xib */; };
+		8519658F21AD37720023EC84 /* sendTipAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8519658E21AD37720023EC84 /* sendTipAnimation.json */; };
 		8540152B218AEBB800B20C7B /* BTCTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152A218AEBB800B20C7B /* BTCTransactionDTO.swift */; };
 		8540152D218AEC3200B20C7B /* ETHTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152C218AEC3200B20C7B /* ETHTransactionDTO.swift */; };
 		854C748B20C56C6900CBAFE9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854C748A20C56C6900CBAFE9 /* Utilities.swift */; };
@@ -792,6 +793,7 @@
 		7304C17824311A19240183E0 /* Pods_Multy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
 		85122C5121A591FE00C73153 /* BannerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerTableViewCell.xib; sourceTree = "<group>"; };
+		8519658E21AD37720023EC84 /* sendTipAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sendTipAnimation.json; path = ../../../../../../../Downloads/sendTipAnimation.json; sourceTree = "<group>"; };
 		853C41B9217A0E3700155B84 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
 		853C41BA217A0E3700155B84 /* ccan_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccan_config.h; sourceTree = "<group>"; };
 		853C41BC217A0E3800155B84 /* compiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compiler.h; sourceTree = "<group>"; };
@@ -2091,6 +2093,7 @@
 		85DE62F120AF187F00423D89 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				8519658E21AD37720023EC84 /* sendTipAnimation.json */,
 				44BF10DF20C971C4009E3E22 /* magicSend.json */,
 				854EF14920C06DA4000C2247 /* tx_success_animation.json */,
 				85741D8420B45E8A0093933B /* circle_grow.json */,
@@ -2458,6 +2461,7 @@
 				4477261720BDA1F2006BF4A7 /* Assets.strings in Resources */,
 				45A9493B1FC59E51003C3A23 /* RecentAddressTableViewCell.xib in Resources */,
 				85741D8520B45E8B0093933B /* circle_grow.json in Resources */,
+				8519658F21AD37720023EC84 /* sendTipAnimation.json in Resources */,
 				44A5BB0320F64282007FBB68 /* MultiSig.strings in Resources */,
 				44A5BB0820F644C4007FBB68 /* CreateMultiSigWallet.storyboard in Resources */,
 				4583AC931FBC7122001991AA /* PortfolioTableViewCell.xib in Resources */,

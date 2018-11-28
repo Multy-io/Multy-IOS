@@ -90,7 +90,7 @@ class AssetsPresenter: NSObject {
     
     var requestImage : UIImage? {
         get {
-            return account != nil ? PictureConstructor().createPicture(diameter: 200, seed: account!.userID.convertToUserCode!) : nil
+            return account != nil ? PictureConstructor().createPicture(diameter: 200, seed: account!.userID.md5()) : nil
         }
     }
     
@@ -551,7 +551,7 @@ class AssetsPresenter: NSObject {
     
     private func startReceiverActivity() -> (Bool, String?) {
         let userID = account?.userID
-        let userCode = userID?.convertToUserCode
+        let userCode = userID?.md5().convertToUserCode
         guard userCode != nil && userID != nil else {
             return (false, "No account")
         }

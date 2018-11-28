@@ -214,6 +214,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.isIdleTimerDisabled = true
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleExchangeUpdatedNotifiction(notification:)), name: NSNotification.Name("exchageUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleTransactionUpdatedNotification(notification :)), name: NSNotification.Name("transactionUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)

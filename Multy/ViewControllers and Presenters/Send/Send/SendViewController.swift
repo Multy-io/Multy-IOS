@@ -55,6 +55,11 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var sendTipLabel: UILabel!
     @IBOutlet weak var sendTipView: UIView!
+    @IBOutlet weak var sendTipImageHolderView: UIView!
+    @IBOutlet weak var requestInfoHolderView: UIView!
+    @IBOutlet weak var enterAmountLabel: UILabel!
+    @IBOutlet weak var plainRequestInfoHolderView: UIView!
+    @IBOutlet weak var multiRequestInfoHolderView: UIView!
     
     var txInfoView: TxInfoView?
     var txTokenImageView: UIImageView?
@@ -65,6 +70,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     var searchingAnimationView : LOTAnimationView?
     var sendLongPressGR : UILongPressGestureRecognizer?
     var sendSwipeGR : UISwipeGestureRecognizer?
+    var sendTipAnimationView : LOTAnimationView?
     
     let presenter = SendPresenter()
     
@@ -106,6 +112,9 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         super.viewWillAppear(animated)
         
         presenter.viewControllerViewWillAppear()
+        enterAmountLabel.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).cgColor
+        enterAmountLabel.layer.borderWidth = 3
+        enterAmountLabel.layer.cornerRadius = 10
     }
     
     override func viewDidLayoutSubviews() {
@@ -119,6 +128,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        enterAmountLabel.stopBlink()
         presenter.viewControllerViewWillDisappear()
     }
     
@@ -148,6 +158,20 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             searchingAnimationView!.loopAnimation = true
             searchingAnimationView!.play()
         }
+        
+        if sendTipAnimationView == nil {
+            sendTipAnimationView = LOTAnimationView(name: "sendTipAnimation")
+            sendTipAnimationView!.frame = sendTipImageHolderView.bounds
+            sendTipImageHolderView.autoresizesSubviews = true
+            sendTipImageHolderView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+            sendTipImageHolderView.insertSubview(sendTipAnimationView!, at: 0)
+            sendTipAnimationView!.transform = CGAffineTransform(rotationAngle: CGFloat(270.0 * (Double.pi / 180)))
+            
+            sendTipAnimationView!.loopAnimation = true
+            sendTipAnimationView!.play()
+        }
+        
+        enterAmountLabel.startBlink()
     }
     
     func refreshBackground() {
@@ -184,6 +208,9 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             } else {
                 selectedRequestAmountLabel.isHidden = true
                 selectedRequestAddressLabel.isHidden = true
+                plainRequestInfoHolderView.isHidden = true
+                multiRequestInfoHolderView.isHidden = true
+                
                 presenter.changeNameLabelVisibility(true)
                 
                 searchingActiveRequestsLabel.isHidden =  false
@@ -194,7 +221,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             }
             
             if sendMode != .prepareSending {
-                if presenter.selectedWalletIndex != nil && presenter.selectedActiveRequestIndex != nil {
+                if presenter.selectedWalletIndex != nil && presenter.selectedActiveRequestIndex != nil && presenter.activeRequestsArr[presenter.selectedActiveRequestIndex!].requester == .wallet {
                     sendTipView.isHidden = false
                     sendTipLabel.text = localize(string: Constants.sendTipString)
                 } else {
@@ -376,16 +403,16 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                 
                 let selectedRequest = presenter.activeRequestsArr[presenter.selectedActiveRequestIndex!]
                 if selectedRequest.requester == .wallet {
-                    selectedRequestAmountLabel.isHidden = false
-                    selectedRequestAddressLabel.isHidden = false
+                    plainRequestInfoHolderView.isHidden = false
+                    multiRequestInfoHolderView.isHidden = true
                     let blockchainType = BlockchainType.create(currencyID: UInt32(truncating: selectedRequest.choosenAddress!.currencyID), netType: 0)
                     let fiatAmount = selectedRequest.choosenAddress!.amountString.doubleValue * DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
                     selectedRequestAmountLabel.text = "\(selectedRequest.choosenAddress!.amountString) \(blockchainType.shortName)  / \(fiatAmount.fixedFraction(digits: 2)) USD"
                     selectedRequestAddressLabel.text = selectedRequest.choosenAddress!.address
                     presenter.changeNameLabelVisibility(false)
                 } else {
-                    selectedRequestAmountLabel.isHidden = true
-                    selectedRequestAddressLabel.isHidden = true
+                    plainRequestInfoHolderView.isHidden = true
+                    multiRequestInfoHolderView.isHidden = false
                     presenter.changeNameLabelVisibility(true)
                 }
             }
@@ -500,8 +527,11 @@ class SendViewController: UIViewController, AnalyticsProtocol {
 
     func prepareClonesViews() {
         selectedRequestAmountCloneLabel = cloneLabel(selectedRequestAmountLabel)
+        selectedRequestAmountCloneLabel?.frame = requestInfoHolderView.convert(selectedRequestAmountLabel.frame, to: foundActiveRequestsHolderView)
         selectedRequestAddressCloneLabel = cloneLabel(selectedRequestAddressLabel)
+        selectedRequestAddressCloneLabel?.frame = requestInfoHolderView.convert(selectedRequestAddressLabel.frame, to: foundActiveRequestsHolderView)
         cloneNameLabel = cloneLabel(nameLabel)
+        cloneNameLabel?.frame = requestInfoHolderView.convert(nameLabel.frame, to: foundActiveRequestsHolderView)
         
         activeRequestsClonesHolderView.addSubview(selectedRequestAmountCloneLabel!)
         activeRequestsClonesHolderView.addSubview(selectedRequestAddressCloneLabel!)
@@ -671,6 +701,10 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     
     @IBAction func enableBluetoothAction(_ sender: Any) {
 //        presentGoToBluetoothSettingsAlert()
+    }
+    
+    @IBAction func enterAmountAction(_ sender: Any) {
+        presenter.goToEnterAmount()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -883,5 +917,22 @@ extension SendViewController: UIGestureRecognizerDelegate {
 extension LocalizeDelegate: Localizable {
     var tableName: String {
         return "Sends"
+    }
+}
+
+extension UILabel {
+    //MARK: StartBlink
+    func startBlink() {
+        UIView.animate(withDuration: 0.8,//Time duration
+            delay:0.0,
+            options:[.allowUserInteraction, .curveEaseInOut, .autoreverse, .repeat],
+            animations: { self.alpha = 0 },
+            completion: nil)
+    }
+    
+    //MARK: StopBlink
+    func stopBlink() {
+        layer.removeAllAnimations()
+        alpha = 1
     }
 }

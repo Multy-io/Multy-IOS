@@ -302,6 +302,12 @@ let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 1
 //let apiUrl = "https://\(shortURL)/"
 //let socketUrl = "wss://\(shortURL)/"
 
+//TEST
+//let shortURL = "test.multy.io"
+//let apiUrl = "http://\(shortURL)/"
+//let socketUrl = "ws://\(shortURL)/"
+
+//Nik
 let shortURL = "test.multy.io"
 let apiUrl = "http://\(shortURL)/"
 let socketUrl = "ws://\(shortURL)/"
