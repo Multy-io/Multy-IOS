@@ -282,7 +282,6 @@
 		50D1AA3CFDA9BDFA53D3B9D0 /* Pods_MultyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */; };
 		85122C4E21A5908E00C73153 /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */; };
 		85122C5221A591FE00C73153 /* BannerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85122C5121A591FE00C73153 /* BannerTableViewCell.xib */; };
-		8519658F21AD37720023EC84 /* sendTipAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8519658E21AD37720023EC84 /* sendTipAnimation.json */; };
 		8527D6BE21AFADFC0071AA70 /* MagicReceiverCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8527D6C021AFADFC0071AA70 /* MagicReceiverCollectionViewCell.xib */; };
 		8540152B218AEBB800B20C7B /* BTCTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152A218AEBB800B20C7B /* BTCTransactionDTO.swift */; };
 		8540152D218AEC3200B20C7B /* ETHTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152C218AEC3200B20C7B /* ETHTransactionDTO.swift */; };
@@ -800,7 +799,6 @@
 		7304C17824311A19240183E0 /* Pods_Multy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
 		85122C5121A591FE00C73153 /* BannerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerTableViewCell.xib; sourceTree = "<group>"; };
-		8519658E21AD37720023EC84 /* sendTipAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sendTipAnimation.json; path = ../../../../../../../Downloads/sendTipAnimation.json; sourceTree = "<group>"; };
 		8527D6C221AFAE020071AA70 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MagicReceiverCollectionViewCell.strings; sourceTree = "<group>"; };
 		8527D6C421AFAE070071AA70 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/MagicReceiverCollectionViewCell.strings; sourceTree = "<group>"; };
 		8527D6C521AFAE0C0071AA70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MagicReceiverCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -3740,7 +3738,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.metamask;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3781,7 +3779,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.metamask;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";
