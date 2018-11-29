@@ -33,8 +33,8 @@
                             <constraint firstAttribute="height" constant="1" id="D8Y-Co-gS1"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="se4-pX-ooN">
-                        <rect key="frame" x="62" y="21" width="72" height="22"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Ethereum" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="se4-pX-ooN">
+                        <rect key="frame" x="62" y="21" width="210" height="22"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -59,6 +59,7 @@
                     <constraint firstAttribute="trailing" secondItem="d7M-nG-J6f" secondAttribute="trailing" constant="16" id="Cdj-a2-XrD"/>
                     <constraint firstItem="FhL-al-Uuc" firstAttribute="top" secondItem="d7M-nG-J6f" secondAttribute="bottom" id="Cfk-d7-rac"/>
                     <constraint firstItem="WK0-Ru-Jh9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="MYt-TG-YcB"/>
+                    <constraint firstItem="d7M-nG-J6f" firstAttribute="leading" secondItem="se4-pX-ooN" secondAttribute="trailing" constant="10" id="TXQ-aN-WOf"/>
                     <constraint firstAttribute="trailing" secondItem="3ej-zT-ELu" secondAttribute="trailing" id="WOh-hh-4lU"/>
                     <constraint firstItem="se4-pX-ooN" firstAttribute="centerY" secondItem="WK0-Ru-Jh9" secondAttribute="centerY" id="cWJ-Xg-PPu"/>
                     <constraint firstItem="FhL-al-Uuc" firstAttribute="trailing" secondItem="d7M-nG-J6f" secondAttribute="trailing" id="mRU-Wm-FPQ"/>

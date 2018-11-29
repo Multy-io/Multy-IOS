@@ -107,7 +107,7 @@ class ConfirmationStatusCollectionViewCell: UICollectionViewCell {
             imageName = "memberStatusConfirmed"
             break
             
-        case .declined:
+        case .declined, .revoke:
             imageName = "memberStatusDeclined"
             break
             

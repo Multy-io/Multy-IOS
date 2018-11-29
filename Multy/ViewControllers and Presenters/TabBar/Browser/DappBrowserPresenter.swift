@@ -59,6 +59,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
     
     func vcViewDidLoad() {
         tabBarFrame = mainVC?.tabBarController?.tabBar.frame
+        mainVC!.view.addSubview(mainVC!.loader)
 
         if dragonDLObj == nil {
             dragonDLObj = mainVC!.make()
@@ -93,24 +94,29 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         
         isWalletsLoading = true
         
+        self.mainVC!.loader.showAndLock(customTitle: self.localize(string: Constants.loadingString))
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             if err != nil {
                 self.isWalletsLoading = false
+                self.mainVC!.loader.hideAndUnlock()
                 
                 return
             } else {
-                let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
+//                let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
+                let walletsArray = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
 
                 let wallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType && $0.isMultiSig == false }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
-                
-                DispatchQueue.main.async { [unowned self] in
-                    if wallet == nil {
-                        self.createFirstWalletAndLoadBrowser()
-                    } else {
-                        self.isWalletsLoading = false
-                        self.wallet = wallet
+                DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArray, completion: { [unowned self] (acc, err) in
+                    DispatchQueue.main.async { [unowned self] in
+                        if wallet == nil {
+                            self.createFirstWalletAndLoadBrowser()
+                        } else {
+                            self.isWalletsLoading = false
+                            self.wallet = wallet
+                            self.mainVC!.loader.hideAndUnlock()
+                        }
                     }
-                }
+                })
             }
         }
     }
@@ -149,7 +155,9 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         clear(cache: true, cookies: true)
         
         DispatchQueue.main.async { [unowned self] in
-            self.browserCoordinator = BrowserCoordinator(wallet: self.wallet!, urlString: self.defaultURLString)
+            let loadUrl = self.mainVC!.urlTextField.text!.isEmpty ? self.defaultURLString : self.mainVC!.urlTextField.text!
+            
+            self.browserCoordinator = BrowserCoordinator(wallet: self.wallet!, urlString: loadUrl)
             self.browserCoordinator!.delegate = self
             self.mainVC!.childViewControllers.last?.remove()
             self.mainVC!.add(self.browserCoordinator!.browserViewController, to: self.mainVC!.browserView)
@@ -180,13 +188,14 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
             currentTopIndex = TopIndexRLM.createDefaultIndex(currencyID: NSNumber(value: currencyID), networkID: NSNumber(value: networkID), topIndex: NSNumber(value: 0))
         }
         
-        let dict = DataManager.shared.createNewWallet(for: &binData, blockchain: blockchianType, walletID: currentTopIndex!.topIndex.uint32Value)
+        let walletID = currentTopIndex!.topIndex.uint32Value
+        let dict = DataManager.shared.createNewWallet(for: &binData, blockchain: blockchianType, walletID: walletID)
         
         createdWallet.chain = NSNumber(value: currencyID)
         createdWallet.chainType = NSNumber(value: networkID)
-        createdWallet.name = "Dragonereum Wallet"
-        createdWallet.walletID = NSNumber(value: Int32(dict!["walletID"] as! UInt32))
-        createdWallet.addressID = NSNumber(value: Int32(dict!["addressID"] as! UInt32))
+        createdWallet.name = "Wallet"
+        createdWallet.walletID = walletID as NSNumber
+        createdWallet.addressID = 0
         createdWallet.address = dict!["address"] as! String
         
         if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
@@ -207,6 +216,7 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         
         DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
             self.isWalletsLoading = false
+            self.mainVC!.loader.hideAndUnlock()
             
             if error == nil {
                 self.loadETHWallets()

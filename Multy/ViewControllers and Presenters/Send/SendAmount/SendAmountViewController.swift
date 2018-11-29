@@ -69,11 +69,17 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     func configure() {
         enableSwipeToBack()
         numberFormatter.numberStyle = .decimal
+        
         if presenter.isPayForComissionCanBeChanged {
             commissionStack.isHidden = false
             commissionSwitch.setOn(presenter.payForCommission, animated: false)
         } else {
             commissionStack.isHidden = true
+        }
+        
+        if presenter.tokenWallet != nil {
+            commissionSwitch.isUserInteractionEnabled = false
+            swapBtn.isUserInteractionEnabled = false
         }
     }
     
@@ -86,8 +92,9 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         amountTF.text = presenter.sendAmountString
         topSumLbl.text = presenter.sendAmountString
         topCurrencyNameLbl.text = presenter.isCrypto ? " " + presenter.cryptoName : " " + presenter.fiatName
-        bottomSumLbl.text = presenter.convertedAmountString
-        bottomCurrencyLbl.text = presenter.isCrypto ? " " + presenter.fiatName : " " + presenter.cryptoName
+        bottomSumLbl.text = presenter.sendTXMode == .erc20 ? "" : presenter.convertedAmountString
+        bottomCurrencyLbl.text = presenter.sendTXMode == .erc20 ? "" : (presenter.isCrypto ? " " + presenter.fiatName : " " + presenter.cryptoName)
+        
         spendableSumAndCurrencyLbl.text = presenter.isCrypto ? presenter.maxAllowedToSpendInChoosenCurrencyString + " " + presenter.cryptoName : presenter.availableSumInFiatString + " " + presenter.fiatName
         
         btnSumLbl.text = presenter.isCrypto ? presenter.totalSumInCryptoString + " " + presenter.cryptoName : presenter.totalSumInFiatString + " " + presenter.fiatName
@@ -268,7 +275,10 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     }
     
     @IBAction func sendAllAction(_ sender: Any) {
-        commissionSwitch.isOn = false
+        if presenter.sendTXMode != .erc20 {
+            commissionSwitch.isOn = false
+        }
+        
         presenter.setSumToMaxAllowed()
         
         sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: payMaxTap)

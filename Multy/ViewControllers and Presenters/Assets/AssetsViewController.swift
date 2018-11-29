@@ -66,7 +66,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setpuUI()
-
+        
         let dm = DataManager.shared
         let mkg = MasterKeyGenerator.shared
         self.performFirstEnterFlow { [unowned self, unowned dm, unowned mkg] (succeeded) in
@@ -730,7 +730,28 @@ extension TableViewDelegate : UITableViewDelegate {
                 let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
                 let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
                 backupSeedVC.isRestore = true
+                backupSeedVC.presenter.accountType = .multy
+                
                 self.navigationController?.pushViewController(backupSeedVC, animated: true)
+            } else {
+                if self.presenter.isWalletExist() {
+                    goToWalletVC(indexPath: indexPath)
+                }
+            }
+        case [0,4]:
+            if self.presenter.account == nil {
+                if isServerConnectionExist == false {
+                    checkServerConnection()
+                    return
+                }
+                
+                let importMetaMaskVC = viewControllerFrom("SeedPhrase", "ImportMetaMask") as! ImportMetaMaskInfoViewController
+                self.navigationController?.pushViewController(importMetaMaskVC, animated: true)
+//                sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: restoreMultyTap)
+//                let storyboard = UIStoryboard(name: "SeedPhrase", bundle: nil)
+//                let backupSeedVC = storyboard.instantiateViewController(withIdentifier: "backupSeed") as! CheckWordsViewController
+//                backupSeedVC.isRestore = true
+//                self.navigationController?.pushViewController(backupSeedVC, animated: true)
             } else {
                 if self.presenter.isWalletExist() {
                     goToWalletVC(indexPath: indexPath)
@@ -791,14 +812,18 @@ extension TableViewDelegate : UITableViewDelegate {
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
 //                    return 340
-                    return screenHeight == heightOfFive ? 270 : 340
+//                    return screenHeight == heightOfFive ? 270 : 320
+                    return screenHeight == heightOfFive ? 270 : 320
                 } else {
 //                    return 340 + Constants.AssetsScreen.backupAssetsOffset
-                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 340
+                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 320
                     return heightConstant + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
+            if presenter.account == nil {
+                return 10
+            }
             return 75
         case [0,2]:
             if self.presenter.account != nil {
@@ -828,13 +853,19 @@ extension TableViewDelegate : UITableViewDelegate {
                 return 220
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
-                    return 340
+                    //                    return 340
+                    //                    return screenHeight == heightOfFive ? 270 : 320
+                    return screenHeight == heightOfFive ? 270 : 340
                 } else {
-//                    return 340 + Constants.AssetsScreen.backupAssetsOffset
-                    return 100 + Constants.AssetsScreen.backupAssetsOffset
+                    //                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 340
+                    return heightConstant + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
+            if presenter.account == nil {
+                return 10
+            }
             return 75
         case [0,2]:
             if self.presenter.account != nil {
@@ -879,7 +910,7 @@ extension TableViewDataSource : UITableViewDataSource {
                 return 3                                     // logo / new wallet / text cell
             }
         } else {
-            return 4                                         // logo / empty cell / create wallet / restore
+            return 5                                         // logo / empty cell / create wallet / restore / restore metamask
         }
     }
     
@@ -890,6 +921,11 @@ extension TableViewDataSource : UITableViewDataSource {
                 let logoCell = self.tableView.dequeueReusableCell(withIdentifier: "logoCell") as! LogoTableViewCell
                 return logoCell
             } else {
+//                let portfolioCell = self.tableView.dequeueReusableCell(withIdentifier: "portfolioCell") as! PortfolioTableViewCell
+//                portfolioCell.mainVC = self
+//                portfolioCell.delegate = self
+//                print(presenter.countFiatMoney())
+
                 let bannerCell = self.tableView.dequeueReusableCell(withIdentifier: "bannerCellReuseID") as! BannerTableViewCell
                 bannerCell.mainVC = self
                 bannerCell.delegate = self
@@ -926,7 +962,7 @@ extension TableViewDataSource : UITableViewDataSource {
                 }
             } else {   // acc == nil
                 let createCell = self.tableView.dequeueReusableCell(withIdentifier: "createOrRestoreCell") as! CreateOrRestoreBtnTableViewCell
-                
+                createCell.makeCreateCell()
                 return createCell
             }
         case [0,3]:
@@ -944,6 +980,21 @@ extension TableViewDataSource : UITableViewDataSource {
                 
                 return restoreCell
             }
+        case [0,4]:
+            if self.presenter.account != nil {
+                let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell
+                //                walletCell.makeshadow()
+                walletCell.wallet = presenter.wallets?[indexPath.row - 2]
+                walletCell.accessibilityIdentifier = "\(indexPath.row - 2)"
+                walletCell.fillInCell()
+                
+                return walletCell
+            } else {
+                let importMetamaskCell = self.tableView.dequeueReusableCell(withIdentifier: "createOrRestoreCell") as! CreateOrRestoreBtnTableViewCell
+                importMetamaskCell.makeMetaMaskCell()
+                
+                return importMetamaskCell
+            }
         default:
             let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell
             
@@ -957,7 +1008,19 @@ extension TableViewDataSource : UITableViewDataSource {
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.presenter.updateWalletsInfo(isInternetAvailable: isInternetAvailable)
+//        presenter.updateWalletsInfoByRefresh(isInternetAvailable: isInternetAvailable) { (isEnd) in
+//            self.presenter.unlockUI(isNeedToScroll: true)
+//        }
     }
+    
+    func blockCollection(block: Bool, isNeedToScroll: Bool) {
+        tableView.cellForRow(at: [0,0])?.isUserInteractionEnabled = !block
+        if isNeedToScroll == true {
+            tableView.scrollToTop()
+        }
+//        self.view.isUserInteractionEnabled = !block
+    }
+    
 }
 
 extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout {
@@ -965,9 +1028,11 @@ extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout 
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        var height: CGFloat = 277
-        if screenHeight == heightOfFive {
+        var height: CGFloat = 277  //widthOfNormal
+        if screenWidth == widthOfSmall {
             height = 250.0
+        } else if screenWidth == widthOfBig {
+            height = 297.0
         }
 //        return CGSize(width: screenWidth, height: 277 /* (screenWidth / 375.0)*/)
         return CGSize(width: screenWidth, height: height /* (screenWidth / 375.0)*/)
@@ -1063,7 +1128,8 @@ extension LocalizeDelegate: Localizable {
 extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        return 3
+//        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -1075,12 +1141,22 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
             magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
             
             return magicReceiverCell
+        } else if indexPath.item == 1 {
+            let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
+            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
+            return assetsCell
+        } else {
+            
+            let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
+//            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
+            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
+            return assetsCell
         }
         
-        let donatCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
-        donatCell.makeCellBy(index: indexPath.row)
-        
-        return donatCell
+        //        let donatCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
+        //        donatCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
+        //
+        //        return donatCell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -1089,7 +1165,7 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
         //            let customTab = tabBarController as! CustomTabBarViewController
         //            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
         //        } else {
-        if indexPath.row == 1 {
+        if indexPath.row == 2 {
             unowned let weakSelf =  self
             makeIdForInAppBigBy(indexPath: indexPath)
             makeIdForInAppBy(indexPath: indexPath)

@@ -43,4 +43,16 @@ class PreloaderView: UIView {
         superview?.isUserInteractionEnabled = true
     }
     
+    func hideAndUnlock() {
+        self.isHidden = true
+        UIApplication.shared.delegate!.window??.rootViewController?.view.isUserInteractionEnabled = true
+        superview?.isUserInteractionEnabled = true
+    }
+    
+    func showAndLock(customTitle: String?) {
+        self.hud?.text = customTitle
+        UIApplication.shared.delegate!.window??.rootViewController?.view.isUserInteractionEnabled = false
+        self.isHidden = false
+        superview?.isUserInteractionEnabled = false
+    }
 }

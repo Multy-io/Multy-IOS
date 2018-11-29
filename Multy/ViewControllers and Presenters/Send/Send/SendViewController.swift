@@ -414,7 +414,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                     presenter.changeNameLabelVisibility(false)
                 } else {
                     plainRequestInfoHolderView.isHidden = true
-                    multiRequestInfoHolderView.isHidden = false
+                    multiRequestInfoHolderView.isHidden = presenter.isSendingAvailable ? false : true
                     presenter.changeNameLabelVisibility(true)
                 }
             }

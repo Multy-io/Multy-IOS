@@ -54,3 +54,4 @@
 "ADD TO CONTACTS" = "Додати в контакт";
 "ENTERED INVALID SUM" = "Введена невірна сума";
 "ENTER AMOUNT" = "ВВЕДІТЬ СУМУ";
+"ENTER NON-ZERO AMOUNT" = "Будь ласка, введіть ненульову кількість!";

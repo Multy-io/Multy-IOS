@@ -99,6 +99,21 @@ extension DataManager {
         }
     }
     
+    func restoreMetamaskWallets(seedPhrase: String, completion: @escaping(_ isSucces: Bool?) -> ()) {
+        let info = metamaskWalletsInfoForRestore(seedPhrase: seedPhrase, isMainnet: true)
+        let info2 = metamaskWalletsInfoForRestore(seedPhrase: seedPhrase, isMainnet: false)
+        
+        apiManager.restoreMemamaskWallets(walletsInfo: info) { [unowned self] in
+            if $0 {
+                self.apiManager.restoreMemamaskWallets(walletsInfo: info2) {
+                    completion($0)
+                }
+            } else {
+                completion(false)
+            }
+        }
+    }
+    
     func appVersion() -> String {
         return ((infoPlist["CFBundleShortVersionString"] as! String) + (infoPlist["CFBundleVersion"] as! String))
     }
