@@ -18,30 +18,6 @@ class SendDetailsPresenter: NSObject {
             cryptoName = transactionDTO.assetsWallet.assetShortName
             fiatName = transactionDTO.choosenWallet!.fiatName
             feeRates = defaultFeeRates()
-           
-            if transactionDTO.blockchain == BLOCKCHAIN_ETHEREUM {
-                if transactionDTO.choosenWallet!.isMultiSig {
-                    DataManager.shared.estimation(for: transactionDTO.choosenWallet!.address) { [weak self] in
-                        switch $0 {
-                        case .success(let value):
-                            guard self != nil else {
-                                return
-                            }
-                            
-                            let limit = value["submitTransaction"] as! String
-                            self!.transactionDTO.ETHDTO!.gasLimit = BigInt(limit)
-                            break
-                        case .failure(let error):
-                            print(error)
-                            break
-                        }
-                    }
-                } else {
-                    transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainTxGasLimit)")
-                }
-            } else if transactionDTO.blockchain == BLOCKCHAIN_ERC20 {
-                transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainERC20TxGasLimit)")
-            }
         }
     }
     

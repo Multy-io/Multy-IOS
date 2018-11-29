@@ -148,4 +148,5 @@ extension Constants {
     static let confirmString = "CONFIRM"
     static let denyString = "DENY"
     static let walletString = "WALLET"
+    static let enterAmountString = "ENTER AMOUNT"
 }
