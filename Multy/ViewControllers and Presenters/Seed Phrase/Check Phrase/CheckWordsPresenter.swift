@@ -60,7 +60,7 @@ class CheckWordsPresenter: NSObject {
         }
         
         checkWordsVC?.nextWordOrContinue.isEnabled = false
-        checkWordsVC?.loader.show(customTitle: localize(string: Constants.restoreMultyString))
+        checkWordsVC?.loader.show(customTitle: localize(string: accountType.restoreString))
         
         DataManager.shared.auth(rootKey: seedString) { [unowned self] (acc, err) in
             if self.accountType == .metamask {
