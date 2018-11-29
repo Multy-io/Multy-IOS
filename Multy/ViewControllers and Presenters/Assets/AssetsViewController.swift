@@ -206,6 +206,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(bluetoothReachabilityChangedNotificationName), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(socketManagerStatusChangedNotificationName), object: nil)
         
         presenter.changeReceivingEnabling(false)
         
@@ -213,6 +214,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.isIdleTimerDisabled = true
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleExchangeUpdatedNotifiction(notification:)), name: NSNotification.Name("exchageUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleTransactionUpdatedNotification(notification :)), name: NSNotification.Name("transactionUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleMembersUpdatedNotification(notification:)), name: NSNotification.Name("msMembersUpdated"), object: nil)
@@ -223,7 +226,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: NSNotification.Name.UIApplicationWillEnterForeground, object:nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.applicationDidBecomeActive(notification:)), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.didChangedBluetoothReachability(notification:)), name: Notification.Name(bluetoothReachabilityChangedNotificationName), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didChangedSocketManagerStatus(notification:)), name: NSNotification.Name(socketManagerStatusChangedNotificationName), object: nil)
         super.viewWillAppear(animated)
         
         if !self.isFirstLaunch || !self.isInternetAvailable {
@@ -309,6 +312,12 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         }
     }
     
+    @objc private func didChangedSocketManagerStatus(notification: Notification) {
+        DispatchQueue.main.async { [unowned self] in
+            self.presenter.updateSocketManagerStatus()
+        }
+    }
+    
     @objc private func applicationDidBecomeActive(notification: Notification) {
         DispatchQueue.main.async { [unowned self] in
             self.presenter.updateBluetoothReachability()
@@ -379,10 +388,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     func updateReceiverUI() {
-        let bannerCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? BannerTableViewCell
-        if bannerCell != nil {
-            bannerCell!.collectionView.reloadData()
-        }
+        guard let bannerCell = self.tableView.cellForRow(at: [0,0]) as? BannerTableViewCell else { return }
+        bannerCell.collectionView!.reloadData()
     }
     
     func setupStatusBar() {
@@ -805,10 +812,11 @@ extension TableViewDelegate : UITableViewDelegate {
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
 //                    return 340
+//                    return screenHeight == heightOfFive ? 270 : 320
                     return screenHeight == heightOfFive ? 270 : 320
                 } else {
 //                    return 340 + Constants.AssetsScreen.backupAssetsOffset
-                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 340
+                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 320
                     return heightConstant + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
@@ -845,10 +853,13 @@ extension TableViewDelegate : UITableViewDelegate {
                 return 220
             } else {
                 if presenter.account!.isSeedPhraseSaved() {
-                    return 340
+                    //                    return 340
+                    //                    return screenHeight == heightOfFive ? 270 : 320
+                    return screenHeight == heightOfFive ? 270 : 340
                 } else {
-//                    return 340 + Constants.AssetsScreen.backupAssetsOffset
-                    return 100 + Constants.AssetsScreen.backupAssetsOffset
+                    //                    return 340 + Constants.AssetsScreen.backupAssetsOffset
+                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 340
+                    return heightConstant + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
@@ -1117,31 +1128,35 @@ extension LocalizeDelegate: Localizable {
 extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 3
-        return 2
+        return 3
+//        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-//        if indexPath.item == 0 {
-//            let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
-//            
-//            let requestImage = presenter.requestImage
-//            magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
-//            
-//            return magicReceiverCell
-//        }
-//        
-//        if indexPath.item == 2 {
-//            let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
+        if indexPath.item == 0 {
+            let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
+            
+            let requestImage = presenter.requestImage
+            magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
+            
+            return magicReceiverCell
+        } else if indexPath.item == 1 {
+            let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
+            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
+            return assetsCell
+        } else {
+            
+            let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
 //            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
-//            return assetsCell
-//        }
+            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
+            return assetsCell
+        }
         
-        let donatCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
-        donatCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
-        
-        return donatCell
+        //        let donatCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
+        //        donatCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
+        //
+        //        return donatCell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -1150,14 +1165,14 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
         //            let customTab = tabBarController as! CustomTabBarViewController
         //            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
         //        } else {
-//        if indexPath.row == 1 {
+        if indexPath.row == 2 {
             unowned let weakSelf =  self
             makeIdForInAppBigBy(indexPath: indexPath)
             makeIdForInAppBy(indexPath: indexPath)
             presentDonationAlertVC(from: weakSelf, with: stringIdForInAppBig)
             (tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
             logAnalytics(indexPath: indexPath)
-//        }
+        }
         //        }
     }
     
@@ -1190,13 +1205,13 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
+        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? BannerTableViewCell else { return }
         let firstCellCollectionView = firstCell.collectionView!
         firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? PortfolioTableViewCell else { return }
+        guard let firstCell = self.tableView.cellForRow(at: [0,0]) as? BannerTableViewCell else { return }
         let firstCellCollectionView = firstCell.collectionView!
         firstCell.pageControl.currentPage = Int(firstCellCollectionView.contentOffset.x) / Int(firstCellCollectionView.frame.width)
     }

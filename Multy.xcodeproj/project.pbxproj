@@ -13,6 +13,7 @@
 		4409E40120DD047900ADBE42 /* LocalizationConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4409E40020DD047900ADBE42 /* LocalizationConstant.swift */; };
 		440AD8D22020D1220015AEF1 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */; };
 		4410425121A44619007135B6 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4410425021A44619007135B6 /* AccountType.swift */; };
+		441606AC21AEDE33005F94B7 /* sendTipAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 441606AB21AEDE33005F94B7 /* sendTipAnimation.json */; };
 		442B94AD216B6E1700D1A402 /* DappOperationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */; };
 		4430569B20C1627600E5415A /* TransactionPendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4430569D20C1627600E5415A /* TransactionPendingCell.xib */; };
 		4436123020B56F000095F3C6 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436122F20B56F000095F3C6 /* UITableView+Extension.swift */; };
@@ -405,6 +406,7 @@
 		4409E40020DD047900ADBE42 /* LocalizationConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstant.swift; sourceTree = "<group>"; };
 		440AD8D12020D1220015AEF1 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		4410425021A44619007135B6 /* AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
+		441606AB21AEDE33005F94B7 /* sendTipAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sendTipAnimation.json; sourceTree = "<group>"; };
 		442B94AC216B6E1700D1A402 /* DappOperationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappOperationTypes.swift; sourceTree = "<group>"; };
 		4430569C20C1627600E5415A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TransactionPendingCell.xib; sourceTree = "<group>"; };
 		4430569F20C1627C00E5415A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransactionPendingCell.strings; sourceTree = "<group>"; };
@@ -2105,6 +2107,7 @@
 		85DE62F120AF187F00423D89 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				441606AB21AEDE33005F94B7 /* sendTipAnimation.json */,
 				44BF10DF20C971C4009E3E22 /* magicSend.json */,
 				854EF14920C06DA4000C2247 /* tx_success_animation.json */,
 				85741D8420B45E8A0093933B /* circle_grow.json */,
@@ -2470,6 +2473,7 @@
 				445B128520BC1C9300FD0D33 /* TextTableViewCell.xib in Resources */,
 				445D150B20DA8513002F6747 /* EPContactCell.xib in Resources */,
 				4477261720BDA1F2006BF4A7 /* Assets.strings in Resources */,
+				441606AC21AEDE33005F94B7 /* sendTipAnimation.json in Resources */,
 				45A9493B1FC59E51003C3A23 /* RecentAddressTableViewCell.xib in Resources */,
 				85741D8520B45E8B0093933B /* circle_grow.json in Resources */,
 				44A5BB0320F64282007FBB68 /* MultiSig.strings in Resources */,
