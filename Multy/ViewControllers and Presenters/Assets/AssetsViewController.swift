@@ -278,7 +278,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
             
             let tx = notification.userInfo?["transaction"] as? NSDictionary
             
-            if tx != nil {                
+            if tx != nil {
                 guard let txStatus = tx!["type"] as? Int,
                     txStatus == SocketMessageType.multisigTxPaymentRequest.rawValue else {
                         return

@@ -367,6 +367,7 @@ class SendPresenter: NSObject {
             let sendAmountVC = storyboard.instantiateViewController(withIdentifier: "sendAmountVC") as! SendAmountViewController
             
             let blockchainType = transaction!.choosenWallet!.blockchainType
+            sendVC?.enterAmountButton.isUserInteractionEnabled = false
             getFeeRate(blockchainType, address:transaction?.sendAddress) { [unowned self] (feeRate, gasLimit) in
                 DispatchQueue.main.async {
                     self.transaction!.feeRate = BigInt(feeRate)
@@ -377,6 +378,7 @@ class SendPresenter: NSObject {
                     sendAmountVC.presenter.sendFromThisScreen = true
                     sendAmountVC.presenter.isPayForComissionCanBeChanged = false
                     self.sendVC?.navigationController?.pushViewController(sendAmountVC, animated: true)
+                    self.sendVC?.enterAmountButton.isUserInteractionEnabled = true
                 }
             }
         }
