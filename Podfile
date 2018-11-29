@@ -33,6 +33,7 @@ target 'Multy' do
   pod 'Web3'
   pod 'Web3/ContractABI'
   pod 'moa', '~> 10.0'
+  pod 'GSMessages'
 #  pod 'MultyCoreLibrary'#, '0.1.7'
 
   #dapp
