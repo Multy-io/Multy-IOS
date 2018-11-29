@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,12 +24,22 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pYr-Eh-rRF" userLabel="Image View - Request">
                                 <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turn On Bluetooth" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ZYW-cU-yAd">
+                                <rect key="frame" x="27" y="130" width="145" height="52"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="18"/>
+                                <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="ZYW-cU-yAd" firstAttribute="leading" secondItem="ei5-nj-Oxi" secondAttribute="leading" constant="27" id="16p-Ut-DYJ"/>
                             <constraint firstItem="pYr-Eh-rRF" firstAttribute="top" secondItem="ei5-nj-Oxi" secondAttribute="top" id="D7b-eL-dHA"/>
+                            <constraint firstAttribute="trailing" secondItem="ZYW-cU-yAd" secondAttribute="trailing" constant="28" id="MxE-Ie-V6F"/>
                             <constraint firstAttribute="width" constant="200" id="Nob-NA-U7T"/>
+                            <constraint firstAttribute="bottom" secondItem="ZYW-cU-yAd" secondAttribute="bottom" constant="18" id="ZDc-DH-NV4"/>
                             <constraint firstAttribute="bottom" secondItem="pYr-Eh-rRF" secondAttribute="bottom" id="ceI-bo-yiY"/>
+                            <constraint firstItem="ZYW-cU-yAd" firstAttribute="top" secondItem="ei5-nj-Oxi" secondAttribute="top" constant="130" id="iVz-LS-3Vu"/>
                             <constraint firstAttribute="width" secondItem="ei5-nj-Oxi" secondAttribute="height" multiplier="1:1" id="uSV-Ts-iy9"/>
                             <constraint firstAttribute="trailing" secondItem="pYr-Eh-rRF" secondAttribute="trailing" id="ufZ-eI-bLJ"/>
                             <constraint firstItem="pYr-Eh-rRF" firstAttribute="leading" secondItem="ei5-nj-Oxi" secondAttribute="leading" id="zwi-ta-6Pv"/>
@@ -53,6 +63,7 @@
             <connections>
                 <outlet property="requestImageHolderView" destination="ei5-nj-Oxi" id="BDb-AY-wNS"/>
                 <outlet property="requestImageView" destination="pYr-Eh-rRF" id="fEa-tT-I4b"/>
+                <outlet property="turnOnBluetoothLabel" destination="ZYW-cU-yAd" id="UJI-ut-0LY"/>
             </connections>
             <point key="canvasLocation" x="-140.80000000000001" y="81.859070464767626"/>
         </collectionViewCell>

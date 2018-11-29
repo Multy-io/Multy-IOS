@@ -6,6 +6,7 @@ import UIKit
 import ZFRippleButton
 
 private typealias LocalizeDelegate = SendAmountViewController
+private typealias SliderExtension = SendAmountViewController
 
 class SendAmountViewController: UIViewController, UITextFieldDelegate, AnalyticsProtocol {
     @IBOutlet weak var titleLbl: UILabel! 
@@ -24,13 +25,17 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var swapBtn: UIButton!
+    @IBOutlet weak var slideToSendHolderView: UIView!
+    @IBOutlet weak var nextButtonHolderView: UIView!
     
     @IBOutlet weak var constratintNextBtnHeight: NSLayoutConstraint!
-    @IBOutlet weak var nextButtonBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonsHolderBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewContentHeightConstraint: NSLayoutConstraint!
     
     let presenter = SendAmountPresenter()
     let numberFormatter = NumberFormatter()
+    var sliderVC : SlideViewController?
+    
     var keyboardHeight : CGFloat = 0 {
         didSet {
             if oldValue != keyboardHeight {
@@ -64,7 +69,13 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     func configure() {
         enableSwipeToBack()
         numberFormatter.numberStyle = .decimal
-        commissionSwitch.setOn(presenter.payForCommission, animated: false)
+        
+        if presenter.isPayForComissionCanBeChanged {
+            commissionStack.isHidden = false
+            commissionSwitch.setOn(presenter.payForCommission, animated: false)
+        } else {
+            commissionStack.isHidden = true
+        }
         
         if presenter.tokenWallet != nil {
             commissionSwitch.isUserInteractionEnabled = false
@@ -90,8 +101,8 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     }
     
     func updateConstraints() {
-        nextButtonBottomConstraint.constant = keyboardHeight - bottomLayoutGuide.length
-        scrollViewContentHeightConstraint.constant = screenHeight - nextBtn.frame.height - nextButtonBottomConstraint.constant - scrollView.frame.origin.y - bottomLayoutGuide.length
+        buttonsHolderBottomConstraint.constant = keyboardHeight - bottomLayoutGuide.length
+        scrollViewContentHeightConstraint.constant = screenHeight - nextBtn.frame.height - buttonsHolderBottomConstraint.constant - scrollView.frame.origin.y - bottomLayoutGuide.length
         view.updateConstraints()
     }
     
@@ -101,6 +112,20 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     
     @objc func showKeyboard() {
         self.amountTF.becomeFirstResponder()
+    }
+    
+    func prepareButtonsHolderUI() {
+        if presenter.sendFromThisScreen {
+            slideToSendHolderView.isHidden = false
+            nextButtonHolderView.isHidden = true
+            let sendStoryboard = UIStoryboard(name: "Send", bundle: nil)
+            sliderVC = sendStoryboard.instantiateViewController(withIdentifier: "sliderVC") as? SlideViewController
+            sliderVC!.delegate = self
+            add(sliderVC!, to: slideToSendHolderView)
+        } else {
+            slideToSendHolderView.isHidden = true
+            nextButtonHolderView.isHidden = false
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -186,6 +211,25 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         }
     }
     
+    func sendingTxDidFailed(_ error: Error?) {
+        if error != nil {
+            sendAnalyticsEvent(screenName: self.className, eventName: (error! as NSError).userInfo.debugDescription)
+        }
+        
+        presentAlert(withTitle: localize(string: Constants.warningString), andMessage: localize(string: Constants.errorSendingTxString))
+        print("sendHDTransaction Error: \(error)")
+        sliderVC?.slideToStart()
+        sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(presenter.transactionDTO.choosenWallet!.chain)", eventName: transactionErrorFromServer)
+    }
+    
+    func goToSendingSuceededScreen() {
+        let storyboard = UIStoryboard(name: "Send", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "SuccessSendVC") as! SendingAnimationViewController
+        vc.presenter.transactionAmount = presenter.totalSumInCryptoString
+        vc.presenter.transactionAddress = presenter.transactionDTO.sendAddress
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @IBAction func cancelAction(_ sender: Any) {
         self.tabBarController?.selectedIndex = 0
         self.navigationController?.popToRootViewController(animated: false)
@@ -242,6 +286,12 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     
     @IBAction func nextAction(_ sender: Any) {
         presenter.goToFinish()
+    }
+}
+
+extension SliderExtension : SliderDelegate {
+    func didSlideToSend(_ sender: SlideViewController) {
+        presenter.sendTx()
     }
 }
 

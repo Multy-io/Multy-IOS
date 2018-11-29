@@ -356,8 +356,20 @@ class SendPresenter: NSObject {
         if transaction != nil {
             let storyboard = UIStoryboard.init(name: "Send", bundle: nil)
             let sendAmountVC = storyboard.instantiateViewController(withIdentifier: "sendAmountVC") as! SendAmountViewController
-            sendAmountVC.presenter.transactionDTO = transaction!
-            sendVC?.navigationController?.pushViewController(sendAmountVC, animated: true)
+            
+            let blockchainType = transaction!.choosenWallet!.blockchainType
+            getFeeRate(blockchainType, address:transaction?.sendAddress) { [unowned self] (feeRate, gasLimit) in
+                DispatchQueue.main.async {
+                    self.transaction!.feeRate = BigInt(feeRate)
+                    if blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
+                        self.transaction!.ETHDTO!.gasLimit = gasLimit != nil ? BigInt(gasLimit!) : BigInt("21000")
+                    }
+                    sendAmountVC.presenter.transactionDTO = self.transaction!
+                    sendAmountVC.presenter.sendFromThisScreen = true
+                    sendAmountVC.presenter.isPayForComissionCanBeChanged = false
+                    self.sendVC?.navigationController?.pushViewController(sendAmountVC, animated: true)
+                }
+            }
         }
     }
     

@@ -4,6 +4,7 @@
 
 import UIKit
 import RealmSwift
+import Alamofire
 
 enum SendTXMode {
     case crypto
@@ -45,6 +46,9 @@ class SendAmountPresenter: NSObject {
             disassembleTransaction()
         }
     }
+    
+    var sendFromThisScreen = false
+    var isPayForComissionCanBeChanged = true
     
     var assetsWallet = UserWalletRLM()
     var tokenWallet: UserWalletRLM?
@@ -251,6 +255,7 @@ class SendAmountPresenter: NSObject {
     func vcViewWillAppear() {
         addNotificationsObservers()
         vc?.showKeyboard()
+        vc?.prepareButtonsHolderUI()
     }
     
     func vcViewDidLayoutSubviews() {
@@ -275,7 +280,34 @@ class SendAmountPresenter: NSObject {
             changeSendAmountString(transactionDTO.sendAmountString!)
         }
         
-        if blockchain == BLOCKCHAIN_ETHEREUM || blockchain == BLOCKCHAIN_ERC20  {
+//        if transactionDTO.blockchain == BLOCKCHAIN_ETHEREUM {
+//            if transactionDTO.choosenWallet!.isMultiSig {
+//                DataManager.shared.estimation(for: transactionDTO.choosenWallet!.address) { [weak self] in
+//                    switch $0 {
+//                    case .success(let value):
+//                        guard self != nil else {
+//                            return
+//                        }
+//                        
+//                        let limit = value["submitTransaction"] as! String
+//                        self!.transactionDTO.ETHDTO!.gasLimit = BigInt(limit)
+//                        self!.feeEstimationInCrypto = self!.transactionDTO.ETHDTO?.feeAmount
+//                        break
+//                    case .failure(let error):
+//                        print(error)
+//                        break
+//                    }
+//                }
+//            } else {
+//                transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainTxGasLimit)")
+//                feeEstimationInCrypto = transactionDTO.ETHDTO?.feeAmount
+//            }
+//        } else if transactionDTO.blockchain == BLOCKCHAIN_ERC20 {
+//            transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainERC20TxGasLimit)")
+//            feeEstimationInCrypto = transactionDTO.ETHDTO?.feeAmount
+//        }
+        
+        if transactionDTO.blockchain == BLOCKCHAIN_ETHEREUM || transactionDTO.blockchain == BLOCKCHAIN_ERC20 {
             feeEstimationInCrypto = transactionDTO.ETHDTO?.feeAmount
         }
     }
@@ -579,5 +611,59 @@ extension CreateTransactionDelegate {
         rawTransaction = rawTX.message
         
         return rawTX.isTransactionCorrect
+    }
+    
+    func sendTx() {
+        if estimateTransactionAndValidation() && sendAmountInCryptoMinimalUnits.isNonZero {
+            assembleTransaction()
+            
+            self.createRecentAddress()
+            
+            let params = createTXParameters()
+            
+            DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
+                print("---------\(dict)")
+                
+                if error != nil {
+                    self.vc?.sendingTxDidFailed(error!)
+                    return
+                }
+                
+                if dict!["code"] as! Int == 200 {
+                    self.vc?.goToSendingSuceededScreen()
+                } else {
+                    self.vc?.sendingTxDidFailed(error!)
+                }
+            }
+        }
+    }
+    
+    func createTXParameters() -> Parameters {
+        let wallet = transactionDTO.assetsWallet
+        let newAddress = wallet.shouldCreateNewAddressAfterTransaction ? transactionDTO.BTCDTO!.newChangeAddress! : ""
+        let addressIndex = wallet.blockchain == BLOCKCHAIN_ETHEREUM ? 0 : wallet.addresses.count
+        
+        let newAddressParams = [
+            "walletindex"   : wallet.walletID.intValue,
+            "address"       : newAddress,
+            "addressindex"  : addressIndex,
+            "transaction"   : transactionDTO.rawValue!,
+            "ishd"          : NSNumber(booleanLiteral: wallet.shouldCreateNewAddressAfterTransaction)
+            ] as [String : Any]
+        
+        let params = [
+            "currencyid": wallet.chain,
+            "networkid" : wallet.chainType,
+            "payload"   : newAddressParams
+            ] as [String : Any]
+        
+        return params
+    }
+    
+    func createRecentAddress() {
+        let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
+        RealmManager.shared.writeOrUpdateRecentAddress(blockchainType: blockchainType,
+                                                       address: transactionDTO.sendAddress!,
+                                                       date: Date())
     }
 }
