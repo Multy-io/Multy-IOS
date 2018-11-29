@@ -64,12 +64,18 @@ class CheckWordsPresenter: NSObject {
         
         DataManager.shared.auth(rootKey: seedString) { [unowned self] (acc, err) in
             if self.accountType == .metamask {
-                self.checkWordsVC?.loader.hide()
+                self.checkWordsVC!.sendAnalyticsEvent(screenName: screenRestoreSeed, eventName: restoringMetaMask)
+                self.checkWordsVC!.loader.hide()
                 let loadingVC = viewControllerFrom("SeedPhrase", "Waiting")
 //                self.checkWordsVC!.present(loadingVC, animated: true, completion: nil)
                 self.checkWordsVC!.navigationController?.pushViewController(loadingVC, animated: true)
                 DataManager.shared.restoreMetamaskWallets(seedPhrase: seedString, completion: { [unowned self] (bool) in
 //                    loadingVC.dismissVC()
+                    if bool == false { // restoring failed
+                        self.checkWordsVC!.sendAnalyticsEvent(screenName: screenRestoreSeed, eventName: restoringMetaMask)
+                    } else {
+                        self.checkWordsVC!.sendAnalyticsEvent(screenName: screenRestoreSeed, eventName: restoringMetaMaskSuccess)
+                    }
                     loadingVC.navigationController?.popToRootViewController(animated: true)
                     self.toMainScreen()
                 })
