@@ -94,26 +94,28 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         
         isWalletsLoading = true
         
-        self.mainVC!.loader.showAndLock(customTitle: self.localize(string: Constants.loadingString))
         DataManager.shared.getWalletsVerbose() { [unowned self] (walletsArrayFromApi, err) in
             if err != nil {
                 self.isWalletsLoading = false
-                self.mainVC!.loader.hideAndUnlock()
                 
                 return
             } else {
 //                let walletsArray = UserWalletRLM.initArrayWithArray(walletsArray: walletsArrayFromApi!)
                 let walletsArray = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi!)
 
-                let wallet = walletsArray.filter { $0.blockchainType == self.defaultBlockchainType && $0.isMultiSig == false }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
                 DataManager.shared.realmManager.updateWalletsInAcc(arrOfWallets: walletsArray, completion: { [unowned self] (acc, err) in
+                    if acc == nil {
+                        return
+                    }
+                    
+                    let wallet = acc!.wallets.filter { $0.blockchainType == self.defaultBlockchainType && $0.isMultiSig == false }.sorted(by: { return $0.allETHBalance > $1.allETHBalance }).first
+                    
                     DispatchQueue.main.async { [unowned self] in
                         if wallet == nil {
                             self.createFirstWalletAndLoadBrowser()
                         } else {
                             self.isWalletsLoading = false
                             self.wallet = wallet
-                            self.mainVC!.loader.hideAndUnlock()
                         }
                     }
                 })
@@ -216,7 +218,6 @@ class DappBrowserPresenter: NSObject, BrowserCoordinatorDelegate {
         
         DataManager.shared.addWallet(params: params) { [unowned self] (dict, error) in
             self.isWalletsLoading = false
-            self.mainVC!.loader.hideAndUnlock()
             
             if error == nil {
                 self.loadETHWallets()
@@ -247,7 +248,6 @@ extension BrowserCacheDelegate {
         cookies.forEach { cookieStorage.deleteCookie($0) }
     }
 }
-
 
 extension DappBrowserPresenter: SendWalletProtocol {
     func sendWallet(wallet: UserWalletRLM) {
