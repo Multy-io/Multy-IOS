@@ -8,6 +8,7 @@ import Lottie
 class MagicReceiverCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var requestImageHolderView: UIView!
     @IBOutlet weak var requestImageView: UIImageView!
+    @IBOutlet weak var turnOnBluetoothLabel: UILabel!
     
     var wavesAnimationView : LOTAnimationView?
     private var bluetoothEnabled = true
@@ -27,6 +28,7 @@ class MagicReceiverCollectionViewCell: UICollectionViewCell {
     func fillWithBluetoothState(_ bluetoothState: Bool, requestImage: UIImage?) {
         bluetoothEnabled = bluetoothState
         requestImageView.image = bluetoothEnabled ? requestImage : #imageLiteral(resourceName: "bluetooth_disabled_img")
+        turnOnBluetoothLabel.isHidden = bluetoothEnabled ? true : false
         updateUI()
     }
     

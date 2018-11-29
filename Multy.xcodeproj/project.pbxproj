@@ -282,6 +282,7 @@
 		50D1AA3CFDA9BDFA53D3B9D0 /* Pods_MultyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */; };
 		85122C4E21A5908E00C73153 /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */; };
 		85122C5221A591FE00C73153 /* BannerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85122C5121A591FE00C73153 /* BannerTableViewCell.xib */; };
+		8527D6BE21AFADFC0071AA70 /* MagicReceiverCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8527D6C021AFADFC0071AA70 /* MagicReceiverCollectionViewCell.xib */; };
 		8540152B218AEBB800B20C7B /* BTCTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152A218AEBB800B20C7B /* BTCTransactionDTO.swift */; };
 		8540152D218AEC3200B20C7B /* ETHTransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8540152C218AEC3200B20C7B /* ETHTransactionDTO.swift */; };
 		854C748B20C56C6900CBAFE9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854C748A20C56C6900CBAFE9 /* Utilities.swift */; };
@@ -308,6 +309,7 @@
 		859C7B1420F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859C7B1320F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib */; };
 		859D37FB2174961800183323 /* SendAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859D37FA2174961800183323 /* SendAmountViewController.swift */; };
 		859D37FD2174963F00183323 /* SendAmountPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859D37FC2174963F00183323 /* SendAmountPresenter.swift */; };
+		85ACDD2321AECAC400742237 /* SlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ACDD2221AECAC400742237 /* SlideViewController.swift */; };
 		85D17209217F22A80046E118 /* TokenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452ED153216E039600B86A67 /* TokenTableViewCell.swift */; };
 		85D1720D217F26640046E118 /* ripemd160.c in Sources */ = {isa = PBXBuildFile; fileRef = 85D1720B217F26640046E118 /* ripemd160.c */; };
 		85DE62DD20AB002000423D89 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62DC20AB002000423D89 /* SendViewController.swift */; };
@@ -319,7 +321,6 @@
 		85DE62ED20AC4E4C00423D89 /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DE62EC20AC4E4C00423D89 /* PaymentRequest.swift */; };
 		85DE62F320AF188B00423D89 /* Check Mark Success Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 85DE62F220AF188B00423D89 /* Check Mark Success Data.json */; };
 		85EBF54221A5A2000001B70C /* MagicReceiverCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EBF54121A5A2000001B70C /* MagicReceiverCollectionViewCell.swift */; };
-		85EBF54421A5A2170001B70C /* MagicReceiverCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85EBF54321A5A2170001B70C /* MagicReceiverCollectionViewCell.xib */; };
 		BA3449F966752EDDC53A2B0D /* Pods_Multy_MultyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572DB9D15F9362827245CF67 /* Pods_Multy_MultyUITests.framework */; };
 		FA0B618D1FEBC1DD00ED0CE6 /* RecentAddressesRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0B618C1FEBC1DD00ED0CE6 /* RecentAddressesRLM.swift */; };
 		FA4125DF2004C0FD00DF9AC3 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA4125DE2004C0FD00DF9AC3 /* libstdc++.tbd */; };
@@ -798,6 +799,10 @@
 		7304C17824311A19240183E0 /* Pods_Multy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85122C4D21A5908E00C73153 /* BannerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
 		85122C5121A591FE00C73153 /* BannerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerTableViewCell.xib; sourceTree = "<group>"; };
+		8527D6C221AFAE020071AA70 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MagicReceiverCollectionViewCell.strings; sourceTree = "<group>"; };
+		8527D6C421AFAE070071AA70 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/MagicReceiverCollectionViewCell.strings; sourceTree = "<group>"; };
+		8527D6C521AFAE0C0071AA70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MagicReceiverCollectionViewCell.xib; sourceTree = "<group>"; };
+		8527D6C621AFAE140071AA70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MagicReceiverCollectionViewCell.strings; sourceTree = "<group>"; };
 		853C41B9217A0E3700155B84 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
 		853C41BA217A0E3700155B84 /* ccan_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccan_config.h; sourceTree = "<group>"; };
 		853C41BC217A0E3800155B84 /* compiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compiler.h; sourceTree = "<group>"; };
@@ -834,6 +839,7 @@
 		859C7B1320F4D3DD002EA215 /* ConfirmationStatusCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmationStatusCollectionViewCell.xib; sourceTree = "<group>"; };
 		859D37FA2174961800183323 /* SendAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAmountViewController.swift; sourceTree = "<group>"; };
 		859D37FC2174963F00183323 /* SendAmountPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAmountPresenter.swift; sourceTree = "<group>"; };
+		85ACDD2221AECAC400742237 /* SlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideViewController.swift; sourceTree = "<group>"; };
 		85D1720B217F26640046E118 /* ripemd160.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ripemd160.c; sourceTree = "<group>"; };
 		85D1720C217F26640046E118 /* ripemd160.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ripemd160.h; sourceTree = "<group>"; };
 		85DE62DC20AB002000423D89 /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
@@ -845,7 +851,6 @@
 		85DE62EC20AC4E4C00423D89 /* PaymentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequest.swift; sourceTree = "<group>"; };
 		85DE62F220AF188B00423D89 /* Check Mark Success Data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Check Mark Success Data.json"; sourceTree = "<group>"; };
 		85EBF54121A5A2000001B70C /* MagicReceiverCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicReceiverCollectionViewCell.swift; sourceTree = "<group>"; };
-		85EBF54321A5A2170001B70C /* MagicReceiverCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MagicReceiverCollectionViewCell.xib; sourceTree = "<group>"; };
 		B0FFD5D1BF6159BB241CBFF9 /* Pods_MultyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MultyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4F4E06236FA82100FA1DF80 /* Pods-Multy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Multy.release.xcconfig"; path = "Pods/Target Support Files/Pods-Multy/Pods-Multy.release.xcconfig"; sourceTree = "<group>"; };
 		F845D6707FC4D00A317BC418 /* Pods-Multy-MultyUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Multy-MultyUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Multy-MultyUITests/Pods-Multy-MultyUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1621,6 +1626,7 @@
 				45A949601FC76697003C3A23 /* Finish */,
 				455CDCED1FC8338100EA5ACE /* Sending Animation */,
 				4511D77420EFAFE800538578 /* DoubleSlideViewController.swift */,
+				85ACDD2221AECAC400742237 /* SlideViewController.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -1990,7 +1996,7 @@
 			isa = PBXGroup;
 			children = (
 				85EBF54121A5A2000001B70C /* MagicReceiverCollectionViewCell.swift */,
-				85EBF54321A5A2170001B70C /* MagicReceiverCollectionViewCell.xib */,
+				8527D6C021AFADFC0071AA70 /* MagicReceiverCollectionViewCell.xib */,
 			);
 			path = MagicReceiverCVC;
 			sourceTree = "<group>";
@@ -2432,7 +2438,7 @@
 				44CBAB9F20BEEC8A005F04C6 /* EthWalletHeaderTableViewCell.xib in Resources */,
 				445B128E20BC1CC800FD0D33 /* CreateOrRestoreBtnTableViewCell.xib in Resources */,
 				4477264920BECAA5006BF4A7 /* Seed.strings in Resources */,
-				85EBF54421A5A2170001B70C /* MagicReceiverCollectionViewCell.xib in Resources */,
+				8527D6BE21AFADFC0071AA70 /* MagicReceiverCollectionViewCell.xib in Resources */,
 				45B9CB081FBB51AE00AA2A31 /* WalletTableViewCell.xib in Resources */,
 				4474C5B720BFE76800EA8B01 /* Activty.strings in Resources */,
 				445B128220BC1C7600FD0D33 /* MainWalletCollectionViewCell.xib in Resources */,
@@ -3058,6 +3064,7 @@
 				457569411FBDD6E000FDEE20 /* BackupSeedPhrasePresenter.swift in Sources */,
 				45D083701FCEF94C0066F1CD /* SendWalletProtocol.swift in Sources */,
 				859C7AFC20ECF3C8002EA215 /* WaitingMembersViewController.swift in Sources */,
+				85ACDD2321AECAC400742237 /* SlideViewController.swift in Sources */,
 				4585BD2B20496E14004542AE /* CreateWalletProtocol.swift in Sources */,
 				45B5CCA41FDA90FE0069BD46 /* NoInternetConnetctionPresenter.swift in Sources */,
 				44C3F38A207E5FAB00AC1BD4 /* ProgressHUD+Extension.swift in Sources */,
@@ -3482,6 +3489,17 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		8527D6C021AFADFC0071AA70 /* MagicReceiverCollectionViewCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8527D6C221AFAE020071AA70 /* ru */,
+				8527D6C421AFAE070071AA70 /* uk */,
+				8527D6C521AFAE0C0071AA70 /* Base */,
+				8527D6C621AFAE140071AA70 /* en */,
+			);
+			name = MagicReceiverCollectionViewCell.xib;
+			sourceTree = "<group>";
+		};
 		8580A08E214BDF4A002A15D7 /* MemberTableViewCell.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3720,7 +3738,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.metamask;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3761,7 +3779,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy.metamask;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";
