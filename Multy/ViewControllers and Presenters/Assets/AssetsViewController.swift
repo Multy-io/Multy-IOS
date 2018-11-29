@@ -1165,7 +1165,7 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
         //            let customTab = tabBarController as! CustomTabBarViewController
         //            customTab.setSelectIndex(from: customTab.selectedIndex, to: 1)
         //        } else {
-        if indexPath.row == 1 {
+        if indexPath.row == 2 {
             unowned let weakSelf =  self
             makeIdForInAppBigBy(indexPath: indexPath)
             makeIdForInAppBy(indexPath: indexPath)

@@ -29,8 +29,8 @@
                             <inset key="sectionInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                         </collectionViewFlowLayout>
                     </collectionView>
-                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="60N-Eg-tcs">
-                        <rect key="frame" x="176" y="302.5" width="23" height="37"/>
+                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="60N-Eg-tcs">
+                        <rect key="frame" x="168" y="302.5" width="39" height="37"/>
                         <color key="pageIndicatorTintColor" red="0.83393996950000004" green="0.86599963899999999" blue="0.92358797790000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="currentPageIndicatorTintColor" red="0.52471911910000002" green="0.62955904009999997" blue="0.76947301629999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </pageControl>
