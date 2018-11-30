@@ -160,4 +160,5 @@ extension Constants {
     static let showKeyString = "SHOW KEY"
     static let youReceivedString = "YOU RECEIVED"
     static let youReceivedMultisigRequestString = "YOU RECEIVED REQUEST"
+    static let sendAmountiPhone5 = "SEND AMOUNT: iPhone 5"
 }

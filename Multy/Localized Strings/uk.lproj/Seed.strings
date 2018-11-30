@@ -18,5 +18,5 @@
 "WANT TO CANCEL" = "Ви дійсно хочете скасувати?";
 "LOADING" = "Завантаження";
 "RESTORING WALLETS" = "Відновлення гаманці";
-"WRONG SEED" = "Сід фраза занадто коротка";
+"WRONG SEED" = "Неправильна seed-фраза";
 "ENTER IN METAMASK" = "Введення MetaMask Seed-фрази";
