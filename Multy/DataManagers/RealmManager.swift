@@ -841,6 +841,28 @@ extension WalletManager {
         }
     }
     
+//    func deleteWalletBy(primaryKey: String) {
+//        getRealm { (realmOpt, error) in
+//            if let realm = realmOpt {
+//                let wallet = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
+//                try! realm.write {
+//                    realm.delete(wallet!)
+//                }
+//            }
+//        }
+//    }
+//
+//    func fetchAddressesForWalllet(walletID: NSNumber, completion: @escaping(_ : [String]?) -> ()) {
+//        getWallet(walletID: walletID) { (wallet) in
+//            if wallet != nil {
+//                var addresses = [String]()
+//                wallet!.addresses.forEach({ addresses.append($0.address) })
+//                completion(addresses)
+//            } else {
+//                completion(nil)
+//            }
+//        }
+//    }
     
     func deleteWallet(_ wallet: UserWalletRLM, realm: Realm) {
         //FIXME: only for non-multisig wallets
@@ -968,6 +990,15 @@ extension RecentAddressManager {
                 let savedAddresses = SavedAddressesRLM()
                 savedAddresses.addresses = [String: String]()
                 completion(savedAddresses, error)
+            }
+        }
+    }
+    
+    func getAllWalletsFor(blockchainType: BlockchainType, completion: @escaping (_ wallets: Results<UserWalletRLM>?, _ error: NSError?) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                let wallets = realm.objects(UserWalletRLM.self).filter("cryptoName == '\(blockchainType.shortName)' AND chainType = \(blockchainType.net_type)")
+                completion(wallets, nil)
             }
         }
     }

@@ -214,6 +214,66 @@ extension UserDefaultsDelegate {
             return nil
         }
     }
+    
+    
+    func createTempWallet(blockchainType: BlockchainType) -> UserWalletRLM {
+        let tempWallet = UserWalletRLM()
+        tempWallet.chain = NSNumber(value: blockchainType.blockchain.rawValue)
+        tempWallet.chainType = NSNumber(value: blockchainType.net_type)
+        tempWallet.name = "\(blockchainType.shortName) Wallet with Exchange"
+        return tempWallet
+    }
+    
+    
+    func createWallet(blockchianType: BlockchainType, completion: @escaping (_ answer: String?,_ error: Error?) -> ()) {
+        getAccount { (account, err) in
+            var binData : BinaryData = account!.binaryDataString.createBinaryData()!
+            let createdWallet = UserWalletRLM()
+            //MARK: topIndex
+            let currencyID = blockchianType.blockchain.rawValue
+            let networkID = blockchianType.net_type
+            var currentTopIndex = account!.topIndexes.filter("currencyID = \(currencyID) AND networkID == \(networkID)").first
+            
+            if currentTopIndex == nil {
+                //            mainVC?.presentAlert(with: "TopIndex error data!")
+                currentTopIndex = TopIndexRLM.createDefaultIndex(currencyID: NSNumber(value: currencyID), networkID: NSNumber(value: networkID), topIndex: NSNumber(value: 0))
+            }
+            
+            let dict = DataManager.shared.createNewWallet(for: &binData, blockchain: blockchianType, walletID: currentTopIndex!.topIndex.uint32Value)
+            
+            createdWallet.chain = NSNumber(value: currencyID)
+            createdWallet.chainType = NSNumber(value: networkID)
+            createdWallet.name = "\(blockchianType.shortName) Wallet with Exchange"
+            createdWallet.walletID = NSNumber(value: dict!["walletID"] as! UInt32)
+            createdWallet.addressID = NSNumber(value: dict!["addressID"] as! UInt32)
+            createdWallet.address = dict!["address"] as! String
+            
+            if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
+                createdWallet.ethWallet = ETHWallet()
+                createdWallet.ethWallet?.balance = "0"
+                createdWallet.ethWallet?.nonce = NSNumber(value: 0)
+                createdWallet.ethWallet?.pendingWeiAmountString = "0"
+            }
+            
+            let params = [
+                "currencyID"    : currencyID,
+                "networkID"     : networkID,
+                "address"       : createdWallet.address,
+                "addressIndex"  : createdWallet.addressID,
+                "walletIndex"   : createdWallet.walletID,
+                "walletName"    : createdWallet.name
+                ] as [String : Any]
+            
+            DataManager.shared.addWallet(params: params) { (dict, error) in
+                if error == nil {
+                    //                self.assetsVC!.sendAnalyticsEvent(screenName: screenCreateWallet, eventName: cancelTap)
+                    completion("ok", nil)
+                } else {
+                    completion(nil, nil)
+                }
+            }
+        }
+    }
 }
 
 extension FCMDelegate {

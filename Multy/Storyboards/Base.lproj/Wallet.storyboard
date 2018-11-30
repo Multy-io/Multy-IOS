@@ -777,6 +777,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
             </objects>
             <point key="canvasLocation" x="1598" y="-417"/>
         </scene>
+
         <!--Address View Controller-->
         <scene sceneID="lsk-9P-QHz">
             <objects>
@@ -2222,8 +2223,8 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                         <rect key="frame" x="56" y="475" width="263" height="44"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                                         <color key="textColor" red="0.31764705882352939" green="0.40784313725490196" blue="0.45490196078431372" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
                                     </label>
+                                
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow" translatesAutoresizingMaskIntoConstraints="NO" id="Zxa-ht-N6m">
                                         <rect key="frame" x="181.5" y="531" width="12" height="20"/>
                                         <constraints>
@@ -3724,6 +3725,9 @@ By donating you help us to bring blockchain technology one step closer to ordina
         <image name="donationIcon" width="30" height="35"/>
         <image name="donationIconSmallestWhite" width="26" height="26"/>
         <image name="donation_icon" width="98" height="78"/>
+        <image name="exchangeMediumArrow" width="38" height="8"/>
+        <image name="exchangeSmallArrow" width="10" height="8"/>
+        <image name="exchangeUnselected" width="46" height="46"/>
         <image name="gradientForWallet" width="375" height="370"/>
         <image name="operationReceive" width="24" height="24"/>
         <image name="operationSend" width="24" height="24"/>
@@ -3735,6 +3739,9 @@ By donating you help us to bring blockchain technology one step closer to ordina
         <image name="recieveIconTabbar" width="19" height="23"/>
         <image name="sendIconTabbar" width="26" height="26"/>
         <image name="settings" width="25" height="20"/>
+        <image name="slideToSend1" width="13" height="22"/>
+        <image name="slideToSend2" width="13" height="22"/>
+        <image name="slideToSend3" width="13" height="22"/>
         <image name="warninngBigWhite" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>

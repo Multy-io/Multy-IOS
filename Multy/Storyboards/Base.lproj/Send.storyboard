@@ -2614,9 +2614,5 @@ address</string>
         <image name="swap" width="25" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="EUD-ex-a5v"/>
-        <segue reference="N56-qi-Hx5"/>
-        <segue reference="jSE-EO-qlC"/>
-        <segue reference="GW1-5g-oIp"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -28,6 +28,15 @@ class BigInt: NSObject {
         let _ = DataManager.shared.coreLibManager.errorString(from: mbi, mask: "\n\ninit big int\n\n")
     }
     
+    init(_ stringWithDoubleValue: String, _ blockchain: Blockchain) {
+        super.init()
+        
+//        let valueInMinimalUnits = stringWithDoubleValue.convertCryptoAmountStringToMinimalUnits(in: blockchain)
+        let valueInMinimalUnits = stringWithDoubleValue.convertCryptoAmountStringToMinimalUnits(for: blockchain)
+        let mbi = make_big_int(valueInMinimalUnits.stringValue.UTF8CStringPointer, valuePointer)
+        let _ = DataManager.shared.coreLibManager.errorString(from: mbi, mask: "\n\ninit big int\n\n")
+    }
+    
     var isNonZero: Bool {
         get {
             return self != Int64(0)
