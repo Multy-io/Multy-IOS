@@ -44,8 +44,8 @@ class Advertisement: NSObject {
 class BLEManager: NSObject, CBCentralManagerDelegate {
     static let shared = BLEManager()
     
-    private var centralManager : CBCentralManager
-    private var peripheralManager : CBPeripheralManager
+    private var centralManager : CBCentralManager!
+    private var peripheralManager : CBPeripheralManager!
     private let serviceUUIDString = "8c0d3334-7711-44e3-b5c4-28b2"
     
     var isScanning : Bool {
@@ -71,14 +71,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate {
     }
     
     override init() {
+        super.init()
         let centralQueue = DispatchQueue(label: "BMCentralManagerQueue")
-        centralManager = CBCentralManager.init(delegate: nil, queue: centralQueue)
+        centralManager = CBCentralManager.init(delegate: self, queue: centralQueue)
         let peripheralQueue = DispatchQueue(label: "BMPeripheralManagerQueue")
         peripheralManager = CBPeripheralManager.init(delegate: nil, queue: peripheralQueue)
-        
-        super.init()
-        
-        centralManager.delegate = self
     }
     
     func serviceUUIDWithId(userId : String) -> CBUUID {
@@ -152,6 +149,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate {
     
     // MARK: Central manager delegate
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        print("State: \(central.state.rawValue)")
         if central.state == .poweredOn {
             reachability = BluetoothReachability.reachable
         } else if central.state != .unknown {

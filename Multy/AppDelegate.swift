@@ -65,8 +65,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
             }
         }
         
-        let _ = BLEManager.shared
-        
         performFirstSegue(launchOptions: launchOptions)
 
         return true

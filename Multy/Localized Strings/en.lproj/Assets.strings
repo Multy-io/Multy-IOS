@@ -46,7 +46,5 @@
 "NOT CORRECT MS ADDRESS" = "You are trying to import not valid MultiSig address";
 "MAXIMUM EMPTY WALLETS" = "Maximum number of empty wallets created";
 "CREATE FIRST WALLET" = "Create First Wallet";
-"YOU RECEIVE %@ TO ADDRESS %@" = "You received %@ to address\n%@";
 "YOU RECEIVED" = "You received";
-"TO ADDRESS" = "to address";
 "YOU RECEIVED REQUEST" = "You received MultiSig request";

@@ -159,6 +159,5 @@ extension Constants {
     static let showKeySString = "SHOW KEYS"
     static let showKeyString = "SHOW KEY"
     static let youReceivedString = "YOU RECEIVED"
-    static let toAddressString = "TO ADDRESS"
     static let youReceivedMultisigRequestString = "YOU RECEIVED REQUEST"
 }
