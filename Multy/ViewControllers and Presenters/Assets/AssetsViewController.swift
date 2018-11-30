@@ -6,6 +6,7 @@ import UIKit
 import RealmSwift
 import Alamofire
 import CryptoSwift
+import GSMessages
 //import MultyCoreLibrary
 //import BiometricAuthentication
 
@@ -103,6 +104,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
     
     func setpuUI() {
+    //    GSMessage.font = UIFont(name: "AvenirNext-Medium", size: 15.0)!
         presenter.assetsVC = self
         checkOSForConstraints()
         backUpView()
@@ -273,6 +275,22 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     @objc fileprivate func handleMsTransactionUpdatedNotification(notification : Notification) {
         DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
+            
+            let tx = notification.userInfo?["transaction"] as? NSDictionary
+            
+            if tx != nil {
+                guard let txStatus = tx!["type"] as? Int,
+                    txStatus == SocketMessageType.multisigTxPaymentRequest.rawValue else {
+                        return
+                }
+
+                
+                let message = NSMutableAttributedString()
+                message.append(NSAttributedString(string:self.localize(string: Constants.youReceivedMultisigRequestString), attributes: [.font: UIFont(name: "AvenirNext-Medium", size: 15)!]))
+                
+                GSMessage.successBackgroundColor = #colorLiteral(red: 0.08235294118, green: 0.4941176471, blue: 0.9843137255, alpha: 0.96)
+                self.showMessage(message, type: .success, options: [.height(64.0)])
+            }
         }
     }
     
@@ -297,6 +315,36 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     @objc fileprivate func handleTransactionUpdatedNotification(notification : Notification) {
         DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletAfterSockets()
+           
+            let userInfo = notification.userInfo
+            if userInfo != nil {
+                let notifictionMsg = userInfo!["NotificationMsg"] as! NSDictionary
+                guard let txStatus = notifictionMsg["transactionType"] as? Int,
+                    let addressTo = notifictionMsg["to"] as? String else {
+                        return
+                }
+                
+                guard let amount = notifictionMsg["amount"] as? String,
+                    let currencyID = notifictionMsg["currencyid"] as? UInt32,
+                    let networkID = notifictionMsg["networkid"] as? UInt32 else {
+                        return
+                }
+                let blockchainType = BlockchainType.create(currencyID: currencyID, netType: networkID)
+                let cryptoValueString = BigInt(amount).cryptoValueString(for: blockchainType.blockchain)
+                
+                let amountString = cryptoValueString + " " + blockchainType.shortName
+                if txStatus == TxStatus.MempoolIncoming.rawValue {
+                    let message = NSMutableAttributedString()
+                    message.append(NSAttributedString(string:self.localize(string: Constants.youReceivedString), attributes: [.font: UIFont(name: "AvenirNext-Medium", size: 15)!]))
+                    message.append(NSAttributedString(string: " \(amountString) ", attributes: [.font: UIFont(name: "AvenirNext-Bold", size: 15)!]))
+                    let wallet = self.presenter.wallets!.filter {$0.address == addressTo}.first
+                    
+                    GSMessage.successBackgroundColor = #colorLiteral(red: 0.168627451, green: 0.662745098, blue: 0.3764705882, alpha: 0.96)
+                    self.showMessage(message, type: .success, options: [.height(64.0), .handleTap({ [unowned self] in
+                        self.goToWalletVC(wallet)
+                    })])
+                }
+            }
         }
     }
     
@@ -453,7 +501,10 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     func goToWalletVC(indexPath: IndexPath) {
 //        let walletVC = presenter.getWalletViewController(indexPath: indexPath)
         let wallet = presenter.wallets?[indexPath.row - 2]
-        
+        goToWalletVC(wallet)
+    }
+    
+    func goToWalletVC(_ wallet: UserWalletRLM?) {
         if !wallet!.isSyncing.boolValue {
             var vc : UIViewController?
             if wallet!.multisigWallet != nil && wallet!.multisigWallet?.deployStatus.intValue != DeployStatus.deployed.rawValue {
