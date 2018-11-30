@@ -89,6 +89,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let _ = BLEManager.shared
         
         registerCells()
         fixUIForX()
