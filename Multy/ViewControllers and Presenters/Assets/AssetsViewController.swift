@@ -928,6 +928,8 @@ extension TableViewDataSource : UITableViewDataSource {
                 bannerCell.delegate = self
                 bannerCell.dataSource = self
                 
+                bannerCell.collectionView.reloadData()
+                
                 return bannerCell
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
@@ -1133,7 +1135,6 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
         
         if indexPath.item == 1 {
             let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
-            
             let requestImage = presenter.requestImage
             magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
             
