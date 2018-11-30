@@ -60,6 +60,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var enterAmountLabel: UILabel!
     @IBOutlet weak var plainRequestInfoHolderView: UIView!
     @IBOutlet weak var multiRequestInfoHolderView: UIView!
+    @IBOutlet weak var enterAmountButton: UIButton!
     
     var txInfoView: TxInfoView?
     var txTokenImageView: UIImageView?

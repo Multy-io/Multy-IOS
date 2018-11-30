@@ -500,6 +500,7 @@
                         <outlet property="bluetoothEnabledContentBottomConstraint" destination="Jqr-Mj-m1F" id="jSH-Yy-pyQ"/>
                         <outlet property="bluetoothEnabledContentView" destination="LP6-eC-Sxy" id="AeB-JA-l6q"/>
                         <outlet property="bluetoothErrorTopConstraint" destination="uoy-ES-sJy" id="chx-OJ-Ljn"/>
+                        <outlet property="enterAmountButton" destination="4KN-Bb-KSk" id="pd5-mX-8Zq"/>
                         <outlet property="enterAmountLabel" destination="9nH-Pm-7xG" id="HHd-w3-Ytu"/>
                         <outlet property="foundActiveRequestsHolderView" destination="oZi-At-pK8" id="dXU-aE-aTd"/>
                         <outlet property="leftActiveRequestsClonesHolderView" destination="A96-El-99J" id="Y0R-u5-rNB"/>

@@ -46,3 +46,6 @@
 "NOT CORRECT MS ADDRESS" = "Ви намагаєтеся імпортувати некоректний MultiSig адресу";
 "MAXIMUM EMPTY WALLETS" = "Створено максимальну кількість порожніх гаманців";
 "CREATE FIRST WALLET" = "Створити Перший Гаманець";
+"YOU RECEIVED" = "Ви отримали";
+"TO ADDRESS" = "на адресу";
+"YOU RECEIVED REQUEST" = "Ви отримали MultiSig запит";
