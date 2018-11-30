@@ -374,7 +374,7 @@
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4KN-Bb-KSk">
                                                                 <rect key="frame" x="0.0" y="0.0" width="334.5" height="63"/>
                                                                 <connections>
-                                                                    <action selector="enterAmountAction:" destination="v1w-JK-3Sa" eventType="touchUpInside" id="O1m-Or-ehO"/>
+                                                                    <action selector="enterAmountAction:" destination="v1w-JK-3Sa" eventType="touchUpInside" id="PAQ-iO-GAT"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -613,7 +613,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2HK-Ho-Qtr">
                                         <rect key="frame" x="102.5" y="0.0" width="98" height="126"/>
                                         <connections>
-                                            <segue destination="v1w-JK-3Sa" kind="presentation" animates="NO" id="GW1-5g-oIp"/>
+                                            <segue destination="v1w-JK-3Sa" kind="show" animates="NO" id="GW1-5g-oIp"/>
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="qrIconGray" translatesAutoresizingMaskIntoConstraints="NO" id="WHV-qZ-AVE">
