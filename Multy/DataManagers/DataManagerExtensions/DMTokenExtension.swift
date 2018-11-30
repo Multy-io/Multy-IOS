@@ -18,9 +18,12 @@ extension DataManager {
         let tokenCount = tokensarray.count
         var newTokenInfo = [TokenRLM]()
         
-        let blockchainType = tokensarray.first!.blockchainType
-        let rpcURL = (blockchainType.net_type == ETHEREUM_CHAIN_ID_MAINNET.rawValue ? "https://mainnet.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8" : (UInt32(blockchainType.net_type) == ETHEREUM_CHAIN_ID_RINKEBY.rawValue ? "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8" : "" ))
-        let web3 = Web3(rpcURL: rpcURL)
+//        let blockchainType = tokensarray.first!.blockchainType
+        
+//        let rpcURL = (blockchainType.net_type == ETHEREUM_CHAIN_ID_MAINNET.rawValue ? "https://mainnet.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8" : (UInt32(blockchainType.net_type) == ETHEREUM_CHAIN_ID_RINKEBY.rawValue ? "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8" : "" ))
+//        let web3 = Web3(rpcURL: rpcURL)
+        let web3Mainnet = Web3(rpcURL: "https://mainnet.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8")
+        let web3Rinkeby = Web3(rpcURL: "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8")
         
         tokensarray.forEach { [unowned self] in
             let newToken = TokenRLM()
@@ -32,28 +35,24 @@ extension DataManager {
             newToken.decimals       = $0.decimals
             
             let contractAddress = try! EthereumAddress(hex: $0.contractAddress.lowercased(), eip55: false)
-            let contract = web3.eth.Contract(type: GenericERC20Contract.self, address: contractAddress)
+            let contract = newToken.netType.int32Value == ETHEREUM_CHAIN_ID_MAINNET.rawValue ?
+                web3Mainnet.eth.Contract(type: GenericERC20Contract.self, address: contractAddress) :
+                web3Rinkeby.eth.Contract(type: GenericERC20Contract.self, address: contractAddress)
             let name = contract.name()
-            let dec = contract.decimals()
+            let decimals = contract.decimals()
             let symbol = contract.symbol()
-            
-//            let call = EthereumCall(from: contractAddress,
-//                                    to: contractAddress,
-//                                    gas: EthereumQuantity(integerLiteral: 21_000),
-//                                    gasPrice: EthereumQuantity(integerLiteral: 1_000_000_000),
-//                                    value: EthereumQuantity(integerLiteral: 1_000_000_000_000_000),
-//                                    data: nil)
-            
-//            contract.estimateGas(call) { (quantity, error) in
-//                print("\(newToken.name): \(quantity?.quantity.description)")
-//            }
-            
+                        
             name.call { [unowned self] (dict, error) in
                 if dict != nil, dict!.keys.count > 0 {
                     newToken.name = dict!.values.first! as! String
                 }
                 
-                dec.call { [unowned self] (dict, error) in
+                //EOS name fix
+                if  newToken.contractAddress.lowercased() == "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0" {
+                    newToken.name = "EOS"
+                }
+                
+                decimals.call { [unowned self] (dict, error) in
                     if dict != nil, dict!.keys.count > 0 {
                         newToken.decimals = dict!.values.first! as! NSNumber
                     } else {

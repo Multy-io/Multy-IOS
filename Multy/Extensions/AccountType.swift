@@ -61,6 +61,15 @@ enum AccountType: Int, CaseIterable {
             return "Metamask"
         }
     }
+    
+    var restoreString: String {
+        switch self {
+        case .multy:
+            return Constants.restoreMultyString
+        case .metamask:
+            return Constants.restoreMetamaskString
+        }
+    }
 }
 
 extension BricksViewInfoDelegate {

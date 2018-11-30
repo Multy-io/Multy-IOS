@@ -29,6 +29,9 @@ let repeatTap                = "Button_Repeat_Seed"
 
 let screenRestoreSeed        = "Screen_Restore_Seed"
 //let cancelTap               = "Button_Cancel"               //cancel or back
+let restoringMetaMask        = "Restoring_Metamask_Begin"
+let restoringMetaMaskFailed  = "Restoring_Failed_on_creatingwallets"
+let restoringMetaMaskSuccess = "Restoring_Success"
 
 //              new screen  5
 
@@ -58,6 +61,7 @@ let logoTap                  = "Button_Logo"
 let pullWallets              = "Pull_Wallets"
 let walletOpenWithChainTap   = "Button_Wallet_Open-"//+chainID
 let backupSeedTap            = "Button_Backup_Seed"
+let importMetamaskTap        = "Button_Import_MetaMask"
 
 //              new screen  8
 

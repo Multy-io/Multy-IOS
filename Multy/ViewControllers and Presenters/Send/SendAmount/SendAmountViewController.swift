@@ -31,6 +31,7 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     @IBOutlet weak var constratintNextBtnHeight: NSLayoutConstraint!
     @IBOutlet weak var buttonsHolderBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewContentHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tokenViewForHide: UIView!
     
     let presenter = SendAmountPresenter()
     let numberFormatter = NumberFormatter()
@@ -78,6 +79,7 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         }
         
         if presenter.tokenWallet != nil {
+            tokenViewForHide.isHidden = false
             commissionSwitch.isUserInteractionEnabled = false
             swapBtn.isUserInteractionEnabled = false
         }

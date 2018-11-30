@@ -121,6 +121,7 @@
 		45344AC620E6589B0039DF30 /* CreateMultiSigPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */; };
 		4535116A213973A300E1F559 /* MSWalletSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45351169213973A300E1F559 /* MSWalletSettingsViewController.swift */; };
 		4535116C213973B800E1F559 /* MSWalletSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4535116B213973B800E1F559 /* MSWalletSettingsPresenter.swift */; };
+		4535C24021AFF91400144825 /* WaitingMetamaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4535C23F21AFF91400144825 /* WaitingMetamaskViewController.swift */; };
 		4538BDCC2099E69900573426 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4538BDCB2099E69900573426 /* StoreKit.framework */; };
 		4540944A2031EEFD00603DB5 /* SecuritySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454094492031EEFD00603DB5 /* SecuritySettingsViewController.swift */; };
 		4540944C2031EF1600603DB5 /* SecuritySettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4540944B2031EF1600603DB5 /* SecuritySettingsPresenter.swift */; };
@@ -634,6 +635,7 @@
 		45344AC520E6589B0039DF30 /* CreateMultiSigPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMultiSigPresenter.swift; sourceTree = "<group>"; };
 		45351169213973A300E1F559 /* MSWalletSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSWalletSettingsViewController.swift; sourceTree = "<group>"; };
 		4535116B213973B800E1F559 /* MSWalletSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSWalletSettingsPresenter.swift; sourceTree = "<group>"; };
+		4535C23F21AFF91400144825 /* WaitingMetamaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingMetamaskViewController.swift; sourceTree = "<group>"; };
 		4538BDCB2099E69900573426 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		454094492031EEFD00603DB5 /* SecuritySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsViewController.swift; sourceTree = "<group>"; };
 		4540944B2031EF1600603DB5 /* SecuritySettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsPresenter.swift; sourceTree = "<group>"; };
@@ -1161,6 +1163,14 @@
 			path = "MS Wallet Settings";
 			sourceTree = "<group>";
 		};
+		4535C23E21AFF8ED00144825 /* WaitingVC */ = {
+			isa = PBXGroup;
+			children = (
+				4535C23F21AFF91400144825 /* WaitingMetamaskViewController.swift */,
+			);
+			path = WaitingVC;
+			sourceTree = "<group>";
+		};
 		454094482031EED500603DB5 /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -1333,6 +1343,7 @@
 		457569301FBDBB7500FDEE20 /* Seed Phrase */ = {
 			isa = PBXGroup;
 			children = (
+				4535C23E21AFF8ED00144825 /* WaitingVC */,
 				45DD9A1421A4102800B8F8AD /* MetaMaskInfo */,
 				457569371FBDC2FE00FDEE20 /* SeedPhraseAbout */,
 				457569381FBDC34700FDEE20 /* Phrase Word */,
@@ -2970,6 +2981,7 @@
 				445D150E20DA8513002F6747 /* EPContactCell.swift in Sources */,
 				45A9492F1FC4780F003C3A23 /* ReceiveProtocol.swift in Sources */,
 				8592E02E2105E0040040125B /* MultisigConstants.swift in Sources */,
+				4535C24021AFF91400144825 /* WaitingMetamaskViewController.swift in Sources */,
 				8540152D218AEC3200B20C7B /* ETHTransactionDTO.swift in Sources */,
 				448C38B62165603500D83D02 /* BrowserAction.swift in Sources */,
 				45B5CCA61FDA94360069BD46 /* ConnectionCheck.swift in Sources */,
@@ -3742,7 +3754,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3783,7 +3795,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";
