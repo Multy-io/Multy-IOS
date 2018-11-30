@@ -25,7 +25,7 @@ class DonationCollectionViewCell: UICollectionViewCell {
     
     func makeCellBy(index: Int, assetsInfo: String?) {
         switch index {
-        case 0:
+        case 1:
             //First Banner
 //            self.bannerImg.isHidden = false
 //            self.bannerImg.image = UIImage(named: "dragonereumAppBanner900X6001001")
@@ -42,9 +42,9 @@ class DonationCollectionViewCell: UICollectionViewCell {
             self.midLbl.text = localize(string: Constants.currenciesChartsString)
             self.bannerImg.isHidden = true
             self.setupUIfor(view: botView, color: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.6))
-        case 1:
+        case 0:
             assetsView.isHidden = false
-            let assetsInfoComponents = assetsInfo!.components(separatedBy: CharacterSet(charactersIn: "."))
+            let assetsInfoComponents = assetsInfo!.components(separatedBy: CharacterSet(charactersIn: ".,"))
             assetsSumLbl.text = assetsInfoComponents[0] //integer part
             decimalPartLbl.text = assetsInfoComponents.count > 1 ? ".\(assetsInfoComponents[1])" : ".00"   //decimal part1
             setupUIfor(view: botView, color: #colorLiteral(red: 0.6509803922, green: 0.6941176471, blue: 0.7764705882, alpha: 0.6))
