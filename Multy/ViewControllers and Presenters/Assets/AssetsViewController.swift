@@ -795,7 +795,7 @@ extension TableViewDelegate : UITableViewDelegate {
                     checkServerConnection()
                     return
                 }
-                
+                sendAnalyticsEvent(screenName: screenMain, eventName: importMetamaskTap)
                 let importMetaMaskVC = viewControllerFrom("SeedPhrase", "ImportMetaMask") as! ImportMetaMaskInfoViewController
                 self.navigationController?.pushViewController(importMetaMaskVC, animated: true)
 //                sendAnalyticsEvent(screenName: screenFirstLaunch, eventName: restoreMultyTap)
