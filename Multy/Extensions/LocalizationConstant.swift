@@ -152,8 +152,12 @@ extension Constants {
     static let browserTxAlertSring = "BROWSER ALERT FOR TX"
     static let confirmString = "CONFIRM"
     static let denyString = "DENY"
+    static let enterAmountString = "ENTER AMOUNT"
     static let walletString = "WALLETS"
     static let wrongMSaddressString = "NOT CORRECT MS ADDRESS"
     static let showKeySString = "SHOW KEYS"
     static let showKeyString = "SHOW KEY"
+    static let youReceivedString = "YOU RECEIVED"
+    static let toAddressString = "TO ADDRESS"
+    static let youReceivedMultisigRequestString = "YOU RECEIVED REQUEST"
 }

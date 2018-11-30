@@ -60,6 +60,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var enterAmountLabel: UILabel!
     @IBOutlet weak var plainRequestInfoHolderView: UIView!
     @IBOutlet weak var multiRequestInfoHolderView: UIView!
+    @IBOutlet weak var enterAmountButton: UIButton!
     
     var txInfoView: TxInfoView?
     var txTokenImageView: UIImageView?
@@ -112,9 +113,10 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         super.viewWillAppear(animated)
         
         presenter.viewControllerViewWillAppear()
-        enterAmountLabel.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).cgColor
-        enterAmountLabel.layer.borderWidth = 3
-        enterAmountLabel.layer.cornerRadius = 10
+        let enterAmountLocalized = localize(string: Constants.enterAmountString)
+        let enterAmountAttributedText = NSMutableAttributedString(string: enterAmountLocalized)
+        enterAmountAttributedText.addAttribute(NSAttributedStringKey.underlineStyle , value: NSUnderlineStyle.styleSingle.rawValue, range: NSMakeRange(0, enterAmountLocalized.count))
+        enterAmountLabel.attributedText = enterAmountAttributedText
     }
     
     override func viewDidLayoutSubviews() {
@@ -128,7 +130,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        enterAmountLabel.stopBlink()
+//        enterAmountLabel.stopBlink()
         presenter.viewControllerViewWillDisappear()
     }
     
@@ -170,8 +172,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             sendTipAnimationView!.loopAnimation = true
             sendTipAnimationView!.play()
         }
-        
-        enterAmountLabel.startBlink()
+        //enterAmountLabel.startBlink()
     }
     
     func refreshBackground() {
@@ -305,36 +306,38 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     
     func prepareForSending() {
         if presenter.isSendingAvailable {
-            sendMode = .prepareSending
-            var navigationButtonsBottomConstant = -navigationButtonsHolderView.frame.size.height
-            if #available(iOS 11.0, *) {
-                let window = UIApplication.shared.keyWindow
-                let bottomPadding = window!.safeAreaInsets.bottom
-                navigationButtonsBottomConstant -= bottomPadding
-            }
-            
-            prepareTxInfo()
-            prepareClonesViews()
-            bluetoothEnabledContentView.isHidden = true
-            
-            // Set constraints for hiding active requests amount
-            activeRequestsAmountTopConstraint.constant = -60
-            
-            // Set constraints for hiding navigation buttons
-            navigationButtonsHolderBottomConstraint.constant = navigationButtonsBottomConstant
-            
-            // Set constraints for hiding wallets
-            leftWalletsClonesLeadingConstraint.constant = -leftWalletsClonesWidthConstraint.constant
-            rightWalletsClonesTrailingConstraint.constant = -rightWalletsClonesWidthConstraint.constant
-            
-            // Set constraints for hiding requests
-            leftActiveRequestsClonesLeadingConstraint.constant = -leftActiveRequestsClonesWidthConstraint.constant
-            rightActiveRequestsClonesTrailingConstraint.constant = -rightActiveRequestsClonesWidthConstraint.constant
-            self.activeRequestsClonesHolderView.layoutIfNeeded()
-            
-            UIView.animate(withDuration: ANIMATION_DURATION) {
-                self.showTxInfo()
-                self.animationHolderView.layoutIfNeeded()
+            if presenter.activeRequestsArr[presenter.selectedActiveRequestIndex!].requester == .wallet {
+                sendMode = .prepareSending
+                var navigationButtonsBottomConstant = -navigationButtonsHolderView.frame.size.height
+                if #available(iOS 11.0, *) {
+                    let window = UIApplication.shared.keyWindow
+                    let bottomPadding = window!.safeAreaInsets.bottom
+                    navigationButtonsBottomConstant -= bottomPadding
+                }
+                
+                prepareTxInfo()
+                prepareClonesViews()
+                bluetoothEnabledContentView.isHidden = true
+                
+                // Set constraints for hiding active requests amount
+                activeRequestsAmountTopConstraint.constant = -60
+                
+                // Set constraints for hiding navigation buttons
+                navigationButtonsHolderBottomConstraint.constant = navigationButtonsBottomConstant
+                
+                // Set constraints for hiding wallets
+                leftWalletsClonesLeadingConstraint.constant = -leftWalletsClonesWidthConstraint.constant
+                rightWalletsClonesTrailingConstraint.constant = -rightWalletsClonesWidthConstraint.constant
+                
+                // Set constraints for hiding requests
+                leftActiveRequestsClonesLeadingConstraint.constant = -leftActiveRequestsClonesWidthConstraint.constant
+                rightActiveRequestsClonesTrailingConstraint.constant = -rightActiveRequestsClonesWidthConstraint.constant
+                self.activeRequestsClonesHolderView.layoutIfNeeded()
+                
+                UIView.animate(withDuration: ANIMATION_DURATION) {
+                    self.showTxInfo()
+                    self.animationHolderView.layoutIfNeeded()
+                }
             }
         }
     }
@@ -412,7 +415,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
                     presenter.changeNameLabelVisibility(false)
                 } else {
                     plainRequestInfoHolderView.isHidden = true
-                    multiRequestInfoHolderView.isHidden = false
+                    multiRequestInfoHolderView.isHidden = presenter.isSendingAvailable ? false : true
                     presenter.changeNameLabelVisibility(true)
                 }
             }
@@ -920,19 +923,19 @@ extension LocalizeDelegate: Localizable {
     }
 }
 
-extension UILabel {
-    //MARK: StartBlink
-    func startBlink() {
-        UIView.animate(withDuration: 0.8,//Time duration
-            delay:0.0,
-            options:[.allowUserInteraction, .curveEaseInOut, .autoreverse, .repeat],
-            animations: { self.alpha = 0 },
-            completion: nil)
-    }
-    
-    //MARK: StopBlink
-    func stopBlink() {
-        layer.removeAllAnimations()
-        alpha = 1
-    }
-}
+//extension UILabel {
+//    //MARK: StartBlink
+//    func startBlink() {
+//        UIView.animate(withDuration: 0.8,//Time duration
+//            delay:0.0,
+//            options:[.allowUserInteraction, .curveEaseInOut, .autoreverse, .repeat],
+//            animations: { self.alpha = 0 },
+//            completion: nil)
+//    }
+//
+//    //MARK: StopBlink
+//    func stopBlink() {
+//        layer.removeAllAnimations()
+//        alpha = 1
+//    }
+//}

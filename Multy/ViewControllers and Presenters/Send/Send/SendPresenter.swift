@@ -166,9 +166,10 @@ class SendPresenter: NSObject {
     }
     
     func filterArray() {
-        filteredWalletArray = walletsArr.filter {
+        var result = walletsArr.filter {
             $0.isImported == false || $0.isImportedHasKey
         }
+        
         
         if selectedActiveRequestIndex != nil  {
             let request = activeRequestsArr[selectedActiveRequestIndex!]
@@ -178,21 +179,29 @@ class SendPresenter: NSObject {
                 let sendAmount = request.choosenAddress!.amount.stringValue.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain)
                 //            let address = request.sendAddress
                 
-                filteredWalletArray = filteredWalletArray.filter {
+                result = result.filter {
                     $0.blockchainType == blockchainType && $0.availableAmount > sendAmount
                 }
             } else {
-                filteredWalletArray = filteredWalletArray.filter {
-                    $0.availableAmount > BigInt.zero()
+                var requestBlockchainTypes : [BlockchainType] = []
+                for address in request.supportedAddresses {
+                    let blockchainType = BlockchainType.create(currencyID: UInt32(truncating: address.currencyID), netType: UInt32(truncating: address.networkID))
+                    requestBlockchainTypes.append(blockchainType)
+                }
+                
+                result = result.filter {
+                    $0.availableAmount > BigInt.zero() && requestBlockchainTypes.contains($0.blockchainType)
                 }
             }
 //            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: address, for: $0).isValid && $0.availableAmount > sendAmount}
         } else {
             
-            filteredWalletArray = filteredWalletArray.filter {
+            result = result.filter {
                 $0.availableAmount > BigInt.zero()
             }
         }
+        
+        filteredWalletArray = result
     }
     
     func viewControllerViewDidLoad() {
@@ -356,8 +365,22 @@ class SendPresenter: NSObject {
         if transaction != nil {
             let storyboard = UIStoryboard.init(name: "Send", bundle: nil)
             let sendAmountVC = storyboard.instantiateViewController(withIdentifier: "sendAmountVC") as! SendAmountViewController
-            sendAmountVC.presenter.transactionDTO = transaction!
-            sendVC?.navigationController?.pushViewController(sendAmountVC, animated: true)
+            
+            let blockchainType = transaction!.choosenWallet!.blockchainType
+            sendVC?.enterAmountButton.isUserInteractionEnabled = false
+            getFeeRate(blockchainType, address:transaction?.sendAddress) { [unowned self] (feeRate, gasLimit) in
+                DispatchQueue.main.async {
+                    self.transaction!.feeRate = BigInt(feeRate)
+                    if blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
+                        self.transaction!.ETHDTO!.gasLimit = gasLimit != nil ? BigInt(gasLimit!) : BigInt("21000")
+                    }
+                    sendAmountVC.presenter.transactionDTO = self.transaction!
+                    sendAmountVC.presenter.sendFromThisScreen = true
+                    sendAmountVC.presenter.isPayForComissionCanBeChanged = false
+                    self.sendVC?.navigationController?.pushViewController(sendAmountVC, animated: true)
+                    self.sendVC?.enterAmountButton.isUserInteractionEnabled = true
+                }
+            }
         }
     }
     
