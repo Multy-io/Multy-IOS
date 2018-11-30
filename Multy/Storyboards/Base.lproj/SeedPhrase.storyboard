@@ -266,6 +266,60 @@ MetaMask</string>
             </objects>
             <point key="canvasLocation" x="1948" y="3434.9325337331338"/>
         </scene>
+        <!--Waiting Metamask View Controller-->
+        <scene sceneID="BjN-Ua-Jkb">
+            <objects>
+                <viewController storyboardIdentifier="Waiting" id="IDk-iJ-y2N" customClass="WaitingMetamaskViewController" customModule="Multy" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dXo-RR-o3M"/>
+                        <viewControllerLayoutGuide type="bottom" id="aJW-yo-pFB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="MKt-9s-oNP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="metamaskLogo1" translatesAutoresizingMaskIntoConstraints="NO" id="1ZT-qX-bFt">
+                                <rect key="frame" x="139.5" y="80" width="96" height="96"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="1ZT-qX-bFt" secondAttribute="height" multiplier="1:1" id="i2E-os-TKO"/>
+                                    <constraint firstAttribute="width" constant="96" id="qWQ-9K-Jo2"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="walletHuge" translatesAutoresizingMaskIntoConstraints="NO" id="QKQ-gc-rTS">
+                                <rect key="frame" x="162.5" y="216" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="RGW-Om-ich"/>
+                                    <constraint firstAttribute="width" secondItem="QKQ-gc-rTS" secondAttribute="height" multiplier="1:1" id="USU-1b-BVd"/>
+                                </constraints>
+                            </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="u9H-do-wOb">
+                                <rect key="frame" x="177.5" y="233" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logging in…" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8S-FT-nxh">
+                                <rect key="frame" x="137" y="286" width="101.5" height="23.5"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.97644573450088501" green="0.98039692640304565" blue="0.99984890222549438" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="QKQ-gc-rTS" firstAttribute="top" secondItem="1ZT-qX-bFt" secondAttribute="bottom" constant="40" id="5E9-7I-Ynj"/>
+                            <constraint firstItem="h8S-FT-nxh" firstAttribute="top" secondItem="QKQ-gc-rTS" secondAttribute="bottom" constant="20" id="6UE-F3-ObA"/>
+                            <constraint firstItem="1ZT-qX-bFt" firstAttribute="width" secondItem="1ZT-qX-bFt" secondAttribute="height" multiplier="1:1" id="IdT-Js-c4L"/>
+                            <constraint firstItem="h8S-FT-nxh" firstAttribute="centerX" secondItem="MKt-9s-oNP" secondAttribute="centerX" id="VFF-26-qCA"/>
+                            <constraint firstItem="u9H-do-wOb" firstAttribute="centerY" secondItem="QKQ-gc-rTS" secondAttribute="centerY" constant="2" id="X1Z-gX-JUu"/>
+                            <constraint firstItem="1ZT-qX-bFt" firstAttribute="top" secondItem="dXo-RR-o3M" secondAttribute="bottom" constant="60" id="j8n-sI-eBa"/>
+                            <constraint firstItem="u9H-do-wOb" firstAttribute="centerX" secondItem="QKQ-gc-rTS" secondAttribute="centerX" id="kUi-y2-dek"/>
+                            <constraint firstItem="1ZT-qX-bFt" firstAttribute="centerX" secondItem="MKt-9s-oNP" secondAttribute="centerX" id="lsA-PS-5zu"/>
+                            <constraint firstItem="QKQ-gc-rTS" firstAttribute="centerX" secondItem="MKt-9s-oNP" secondAttribute="centerX" id="mRO-fN-0Aw"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I7P-Qt-vfV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2750" y="3435"/>
+        </scene>
         <!--Seed Phrase Word View Controller-->
         <scene sceneID="yGr-L9-98S">
             <objects>
@@ -874,5 +928,6 @@ Seed Phrase!</string>
         <image name="snapShot" width="62" height="62"/>
         <image name="spyCam" width="62" height="62"/>
         <image name="spyIcon" width="62" height="62"/>
+        <image name="walletHuge" width="48" height="46"/>
     </resources>
 </document>
