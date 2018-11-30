@@ -49,6 +49,11 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         super.viewDidLoad()
         
         presenter.vc = self
+        
+        if screenWidth == widthOfSmall {
+            titleLbl.text = localize(string: Constants.sendAmountiPhone5)
+        }
+        
         presenter.vcViewDidLoad()
     }
     
