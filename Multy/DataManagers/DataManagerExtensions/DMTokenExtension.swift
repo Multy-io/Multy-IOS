@@ -41,10 +41,15 @@ extension DataManager {
             let name = contract.name()
             let decimals = contract.decimals()
             let symbol = contract.symbol()
-            
+                        
             name.call { [unowned self] (dict, error) in
                 if dict != nil, dict!.keys.count > 0 {
                     newToken.name = dict!.values.first! as! String
+                }
+                
+                //EOS name fix
+                if  newToken.contractAddress.lowercased() == "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0" {
+                    newToken.name = "EOS"
                 }
                 
                 decimals.call { [unowned self] (dict, error) in
