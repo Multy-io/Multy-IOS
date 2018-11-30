@@ -35,11 +35,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
 //    let progressHUD = ProgressHUD(text: Constants.AssetsScreen.progressString)
     
     var isSeedBackupOnScreen = false
-    
     var isFirstLaunch = true
-    
     var isInsetCorrect = false
-    
     var isInternetAvailable = true
     
     var loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
@@ -982,6 +979,8 @@ extension TableViewDataSource : UITableViewDataSource {
                 bannerCell.delegate = self
                 bannerCell.dataSource = self
                 
+                bannerCell.collectionView.reloadData()
+                
                 return bannerCell
             }
         case [0,1]:        // !!!NEW!!! WALLET CELL
@@ -996,7 +995,7 @@ extension TableViewDataSource : UITableViewDataSource {
             return newWalletCell
         case [0,2]:
             if self.presenter.account != nil {
-                //MARK: change logiv
+                //MARK: change logic
                 
                 if presenter.isWalletExist() {
                     let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell
@@ -1185,22 +1184,23 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if indexPath.item == 0 {
+        if indexPath.item == 1 {
             let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
-            
             let requestImage = presenter.requestImage
             magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
             
             return magicReceiverCell
-        } else if indexPath.item == 1 {
+        } else if indexPath.item == 0 {
             let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
             assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
+            
             return assetsCell
         } else {
             
             let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
 //            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
             assetsCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
+            
             return assetsCell
         }
         

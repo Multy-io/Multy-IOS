@@ -21,7 +21,7 @@
 "SATOSHI PER BYTE" = "satoshi per byte";
 "FEE TOO HIGH" = "You fee is too high. Please enter normal fee amount!";
 "GAS PRICE LESS 1" = "Gas Price can not be less then 1 Gwei.";
-"SUCCESS" = "Succsess!";
+"SUCCESS" = "Success!";
 "DONE" = "Done!";
 "ERROR WHILE SENDING TX" = "Error while sending transaction. Please, try again!";
 "TRANSACTION ERROR" = "Transaction Error";

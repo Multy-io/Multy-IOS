@@ -11,6 +11,7 @@ let tabbarSelectedBackground = UIColor(redInt: 3, greenInt: 127, blueInt: 255, a
 class CustomTabBarViewController: RAMAnimatedTabBarController, UITabBarControllerDelegate, AnalyticsProtocol {
     let presenter = CustomTabBarPresenter()
     // MARK: - View lifecycle
+
     let menuButton = UIButton()
     var previousSelectedIndex = 0
     var browserCoordinator: BrowserCoordinator?

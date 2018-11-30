@@ -71,6 +71,8 @@ class AssetsPresenter: NSObject {
                 wallets = validWallets().sorted(by: {
                     $0.lastActivityTimestamp.intValue > $1.lastActivityTimestamp.intValue
                 })
+                
+                
         //        wallets = validWallets().sorted(byKeyPath: "lastActivityTimestamp", ascending: false)
                 
                 
