@@ -163,15 +163,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         if presenter.walletRepresentingMode == .tokenInfo {
             setupUIForToken()
-            
-            receiveIcon.alpha = 0.3
-            receiveLabel.alpha = 0.3
-            receiveButton.alpha = 0.3
-            
-            receiveButton.isUserInteractionEnabled = false
-            
-            emptyLbl.isHidden = true
-            emptyArrowImg.isHidden = true
         }
     }
     
@@ -488,7 +479,21 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     func setupUIForToken() {
         settingsImg.isHidden = true
         settingsBtn.isHidden = true
+        
+        showAddressesBtn.isUserInteractionEnabled = false
+        shareAddressBtn.isUserInteractionEnabled = false
+        showAddressesBtn.alpha = 0.3
+        shareAddressBtn.alpha = 0.3
 //        presenter.isToken = true
+        
+        receiveIcon.alpha = 0.3
+        receiveLabel.alpha = 0.3
+        receiveButton.alpha = 0.3
+        
+        receiveButton.isUserInteractionEnabled = false
+        
+        emptyLbl.isHidden = true
+        emptyArrowImg.isHidden = true
     }
     
     @IBAction func titleAction(_ sender: Any) {
