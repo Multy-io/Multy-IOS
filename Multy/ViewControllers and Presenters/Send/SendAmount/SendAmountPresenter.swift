@@ -24,13 +24,13 @@ class SendAmountPresenter: NSObject {
             
             assetsWallet = transactionDTO.assetsWallet
             
+            blockchainType = transactionDTO.blockchainType!
+            blockchain = blockchainType.blockchain
+            
             if transactionDTO.isTokenTransfer {
                 sendTXMode = SendTXMode.erc20
                 tokenWallet = transactionDTO.choosenWallet
             }
-            
-            blockchainType = transactionDTO.blockchainType!
-            blockchain = blockchainType.blockchain
             
             blockchainObject = (sendTXMode == SendTXMode.crypto) ? blockchain : tokenWallet!.token
             
