@@ -167,7 +167,7 @@ class SendPresenter: NSObject {
     
     func filterArray() {
         var result = walletsArr.filter {
-            $0.isImported == false || $0.isImportedHasKey
+            ($0.isImported == false || $0.isImportedHasKey) && !$0.isMultiSig
         }
         
         

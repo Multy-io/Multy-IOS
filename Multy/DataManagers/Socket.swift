@@ -154,12 +154,6 @@ class Socket: NSObject {
     
     func becomeSender(nearIDs : [String]) {
         print("becomeSender: \(nearIDs)")
-        self.socket.on("event:new:receiver") { (data, ack) in
-            print(data)
-            if data.first != nil {
-                
-            }
-        }
 
         socket.emitWithAck("event:startup:receiver:available", with: [["ids" : nearIDs]]).timingOut(after: 1) { data in
             print("multi \(data)")
