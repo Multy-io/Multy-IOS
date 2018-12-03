@@ -8,7 +8,7 @@ class BannerTableViewCell: UITableViewCell {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
     
-    var mainVC: UIViewController?
+    var mainVC: AssetsViewController?
     
     weak var delegate : UICollectionViewDelegate? {
         didSet {
@@ -34,5 +34,15 @@ class BannerTableViewCell: UITableViewCell {
         
         let magicReceiverCell = UINib.init(nibName: "MagicReceiverCollectionViewCell", bundle: nil)
         self.collectionView.register(magicReceiverCell, forCellWithReuseIdentifier: "magicReceiverCVCReuseID")
+    }
+    
+    func setTopOffset() {
+        var topOffset: CGFloat = 0.0
+        if mainVC != nil {
+            topOffset = mainVC!.presenter.account!.isSeedPhraseSaved() ? 0 : 50
+        } else {
+            topOffset = 0
+        }
+        collectionView.contentInset = UIEdgeInsetsMake(topOffset, 0, 0, 0)
     }
 }
