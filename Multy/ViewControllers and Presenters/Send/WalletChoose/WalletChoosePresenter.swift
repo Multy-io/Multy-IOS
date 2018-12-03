@@ -65,9 +65,9 @@ class WalletChoosePresenter: NSObject {
     func destinationSegueString() -> String {
         switch transactionDTO.blockchain {
         case BLOCKCHAIN_BITCOIN:
-            return "sendBTCDetailsVC"
+            return "sendDetailsVC"
         case BLOCKCHAIN_ETHEREUM:
-            return "sendETHDetailsVC"
+            return "sendDetailsVC"
         default:
             return ""
         }

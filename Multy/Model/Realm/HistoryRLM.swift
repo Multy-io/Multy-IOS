@@ -96,7 +96,7 @@ class HistoryRLM: Object {
             hist.blockTime = NSDate(timeIntervalSince1970: blocktime) as Date
             
             // in some cases mempool time equals 1 January 1970
-            if hist.blockTime.timeIntervalSince1970 == 0 {
+            if hist.blockTime.timeIntervalSince1970 == 0 || hist.blockTime.timeIntervalSince1970 == -1 {
                 hist.mempoolTime = Date()
             } else {
                 hist.mempoolTime = hist.blockTime

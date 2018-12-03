@@ -845,10 +845,25 @@ extension TableViewDelegate : UITableViewDelegate {
                 if presenter.account!.isSeedPhraseSaved() {
 //                    return 340
 //                    return screenHeight == heightOfFive ? 270 : 320
-                    return screenHeight == heightOfFive ? 270 : 320
+                    var heightConstant: CGFloat = 0.0
+                    if screenWidth == widthOfSmall {
+                        heightConstant = 270
+                    } else if screenWidth == widthOfNormal {
+                        heightConstant = 300
+                    } else if screenWidth == widthOfBig {
+                        heightConstant = 320
+                    }
+                    return heightConstant
                 } else {
-//                    return 340 + Constants.AssetsScreen.backupAssetsOffset
-                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 320
+//                    return 340 + Constants.AssetsScreen.backupAssetsOffset 320
+                    var heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 320
+                    if screenWidth == widthOfSmall {
+                        heightConstant = 295
+                    } else if screenWidth == widthOfNormal {
+                        heightConstant = 320
+                    } else if screenWidth == widthOfBig {
+                        heightConstant = 340
+                    }
                     return heightConstant + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
@@ -962,6 +977,7 @@ extension TableViewDataSource : UITableViewDataSource {
                 bannerCell.mainVC = self
                 bannerCell.delegate = self
                 bannerCell.dataSource = self
+                bannerCell.setTopOffset()
                 
                 bannerCell.collectionView.reloadData()
                 
