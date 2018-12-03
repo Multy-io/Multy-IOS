@@ -89,6 +89,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let _ = BLEManager.shared
         
         registerCells()
         fixUIForX()
@@ -682,7 +683,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
             return self.dismiss(animated: false, completion: nil)
         }
         
-        nc.popToRootViewController(animated: true)
+        nc.popToRootViewController(animated: false)
         if let tbc = self.tabBarController as? CustomTabBarViewController {
             tbc.setSelectIndex(from: 2, to: tbc.previousSelectedIndex)
         }
@@ -707,7 +708,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
     }
     
     @IBAction func enterAmountAction(_ sender: Any) {
-        presenter.goToEnterAmount()
+       presenter.goToEnterAmount()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -824,7 +825,13 @@ extension SendViewController: UICollectionViewDataSource, UICollectionViewDelega
         if scrollView == activeRequestsCollectionView {
             let width = self.requestPageSize.width
             let offset = scrollView.contentOffset.x
-            presenter.selectedActiveRequestIndex = Int(floor((offset - width / 2) / width) + 1)
+            var index = Int(floor((offset - width / 2) / width) + 1)
+            if index < 0 {
+                index = 0
+            } else if index > (presenter.activeRequestsArr.count - 1) {
+                index = presenter.activeRequestsArr.count - 1
+            }
+            presenter.selectedActiveRequestIndex = index < 0 ? 0 : index
         }
     }
 }

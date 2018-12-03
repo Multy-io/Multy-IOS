@@ -82,7 +82,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         if self.isRestore {
             self.titleLbl.text = localize(string: Constants.restoreMultyString)
             if presenter.accountType == .metamask {
-                self.titleLbl.text = localize(string: Constants.restoreMetamaskString)
+                self.titleLbl.text = localize(string: Constants.enterMetamaskString)
             }
         }
         if self.isNeedToClean {
@@ -149,7 +149,7 @@ class CheckWordsViewController: UIViewController, UITextFieldDelegate, Analytics
         bricksView.addSubview(BricksView(with: bricksView.bounds, accountType: presenter.accountType, color: brickColorSelectedGreen, and: currentWordNumber))
         
         if currentWordNumber == presenter.wordsCount {
-            nextWordOrContinue.setTitle(localize(string: Constants.continueString), for: .normal)
+            nextWordOrContinue.setTitle(localize(string: presenter.accountType.restoreString), for: .normal)
         }
         
         if currentWordNumber < presenter.wordsCount {

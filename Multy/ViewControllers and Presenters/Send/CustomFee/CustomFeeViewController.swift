@@ -123,17 +123,17 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
             return false
         }
         
-        let endString = textField.text! + string
-        if UInt64(endString)! > 3000 {
-            let message = localize(string: Constants.feeTooHighString)
-            let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
-                self.topPriceTF.becomeFirstResponder()
-            }))
-            
-            self.present(alert, animated: true, completion: nil)
-            return false
-        }
+//        let endString = textField.text! + string
+//        if UInt64(endString)! > 3000 {
+//            let message = localize(string: Constants.feeTooHighString)
+//            let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
+//                self.topPriceTF.becomeFirstResponder()
+//            }))
+//            
+//            self.present(alert, animated: true, completion: nil)
+//            return false
+//        }
         
         return true
     }

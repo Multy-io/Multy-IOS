@@ -13,8 +13,9 @@ extension Constants {
     static let jailbrokenDeviceWarningString = "JAILBROKEN DEVICE ALERT MESSAGE"
     static let backupNeededString = "BACKUP IS NEEDED"
     static let restoreMultyString = "RESTORE MULTY"
+    static let restoreMetamaskString = "RESTORE METAMASK"
     static let createFirstWalletString = "CREATE FIRST WALLET"
-    static let restoreMetamaskString = "ENTER IN METAMASK"
+    static let enterMetamaskString = "ENTER IN METAMASK"
     static let importMetaMaskString = "IMPORT METAMASK"
     static let gettingWalletString = "GETTING WALLET"
     static let creatingWalletString = "CREATING WALLET"
@@ -158,6 +159,6 @@ extension Constants {
     static let showKeySString = "SHOW KEYS"
     static let showKeyString = "SHOW KEY"
     static let youReceivedString = "YOU RECEIVED"
-    static let toAddressString = "TO ADDRESS"
     static let youReceivedMultisigRequestString = "YOU RECEIVED REQUEST"
+    static let sendAmountiPhone5 = "SEND AMOUNT: iPhone 5"
 }
