@@ -825,7 +825,13 @@ extension SendViewController: UICollectionViewDataSource, UICollectionViewDelega
         if scrollView == activeRequestsCollectionView {
             let width = self.requestPageSize.width
             let offset = scrollView.contentOffset.x
-            presenter.selectedActiveRequestIndex = Int(floor((offset - width / 2) / width) + 1)
+            var index = Int(floor((offset - width / 2) / width) + 1)
+            if index < 0 {
+                index = 0
+            } else if index > (presenter.activeRequestsArr.count - 1) {
+                index = presenter.activeRequestsArr.count - 1
+            }
+            presenter.selectedActiveRequestIndex = index < 0 ? 0 : index
         }
     }
 }
