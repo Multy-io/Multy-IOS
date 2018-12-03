@@ -272,22 +272,6 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     @objc fileprivate func handleMsTransactionUpdatedNotification(notification : Notification) {
         DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
-            
-            let tx = notification.userInfo?["transaction"] as? NSDictionary
-            
-            if tx != nil {
-                guard let txStatus = tx!["type"] as? Int,
-                    txStatus == SocketMessageType.multisigTxPaymentRequest.rawValue else {
-                        return
-                }
-
-                
-                let message = NSMutableAttributedString()
-                message.append(NSAttributedString(string:self.localize(string: Constants.youReceivedMultisigRequestString), attributes: [.font: UIFont(name: "AvenirNext-Medium", size: 15)!]))
-                
-                GSMessage.successBackgroundColor = #colorLiteral(red: 0.08235294118, green: 0.4941176471, blue: 0.9843137255, alpha: 0.96)
-                self.showMessage(message, type: .success, options: [.height(64.0)])
-            }
         }
     }
     
@@ -344,7 +328,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
             }
         }
     }
-    
+
     @objc fileprivate func handleResyncCompleteNotification(notification : Notification) {
         DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)

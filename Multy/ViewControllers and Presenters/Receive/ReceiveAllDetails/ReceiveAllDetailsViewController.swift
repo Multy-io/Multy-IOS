@@ -330,7 +330,7 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
     func updateSearchingAnimation() {
         if option == .wireless {
             if searchingAnimationView == nil {
-                searchingAnimationView = LOTAnimationView(name: "circle_grow")
+                searchingAnimationView = LOTAnimationView(name: "circle_grow_white")
                 searchingAnimationView!.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight) //searchingAnimationHolder.bounds
                 searchingAnimationHolder.insertSubview(searchingAnimationView!, at: 0)
                 searchingAnimationView!.center = hidedImage.center

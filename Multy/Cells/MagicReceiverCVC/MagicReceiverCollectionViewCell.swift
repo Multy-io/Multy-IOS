@@ -17,7 +17,7 @@ class MagicReceiverCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         if wavesAnimationView == nil {
-            wavesAnimationView = LOTAnimationView(name: "circle_grow")
+            wavesAnimationView = LOTAnimationView(name: "circle_grow_gray")
             requestImageHolderView.insertSubview(wavesAnimationView!, at: 0)
             wavesAnimationView!.loopAnimation = true
         }
