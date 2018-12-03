@@ -91,13 +91,19 @@ class TransactionDTO: NSObject {
         case 2:                              // chain name + address
             let blockchainName = array[0]
             sendAddress = array[1]
-            blockchain = Blockchain.blockchainFromString(blockchainName)
+            
+            if blockchain == nil {
+                blockchain = Blockchain.blockchainFromString(blockchainName)
+            }
         case 4:                                // chain name + address + amount
             let blockchainName = array[0]
             sendAddress = array[1]
             let sendAmountString = array[3]
             self.sendAmountString = sendAmountString
-            blockchain = Blockchain.blockchainFromString(blockchainName)
+            
+            if blockchain == nil {
+                blockchain = Blockchain.blockchainFromString(blockchainName)
+            }
         default:
             return
         }

@@ -151,7 +151,7 @@ class SendViewController: UIViewController, AnalyticsProtocol {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.navigationBar.isHidden = true
         if searchingAnimationView == nil {
-            searchingAnimationView = LOTAnimationView(name: "circle_grow")
+            searchingAnimationView = LOTAnimationView(name: "circle_grow_white")
             searchingAnimationView!.frame = searchingRequestsHolderView.bounds
             searchingRequestsHolderView.autoresizesSubviews = true
             searchingRequestsHolderView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
