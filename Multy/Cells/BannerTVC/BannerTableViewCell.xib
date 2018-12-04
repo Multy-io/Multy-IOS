@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="1a8-bQ-2ZS">
-                        <rect key="frame" x="0.0" y="32" width="375" height="280.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="312.5"/>
                         <color key="backgroundColor" red="0.92515683169999996" green="0.93285363909999997" blue="0.96979457140000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="KEV-on-igd">
                             <size key="itemSize" width="343" height="213"/>
@@ -37,10 +37,10 @@
                 </subviews>
                 <color key="backgroundColor" red="0.92549019610000005" green="0.93333333330000001" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
+                    <constraint firstItem="1a8-bQ-2ZS" firstAttribute="top" secondItem="zSn-lx-bLZ" secondAttribute="top" id="67G-rx-N8T"/>
                     <constraint firstAttribute="bottom" secondItem="60N-Eg-tcs" secondAttribute="bottom" id="Jtn-1U-1Yg"/>
                     <constraint firstItem="1a8-bQ-2ZS" firstAttribute="leading" secondItem="zSn-lx-bLZ" secondAttribute="leading" id="KYS-XU-mtr"/>
                     <constraint firstAttribute="trailing" secondItem="1a8-bQ-2ZS" secondAttribute="trailing" id="eN4-Vh-3gy"/>
-                    <constraint firstItem="1a8-bQ-2ZS" firstAttribute="height" secondItem="zSn-lx-bLZ" secondAttribute="height" multiplier="280/339" id="xeH-n5-dx2"/>
                     <constraint firstItem="60N-Eg-tcs" firstAttribute="top" secondItem="1a8-bQ-2ZS" secondAttribute="bottom" constant="-10" id="yLW-zE-Vyz"/>
                     <constraint firstItem="60N-Eg-tcs" firstAttribute="centerX" secondItem="zSn-lx-bLZ" secondAttribute="centerX" id="zEM-QP-9Mq"/>
                 </constraints>

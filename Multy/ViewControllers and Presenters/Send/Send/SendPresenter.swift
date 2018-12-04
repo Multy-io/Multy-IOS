@@ -167,7 +167,7 @@ class SendPresenter: NSObject {
     
     func filterArray() {
         var result = walletsArr.filter {
-            $0.isImported == false || $0.isImportedHasKey
+            ($0.isImported == false || $0.isImportedHasKey) && !$0.isMultiSig
         }
         
         
@@ -377,7 +377,11 @@ class SendPresenter: NSObject {
                     sendAmountVC.presenter.transactionDTO = self.transaction!
                     sendAmountVC.presenter.sendFromThisScreen = true
                     sendAmountVC.presenter.isPayForComissionCanBeChanged = false
-                    self.sendVC?.navigationController?.pushViewController(sendAmountVC, animated: true)
+                    var nc = self.sendVC?.navigationController
+                    if nc == nil {
+                        nc = self.sendVC?.presentingViewController?.navigationController
+                    }
+                    nc?.pushViewController(sendAmountVC, animated: true)
                     self.sendVC?.enterAmountButton.isUserInteractionEnabled = true
                 }
             }

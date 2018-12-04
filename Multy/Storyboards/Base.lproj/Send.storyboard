@@ -374,7 +374,7 @@
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4KN-Bb-KSk">
                                                                 <rect key="frame" x="0.0" y="0.0" width="334.5" height="63"/>
                                                                 <connections>
-                                                                    <action selector="enterAmountAction:" destination="v1w-JK-3Sa" eventType="touchUpInside" id="O1m-Or-ehO"/>
+                                                                    <action selector="enterAmountAction:" destination="v1w-JK-3Sa" eventType="touchUpInside" id="PAQ-iO-GAT"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -613,7 +613,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2HK-Ho-Qtr">
                                         <rect key="frame" x="102.5" y="0.0" width="98" height="126"/>
                                         <connections>
-                                            <segue destination="v1w-JK-3Sa" kind="presentation" animates="NO" id="GW1-5g-oIp"/>
+                                            <segue destination="v1w-JK-3Sa" kind="show" animates="NO" id="GW1-5g-oIp"/>
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="qrIconGray" translatesAutoresizingMaskIntoConstraints="NO" id="WHV-qZ-AVE">
@@ -2284,18 +2284,18 @@ address</string>
                                                 <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mMU-mh-iSV">
-                                                <rect key="frame" x="201.5" y="390.5" width="157.5" height="2"/>
-                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="Q9i-lW-oMJ"/>
-                                                </constraints>
-                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KFu-oe-qLm">
                                                 <rect key="frame" x="16" y="390.5" width="155.5" height="2"/>
                                                 <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="2" id="X1m-4P-1O6"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mMU-mh-iSV">
+                                                <rect key="frame" x="201.5" y="390.5" width="157.5" height="2"/>
+                                                <color key="backgroundColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="2" id="Q9i-lW-oMJ"/>
                                                 </constraints>
                                             </view>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swap" translatesAutoresizingMaskIntoConstraints="NO" id="6Sg-1j-5o3">
@@ -2305,6 +2305,11 @@ address</string>
                                                     <constraint firstAttribute="width" constant="24" id="wYo-fj-VH3"/>
                                                 </constraints>
                                             </imageView>
+                                            <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8G-in-z9x">
+                                                <rect key="frame" x="16" y="381" width="343" height="21"/>
+                                                <color key="backgroundColor" red="0.96862745098039216" green="0.97647058823529409" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ytz-Mp-32f">
                                                 <rect key="frame" x="164" y="417" width="47" height="22"/>
                                                 <subviews>
@@ -2445,6 +2450,7 @@ address</string>
                                             <constraint firstAttribute="bottom" secondItem="ZBu-v0-RrT" secondAttribute="bottom" id="Ot5-C7-YtK"/>
                                             <constraint firstItem="mMU-mh-iSV" firstAttribute="centerY" secondItem="6Sg-1j-5o3" secondAttribute="centerY" id="Pv1-zD-g4F"/>
                                             <constraint firstItem="ZBu-v0-RrT" firstAttribute="top" secondItem="boT-b2-WD9" secondAttribute="bottom" constant="10" id="QPs-J8-Bnq"/>
+                                            <constraint firstItem="B8G-in-z9x" firstAttribute="bottom" secondItem="6Sg-1j-5o3" secondAttribute="bottom" id="Roh-Pe-wna"/>
                                             <constraint firstItem="f9t-r2-fgh" firstAttribute="centerX" secondItem="226-XO-eEP" secondAttribute="centerX" id="TJZ-Tu-8fP"/>
                                             <constraint firstItem="ZBu-v0-RrT" firstAttribute="top" secondItem="226-XO-eEP" secondAttribute="bottom" constant="-44" id="VlH-H0-dFO"/>
                                             <constraint firstItem="boT-b2-WD9" firstAttribute="centerX" secondItem="226-XO-eEP" secondAttribute="centerX" id="XK2-iL-sit"/>
@@ -2454,14 +2460,17 @@ address</string>
                                             <constraint firstItem="ZBu-v0-RrT" firstAttribute="leading" secondItem="226-XO-eEP" secondAttribute="leading" id="cSb-lw-Voe"/>
                                             <constraint firstItem="6Sg-1j-5o3" firstAttribute="centerX" secondItem="226-XO-eEP" secondAttribute="centerX" id="dAS-Dd-fve"/>
                                             <constraint firstItem="kWH-Ym-sc6" firstAttribute="trailing" secondItem="glU-n3-T49" secondAttribute="trailing" constant="20" id="dQy-wJ-FkN"/>
+                                            <constraint firstItem="B8G-in-z9x" firstAttribute="leading" secondItem="KFu-oe-qLm" secondAttribute="leading" id="fcf-bQ-MnU"/>
                                             <constraint firstItem="mMU-mh-iSV" firstAttribute="leading" secondItem="6Sg-1j-5o3" secondAttribute="trailing" constant="2" id="fyP-I4-Cba"/>
                                             <constraint firstItem="f9t-r2-fgh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="226-XO-eEP" secondAttribute="leading" constant="20" id="gPu-Us-zwV"/>
+                                            <constraint firstItem="B8G-in-z9x" firstAttribute="top" secondItem="6Sg-1j-5o3" secondAttribute="top" id="igc-pc-D5x"/>
                                             <constraint firstItem="NXP-BI-bTn" firstAttribute="leading" secondItem="f9t-r2-fgh" secondAttribute="leading" id="jMd-9C-tt3"/>
                                             <constraint firstItem="kWH-Ym-sc6" firstAttribute="top" secondItem="glU-n3-T49" secondAttribute="top" constant="-20" id="k4w-CS-6kF"/>
                                             <constraint firstItem="kWH-Ym-sc6" firstAttribute="leading" secondItem="glU-n3-T49" secondAttribute="leading" id="kK7-Gg-IB2"/>
                                             <constraint firstItem="mka-k7-81Y" firstAttribute="centerX" secondItem="226-XO-eEP" secondAttribute="centerX" id="ktp-Us-aa7"/>
                                             <constraint firstItem="KFu-oe-qLm" firstAttribute="leading" secondItem="226-XO-eEP" secondAttribute="leading" constant="16" id="pQ9-t3-gdh"/>
                                             <constraint firstItem="mka-k7-81Y" firstAttribute="top" secondItem="f9t-r2-fgh" secondAttribute="bottom" constant="-13.5" id="pbR-aY-pn8"/>
+                                            <constraint firstItem="B8G-in-z9x" firstAttribute="trailing" secondItem="mMU-mh-iSV" secondAttribute="trailing" id="rV1-xB-qGg"/>
                                             <constraint firstItem="NXP-BI-bTn" firstAttribute="trailing" secondItem="cCm-1i-LiC" secondAttribute="trailing" id="trB-Kb-66H"/>
                                             <constraint firstItem="6Sg-1j-5o3" firstAttribute="top" secondItem="f9t-r2-fgh" secondAttribute="bottom" constant="-0.5" id="ujF-jw-KXK"/>
                                             <constraint firstItem="glU-n3-T49" firstAttribute="centerY" secondItem="f9t-r2-fgh" secondAttribute="centerY" id="vg0-5O-Vxo"/>
@@ -2550,7 +2559,7 @@ address</string>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.97647058823529409" green="0.98039215686274506" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.96862745098039216" green="0.97647058823529409" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="iXb-l2-3Ka" firstAttribute="top" secondItem="CNA-bH-Up3" secondAttribute="bottom" id="6gq-St-1yn"/>
                             <constraint firstAttribute="trailing" secondItem="CNA-bH-Up3" secondAttribute="trailing" id="8Aq-9N-vK5"/>
@@ -2584,6 +2593,7 @@ address</string>
                         <outlet property="spendableSumAndCurrencyLbl" destination="B7O-wZ-L5Q" id="2Q6-4Z-BEx"/>
                         <outlet property="swapBtn" destination="mka-k7-81Y" id="JYS-Au-qFT"/>
                         <outlet property="titleLbl" destination="xQj-gf-m8W" id="3Ut-01-Zqd"/>
+                        <outlet property="tokenViewForHide" destination="B8G-in-z9x" id="Zoa-Rf-fpC"/>
                         <outlet property="topCurrencyNameLbl" destination="cCm-1i-LiC" id="GCR-ut-jak"/>
                         <outlet property="topSumLbl" destination="f9t-r2-fgh" id="yAq-nA-Ab0"/>
                         <segue destination="0GY-ag-sLU" kind="show" identifier="sendFinishVC" id="S6Q-mN-NGm"/>

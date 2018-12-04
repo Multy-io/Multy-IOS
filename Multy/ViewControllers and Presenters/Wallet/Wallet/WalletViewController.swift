@@ -70,6 +70,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var tableHolderViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var infoHolderTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomGradientConstant: NSLayoutConstraint!
+    @IBOutlet weak var receiveIcon: UIImageView!
+    @IBOutlet weak var receiveLabel: UILabel!
+    @IBOutlet weak var receiveButton: UIButton!
     
     var presenter = WalletPresenter()
     
@@ -160,6 +163,15 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         if presenter.walletRepresentingMode == .tokenInfo {
             setupUIForToken()
+            
+            receiveIcon.alpha = 0.3
+            receiveLabel.alpha = 0.3
+            receiveButton.alpha = 0.3
+            
+            receiveButton.isUserInteractionEnabled = false
+            
+            emptyLbl.isHidden = true
+            emptyArrowImg.isHidden = true
         }
     }
     

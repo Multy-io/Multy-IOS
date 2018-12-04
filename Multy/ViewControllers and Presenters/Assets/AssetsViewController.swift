@@ -35,11 +35,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
 //    let progressHUD = ProgressHUD(text: Constants.AssetsScreen.progressString)
     
     var isSeedBackupOnScreen = false
-    
     var isFirstLaunch = true
-    
     var isInsetCorrect = false
-    
     var isInternetAvailable = true
     
     var loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
@@ -275,22 +272,6 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     @objc fileprivate func handleMsTransactionUpdatedNotification(notification : Notification) {
         DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
-            
-            let tx = notification.userInfo?["transaction"] as? NSDictionary
-            
-            if tx != nil {
-                guard let txStatus = tx!["type"] as? Int,
-                    txStatus == SocketMessageType.multisigTxPaymentRequest.rawValue else {
-                        return
-                }
-
-                
-                let message = NSMutableAttributedString()
-                message.append(NSAttributedString(string:self.localize(string: Constants.youReceivedMultisigRequestString), attributes: [.font: UIFont(name: "AvenirNext-Medium", size: 15)!]))
-                
-                GSMessage.successBackgroundColor = #colorLiteral(red: 0.08235294118, green: 0.4941176471, blue: 0.9843137255, alpha: 0.96)
-                self.showMessage(message, type: .success, options: [.height(64.0)])
-            }
         }
     }
     
@@ -347,7 +328,7 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
             }
         }
     }
-    
+
     @objc fileprivate func handleResyncCompleteNotification(notification : Notification) {
         DispatchQueue.main.async { [unowned self] in
             self.presenter.updateWalletsInfo(isInternetAvailable: self.isInternetAvailable)
@@ -864,10 +845,25 @@ extension TableViewDelegate : UITableViewDelegate {
                 if presenter.account!.isSeedPhraseSaved() {
 //                    return 340
 //                    return screenHeight == heightOfFive ? 270 : 320
-                    return screenHeight == heightOfFive ? 270 : 320
+                    var heightConstant: CGFloat = 0.0
+                    if screenWidth == widthOfSmall {
+                        heightConstant = 270
+                    } else if screenWidth == widthOfNormal {
+                        heightConstant = 300
+                    } else if screenWidth == widthOfBig {
+                        heightConstant = 320
+                    }
+                    return heightConstant
                 } else {
-//                    return 340 + Constants.AssetsScreen.backupAssetsOffset
-                    let heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 320
+//                    return 340 + Constants.AssetsScreen.backupAssetsOffset 320
+                    var heightConstant: CGFloat = screenHeight == heightOfFive ? 295 : 320
+                    if screenWidth == widthOfSmall {
+                        heightConstant = 295
+                    } else if screenWidth == widthOfNormal {
+                        heightConstant = 320
+                    } else if screenWidth == widthOfBig {
+                        heightConstant = 340
+                    }
                     return heightConstant + Constants.AssetsScreen.backupAssetsOffset
                 }
             }
@@ -981,6 +977,9 @@ extension TableViewDataSource : UITableViewDataSource {
                 bannerCell.mainVC = self
                 bannerCell.delegate = self
                 bannerCell.dataSource = self
+                bannerCell.setTopOffset()
+                
+                bannerCell.collectionView.reloadData()
                 
                 return bannerCell
             }
@@ -996,7 +995,7 @@ extension TableViewDataSource : UITableViewDataSource {
             return newWalletCell
         case [0,2]:
             if self.presenter.account != nil {
-                //MARK: change logiv
+                //MARK: change logic
                 
                 if presenter.isWalletExist() {
                     let walletCell = self.tableView.dequeueReusableCell(withIdentifier: "walletCell") as! WalletTableViewCell
@@ -1185,22 +1184,23 @@ extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if indexPath.item == 0 {
+        if indexPath.item == 1 {
             let magicReceiverCell = collectionView.dequeueReusableCell(withReuseIdentifier: "magicReceiverCVCReuseID", for: indexPath) as! MagicReceiverCollectionViewCell
-            
             let requestImage = presenter.requestImage
             magicReceiverCell.fillWithBluetoothState(presenter.isBluetoothReachable, requestImage: requestImage)
             
             return magicReceiverCell
-        } else if indexPath.item == 1 {
+        } else if indexPath.item == 0 {
             let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
             assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
+            
             return assetsCell
         } else {
             
             let assetsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "donatCell", for: indexPath) as! DonationCollectionViewCell
 //            assetsCell.makeCellBy(index: indexPath.row, assetsInfo: presenter.countFiatMoney())
             assetsCell.makeCellBy(index: indexPath.row, assetsInfo: nil)
+            
             return assetsCell
         }
         

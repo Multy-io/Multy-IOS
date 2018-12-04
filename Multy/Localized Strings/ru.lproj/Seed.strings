@@ -3,6 +3,7 @@
 //See LICENSE for detailss
 
 "RESTORE MULTY" = "Восстановить Multy";
+"RESTORE METAMASK" = "Восстановить Metamask";
 "WARNING" = "Предупреждение";
 "CANCEL" = "Отменить";
 "ERROR" = "Ошибка";
@@ -17,5 +18,5 @@
 "WANT TO CANCEL" = "Вы действительно хотите отменить?";
 "LOADING" = "Загрузка";
 "RESTORING WALLETS" = "Восстановление кошельков";
-"WRONG SEED" = "Сид фраза слишком короткая";
+"WRONG SEED" = "Неправильная seed-фраза";
 "ENTER IN METAMASK" = "Ввод MetaMask Seed-фразы";
