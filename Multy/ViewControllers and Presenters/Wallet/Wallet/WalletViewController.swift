@@ -163,15 +163,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         if presenter.walletRepresentingMode == .tokenInfo {
             setupUIForToken()
-            
-            receiveIcon.alpha = 0.3
-            receiveLabel.alpha = 0.3
-            receiveButton.alpha = 0.3
-            
-            receiveButton.isUserInteractionEnabled = false
-            
-            emptyLbl.isHidden = true
-            emptyArrowImg.isHidden = true
         }
     }
     
@@ -488,7 +479,15 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     func setupUIForToken() {
         settingsImg.isHidden = true
         settingsBtn.isHidden = true
+        
+        showAddressesBtn.isUserInteractionEnabled = false
+        shareAddressBtn.isUserInteractionEnabled = false
+        showAddressesBtn.alpha = 0.3
+        shareAddressBtn.alpha = 0.3
 //        presenter.isToken = true
+        
+        emptyLbl.isHidden = true
+        emptyArrowImg.isHidden = true
     }
     
     @IBAction func titleAction(_ sender: Any) {
@@ -596,7 +595,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBAction func receiveAction(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Receive", bundle: nil)
         let receiveDetailsVC = storyboard.instantiateViewController(withIdentifier: "receiveDetails") as! ReceiveAllDetailsViewController
-        receiveDetailsVC.presenter.wallet = self.presenter.wallet
+        receiveDetailsVC.presenter.wallet = presenter.wallet
+        receiveDetailsVC.presenter.tokenHolderWallet = presenter.tokenHolderWallet
         self.navigationController?.pushViewController(receiveDetailsVC, animated: true)
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(receiveWithChainTap)\(presenter.wallet!.chain)")
     }

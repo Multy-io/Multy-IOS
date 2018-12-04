@@ -17,6 +17,8 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var bottomSumLbl: UILabel!
     @IBOutlet weak var bottomCurrencyNameLbl: UILabel!
     @IBOutlet weak var constraintBtnBottom: NSLayoutConstraint!
+    @IBOutlet weak var swapButton: UIButton!
+    @IBOutlet weak var hideUnusedUIView: UIView!
     
     @IBOutlet weak var btnTopConstraint: NSLayoutConstraint! // ipad
     
@@ -46,9 +48,18 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)),
                                                name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
-        cryptoName = blockchainType.shortName
+        cryptoName = presenter.wallet!.assetShortName
         tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         fixForIpad()
+        
+        if presenter.tokenHolderWallet != nil {
+            swapButton.isUserInteractionEnabled = false
+            hideUnusedUIView.isHidden = false
+            bottomSumLbl.isHidden = true
+            bottomCurrencyNameLbl.isHidden = true
+            
+            btnTopConstraint.constant = 40
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -136,7 +147,7 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch isCrypto{
         case true:
-            if ((amountTF.text! + string) as NSString).doubleValue > presenter.getMaxValueOfChain(curency: blockchainType.blockchain) {
+            if blockchainType.blockchain != BLOCKCHAIN_ERC20 && ((amountTF.text! + string) as NSString).doubleValue > presenter.getMaxValueOfChain(curency: blockchainType.blockchain) {
                 presentWarning(message: localize(string: Constants.youCantEnterSumString))
                 
                 return false
