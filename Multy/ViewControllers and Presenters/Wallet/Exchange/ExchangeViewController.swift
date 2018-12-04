@@ -62,6 +62,9 @@ class ExchangeViewController: UIViewController {
         setupUI()
         presenter.updateUI()
 //        presenter.updateReceiveSection()
+        DataManager.shared.apiManager.getSupportedExchanges { (result) in
+            print(result)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -167,12 +170,13 @@ class ExchangeViewController: UIViewController {
     }
     
     @IBAction func selectChainToReceiveAction(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
-        let currenciesVC = storyboard.instantiateViewController(withIdentifier: "exchangeCurrencies") as! CurrencyToExchangeViewController
-        currenciesVC.presenter.walletFromExchange = presenter.walletFromSending
-        currenciesVC.sendWalletDelegate = presenter
-        currenciesVC.presenter.sendNewWalletDelegate = presenter
-        navigationController?.pushViewController(currenciesVC, animated: true)
+//        let currenciesVC = viewControllerFrom("Wallet", "exchangeCurrencies") as! CurrencyToExchangeViewController
+//        currenciesVC.presenter.walletFromExchange = presenter.walletFromSending
+//        currenciesVC.sendWalletDelegate = presenter
+//        currenciesVC.presenter.sendNewWalletDelegate = presenter
+//        navigationController?.pushViewController(currenciesVC, animated: true)
+        
+        presenter.checkForExistingWallet() // goto selecting wallet
     }
     
     @IBAction func sendingCryptoValueChanged(_ sender: Any) {

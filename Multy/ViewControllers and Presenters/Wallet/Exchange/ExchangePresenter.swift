@@ -24,6 +24,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         exchangeVC?.sendingImg.image = UIImage(named: walletFromSending!.blockchainType.iconString)
         exchangeVC?.sendingMaxBtn.setTitle("MAX \(walletFromSending!.availableAmountString)", for: .normal)
         exchangeVC?.sendingCryptoName.text = walletFromSending?.blockchainType.shortName
+        setEndValueToSend()
 //        setEndValueToSend()
     }
     
@@ -204,5 +205,31 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     
     func sendWallet(wallet: UserWalletRLM) {
         walletToReceive = wallet
+    }
+    
+    func checkForExistingWallet() {
+        let blockchainToReceive = walletFromSending?.blockchain == BLOCKCHAIN_ETHEREUM ? BlockchainType(blockchain: BLOCKCHAIN_BITCOIN, net_type: 0) : BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 1)
+        RealmManager.shared.getAllWalletsFor(blockchainType: blockchainToReceive) { (wallets, error) in
+            if wallets != nil && (wallets?.count)! > 0 {
+                let storyboard = UIStoryboard(name: "Receive", bundle: nil)
+                let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
+                walletsVC.presenter.walletsArr = Array(wallets!)
+                walletsVC.presenter.isNeedToPop = true
+                walletsVC.whereFrom = self.exchangeVC
+                walletsVC.sendWalletDelegate = self//self.mainVC?.sendWalletDelegate
+                self.exchangeVC!.navigationController?.pushViewController(walletsVC, animated: true)
+            } else {
+//                let alert = UIAlertController(title: "Attantion", message: "We crete wallet for this blockchain automatically", preferredStyle: .alert)
+//                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+//                    //delegate
+//                    self.sendNewWalletDelegate?.sendWallet(wallet: DataManager.shared.createTempWallet(blockchainType: self.availableBlockchainArray[index].currencyBlockchain))
+//                    self.mainVC?.navigationController?.popViewController(animated: true)
+//                }))
+//                alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+//                    alert.dismiss(animated: true, completion: nil)
+//                }))
+//                self.mainVC?.present(alert, animated: true, completion: nil)
+            }
+        }
     }
 }

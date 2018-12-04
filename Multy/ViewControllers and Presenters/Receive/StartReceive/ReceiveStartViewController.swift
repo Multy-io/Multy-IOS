@@ -120,7 +120,8 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if whereFrom?.className == CurrencyToExchangeViewController.className {
-            return self.presenter.numberOfWallets() + 1
+//            return self.presenter.numberOfWallets() + 1
+            return self.presenter.numberOfWallets()
         } else {
             return self.presenter.numberOfWallets()
         }

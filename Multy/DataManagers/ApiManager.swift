@@ -827,5 +827,26 @@ class ApiManager: NSObject, RequestRetrier {
             }
         }
     }
+    
+    func getSupportedExchanges(completion: @escaping(Result<[String], String>) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type"  : "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        requestManager.request("\(apiUrl)api/v1/exchanger/supported_currencies", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    print(response.result.value as! NSDictionary)
+//                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
+                }
+            case .failure(_):
+                completion(Result.failure(response.result.error!.localizedDescription))
+                break
+            }
+        }
+    }
 }
 
