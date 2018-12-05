@@ -47,7 +47,9 @@ class TransactionDTO: NSObject {
         return choosenWallet!.blockchain == BLOCKCHAIN_ERC20 ? tokenHolderWallet! : choosenWallet!
     }
     
-    var tokenHolderWallet: UserWalletRLM?
+    var tokenHolderWallet: UserWalletRLM? {
+        return choosenWallet?.tokenHolderWallet
+    }
     
     var blockchainType: BlockchainType?
     

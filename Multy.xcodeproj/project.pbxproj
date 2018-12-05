@@ -2558,7 +2558,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "tag=$(git describe --tags --abbrev=0)\nbranch=$(git rev-parse --abbrev-ref HEAD)\ncommitHash=$(git log -1 --format=%h)\n#curdate     =$(date +\"%d.%m.%y\")\n\n#if [ ${CONFIGURATION} == \"Release\" ]; then\n#buildNumber=$(git log -1 --format=%h)\n\n/usr/libexec/PlistBuddy -c \"Set :GIT_TAG_NAME $tag\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Set :GIT_BRANCH_NAME $branch\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Set :GIT_COMMIT_HASH $commitHash\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+			shellScript = "tag=$(git describe --tags --abbrev=0 --dirty)\nbranch=$(git rev-parse --abbrev-ref HEAD)\ncommitHash=$(git log -1 --format=%h)\n#curdate     =$(date +\"%d.%m.%y\")\n\n#if [ ${CONFIGURATION} == \"Release\" ]; then\n#buildNumber=$(git log -1 --format=%h)\n\n/usr/libexec/PlistBuddy -c \"Set :GIT_TAG_NAME $tag\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Set :GIT_BRANCH_NAME $branch\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Set :GIT_COMMIT_HASH $commitHash\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 		};
 		45A7DAC077A4AF85F649A1B1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3758,7 +3758,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.tokenKF;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3799,7 +3799,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.tokenKF;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";

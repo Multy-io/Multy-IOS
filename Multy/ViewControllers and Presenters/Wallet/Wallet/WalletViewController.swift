@@ -581,7 +581,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
-        sendStartVC.presenter.transactionDTO.tokenHolderWallet = self.presenter.tokenHolderWallet
         sendStartVC.presenter.transactionDTO.choosenWallet = self.presenter.wallet
         //        if presenter.importedPrivateKey != nil && presenter.importedPublicKey != nil {
         //            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPrivateKey = presenter.importedPrivateKey!
@@ -596,7 +595,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         let storyboard = UIStoryboard(name: "Receive", bundle: nil)
         let receiveDetailsVC = storyboard.instantiateViewController(withIdentifier: "receiveDetails") as! ReceiveAllDetailsViewController
         receiveDetailsVC.presenter.wallet = presenter.wallet
-        receiveDetailsVC.presenter.tokenHolderWallet = presenter.tokenHolderWallet
         self.navigationController?.pushViewController(receiveDetailsVC, animated: true)
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(receiveWithChainTap)\(presenter.wallet!.chain)")
     }
@@ -699,8 +697,7 @@ extension TableViewDelegate: UITableViewDelegate {
                 walletVC.presenter.wallet = presenter.wallet
             } else {
                 walletVC.presenter.walletRepresentingMode = .tokenInfo
-                walletVC.presenter.tokenHolderWallet = presenter.wallet!
-                walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.assetsDataSource[indexPath.row])
+                walletVC.presenter.wallet = presenter.wallet!.createTokenWallet(for: presenter.assetsDataSource[indexPath.row])
             }
             
             navigationController?.pushViewController(walletVC, animated: true)

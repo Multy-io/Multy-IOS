@@ -30,11 +30,26 @@ class WalletCollectionViewCell: UICollectionViewCell {
     
     func fillInCell() {
         let blockchainType = BlockchainType.createAssociated(wallet: wallet!)
-        self.tokenImage.image = UIImage(named: blockchainType.iconString)
-        let sumInFiat = wallet!.sumInFiat.fixedFraction(digits: 2)
-        self.walletNameLbl.text = self.wallet!.name
-        self.cryptoSumLbl.text  = self.wallet!.availableAmount.cryptoValueString(for: blockchainType.blockchain)
-        self.cryptoNameLbl.text = blockchainType.shortName
-        self.fiatSumLbl.text = "\(sumInFiat) \(self.wallet!.fiatSymbol)"
+        
+        tokenImage.image = UIImage(named: blockchainType.iconString)
+        
+        if wallet!.isTokenWallet {
+            tokenImage.moa.url = wallet!.token?.tokenImageURLString
+            walletNameLbl.text = wallet!.tokenHolderWallet!.name
+            
+            cryptoNameLbl.text = wallet!.token!.ticker
+            
+            cryptoSumLbl.text  = wallet!.availableAmount.cryptoValueString(for: wallet!.token)
+            fiatSumLbl.isHidden = true
+        } else {
+            walletNameLbl.text = wallet!.name
+            
+            cryptoSumLbl.text  = wallet!.availableAmount.cryptoValueString(for: blockchainType.blockchain)
+            cryptoNameLbl.text = blockchainType.shortName
+            
+            let sumInFiat = wallet!.sumInFiat.fixedFraction(digits: 2)
+            fiatSumLbl.isHidden = false
+            fiatSumLbl.text = "\(sumInFiat) \(self.wallet!.fiatSymbol)"
+        }
     }
 }

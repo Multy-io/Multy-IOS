@@ -34,7 +34,9 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
         }
     }
     
-    var tokenHolderWallet: UserWalletRLM?
+    var tokenHolderWallet: UserWalletRLM? {
+        return wallet?.tokenHolderWallet
+    }
     
     var wallet: UserWalletRLM? {
         didSet {

@@ -441,7 +441,6 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
             destVC.delegate = presenter
             destVC.blockchainType = BlockchainType.create(wallet: presenter.wallet!)
             destVC.presenter.wallet = presenter.wallet
-            destVC.presenter.tokenHolderWallet = presenter.tokenHolderWallet
             
             if self.presenter.cryptoSum != nil {
                 destVC.sumInCryptoString = self.presenter.cryptoSum!
