@@ -78,9 +78,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     //FIXME: set true when add assets functionality
     var isAssets = false
-    
-    var visibleCells = 5
-    
+        
     var isCanUpdate = true {
         didSet {
             if isCanUpdate == true && tableHolderViewHeight < tablesHolderBottomEdge {
