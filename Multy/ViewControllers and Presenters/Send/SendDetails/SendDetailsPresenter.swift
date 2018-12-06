@@ -172,7 +172,7 @@ class SendDetailsPresenter: NSObject {
                                         
                                         self!.vc?.loader.hide()
                                         
-                                        if let gasLimitForMS = dict!["gaslimit"] as? String {
+                                        if let gasLimitForMS = dict?["gaslimit"] as? String {
                                             self!.transactionDTO.ETHDTO!.gasLimit = BigInt(gasLimitForMS)
                                         }
                                         
