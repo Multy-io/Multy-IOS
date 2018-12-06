@@ -78,9 +78,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     //FIXME: set true when add assets functionality
     var isAssets = false
-    
-    var visibleCells = 5
-    
+        
     var isCanUpdate = true {
         didSet {
             if isCanUpdate == true && tableHolderViewHeight < tablesHolderBottomEdge {
@@ -671,7 +669,7 @@ extension TableViewDelegate: UITableViewDelegate {
                 return
             }
             let countOfHistObjs = presenter.transactionDataSource.count
-            if indexPath.row >= countOfHistObjs && countOfHistObjs <= visibleCells {
+            if indexPath.row >= countOfHistObjs {
                 return
             }
             
@@ -690,12 +688,12 @@ extension TableViewDelegate: UITableViewDelegate {
             sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(transactionWithChainTap)\(presenter.wallet!.chain)")
         } else {
             let tokensCount = presenter.assetsDataSource.count
-            if indexPath.row >= tokensCount && tokensCount <= visibleCells {
+          //  tableView.deselectRow(at: indexPath, animated: true)
+            if indexPath.row >= tokensCount {
                 return
             }
             
             //open
-            tableView.deselectRow(at: indexPath, animated: true)
             let walletVC = viewControllerFrom("Wallet", "newWallet") as! WalletViewController
             walletVC.presenter.account = presenter.account
             
@@ -768,10 +766,12 @@ extension TableViewDataSource: UITableViewDataSource {
             let countOfTokens = presenter.assetsDataSource.count
             if indexPath.row < countOfTokens {
                 let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
+                tokenCell.selectionStyle = .none
                 tokenCell.fillingCell(tokenObj: presenter.assetsDataSource[indexPath.row])
                 return tokenCell
             } else {
                 let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
+                transactionCell.selectionStyle = .none
                 transactionCell.changeState(isEmpty: true)
                 return transactionCell
             }
