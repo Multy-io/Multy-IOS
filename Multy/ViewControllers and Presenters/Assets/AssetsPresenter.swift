@@ -386,6 +386,7 @@ class AssetsPresenter: NSObject {
             //            self.assetsVC?.view.isUserInteractionEnabled = true
             //            self.assetsVC?.progressHUD.hide()
             guard account != nil else {
+                completion("error")
                 return
             }
             self.account = account

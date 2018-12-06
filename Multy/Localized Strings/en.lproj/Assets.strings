@@ -48,3 +48,5 @@
 "CREATE FIRST WALLET" = "Create First Wallet";
 "YOU RECEIVED" = "You received";
 "YOU RECEIVED REQUEST" = "You received MultiSig request";
+"DB CORRUPT TITLE" = "Database corrupt";
+"DB CORRUPT MESSAGE" = "Multy can't access any of your existing wallets and accounts. Please use your seed-phrase to restore existing account or create a new one.";
