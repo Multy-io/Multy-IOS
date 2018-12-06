@@ -36,9 +36,9 @@
 	<key>GIT_BRANCH_NAME</key>
 	<string>master</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>26e37e09</string>
+	<string>e5986979</string>
 	<key>GIT_TAG_NAME</key>
-	<string>RELEASE_1.3.4_77_MetaMaskLogin-dirty</string>
+	<string>RELEASE_1.4.1_78_RealmMigration</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
