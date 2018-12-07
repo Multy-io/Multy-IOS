@@ -90,6 +90,10 @@ struct Constants {
         static let defaultETHCustomFeeKey = BigInt("1") // in GWei
     }
     
+    struct Infura {
+        static let mainnetETHUrl = "https://mainnet.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
+        static let testnetETHUrl = "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
+    }
 }
 
 extension LocalizeDelegate: Localizable {
@@ -304,14 +308,14 @@ let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 1
 //let apiUrl = "http://88.198.47.112:2278/"//"http://192.168.0.121:7778/"
 
 //
-//let shortURL = "api.multy.io"
-//let apiUrl = "https://\(shortURL)/"
-//let socketUrl = "wss://\(shortURL)/"
+let shortURL = "api.multy.io"
+let apiUrl = "https://\(shortURL)/"
+let socketUrl = "wss://\(shortURL)/"
 
 //TEST
-let shortURL = "test.multy.io"
-let apiUrl = "http://\(shortURL)/"
-let socketUrl = "ws://\(shortURL)/"
+//let shortURL = "test.multy.io"
+//let apiUrl = "http://\(shortURL)/"
+//let socketUrl = "ws://\(shortURL)/"
 
 //stage
 //let shortURL = "148.251.42.107/"
