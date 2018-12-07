@@ -29,7 +29,6 @@ class WalletPresenter: NSObject {
 //            }
             prepareAssetsData(array: wallet!.ethWallet?.erc20Tokens)
             updateUI()
-            walletVC?.setupUI()
         }
         
         willSet {
@@ -126,6 +125,7 @@ class WalletPresenter: NSObject {
     }
     
     func updateHeader() {
+        walletVC!.hideAssetsBtn(!isTokenDisplayed, animated: true)
         walletVC!.showHidePendingSection(true)
         
         walletVC!.amountCryptoLbl.text = wallet!.availableAmountString
@@ -319,7 +319,6 @@ class WalletPresenter: NSObject {
             
             self.updateHeader()
         }
-        walletVC!.setupUI()
     }
     
     func canSendMinimumAmount() -> Bool {

@@ -78,9 +78,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     
     //FIXME: set true when add assets functionality
     var isAssets = false
-    
-    var visibleCells = 5
-    
+        
     var isCanUpdate = true {
         didSet {
             if isCanUpdate == true && tableHolderViewHeight < tablesHolderBottomEdge {
@@ -164,6 +162,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         if presenter.walletRepresentingMode == .tokenInfo {
             setupUIForToken()
         }
+        
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -277,13 +277,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func updateTablesHolderBottomEdge() {
-        UIView.animate(withDuration: 0.2) { [weak self] in
-            guard self != nil else {
-                return
-            }
-            
-            self!.tablesHolderBottomEdge = self!.contentHeight - (self!.infoHolderView.frame.origin.y + self!.infoHolderViewHeigth)
-        }
+        self.tablesHolderBottomEdge = self.contentHeight - (self.infoHolderView.frame.origin.y + self.infoHolderViewHeigth)
     }
     
     func checkConstraints() {
@@ -327,19 +321,29 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func setTransactionsTableFirst(hide: Bool) {
-        hideAssetsBtn(bool: hide)
+        hideAssetsBtn(hide, animated: false)
         assetsTableTrailingConstraint.constant = hide ? -screenWidth : 0
         view.layoutIfNeeded()
     }
     
-    func hideAssetsBtn(bool: Bool) {
+    func hideAssetsBtn(_ bool: Bool, animated isAnimated: Bool) {
         if bool {
-            assetsTransactionsBtnsView.isHidden = true
-            assetsTansactionsHeightConstraint.constant = 0
+            if assetsTransactionsBtnsView.isHidden == false {
+                assetsTransactionsBtnsView.isHidden = true
+                assetsTansactionsHeightConstraint.constant = 0
+                self.view.layoutIfNeeded()
+            }
         } else {
-            UIView.animate(withDuration: 0.3) {
-                self.assetsTransactionsBtnsView.isHidden = false
+            if self.assetsTransactionsBtnsView.isHidden {
                 self.assetsTansactionsHeightConstraint.constant = 50
+                self.assetsTransactionsBtnsView.isHidden = false
+                if isAnimated {
+                    UIView.animate(withDuration: 0.3) { [unowned self] in
+                        self.view.layoutIfNeeded()
+                    }
+                } else {
+                    self.view.layoutIfNeeded()
+                }
             }
         }
     }
@@ -497,7 +501,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     @IBAction func backAction(_ sender: Any) {
-        assetsTableTrailingConstraint.constant = 0
         backAction(isToken: presenter.walletRepresentingMode != .allInfo)
     }
     
@@ -664,7 +667,7 @@ extension TableViewDelegate: UITableViewDelegate {
                 return
             }
             let countOfHistObjs = presenter.transactionDataSource.count
-            if indexPath.row >= countOfHistObjs && countOfHistObjs <= visibleCells {
+            if indexPath.row >= countOfHistObjs {
                 return
             }
             
@@ -683,12 +686,12 @@ extension TableViewDelegate: UITableViewDelegate {
             sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(transactionWithChainTap)\(presenter.wallet!.chain)")
         } else {
             let tokensCount = presenter.assetsDataSource.count
-            if indexPath.row >= tokensCount && tokensCount <= visibleCells {
+          //  tableView.deselectRow(at: indexPath, animated: true)
+            if indexPath.row >= tokensCount {
                 return
             }
             
             //open
-            tableView.deselectRow(at: indexPath, animated: true)
             let walletVC = viewControllerFrom("Wallet", "newWallet") as! WalletViewController
             walletVC.presenter.account = presenter.account
             
@@ -760,10 +763,12 @@ extension TableViewDataSource: UITableViewDataSource {
             let countOfTokens = presenter.assetsDataSource.count
             if indexPath.row < countOfTokens {
                 let tokenCell = assetsTable.dequeueReusableCell(withIdentifier: "tokenCell") as! TokenTableViewCell
+                tokenCell.selectionStyle = .none
                 tokenCell.fillingCell(tokenObj: presenter.assetsDataSource[indexPath.row])
                 return tokenCell
             } else {
                 let transactionCell = transactionsTable.dequeueReusableCell(withIdentifier: "TransactionWalletCellID") as! TransactionWalletCell
+                transactionCell.selectionStyle = .none
                 transactionCell.changeState(isEmpty: true)
                 return transactionCell
             }
