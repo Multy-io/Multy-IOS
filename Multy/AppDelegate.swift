@@ -85,6 +85,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
 
     func performFirstSegue(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
         DataManager.shared.realmManager.getAccount { (acc, err) in
+            if err != nil {
+                let tabBar = self.window?.rootViewController as! CustomTabBarViewController
+                let assetVC = tabBar.topMostViewController() as! AssetsViewController
+                assetVC.presentAlert(withTitle: assetVC.localize(string: Constants.dbCorruptTitle), andMessage: assetVC.localize(string: Constants.dbCorruptMessage))
+            }
             DataManager.shared.realmManager.fetchCurrencyExchange { (currencyExchange) in
                 if currencyExchange != nil {
                     DataManager.shared.currencyExchange.update(currencyExchangeRLM: currencyExchange!)

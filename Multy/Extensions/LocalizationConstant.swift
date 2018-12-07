@@ -161,4 +161,6 @@ extension Constants {
     static let youReceivedString = "YOU RECEIVED"
     static let youReceivedMultisigRequestString = "YOU RECEIVED REQUEST"
     static let sendAmountiPhone5 = "SEND AMOUNT: iPhone 5"
+    static let dbCorruptTitle = "DB CORRUPT TITLE"
+    static let dbCorruptMessage = "DB CORRUPT MESSAGE"
 }

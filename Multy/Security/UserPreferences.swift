@@ -117,8 +117,19 @@ class UserPreferences : NSObject {
         if isDebug {
             loggingPrint("getAndDecryptDatabasePassword:\n\n\(cipheredData!.base64EncodedString())\n\n\(originalArrayData!.data.base64EncodedString())\n\n\(originalArrayData!.data.count)")
         }
-         
-        completion(originalArrayData!.data, nil)
+        
+        if originalArrayData!.data.count != 64 { //realm need 64bytes
+            let domain = Bundle.main.bundleIdentifier!
+            UserDefaults.standard.removePersistentDomain(forName: domain)
+            UserDefaults.standard.synchronize()
+            resetUserPreferences()
+            UserDefaults.standard.set(true, forKey: "isTermsAccept") // check this
+            UserDefaults.standard.set(true, forKey: "isFCMAccepted") // check this
+            let error = NSError(domain:"", code: 400, userInfo: nil)
+            completion(nil, error)
+        } else {
+            completion(originalArrayData!.data, nil) 
+        }
     }
     
     func writeCipheredPinMode(mode : Int) {

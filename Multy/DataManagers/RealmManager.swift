@@ -67,7 +67,8 @@ class RealmManager: NSObject {
         
         UserPreferences.shared.getAndDecryptDatabasePassword { [unowned self] (pass, error) in
             guard pass != nil else {
-                completion(nil, nil)
+                let error = NSError(domain: "", code: 400, userInfo: nil)
+                completion(nil, error)
                 
                 return
             }
@@ -316,7 +317,8 @@ class RealmManager: NSObject {
                 }
             } else {
                 print("Err from realm GetAcctount:\(#function)")
-                completion(nil,nil)
+                let error = NSError(domain: "", code: 400, userInfo: nil)
+                completion(nil,error)
             }
         }
     }
