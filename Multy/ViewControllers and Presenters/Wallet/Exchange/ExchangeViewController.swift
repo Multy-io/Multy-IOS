@@ -62,9 +62,7 @@ class ExchangeViewController: UIViewController {
         setupUI()
         presenter.updateUI()
 //        presenter.updateReceiveSection()
-        DataManager.shared.apiManager.getSupportedExchanges { (result) in
-            print(result)
-        }
+        sendingCryptoValueTF.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,7 +121,13 @@ class ExchangeViewController: UIViewController {
                 self.isAnimateEnded = true
                 self.slideView.frame.origin.x = self.finishSlideX - self.slideView.frame.width
                 //                self.view.isUserInteractionEnabled = false
-                //EXCHANGE action
+//                exchangeAmount
+//                func sendExchange
+                DataManager.shared.apiManager.exchangeAmount(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, completion: { (result) in
+                    DataManager.shared.apiManager.sendExchange(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, receiveAddress: self.presenter.walletToReceive!.address, completion: { (result) in
+                        print("asbad")
+                    })
+                })
             }
             return
         }
@@ -218,10 +222,13 @@ extension TextFieldDelegate: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch string {
         case "":
+            abc()
             return presenter.deleteEnteredIn(textField: textField)
         case ",", ".":
+            abc()
             return presenter.delimiterEnteredIn(textField: textField)
         case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
+            abc()
             return presenter.numberEnteredIn(textField: textField)
         default: break
         }
@@ -229,5 +236,12 @@ extension TextFieldDelegate: UITextFieldDelegate {
         return true
     }
     
+    func abc() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // change 2 to desired number of seconds
+            let sendingValue = self.sendingCryptoValueTF.text?.convertCryptoAmountStringToMinimalUnits(for: self.presenter.walletFromSending?.blockchain)
+            print(sendingValue?.stringValue)
+            print(self.sendingCryptoValueTF.text)
+        }
+    }
     
 }

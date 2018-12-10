@@ -56,7 +56,9 @@ class ReceiveStartViewController: UIViewController, AnalyticsProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (self.tabBarController as! CustomTabBarViewController).menuButton.isHidden = true
-        if whereFrom != nil && whereFrom?.className == CreateMultiSigViewController.className || whereFrom?.className == AssetsViewController.className {
+        if whereFrom != nil && whereFrom?.className == CreateMultiSigViewController.className
+                            || whereFrom?.className == AssetsViewController.className
+                            || whereFrom?.className == ExchangeViewController.className {
             addWallet.isHidden = false
             plusLbl.isHidden = false
         }
@@ -198,7 +200,8 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
 
     
     func updateUI() {
-        if presenter.isForMultisig && presenter.walletsArr.isEmpty {
+//        if presenter.isForMultisig && presenter.walletsArr.isEmpty {
+        if presenter.walletsArr.isEmpty {
             emptyWalletsView.isHidden = false
         } else {
             emptyWalletsView.isHidden = true

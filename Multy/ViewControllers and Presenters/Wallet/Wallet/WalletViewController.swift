@@ -148,6 +148,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    var loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent//currentStatusStyle
     }
@@ -155,6 +157,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        view.addSubview(loader)
         presenter.walletVC = self
         presenter.registerCells()
         addGestureRecognizers()
@@ -607,12 +610,24 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBAction func exchangeAction(_ sender: Any) {
         //        unowned let weakSelf =  self
         //        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
-        let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
-        let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC") as! ExchangeViewController
-        exchangeVC.presenter.walletFromSending = presenter.wallet
-        navigationController?.pushViewController(exchangeVC, animated: true)
-        
-        
+        loader.show(customTitle: "Loading")
+        DataManager.shared.apiManager.getSupportedExchanges { (answerDict, error) in
+            self.loader.hide()
+            if answerDict != nil {
+                let currenciesArr = answerDict!["currencies"] as! NSArray
+                if currenciesArr.contains("btc") && currenciesArr.contains("eth") {
+                    let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+                    let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC") as! ExchangeViewController
+                    exchangeVC.presenter.walletFromSending = self.presenter.wallet
+                    self.navigationController?.pushViewController(exchangeVC, animated: true)
+                } else {
+                    //error alert: Changily don`t convert btc to eth and eth to usd
+                }
+            } else {
+                self.presentAlert(with: "Changily is unavailable")
+            }
+            
+        }
         logAnalytics()
     }
     

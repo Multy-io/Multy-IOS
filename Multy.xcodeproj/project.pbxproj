@@ -272,12 +272,9 @@
 		45E215E01FD164F80078945A /* QrScannerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E215DF1FD164F80078945A /* QrScannerPresenter.swift */; };
 		45E215E21FD16AA70078945A /* GoToQrProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E215E11FD16AA70078945A /* GoToQrProtocol.swift */; };
 		45E215E41FD179100078945A /* QrDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E215E31FD179100078945A /* QrDataProtocol.swift */; };
-
 		45E2D178217898E3006F862A /* WalletTokenRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E2D177217898E3006F862A /* WalletTokenRLM.swift */; };
-
 		45E665E420E3F4860063BD29 /* NewExchangeWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E665E220E3F4860063BD29 /* NewExchangeWalletTableViewCell.swift */; };
 		45E665E520E3F4860063BD29 /* NewExchangeWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E665E320E3F4860063BD29 /* NewExchangeWalletTableViewCell.xib */; };
-
 		45E7A8A620065455005D2D6E /* StockExchanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E7A8A520065455005D2D6E /* StockExchanges.swift */; };
 		45EBB6A8200D312700F81322 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45EBB6A7200D312700F81322 /* GoogleService-Info.plist */; };
 		45ECDBD7203D9E77009FD339 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 45ECDBD5203D9E77009FD339 /* LICENSE */; };
@@ -797,12 +794,9 @@
 		45E215DF1FD164F80078945A /* QrScannerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrScannerPresenter.swift; sourceTree = "<group>"; };
 		45E215E11FD16AA70078945A /* GoToQrProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToQrProtocol.swift; sourceTree = "<group>"; };
 		45E215E31FD179100078945A /* QrDataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrDataProtocol.swift; sourceTree = "<group>"; };
-
 		45E2D177217898E3006F862A /* WalletTokenRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokenRLM.swift; sourceTree = "<group>"; };
-
 		45E665E220E3F4860063BD29 /* NewExchangeWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExchangeWalletTableViewCell.swift; sourceTree = "<group>"; };
 		45E665E320E3F4860063BD29 /* NewExchangeWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewExchangeWalletTableViewCell.xib; sourceTree = "<group>"; };
-
 		45E7A8A520065455005D2D6E /* StockExchanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockExchanges.swift; sourceTree = "<group>"; };
 		45EBB6A7200D312700F81322 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45ECDBD5203D9E77009FD339 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
