@@ -848,6 +848,36 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
+    func getMinExchangeAmount(fromBlockChain: String, toBlockchain: String, completion: @escaping(_ dict: NSDictionary?, _ error: Error?) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type"  : "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        let params: Parameters = [
+            "from": fromBlockChain,
+            "to"  : toBlockchain
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/exchanger/minimum_amount", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+//                amount = "0.145668";
+//                code = 200;
+//                message = OK;
+                if response.result.value != nil {
+                    print("MINIMUM\n\(response.result.value)")
+                    completion(response.result.value as! NSDictionary, nil)
+                } else {
+                    completion(nil, response.result.error)
+                }
+            case .failure(_):
+                completion(nil, response.result.error)
+                break
+            }
+        }
+    }
+    
     func exchangeAmount(fromBlockchain: String, toBlockchain: String, amount: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
         let header: HTTPHeaders = [
             "Content-Type"  : "application/json",
@@ -875,6 +905,36 @@ class ApiManager: NSObject, RequestRetrier {
             }
         }
     }
+    
+    func createExchangeTransaction(fromBlockchain: String, toBlockchain: String, amount: String, receiveAddress: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type"  : "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        let params: Parameters = [
+            "from": fromBlockchain,
+            "to": toBlockchain,
+            "amount": amount,
+            "address": receiveAddress
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/exchanger/transaction", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    print(response.result.value as! NSDictionary)
+                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
+                }
+            case .failure(_):
+                completion(Result.failure(response.result.error!.localizedDescription))
+                break
+            }
+        }
+    }
+    
     
     func sendExchange(fromBlockchain: String, toBlockchain: String, amount: String, receiveAddress: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
         let header: HTTPHeaders = [

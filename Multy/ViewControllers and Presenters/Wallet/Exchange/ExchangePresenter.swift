@@ -220,4 +220,18 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             self.exchangeVC!.navigationController?.pushViewController(walletsVC, animated: true)
         }
     }
+    
+    func checkMinAmountExchange(from: Blockchain?, to: Blockchain?) {
+        if from == nil && to == nil {
+            return
+        }
+        
+        DataManager.shared.apiManager.getMinExchangeAmount(fromBlockChain: from!.shortName, toBlockchain: to!.shortName) { (answerDict, err) in
+            if err != nil || answerDict == nil {
+                //error
+            }
+            
+            
+        }
+    }
 }

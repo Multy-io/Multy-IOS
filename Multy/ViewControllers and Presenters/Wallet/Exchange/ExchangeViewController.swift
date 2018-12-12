@@ -63,10 +63,12 @@ class ExchangeViewController: UIViewController {
         presenter.updateUI()
 //        presenter.updateReceiveSection()
         sendingCryptoValueTF.delegate = self
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        presenter.checkMinAmountExchange(from: presenter.walletFromSending?.blockchain, to: presenter.walletToReceive?.blockchain)
     }
     
     func setupUI() {
@@ -123,10 +125,16 @@ class ExchangeViewController: UIViewController {
                 //                self.view.isUserInteractionEnabled = false
 //                exchangeAmount
 //                func sendExchange
-                DataManager.shared.apiManager.exchangeAmount(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, completion: { (result) in
-                    DataManager.shared.apiManager.sendExchange(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, receiveAddress: self.presenter.walletToReceive!.address, completion: { (result) in
-                        print("asbad")
+                
+                DataManager.shared.apiManager.exchangeAmount(fromBlockchain: "btc", toBlockchain: "eth", amount: "0.00284062", completion: { (result) in
+                    
+                    DataManager.shared.apiManager.createExchangeTransaction(fromBlockchain: "btc", toBlockchain: "eth", amount: "0.00284062", receiveAddress: self.presenter.walletToReceive!.address, completion: { (result) in
+                        
+                        
                     })
+//                    DataManager.shared.apiManager.sendExchange(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, receiveAddress: self.presenter.walletToReceive!.address, completion: { (result) in
+//                        print("asbad")
+//                    })
                 })
             }
             return

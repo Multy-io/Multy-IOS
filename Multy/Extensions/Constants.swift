@@ -319,7 +319,7 @@ let socketUrl = "ws://\(shortURL)/"
 //let socketUrl = "ws://\(shortURL)"
 
 //JACK
-//let shortURL = "192.168.31.146"
+//let shortURL = "192.168.0.125"
 //let apiUrl = "http://\(shortURL):6778/"
 //let socketUrl = "ws://\(shortURL):6780/"
 //let socketUrl = "ws://192.168.31.147:6780"
