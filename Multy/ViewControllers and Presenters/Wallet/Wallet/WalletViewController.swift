@@ -611,7 +611,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         //        unowned let weakSelf =  self
         //        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
         loader.show(customTitle: "Loading")
-        DataManager.shared.apiManager.getSupportedExchanges { (answerDict, error) in
+        DataManager.shared.apiManager.getSupportedExchanges { (answerDict, err) in
+            
+        
+//        DataManager.shared.apiManager.getCurrenciesChangelly { (answerDict, err) in
             self.loader.hide()
             if answerDict != nil {
                 let currenciesArr = answerDict!["currencies"] as! NSArray
@@ -626,8 +629,11 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             } else {
                 self.presentAlert(with: "Changily is unavailable")
             }
-            
         }
+//        DataManager.shared.apiManager.getSupportedExchanges { (answerDict, error) in
+//
+//
+//        }
         logAnalytics()
     }
     

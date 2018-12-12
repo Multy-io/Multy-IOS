@@ -317,21 +317,29 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     func creatreExchangeRequest() {
-        let amountString = exchangeVC!.receiveCryptoValueTF.text!.replacingOccurrences(of: ",", with: ".")
-        let pairString = DataManager.shared.currencyPairString(fromBlockchain: walletFromSending!.blockchain, toBlockchain: walletToReceive!.blockchain)
+        DataManager.shared.apiManager.exchangeAmount(fromBlockchain: "btc", toBlockchain: "eth", amount: "0.00284062", completion: { (result) in
+            DataManager.shared.apiManager.createExchangeTransaction(fromBlockchain: "btc", toBlockchain: "eth", amount: "0.00284062", receiveAddress: self.walletToReceive!.address, completion: { (result) in
+                
+                
+            })
+        })
         
-        DataManager.shared.exchange(amountString: amountString,
-                                    withdrawalAddress: walletToReceive!.address,
-                                    pairString: pairString,
-                                    returnAddress: walletFromSending!.address) { [unowned self] in
-                                        switch $0 {
-                                        case .success(let info):
-                                            print(info)
-                                            self.sendTX(info: info)
-                                        case .failure(let error):
-                                            print(error)
-                                        }
-        }
+        //quickex
+//        let amountString = exchangeVC!.receiveCryptoValueTF.text!.replacingOccurrences(of: ",", with: ".")
+//        let pairString = DataManager.shared.currencyPairString(fromBlockchain: walletFromSending!.blockchain, toBlockchain: walletToReceive!.blockchain)
+//
+//        DataManager.shared.exchange(amountString: amountString,
+//                                    withdrawalAddress: walletToReceive!.address,
+//                                    pairString: pairString,
+//                                    returnAddress: walletFromSending!.address) { [unowned self] in
+//                                        switch $0 {
+//                                        case .success(let info):
+//                                            print(info)
+//                                            self.sendTX(info: info)
+//                                        case .failure(let error):
+//                                            print(error)
+//                                        }
+//        }
     }
     
     func sendTX(info: NSDictionary) {
@@ -377,6 +385,21 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         
         DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
             print(dict)
+        }
+    }
+
+    //changelly
+    func checkMinAmountExchange(from: Blockchain?, to: Blockchain?) {
+        if from == nil && to == nil {
+            return
+        }
+        
+        DataManager.shared.apiManager.getMinExchangeAmount(fromBlockChain: from!.shortName, toBlockchain: to!.shortName) { (answerDict, err) in
+            if err != nil || answerDict == nil {
+                //error
+            }
+            
+            
         }
     }
 }

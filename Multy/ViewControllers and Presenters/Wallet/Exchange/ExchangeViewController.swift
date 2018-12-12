@@ -70,26 +70,31 @@ class ExchangeViewController: UIViewController {
 //        presenter.updateReceiveSection()
         sendingCryptoValueTF.delegate = self
         
+        //quickex
         //FIXME: update later to other chains
-        let toBlockchain = presenter.walletFromSending!.blockchain == BLOCKCHAIN_BITCOIN ? BLOCKCHAIN_ETHEREUM : BLOCKCHAIN_BITCOIN
+//        let toBlockchain = presenter.walletFromSending!.blockchain == BLOCKCHAIN_BITCOIN ? BLOCKCHAIN_ETHEREUM : BLOCKCHAIN_BITCOIN
+//
+//        DataManager.shared.marketInfo(fromBlockchain: presenter.walletFromSending!.blockchain, toBlockchain: toBlockchain) { [unowned self] in
+//            switch $0 {
+//            case .success(let info):
+//                self.presenter.marketInfo.updateMarketInfo(dict: info)
+//                if self.presenter.walletToReceive != nil {
+//                    self.sendingCryptoValueChanged(self)
+//                }
+//            case .failure(let error):
+//                print(error.localized())
+//            }
+//
+//            self.loader.hide()
+//        }
         
-        DataManager.shared.marketInfo(fromBlockchain: presenter.walletFromSending!.blockchain, toBlockchain: toBlockchain) { [unowned self] in
-            switch $0 {
-            case .success(let info):
-                self.presenter.marketInfo.updateMarketInfo(dict: info)
-                if self.presenter.walletToReceive != nil {
-                    self.sendingCryptoValueChanged(self)
-                }
-            case .failure(let error):
-                print(error.localized())
-            }
-            
-            self.loader.hide()
-        }
+        //changelly
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        presenter.checkMinAmountExchange(from: presenter.walletFromSending?.blockchain, to: presenter.walletToReceive?.blockchain)
     }
     
     func setupUI() {
@@ -143,18 +148,10 @@ class ExchangeViewController: UIViewController {
             UIView.animate(withDuration: 0.3) {
                 self.isAnimateEnded = true
                 self.slideView.frame.origin.x = self.finishSlideX - self.slideView.frame.width
-                //                self.view.isUserInteractionEnabled = false
-//                exchangeAmount
-//                func sendExchange
-//                DataManager.shared.apiManager.exchangeAmount(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, completion: { (result) in
-//                    DataManager.shared.apiManager.sendExchange(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, receiveAddress: self.presenter.walletToReceive!.address, completion: { (result) in
-//                        print("asbad")
-//                        self.slideView.
-//                    })
-//                })
-                
+
                 self.presenter.creatreExchangeRequest()
             }
+            
             return
         }
         
@@ -185,11 +182,6 @@ class ExchangeViewController: UIViewController {
             self.isAnimateEnded = false
         }
     }
-    
-   
-    
-    
-    
     
     @IBAction func backAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)
