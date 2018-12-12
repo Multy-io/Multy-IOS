@@ -848,14 +848,14 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func getMinExchangeAmount(fromBlockChain: String, toBlockchain: String, completion: @escaping(_ dict: NSDictionary?, _ error: Error?) -> ()) {
+    func getMinExchangeAmount(fromBlockchain: String, toBlockchain: String, completion: @escaping(_ dict: NSDictionary?, _ error: Error?) -> ()) {
         let header: HTTPHeaders = [
             "Content-Type"  : "application/json",
             "Authorization" : "Bearer \(self.token)"
         ]
         
         let params: Parameters = [
-            "from": fromBlockChain,
+            "from": fromBlockchain,
             "to"  : toBlockchain
         ]
         

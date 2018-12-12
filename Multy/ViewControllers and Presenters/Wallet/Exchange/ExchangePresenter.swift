@@ -394,7 +394,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             return
         }
         
-        DataManager.shared.apiManager.getMinExchangeAmount(fromBlockChain: from!.shortName, toBlockchain: to!.shortName) { (answerDict, err) in
+        DataManager.shared.apiManager.getMinExchangeAmount(fromBlockchain: from!.shortName, toBlockchain: to!.shortName) { (answerDict, err) in
             if err != nil || answerDict == nil {
                 //error
             }
