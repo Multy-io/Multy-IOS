@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>token</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -34,11 +36,11 @@
 	<key>CFBundleVersion</key>
 	<string>79</string>
 	<key>GIT_BRANCH_NAME</key>
-	<string>MergeExchangeUIWithTokens</string>
+	<string>exchange</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>17b3958d</string>
+	<string>5a38aeb7</string>
 	<key>GIT_TAG_NAME</key>
-	<string>RELEASE_1.4.1_79_RealmMigration</string>
+	<string>RELEASE_1.4.1_79_RealmMigration-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

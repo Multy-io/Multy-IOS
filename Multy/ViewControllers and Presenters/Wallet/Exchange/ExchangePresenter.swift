@@ -4,17 +4,43 @@
 
 import UIKit
 
+struct MarketInfo {
+    var rate = Double(exactly: 1)!
+    var limit = Double()
+    var min = Double()
+    var pairString = String()
+    
+    mutating func updateMarketInfo(dict: NSDictionary) {
+        rate = dict["rate"] as! Double
+        limit = dict["limit"] as! Double
+        min = dict["min"] as! Double
+        pairString = dict["pair"] as! String
+    }
+}
+
 class ExchangePresenter: NSObject, SendWalletProtocol {
     
+    var marketInfo = MarketInfo()
     var exchangeVC: ExchangeViewController?
     var walletFromSending: UserWalletRLM? {
         didSet {
             updateUI()
+            
+            if walletFromSending == nil {
+                return
+            }
+            
+            feeRate = walletFromSending!.blockchain.defaultfeeRate
+            gasLimit = walletFromSending!.blockchain.defaultGasLimit
         }
     }
+    
+    var feeRate = "1"
+    var gasLimit = "\(1_000_000_000)"
 
     var walletToReceive: UserWalletRLM? {
         didSet {
+            getMarketInfo()
             updateReceiveSection()
             enableUI()
         }
@@ -172,35 +198,63 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     
     
     func makeSendFiatTfValue() {
-        let str: String = exchangeVC!.sendingCryptoValueTF.text!
+        let str = exchangeVC!.sendingCryptoValueTF.text!
         exchangeVC!.sendingFiatValueTF.text = "$ " + str.fiatValueString(for: walletFromSending!.blockchainType)
+        
+        //added
+        let anotherAmount = str.convertCryptoAmountStringToMinimalUnits(for: walletFromSending!.blockchain) * marketInfo.rate
+        let anotherAmountString = anotherAmount.cryptoValueString(for: walletFromSending!.blockchain)
+        exchangeVC!.receiveCryptoValueTF.text! = anotherAmountString
+        exchangeVC!.receiveFiatValueTF.text = "$ " + anotherAmountString.fiatValueString(for: walletToReceive!.blockchainType)
     }
     
     func makeSendCryptoTfValue() {
         let valueFromTF = exchangeVC!.sendingFiatValueTF.text!.replacingOccurrences(of: "$ ", with: "")
-        let sumInFiat = walletFromSending!.blockchain.multiplyerToMinimalUnits * Double(valueFromTF.stringWithDot)
+        let sumInFiat = walletFromSending!.blockchain.multiplierToMinimalUnits * Double(valueFromTF.stringWithDot)
         let endCryptoString = sumInFiat / walletFromSending?.exchangeCourse
         if valueFromTF.isEmpty {
             exchangeVC!.sendingCryptoValueTF.text = "0.0"
         } else {
             exchangeVC!.sendingCryptoValueTF.text = endCryptoString.cryptoValueString(for: walletFromSending!.blockchain)
         }
+        
+        //added
+        let str = exchangeVC!.sendingCryptoValueTF.text!
+        
+        let anotherAmount = str.convertCryptoAmountStringToMinimalUnits(for: walletFromSending!.blockchain) * marketInfo.rate
+        let anotherAmountString = anotherAmount.cryptoValueString(for: walletFromSending!.blockchain)
+        exchangeVC!.receiveCryptoValueTF.text! = anotherAmountString
+        exchangeVC!.receiveFiatValueTF.text = "$ " + anotherAmountString.fiatValueString(for: walletToReceive!.blockchainType)
     }
     
     func makeReceiveFiatString() {
         let str = exchangeVC!.receiveCryptoValueTF.text!
         exchangeVC!.receiveFiatValueTF.text = "$ " + str.fiatValueString(for: walletToReceive!.blockchainType)
+        
+        //added
+        let anotherAmount = str.convertCryptoAmountStringToMinimalUnits(for: walletToReceive!.blockchain) * (1 / marketInfo.rate)
+        let anotherAmountString = anotherAmount.cryptoValueString(for: walletToReceive!.blockchainType.blockchain)
+        exchangeVC!.sendingCryptoValueTF.text! = anotherAmountString
+        exchangeVC!.sendingFiatValueTF.text = "$ " + anotherAmountString.fiatValueString(for: walletFromSending!.blockchainType)
     }
     
     func makeReceiveCryptoTfValue() {
         let valueFromTF = exchangeVC!.receiveFiatValueTF.text!.replacingOccurrences(of: "$ ", with: "")
-        let sumInFiat = walletToReceive!.blockchain.multiplyerToMinimalUnits * Double(valueFromTF.stringWithDot)
+        let sumInFiat = walletToReceive!.blockchain.multiplierToMinimalUnits * Double(valueFromTF.stringWithDot)
         let endCryptoString = sumInFiat / walletToReceive!.exchangeCourse
         if valueFromTF.isEmpty {
             exchangeVC!.receiveCryptoValueTF.text = "0.0"
         } else {
             exchangeVC!.receiveCryptoValueTF.text = endCryptoString.cryptoValueString(for: walletToReceive!.blockchain)
         }
+        
+        //added
+        let str = exchangeVC!.receiveCryptoValueTF.text!
+        
+        let anotherAmount = str.convertCryptoAmountStringToMinimalUnits(for: walletToReceive!.blockchain) * (1 / marketInfo.rate)
+        let anotherAmountString = anotherAmount.cryptoValueString(for: walletToReceive!.blockchain)
+        exchangeVC!.sendingCryptoValueTF.text! = anotherAmountString
+        exchangeVC!.sendingFiatValueTF.text = "$ " + anotherAmountString.fiatValueString(for: walletFromSending!.blockchainType)
     }
     
     func sendWallet(wallet: UserWalletRLM) {
@@ -218,6 +272,111 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             walletsVC.sendWalletDelegate = self//self.mainVC?.sendWalletDelegate
             walletsVC.presenter.displayedBlockchainOnly = blockchainToReceive
             self.exchangeVC!.navigationController?.pushViewController(walletsVC, animated: true)
+        }
+    }
+    
+    @objc func getMarketInfo() {
+        let date = Date()
+        DataManager.shared.marketInfo(fromBlockchain: walletFromSending!.blockchain,
+                                      toBlockchain: walletToReceive!.blockchain) {
+                                        switch $0 {
+                                        case .success(let info):
+                                            print(info)
+                                            print(Date().timeIntervalSince(date))
+                                            self.marketInfo.updateMarketInfo(dict: info)
+                                            self.exchangeVC!.sendingCryptoValueChanged(self)
+                                        case .failure(let error):
+                                            print(error)
+                                        }
+        }
+    }
+    
+    func getFeeRate(_ blockchainType: BlockchainType, address: String?, completion: @escaping (Result<Bool, String>) -> ()) {
+        DataManager.shared.getFeeRate(currencyID: blockchainType.blockchain.rawValue,
+                                      networkID: UInt32(blockchainType.net_type),
+                                      ethAddress: address,
+                                      completion: { (dict, error) in
+                                        print(dict)
+                                        if let feeRates = dict!["speeds"] as? NSDictionary, let fastFeeRate = feeRates["Fast"] as? UInt64 {
+                                            if let gasLimitForMS = dict!["gaslimit"] as? String {
+                                                self.feeRate = "\(fastFeeRate)"
+                                                self.gasLimit = gasLimitForMS
+                                            } else {
+                                                self.feeRate = "\(fastFeeRate)"
+                                            }
+                                            
+                                            completion(Result.success(true))
+                                        } else {
+                                            if error == nil {
+                                                completion(Result.failure("Error"))
+                                            } else {
+                                                completion(Result.failure(error!.localizedDescription))
+                                            }
+                                        }
+        })
+    }
+    
+    func creatreExchangeRequest() {
+        let amountString = exchangeVC!.receiveCryptoValueTF.text!.replacingOccurrences(of: ",", with: ".")
+        let pairString = DataManager.shared.currencyPairString(fromBlockchain: walletFromSending!.blockchain, toBlockchain: walletToReceive!.blockchain)
+        
+        DataManager.shared.exchange(amountString: amountString,
+                                    withdrawalAddress: walletToReceive!.address,
+                                    pairString: pairString,
+                                    returnAddress: walletFromSending!.address) { [unowned self] in
+                                        switch $0 {
+                                        case .success(let info):
+                                            print(info)
+                                            self.sendTX(info: info)
+                                        case .failure(let error):
+                                            print(error)
+                                        }
+        }
+    }
+    
+    func sendTX(info: NSDictionary) {
+        let depositAddress = info["deposit"] as! String
+        
+        getFeeRate(walletFromSending!.blockchainType, address: depositAddress) {
+            switch $0 {
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.createAndSendTX(info: info)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+    }
+    
+    func createAndSendTX(info: NSDictionary) {
+        let depositAmountString = (info["depositAmount"] as! NSNumber).stringValue.convertCryptoAmountStringToMinimalUnits(for: walletFromSending?.blockchain).stringValue
+        let depositAddress = info["deposit"] as! String
+        
+        let trData = DataManager.shared.createETHTransaction(wallet: walletFromSending!,
+                                                             sendAmountString: depositAmountString,
+                                                             destinationAddress: depositAddress,
+                                                             gasPriceAmountString: feeRate,
+                                                             gasLimitAmountString: gasLimit)
+        
+        let newAddressParams = [
+            "walletindex"   : walletFromSending!.walletID.intValue,
+            "address"       : walletFromSending!.address,
+            "addressindex"  : 0,
+            "transaction"   : trData.message,
+            "ishd"          : walletFromSending!.shouldCreateNewAddressAfterTransaction
+            ] as [String : Any]
+        
+        let params = [
+            "currencyid": walletFromSending!.chain,
+            /*"JWT"       : jwtToken,*/
+            "networkid" : walletFromSending!.chainType,
+            "payload"   : newAddressParams
+            ] as [String : Any]
+        
+        DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
+            print(dict)
         }
     }
 }

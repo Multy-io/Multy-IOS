@@ -48,6 +48,8 @@ class ExchangeViewController: UIViewController {
     
     @IBOutlet weak var topViewHeightConstraint: NSLayoutConstraint!  // 295 /246
     
+    var loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
+    
     let presenter = ExchangePresenter()
     var imageArr = [#imageLiteral(resourceName: "slideToSend1"),#imageLiteral(resourceName: "slideToSend2"),#imageLiteral(resourceName: "slideToSend3")]
     var timer: Timer?
@@ -58,11 +60,32 @@ class ExchangeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(loader)
+        loader.show(customTitle: localize(string: Constants.loadingString))
+        
         presenter.exchangeVC = self
         setupUI()
         presenter.updateUI()
 //        presenter.updateReceiveSection()
         sendingCryptoValueTF.delegate = self
+        
+        //FIXME: update later to other chains
+        let toBlockchain = presenter.walletFromSending!.blockchain == BLOCKCHAIN_BITCOIN ? BLOCKCHAIN_ETHEREUM : BLOCKCHAIN_BITCOIN
+        
+        DataManager.shared.marketInfo(fromBlockchain: presenter.walletFromSending!.blockchain, toBlockchain: toBlockchain) { [unowned self] in
+            switch $0 {
+            case .success(let info):
+                self.presenter.marketInfo.updateMarketInfo(dict: info)
+                if self.presenter.walletToReceive != nil {
+                    self.sendingCryptoValueChanged(self)
+                }
+            case .failure(let error):
+                print(error.localized())
+            }
+            
+            self.loader.hide()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,11 +146,14 @@ class ExchangeViewController: UIViewController {
                 //                self.view.isUserInteractionEnabled = false
 //                exchangeAmount
 //                func sendExchange
-                DataManager.shared.apiManager.exchangeAmount(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, completion: { (result) in
-                    DataManager.shared.apiManager.sendExchange(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, receiveAddress: self.presenter.walletToReceive!.address, completion: { (result) in
-                        print("asbad")
-                    })
-                })
+//                DataManager.shared.apiManager.exchangeAmount(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, completion: { (result) in
+//                    DataManager.shared.apiManager.sendExchange(fromBlockchain: "btc", toBlockchain: "eth", amount: self.sendingCryptoValueTF.text!, receiveAddress: self.presenter.walletToReceive!.address, completion: { (result) in
+//                        print("asbad")
+//                        self.slideView.
+//                    })
+//                })
+                
+                self.presenter.creatreExchangeRequest()
             }
             return
         }
@@ -186,21 +212,25 @@ class ExchangeViewController: UIViewController {
     @IBAction func sendingCryptoValueChanged(_ sender: Any) {
         presenter.makeSendFiatTfValue()
         presenter.setEndValueToSend()
+        presenter.setEndValueToReceive()
     }
     
     @IBAction func sendingFiatValueChanged(_ sender: Any) {
         presenter.makeSendCryptoTfValue()
         presenter.setEndValueToSend()
+        presenter.setEndValueToReceive()
     }
     
     @IBAction func receiveCryptoValueChanged(_ sender: Any) {
         presenter.makeReceiveFiatString()
         presenter.setEndValueToReceive()
+        presenter.setEndValueToSend()
     }
     
     @IBAction func receiveFiatValueChanged(_ sender: Any) {
         presenter.makeReceiveCryptoTfValue()
         presenter.setEndValueToReceive()
+        presenter.setEndValueToSend()
     }
     
     @IBAction func maxToExchangeAction(_ sender: Any) {
@@ -208,8 +238,6 @@ class ExchangeViewController: UIViewController {
         presenter.makeSendFiatTfValue()
         presenter.setEndValueToSend()
     }
-    
-    
 }
 
 extension LocalizableDelegate: Localizable {
@@ -222,13 +250,10 @@ extension TextFieldDelegate: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch string {
         case "":
-            abc()
             return presenter.deleteEnteredIn(textField: textField)
         case ",", ".":
-            abc()
             return presenter.delimiterEnteredIn(textField: textField)
         case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-            abc()
             return presenter.numberEnteredIn(textField: textField)
         default: break
         }
@@ -236,12 +261,9 @@ extension TextFieldDelegate: UITextFieldDelegate {
         return true
     }
     
-    func abc() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // change 2 to desired number of seconds
-            let sendingValue = self.sendingCryptoValueTF.text?.convertCryptoAmountStringToMinimalUnits(for: self.presenter.walletFromSending?.blockchain)
-            print(sendingValue?.stringValue)
-            print(self.sendingCryptoValueTF.text)
-        }
+    func getMarketInfoDelayed() {
+        NSObject.cancelPreviousPerformRequests(withTarget: self)
+        
+        perform(#selector(presenter.getMarketInfo), with: nil, afterDelay: 0.5)
     }
-    
 }

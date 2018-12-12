@@ -26,6 +26,8 @@
 		444905932163813600911A11 /* DappBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444905922163813600911A11 /* DappBrowserViewController.swift */; };
 		444905962163818900911A11 /* DappBrowserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444905952163818900911A11 /* DappBrowserPresenter.swift */; };
 		444B3B652045723C008129B8 /* BigInt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444B3B642045723C008129B8 /* BigInt+Extension.swift */; };
+		4452C32121BE9A560036F39D /* QuickexManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4452C32021BE9A560036F39D /* QuickexManager.swift */; };
+		4452C32321BE9FBD0036F39D /* DMQuickexExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4452C32221BE9FBD0036F39D /* DMQuickexExtension.swift */; };
 		4453507B20D14E21004F8DAE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4453507D20D14E21004F8DAE /* Localizable.strings */; };
 		4454BAC22191C90800BC06B3 /* DMTokenExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4454BAC12191C90800BC06B3 /* DMTokenExtension.swift */; };
 		4456964920F391FE00B0C496 /* libccan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4456964820F391FD00B0C496 /* libccan.a */; };
@@ -431,6 +433,8 @@
 		444905922163813600911A11 /* DappBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappBrowserViewController.swift; sourceTree = "<group>"; };
 		444905952163818900911A11 /* DappBrowserPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappBrowserPresenter.swift; sourceTree = "<group>"; };
 		444B3B642045723C008129B8 /* BigInt+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BigInt+Extension.swift"; sourceTree = "<group>"; };
+		4452C32021BE9A560036F39D /* QuickexManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickexManager.swift; sourceTree = "<group>"; };
+		4452C32221BE9FBD0036F39D /* DMQuickexExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMQuickexExtension.swift; sourceTree = "<group>"; };
 		4453507C20D14E21004F8DAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4453508020D14E43004F8DAE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4453508120D14E47004F8DAE /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2190,6 +2194,7 @@
 				FA4D43DC1FC581CF003C7117 /* DMSocketExtension.swift */,
 				FA4D43D81FC5772E003C7117 /* DMCoreLibExtension.swift */,
 				4454BAC12191C90800BC06B3 /* DMTokenExtension.swift */,
+				4452C32221BE9FBD0036F39D /* DMQuickexExtension.swift */,
 			);
 			path = DataManagerExtensions;
 			sourceTree = "<group>";
@@ -2322,6 +2327,7 @@
 				FADC004B1FC323A900182E45 /* Socket.swift */,
 				FADC004D1FC323C300182E45 /* CoreLibManager.swift */,
 				85741D8620B555DB0093933B /* BLEManager.swift */,
+				4452C32021BE9A560036F39D /* QuickexManager.swift */,
 			);
 			path = DataManagers;
 			sourceTree = "<group>";
@@ -3086,6 +3092,7 @@
 				451ED793207CD88D00542F00 /* UITextField+Extensions.swift in Sources */,
 				FA4D43E11FC5895D003C7117 /* String+Extension.swift in Sources */,
 				4563174020D2A994004D29C6 /* WalletViewController.swift in Sources */,
+				4452C32321BE9FBD0036F39D /* DMQuickexExtension.swift in Sources */,
 				85122C4E21A5908E00C73153 /* BannerTableViewCell.swift in Sources */,
 				4558F41920C03F87003D7C7A /* PreloaderView.swift in Sources */,
 				45A949271FC2EE68003C3A23 /* ReceiveAmountViewController.swift in Sources */,
@@ -3136,6 +3143,7 @@
 				FA4D44011FC71B6D003C7117 /* AccountRLM.swift in Sources */,
 				45A949251FC2EE55003C3A23 /* ReceiveAmountPresenter.swift in Sources */,
 				45A949421FC5AFB2003C3A23 /* CancelProtocol.swift in Sources */,
+				4452C32121BE9A560036F39D /* QuickexManager.swift in Sources */,
 				445D14DA20DA528D002F6747 /* ContactRLM.swift in Sources */,
 				45498F932061662A00130B94 /* CurrencyExchange.swift in Sources */,
 				45B9CB001FBB4AB200AA2A31 /* AssetsPresenter.swift in Sources */,
@@ -3798,7 +3806,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.token;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3839,7 +3847,7 @@
 					"$(PROJECT_DIR)/Multy/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.multy;
+				PRODUCT_BUNDLE_IDENTIFIER = io.multy.token;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Multy/Multy-Bridging-Header.h";
