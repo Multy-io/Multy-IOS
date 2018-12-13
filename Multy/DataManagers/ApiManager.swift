@@ -833,6 +833,7 @@ class ApiManager: NSObject, RequestRetrier {
             "Content-Type"  : "application/json",
             "Authorization" : "Bearer \(self.token)"
         ]
+        
         requestManager.request("\(apiUrl)api/v1/exchanger/supported_currencies", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):

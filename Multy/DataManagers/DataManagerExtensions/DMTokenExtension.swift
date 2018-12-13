@@ -10,6 +10,12 @@ import Foundation
 import Web3
 
 extension DataManager {
+    func supportedTokens(tikersArray: Array<String>) -> [TokenRLM] {
+        let savedTokens = Array(DataManager.shared.realmManager.erc20Tokens.values)
+        
+        return savedTokens.filter { tikersArray.contains($0.ticker.lowercased()) }
+    }
+    
     func updateTokensInfo(_ tokensarray: [TokenRLM]) {
         if tokensarray.count == 0 {
             return

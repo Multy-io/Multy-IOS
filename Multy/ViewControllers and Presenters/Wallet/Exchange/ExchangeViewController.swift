@@ -62,7 +62,7 @@ class ExchangeViewController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(loader)
-        loader.show(customTitle: localize(string: Constants.loadingString))
+//        loader.show(customTitle: localize(string: Constants.loadingString))
         
         presenter.exchangeVC = self
         setupUI()
@@ -94,7 +94,6 @@ class ExchangeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter.checkMinAmountExchange(from: presenter.walletFromSending?.blockchain, to: presenter.walletToReceive?.blockchain)
     }
     
     func setupUI() {

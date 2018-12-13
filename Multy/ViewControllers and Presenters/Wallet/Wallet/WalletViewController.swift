@@ -617,11 +617,13 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
 //        DataManager.shared.apiManager.getCurrenciesChangelly { (answerDict, err) in
             self.loader.hide()
             if answerDict != nil {
-                let currenciesArr = answerDict!["currencies"] as! NSArray
+                let currenciesArr = answerDict!["currencies"] as! Array<String>
+                let supportedTokens = DataManager.shared.supportedTokens(tikersArray: currenciesArr)
                 if currenciesArr.contains("btc") && currenciesArr.contains("eth") {
                     let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
                     let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC") as! ExchangeViewController
                     exchangeVC.presenter.walletFromSending = self.presenter.wallet
+                    exchangeVC.presenter.supportedTokens = supportedTokens
                     self.navigationController?.pushViewController(exchangeVC, animated: true)
                 } else {
                     //error alert: Changily don`t convert btc to eth and eth to usd

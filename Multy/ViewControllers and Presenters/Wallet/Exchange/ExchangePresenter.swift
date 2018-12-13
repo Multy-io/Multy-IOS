@@ -4,6 +4,12 @@
 
 import UIKit
 
+enum ExchangeMarket: String {
+    case
+        changelly = "Changelly",
+        quickex = "Quickex"
+}
+
 struct MarketInfo {
     var rate = Double(exactly: 1)!
     var limit = Double()
@@ -19,9 +25,11 @@ struct MarketInfo {
 }
 
 class ExchangePresenter: NSObject, SendWalletProtocol {
-    
+    var exchangeMarket = ExchangeMarket.changelly
     var marketInfo = MarketInfo()
+    
     var exchangeVC: ExchangeViewController?
+    var supportedTokens: Array<TokenRLM>?
     var walletFromSending: UserWalletRLM? {
         didSet {
             updateUI()
@@ -276,19 +284,33 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     @objc func getMarketInfo() {
-        let date = Date()
-        DataManager.shared.marketInfo(fromBlockchain: walletFromSending!.blockchain,
-                                      toBlockchain: walletToReceive!.blockchain) {
-                                        switch $0 {
-                                        case .success(let info):
-                                            print(info)
-                                            print(Date().timeIntervalSince(date))
-                                            self.marketInfo.updateMarketInfo(dict: info)
-                                            self.exchangeVC!.sendingCryptoValueChanged(self)
-                                        case .failure(let error):
-                                            print(error)
-                                        }
+        DataManager.shared.apiManager.exchangeAmount(fromBlockchain: walletFromSending!.blockchain.shortName,
+                                                     toBlockchain: walletToReceive!.blockchain.shortName,
+                                                     amount: "1") { [unowned self] in
+                                                        switch $0 {
+                                                        case .success(let info):
+                                                            if let amount = info["amount"] as? String {
+                                                                self.marketInfo.rate = Double(amount)!
+                                                            }
+                                                        case .failure(let error):
+                                                            print(error)
+                                                        }
         }
+        
+        //quickex
+//        let date = Date()
+//        DataManager.shared.marketInfo(fromBlockchain: walletFromSending!.blockchain,
+//                                      toBlockchain: walletToReceive!.blockchain) {
+//                                        switch $0 {
+//                                        case .success(let info):
+//                                            print(info)
+//                                            print(Date().timeIntervalSince(date))
+//                                            self.marketInfo.updateMarketInfo(dict: info)
+//                                            self.exchangeVC!.sendingCryptoValueChanged(self)
+//                                        case .failure(let error):
+//                                            print(error)
+//                                        }
+//        }
     }
     
     func getFeeRate(_ blockchainType: BlockchainType, address: String?, completion: @escaping (Result<Bool, String>) -> ()) {
@@ -317,15 +339,24 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     func creatreExchangeRequest() {
-        DataManager.shared.apiManager.exchangeAmount(fromBlockchain: "btc", toBlockchain: "eth", amount: "0.00284062", completion: { (result) in
-            DataManager.shared.apiManager.createExchangeTransaction(fromBlockchain: "btc", toBlockchain: "eth", amount: "0.00284062", receiveAddress: self.walletToReceive!.address, completion: { (result) in
-                
-                
-            })
-        })
+        let fromTicker = walletFromSending!.blockchain.shortName
+        let toTicker = walletToReceive!.blockchain.shortName
+        let amountString = exchangeVC!.sendingCryptoValueTF.text!.replacingOccurrences(of: ",", with: ".")
+        
+        
+        DataManager.shared.apiManager.exchangeAmount(fromBlockchain: fromTicker,
+                                                     toBlockchain: toTicker,
+                                                     amount: amountString) { [unowned self] in
+                                                        switch $0 {
+                                                        case .success(let info):
+                                                            self.retrieveChangellyTX()
+                                                        case .failure(let error):
+                                                            print(error)
+                                                        }
+        }
         
         //quickex
-//        let amountString = exchangeVC!.receiveCryptoValueTF.text!.replacingOccurrences(of: ",", with: ".")
+
 //        let pairString = DataManager.shared.currencyPairString(fromBlockchain: walletFromSending!.blockchain, toBlockchain: walletToReceive!.blockchain)
 //
 //        DataManager.shared.exchange(amountString: amountString,
@@ -342,6 +373,30 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
 //        }
     }
     
+    func retrieveChangellyTX() {
+        let fromTicker = walletFromSending!.blockchain.shortName
+        let toTicker = walletToReceive!.blockchain.shortName
+        let amountString = exchangeVC!.sendingCryptoValueTF.text!.replacingOccurrences(of: ",", with: ".")
+        let toAddress = walletToReceive!.address
+        DataManager.shared.apiManager.createExchangeTransaction(fromBlockchain: fromTicker,
+                                                                toBlockchain: toTicker,
+                                                                amount: amountString,
+                                                                receiveAddress: toAddress) { [unowned self] in
+                                                                    //check zero
+                                                                    switch $0 {
+                                                                    case .success(let info):
+                                                                        let dict = ["deposit" : info["payinAddress"] as! String,
+                                                                                    "depositAmount" : Double(amountString)!
+                                                                                    ] as NSDictionary
+                                                                        self.sendTX(info: dict)
+                                                                    case .failure(let error):
+                                                                        print(error)
+                                                                    }
+                                                                    
+                                                                    print($0)
+        }
+    }
+    
     func sendTX(info: NSDictionary) {
         let depositAddress = info["deposit"] as! String
         
@@ -355,7 +410,6 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                 print(error)
             }
         }
-        
     }
     
     func createAndSendTX(info: NSDictionary) {
