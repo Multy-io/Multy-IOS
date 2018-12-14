@@ -78,14 +78,36 @@ extension BrowserCoordinator: WKUIDelegate {
         if isDebug {
             print("runJavaScriptAlertPanelWithMessage:" + message)
         }
+        
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            completionHandler()
+        }))
+        
+        browserViewController.present(alert, animated: true, completion: nil)
     }
 
     func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
-        print("runJavaScriptConfirmPanelWithMessage:" + message)
+        if isDebug {
+            print("runJavaScriptConfirmPanelWithMessage:" + message)
+        }
+        
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            completionHandler(false)
+        }))
+        
+        browserViewController.present(alert, animated: true, completion: nil)
     }
 
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
-        print("runJavaScriptTextInputPanelWithPrompt:" + prompt)
+        if isDebug {
+            print("runJavaScriptTextInputPanelWithPrompt:" + prompt)
+        }
+        
+        completionHandler(nil)
     }
     
     func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
