@@ -87,7 +87,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     func makeBlockchainRelation() {
-        let relationString = String(walletFromSending!.exchangeCourse / walletToReceive!.exchangeCourse).showString(8)
+        let relationString = String(marketInfo.rate).showString(8) //String(walletFromSending!.exchangeCourse / walletToReceive!.exchangeCourse).showString(8)
         exchangeVC?.sendToReceiveRelation.text = "1 " + walletFromSending!.blockchainType.shortName + "= " + relationString + " " + walletToReceive!.blockchainType.shortName
     }
     
@@ -284,13 +284,16 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     @objc func getMarketInfo() {
-        DataManager.shared.apiManager.exchangeAmount(fromBlockchain: walletFromSending!.blockchain.shortName,
-                                                     toBlockchain: walletToReceive!.blockchain.shortName,
+        let fromBlockchain = walletFromSending!.blockchain.shortName
+        let toBlockchain = walletToReceive!.blockchain.shortName
+        DataManager.shared.apiManager.exchangeAmount(fromBlockchain: fromBlockchain,
+                                                     toBlockchain: toBlockchain,
                                                      amount: "1") { [unowned self] in
                                                         switch $0 {
                                                         case .success(let info):
                                                             if let amount = info["amount"] as? String {
                                                                 self.marketInfo.rate = Double(amount)!
+                                                                self.makeBlockchainRelation()
                                                             }
                                                         case .failure(let error):
                                                             print(error)
