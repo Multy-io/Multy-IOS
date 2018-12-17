@@ -27,6 +27,7 @@ struct MarketInfo {
 class ExchangePresenter: NSObject, SendWalletProtocol {
     var exchangeMarket = ExchangeMarket.changelly
     var marketInfo = MarketInfo()
+    var minimalValueString = String()
     
     var exchangeVC: ExchangeViewController?
     var supportedTokens: Array<TokenRLM>?
@@ -51,6 +52,8 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             getMarketInfo()
             updateReceiveSection()
             enableUI()
+            checkMinAmountExchange(from: walletFromSending!.blockchain.shortName,
+                                   to:  walletToReceive!.blockchain.shortName)
         }
     }
     
@@ -446,17 +449,17 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
 
     //changelly
-    func checkMinAmountExchange(from: Blockchain?, to: Blockchain?) {
-        if from == nil && to == nil {
+    func checkMinAmountExchange(from: String, to: String) {
+        if from.isEmpty || to.isEmpty {
             return
         }
         
-        DataManager.shared.apiManager.getMinExchangeAmount(fromBlockchain: from!.shortName, toBlockchain: to!.shortName) { (answerDict, err) in
+        DataManager.shared.apiManager.getMinExchangeAmount(fromBlockchain: from, toBlockchain: to) { (answerDict, err) in
             if err != nil || answerDict == nil {
                 //error
+            } else {
+                self.minimalValueString = answerDict!["amount"] as! String
             }
-            
-            
         }
     }
 }

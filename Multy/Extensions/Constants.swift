@@ -135,7 +135,7 @@ enum DefaultFeeRates: Hashable {
 
 let minBTCDonationAmount = 0.0001
 
-let defaultDelimeter = "," as Character
+let defaultDelimeter = "." as Character
 
 let screenSize = UIScreen.main.bounds
 let screenWidth = UIScreen.main.bounds.size.width

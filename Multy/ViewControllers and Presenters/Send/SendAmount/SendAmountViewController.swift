@@ -137,7 +137,7 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var prevAmount = textField.text
-        let changeSymbol = string
+        let changeSymbol = string.replacingOccurrences(of: ",", with: ".")
         if prevAmount == "" || (prevAmount == "0" && changeSymbol != "," && changeSymbol != "." && !changeSymbol.isEmpty) {
             if !presenter.isPossibleToSpendAmount(changeSymbol) {
                 presentWarning(message: localize(string: Constants.youTryingSpendMoreThenHaveString))
@@ -166,12 +166,12 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
         if newLength <= self.presenter.maxLengthForSum {
             let changedAmountString =  prevAmount! + changeSymbol
             
-            if (changeSymbol == "," || changeSymbol == ".") && (prevAmount?.contains(","))!{
+            if (changeSymbol == "," || changeSymbol == ".") && (prevAmount?.contains(defaultDelimeter))!{
                 return false
             }
             
             if (prevAmount?.contains(","))! && changeSymbol != "" {
-                let strAfterDot: [String?] = (prevAmount?.components(separatedBy: ","))!
+                let strAfterDot: [String?] = (prevAmount?.components(separatedBy: String(defaultDelimeter)))!
                 if self.presenter.isCrypto {
                     if strAfterDot[1]?.count == 8 {
                         return false

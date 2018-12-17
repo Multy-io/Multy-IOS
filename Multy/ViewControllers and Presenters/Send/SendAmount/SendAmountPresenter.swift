@@ -314,7 +314,7 @@ class SendAmountPresenter: NSObject {
     
     private func sendAmountForDoubleString() -> String {
         var result = sendAmountString
-        if result.last == "," {
+        if result.last == "," || result.last == "." {
             result.removeLast()
         }
         return result
@@ -396,7 +396,7 @@ class SendAmountPresenter: NSObject {
     
     func isPossibleToSpendAmount(_ amountString: String) -> Bool {
         var sendAmountStringForDouble = amountString
-        if amountString.last == "," {
+        if amountString.last == "," || amountString.last == "." {
             sendAmountStringForDouble.removeLast()
         }
         

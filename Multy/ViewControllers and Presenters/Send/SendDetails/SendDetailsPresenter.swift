@@ -77,7 +77,7 @@ class SendDetailsPresenter: NSObject {
                 donationInCrypto = nil
             } else {
                 var donationStringForDouble = donationInCryptoString!
-                if donationStringForDouble.last == "," {
+                if donationStringForDouble.last == "," || donationStringForDouble.last == "." {
                     donationStringForDouble.removeLast()
                 }
                 
@@ -265,7 +265,7 @@ class SendDetailsPresenter: NSObject {
     
     func isPossibleToDonate(_ amountString: String) -> Bool {
         var donationStringForDouble = amountString
-        if donationStringForDouble.last == "," {
+        if donationStringForDouble.last == "," || donationStringForDouble.last == "." {
             donationStringForDouble.removeLast()
         }
         

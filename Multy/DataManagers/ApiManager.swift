@@ -936,7 +936,6 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    
     func sendExchange(fromBlockchain: String, toBlockchain: String, amount: String, receiveAddress: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
         let header: HTTPHeaders = [
             "Content-Type"  : "application/json",

@@ -123,6 +123,10 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
             return false
         }
         
+        if string == "." && (textField.text?.contains("."))! {
+            return false
+        }
+        
 //        let endString = textField.text! + string
 //        if UInt64(endString)! > 3000 {
 //            let message = localize(string: Constants.feeTooHighString)

@@ -134,7 +134,7 @@ extension String {
     }
     
     func toStringWithZeroes(precision: Int) -> String {
-        let string = self.replacingOccurrences(of: ".", with: ",")
+        let string = self.replacingOccurrences(of: ",", with: ".")
         let components = string.components(separatedBy: CharacterSet.init(charactersIn: "\(defaultDelimeter)"))
         
         if precision < 1 {
@@ -249,7 +249,7 @@ extension String {
     }
     
     func showString(_ precision: Int) -> String {
-        let stringWithDot = self.replacingOccurrences(of: ".", with: ",")
+        let stringWithDot = self.replacingOccurrences(of: ",", with: ".")
         let components = stringWithDot.components(separatedBy: CharacterSet.init(charactersIn: "\(defaultDelimeter)"))
         
         if precision < 1 {

@@ -139,6 +139,22 @@ class ExchangeViewController: UIViewController {
     }
     
     @IBAction func slideToSend(_ gestureRecognizer: UIPanGestureRecognizer) {
+        if let minValue = Double(presenter.minimalValueString) {
+            if let enteredValue = Double(sendingCryptoValueTF.text!) {
+                if enteredValue < minValue {
+                    presentAlert(with: localize(string: Constants.youEnteredTooSmallAmountString))
+                }
+            } else {
+                presentAlert(with: localize(string: Constants.enterAmountString))
+                
+                return
+            }
+        } else {
+            presentAlert(with: localize(string: Constants.enterAmountString))
+            
+            return
+        }
+        
         let translation = gestureRecognizer.translation(in: self.view)
         if isAnimateEnded {
             return

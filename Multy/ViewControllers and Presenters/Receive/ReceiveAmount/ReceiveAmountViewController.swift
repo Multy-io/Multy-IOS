@@ -99,9 +99,9 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
             bottomCurrencyNameLbl.text = fiatName
         }
         
-        amountTF.text = amountTF.text?.replacingOccurrences(of: ".", with: ",")
-        bottomSumLbl.text = bottomSumLbl.text?.replacingOccurrences(of: ".", with: ",")
-        sumLbl.text = sumLbl.text?.replacingOccurrences(of: ".", with: ",")
+        amountTF.text = amountTF.text?.replacingOccurrences(of: ",", with: ".")
+        bottomSumLbl.text = bottomSumLbl.text?.replacingOccurrences(of: ",", with: ".")
+        sumLbl.text = sumLbl.text?.replacingOccurrences(of: ",", with: ".")
         if amountTF.text!.contains(" ") {
             amountTF.text = amountTF.text?.replacingOccurrences(of: " ", with: "")  //delete space after exchange action
         }
@@ -164,14 +164,14 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
         let newLength = text.count + string.count - range.length
         
         if newLength <= self.maxLengthForSum {
-            self.amountTF.text = self.amountTF.text?.replacingOccurrences(of: ".", with: ",")
+            self.amountTF.text = self.amountTF.text?.replacingOccurrences(of: ",", with: ".")
             
-            if (string == "," || string == ".") && (self.amountTF.text?.contains(","))!{
+            if (string == "," || string == ".") && (self.amountTF.text?.contains(defaultDelimeter))!{
                 return false
             }
             
-            if (self.amountTF.text?.contains(","))! && string != "" {
-                let strAfterDot: [String?] = (self.amountTF.text?.components(separatedBy: ","))!
+            if (self.amountTF.text?.contains(defaultDelimeter))! && string != "" {
+                let strAfterDot: [String?] = (self.amountTF.text?.components(separatedBy: String(defaultDelimeter)))!
                 if self.isCrypto {
                     if strAfterDot[1]?.count == 8 {
                         return false
@@ -190,7 +190,7 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
             }
 
             if string == "," || string == "." {
-                self.sumLbl.text = self.amountTF.text! + ","
+                self.sumLbl.text = self.amountTF.text! + String(defaultDelimeter)
             } else {
                 if string != "" {
                     self.sumLbl.text = self.amountTF.text! + string

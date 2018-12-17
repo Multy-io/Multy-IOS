@@ -283,16 +283,17 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
             var donation = prevAmount + changeSymbol
             
             if (changeSymbol != "," || changeSymbol != ".") && !presenter.isPossibleToDonate(donation) {
-                if string != "" {
+                if changeSymbol != "" {
                     self.presentWarning(message: localize(string: Constants.moreThenYouHaveString))
                     return false
                 }
             }
             
             donation = donation.replacingOccurrences(of: ",", with: ".")
-            if string == "," && prevAmount.contains(".") {
+            if (changeSymbol == "," || changeSymbol == ".") && prevAmount.contains(".") {
                 return false
             }
+            
             if donation.contains(".") && string != "" {
                 let strAfterDot: [String] = donation.components(separatedBy: ".")
                 if strAfterDot[1].count >= 8 {
