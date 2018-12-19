@@ -182,6 +182,8 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
             } else {
                 self.sendWalletDelegate?.sendWallet(wallet: self.presenter.walletsArr[self.presenter.selectedIndex!])
                 self.navigationController?.popViewController(animated: true)
+                //add
+//                self.navigationController?.popToViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
             }
         } else {
             self.performSegue(withIdentifier: "receiveDetails", sender: Any.self)

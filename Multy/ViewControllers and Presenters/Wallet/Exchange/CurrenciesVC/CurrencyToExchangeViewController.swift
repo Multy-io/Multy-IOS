@@ -44,14 +44,15 @@ extension TableViewDataSource: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.availableAssetsArray.count
+        return presenter.filteredAssets.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let blockchainCell = self.tableView.dequeueReusableCell(withIdentifier: "blockchainCell") as! BlockchainCellTableViewCell
-        blockchainCell.fillFromArr(curObj: presenter.availableAssetsArray[indexPath.row])
+        blockchainCell.fillFromArr(curObj: presenter.filteredAssets[indexPath.row])
         blockchainCell.updateIconsVisibility(isAvailable: true, isChecked: false)
         blockchainCell.selectionStyle = .none
+        
         return blockchainCell
     }
 }
@@ -81,11 +82,7 @@ extension SearchBarDelegate: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-    }
-    
-    func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
-        
+        presenter.filterAssets(by: searchText)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

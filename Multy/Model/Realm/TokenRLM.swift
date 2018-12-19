@@ -18,7 +18,7 @@ class TokenRLM: Object {
     }
     
     var tokenImageURLString: String {
-        return "https://raw.githubusercontent.com/Multy-io/tokens/master/images/\(contractAddress).png"
+        return "https://raw.githubusercontent.com/Multy-io/tokens/master/images/\(contractAddress.lowercased()).png"
     }
     
     var precision: Int {
@@ -37,7 +37,19 @@ class TokenRLM: Object {
         }
     }
     
-    //func makeIcon by address for example or ticker
+    func createWallet() -> UserWalletRLM {
+        let tokenWallet = UserWalletRLM()
+        
+        tokenWallet.address = contractAddress
+        tokenWallet.name = name
+        tokenWallet.chain = BLOCKCHAIN_ERC20.rawValue as NSNumber
+        tokenWallet.chainType = blockchainType.net_type as NSNumber
+        tokenWallet.cryptoName = ticker
+        tokenWallet.ethWallet = ETHWallet()
+        tokenWallet.ethWallet!.balance = "0"
+        
+        return tokenWallet
+    }
     
     public class func initArrayWithArray(tokensArray: NSArray, blockchainType: BlockchainType) -> [TokenRLM] {
         var tokens = [TokenRLM]()

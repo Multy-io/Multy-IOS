@@ -218,9 +218,11 @@ extension UserDefaultsDelegate {
     
     func createTempWallet(blockchainType: BlockchainType) -> UserWalletRLM {
         let tempWallet = UserWalletRLM()
+        
         tempWallet.chain = NSNumber(value: blockchainType.blockchain.rawValue)
         tempWallet.chainType = NSNumber(value: blockchainType.net_type)
-        tempWallet.name = "\(blockchainType.shortName) Wallet with Exchange"
+        tempWallet.name = "\(blockchainType.shortName) Wallet for Exchange"
+        
         return tempWallet
     }
     
