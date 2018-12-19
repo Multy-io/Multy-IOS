@@ -29,6 +29,7 @@ struct Constants {
         static let createWalletVCSegueID = "createWalletVC"
         static let contactVCSegueID = "contactVC"
         static let waitingMembersSettingsVCSegueID = "waitingMembersSettings"
+        static let toExchangeSegueID = "toExchangeSegue"
     }
     
     struct UserDefaults {

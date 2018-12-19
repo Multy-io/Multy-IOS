@@ -30,7 +30,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     var minimalValueString = String()
     
     var exchangeVC: ExchangeViewController?
-    var supportedTokens: Array<TokenRLM>?
+    var supportedTokens = Array<TokenRLM>()
     var walletFromSending: UserWalletRLM? {
         didSet {
             updateUI()
@@ -59,7 +59,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     
     func updateUI() {
         exchangeVC?.sendingImg.image = UIImage(named: walletFromSending!.blockchainType.iconString)
-        exchangeVC?.sendingMaxBtn.setTitle("MAX \(walletFromSending!.availableAmountString)", for: .normal)
+        exchangeVC?.sendingMaxBtn.setTitle("MAX \(walletFromSending!.availableAmountString) \(walletFromSending!.blockchain.shortName)", for: .normal)
         exchangeVC?.sendingCryptoName.text = walletFromSending?.blockchainType.shortName
         setEndValueToSend()
 //        setEndValueToSend()

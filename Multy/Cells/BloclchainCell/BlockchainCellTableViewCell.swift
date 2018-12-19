@@ -40,9 +40,14 @@ class BlockchainCellTableViewCell: UITableViewCell {
     }
     
     func fillFromArr(curObj: CurrencyObj) {
-        self.chainImg.image = UIImage(named: curObj.currencyImgName)
-        self.chainShortNameLbl.text = curObj.currencyShortName
-        self.chainFullNameLbl.text =  curObj.currencyFullName
+        if curObj.isToken {
+            chainImg.image = UIImage(named: "erc20Token")
+            chainImg.moa.url = curObj.tokenImageURLString
+        } else {
+            chainImg.image = UIImage(named: curObj.currencyImgName)
+        }
+        
+        chainShortNameLbl.text = curObj.currencyShortName
+        chainFullNameLbl.text =  curObj.currencyFullName
     }
-    
 }

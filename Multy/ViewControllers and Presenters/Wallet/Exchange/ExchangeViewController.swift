@@ -213,7 +213,7 @@ class ExchangeViewController: UIViewController {
 //        currenciesVC.presenter.sendNewWalletDelegate = presenter
 //        navigationController?.pushViewController(currenciesVC, animated: true)
         
-        presenter.checkForExistingWallet() // goto selecting wallet
+//        presenter.checkForExistingWallet() // goto selecting wallet
     }
     
     @IBAction func sendingCryptoValueChanged(_ sender: Any) {
@@ -244,6 +244,14 @@ class ExchangeViewController: UIViewController {
         sendingCryptoValueTF.text = presenter.walletFromSending!.availableAmountString
         presenter.makeSendFiatTfValue()
         presenter.setEndValueToSend()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Storyboard.toExchangeSegueID {
+            let exchangeCurrencyVC = segue.destination as! CurrencyToExchangeViewController
+            exchangeCurrencyVC.presenter.sendNewWalletDelegate = presenter
+            exchangeCurrencyVC.presenter.availableTokens = presenter.supportedTokens
+        }
     }
 }
 

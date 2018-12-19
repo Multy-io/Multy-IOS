@@ -4,8 +4,10 @@
 
 import UIKit
 
+
 private typealias TableViewDelegate = CurrencyToExchangeViewController
 private typealias TableViewDataSource = CurrencyToExchangeViewController
+private typealias SearchBarDelegate = CurrencyToExchangeViewController
 
 class CurrencyToExchangeViewController: UIViewController {
     
@@ -20,7 +22,7 @@ class CurrencyToExchangeViewController: UIViewController {
         presenter.mainVC = self
         registerCells()
         hideKeyboardWhenTappedAround()
-        presenter.addFakeBlockchains()
+        presenter.addAssetsTypes()
         tableView.tableFooterView = UIView()
     }
     
@@ -42,12 +44,12 @@ extension TableViewDataSource: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2 //numberOfPairs from backend response
+        return presenter.availableAssetsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let blockchainCell = self.tableView.dequeueReusableCell(withIdentifier: "blockchainCell") as! BlockchainCellTableViewCell
-        blockchainCell.fillFromArr(curObj: presenter.availableBlockchainArray[indexPath.row])
+        blockchainCell.fillFromArr(curObj: presenter.availableAssetsArray[indexPath.row])
         blockchainCell.updateIconsVisibility(isAvailable: true, isChecked: false)
         blockchainCell.selectionStyle = .none
         return blockchainCell
@@ -61,5 +63,32 @@ extension TableViewDelegate: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.checkForExistingWallet(index: indexPath.row)
+    }
+}
+
+extension SearchBarDelegate: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    }
+    
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+    }
+    
+    func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
+        
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }
