@@ -195,13 +195,13 @@ class SendPresenter: NSObject {
             }
 //            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: address, for: $0).isValid && $0.availableAmount > sendAmount}
         } else {
-            
             result = result.filter {
                 $0.availableAmount > BigInt.zero()
             }
         }
         
-        filteredWalletArray = result
+        //add token wallets
+        filteredWalletArray = result.flatMap { $0.mainWalletWithTokenWallets }
     }
     
     func viewControllerViewDidLoad() {
@@ -346,7 +346,7 @@ class SendPresenter: NSObject {
                 transaction = TransactionDTO()
                 let selectedWallet = filteredWalletArray[selectedWalletIndex!]
                 transaction!.choosenWallet = selectedWallet
-                let walletBlockchainType = BlockchainType.create(wallet: selectedWallet)
+                let walletBlockchainType = transaction!.assetsWallet.blockchainType
                 if activeRequest.supportedAddresses.count > 0 {
                     for address in activeRequest.supportedAddresses {
                         let blockchain = Blockchain(rawValue: address.currencyID.uint32Value)
@@ -366,13 +366,16 @@ class SendPresenter: NSObject {
             let storyboard = UIStoryboard.init(name: "Send", bundle: nil)
             let sendAmountVC = storyboard.instantiateViewController(withIdentifier: "sendAmountVC") as! SendAmountViewController
             
+            let assetsBlockchainType = transaction!.assetsWallet.blockchainType
             let blockchainType = transaction!.choosenWallet!.blockchainType
             sendVC?.enterAmountButton.isUserInteractionEnabled = false
-            getFeeRate(blockchainType, address:transaction?.sendAddress) { [unowned self] (feeRate, gasLimit) in
+            getFeeRate(assetsBlockchainType, address:transaction?.sendAddress) { [unowned self] (feeRate, gasLimit) in
                 DispatchQueue.main.async {
                     self.transaction!.feeRate = BigInt(feeRate)
                     if blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
                         self.transaction!.ETHDTO!.gasLimit = gasLimit != nil ? BigInt(gasLimit!) : BigInt("21000")
+                    } else if blockchainType.blockchain == BLOCKCHAIN_ERC20 {
+                        self.transaction!.ETHDTO!.gasLimit = BigInt("\(plainERC20TxGasLimit)")
                     }
                     sendAmountVC.presenter.transactionDTO = self.transaction!
                     sendAmountVC.presenter.sendFromThisScreen = true
@@ -585,16 +588,16 @@ class SendPresenter: NSObject {
         let wallet = filteredWalletArray[selectedWalletIndex!]
         
         
-                switch wallet.blockchainType.blockchain {
-                case BLOCKCHAIN_BITCOIN:
-                    completion(self.createBTCTransaction())
-                case BLOCKCHAIN_ETHEREUM:
-                    createETHTransaction { completion($0) }
-                default:
-                    completion(false)
-                }
-//            }
-//        }
+        switch wallet.blockchainType.blockchain {
+        case BLOCKCHAIN_BITCOIN:
+            completion(createBTCTransaction())
+        case BLOCKCHAIN_ETHEREUM:
+            createETHTransaction { completion($0) }
+        case BLOCKCHAIN_ERC20:
+            createERC20TokenTransaction { completion($0) }
+        default:
+            completion(false)
+        }
     }
     
     func sendAnimationComplete() {
@@ -887,6 +890,39 @@ extension CreateTransactionDelegate {
                     
                     completion(trData.isTransactionCorrect)
                 }
+            }
+        }
+    }
+    
+    func createERC20TokenTransaction(completion: @escaping(_ isTXCorrect: Bool) -> ()) {
+//        transactionDTO.ETHDTO!.gasLimit = BigInt("\(plainERC20TxGasLimit)")
+        let requestIndex = selectedActiveRequestIndex
+        let walletIndex = selectedWalletIndex
+        
+        if requestIndex == nil || walletIndex == nil {
+            completion(false)
+        }
+        
+        let request = activeRequestsArr[requestIndex!]
+        let wallet = filteredWalletArray[walletIndex!]
+        
+        let sendAmount = request.choosenAddress!.amountString.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: wallet.tokenHolderWallet!.token).stringValue
+        
+        getFeeRate(wallet.blockchainType, address: request.choosenAddress!.address) { [unowned self] (fastGasPrice, gasLimit) in
+            DispatchQueue.main.async {
+                let gasLimitEnd = "\(plainERC20TxGasLimit)"
+                self.feeRate = fastGasPrice
+                
+                let rawTX = DataManager.shared.createERC20TokenTransaction(wallet: self.transaction!.assetsWallet,
+                                                                           tokenWallet: self.transaction!.choosenWallet!,
+                                                                           sendTokenAmountString: sendAmount,
+                                                                           destinationAddress: request.choosenAddress!.address,
+                                                                           gasPriceAmountString: self.feeRate,
+                                                                           gasLimitAmountString: gasLimitEnd)
+                
+                self.rawTransaction = rawTX.message
+                
+                completion(rawTX.isTransactionCorrect)
             }
         }
     }

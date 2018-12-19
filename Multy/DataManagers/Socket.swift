@@ -290,7 +290,7 @@ extension MessageHandler {
         }
         
         switch SocketMessageType(rawValue: msgType)!  {
-        case SocketMessageType.multisigJoin:
+        case .multisigJoin:
             let payload = data["payload"] as! [AnyHashable : Any]
             let inviteCode = payload["inviteCode"] as! String
             let userInfo = ["inviteCode" : inviteCode]
@@ -298,7 +298,7 @@ extension MessageHandler {
             NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
             break
             
-        case SocketMessageType.multisigLeave:
+        case .multisigLeave:
             let payload = data["payload"] as! [AnyHashable : Any]
             let inviteCode = payload["inviteCode"] as! String
             let userInfo = ["inviteCode" : inviteCode]
@@ -306,12 +306,12 @@ extension MessageHandler {
             NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
             break
             
-        case SocketMessageType.multisigDelete:
+        case .multisigDelete:
             let inviteCode = data["payload"] as! String
             NotificationCenter.default.post(name: NSNotification.Name("msWalletDeleted"), object: nil, userInfo: ["inviteCode" : inviteCode])
             break
             
-        case SocketMessageType.multisigKick:
+        case .multisigKick:
             let payload = data["payload"] as! [AnyHashable : Any]
             let multisig = payload["multisig"] as? [AnyHashable : Any]
             
@@ -326,9 +326,9 @@ extension MessageHandler {
             
             NotificationCenter.default.post(name: NSNotification.Name("msMembersUpdated"), object: nil, userInfo: userInfo)
             break
-        case SocketMessageType.multisigCheck:
+        case .multisigCheck:
             break
-        case SocketMessageType.multisigView:
+        case .multisigView:
             let payload = data["payload"] as? [AnyHashable : Any]
             
             guard payload != nil else {
@@ -344,7 +344,7 @@ extension MessageHandler {
             
             handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
-        case SocketMessageType.multisigDecline:
+        case .multisigDecline:
             let payload = data["payload"] as? [AnyHashable : Any]
             
             guard payload != nil else {
@@ -360,7 +360,7 @@ extension MessageHandler {
             
             handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
-        case SocketMessageType.multisigWalletDeploy:
+        case .multisigWalletDeploy:
             let payload = data["payload"] as? [AnyHashable : Any]
             
             guard payload != nil else {
@@ -378,7 +378,7 @@ extension MessageHandler {
             
             NotificationCenter.default.post(name: NSNotification.Name("msWalletUpdated"), object: nil, userInfo: userInfo)
             break
-        case SocketMessageType.multisigTxPaymentRequest:
+        case .multisigTxPaymentRequest:
             let payload = data["payload"] as? [AnyHashable : Any]
             
             guard payload != nil else {
@@ -394,7 +394,7 @@ extension MessageHandler {
             
             handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
-        case SocketMessageType.multisigTxIncoming:
+        case .multisigTxIncoming:
             let payload = data["payload"] as? [AnyHashable : Any]
             
             guard payload != nil else {
@@ -410,7 +410,7 @@ extension MessageHandler {
             
             handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
-        case SocketMessageType.multisigTxConfirm:
+        case .multisigTxConfirm:
             let payload = data["payload"] as? [AnyHashable : Any]
             
             guard payload != nil else {
@@ -426,7 +426,7 @@ extension MessageHandler {
             
             handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
-        case SocketMessageType.multisigTxRevoke:
+        case .multisigTxRevoke:
             let payload = data["payload"] as? [AnyHashable : Any]
             
             guard payload != nil else {
@@ -443,7 +443,7 @@ extension MessageHandler {
             handleMSTxUpdatedMessage(address: address!, hash: txHash!)
             break
             
-        case SocketMessageType.resyncCompleted:
+        case .resyncCompleted:
             print("Resync completed")
             NotificationCenter.default.post(name: NSNotification.Name("resyncCompleted"), object: nil, userInfo: nil)
             break

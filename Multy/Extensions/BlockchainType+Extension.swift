@@ -93,7 +93,7 @@ extension BlockchainType {
         case BLOCKCHAIN_BITSHARES:
             iconString = "chainBts"
         case BLOCKCHAIN_ERC20:
-            iconString = "chainErc20"
+            iconString = "erc20Token"
         default:
             iconString = ""
         }

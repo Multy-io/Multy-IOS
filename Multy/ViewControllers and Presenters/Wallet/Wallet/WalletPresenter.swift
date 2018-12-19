@@ -16,7 +16,10 @@ class WalletPresenter: NSObject {
 
     var walletVC: WalletViewController?
     
-    var tokenHolderWallet: UserWalletRLM?
+    var tokenHolderWallet: UserWalletRLM? {
+        return wallet?.tokenHolderWallet
+    }
+    
     var wallet : UserWalletRLM? {
         didSet {
             walletVC?.titleLbl.text = wallet?.name
@@ -338,23 +341,5 @@ class WalletPresenter: NSObject {
         } else {
             return true
         }
-    }
-    
-    func makeWalletFrom(token: WalletTokenRLM) -> UserWalletRLM {
-        let tokenWallet = UserWalletRLM()
-        
-        tokenWallet.address = token.address
-        tokenWallet.name = token.name
-        tokenWallet.chain = NSNumber(value: token.token?.blockchainType.blockchain.rawValue ?? 0)
-        tokenWallet.chainType = wallet!.chainType
-        tokenWallet.cryptoName = token.ticker
-//        tokenWallet.importedPrivateKey = self.wallet!.importedPrivateKey
-//        tokenWallet.importedPublicKey = self.wallet!.importedPublicKey
-//        tokenWallet.fiatName = self.wallet!.fiatName
-//        tokenWallet.fiatSymbol = self.wallet!.fiatSymbol
-        tokenWallet.ethWallet = ETHWallet()
-        tokenWallet.ethWallet!.balance = token.balance
-        
-        return tokenWallet
     }
 }

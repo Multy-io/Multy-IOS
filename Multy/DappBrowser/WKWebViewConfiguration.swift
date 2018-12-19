@@ -14,9 +14,9 @@ extension WKWebViewConfiguration {
         var rpcURL = ""
         
         if UInt32(wallet.blockchainType.net_type) == ETHEREUM_CHAIN_ID_MAINNET.rawValue {
-            rpcURL = "https://mainnet.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
+            rpcURL = Constants.Infura.mainnetETHUrl
         } else if UInt32(wallet.blockchainType.net_type) == ETHEREUM_CHAIN_ID_RINKEBY.rawValue  {
-            rpcURL = "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
+            rpcURL = Constants.Infura.testnetETHUrl
         } else {
             rpcURL = ""
         }

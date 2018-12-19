@@ -82,6 +82,10 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
         self.presenter.viewControllerViewDidLoad()
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         
+        if presenter.sendTXMode == .erc20 {
+            walletCryptoSumBtn.isUserInteractionEnabled = false
+        }
+        
         if presenter.isOpenByDL {
             presenter.openByDL(params: presenter.dlParams!)
         }
@@ -263,21 +267,32 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
         self.walletNameLbl.text = self.presenter.wallet?.name
         
         //FIXME: BLOCKCHAIN
-        let blockchain = BlockchainType.createAssociated(wallet: presenter.wallet!)
-        
+        let blockchainType = BlockchainType.createAssociated(wallet: presenter.wallet!)
+        var blockchainObject: Any = blockchainType.blockchain == BLOCKCHAIN_ERC20 ? presenter.wallet!.token! : blockchainType
+        let shortName = presenter.wallet!.assetShortName
 //        self.walletCryptoSumBtn.setTitle("\((self.presenter.wallet?.sumInCryptoString) ?? "") \(blockchain.shortName /*self.presenter.wallet?.cryptoName ?? ""*/)", for: .normal)
         //FIXME:  Check this
-        self.walletCryptoSumLbl.text = "\(self.presenter.wallet!.sumInCryptoString) \(blockchain.shortName /*self.presenter.wallet?.cryptoName ?? ""*/)"
-
-        let sum = presenter.wallet!.sumInFiat.fixedFraction(digits: 2)
-        self.walletFiatSumLbl.text = "\(sum) \(self.presenter.wallet?.fiatSymbol ?? "")"
-        self.walletTokenImageView.image = UIImage(named: blockchain.iconString)
-        if presenter.walletAddress == "" {
-            self.presenter.walletAddress = (self.presenter.wallet?.address)!
+        
+        walletCryptoSumLbl.text = "\(presenter.wallet!.sumInCryptoString) \(shortName /*self.presenter.wallet?.cryptoName ?? ""*/)"
+        
+        if blockchainType.blockchain == BLOCKCHAIN_ERC20 {
+            walletTokenImageView.image = UIImage(named: "erc20Token")
+            walletTokenImageView.moa.url = presenter.wallet?.token?.tokenImageURLString
+            
+            walletFiatSumLbl.isHidden = true
+        } else {
+            walletTokenImageView.image = UIImage(named: blockchainType.iconString)
+            
+            let sum = presenter.wallet!.sumInFiat.fixedFraction(digits: 2)
+            walletFiatSumLbl.text = "\(sum) \(self.presenter.wallet?.fiatSymbol ?? "")"
         }
-        self.addressLbl.text = self.presenter.walletAddress
-        addressButton.isHidden = blockchain.blockchain != BLOCKCHAIN_BITCOIN
-        addressChevron.isHidden = blockchain.blockchain != BLOCKCHAIN_BITCOIN
+        
+        if presenter.walletAddress == "" {
+            presenter.walletAddress = presenter.wallet!.address
+        }
+        addressLbl.text = presenter.walletAddress
+        addressButton.isHidden = blockchainType.blockchain != BLOCKCHAIN_BITCOIN
+        addressChevron.isHidden = blockchainType.blockchain != BLOCKCHAIN_BITCOIN
         
         if sumValueLbl.isHidden == false {
             setupUIWithAmounts()
@@ -395,10 +410,15 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
         sumValueLbl.text = presenter.cryptoSum
         
         let blockchainType = BlockchainType.create(wallet: presenter.wallet!)
-        cryptoNameLbl.text = blockchainType.shortName
+        cryptoNameLbl.text = presenter.wallet?.assetShortName
         
-        fiatSumLbl.text = presenter.cryptoSum?.fiatValueString(for: blockchainType)
-        fiatNameLbl.text = presenter.fiatName
+        if presenter.sendTXMode == .erc20 {
+            fiatSumLbl.isHidden = true
+            fiatNameLbl.isHidden = true
+        } else {
+            fiatSumLbl.text = presenter.cryptoSum?.fiatValueString(for: blockchainType)
+            fiatNameLbl.text = presenter.fiatName
+        }
         
         makeQrWithSum()
     }
@@ -418,9 +438,9 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "receiveAmount" {
             let destVC = segue.destination as! ReceiveAmountViewController
-            destVC.delegate = self.presenter
+            destVC.delegate = presenter
             destVC.blockchainType = BlockchainType.create(wallet: presenter.wallet!)
-            destVC.presenter.wallet = self.presenter.wallet
+            destVC.presenter.wallet = presenter.wallet
             
             if self.presenter.cryptoSum != nil {
                 destVC.sumInCryptoString = self.presenter.cryptoSum!
