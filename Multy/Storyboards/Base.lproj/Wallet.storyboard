@@ -2292,7 +2292,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                     <action selector="receiveAction:" destination="KLb-lE-n1e" eventType="touchUpInside" id="Olc-aK-DRw"/>
                                                 </connections>
                                             </button>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="donationIconSmallestWhite" translatesAutoresizingMaskIntoConstraints="NO" id="zYu-ne-tNh">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="operationExchange" translatesAutoresizingMaskIntoConstraints="NO" id="zYu-ne-tNh">
                                                 <rect key="frame" x="274.5" y="12" width="24" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="Rar-l0-03I"/>
@@ -2414,6 +2414,9 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <outlet property="contentView" destination="3bV-jn-mM7" id="ebp-IV-52t"/>
                         <outlet property="emptyArrowImg" destination="Zxa-ht-N6m" id="Tqs-TF-pRq"/>
                         <outlet property="emptyLbl" destination="f6g-fm-Ou2" id="hh0-JR-a3Q"/>
+                        <outlet property="exchangeButton" destination="Vbj-hr-emO" id="Pjj-6o-5EF"/>
+                        <outlet property="exchangeImageView" destination="zYu-ne-tNh" id="sfz-pI-TsB"/>
+                        <outlet property="exchangeLabel" destination="zRh-am-gEl" id="brw-Ou-1In"/>
                         <outlet property="fiatAmountLbl" destination="8fo-Yl-r7U" id="5Uq-G7-k1E"/>
                         <outlet property="gradientView" destination="MCz-Dk-xEQ" id="dGs-E1-bGJ"/>
                         <outlet property="infoHolderTopConstraint" destination="LXR-zy-lQp" id="ued-SX-iOF"/>
@@ -4362,12 +4365,12 @@ By donating you help us to bring blockchain technology one step closer to ordina
         <image name="chevron" width="10" height="15"/>
         <image name="chevron__" width="13" height="13"/>
         <image name="donationIcon" width="30" height="35"/>
-        <image name="donationIconSmallestWhite" width="26" height="26"/>
         <image name="donation_icon" width="98" height="78"/>
         <image name="exchangeMediumArrow" width="38" height="8"/>
         <image name="exchangeSmallArrow" width="10" height="8"/>
         <image name="exchangeUnselected" width="46" height="46"/>
         <image name="gradientForWallet" width="375" height="370"/>
+        <image name="operationExchange" width="24" height="24"/>
         <image name="operationReceive" width="24" height="24"/>
         <image name="operationSend" width="24" height="24"/>
         <image name="operation_copy_grey" width="24" height="24"/>

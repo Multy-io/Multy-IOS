@@ -73,6 +73,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var receiveIcon: UIImageView!
     @IBOutlet weak var receiveLabel: UILabel!
     @IBOutlet weak var receiveButton: UIButton!
+    @IBOutlet weak var exchangeImageView: UIImageView!
+    @IBOutlet weak var exchangeLabel: UILabel!
+    @IBOutlet weak var exchangeButton: UIButton!
     
     var presenter = WalletPresenter()
     
@@ -495,6 +498,19 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         emptyLbl.isHidden = true
         emptyArrowImg.isHidden = true
+        
+        //cancel receive for tokens
+        receiveButton.isUserInteractionEnabled = false
+        receiveButton.alpha = 0.3
+        receiveIcon.alpha = 0.3
+        receiveLabel.alpha = 0.3
+        
+        if presenter.wallet!.blockchainType.isMainnet == false {
+            exchangeLabel.alpha = 0.3
+            exchangeButton.isUserInteractionEnabled = false
+            exchangeButton.alpha = 0.3
+            exchangeImageView.alpha = 0.3
+        }
     }
     
     @IBAction func titleAction(_ sender: Any) {

@@ -29,7 +29,7 @@ extension BlockchainType {
             default:
                 return false
             }
-        case BLOCKCHAIN_ETHEREUM:
+        case BLOCKCHAIN_ETHEREUM, BLOCKCHAIN_ERC20:
             switch Int32(self.net_type) {
             case ETHEREUM_CHAIN_ID_MAINNET.rawValue:
                 return true

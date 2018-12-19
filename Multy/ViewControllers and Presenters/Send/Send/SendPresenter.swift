@@ -201,7 +201,7 @@ class SendPresenter: NSObject {
         }
         
         //add token wallets
-        filteredWalletArray = result.flatMap { $0.mainWalletWithTokenWallets }
+        filteredWalletArray = result // result.flatMap { $0.mainWalletWithTokenWallets } // for now
     }
     
     func viewControllerViewDidLoad() {
