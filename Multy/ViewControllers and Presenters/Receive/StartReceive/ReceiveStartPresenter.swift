@@ -18,6 +18,7 @@ class ReceiveStartPresenter: NSObject {
     
 //    var walletsArr = [UserWalletRLM?]()
     var walletsArr = Array<UserWalletRLM>()
+    var choosenToken: TokenRLM?
     
     var selectedIndex: Int?
     var preselectedWallet: UserWalletRLM?
@@ -27,7 +28,6 @@ class ReceiveStartPresenter: NSObject {
     
     var isForMultisig = false
     var inviteCode = ""
-    var blockchainForSort: BlockchainType?
     
     var titleTextKey = Constants.receiveString
     

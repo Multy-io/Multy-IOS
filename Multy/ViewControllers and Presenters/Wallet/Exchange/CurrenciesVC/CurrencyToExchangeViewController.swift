@@ -4,7 +4,6 @@
 
 import UIKit
 
-
 private typealias TableViewDelegate = CurrencyToExchangeViewController
 private typealias TableViewDataSource = CurrencyToExchangeViewController
 private typealias SearchBarDelegate = CurrencyToExchangeViewController
@@ -31,11 +30,9 @@ class CurrencyToExchangeViewController: UIViewController {
         tableView.register(blockchainCell, forCellReuseIdentifier: "blockchainCell")
     }
     
-    
     @IBAction func backAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
-    
 }
 
 extension TableViewDataSource: UITableViewDataSource {

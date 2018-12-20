@@ -113,9 +113,6 @@ class ExchangeViewController: UIViewController {
         sendingImg.setShadow(with: #colorLiteral(red: 0.3607843137, green: 0.4784313725, blue: 0.7607843137, alpha: 0.4))
         receiveCryptoImg.setShadow(with: #colorLiteral(red: 0.3607843137, green: 0.4784313725, blue: 0.7607843137, alpha: 0.4))
     }
-
-    
-    
     
     func animate() {
         self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.decrease), userInfo: nil, repeats: true)
@@ -207,13 +204,7 @@ class ExchangeViewController: UIViewController {
     }
     
     @IBAction func selectChainToReceiveAction(_ sender: Any) {
-//        let currenciesVC = viewControllerFrom("Wallet", "exchangeCurrencies") as! CurrencyToExchangeViewController
-//        currenciesVC.presenter.walletFromExchange = presenter.walletFromSending
-//        currenciesVC.sendWalletDelegate = presenter
-//        currenciesVC.presenter.sendNewWalletDelegate = presenter
-//        navigationController?.pushViewController(currenciesVC, animated: true)
-        
-//        presenter.checkForExistingWallet() // goto selecting wallet
+        //choosing exchanging currency/token 
     }
     
     @IBAction func sendingCryptoValueChanged(_ sender: Any) {
@@ -251,6 +242,7 @@ class ExchangeViewController: UIViewController {
             let exchangeCurrencyVC = segue.destination as! CurrencyToExchangeViewController
             exchangeCurrencyVC.presenter.sendNewWalletDelegate = presenter
             exchangeCurrencyVC.presenter.availableTokens = presenter.supportedTokens
+            exchangeCurrencyVC.presenter.walletFromExchange = presenter.walletFromSending
         }
     }
 }

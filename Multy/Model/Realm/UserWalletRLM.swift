@@ -292,6 +292,23 @@ class UserWalletRLM: Object {
         return tokenWallet
     }
     
+    func createTokenWallet(for token: TokenRLM) -> UserWalletRLM {
+        let tokenWallet = UserWalletRLM()
+        
+        tokenWallet.address = token.contractAddress
+        tokenWallet.name = token.name
+        tokenWallet.chain = NSNumber(value: token.blockchainType.blockchain.rawValue)
+        tokenWallet.chainType = chainType
+        tokenWallet.cryptoName = token.ticker
+        
+        tokenWallet.ethWallet = ETHWallet()
+        tokenWallet.ethWallet!.balance = "0"
+        
+        tokenWallet.tokenHolderWallet = self
+        
+        return tokenWallet
+    }
+    
     var isTokenWallet: Bool {
         return tokenHolderWallet != nil
     }

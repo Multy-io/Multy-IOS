@@ -228,7 +228,7 @@ extension UserDefaultsDelegate {
     
     
     func createWallet(blockchianType: BlockchainType, completion: @escaping (_ answer: String?,_ error: Error?) -> ()) {
-        getAccount { (account, err) in
+        getAccount { [unowned self] (account, err) in
             var binData : BinaryData = account!.binaryDataString.createBinaryData()!
             let createdWallet = UserWalletRLM()
             //MARK: topIndex
@@ -252,9 +252,9 @@ extension UserDefaultsDelegate {
             
             if createdWallet.blockchainType.blockchain == BLOCKCHAIN_ETHEREUM {
                 createdWallet.ethWallet = ETHWallet()
-                createdWallet.ethWallet?.balance = "0"
-                createdWallet.ethWallet?.nonce = NSNumber(value: 0)
-                createdWallet.ethWallet?.pendingWeiAmountString = "0"
+                createdWallet.ethWallet!.balance = "0"
+                createdWallet.ethWallet!.nonce = NSNumber(value: 0)
+                createdWallet.ethWallet!.pendingWeiAmountString = "0"
             }
             
             let params = [
@@ -266,12 +266,24 @@ extension UserDefaultsDelegate {
                 "walletName"    : createdWallet.name
                 ] as [String : Any]
             
-            DataManager.shared.addWallet(params: params) { (dict, error) in
+            self.addWallet(params: params) { (dict, error) in
                 if error == nil {
-                    //                self.assetsVC!.sendAnalyticsEvent(screenName: screenCreateWallet, eventName: cancelTap)
-                    completion("ok", nil)
+                    self.getWalletsVerbose(completion: { (wallets, error) in
+                        if error != nil {
+                            completion(nil, error)
+                        } else {
+                            let walletsArr = UserWalletRLM.initWithArray(walletsInfo: wallets!)
+                            self.realmManager.updateWalletsInAcc(arrOfWallets: walletsArr, completion: { (acc, error) in
+                                if error == nil {
+                                    completion("ok", nil)
+                                } else {
+                                    completion(nil, NSError(domain: "Error", code: 404, userInfo: nil))
+                                }
+                            })
+                        }
+                    })
                 } else {
-                    completion(nil, nil)
+                    completion(nil, error)
                 }
             }
         }
@@ -311,5 +323,17 @@ extension FCMDelegate {
                 completion(boolValue)
             }
         }
+    }
+    
+    func getActiveAccountsWalletsWithoutMSFor(blockchainType: BlockchainType) -> [UserWalletRLM] {
+        if realmManager.account == nil {
+            return [UserWalletRLM]()
+        }
+        
+        var wallets = Array(realmManager.account!.wallets)
+        //modify for tokens
+        wallets = wallets.filter{ $0.blockchainType == blockchainType && $0.isMultiSig == false && $0.isImportedHasKey }
+        
+        return wallets
     }
 }

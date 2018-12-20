@@ -272,20 +272,6 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         walletToReceive = wallet
     }
     
-    func checkForExistingWallet() {
-        let blockchainToReceive = walletFromSending?.blockchain == BLOCKCHAIN_ETHEREUM ? BlockchainType(blockchain: BLOCKCHAIN_BITCOIN, net_type: 0) : BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: 1)
-        RealmManager.shared.getAllWalletsFor(blockchainType: blockchainToReceive) { (wallets, error) in
-            let storyboard = UIStoryboard(name: "Receive", bundle: nil)
-            let walletsVC = storyboard.instantiateViewController(withIdentifier: "ReceiveStart") as! ReceiveStartViewController
-            walletsVC.presenter.walletsArr = Array(wallets!)
-            walletsVC.presenter.isNeedToPop = true
-            walletsVC.whereFrom = self.exchangeVC
-            walletsVC.sendWalletDelegate = self//self.mainVC?.sendWalletDelegate
-            walletsVC.presenter.displayedBlockchainOnly = blockchainToReceive
-            self.exchangeVC!.navigationController?.pushViewController(walletsVC, animated: true)
-        }
-    }
-    
     @objc func getMarketInfo() {
         let fromBlockchain = walletFromSending!.blockchain.shortName
         let toBlockchain = walletToReceive!.blockchain.shortName

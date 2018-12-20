@@ -996,11 +996,13 @@ extension RecentAddressManager {
         }
     }
     
-    func getAllWalletsFor(blockchainType: BlockchainType, completion: @escaping (_ wallets: Results<UserWalletRLM>?, _ error: NSError?) -> ()) {
+    func getActiveWalletsWithoutMSFor(blockchainType: BlockchainType, completion: @escaping (_ wallets: [UserWalletRLM]) -> ()) {
         getRealm { (realmOpt, error) in
             if let realm = realmOpt {
-                let wallets = realm.objects(UserWalletRLM.self).filter("cryptoName == '\(blockchainType.shortName)' AND chainType = \(blockchainType.net_type)")
-                completion(wallets, nil)
+                var wallets = Array(realm.objects(UserWalletRLM.self).filter("cryptoName == '\(blockchainType.shortName)' AND chainType = \(blockchainType.net_type)"))
+                wallets = wallets.filter{ $0.isMultiSig == false && $0.isImportedHasKey }
+                
+                completion(wallets)
             }
         }
     }

@@ -246,13 +246,16 @@ extension DataManager {
                 } else {
                     //MARK: delete
                     if answer!["wallets"] is NSNull || answer!["wallets"] == nil {
+                        completion(nil, NSError(domain: "Error", code: 404, userInfo: nil))
+                        
                         return
                     } else if answer!["wallets"] == nil {
+                        completion(nil, NSError(domain: "Error", code: 404, userInfo: nil))
+                        
                         return
                     }
                     
                     let walletsArrayFromApi = answer!["wallets"] as! NSArray
-                    //                    let walletsArr = UserWalletRLM.initWithArray(walletsInfo: walletsArrayFromApi)
                     completion(walletsArrayFromApi, nil)
                 }
             } else {
