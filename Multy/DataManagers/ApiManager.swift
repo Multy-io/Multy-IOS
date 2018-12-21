@@ -555,7 +555,6 @@ class ApiManager: NSObject, RequestRetrier {
                     }
                 }
                 completion(nil, response.result.error)
-                break
             }
             
         }
@@ -891,7 +890,7 @@ class ApiManager: NSObject, RequestRetrier {
             "amount": amount
         ]
         
-        requestManager.request("\(apiUrl)api/v1/exchanger/exchange_amount", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/exchanger/exchange_amount", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { [unowned self] (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
@@ -901,8 +900,8 @@ class ApiManager: NSObject, RequestRetrier {
                     completion(Result.failure("Error"))
                 }
             case .failure(_):
-                completion(Result.failure(response.result.error!.localizedDescription))
-                break
+                let errorString = self.returnErrorString(dataResponse: response)
+                completion(Result.failure(errorString))
             }
         }
     }
@@ -930,8 +929,8 @@ class ApiManager: NSObject, RequestRetrier {
                     completion(Result.failure("Error"))
                 }
             case .failure(_):
-                completion(Result.failure(response.result.error!.localizedDescription))
-                break
+                let errorString = self.returnErrorString(dataResponse: response)
+                completion(Result.failure(errorString))
             }
         }
     }
@@ -962,6 +961,21 @@ class ApiManager: NSObject, RequestRetrier {
                 completion(Result.failure(response.result.error!.localizedDescription))
                 break
             }
+        }
+    }
+}
+
+extension ApiManager {
+    func returnErrorString(dataResponse: DataResponse<Any>) -> String {
+        if let data = dataResponse.data {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: Any], let message = json["message"] as? String {
+                print(json)
+                return message
+            } else {
+                return dataResponse.error!.localizedDescription
+            }
+        } else {
+            return dataResponse.error!.localizedDescription
         }
     }
 }

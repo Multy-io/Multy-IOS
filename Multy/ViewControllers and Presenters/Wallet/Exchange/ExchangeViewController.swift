@@ -153,12 +153,15 @@ class ExchangeViewController: UIViewController {
         if isAnimateEnded {
             return
         }
+        
         if slideView.frame.maxX + translation.x >= finishSlideX {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.3) { [unowned self] in
                 self.isAnimateEnded = true
                 self.slideView.frame.origin.x = self.finishSlideX - self.slideView.frame.width
 
                 self.presenter.creatreExchangeRequest()
+                
+                self.slideToStart()
             }
             
             return

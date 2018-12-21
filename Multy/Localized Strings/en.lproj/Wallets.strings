@@ -37,3 +37,8 @@
 "WAITING CONFIRMATIONS" = "Waiting for confirmations...";
 "SHOW KEY" = "Show Private Key";
 "SHOW KEYS" = "Show Private Keys";
+"ASSETS ARE NOT CONVERTIBLE" = "Assets are not convertible";
+"CANNOT RETRIEVE EXCHANGE RATE" = "Cannot retrieve exchange rate";
+"NOT DETERMINED" = "not determined";
+"UNABLE TO EXCHANGE" = "Unable to exchange! Please, enter larger amount";
+"YOU ENTERED TOO SMALL AMOUNT" = "You entered too small amount!";

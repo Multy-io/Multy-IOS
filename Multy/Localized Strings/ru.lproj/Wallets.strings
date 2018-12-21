@@ -37,3 +37,8 @@
 "WAITING CONFIRMATIONS" = "Ожидание подтверждений...";
 "SHOW KEY" = "Показать приватный ключ";
 "SHOW KEYS" = "Показать приватные ключи";
+"ASSETS ARE NOT CONVERTIBLE" = "Активы не являются конвертируемыми";
+"CANNOT RETRIEVE EXCHANGE RATE" = "Не удается получить обменный курс";
+"NOT DETERMINED" = "не определено";
+"UNABLE TO EXCHANGE" = "Невозможно обменять! Пожалуйста, введите большую сумму";
+"YOU ENTERED TOO SMALL AMOUNT" = "Вы ввели слишком малое количество!";

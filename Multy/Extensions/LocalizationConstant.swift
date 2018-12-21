@@ -163,4 +163,8 @@ extension Constants {
     static let sendAmountiPhone5 = "SEND AMOUNT: iPhone 5"
     static let dbCorruptTitle = "DB CORRUPT TITLE"
     static let dbCorruptMessage = "DB CORRUPT MESSAGE"
+    static let assetsNotConvertibleString = "ASSETS ARE NOT CONVERTIBLE"
+    static let cannotRetrieveExchangeRateString = "CANNOT RETRIEVE EXCHANGE RATE"
+    static let notDeterminedString = "NOT DETERMINED"
+    static let unableToExchangeString = "UNABLE TO EXCHANGE"
 }

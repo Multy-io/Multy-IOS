@@ -27,14 +27,15 @@ struct MarketInfo {
 }
 
 class ExchangePresenter: NSObject, SendWalletProtocol {
+    var slideGradient: CAGradientLayer?
     var exchangeMarket = ExchangeMarket.changelly
     var marketInfo = MarketInfo()
     var minimalValueString = String() {
         didSet {
             if minimalValueString.isEmpty {
-                exchangeVC!.minimumAmountLabel.text = "MIN: not determined"
+                exchangeVC!.minimumAmountLabel.text = "MIN: \(localize(string: Constants.notDeterminedString))"
             } else {
-                exchangeVC!.minimumAmountLabel.text = "MIN: \(BigInt(minimalValueString).cryptoValueString(for: sendObject))"
+                exchangeVC!.minimumAmountLabel.text = "MIN: \(minimalValueString) \(walletFromSending!.assetShortName)"
             }
         }
     }
@@ -105,7 +106,6 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         exchangeVC?.summarySendingFiatLbl.text = exchangeVC!.sendingFiatValueTF.text!
     }
     
-    
     func updateReceiveSection() {
         exchangeVC?.receiveCryptoImg.image = UIImage(named: walletToReceive!.blockchainType.iconString)
         if walletToReceive!.isTokenWallet {
@@ -163,14 +163,23 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         exchangeVC?.sendToReceiveRelation.isHidden = false
         exchangeVC?.summaryView.isHidden = false
         
-        exchangeVC?.slideView.isUserInteractionEnabled = true
-        setGradientToSlide()
+        unlockSlideButton()
     }
     
     func setGradientToSlide() {
-        exchangeVC?.slideColorView.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
-                                                   UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
-                                     gradientOrientation: .horizontal)
+        slideGradient = exchangeVC?.slideColorView.applyGradient(withColours: [UIColor(ciColor: CIColor(red: 0/255, green: 178/255, blue: 255/255)),
+                                                                               UIColor(ciColor: CIColor(red: 0/255, green: 122/255, blue: 255/255))],
+                                                                 gradientOrientation: .horizontal)
+    }
+    
+    func lockSlideButton() {
+        slideGradient?.removeFromSuperlayer()
+        exchangeVC?.slideView.isUserInteractionEnabled = false
+    }
+    
+    func unlockSlideButton() {
+        setGradientToSlide()
+        exchangeVC?.slideView.isUserInteractionEnabled = true
     }
     
     //text field section
@@ -331,19 +340,18 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     @objc func getMarketInfo() {
         let fromBlockchain = walletFromSending!.assetShortName
         let toBlockchain = walletToReceive!.assetShortName
+        
+        exchangeVC?.loader.show(customTitle: localize(string: Constants.loadingString))
         DataManager.shared.apiManager.exchangeAmount(fromBlockchain: fromBlockchain,
                                                      toBlockchain: toBlockchain,
                                                      amount: "1") { [unowned self] in
+                                                        self.exchangeVC?.loader.hide()
                                                         switch $0 {
                                                         case .success(let info):
-                                                            if let amount = info["amount"] as? String, amount.isEmpty == false {
-                                                                self.marketInfo.rate = Double(amount)!
-                                                                self.makeBlockchainRelation()
-                                                            } else {
-                                                                self.exchangeVC?.presentAlert(with: "Assets are not convertible")
-                                                            }
-                                                        case .failure(let error):
-                                                            print(error)
+                                                            self.exchangeAmountProcessing(info: info)
+                                                        case .failure(_):
+                                                            self.lockSlideButton()
+                                                            self.exchangeVC?.presentAlert(with: self.localize(string: Constants.cannotRetrieveExchangeRateString))
                                                         }
         }
         
@@ -363,6 +371,16 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
 //        }
     }
     
+    func exchangeAmountProcessing(info: NSDictionary) {
+        if let amount = info["amount"] as? String, amount.isEmpty == false {
+            marketInfo.rate = Double(amount)!
+            makeBlockchainRelation()
+        } else {
+            lockSlideButton()
+            exchangeVC?.presentAlert(with: self.localize(string: Constants.assetsNotConvertibleString))
+        }
+    }
+    
     func getFeeRate(_ blockchainType: BlockchainType, address: String?, completion: @escaping (Result<Bool, String>) -> ()) {
         DataManager.shared.getFeeRate(currencyID: blockchainType.blockchain.rawValue,
                                       networkID: UInt32(blockchainType.net_type),
@@ -380,7 +398,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                             completion(Result.success(true))
                                         } else {
                                             if error == nil {
-                                                completion(Result.failure("Error"))
+                                                completion(Result.failure(self.localize(string: Constants.errorString)))
                                             } else {
                                                 completion(Result.failure(error!.localizedDescription))
                                             }
@@ -401,7 +419,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                         case .success(let info):
                                                             self.retrieveChangellyTX()
                                                         case .failure(let error):
-                                                            print(error)
+                                                            self.exchangeVC?.presentAlert(with: error)
                                                         }
         }
         
@@ -437,7 +455,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                                     case .success(let info):
                                                                         self.checkExchangeInfoAndSend(amountString: amountString, info: info)
                                                                     case .failure(let error):
-                                                                        print(error)
+                                                                        self.exchangeVC?.presentAlert(with: error)
                                                                     }
                                                                     
                                                                     print($0)
@@ -446,7 +464,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     
     func checkExchangeInfoAndSend(amountString: String, info: NSDictionary) {
         guard let payingAddress = info["payinAddress"] as? String, payingAddress.isEmpty == false else {
-            exchangeVC!.presentAlert(with: "Unable to exchange! Please, enter larger amount")
+            exchangeVC!.presentAlert(with: localize(string: Constants.unableToExchangeString))
             
             return
         }
@@ -467,6 +485,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                     self.createAndSendTX(info: info)
                 }
             case .failure(let error):
+                self.exchangeVC?.presentAlert(with: error)
                 print(error)
             }
         }
