@@ -446,7 +446,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     
     func checkExchangeInfoAndSend(amountString: String, info: NSDictionary) {
         guard let payingAddress = info["payinAddress"] as? String, payingAddress.isEmpty == false else {
-            exchangeVC!.presentAlert(with: "Cannot exchange! Please, enter another amount")
+            exchangeVC!.presentAlert(with: "Unable to exchange! Please, enter larger amount")
             
             return
         }

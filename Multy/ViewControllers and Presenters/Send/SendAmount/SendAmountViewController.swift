@@ -6,7 +6,7 @@ import UIKit
 import ZFRippleButton
 
 private typealias LocalizeDelegate = SendAmountViewController
-private typealias SliderExtension = SendAmountViewController
+private typealias SliderDelegate = SendAmountViewController
 
 class SendAmountViewController: UIViewController, UITextFieldDelegate, AnalyticsProtocol {
     @IBOutlet weak var titleLbl: UILabel! 
@@ -296,7 +296,7 @@ class SendAmountViewController: UIViewController, UITextFieldDelegate, Analytics
     }
 }
 
-extension SliderExtension : SliderDelegate {
+extension SliderDelegate : SliderProtocol {
     func didSlideToSend(_ sender: SlideViewController) {
         presenter.sendTx()
     }
