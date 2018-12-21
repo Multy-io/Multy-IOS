@@ -4,6 +4,8 @@
 
 import UIKit
 
+private typealias LocalizeDelegate = ExchangePresenter
+
 enum ExchangeMarket: String {
     case
         changelly = "Changelly",
@@ -27,7 +29,15 @@ struct MarketInfo {
 class ExchangePresenter: NSObject, SendWalletProtocol {
     var exchangeMarket = ExchangeMarket.changelly
     var marketInfo = MarketInfo()
-    var minimalValueString = String()
+    var minimalValueString = String() {
+        didSet {
+            if minimalValueString.isEmpty {
+                exchangeVC!.minimumAmountLabel.text = "MIN: not determined"
+            } else {
+                exchangeVC!.minimumAmountLabel.text = "MIN: \(BigInt(minimalValueString).cryptoValueString(for: sendObject))"
+            }
+        }
+    }
     
     var exchangeVC: ExchangeViewController?
     var supportedTokens = Array<TokenRLM>()
@@ -37,6 +47,12 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             
             if walletFromSending == nil {
                 return
+            }
+            
+            if walletFromSending!.isTokenWallet {
+                sendObject = walletFromSending!.token
+            } else {
+                sendObject = walletFromSending?.blockchain
             }
             
             feeRate = walletFromSending!.blockchain.defaultfeeRate
@@ -49,60 +65,100 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
 
     var walletToReceive: UserWalletRLM? {
         didSet {
+            if walletToReceive!.isTokenWallet {
+                receiveObject = walletToReceive!.token
+            } else {
+                receiveObject = walletToReceive!.blockchain
+            }
+            
             getMarketInfo()
             updateReceiveSection()
             enableUI()
             checkMinAmountExchange(from: walletFromSending!.blockchain.shortName,
-                                   to:  walletToReceive!.blockchain.shortName)
+                                   to: walletToReceive!.blockchain.shortName)
         }
     }
     
+    var sendObject: Any?
+    var receiveObject: Any?
+    
     func updateUI() {
         exchangeVC?.sendingImg.image = UIImage(named: walletFromSending!.blockchainType.iconString)
+        if walletFromSending!.isTokenWallet {
+            exchangeVC?.sendingImg.moa.url = walletFromSending?.token?.tokenImageURLString
+            exchangeVC?.sendingFiatValueTF.disableView()
+        }
         exchangeVC?.sendingMaxBtn.setTitle("MAX \(walletFromSending!.availableAmountString) \(walletFromSending!.blockchain.shortName)", for: .normal)
-        exchangeVC?.sendingCryptoName.text = walletFromSending?.blockchainType.shortName
+        exchangeVC?.sendingCryptoName.text = walletFromSending?.assetShortName
         setEndValueToSend()
-//        setEndValueToSend()
     }
     
     func setEndValueToSend() {
-        exchangeVC?.summarySendingWalletNameLbl.text = walletFromSending?.name
+        exchangeVC?.summarySendingWalletNameLbl.text = walletFromSending?.assetWalletName
         exchangeVC?.summarySendingCryptoValueLbl.text = exchangeVC!.sendingCryptoValueTF.text
-        exchangeVC?.summarySendingCryptoNameLbl.text = walletFromSending?.blockchainType.shortName
+        exchangeVC?.summarySendingCryptoNameLbl.text = walletFromSending?.assetShortName
         exchangeVC?.summarySendingImg.image = UIImage(named: walletFromSending!.blockchainType.iconString)
+        if walletFromSending!.isTokenWallet {
+            exchangeVC?.summarySendingImg.moa.url = walletFromSending?.token?.tokenImageURLString
+            exchangeVC?.summarySendingFiatLbl.isHidden = true
+        }
         exchangeVC?.summarySendingFiatLbl.text = exchangeVC!.sendingFiatValueTF.text!
     }
     
     
     func updateReceiveSection() {
         exchangeVC?.receiveCryptoImg.image = UIImage(named: walletToReceive!.blockchainType.iconString)
-        exchangeVC?.receiveCryptoNameLbl.text = walletToReceive!.blockchainType.shortName
+        if walletToReceive!.isTokenWallet {
+            exchangeVC?.receiveCryptoImg.moa.url = walletToReceive?.token?.tokenImageURLString
+        }
+        exchangeVC?.receiveCryptoNameLbl.text = walletToReceive!.assetShortName
         makeBlockchainRelation()
         setEndValueToReceive()
     }
     
     func setEndValueToReceive() {
-        exchangeVC?.summaryReceiveWalletNameLbl.text = walletToReceive!.name
+        exchangeVC?.summaryReceiveWalletNameLbl.text = walletToReceive!.assetWalletName
         exchangeVC?.summaryReceiveImg.image = UIImage(named: walletToReceive!.blockchainType.iconString)
+        if walletToReceive!.isTokenWallet {
+            exchangeVC?.summaryReceiveImg.moa.url = walletToReceive?.token?.tokenImageURLString
+            exchangeVC?.summaryReceiveFiatLbl.isHidden = true
+        }
         exchangeVC?.summaryReceiveCryptoValueLbl.text = exchangeVC?.receiveCryptoValueTF.text
-        exchangeVC?.summaryReceiveCryptoNameLbl.text = walletToReceive!.blockchainType.shortName
+        exchangeVC?.summaryReceiveCryptoNameLbl.text = walletToReceive!.assetShortName
         exchangeVC?.summaryReceiveFiatLbl.text = exchangeVC?.receiveFiatValueTF.text
     }
     
     func makeBlockchainRelation() {
         let relationString = String(marketInfo.rate).showString(8) //String(walletFromSending!.exchangeCourse / walletToReceive!.exchangeCourse).showString(8)
-        exchangeVC?.sendToReceiveRelation.text = "1 " + walletFromSending!.blockchainType.shortName + "= " + relationString + " " + walletToReceive!.blockchainType.shortName
+        exchangeVC?.sendToReceiveRelation.text = "1 " + walletFromSending!.assetShortName + "= " + relationString + " " + walletToReceive!.assetShortName
     }
     
     func enableUI() {
-        exchangeVC?.receiveFiatValueTF.isUserInteractionEnabled = true
-        exchangeVC?.receiveCryptoValueTF.isUserInteractionEnabled = true
-        exchangeVC?.sendingFiatValueTF.isUserInteractionEnabled = true
+        if !walletToReceive!.isTokenWallet {
+            exchangeVC?.receiveFiatValueTF.isHidden = false
+            exchangeVC?.receiveFiatValueTF.isUserInteractionEnabled = true
+            exchangeVC?.receiveFiatValueTF.textColor = .black
+            
+            exchangeVC!.summaryReceiveFiatLbl.isHidden = true
+        } else {
+            exchangeVC?.receiveFiatValueTF.isHidden = true
+        }
+        
+        if !walletFromSending!.isTokenWallet {
+            exchangeVC?.sendingFiatValueTF.isHidden = false
+            exchangeVC?.sendingFiatValueTF.isUserInteractionEnabled = true
+            exchangeVC?.sendingFiatValueTF.textColor = .black
+            
+            exchangeVC!.summaryReceiveFiatLbl.isHidden = true
+        } else {
+            exchangeVC!.summaryReceiveFiatLbl.isHidden = true
+        }
+        
         exchangeVC?.sendingCryptoValueTF.isUserInteractionEnabled = true
-        exchangeVC?.receiveFiatValueTF.textColor = .black
-        exchangeVC?.receiveCryptoValueTF.textColor = .black
-        exchangeVC?.sendingFiatValueTF.textColor = .black
+        exchangeVC?.receiveCryptoValueTF.isUserInteractionEnabled = true
+        
         exchangeVC?.sendingCryptoValueTF.textColor = .black
+        exchangeVC?.receiveCryptoValueTF.textColor = .black
         
         exchangeVC?.sendToReceiveRelation.isHidden = false
         exchangeVC?.summaryView.isHidden = false
@@ -213,8 +269,8 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         exchangeVC!.sendingFiatValueTF.text = "$ " + str.fiatValueString(for: walletFromSending!.blockchainType)
         
         //added
-        let anotherAmount = str.convertCryptoAmountStringToMinimalUnits(for: walletFromSending!.blockchain) * marketInfo.rate
-        let anotherAmountString = anotherAmount.cryptoValueString(for: walletFromSending!.blockchain)
+        let anotherAmount = str.convertCryptoAmountStringToMinimalUnits(for: sendObject) * marketInfo.rate
+        let anotherAmountString = anotherAmount.cryptoValueString(for: sendObject)
         exchangeVC!.receiveCryptoValueTF.text! = anotherAmountString
         exchangeVC!.receiveFiatValueTF.text = "$ " + anotherAmountString.fiatValueString(for: walletToReceive!.blockchainType)
     }
@@ -243,8 +299,8 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         exchangeVC!.receiveFiatValueTF.text = "$ " + str.fiatValueString(for: walletToReceive!.blockchainType)
         
         //added
-        let anotherAmount = str.convertCryptoAmountStringToMinimalUnits(for: walletToReceive!.blockchain) * (1 / marketInfo.rate)
-        let anotherAmountString = anotherAmount.cryptoValueString(for: walletToReceive!.blockchainType.blockchain)
+        let anotherAmount = str.convertCryptoAmountStringToMinimalUnits(for: receiveObject) * (1 / marketInfo.rate)
+        let anotherAmountString = anotherAmount.cryptoValueString(for: receiveObject)
         exchangeVC!.sendingCryptoValueTF.text! = anotherAmountString
         exchangeVC!.sendingFiatValueTF.text = "$ " + anotherAmountString.fiatValueString(for: walletFromSending!.blockchainType)
     }
@@ -273,16 +329,18 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     @objc func getMarketInfo() {
-        let fromBlockchain = walletFromSending!.blockchain.shortName
-        let toBlockchain = walletToReceive!.blockchain.shortName
+        let fromBlockchain = walletFromSending!.assetShortName
+        let toBlockchain = walletToReceive!.assetShortName
         DataManager.shared.apiManager.exchangeAmount(fromBlockchain: fromBlockchain,
                                                      toBlockchain: toBlockchain,
                                                      amount: "1") { [unowned self] in
                                                         switch $0 {
                                                         case .success(let info):
-                                                            if let amount = info["amount"] as? String {
+                                                            if let amount = info["amount"] as? String, amount.isEmpty == false {
                                                                 self.marketInfo.rate = Double(amount)!
                                                                 self.makeBlockchainRelation()
+                                                            } else {
+                                                                self.exchangeVC?.presentAlert(with: "Assets are not convertible")
                                                             }
                                                         case .failure(let error):
                                                             print(error)
@@ -311,7 +369,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                       ethAddress: address,
                                       completion: { (dict, error) in
                                         print(dict)
-                                        if let feeRates = dict!["speeds"] as? NSDictionary, let fastFeeRate = feeRates["Fast"] as? UInt64 {
+                                        if dict != nil, let feeRates = dict!["speeds"] as? NSDictionary, let fastFeeRate = feeRates["Fast"] as? UInt64 {
                                             if let gasLimitForMS = dict!["gaslimit"] as? String {
                                                 self.feeRate = "\(fastFeeRate)"
                                                 self.gasLimit = gasLimitForMS
@@ -331,8 +389,8 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     func creatreExchangeRequest() {
-        let fromTicker = walletFromSending!.blockchain.shortName
-        let toTicker = walletToReceive!.blockchain.shortName
+        let fromTicker = walletFromSending!.assetShortName
+        let toTicker = walletToReceive!.assetShortName
         let amountString = exchangeVC!.sendingCryptoValueTF.text!.replacingOccurrences(of: ",", with: ".")
         
         
@@ -366,10 +424,10 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     func retrieveChangellyTX() {
-        let fromTicker = walletFromSending!.blockchain.shortName
-        let toTicker = walletToReceive!.blockchain.shortName
+        let fromTicker = walletFromSending!.assetShortName
+        let toTicker = walletToReceive!.assetShortName
         let amountString = exchangeVC!.sendingCryptoValueTF.text!.replacingOccurrences(of: ",", with: ".")
-        let toAddress = walletToReceive!.address
+        let toAddress = walletToReceive!.assetAddress
         DataManager.shared.apiManager.createExchangeTransaction(fromBlockchain: fromTicker,
                                                                 toBlockchain: toTicker,
                                                                 amount: amountString,
@@ -377,10 +435,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                                     //check zero
                                                                     switch $0 {
                                                                     case .success(let info):
-                                                                        let dict = ["deposit" : info["payinAddress"] as! String,
-                                                                                    "depositAmount" : Double(amountString)!
-                                                                                    ] as NSDictionary
-                                                                        self.sendTX(info: dict)
+                                                                        self.checkExchangeInfoAndSend(amountString: amountString, info: info)
                                                                     case .failure(let error):
                                                                         print(error)
                                                                     }
@@ -389,10 +444,23 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         }
     }
     
+    func checkExchangeInfoAndSend(amountString: String, info: NSDictionary) {
+        guard let payingAddress = info["payinAddress"] as? String, payingAddress.isEmpty == false else {
+            exchangeVC!.presentAlert(with: "Cannot exchange! Please, enter another amount")
+            
+            return
+        }
+        
+        let dict = ["deposit" : payingAddress,
+                    "depositAmount" : Double(amountString)!
+            ] as NSDictionary
+        self.sendTX(info: dict)
+    }
+    
     func sendTX(info: NSDictionary) {
         let depositAddress = info["deposit"] as! String
         
-        getFeeRate(walletFromSending!.blockchainType, address: depositAddress) {
+        getFeeRate(walletFromSending!.assetBlockchainType, address: depositAddress) {
             switch $0 {
             case .success(_):
                 DispatchQueue.main.async {
@@ -429,8 +497,16 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             "payload"   : newAddressParams
             ] as [String : Any]
         
-        DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
-            print(dict)
+        DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
+            if error != nil {
+                if let info = (error as NSError?)?.userInfo["message"] as? String {
+                    self.exchangeVC?.presentAlert(with: info)
+                } else {
+                    self.exchangeVC?.presentAlert(with: error?.localizedDescription)
+                }
+            } else {
+                self.exchangeVC?.presentAlert(with: self.localize(string: Constants.errorSendingTxString))
+            }
         }
     }
 
@@ -447,5 +523,11 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                 self.minimalValueString = answerDict!["amount"] as! String
             }
         }
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Wallets"
     }
 }

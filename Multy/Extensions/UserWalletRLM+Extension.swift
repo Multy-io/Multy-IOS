@@ -23,6 +23,33 @@ extension UserWalletRLM {
         }
     }
     
+    var assetWalletName: String {
+        switch blockchain {
+        case BLOCKCHAIN_ERC20:
+            return tokenHolderWallet?.name ?? ""
+        default:
+            return name
+        }
+    }
+    
+    var assetAddress: String {
+        switch blockchain {
+        case BLOCKCHAIN_ERC20:
+            return tokenHolderWallet?.address ?? ""
+        default:
+            return address
+        }
+    }
+    
+    var assetBlockchainType: BlockchainType {
+        switch blockchain {
+        case BLOCKCHAIN_ERC20:
+            return BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: blockchainType.net_type)
+        default:
+            return blockchainType
+        }
+    }
+    
     func convertCryptoAmountStringToMinimalUnits(amountString: String) -> BigInt {
         return blockchain == BLOCKCHAIN_ERC20 ? amountString.convertCryptoAmountStringToMinimalUnits(for: blockchain) : amountString.convertCryptoAmountStringToMinimalUnits(for: token)
     }

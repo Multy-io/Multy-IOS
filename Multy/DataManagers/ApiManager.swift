@@ -549,7 +549,7 @@ class ApiManager: NSObject, RequestRetrier {
                 if let data = response.data {
                     if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: Any] {
                         print(json)
-                        let bakcError = NSError(domain: "", code: json["code"] as! Int, userInfo: ["Message" : json["message"] as! String])
+                        let bakcError = NSError(domain: "", code: json["code"] as! Int, userInfo: ["message" : json["message"] as! String])
                         completion(nil, bakcError)
                         break
                     }

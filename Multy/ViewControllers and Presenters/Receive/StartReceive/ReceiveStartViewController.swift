@@ -163,8 +163,30 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
             presenter.joinRequest()
         }
         
+        let choosenWallet = presenter.walletsArr[indexPath.row]
+        
         if self.presenter.isNeedToPop == true {
-            if checkWhereFromForNil() && self.presenter.walletsArr[indexPath.row].availableAmount.isZero {
+            if whereFrom?.className == CurrencyToExchangeViewController.className {
+                if presenter.choosenToken != nil {
+                    let tokenWallet = choosenWallet.createTokenWallet(for: presenter.choosenToken!)
+                    self.sendWalletDelegate?.sendWallet(wallet: tokenWallet)
+                } else {
+                    self.sendWalletDelegate?.sendWallet(wallet: choosenWallet)
+                }
+                
+                let vcCount = self.navigationController?.viewControllers.count
+                
+                if vcCount == nil || vcCount! < 3 {
+                    return
+                }
+                
+                let popToVC = self.navigationController?.viewControllers[vcCount! - 3]
+                self.navigationController?.popToViewController(popToVC!, animated: true)
+                
+                return
+            }
+            
+            if checkWhereFromForNil() && choosenWallet.availableAmount.isZero {
 //            if self.whereFrom?.className == CurrencyToExchangeViewController.className {
 //                //delegate to send wallet
 //                if indexPath.row >= presenter.numberOfWallets() {
@@ -180,10 +202,9 @@ extension ReceiveStartViewController: UITableViewDelegate, UITableViewDataSource
                 self.present(alert, animated: true, completion: nil)
                 shakeView(viewForShake: self.tableView.cellForRow(at: indexPath)!)
             } else {
+                
                 self.sendWalletDelegate?.sendWallet(wallet: self.presenter.walletsArr[self.presenter.selectedIndex!])
                 self.navigationController?.popViewController(animated: true)
-                //add
-//                self.navigationController?.popToViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
             }
         } else {
             self.performSegue(withIdentifier: "receiveDetails", sender: Any.self)

@@ -37,20 +37,6 @@ class TokenRLM: Object {
         }
     }
     
-    func createWallet() -> UserWalletRLM {
-        let tokenWallet = UserWalletRLM()
-        
-        tokenWallet.address = contractAddress
-        tokenWallet.name = name
-        tokenWallet.chain = BLOCKCHAIN_ERC20.rawValue as NSNumber
-        tokenWallet.chainType = blockchainType.net_type as NSNumber
-        tokenWallet.cryptoName = ticker
-        tokenWallet.ethWallet = ETHWallet()
-        tokenWallet.ethWallet!.balance = "0"
-        
-        return tokenWallet
-    }
-    
     public class func initArrayWithArray(tokensArray: NSArray, blockchainType: BlockchainType) -> [TokenRLM] {
         var tokens = [TokenRLM]()
         

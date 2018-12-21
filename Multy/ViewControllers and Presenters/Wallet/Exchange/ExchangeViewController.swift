@@ -22,6 +22,7 @@ class ExchangeViewController: UIViewController {
     @IBOutlet weak var receiveFiatValueTF: UITextField!
     
     @IBOutlet weak var sendToReceiveRelation: UILabel!  // 1 BTC = 0.075342 BTC
+    @IBOutlet weak var minimumAmountLabel: UILabel!
     
     @IBOutlet weak var summaryView: UIView!
     
@@ -146,10 +147,6 @@ class ExchangeViewController: UIViewController {
                 
                 return
             }
-        } else {
-            presentAlert(with: localize(string: Constants.enterAmountString))
-            
-            return
         }
         
         let translation = gestureRecognizer.translation(in: self.view)
@@ -240,6 +237,7 @@ class ExchangeViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Storyboard.toExchangeSegueID {
             let exchangeCurrencyVC = segue.destination as! CurrencyToExchangeViewController
+            
             exchangeCurrencyVC.presenter.sendNewWalletDelegate = presenter
             exchangeCurrencyVC.presenter.availableTokens = presenter.supportedTokens
             exchangeCurrencyVC.presenter.walletFromExchange = presenter.walletFromSending
