@@ -55,7 +55,7 @@ class TransactionWalletCell: UITableViewCell {
             self.addressLabel.textColor = .black
             self.timeLabel.textColor = blockedTxInfoColor
             self.cryptoAmountLabel.textColor = .black
-        } else if histObj.txStatus.intValue == TxStatus.Rejected.rawValue || histObj.txStatus.intValue ==  TxStatus.BlockMethodInvocationFail.rawValue {
+        } else if histObj.txStatus.intValue == TxStatus.Rejected.rawValue || histObj.txStatus.intValue ==  TxStatus.BlockMethodInvocationFail.rawValue || histObj.txStatus.intValue == TxStatus.RejectedOutgoing.rawValue || histObj.txStatus.intValue == TxStatus.RejectedIncoming.rawValue {
             self.transactionImage.image = #imageLiteral(resourceName: "warninngBig")
             self.addressLabel.textColor = .black
             self.timeLabel.textColor = .red
