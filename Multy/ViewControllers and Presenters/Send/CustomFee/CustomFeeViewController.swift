@@ -22,6 +22,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
     weak var delegate: CustomFeeRateProtocol?
     
     var rate = BigInt.zero()
+    var gasLImit = BigInt.zero()
     var previousSelected: Int?
     
     override func viewDidLoad() {
@@ -38,6 +39,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
     func setupUI() {
         unowned let weakSelf =  self
         self.topPriceTF.addDoneCancelToolbar(onDone: (target: self, action: #selector(done)), viewController: weakSelf)
+        self.botLimitTf.addDoneCancelToolbar(onDone: (target: self, action: #selector(done)), viewController: weakSelf)
         
         //FIXME: check chainID nullability
         switch self.presenter.blockchainType?.blockchain {
@@ -54,12 +56,15 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
                 self.topPriceTF.text = rate.stringValue
             }
         case BLOCKCHAIN_ETHEREUM:
-            self.botNameLbl.isHidden = true
-            self.botLimitTf.isHidden = true
+            self.botNameLbl.isHidden = false
+            self.botLimitTf.isHidden = false
+            
+            self.botLimitTf.text = gasLImit.stringValue
+            
             if rate.isNonZero {
                 self.topPriceTF.text = presenter.textForRate(rate)
             }
-            self.viewHeightConstraint.constant = viewHeightConstraint.constant / 2
+//            self.viewHeightConstraint.constant = viewHeightConstraint.constant
         default: return
         }
     }
@@ -112,8 +117,16 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
                 self.present(alert, animated: true, completion: nil)
             default: return
             }
+        } else if presenter.blockchainType!.blockchain == BLOCKCHAIN_ETHEREUM && BigInt(botLimitTf.text ?? "0") < BigInt("21000") {
+            let message = localize(string: Constants.gasLimitLess21KString)
+            let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
+                self.botLimitTf.becomeFirstResponder()
+            }))
+            
+            self.present(alert, animated: true, completion: nil)
         } else {
-            self.delegate?.customFeeData(firstValue: presenter.rateForText(topPriceTF.text!), secValue: nil)
+            self.delegate?.customFeeData(firstValue: presenter.rateForText(topPriceTF.text!), secValue: botLimitTf.isHidden ? nil : BigInt(botLimitTf.text!))
             self.navigationController?.popViewController(animated: true)
         }
     }

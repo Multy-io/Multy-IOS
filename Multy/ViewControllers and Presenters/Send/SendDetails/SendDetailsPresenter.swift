@@ -117,6 +117,10 @@ class SendDetailsPresenter: NSObject {
         }
     }
     
+    var customGasLimit: BigInt {
+        return transactionDTO.ETHDTO!.gasLimit
+    }
+    
     var feeRates = NSDictionary() {
         didSet {
             if feeRates.count > 0 {
@@ -319,6 +323,11 @@ extension CustomFeeRateDelegate: CustomFeeRateProtocol {
         }
         
         customFee = firstValue!
+        
+        if secValue != nil && blockchain == BLOCKCHAIN_ETHEREUM {
+            transactionDTO.ETHDTO!.gasLimit = secValue!
+        }
+        
         vc?.sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(transactionDTO.choosenWallet!.chain)", eventName: customFeeSetuped)
     }
 

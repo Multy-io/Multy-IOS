@@ -1146,12 +1146,6 @@ scan</string>
                                         <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GAS Limit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enn-zm-3do">
-                                        <rect key="frame" x="20" y="72.5" width="55" height="17"/>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                                        <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter price here" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="84M-y9-Blm">
                                         <rect key="frame" x="20" y="28" width="335" height="30"/>
                                         <nil key="textColor"/>
@@ -1161,13 +1155,19 @@ scan</string>
                                             <outlet property="delegate" destination="rrp-ST-Ben" id="mfF-SF-PkO"/>
                                         </connections>
                                     </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GAS Limit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enn-zm-3do">
+                                        <rect key="frame" x="20" y="72.5" width="55" height="17"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                        <color key="textColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter limit here" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sAV-0f-SxV">
                                         <rect key="frame" x="20" y="90.5" width="335" height="29.5"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                         <connections>
-                                            <outlet property="delegate" destination="rrp-ST-Ben" id="WJj-a7-ofs"/>
+                                            <outlet property="delegate" destination="rrp-ST-Ben" id="2mu-vw-sCu"/>
                                         </connections>
                                     </textField>
                                 </subviews>
@@ -1207,8 +1207,8 @@ scan</string>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="botLimitTf" destination="sAV-0f-SxV" id="Z2c-ae-jlU"/>
-                        <outlet property="botNameLbl" destination="enn-zm-3do" id="74r-v8-vPt"/>
+                        <outlet property="botLimitTf" destination="sAV-0f-SxV" id="nFY-3D-n80"/>
+                        <outlet property="botNameLbl" destination="enn-zm-3do" id="0wy-rW-XSF"/>
                         <outlet property="topNameLbl" destination="axx-5t-akg" id="w0E-SF-2CD"/>
                         <outlet property="topPriceTF" destination="84M-y9-Blm" id="cfT-Hm-M4n"/>
                         <outlet property="viewHeightConstraint" destination="1O3-BW-9sO" id="vVK-f0-5ef"/>
@@ -2624,5 +2624,9 @@ address</string>
         <image name="swap" width="25" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="EUD-ex-a5v"/>
+        <segue reference="FRo-Sp-aVY"/>
+        <segue reference="jSE-EO-qlC"/>
+        <segue reference="62n-xT-X9r"/>
     </inferredMetricsTieBreakers>
 </document>

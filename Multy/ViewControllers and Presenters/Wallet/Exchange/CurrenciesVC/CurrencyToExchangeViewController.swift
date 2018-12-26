@@ -13,12 +13,18 @@ class CurrencyToExchangeViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var emptySetImage: UIImageView!
+    @IBOutlet weak var emptySetLabel: UILabel!
+    
     var presenter = CurrencyToExchangePresenter()
     var sendWalletDelegate: SendWalletProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         presenter.mainVC = self
+        presenter.setupUI()
+        
         registerCells()
         hideKeyboardWhenTappedAround()
         presenter.addAssetsTypes()

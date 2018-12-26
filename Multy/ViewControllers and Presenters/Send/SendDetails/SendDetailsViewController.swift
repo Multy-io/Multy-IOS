@@ -369,6 +369,7 @@ extension TableViewDelegate: UITableViewDelegate {
             customVC.presenter.blockchainType = self.presenter.transactionDTO.assetsWallet.blockchainType
             customVC.delegate = presenter
             customVC.rate = presenter.customFee
+            customVC.gasLImit = presenter.customGasLimit
             customVC.previousSelected = presenter.selectedIndexOfSpeed
             navigationController?.pushViewController(customVC, animated: true)
         } 

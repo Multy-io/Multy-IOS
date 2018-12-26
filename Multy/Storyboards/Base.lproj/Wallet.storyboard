@@ -4363,22 +4363,41 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <outlet property="delegate" destination="sCS-yi-EuK" id="SoY-1S-KVE"/>
                                 </connections>
                             </tableView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activityEs" translatesAutoresizingMaskIntoConstraints="NO" id="1jy-nz-Cd3">
+                                <rect key="frame" x="64.5" y="150" width="246" height="211"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="1jy-nz-Cd3" secondAttribute="height" multiplier="7:6" id="q19-QQ-vzG"/>
+                                </constraints>
+                            </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tttttttttt" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZp-Ze-vCT">
+                                <rect key="frame" x="158.5" y="351" width="58" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.97044849395751953" green="0.97451531887054443" blue="0.99990391731262207" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="1jy-nz-Cd3" firstAttribute="width" secondItem="cNX-TL-b7J" secondAttribute="width" multiplier="210/320" id="02A-WP-dwr"/>
                             <constraint firstItem="BqP-9Z-Ve2" firstAttribute="top" secondItem="Zef-7g-B2V" secondAttribute="bottom" id="8iD-ff-bRL"/>
                             <constraint firstAttribute="trailing" secondItem="cNX-TL-b7J" secondAttribute="trailing" id="CSr-0a-mvS"/>
+                            <constraint firstItem="LZp-Ze-vCT" firstAttribute="top" secondItem="1jy-nz-Cd3" secondAttribute="bottom" constant="-10" id="JMg-pw-ilM"/>
                             <constraint firstItem="8qE-yI-nIQ" firstAttribute="top" secondItem="cNX-TL-b7J" secondAttribute="bottom" id="PYB-LT-MFd"/>
                             <constraint firstItem="UcM-e4-lbc" firstAttribute="leading" secondItem="BqP-9Z-Ve2" secondAttribute="leading" id="Sc2-2H-a9p"/>
+                            <constraint firstItem="1jy-nz-Cd3" firstAttribute="top" secondItem="UcM-e4-lbc" secondAttribute="bottom" constant="30" id="WlB-Wj-MzJ"/>
                             <constraint firstItem="cNX-TL-b7J" firstAttribute="leading" secondItem="01x-FG-5im" secondAttribute="leading" id="bjc-vN-Ifc"/>
                             <constraint firstAttribute="trailing" secondItem="BqP-9Z-Ve2" secondAttribute="trailing" id="eYh-9K-fzf"/>
                             <constraint firstItem="UcM-e4-lbc" firstAttribute="top" secondItem="BqP-9Z-Ve2" secondAttribute="bottom" id="fUm-lm-R1U"/>
                             <constraint firstItem="BqP-9Z-Ve2" firstAttribute="leading" secondItem="01x-FG-5im" secondAttribute="leading" id="gJh-VQ-Nds"/>
                             <constraint firstItem="cNX-TL-b7J" firstAttribute="top" secondItem="UcM-e4-lbc" secondAttribute="bottom" id="m5m-lA-wPo"/>
                             <constraint firstItem="UcM-e4-lbc" firstAttribute="trailing" secondItem="BqP-9Z-Ve2" secondAttribute="trailing" id="rCs-0O-d9H"/>
+                            <constraint firstItem="1jy-nz-Cd3" firstAttribute="centerX" secondItem="cNX-TL-b7J" secondAttribute="centerX" id="sVK-94-EZE"/>
+                            <constraint firstItem="LZp-Ze-vCT" firstAttribute="centerX" secondItem="01x-FG-5im" secondAttribute="centerX" id="xT1-BH-Xbx"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="emptySetImage" destination="1jy-nz-Cd3" id="bF5-Xb-LiF"/>
+                        <outlet property="emptySetLabel" destination="LZp-Ze-vCT" id="BIr-FV-Cgb"/>
                         <outlet property="searchBar" destination="UcM-e4-lbc" id="wN9-9A-hWF"/>
                         <outlet property="tableView" destination="cNX-TL-b7J" id="odj-V5-aQs"/>
                     </connections>
@@ -4390,6 +4409,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
     </scenes>
     <resources>
         <image name="BTC_medium_icon" width="39" height="39"/>
+        <image name="activityEs" width="210" height="180"/>
         <image name="arrow" width="14" height="20"/>
         <image name="arrowCoin" width="14" height="68"/>
         <image name="attention" width="66" height="66"/>

@@ -63,6 +63,9 @@ class CurrencyToExchangePresenter: NSObject {
             filteredAssets = availableAssetsArray.filter{ $0.currencyShortName.lowercased().contains(string.lowercased()) || $0.currencyFullName.lowercased().contains(string.lowercased()) }
         }
         
+        mainVC?.emptySetImage.isHidden = (filteredAssets.count != 0)
+        mainVC?.emptySetLabel.isHidden = (filteredAssets.count != 0)
+        
         mainVC!.tableView.reloadData()
     }
     
@@ -74,6 +77,10 @@ class CurrencyToExchangePresenter: NSObject {
                 self.checkForExistingWallet(index: choosenIndex)
             }
         })
+    }
+    
+    func setupUI() {
+        mainVC?.emptySetLabel.text = localize(string: Constants.noResultsString)
     }
 }
 

@@ -168,4 +168,6 @@ extension Constants {
     static let notDeterminedString = "NOT DETERMINED"
     static let unableToExchangeString = "UNABLE TO EXCHANGE"
     static let createWalletAutomaticallyString = "CREATE WALLET AUTOMATICALLY"
+    static let gasLimitLess21KString = "GAS LIMIT LESS 21K"
+    static let noResultsString = "NO RESULTS"
 }
