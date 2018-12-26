@@ -207,25 +207,50 @@ class ExchangeViewController: UIViewController {
         //choosing exchanging currency/token 
     }
     
+    func checkZeroes(textField: UITextField) {
+        let textInTf = textField.text!.replacingOccurrences(of: "$ ", with: "")
+        
+        if textInTf.count != 2 {
+            return
+        }
+        
+        if textInTf.hasPrefix("0") && !textInTf.hasSuffix(".") {
+            if presenter.checkIsFiatTf(textField: textField) {
+                textField.text = "$ " + String(textInTf.suffix(1))
+            } else {
+                textField.text = String(textInTf.suffix(1))
+            }
+        }
+
+    }
+    
     @IBAction func sendingCryptoValueChanged(_ sender: Any) {
+        checkZeroes(textField: sendingCryptoValueTF)
+        
         presenter.makeSendFiatTfValue()
         presenter.setEndValueToSend()
         presenter.setEndValueToReceive()
     }
     
     @IBAction func sendingFiatValueChanged(_ sender: Any) {
+        checkZeroes(textField: sendingFiatValueTF)
+        
         presenter.makeSendCryptoTfValue()
         presenter.setEndValueToSend()
         presenter.setEndValueToReceive()
     }
     
     @IBAction func receiveCryptoValueChanged(_ sender: Any) {
+        checkZeroes(textField: receiveCryptoValueTF)
+        
         presenter.makeReceiveFiatString()
         presenter.setEndValueToReceive()
         presenter.setEndValueToSend()
     }
     
     @IBAction func receiveFiatValueChanged(_ sender: Any) {
+        checkZeroes(textField: receiveFiatValueTF)
+        
         presenter.makeReceiveCryptoTfValue()
         presenter.setEndValueToReceive()
         presenter.setEndValueToSend()

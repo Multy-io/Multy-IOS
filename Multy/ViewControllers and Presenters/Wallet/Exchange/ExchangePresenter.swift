@@ -230,6 +230,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         
         if textField.text == "0," || textField.text == "0." {
             textField.text?.removeAll()
+            
             return false
         }
         
@@ -246,9 +247,11 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         //if text is empty return 0.
         if checkIsFiatTf(textField: textField) && textField.text == "$ " {
             textField.text = "$ 0."
+            
             return false
         } else if textField.text!.isEmpty {
             textField.text = "0."
+            
             return false
         }
         
