@@ -4,6 +4,8 @@
 
 import UIKit
 
+private typealias LocalizeDelegate = CurrencyToExchangePresenter
+
 class CurrencyToExchangePresenter: NSObject {
     
     var mainVC: CurrencyToExchangeViewController?
@@ -41,13 +43,13 @@ class CurrencyToExchangePresenter: NSObject {
             walletsVC.sendWalletDelegate = self.sendNewWalletDelegate
             self.mainVC?.navigationController?.pushViewController(walletsVC, animated: true)
         } else {
-            let alert = UIAlertController(title: "Attention", message: "We crete wallet for this blockchain automatically", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            let alert = UIAlertController(title: localize(string: Constants.warningString), message: localize(string: Constants.createWalletAutomaticallyString), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
                 //delegate
                 //FIXME: refactor
                 self.createNewWalletAndGoNextScreen(blockchainType: choosenCurrency.currencyBlockchainType, choosenIndex: index)
             }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { [unowned self] (action) in
+            alert.addAction(UIAlertAction(title: localize(string: Constants.errorString), style: .default, handler: { (action) in
                 alert.dismiss(animated: true, completion: nil)
             }))
             self.mainVC?.present(alert, animated: true, completion: nil)
@@ -72,5 +74,11 @@ class CurrencyToExchangePresenter: NSObject {
                 self.checkForExistingWallet(index: choosenIndex)
             }
         })
+    }
+}
+
+extension LocalizeDelegate: Localizable {
+    var tableName: String {
+        return "Wallets"
     }
 }

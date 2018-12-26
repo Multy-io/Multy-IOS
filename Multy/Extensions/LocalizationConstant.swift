@@ -167,4 +167,5 @@ extension Constants {
     static let cannotRetrieveExchangeRateString = "CANNOT RETRIEVE EXCHANGE RATE"
     static let notDeterminedString = "NOT DETERMINED"
     static let unableToExchangeString = "UNABLE TO EXCHANGE"
+    static let createWalletAutomaticallyString = "CREATE WALLET AUTOMATICALLY"
 }

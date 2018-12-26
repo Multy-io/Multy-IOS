@@ -42,3 +42,5 @@
 "NOT DETERMINED" = "not determined";
 "UNABLE TO EXCHANGE" = "Unable to exchange! Please, enter larger amount";
 "YOU ENTERED TOO SMALL AMOUNT" = "You entered too small amount!";
+"CREATE WALLET AUTOMATICALLY" = "We crete wallet for this blockchain automatically";
+"DONE" = "Done!";

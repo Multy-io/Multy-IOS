@@ -42,3 +42,5 @@
 "NOT DETERMINED" = "не визначено";
 "UNABLE TO EXCHANGE" = "Неможливо обміняти! Будь ласка, введіть більшу суму";
 "YOU ENTERED TOO SMALL AMOUNT" = "Ви ввели занадто малу суму!";
+"CREATE WALLET AUTOMATICALLY" = "Ми створюємо гаманець для цього блокчейна автоматично";
+"DONE" = "Готово!";
