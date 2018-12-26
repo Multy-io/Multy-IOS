@@ -34,6 +34,7 @@ target 'Multy' do
   pod 'Web3/ContractABI'
   pod 'moa', '~> 10.0'
   pod 'GSMessages'
+  pod 'CommonCryptoSwift', git: 'https://github.com/jaredsinclair/CommonCrypto.swift.git'
 #  pod 'MultyCoreLibrary'#, '0.1.7'
 
   #dapp

@@ -457,8 +457,6 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                                     case .failure(let error):
                                                                         self.exchangeVC?.presentAlert(with: error)
                                                                     }
-                                                                    
-                                                                    print($0)
         }
     }
     
@@ -494,17 +492,53 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     func createAndSendTX(info: NSDictionary) {
         let depositAmountString = (info["depositAmount"] as! NSNumber).stringValue.convertCryptoAmountStringToMinimalUnits(for: walletFromSending?.blockchain).stringValue
         let depositAddress = info["deposit"] as! String
+
         
-        let trData = DataManager.shared.createETHTransaction(wallet: walletFromSending!,
+        var trData = (isTransactionCorrect: false, message: "Error")
+        var binaryData = DataManager.shared.realmManager.account!.binaryDataString.createBinaryData()!
+        let addressData = DataManager.shared.createAddress(blockchainType:walletFromSending!.assetBlockchainType,
+                                                           walletID:      walletFromSending!.assetWallet.walletID.uint32Value,
+                                                           addressID:     walletFromSending!.assetWallet.changeAddressIndex,
+                                                           binaryData:    &binaryData)
+        
+        switch walletFromSending!.assetBlockchain {
+        case BLOCKCHAIN_BITCOIN:
+            //BTC: imported not supported
+            //FIXME:
+            let data = DataManager.shared.createTransaction(addressPointer: addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>,
+                                                            sendAddress: depositAddress,
+                                                            sendAmountString: BigInt(depositAmountString).cryptoValueString(for: walletFromSending!.assetBlockchain),
+                                                            feePerByteAmount: feeRate,
+                                                            isDonationExists: false,
+                                                            donationAmount: "",
+                                                            isPayCommission: true,
+                                                            wallet: walletFromSending!.assetWallet,
+                                                            binaryData: &binaryData,
+                                                            inputs: walletFromSending!.assetWallet.addresses)
+            
+            trData = (isTransactionCorrect: data.1 >= 0, message: data.0)
+        case BLOCKCHAIN_ETHEREUM:
+            trData = DataManager.shared.createETHTransaction(wallet: walletFromSending!.assetWallet,
                                                              sendAmountString: depositAmountString,
                                                              destinationAddress: depositAddress,
                                                              gasPriceAmountString: feeRate,
                                                              gasLimitAmountString: gasLimit)
+        default:
+            exchangeVC?.presentAlert(with: "\(walletFromSending!.assetBlockchain.fullName): not imlemented yet")
+        }
+        
+        if trData.isTransactionCorrect == false {
+            exchangeVC?.presentAlert(with: "transaction is not created. Error: \(trData.message)")
+            
+            return
+        }
+        
+        let addressIndex = walletFromSending!.assetWallet.blockchain == BLOCKCHAIN_ETHEREUM ? 0 : walletFromSending!.assetWallet.addresses.count
         
         let newAddressParams = [
             "walletindex"   : walletFromSending!.walletID.intValue,
-            "address"       : walletFromSending!.address,
-            "addressindex"  : 0,
+            "address"       : addressData!["address"] as! String,
+            "addressindex"  : addressIndex,
             "transaction"   : trData.message,
             "ishd"          : walletFromSending!.shouldCreateNewAddressAfterTransaction
             ] as [String : Any]

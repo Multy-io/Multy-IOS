@@ -12,7 +12,7 @@ class WalletTokenRLM: Object {
     @objc dynamic var balance = String()
     
     var token: TokenRLM? {
-        return DataManager.shared.realmManager.erc20Tokens[address]
+        return DataManager.shared.realmManager.erc20Tokens[address.lowercased()]
     }
     
     var tokenImageURLString: String {
@@ -48,7 +48,7 @@ class WalletTokenRLM: Object {
             token.balance = balance as! String
         }
         
-        if let erc20FromDB = realmManagerReference.erc20Tokens[token.address] {
+        if let erc20FromDB = realmManagerReference.erc20Tokens[token.address.lowercased()] {
             token.ticker = erc20FromDB.ticker
             token.name = erc20FromDB.name
         } else { //not valid tokens default values

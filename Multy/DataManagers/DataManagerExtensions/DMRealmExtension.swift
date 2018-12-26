@@ -12,7 +12,7 @@ extension DataManager {
     }
     
     func getToken(address: String) -> TokenRLM? {
-        return realmManager.erc20Tokens[address]
+        return realmManager.erc20Tokens[address.lowercased()]
     }
     
     func writeSeedPhrase(_ seedPhrase : String, completion: @escaping (_ error: NSError?) -> ()) {

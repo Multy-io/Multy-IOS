@@ -255,6 +255,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         
         refreshControl.beginRefreshing()
         refreshControl.endRefreshing()
+        
+        DataManager.shared.apiManager.getStatus(of: "6cbzgcwowscrs13l") { print($0) }
     }
     
     @objc fileprivate func handleWalletDeletedNotification(notification : Notification) {

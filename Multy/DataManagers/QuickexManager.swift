@@ -1,10 +1,6 @@
-//
-//  QuickexManager.swift
-//  Multy
-//
-//  Created by Alex Pro on 12/10/18.
-//  Copyright © 2018 Idealnaya rabota. All rights reserved.
-//
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
 
 import Foundation
 import Alamofire

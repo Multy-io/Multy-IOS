@@ -42,6 +42,6 @@ class CurrencyObj: NSObject {
     }
     
     var token: TokenRLM? {
-        return DataManager.shared.realmManager.erc20Tokens[tokenAddress]
+        return DataManager.shared.realmManager.erc20Tokens[tokenAddress.lowercased()]
     }
 }

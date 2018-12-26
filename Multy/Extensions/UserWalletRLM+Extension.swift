@@ -50,6 +50,24 @@ extension UserWalletRLM {
         }
     }
     
+    var assetBlockchain: Blockchain {
+        switch blockchain {
+        case BLOCKCHAIN_ERC20:
+            return BLOCKCHAIN_ETHEREUM
+        default:
+            return blockchain
+        }
+    }
+    
+    var assetWallet: UserWalletRLM {
+        switch blockchain {
+        case BLOCKCHAIN_ERC20:
+            return tokenHolderWallet!
+        default:
+            return self
+        }
+    }
+    
     func convertCryptoAmountStringToMinimalUnits(amountString: String) -> BigInt {
         return blockchain == BLOCKCHAIN_ERC20 ? amountString.convertCryptoAmountStringToMinimalUnits(for: blockchain) : amountString.convertCryptoAmountStringToMinimalUnits(for: token)
     }

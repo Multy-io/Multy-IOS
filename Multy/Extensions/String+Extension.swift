@@ -27,6 +27,28 @@ extension String {
         return UnsafeMutablePointer(mutating: (self as NSString).utf8String!)
     }
     
+    func dataWithHexString(_ hex: String) -> Data {
+        var hex = hex
+        var data = Data()
+        while(hex.count > 0) {
+            let subIndex = hex.index(hex.startIndex, offsetBy: 2)
+            let c = String(hex[..<subIndex])
+            hex = String(hex[subIndex...])
+            
+            var ch: UInt32 = 0
+            Scanner(string: c).scanHexInt32(&ch)
+            
+            var char = UInt8(ch)
+            data.append(&char, count: 1)
+        }
+        
+        return data
+    }
+    
+    var bytes: [UInt8] {
+        return Array(utf8)
+    }
+    
     var stringWithDot: String {
         get {
             return  self.replacingOccurrences(of: ",", with: ".")

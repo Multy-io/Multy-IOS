@@ -222,3 +222,16 @@
 "76O-3S-0nx.text" = "Imported Wallet";
 
 "bTm-8y-NG5.text" = "Please note that imported wallets can't be restored from seed phrase on other device. You should backup your private key in order to secure your funds, so you can import it later on other device.";
+
+"7ka-XT-dn4.normalTitle" = "Assets";
+"eL6-la-EVm.normalTitle" = "Transactions";
+"4T0-Yp-RXv.text" = "Exchange";
+"O5d-K7-QIT.text" = "You are sending";
+"bfo-Oh-csN.text" = "You will receive";
+"TZd-Y7-9s8.text" = "You are sending from";
+"lW3-fG-jFU.text" = "You will receive to";
+"02v-fl-huj.text" = "Slide to Exchange";
+"J2K-xu-3Wt.text" = "SELECT CURRENCY";
+"SD5-qf-U6C.text" = "Close";
+"1ZH-Kv-RkO.text" = "Currency to Exchange";
+"UcM-e4-lbc.placeholder" = "Search";

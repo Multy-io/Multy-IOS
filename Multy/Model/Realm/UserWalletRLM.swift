@@ -238,7 +238,7 @@ class UserWalletRLM: Object {
     weak var tokenHolderWallet: UserWalletRLM?
     
     var token: TokenRLM? {
-        return DataManager.shared.realmManager.erc20Tokens[address]
+        return DataManager.shared.realmManager.erc20Tokens[address.lowercased()]
     }
     
     var exchangeCourse: Double {

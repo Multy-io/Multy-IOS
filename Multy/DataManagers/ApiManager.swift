@@ -81,6 +81,14 @@ class ApiManager: NSObject, RequestRetrier {
     public func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
         print("\n\n\n\n\n\nretrier: \(request.request?.urlRequest?.url?.absoluteString)\n\n\n\n\n\n")
         
+        guard let address = request.request?.urlRequest?.url?.absoluteString else {
+            return
+        }
+        
+        guard address.hasPrefix("http://test.multy.io/") || address.hasPrefix("http://api.multy.io/") || address.hasPrefix("http://stage.multy.io/") else {
+            return
+        }
+        
         getServerConfig { (answer, error) in
             if answer != nil && error == nil {
                 self.topVC?.removeNoConnection(view: self.noConnectionView!)
@@ -959,7 +967,6 @@ class ApiManager: NSObject, RequestRetrier {
                 }
             case .failure(_):
                 completion(Result.failure(response.result.error!.localizedDescription))
-                break
             }
         }
     }

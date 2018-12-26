@@ -2132,7 +2132,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eL6-la-EVm">
                                                         <rect key="frame" x="187.5" y="0.0" width="187.5" height="50"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                                        <state key="normal" title="Trasactions">
+                                                        <state key="normal" title="Transactions">
                                                             <color key="titleColor" red="0.21176470588235294" green="0.21176470588235294" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
