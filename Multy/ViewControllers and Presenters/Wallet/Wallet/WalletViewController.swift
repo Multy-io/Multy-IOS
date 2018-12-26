@@ -165,10 +165,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         presenter.registerCells()
         addGestureRecognizers()
         
-        if presenter.walletRepresentingMode == .tokenInfo {
-            setupUIForToken()
-        }
-        
         setupUI()
     }
     
@@ -261,6 +257,16 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         checkConstraints()
         makeGradientForBottom()
         
+        if presenter.walletRepresentingMode == .tokenInfo {
+            setupUIForToken()
+        }
+        
+        if presenter.wallet!.blockchainType.isMainnet == false {
+            exchangeLabel.alpha = 0.3
+            exchangeButton.isUserInteractionEnabled = false
+            exchangeButton.alpha = 0.3
+            exchangeImageView.alpha = 0.3
+        }
         
         //------------  WARNING  ------------//
 //        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
@@ -504,13 +510,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         receiveButton.alpha = 0.3
         receiveIcon.alpha = 0.3
         receiveLabel.alpha = 0.3
-        
-        if presenter.wallet!.blockchainType.isMainnet == false {
-            exchangeLabel.alpha = 0.3
-            exchangeButton.isUserInteractionEnabled = false
-            exchangeButton.alpha = 0.3
-            exchangeImageView.alpha = 0.3
-        }
     }
     
     @IBAction func titleAction(_ sender: Any) {
