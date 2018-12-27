@@ -24,7 +24,6 @@ class SendingAnimationViewController: UIViewController, AnalyticsProtocol {
     let when = DispatchTime.now() + 0.1 // change 2 to desired number of seconds
 
     var chainId: Int?
-    
     var indexForTabBar: Int?
     
     override func viewDidLoad() {
@@ -83,13 +82,32 @@ class SendingAnimationViewController: UIViewController, AnalyticsProtocol {
     
     @IBAction func closeAction(_ sender: Any) {
         if indexForTabBar == nil {
-            self.tabBarController?.selectedIndex = 0
+            tabBarController?.selectedIndex = 0
         } else {
-            if let tbc = self.tabBarController as? CustomTabBarViewController {
+            if let tbc = tabBarController as? CustomTabBarViewController {
                 tbc.setSelectIndex(from: indexForTabBar!, to: indexForTabBar!)
             }
         }
-        self.navigationController?.popToRootViewController(animated: true)
+        
+        guard let popToVCType = presenter.fromVCType else {
+            navigationController?.popToRootViewController(animated: true)
+            
+            return
+        }
+        
+        switch popToVCType {
+        case .exchange:
+            let allVCs = navigationController!.viewControllers
+            if allVCs.count > 2 {
+                let destinationVC = allVCs[allVCs.count - 3]
+                navigationController?.popToViewController(destinationVC, animated: true)
+            } else {
+                navigationController?.popToRootViewController(animated: true)
+            }
+        case .sendTX:
+            navigationController?.popToRootViewController(animated: true)
+        }
+        
     }
     
     func sendOK() {

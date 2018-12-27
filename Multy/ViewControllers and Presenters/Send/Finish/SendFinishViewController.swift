@@ -261,7 +261,7 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
         
         let params = createTXParameters()
         
-        DataManager.shared.sendHDTransaction(transactionParameters: params) { (dict, error) in
+        DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
             print("---------\(dict)")
 
             if error != nil {
@@ -272,6 +272,7 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
                 self.view.isUserInteractionEnabled = true
                 self.presenter.makeNewTx()
                 self.sendAnalyticsEvent(screenName: "\(screenSendAmountWithChain)\(self.presenter.transactionDTO.choosenWallet!.chain)", eventName: transactionErrorFromServer)
+                
                 return
             }
 

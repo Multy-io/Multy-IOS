@@ -10,6 +10,22 @@ typealias QuickexManager = ApiManager
 let quickexURL = "https://api.quickex.io/"
 
 extension QuickexManager {
+    func getQuickexCurrencies(completion: @escaping(_ answer: Result<NSDictionary, String>) -> ()) {
+        requestManager.request("\(quickexURL)getcoins", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
+                }
+            case .failure(let error):
+                completion(Result.failure(error.localizedDescription))
+                break
+            }
+        }
+    }
+    
     func marketInfo(currencyPair: String, completion: @escaping(_ answer: Result<NSDictionary, String>) -> ()) {
         //MARK: add chain ID
         

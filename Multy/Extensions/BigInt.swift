@@ -248,6 +248,27 @@ class BigInt: NSObject {
         return stringValue.appendDelimeter(at: precision).showString(8)
     }
     
+    func cryptoValueStringWithTicker(for object: Any?) -> String {
+        switch object {
+        case let blockchain as Blockchain:
+            return cryptoValueStringWithTicker(for: blockchain)
+        case let token as TokenRLM:
+            return cryptoValueStringWithTicker(for: token)
+        default:
+            return "0"
+        }
+    }
+    
+    func cryptoValueStringWithTicker(for blockchain: Blockchain) -> String {
+        return stringValue.appendDelimeter(at: blockchain.maxPrecision).showString(8) + " " + blockchain.shortName
+    }
+    
+    func cryptoValueStringWithTicker(for token: TokenRLM?) -> String {
+        let precision = token == nil ? 0 : token!.decimals.intValue
+        
+        return stringValue.appendDelimeter(at: precision).showString(8) + (token == nil ? "" : " " + token!.ticker)
+    }
+    
     deinit {
         free_big_int(valuePointer.pointee)
         valuePointer.deallocate()

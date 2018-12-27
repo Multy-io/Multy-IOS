@@ -621,10 +621,19 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     @IBAction func exchangeAction(_ sender: Any) {
+        if presenter.wallet!.availableAmount.isZero {
+            self.presentAlert(with: localize(string: Constants.noFundsString))
+            
+            return
+        } else if let tokenWallet = presenter.tokenHolderWallet, tokenWallet.availableAmount.isZero {
+            self.presentAlert(with: localize(string: Constants.noFundsString))
+            
+            return
+        }
         //        unowned let weakSelf =  self
         //        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
         loader.show(customTitle: "Loading")
-        DataManager.shared.apiManager.getSupportedExchanges { (answerDict, err) in
+        DataManager.shared.apiManager.getSupportedExchanges { [unowned self] (answerDict, err) in
             
         
 //        DataManager.shared.apiManager.getCurrenciesChangelly { (answerDict, err) in
@@ -642,7 +651,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
                     //error alert: Changily don`t convert btc to eth and eth to usd
                 }
             } else {
-                self.presentAlert(with: "Changily is unavailable")
+                self.presentAlert(with: self.localize(string: Constants.unableToExchangeString))
             }
         }
 //        DataManager.shared.apiManager.getSupportedExchanges { (answerDict, error) in

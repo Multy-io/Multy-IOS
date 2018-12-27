@@ -46,3 +46,6 @@
 "DONE" = "Готово!";
 "NO RESULTS" = "Немає результатів";
 "SUCCESS" = "Успішно!";
+"EXCHANGE IS UNAVAILABLE" = "Обмін недоступний";
+"NOT IMPLEMENTED YET" = "ще не реалізовано";
+"TRANSACTION ERROR" = "Помилка транзакції";

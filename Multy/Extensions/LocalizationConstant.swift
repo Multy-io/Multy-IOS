@@ -170,4 +170,6 @@ extension Constants {
     static let createWalletAutomaticallyString = "CREATE WALLET AUTOMATICALLY"
     static let gasLimitLess21KString = "GAS LIMIT LESS 21K"
     static let noResultsString = "NO RESULTS"
+    static let exchangeIsUnavailable = "EXCHANGE IS UNAVAILABLE"
+    static let notImplementedYet = "NOT IMPLEMENTED YET"
 }

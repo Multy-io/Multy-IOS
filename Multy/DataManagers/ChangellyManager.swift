@@ -14,7 +14,7 @@ let secretKey = "57ef86f42d6790fc9b02f281a43e500a5639f067e4b25dc043240d891fc4e40
 
 extension ChangellyManager {
     func getChangellyCurrencies(completion: @escaping(_ answer: Result<NSDictionary, String>) -> ()) {
-        createRequest(method: "getCurrencies", parameters: [:]) { completion($0) }
+        createChangellyRequest(method: "getCurrencies", parameters: [:]) { completion($0) }
     }
     
     func  getStatus(of transactionID: String, completion: @escaping(_ answer: Result<NSDictionary, String>) -> ()) {
@@ -22,10 +22,10 @@ extension ChangellyManager {
             "id":  transactionID
         ]
         
-        createRequest(method: "getStatus", parameters: params) { completion($0) }
+        createChangellyRequest(method: "getStatus", parameters: params) { completion($0) }
     }
     
-    func createRequest(method: String, parameters: Parameters, completion: @escaping(_ answer: Result<NSDictionary, String>) -> ())  {
+    func createChangellyRequest(method: String, parameters: Parameters, completion: @escaping(_ answer: Result<NSDictionary, String>) -> ())  {
         let params: Parameters = [
             "jsonrpc":  "2.0",
             "id":       "1",
@@ -60,13 +60,9 @@ extension ChangellyManager {
             let theJSONText = String(data: theJSONData, encoding: .ascii)
             print("JSON string = \(theJSONText!)")
             
-//            let mess = """
-//            {"jsonrpc": "2.0", "id": 1, "method": "getCurrencies", "params": []}
-//            """
+            let sign = HMAC.SHA512(string: theJSONText!, key: secretKey)
             
-            let hh = HMAC.SHA512(string: theJSONText!, key: secretKey)
-            
-            return hh!
+            return sign!
         } else {
             return ""
         }

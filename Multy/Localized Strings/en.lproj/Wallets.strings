@@ -46,3 +46,6 @@
 "DONE" = "Done!";
 "NO RESULTS" = "No Results";
 "SUCCESS" = "Success!";
+"EXCHANGE IS UNAVAILABLE" = "Exchange is unavailable";
+"NOT IMPLEMENTED YET" = "is not implemented yet";
+"TRANSACTION ERROR" = "Transaction Error";

@@ -510,6 +510,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                            walletID:      walletFromSending!.assetWallet.walletID.uint32Value,
                                                            addressID:     walletFromSending!.assetWallet.changeAddressIndex,
                                                            binaryData:    &binaryData)
+        var correctedAmount = depositAmountString
         
         switch walletFromSending!.assetBlockchain {
         case BLOCKCHAIN_BITCOIN:
@@ -528,8 +529,6 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             
             trData = (isTransactionCorrect: data.1 >= 0, message: data.0)
         case BLOCKCHAIN_ETHEREUM:
-            var correctedAmount = depositAmountString
-            
             if isSendMax && walletFromSending!.blockchain == BLOCKCHAIN_ETHEREUM {
                 correctedAmount = (BigInt(depositAmountString) - BigInt(feeRate) * BigInt(gasLimit)).stringValue
             }
@@ -541,12 +540,12 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                              gasLimitAmountString: gasLimit)
         default:
             exchangeVC?.loader.hideAndUnlock()
-            exchangeVC?.presentAlert(with: "\(walletFromSending!.assetBlockchain.fullName): not imlemented yet")
+            exchangeVC?.presentAlert(with: "\(walletFromSending!.assetBlockchain.fullName): \(localize(string: Constants.notImplementedYet))")
         }
         
         if trData.isTransactionCorrect == false {
-            exchangeVC?.loader.hide()
-            exchangeVC?.presentAlert(with: "transaction is not created. Error: \(trData.message)")
+            exchangeVC?.loader.hideAndUnlock()
+            exchangeVC?.presentAlert(with: "\(localize(string: Constants.transactionErrorString)): \(trData.message)")
             
             return
         }
@@ -578,14 +577,18 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                     self.exchangeVC?.presentAlert(with: error?.localizedDescription)
                 }
             } else {
-                let alert = UIAlertController(title: nil, message: self.localize(string: Constants.successString), preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { [unowned self] _ in
-                    self.exchangeVC?.navigationController?.popViewController(animated: true)
-                }))
-                
-                self.exchangeVC?.present(alert, animated: true, completion: nil)
+                let value = BigInt(depositAmountString).cryptoValueStringWithTicker(for: self.walletFromSending!.assetBlockchain)
+                self.presentSuccesScreen(value , depositAddress)
             }
         }
+    }
+    
+    func presentSuccesScreen(_ amount: String, _ address: String) {
+        let sendOKVC = viewControllerFrom("Send", "SuccessSendVC") as! SendingAnimationViewController
+        sendOKVC.presenter.fundsReceived(amount, address, fromVCType: .exchange)
+        sendOKVC.chainId = Int(walletFromSending!.assetWallet.blockchain.rawValue)
+        
+        exchangeVC?.navigationController?.pushViewController(sendOKVC, animated: true)
     }
 
     //changelly

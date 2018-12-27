@@ -523,7 +523,7 @@ class AssetsPresenter: NSObject {
         let chainId = UInt32(params["chainID"] as! String)
         let chainType = UInt32(params["chainType"] as! String)
         let blockchainType = BlockchainType(blockchain: Blockchain(rawValue: chainId!), net_type: Int(params["chainType"] as! String)!)
-        DataManager.shared.getWalletWith(name: walletName, chain: chainId! as NSNumber, chainType: chainType! as NSNumber) { (wallet) in
+        DataManager.shared.getWalletWith(name: walletName, chain: chainId! as NSNumber, chainType: chainType! as NSNumber) { [unowned self] (wallet) in
             if wallet != nil {
                 self.openMagicReceive(wallet: wallet!, dlParams: params)
             } else {
@@ -531,10 +531,10 @@ class AssetsPresenter: NSObject {
                     let walletID = self.account!.topIndexes.filter("currencyID = \(chainId!) AND networkID == \(chainType!)").first
                     print(answer)
                     print(walletID)
-                    DataManager.shared.apiManager.getOneCreatedWalletVerbose(walletID: walletID!.topIndex, blockchain: blockchainType, completion: { (dict, err) in
+                    DataManager.shared.apiManager.getOneCreatedWalletVerbose(walletID: walletID!.topIndex, blockchain: blockchainType, completion: { [unowned self] (dict, err) in
                         print(dict)
                         if ((dict as! NSDictionary)["code"] as! NSNumber) == 400 {
-                            self.assetsVC?.presentAlert(with: "Sorry Error")
+                            self.assetsVC?.presentAlert(with: self.assetsVC?.localize(string: Constants.errorString))
                             return
                         }
                         let wallet = UserWalletRLM.initWithInfo(walletInfo: (dict!["wallet"] as! NSArray)[0] as! NSDictionary)
