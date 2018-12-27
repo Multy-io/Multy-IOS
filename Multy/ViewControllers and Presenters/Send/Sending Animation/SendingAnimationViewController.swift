@@ -107,7 +107,6 @@ class SendingAnimationViewController: UIViewController, AnalyticsProtocol {
         case .sendTX:
             navigationController?.popToRootViewController(animated: true)
         }
-        
     }
     
     func sendOK() {
