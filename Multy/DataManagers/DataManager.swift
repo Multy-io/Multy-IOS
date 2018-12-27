@@ -46,6 +46,25 @@ class DataManager: NSObject {
 //        })
     }
     
+    func currencyPairString(fromAsset: Any?, toAsset: Any?) -> String? {
+        guard let stringFrom = assetShortName(asset: fromAsset), let stringTo = assetShortName(asset: toAsset) else {
+            return nil
+        }
+        
+        return stringFrom + "_" + stringTo
+    }
+    
+    func assetShortName(asset: Any?) -> String? {
+        switch asset {
+        case let blockchain as Blockchain:
+            return blockchain.shortName.uppercased()
+        case let token as TokenRLM:
+            return token.ticker.uppercased()
+        default:
+            return nil
+        }
+    }
+    
     func mapAddressesAndSave(_ contacts: [EPContact]) {
         savedAddresses.removeAll()
         

@@ -26,7 +26,7 @@ struct MarketInfo {
     }
 }
 
-class ExchangePresenter: NSObject, SendWalletProtocol {
+class ExchangePresenter: NSObject, SendWalletProtocol, AnalyticsProtocol {
     var slideGradient: CAGradientLayer?
     var exchangeMarket = ExchangeMarket.changelly
     var marketInfo = MarketInfo()
@@ -577,10 +577,21 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                     self.exchangeVC?.presentAlert(with: error?.localizedDescription)
                 }
             } else {
+                
+                
+                
                 let value = BigInt(depositAmountString).cryptoValueStringWithTicker(for: self.walletFromSending!.assetBlockchain)
                 self.presentSuccesScreen(value , depositAddress)
             }
         }
+    }
+    
+    func sendAnalytics(amountString: String) {
+        guard let pairString = DataManager.shared.currencyPairString(fromAsset: walletFromSending?.assetObject, toAsset: walletToReceive?.assetObject) else {
+            return
+        }
+        
+        exchangeSuccess(pairString: pairString, amount: BigInt(amountString).cryptoValueString(for: walletFromSending!.assetObject))
     }
     
     func presentSuccesScreen(_ amount: String, _ address: String) {

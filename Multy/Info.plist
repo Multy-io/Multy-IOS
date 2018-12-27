@@ -38,7 +38,7 @@
 	<key>GIT_BRANCH_NAME</key>
 	<string>exchange</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>979ae382</string>
+	<string>936ccb70</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_1.4.1_79_RealmMigration-dirty</string>
 	<key>LSRequiresIPhoneOS</key>

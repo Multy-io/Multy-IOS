@@ -50,4 +50,8 @@ extension AnalyticsProtocol {
         let code = DataManager.shared.donationCode
         sendAnalyticsEvent(screenName: screenDonationSuccess, eventName: screenDonationSuccessWith_ + "\(code)")
     }
+    
+    func exchangeSuccess(pairString: String, amount: String) {
+        sendAnalyticsEvent(screenName: screenExchange, eventName: pairString + " " + "\(amount)")
+    }
 }

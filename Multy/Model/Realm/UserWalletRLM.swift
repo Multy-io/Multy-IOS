@@ -222,6 +222,14 @@ class UserWalletRLM: Object {
         }
     }
     
+    var assetObject: Any? {
+        if blockchain == BLOCKCHAIN_ERC20 {
+            return token
+        } else {
+            return blockchain
+        }
+    }
+    
     @objc dynamic var fiatName = String()
     @objc dynamic var fiatSymbol = String()
     
