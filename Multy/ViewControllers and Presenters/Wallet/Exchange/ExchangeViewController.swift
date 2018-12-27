@@ -230,6 +230,8 @@ class ExchangeViewController: UIViewController {
         presenter.makeSendFiatTfValue()
         presenter.setEndValueToSend()
         presenter.setEndValueToReceive()
+        
+        presenter.isSendMax = false
     }
     
     @IBAction func sendingFiatValueChanged(_ sender: Any) {
@@ -238,6 +240,8 @@ class ExchangeViewController: UIViewController {
         presenter.makeSendCryptoTfValue()
         presenter.setEndValueToSend()
         presenter.setEndValueToReceive()
+        
+        presenter.isSendMax = false
     }
     
     @IBAction func receiveCryptoValueChanged(_ sender: Any) {
@@ -246,6 +250,8 @@ class ExchangeViewController: UIViewController {
         presenter.makeReceiveFiatString()
         presenter.setEndValueToReceive()
         presenter.setEndValueToSend()
+        
+        presenter.isSendMax = false
     }
     
     @IBAction func receiveFiatValueChanged(_ sender: Any) {
@@ -254,12 +260,15 @@ class ExchangeViewController: UIViewController {
         presenter.makeReceiveCryptoTfValue()
         presenter.setEndValueToReceive()
         presenter.setEndValueToSend()
+        
+        presenter.isSendMax = false
     }
     
     @IBAction func maxToExchangeAction(_ sender: Any) {
         sendingCryptoValueTF.text = presenter.walletFromSending!.availableAmountString
         presenter.makeSendFiatTfValue()
         presenter.setEndValueToSend()
+        presenter.isSendMax = true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -63,6 +63,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     
     var feeRate = "1"
     var gasLimit = "\(1_000_000_000)"
+    var isSendMax = false
 
     var walletToReceive: UserWalletRLM? {
         didSet {
@@ -153,6 +154,8 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         } else {
             exchangeVC!.summaryReceiveFiatLbl.isHidden = true
         }
+        
+        exchangeVC?.sendingMaxBtn.isUserInteractionEnabled = true
         
         exchangeVC?.sendingCryptoValueTF.isUserInteractionEnabled = true
         exchangeVC?.receiveCryptoValueTF.isUserInteractionEnabled = true
@@ -396,6 +399,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                 self.gasLimit = gasLimitForMS
                                             } else {
                                                 self.feeRate = "\(fastFeeRate)"
+                                                self.gasLimit = "21000"
                                             }
                                             
                                             completion(Result.success(true))
@@ -414,7 +418,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         let toTicker = walletToReceive!.assetShortName
         let amountString = exchangeVC!.sendingCryptoValueTF.text!.replacingOccurrences(of: ",", with: ".")
         
-        
+        exchangeVC?.loader.showAndLock(customTitle: localize(string: Constants.loadingString))
         DataManager.shared.apiManager.exchangeAmount(fromBlockchain: fromTicker,
                                                      toBlockchain: toTicker,
                                                      amount: amountString) { [unowned self] in
@@ -422,6 +426,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                         case .success(let info):
                                                             self.retrieveChangellyTX()
                                                         case .failure(let error):
+                                                            self.exchangeVC?.loader.hideAndUnlock()
                                                             self.exchangeVC?.presentAlert(with: error)
                                                         }
         }
@@ -458,6 +463,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                                     case .success(let info):
                                                                         self.checkExchangeInfoAndSend(amountString: amountString, info: info)
                                                                     case .failure(let error):
+                                                                        self.exchangeVC?.loader.hideAndUnlock()
                                                                         self.exchangeVC?.presentAlert(with: error)
                                                                     }
         }
@@ -465,6 +471,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     
     func checkExchangeInfoAndSend(amountString: String, info: NSDictionary) {
         guard let payingAddress = info["payinAddress"] as? String, payingAddress.isEmpty == false else {
+            exchangeVC?.loader.hideAndUnlock()
             exchangeVC!.presentAlert(with: localize(string: Constants.unableToExchangeString))
             
             return
@@ -486,6 +493,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                     self.createAndSendTX(info: info)
                 }
             case .failure(let error):
+                self.exchangeVC?.loader.hideAndUnlock()
                 self.exchangeVC?.presentAlert(with: error)
                 print(error)
             }
@@ -495,7 +503,6 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     func createAndSendTX(info: NSDictionary) {
         let depositAmountString = (info["depositAmount"] as! NSNumber).stringValue.convertCryptoAmountStringToMinimalUnits(for: walletFromSending?.blockchain).stringValue
         let depositAddress = info["deposit"] as! String
-
         
         var trData = (isTransactionCorrect: false, message: "Error")
         var binaryData = DataManager.shared.realmManager.account!.binaryDataString.createBinaryData()!
@@ -514,23 +521,31 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                             feePerByteAmount: feeRate,
                                                             isDonationExists: false,
                                                             donationAmount: "",
-                                                            isPayCommission: true,
+                                                            isPayCommission: !isSendMax,
                                                             wallet: walletFromSending!.assetWallet,
                                                             binaryData: &binaryData,
                                                             inputs: walletFromSending!.assetWallet.addresses)
             
             trData = (isTransactionCorrect: data.1 >= 0, message: data.0)
         case BLOCKCHAIN_ETHEREUM:
+            var correctedAmount = depositAmountString
+            
+            if isSendMax && walletFromSending!.blockchain == BLOCKCHAIN_ETHEREUM {
+                correctedAmount = (BigInt(depositAmountString) - BigInt(feeRate) * BigInt(gasLimit)).stringValue
+            }
+            
             trData = DataManager.shared.createETHTransaction(wallet: walletFromSending!.assetWallet,
-                                                             sendAmountString: depositAmountString,
+                                                             sendAmountString: correctedAmount,
                                                              destinationAddress: depositAddress,
                                                              gasPriceAmountString: feeRate,
                                                              gasLimitAmountString: gasLimit)
         default:
+            exchangeVC?.loader.hideAndUnlock()
             exchangeVC?.presentAlert(with: "\(walletFromSending!.assetBlockchain.fullName): not imlemented yet")
         }
         
         if trData.isTransactionCorrect == false {
+            exchangeVC?.loader.hide()
             exchangeVC?.presentAlert(with: "transaction is not created. Error: \(trData.message)")
             
             return
@@ -554,6 +569,8 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             ] as [String : Any]
         
         DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
+            self.exchangeVC?.loader.hideAndUnlock()
+            
             if error != nil {
                 if let info = (error as NSError?)?.userInfo["message"] as? String {
                     self.exchangeVC?.presentAlert(with: info)
@@ -561,7 +578,12 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                     self.exchangeVC?.presentAlert(with: error?.localizedDescription)
                 }
             } else {
-                self.exchangeVC?.presentAlert(with: self.localize(string: Constants.errorSendingTxString))
+                let alert = UIAlertController(title: nil, message: self.localize(string: Constants.successString), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { [unowned self] _ in
+                    self.exchangeVC?.navigationController?.popViewController(animated: true)
+                }))
+                
+                self.exchangeVC?.present(alert, animated: true, completion: nil)
             }
         }
     }
