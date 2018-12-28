@@ -326,7 +326,8 @@ let copyTap                     = "Button_Copy"
 let exchangeTap                 = "Button_exchange"
 
 let screenExchange              = "Screen_Exchange"
-let exchangeSuccess             = "Exchange_Succes_"//AssetNameFrom-AssetNameTo-Amount
+let exchangeSuccessChangelly    = "Exchange_Succes_Changelly_"//AssetNameFrom-AssetNameTo
+let exchangeSuccessQuickex      = "Exchange_Succes_Quickex_"//AssetNameFrom-AssetNameTo
 
 //featues code
 let donationWithTransaction     = 20000

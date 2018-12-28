@@ -71,6 +71,8 @@ class ExchangeViewController: UIViewController {
 //        presenter.updateReceiveSection()
         sendingCryptoValueTF.delegate = self
         
+        presenter.sendLoadScreenAnalytic()
+        
         //quickex
         //FIXME: update later to other chains
 //        let toBlockchain = presenter.walletFromSending!.blockchain == BLOCKCHAIN_BITCOIN ? BLOCKCHAIN_ETHEREUM : BLOCKCHAIN_BITCOIN

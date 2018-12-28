@@ -51,7 +51,7 @@ extension AnalyticsProtocol {
         sendAnalyticsEvent(screenName: screenDonationSuccess, eventName: screenDonationSuccessWith_ + "\(code)")
     }
     
-    func exchangeSuccess(pairString: String, amount: String) {
-        sendAnalyticsEvent(screenName: screenExchange, eventName: pairString + " " + "\(amount)")
+    func exchangeSuccess(pairString: String, market: ExchangeMarket) {
+        sendAnalyticsEvent(screenName: screenExchange, eventName: market.analyticString + pairString)
     }
 }

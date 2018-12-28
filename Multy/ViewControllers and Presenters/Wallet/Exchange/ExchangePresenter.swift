@@ -5,11 +5,20 @@
 import UIKit
 
 private typealias LocalizeDelegate = ExchangePresenter
+private typealias AnalyticsDelegate = ExchangePresenter
 
 enum ExchangeMarket: String {
-    case
-        changelly = "Changelly",
-        quickex = "Quickex"
+    case changelly
+    case quickex
+    
+    var analyticString: String {
+        switch self {
+        case .changelly:
+            return exchangeSuccessChangelly
+        case .quickex:
+            return exchangeSuccessQuickex
+        }
+    }
 }
 
 struct MarketInfo {
@@ -26,7 +35,7 @@ struct MarketInfo {
     }
 }
 
-class ExchangePresenter: NSObject, SendWalletProtocol, AnalyticsProtocol {
+class ExchangePresenter: NSObject, SendWalletProtocol {
     var slideGradient: CAGradientLayer?
     var exchangeMarket = ExchangeMarket.changelly
     var marketInfo = MarketInfo()
@@ -578,20 +587,12 @@ class ExchangePresenter: NSObject, SendWalletProtocol, AnalyticsProtocol {
                 }
             } else {
                 
-                
+                self.sendAnalytics()
                 
                 let value = BigInt(depositAmountString).cryptoValueStringWithTicker(for: self.walletFromSending!.assetBlockchain)
                 self.presentSuccesScreen(value , depositAddress)
             }
         }
-    }
-    
-    func sendAnalytics(amountString: String) {
-        guard let pairString = DataManager.shared.currencyPairString(fromAsset: walletFromSending?.assetObject, toAsset: walletToReceive?.assetObject) else {
-            return
-        }
-        
-        exchangeSuccess(pairString: pairString, amount: BigInt(amountString).cryptoValueString(for: walletFromSending!.assetObject))
     }
     
     func presentSuccesScreen(_ amount: String, _ address: String) {
@@ -615,6 +616,20 @@ class ExchangePresenter: NSObject, SendWalletProtocol, AnalyticsProtocol {
                 self.minimalValueString = answerDict!["amount"] as! String
             }
         }
+    }
+}
+
+extension AnalyticsDelegate: AnalyticsProtocol {
+    func sendAnalytics() {
+        guard let pairString = DataManager.shared.currencyPairString(fromAsset: walletFromSending?.assetObject, toAsset: walletToReceive?.assetObject) else {
+            return
+        }
+        
+        exchangeSuccess(pairString: pairString, market: exchangeMarket)
+    }
+    
+    func sendLoadScreenAnalytic() {
+        sendAnalyticsEvent(screenName: screenExchange, eventName: screenExchange)
     }
 }
 
