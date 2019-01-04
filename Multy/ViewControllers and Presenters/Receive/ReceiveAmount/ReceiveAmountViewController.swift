@@ -17,6 +17,8 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var bottomSumLbl: UILabel!
     @IBOutlet weak var bottomCurrencyNameLbl: UILabel!
     @IBOutlet weak var constraintBtnBottom: NSLayoutConstraint!
+    @IBOutlet weak var swapButton: UIButton!
+    @IBOutlet weak var hideUnusedUIView: UIView!
     
     @IBOutlet weak var btnTopConstraint: NSLayoutConstraint! // ipad
     
@@ -46,9 +48,18 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)),
                                                name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
-        cryptoName = blockchainType.shortName
+        cryptoName = presenter.wallet!.assetShortName
         tabBarController?.tabBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         fixForIpad()
+        
+        if presenter.tokenHolderWallet != nil {
+            swapButton.isUserInteractionEnabled = false
+            hideUnusedUIView.isHidden = false
+            bottomSumLbl.isHidden = true
+            bottomCurrencyNameLbl.isHidden = true
+            
+            btnTopConstraint.constant = 40
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,9 +110,9 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
             bottomCurrencyNameLbl.text = fiatName
         }
         
-        amountTF.text = amountTF.text?.replacingOccurrences(of: ".", with: ",")
-        bottomSumLbl.text = bottomSumLbl.text?.replacingOccurrences(of: ".", with: ",")
-        sumLbl.text = sumLbl.text?.replacingOccurrences(of: ".", with: ",")
+        amountTF.text = amountTF.text?.replacingOccurrences(of: ",", with: ".")
+        bottomSumLbl.text = bottomSumLbl.text?.replacingOccurrences(of: ",", with: ".")
+        sumLbl.text = sumLbl.text?.replacingOccurrences(of: ",", with: ".")
         if amountTF.text!.contains(" ") {
             amountTF.text = amountTF.text?.replacingOccurrences(of: " ", with: "")  //delete space after exchange action
         }
@@ -136,7 +147,7 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch isCrypto{
         case true:
-            if ((amountTF.text! + string) as NSString).doubleValue > presenter.getMaxValueOfChain(curency: blockchainType.blockchain) {
+            if blockchainType.blockchain != BLOCKCHAIN_ERC20 && ((amountTF.text! + string) as NSString).doubleValue > presenter.getMaxValueOfChain(curency: blockchainType.blockchain) {
                 presentWarning(message: localize(string: Constants.youCantEnterSumString))
                 
                 return false
@@ -164,14 +175,14 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
         let newLength = text.count + string.count - range.length
         
         if newLength <= self.maxLengthForSum {
-            self.amountTF.text = self.amountTF.text?.replacingOccurrences(of: ".", with: ",")
+            self.amountTF.text = self.amountTF.text?.replacingOccurrences(of: ",", with: ".")
             
-            if (string == "," || string == ".") && (self.amountTF.text?.contains(","))!{
+            if (string == "," || string == ".") && (self.amountTF.text?.contains(defaultDelimeter))!{
                 return false
             }
             
-            if (self.amountTF.text?.contains(","))! && string != "" {
-                let strAfterDot: [String?] = (self.amountTF.text?.components(separatedBy: ","))!
+            if (self.amountTF.text?.contains(defaultDelimeter))! && string != "" {
+                let strAfterDot: [String?] = (self.amountTF.text?.components(separatedBy: String(defaultDelimeter)))!
                 if self.isCrypto {
                     if strAfterDot[1]?.count == 8 {
                         return false
@@ -190,7 +201,7 @@ class ReceiveAmountViewController: UIViewController, UITextFieldDelegate {
             }
 
             if string == "," || string == "." {
-                self.sumLbl.text = self.amountTF.text! + ","
+                self.sumLbl.text = self.amountTF.text! + String(defaultDelimeter)
             } else {
                 if string != "" {
                     self.sumLbl.text = self.amountTF.text! + string

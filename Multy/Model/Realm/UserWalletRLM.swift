@@ -222,6 +222,105 @@ class UserWalletRLM: Object {
         }
     }
     
+    var assetObject: Any? {
+        if blockchain == BLOCKCHAIN_ERC20 {
+            return token
+        } else {
+            return blockchain
+        }
+    }
+    
+    @objc dynamic var fiatName = String()
+    @objc dynamic var fiatSymbol = String()
+    
+    @objc dynamic var address = String()
+    
+    @objc dynamic var historyAddress : AddressRLM?
+    
+    @objc dynamic var isTherePendingTx = NSNumber(value: 0)
+    
+    @objc dynamic var ethWallet: ETHWallet?
+    @objc dynamic var btcWallet: BTCWallet?
+    @objc dynamic var multisigWallet: MultisigWallet?
+    
+    weak var tokenHolderWallet: UserWalletRLM?
+    
+    var token: TokenRLM? {
+        return DataManager.shared.realmManager.erc20Tokens[address.lowercased()]
+    }
+    
+    var exchangeCourse: Double {
+        return DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
+    }
+    
+    var addresses = List<AddressRLM>() {
+        didSet {
+            var sum : UInt64 = 0
+            
+            for address in addresses {
+                for out in address.spendableOutput {
+                    sum += out.transactionOutAmount.uint64Value
+                }
+            }
+            
+            sumInCrypto = sum.btcValue
+            
+            address = addresses.last?.address ?? ""
+        }
+    }
+    
+    var mainWalletWithTokenWallets: [UserWalletRLM] {
+        return [self] + tokenWallets
+    }
+    
+    var tokenWallets: [UserWalletRLM] {
+        if ethWallet == nil {
+            return [UserWalletRLM]()
+        } else {
+            weak var weakSelf = self
+            
+            return ethWallet!.erc20Tokens.map { weakSelf!.createTokenWallet(for: $0) }
+        }
+    }
+    
+    func createTokenWallet(for token: WalletTokenRLM) -> UserWalletRLM {
+        let tokenWallet = UserWalletRLM()
+        
+        tokenWallet.address = token.address
+        tokenWallet.name = token.name
+        tokenWallet.chain = NSNumber(value: token.token?.blockchainType.blockchain.rawValue ?? 0)
+        tokenWallet.chainType = chainType
+        tokenWallet.cryptoName = token.ticker
+        
+        tokenWallet.ethWallet = ETHWallet()
+        tokenWallet.ethWallet!.balance = token.balance
+        
+        tokenWallet.tokenHolderWallet = self
+        
+        return tokenWallet
+    }
+    
+    func createTokenWallet(for token: TokenRLM) -> UserWalletRLM {
+        let tokenWallet = UserWalletRLM()
+        
+        tokenWallet.address = token.contractAddress
+        tokenWallet.name = token.name
+        tokenWallet.chain = NSNumber(value: token.blockchainType.blockchain.rawValue)
+        tokenWallet.chainType = chainType
+        tokenWallet.cryptoName = token.ticker
+        
+        tokenWallet.ethWallet = ETHWallet()
+        tokenWallet.ethWallet!.balance = "0"
+        
+        tokenWallet.tokenHolderWallet = self
+        
+        return tokenWallet
+    }
+    
+    var isTokenWallet: Bool {
+        return tokenHolderWallet != nil
+    }
+    
     func confirmationStatusForTransaction(transaction : HistoryRLM) -> ConfirmationStatus {
         var result = ConfirmationStatus.waiting
         if isMultiSig && transaction.multisig != nil {
@@ -262,43 +361,6 @@ class UserWalletRLM: Object {
 //        let declinedCount = tx.multisig!.owners.filter { $0.confirmationStatus.intValue == MultisigOwnerTxStatus.msOwnerStatusDeclined.rawValue }.count
         
         return declinedCount + multisigWallet!.signaturesRequiredCount > multisigWallet!.ownersCount
-    }
-    
-    @objc dynamic var fiatName = String()
-    @objc dynamic var fiatSymbol = String()
-    
-    @objc dynamic var address = String()
-    
-    @objc dynamic var historyAddress : AddressRLM?
-    
-    @objc dynamic var isTherePendingTx = NSNumber(value: 0)
-    
-    @objc dynamic var ethWallet: ETHWallet?
-    @objc dynamic var btcWallet: BTCWallet?
-    @objc dynamic var multisigWallet: MultisigWallet?
-    
-    var token: TokenRLM? {
-        return DataManager.shared.realmManager.erc20Tokens[address]
-    }
-
-    var exchangeCourse: Double {
-        return DataManager.shared.makeExchangeFor(blockchainType: blockchainType)
-    }
-    
-    var addresses = List<AddressRLM>() {
-        didSet {
-            var sum : UInt64 = 0
-            
-            for address in addresses {
-                for out in address.spendableOutput {
-                    sum += out.transactionOutAmount.uint64Value
-                }
-            }
-            
-            sumInCrypto = sum.btcValue
-            
-            address = addresses.last?.address ?? ""
-        }
     }
     
     class func checkMissingTokens(array: List<UserWalletRLM>) {
@@ -639,7 +701,7 @@ class UserWalletRLM: Object {
     }
     
     override static func ignoredProperties() -> [String] {
-        return ["availableSumInCrypto", "availableSumInFiat"]
+        return ["availableSumInCrypto", "availableSumInFiat", "tokenHolderWaller"]
     }
     
 //    public func updateWallet(walletInfo: NSDictionary) {

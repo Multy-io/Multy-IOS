@@ -29,6 +29,7 @@ struct Constants {
         static let createWalletVCSegueID = "createWalletVC"
         static let contactVCSegueID = "contactVC"
         static let waitingMembersSettingsVCSegueID = "waitingMembersSettings"
+        static let toExchangeSegueID = "toExchangeSegue"
     }
     
     struct UserDefaults {
@@ -90,6 +91,10 @@ struct Constants {
         static let defaultETHCustomFeeKey = BigInt("1") // in GWei
     }
     
+    struct Infura {
+        static let mainnetETHUrl = "https://mainnet.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
+        static let testnetETHUrl = "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8"
+    }
 }
 
 extension LocalizeDelegate: Localizable {
@@ -135,7 +140,7 @@ enum DefaultFeeRates: Hashable {
 
 let minBTCDonationAmount = 0.0001
 
-let defaultDelimeter = "," as Character
+let defaultDelimeter = "." as Character
 
 let screenSize = UIScreen.main.bounds
 let screenWidth = UIScreen.main.bounds.size.width
@@ -297,11 +302,9 @@ let minSatoshiInWalletForDonate: UInt64 = 10000 //10k minimun sum in wallet for 
 let minSatoshiToDonate: UInt64          = 5000  //5k minimum sum to donate
 
 let plainTxGasLimit : UInt64 = 42000
-let plainERC20TxGasLimit : UInt64 = 5_000_000
+let plainERC20TxGasLimit : UInt64 = 500_000
+let exchangeERC20TxGasLimit : UInt64 = 250_000
 let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 16.10.2018
-
-//API REST constants
-//let apiUrl = "http://88.198.47.112:2278/"//"http://192.168.0.121:7778/"
 
 //
 let shortURL = "api.multy.io"

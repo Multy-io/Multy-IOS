@@ -36,7 +36,7 @@ class BlockchainsPresenter: NSObject {
     
     private func addCurrencyObjects(blockchainArray: [BlockchainType], into array: inout [CurrencyObj]) {
         for blockchain in blockchainArray {
-            let currencyObj = CurrencyObj.createCurrencyObj(blockchain: blockchain)
+            let currencyObj = CurrencyObj.createCurrencyObj(blockchainType: blockchain)
             array.append(currencyObj)
         }
     }

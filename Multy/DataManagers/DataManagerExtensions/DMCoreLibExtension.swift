@@ -396,7 +396,7 @@ extension CoreLibInfoManager {
             return nil
         }
         
-        if wallet.isImported {
+        if wallet.isImportedForPrimaryKey {
             if wallet.importedPrivateKey.isEmpty {
                 return nil
             } else {

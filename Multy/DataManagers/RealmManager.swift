@@ -843,6 +843,28 @@ extension WalletManager {
         }
     }
     
+//    func deleteWalletBy(primaryKey: String) {
+//        getRealm { (realmOpt, error) in
+//            if let realm = realmOpt {
+//                let wallet = realm.object(ofType: UserWalletRLM.self, forPrimaryKey: primaryKey)
+//                try! realm.write {
+//                    realm.delete(wallet!)
+//                }
+//            }
+//        }
+//    }
+//
+//    func fetchAddressesForWalllet(walletID: NSNumber, completion: @escaping(_ : [String]?) -> ()) {
+//        getWallet(walletID: walletID) { (wallet) in
+//            if wallet != nil {
+//                var addresses = [String]()
+//                wallet!.addresses.forEach({ addresses.append($0.address) })
+//                completion(addresses)
+//            } else {
+//                completion(nil)
+//            }
+//        }
+//    }
     
     func deleteWallet(_ wallet: UserWalletRLM, realm: Realm) {
         //FIXME: only for non-multisig wallets
@@ -970,6 +992,17 @@ extension RecentAddressManager {
                 let savedAddresses = SavedAddressesRLM()
                 savedAddresses.addresses = [String: String]()
                 completion(savedAddresses, error)
+            }
+        }
+    }
+    
+    func getActiveWalletsWithoutMSFor(blockchainType: BlockchainType, completion: @escaping (_ wallets: [UserWalletRLM]) -> ()) {
+        getRealm { (realmOpt, error) in
+            if let realm = realmOpt {
+                var wallets = Array(realm.objects(UserWalletRLM.self).filter("cryptoName == '\(blockchainType.shortName)' AND chainType = \(blockchainType.net_type)"))
+                wallets = wallets.filter{ $0.isMultiSig == false && $0.isImportedHasKey }
+                
+                completion(wallets)
             }
         }
     }

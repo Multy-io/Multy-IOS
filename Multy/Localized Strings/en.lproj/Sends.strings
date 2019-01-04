@@ -20,7 +20,7 @@
 "FEE RATE LESS THEN" = "Fee rate can not be less then";
 "SATOSHI PER BYTE" = "satoshi per byte";
 "FEE TOO HIGH" = "You fee is too high. Please enter normal fee amount!";
-"GAS PRICE LESS 1" = "Gas Price can not be less then 1 Gwei.";
+"GAS PRICE LESS 1" = "Gas Price cannot be less then 1 Gwei.";
 "SUCCESS" = "Success!";
 "DONE" = "Done!";
 "ERROR WHILE SENDING TX" = "Error while sending transaction. Please, try again!";
@@ -55,3 +55,4 @@
 "ENTER AMOUNT" = "ENTER AMOUNT";
 "ENTER NON-ZERO AMOUNT" = "Please, enter non-zero amount!";
 "SEND AMOUNT: iPhone 5" = "Send Amount";
+"GAS LIMIT LESS 21K" = "Gas limit cannot be less then 21000";

@@ -5,7 +5,7 @@
 import UIKit
 import Lottie
 
-protocol SliderDelegate: class {
+protocol SliderProtocol: class {
     func didSlideToSend(_ sender: SlideViewController)
 }
 
@@ -21,7 +21,7 @@ class SlideViewController: UIViewController {
     var finishSlideX: CGFloat = screenWidth - 33
     
     var animateTimer: Timer?
-    weak var delegate : SliderDelegate?
+    weak var delegate : SliderProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()

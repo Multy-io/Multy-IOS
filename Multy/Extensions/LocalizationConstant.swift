@@ -163,4 +163,13 @@ extension Constants {
     static let sendAmountiPhone5 = "SEND AMOUNT: iPhone 5"
     static let dbCorruptTitle = "DB CORRUPT TITLE"
     static let dbCorruptMessage = "DB CORRUPT MESSAGE"
+    static let assetsNotConvertibleString = "ASSETS ARE NOT CONVERTIBLE"
+    static let cannotRetrieveExchangeRateString = "CANNOT RETRIEVE EXCHANGE RATE"
+    static let notDeterminedString = "NOT DETERMINED"
+    static let unableToExchangeString = "UNABLE TO EXCHANGE"
+    static let createWalletAutomaticallyString = "CREATE WALLET AUTOMATICALLY"
+    static let gasLimitLess21KString = "GAS LIMIT LESS 21K"
+    static let noResultsString = "NO RESULTS"
+    static let exchangeIsUnavailable = "EXCHANGE IS UNAVAILABLE"
+    static let notImplementedYet = "NOT IMPLEMENTED YET"
 }

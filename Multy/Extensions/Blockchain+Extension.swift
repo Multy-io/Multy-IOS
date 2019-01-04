@@ -17,7 +17,7 @@ extension Blockchain {
         }
     }
     
-    var multiplyerToMinimalUnits: BigInt {
+    var multiplierToMinimalUnits: BigInt {
         get {
             switch self {
             case BLOCKCHAIN_BITCOIN:
@@ -207,5 +207,37 @@ extension Blockchain {
         }
         
         return maxLenght
+    }
+    
+    var defaultfeeRate: String {
+        var feeRate = "1"
+        
+        switch self {
+        case BLOCKCHAIN_BITCOIN:
+            feeRate = "2"
+        case BLOCKCHAIN_ETHEREUM, BLOCKCHAIN_ERC20://GasPrice
+            feeRate = "\(1_000_000_000)"
+        default:
+            feeRate = "1"
+        }
+        
+        return feeRate
+    }
+    
+    var defaultGasLimit: String {
+        var gasLimit = "1"
+        
+        switch self {
+        case BLOCKCHAIN_BITCOIN:
+            gasLimit = "0"
+        case BLOCKCHAIN_ETHEREUM:
+            gasLimit = "\(plainTxGasLimit)"
+        case BLOCKCHAIN_ERC20:
+            gasLimit = "\(plainERC20TxGasLimit)"
+        default:
+            gasLimit = "1"
+        }
+        
+        return gasLimit
     }
 }

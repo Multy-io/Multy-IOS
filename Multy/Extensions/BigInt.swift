@@ -28,6 +28,15 @@ class BigInt: NSObject {
         let _ = DataManager.shared.coreLibManager.errorString(from: mbi, mask: "\n\ninit big int\n\n")
     }
     
+    init(_ stringWithDoubleValue: String, _ blockchain: Blockchain) {
+        super.init()
+        
+//        let valueInMinimalUnits = stringWithDoubleValue.convertCryptoAmountStringToMinimalUnits(in: blockchain)
+        let valueInMinimalUnits = stringWithDoubleValue.convertCryptoAmountStringToMinimalUnits(for: blockchain)
+        let mbi = make_big_int(valueInMinimalUnits.stringValue.UTF8CStringPointer, valuePointer)
+        let _ = DataManager.shared.coreLibManager.errorString(from: mbi, mask: "\n\ninit big int\n\n")
+    }
+    
     var isNonZero: Bool {
         get {
             return self != Int64(0)
@@ -237,6 +246,27 @@ class BigInt: NSObject {
         let precision = token == nil ? 0 : token!.decimals.intValue
         
         return stringValue.appendDelimeter(at: precision).showString(8)
+    }
+    
+    func cryptoValueStringWithTicker(for object: Any?) -> String {
+        switch object {
+        case let blockchain as Blockchain:
+            return cryptoValueStringWithTicker(for: blockchain)
+        case let token as TokenRLM:
+            return cryptoValueStringWithTicker(for: token)
+        default:
+            return "0"
+        }
+    }
+    
+    func cryptoValueStringWithTicker(for blockchain: Blockchain) -> String {
+        return stringValue.appendDelimeter(at: blockchain.maxPrecision).showString(8) + " " + blockchain.shortName
+    }
+    
+    func cryptoValueStringWithTicker(for token: TokenRLM?) -> String {
+        let precision = token == nil ? 0 : token!.decimals.intValue
+        
+        return stringValue.appendDelimeter(at: precision).showString(8) + (token == nil ? "" : " " + token!.ticker)
     }
     
     deinit {

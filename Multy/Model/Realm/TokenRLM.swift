@@ -18,7 +18,7 @@ class TokenRLM: Object {
     }
     
     var tokenImageURLString: String {
-        return "https://raw.githubusercontent.com/Multy-io/tokens/master/images/\(contractAddress).png"
+        return "https://raw.githubusercontent.com/Multy-io/tokens/master/images/\(contractAddress.lowercased()).png"
     }
     
     var precision: Int {
@@ -37,8 +37,6 @@ class TokenRLM: Object {
         }
     }
     
-    //func makeIcon by address for example or ticker
-    
     public class func initArrayWithArray(tokensArray: NSArray, blockchainType: BlockchainType) -> [TokenRLM] {
         var tokens = [TokenRLM]()
         
@@ -53,7 +51,7 @@ class TokenRLM: Object {
     public class func createWith(_ address: String, blockchainType: BlockchainType) -> TokenRLM {
         let erc20token = TokenRLM()
         
-        erc20token.contractAddress  = address
+        erc20token.contractAddress  = address.lowercased()
         erc20token.currencyID       = NSNumber(value: blockchainType.blockchain.rawValue)
         erc20token.netType          = NSNumber(value: blockchainType.net_type)
         
@@ -64,7 +62,7 @@ class TokenRLM: Object {
         let erc20token = TokenRLM()
         
         if let contractAddress = tokensInfo["ContractAddress"] {
-            erc20token.contractAddress = contractAddress as! String
+            erc20token.contractAddress = (contractAddress as! String).lowercased()
         }
         
         if let ticker = tokensInfo["Ticker"] {

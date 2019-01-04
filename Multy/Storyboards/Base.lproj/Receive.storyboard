@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -365,10 +365,10 @@ You can create one by tapping "+"  at the top right.</string>
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WdU-vV-Cb8">
-                                        <rect key="frame" x="15.5" y="73.5" width="342.5" height="401"/>
+                                        <rect key="frame" x="15.5" y="73.5" width="344" height="401"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gm8-Tf-jrp">
-                                                <rect key="frame" x="101.5" y="18" width="140" height="141"/>
+                                                <rect key="frame" x="102" y="18" width="140" height="141"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ThE-pM-iFA" userLabel="Qr Holder View">
                                                         <rect key="frame" x="0.0" y="0.0" width="140" height="141"/>
@@ -407,7 +407,7 @@ You can create one by tapping "+"  at the top right.</string>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3DA28WCp4Cu5LQiddJnDJJmKWvmmZAKP5K" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TcM-XW-eXl">
-                                                <rect key="frame" x="48.5" y="175" width="245.5" height="15.5"/>
+                                                <rect key="frame" x="48.5" y="175" width="247" height="15.5"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="11"/>
                                                 <color key="textColor" red="0.21176470589999999" green="0.21176470589999999" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -427,21 +427,21 @@ You can create one by tapping "+"  at the top right.</string>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
                                             <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="6a8-cd-Cp7">
-                                                <rect key="frame" x="0.0" y="203.5" width="342.5" height="2"/>
+                                                <rect key="frame" x="0.0" y="203.5" width="344" height="2"/>
                                                 <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="2" id="Top-0c-C7H"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aj5-6E-t5v">
-                                                <rect key="frame" x="0.0" y="301.5" width="342.5" height="2"/>
+                                                <rect key="frame" x="0.0" y="301.5" width="344" height="2"/>
                                                 <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="2" id="zl2-jf-MAO"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SXI-5J-BlV">
-                                                <rect key="frame" x="0.0" y="205.5" width="328.5" height="96"/>
+                                                <rect key="frame" x="0.0" y="205.5" width="330" height="96"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
                                                 <state key="normal" title="Request summ">
                                                     <color key="titleColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -451,14 +451,14 @@ You can create one by tapping "+"  at the top right.</string>
                                                 </connections>
                                             </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron" translatesAutoresizingMaskIntoConstraints="NO" id="d7q-S5-bpY">
-                                                <rect key="frame" x="313.5" y="246" width="15" height="15"/>
+                                                <rect key="frame" x="315" y="246" width="15" height="15"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="15" id="aFh-UD-9hC"/>
                                                     <constraint firstAttribute="height" constant="15" id="l3E-2O-F7K"/>
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AXb-Qw-h0b">
-                                                <rect key="frame" x="0.0" y="303.5" width="336.5" height="96"/>
+                                                <rect key="frame" x="0.0" y="303.5" width="338" height="96"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="14"/>
                                                 <state key="normal">
                                                     <color key="titleColor" red="0.52941176469999995" green="0.63137254899999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -474,7 +474,7 @@ You can create one by tapping "+"  at the top right.</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron" translatesAutoresizingMaskIntoConstraints="NO" id="Aws-8s-3F6">
-                                                <rect key="frame" x="313.5" y="344" width="15" height="15"/>
+                                                <rect key="frame" x="315" y="344" width="15" height="15"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="15" id="V7j-ak-utR"/>
                                                     <constraint firstAttribute="width" constant="15" id="lko-1a-2fy"/>
@@ -505,7 +505,7 @@ You can create one by tapping "+"  at the top right.</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ann-9P-bqo">
-                                                <rect key="frame" x="48.5" y="175" width="280" height="15"/>
+                                                <rect key="frame" x="48.5" y="175" width="281.5" height="15"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="15" id="Pvz-ko-cX6"/>
                                                 </constraints>
@@ -554,7 +554,7 @@ You can create one by tapping "+"  at the top right.</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron" translatesAutoresizingMaskIntoConstraints="NO" id="0iV-OV-cac">
-                                                <rect key="frame" x="313.5" y="174.5" width="15" height="15"/>
+                                                <rect key="frame" x="315" y="174.5" width="15" height="15"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="15" id="fbq-qC-41O"/>
                                                     <constraint firstAttribute="height" constant="15" id="mEd-PH-wDs"/>
@@ -634,13 +634,13 @@ You can create one by tapping "+"  at the top right.</string>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cancel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Et-dH-d2P">
-                                        <rect key="frame" x="304" y="29.5" width="53.5" height="24"/>
+                                        <rect key="frame" x="305.5" y="29.5" width="53.5" height="24"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                         <color key="textColor" red="0.21176470589999999" green="0.21176470589999999" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9u-xK-NFv">
-                                        <rect key="frame" x="284" y="26.5" width="89.5" height="30"/>
+                                        <rect key="frame" x="285.5" y="26.5" width="89.5" height="30"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="cancelAction:" destination="Ci5-VC-rpK" eventType="touchUpInside" id="9og-7R-6Au"/>
@@ -861,13 +861,18 @@ You can create one by tapping "+"  at the top right.</string>
                                 <color key="textColor" red="0.52941176470588236" green="0.63137254901960782" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uQx-pj-NgK">
+                                <rect key="frame" x="16" y="450" width="343" height="63"/>
+                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="deviceRGB"/>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.89801448583602905" green="0.89777094125747681" blue="0.91821378469467163" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstItem="Ehy-SB-2yj" firstAttribute="top" secondItem="lXp-WU-5ec" secondAttribute="bottom" constant="8.5" id="0PM-A9-dU5"/>
                             <constraint firstItem="1L7-H1-E5D" firstAttribute="top" secondItem="hbS-jX-vva" secondAttribute="bottom" constant="13" id="559-j9-FiO"/>
                             <constraint firstItem="lXp-WU-5ec" firstAttribute="top" secondItem="qZH-gm-lpy" secondAttribute="bottom" constant="60" id="5m2-FG-wvy"/>
                             <constraint firstItem="lXp-WU-5ec" firstAttribute="leading" secondItem="VeI-na-O7A" secondAttribute="leading" constant="-30" id="8T7-3L-4tp"/>
+                            <constraint firstItem="uQx-pj-NgK" firstAttribute="top" secondItem="VeI-na-O7A" secondAttribute="top" id="8y6-s0-Ati"/>
                             <constraint firstItem="lXp-WU-5ec" firstAttribute="centerY" secondItem="VeI-na-O7A" secondAttribute="centerY" id="Avf-76-940"/>
                             <constraint firstItem="Ehy-SB-2yj" firstAttribute="centerX" secondItem="h8C-J7-PWy" secondAttribute="centerX" id="C1h-1C-tSf"/>
                             <constraint firstItem="Egj-4Y-5Va" firstAttribute="leading" secondItem="h8C-J7-PWy" secondAttribute="leading" id="ELY-Kl-pPI"/>
@@ -886,10 +891,13 @@ You can create one by tapping "+"  at the top right.</string>
                             <constraint firstItem="Vfg-fp-rB8" firstAttribute="centerY" secondItem="VeI-na-O7A" secondAttribute="centerY" id="aCF-lm-LeR"/>
                             <constraint firstItem="SJp-d1-7t5" firstAttribute="centerX" secondItem="h8C-J7-PWy" secondAttribute="centerX" id="abg-cz-A2x"/>
                             <constraint firstAttribute="trailing" secondItem="1rx-ZD-enW" secondAttribute="trailing" constant="16" id="b5a-AJ-DuD"/>
+                            <constraint firstItem="uQx-pj-NgK" firstAttribute="trailing" secondItem="1rx-ZD-enW" secondAttribute="trailing" id="ddu-7E-eKg"/>
                             <constraint firstAttribute="trailing" secondItem="roV-FV-zns" secondAttribute="trailing" id="dw5-Os-kox"/>
                             <constraint firstItem="lXp-WU-5ec" firstAttribute="centerX" secondItem="Ehy-SB-2yj" secondAttribute="centerX" id="elb-Xo-Glo"/>
+                            <constraint firstItem="uQx-pj-NgK" firstAttribute="bottom" secondItem="Ehy-SB-2yj" secondAttribute="bottom" id="iS8-bB-eSK"/>
                             <constraint firstItem="Egj-4Y-5Va" firstAttribute="top" secondItem="hbS-jX-vva" secondAttribute="bottom" constant="13" id="ixx-p4-Tof"/>
                             <constraint firstItem="F0n-7y-x9F" firstAttribute="leading" secondItem="eGl-ZA-fcR" secondAttribute="trailing" constant="2" id="kEo-qG-zoz"/>
+                            <constraint firstItem="uQx-pj-NgK" firstAttribute="leading" secondItem="Vfg-fp-rB8" secondAttribute="leading" id="kdj-TY-WUI"/>
                             <constraint firstItem="1L7-H1-E5D" firstAttribute="leading" secondItem="h8C-J7-PWy" secondAttribute="leading" constant="9" id="ln2-QI-ab3"/>
                             <constraint firstItem="lXp-WU-5ec" firstAttribute="trailing" secondItem="VeI-na-O7A" secondAttribute="trailing" constant="30" id="n16-cL-JQf"/>
                             <constraint firstItem="Egj-4Y-5Va" firstAttribute="trailing" secondItem="1L7-H1-E5D" secondAttribute="trailing" constant="50" id="uAv-xr-zVb"/>
@@ -906,7 +914,9 @@ You can create one by tapping "+"  at the top right.</string>
                         <outlet property="constraintBtnBottom" destination="XJu-tO-ay9" id="5EO-dH-LcB"/>
                         <outlet property="currencyNameLbl" destination="F0n-7y-x9F" id="ols-t6-3hv"/>
                         <outlet property="doneBtn" destination="roV-FV-zns" id="tGd-cV-vj2"/>
+                        <outlet property="hideUnusedUIView" destination="uQx-pj-NgK" id="rHB-Cc-2it"/>
                         <outlet property="sumLbl" destination="eGl-ZA-fcR" id="NsJ-Up-ZTu"/>
+                        <outlet property="swapButton" destination="lXp-WU-5ec" id="reE-Kf-CYz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7cR-Ou-KRa" userLabel="First Responder" sceneMemberID="firstResponder"/>

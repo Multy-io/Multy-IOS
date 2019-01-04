@@ -93,9 +93,9 @@ extension UIView {
         self.layer.insertSublayer(gradient, at: 0)
     }
     
-    func applyGradient(withColours colours: [UIColor], gradientOrientation orientation: GradientOrientation) {
+    func applyGradient(withColours colours: [UIColor], gradientOrientation orientation: GradientOrientation) -> CAGradientLayer? {
         if frame.width != screenWidth {
-            return
+            return nil
         }
         
         let gradient: CAGradientLayer = CAGradientLayer()
@@ -104,6 +104,8 @@ extension UIView {
         gradient.startPoint = orientation.startPoint
         gradient.endPoint = orientation.endPoint
         self.layer.insertSublayer(gradient, at: 0)
+        
+        return gradient
     }
     
     

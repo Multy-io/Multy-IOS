@@ -73,6 +73,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var receiveIcon: UIImageView!
     @IBOutlet weak var receiveLabel: UILabel!
     @IBOutlet weak var receiveButton: UIButton!
+    @IBOutlet weak var exchangeImageView: UIImageView!
+    @IBOutlet weak var exchangeLabel: UILabel!
+    @IBOutlet weak var exchangeButton: UIButton!
     
     var presenter = WalletPresenter()
     
@@ -148,6 +151,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    var loader = PreloaderView(frame: HUDFrame, text: "", image: #imageLiteral(resourceName: "walletHuge"))
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent//currentStatusStyle
     }
@@ -155,22 +160,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        view.addSubview(loader)
         presenter.walletVC = self
         presenter.registerCells()
         addGestureRecognizers()
-        
-        if presenter.walletRepresentingMode == .tokenInfo {
-            setupUIForToken()
-            
-            receiveIcon.alpha = 0.3
-            receiveLabel.alpha = 0.3
-            receiveButton.alpha = 0.3
-            
-            receiveButton.isUserInteractionEnabled = false
-            
-            emptyLbl.isHidden = true
-            emptyArrowImg.isHidden = true
-        }
         
         setupUI()
     }
@@ -264,6 +257,16 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         checkConstraints()
         makeGradientForBottom()
         
+        if presenter.walletRepresentingMode == .tokenInfo {
+            setupUIForToken()
+        }
+        
+        if presenter.wallet!.blockchainType.isMainnet == false {
+            exchangeLabel.alpha = 0.3
+            exchangeButton.isUserInteractionEnabled = false
+            exchangeButton.alpha = 0.3
+            exchangeImageView.alpha = 0.3
+        }
         
         //------------  WARNING  ------------//
 //        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
@@ -492,7 +495,21 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     func setupUIForToken() {
         settingsImg.isHidden = true
         settingsBtn.isHidden = true
+        
+        showAddressesBtn.isUserInteractionEnabled = false
+        shareAddressBtn.isUserInteractionEnabled = false
+        showAddressesBtn.alpha = 0.3
+        shareAddressBtn.alpha = 0.3
 //        presenter.isToken = true
+        
+        emptyLbl.isHidden = true
+        emptyArrowImg.isHidden = true
+        
+        //cancel receive for tokens
+        receiveButton.isUserInteractionEnabled = false
+        receiveButton.alpha = 0.3
+        receiveIcon.alpha = 0.3
+        receiveLabel.alpha = 0.3
     }
     
     @IBAction func titleAction(_ sender: Any) {
@@ -585,7 +602,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         
         let storyboard = UIStoryboard(name: "Send", bundle: nil)
         let sendStartVC = storyboard.instantiateViewController(withIdentifier: "sendStart") as! SendStartViewController
-        sendStartVC.presenter.transactionDTO.tokenHolderWallet = self.presenter.tokenHolderWallet
         sendStartVC.presenter.transactionDTO.choosenWallet = self.presenter.wallet
         //        if presenter.importedPrivateKey != nil && presenter.importedPublicKey != nil {
         //            sendStartVC.presenter.transactionDTO.choosenWallet?.importedPrivateKey = presenter.importedPrivateKey!
@@ -599,9 +615,50 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBAction func receiveAction(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Receive", bundle: nil)
         let receiveDetailsVC = storyboard.instantiateViewController(withIdentifier: "receiveDetails") as! ReceiveAllDetailsViewController
-        receiveDetailsVC.presenter.wallet = self.presenter.wallet
+        receiveDetailsVC.presenter.wallet = presenter.wallet
         self.navigationController?.pushViewController(receiveDetailsVC, animated: true)
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(receiveWithChainTap)\(presenter.wallet!.chain)")
+    }
+    
+    @IBAction func exchangeAction(_ sender: Any) {
+        if presenter.wallet!.availableAmount.isZero {
+            self.presentAlert(with: localize(string: Constants.noFundsString))
+            
+            return
+        } else if let tokenWallet = presenter.tokenHolderWallet, tokenWallet.availableAmount.isZero {
+            self.presentAlert(with: localize(string: Constants.noFundsString))
+            
+            return
+        }
+        //        unowned let weakSelf =  self
+        //        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
+        loader.show(customTitle: "Loading")
+        DataManager.shared.apiManager.getSupportedExchanges { [unowned self] (answerDict, err) in
+            
+        
+//        DataManager.shared.apiManager.getCurrenciesChangelly { (answerDict, err) in
+            self.loader.hide()
+            if answerDict != nil {
+                let currenciesArr = answerDict!["currencies"] as! Array<String>
+                let supportedTokens = DataManager.shared.supportedTokens(tikersArray: currenciesArr)
+                if currenciesArr.contains("btc") && currenciesArr.contains("eth") {
+                    let storyboard = UIStoryboard(name: "Wallet", bundle: nil)
+                    let exchangeVC = storyboard.instantiateViewController(withIdentifier: "exchangeVC") as! ExchangeViewController
+                    exchangeVC.presenter.walletFromSending = self.presenter.wallet
+                    exchangeVC.presenter.supportedTokens = supportedTokens
+                    self.navigationController?.pushViewController(exchangeVC, animated: true)
+                } else {
+                    //error alert: Changily don`t convert btc to eth and eth to usd
+                }
+            } else {
+                self.presentAlert(with: self.localize(string: Constants.unableToExchangeString))
+            }
+        }
+//        DataManager.shared.apiManager.getSupportedExchanges { (answerDict, error) in
+//
+//
+//        }
+        logAnalytics()
     }
     
     @IBAction func settingssAction(_ sender: Any) {
@@ -635,13 +692,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         adressesVC.presenter.wallet = presenter.wallet
         navigationController?.pushViewController(adressesVC, animated: true)
         sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(allAddressesWithChainTap)\(presenter.wallet!.chain)")
-    }
-    
-    @IBAction func exchangeAction(_ sender: Any) {
-        unowned let weakSelf =  self
-        self.presentDonationAlertVC(from: weakSelf, with: "io.multy.addingExchange50")
-        //        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(exchangeWithChainTap)\(presenter.wallet!.chain)")
-        logAnalytics()
     }
     
     func logAnalytics() {
@@ -702,8 +752,7 @@ extension TableViewDelegate: UITableViewDelegate {
                 walletVC.presenter.wallet = presenter.wallet
             } else {
                 walletVC.presenter.walletRepresentingMode = .tokenInfo
-                walletVC.presenter.tokenHolderWallet = presenter.wallet!
-                walletVC.presenter.wallet = presenter.makeWalletFrom(token: presenter.assetsDataSource[indexPath.row])
+                walletVC.presenter.wallet = presenter.wallet!.createTokenWallet(for: presenter.assetsDataSource[indexPath.row])
             }
             
             navigationController?.pushViewController(walletVC, animated: true)

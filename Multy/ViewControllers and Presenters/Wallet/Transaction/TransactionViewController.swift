@@ -590,6 +590,8 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     }
 }
 
+//MARK: -
+//MARK: -
 extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) {
         if contact.contactId == nil {
@@ -609,6 +611,8 @@ extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
     }
 }
 
+//MARK: -
+//MARK: -
 extension AnalyticsDelegate: AnalyticsProtocol {
     func sendAnalyticOnStrart() {
         if self.presenter.blockedAmount(for: presenter.histObj) > 0 {
@@ -628,6 +632,8 @@ extension AnalyticsDelegate: AnalyticsProtocol {
     }
 }
 
+//MARK: -
+//MARK: -
 extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DoubleSliderDelegate {
     
     //MARK: UICollectionViewDataSource
@@ -681,12 +687,16 @@ extension MultisigDelegate: UICollectionViewDataSource, UICollectionViewDelegate
     }
 }
 
+//MARK: -
+//MARK: -
 extension LocalizeDelegate: Localizable {
     var tableName: String {
         return "Wallets"
     }
 }
 
+//MARK: -
+//MARK: -
 extension CancelDelegate : CancelProtocol {
     func cancelAction() {
         makePurchaseFor(productId: "io.multy.addingExchange5")

@@ -81,6 +81,14 @@ class ApiManager: NSObject, RequestRetrier {
     public func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
         print("\n\n\n\n\n\nretrier: \(request.request?.urlRequest?.url?.absoluteString)\n\n\n\n\n\n")
         
+        guard let address = request.request?.urlRequest?.url?.absoluteString else {
+            return
+        }
+        
+        guard address.hasPrefix("http://test.multy.io/") || address.hasPrefix("http://api.multy.io/") || address.hasPrefix("http://stage.multy.io/") else {
+            return
+        }
+        
         getServerConfig { (answer, error) in
             if answer != nil && error == nil {
                 self.topVC?.removeNoConnection(view: self.noConnectionView!)
@@ -549,13 +557,12 @@ class ApiManager: NSObject, RequestRetrier {
                 if let data = response.data {
                     if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: Any] {
                         print(json)
-                        let bakcError = NSError(domain: "", code: json["code"] as! Int, userInfo: ["Message" : json["message"] as! String])
+                        let bakcError = NSError(domain: "", code: json["code"] as! Int, userInfo: ["message" : json["message"] as! String])
                         completion(nil, bakcError)
                         break
                     }
                 }
                 completion(nil, response.result.error)
-                break
             }
             
         }
@@ -825,6 +832,157 @@ class ApiManager: NSObject, RequestRetrier {
                 completion(Result.failure(response.result.error!.localizedDescription))
                 break
             }
+        }
+    }
+    
+    func getSupportedExchanges(completion: @escaping(_ dict: NSDictionary?, _ error: Error?) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type"  : "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/exchanger/supported_currencies", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    completion(response.result.value as! NSDictionary, nil)
+                } else {
+                    completion(nil, response.result.error)
+                }
+            case .failure(_):
+                completion(nil, response.result.error)
+                break
+            }
+        }
+    }
+    
+    func getMinExchangeAmount(fromBlockchain: String, toBlockchain: String, completion: @escaping(_ dict: NSDictionary?, _ error: Error?) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type"  : "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        let params: Parameters = [
+            "from": fromBlockchain,
+            "to"  : toBlockchain
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/exchanger/minimum_amount", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+//                amount = "0.145668";
+//                code = 200;
+//                message = OK;
+                if response.result.value != nil {
+                    print("MINIMUM\n\(response.result.value)")
+                    completion(response.result.value as! NSDictionary, nil)
+                } else {
+                    completion(nil, response.result.error)
+                }
+            case .failure(_):
+                completion(nil, response.result.error)
+                break
+            }
+        }
+    }
+    
+    func exchangeAmount(fromBlockchain: String, toBlockchain: String, amount: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type"  : "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        let params: Parameters = [
+            "from": fromBlockchain,
+            "to": toBlockchain,
+            "amount": amount
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/exchanger/exchange_amount", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { [unowned self] (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    print(response.result.value as! NSDictionary)
+                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
+                }
+            case .failure(_):
+                let errorString = self.returnErrorString(dataResponse: response)
+                completion(Result.failure(errorString))
+            }
+        }
+    }
+    
+    func createExchangeTransaction(fromBlockchain: String, toBlockchain: String, amount: String, receiveAddress: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type"  : "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        let params: Parameters = [
+            "from": fromBlockchain,
+            "to": toBlockchain,
+            "amount": amount,
+            "address": receiveAddress
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/exchanger/transaction", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    print(response.result.value as! NSDictionary)
+                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
+                }
+            case .failure(_):
+                let errorString = self.returnErrorString(dataResponse: response)
+                completion(Result.failure(errorString))
+            }
+        }
+    }
+    
+    func sendExchange(fromBlockchain: String, toBlockchain: String, amount: String, receiveAddress: String, completion: @escaping(Result<NSDictionary, String>) -> ()) {
+        let header: HTTPHeaders = [
+            "Content-Type"  : "application/json",
+            "Authorization" : "Bearer \(self.token)"
+        ]
+        
+        let params: Parameters = [
+            "from": fromBlockchain,
+            "to": toBlockchain,
+            "amount": amount,
+            "address": receiveAddress
+        ]
+        
+        requestManager.request("\(apiUrl)api/v1/exchanger/transaction", method: .post, parameters: params, encoding: JSONEncoding.default, headers: header).validate().debugLog().responseJSON { (response: DataResponse<Any>) in
+            switch response.result {
+            case .success(_):
+                if response.result.value != nil {
+                    print(response.result.value as! NSDictionary)
+                    completion(Result.success(response.result.value as! NSDictionary))
+                } else {
+                    completion(Result.failure("Error"))
+                }
+            case .failure(_):
+                completion(Result.failure(response.result.error!.localizedDescription))
+            }
+        }
+    }
+}
+
+extension ApiManager {
+    func returnErrorString(dataResponse: DataResponse<Any>) -> String {
+        if let data = dataResponse.data {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: Any], let message = json["message"] as? String {
+                print(json)
+                return message
+            } else {
+                return dataResponse.error!.localizedDescription
+            }
+        } else {
+            return dataResponse.error!.localizedDescription
         }
     }
 }

@@ -255,6 +255,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         
         refreshControl.beginRefreshing()
         refreshControl.endRefreshing()
+        
+//        DataManager.shared.apiManager.getStatus(of: "6cbzgcwowscrs13l") { print($0) }
     }
     
     @objc fileprivate func handleWalletDeletedNotification(notification : Notification) {
@@ -634,6 +636,8 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
     }
 }
 
+//MARK: -
+//MARK: -
 extension CreateWalletDelegate: CreateWalletProtocol {
     func goToCreateWallet(tag: String) {
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
@@ -667,6 +671,8 @@ extension CreateWalletDelegate: CreateWalletProtocol {
     }
 }
 
+//MARK: -
+//MARK: -
 extension CancelDelegate: CancelProtocol {
     func cancelAction() {
 //        presentDonationVCorAlert()
@@ -684,6 +690,8 @@ extension CancelDelegate: CancelProtocol {
     }
 }
 
+//MARK: -
+//MARK: -
 extension PresentingSheetDelegate: OpenCreatingSheet {
     //MARK: CreateNewWalletProtocol
     func openNewWalletSheet() {
@@ -719,6 +727,8 @@ extension PresentingSheetDelegate: OpenCreatingSheet {
     }
 }
 
+//MARK: -
+//MARK: -
 extension TableViewDelegate : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.tappedIndexPath = indexPath
@@ -944,6 +954,8 @@ extension TableViewDelegate : UITableViewDelegate {
     }
 }
 
+//MARK: -
+//MARK: -
 extension TableViewDataSource : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -1073,6 +1085,8 @@ extension TableViewDataSource : UITableViewDataSource {
     
 }
 
+//MARK: -
+//MARK: -
 extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -1101,6 +1115,8 @@ extension CollectionViewDelegateFlowLayout : UICollectionViewDelegateFlowLayout 
     }
 }
 
+//MARK: -
+//MARK: -
 extension PushTxDelegate {
     func openTxFromPush() {
         let app = UIApplication.shared.delegate as? AppDelegate
@@ -1163,18 +1179,24 @@ extension PushTxDelegate {
     }
 }
 
+//MARK: -
+//MARK: -
 extension SendWalletsDelegate: SendArrayOfWallets {
     func sendArrOfWallets(arrOfWallets: [UserWalletRLM]) {
         presenter.importedWalletsInDB = arrOfWallets
     }
 }
 
+//MARK: -
+//MARK: -
 extension LocalizeDelegate: Localizable {
     var tableName: String {
         return "Assets"
     }
 }
 
+//MARK: -
+//MARK: -
 extension BannersExtension: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

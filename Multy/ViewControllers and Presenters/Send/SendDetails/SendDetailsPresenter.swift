@@ -77,7 +77,7 @@ class SendDetailsPresenter: NSObject {
                 donationInCrypto = nil
             } else {
                 var donationStringForDouble = donationInCryptoString!
-                if donationStringForDouble.last == "," {
+                if donationStringForDouble.last == "," || donationStringForDouble.last == "." {
                     donationStringForDouble.removeLast()
                 }
                 
@@ -115,6 +115,10 @@ class SendDetailsPresenter: NSObject {
                 vc?.tableView.reloadData()
             }
         }
+    }
+    
+    var customGasLimit: BigInt {
+        return transactionDTO.ETHDTO?.gasLimit ?? BigInt.zero()
     }
     
     var feeRates = NSDictionary() {
@@ -265,7 +269,7 @@ class SendDetailsPresenter: NSObject {
     
     func isPossibleToDonate(_ amountString: String) -> Bool {
         var donationStringForDouble = amountString
-        if donationStringForDouble.last == "," {
+        if donationStringForDouble.last == "," || donationStringForDouble.last == "." {
             donationStringForDouble.removeLast()
         }
         
@@ -319,6 +323,11 @@ extension CustomFeeRateDelegate: CustomFeeRateProtocol {
         }
         
         customFee = firstValue!
+        
+        if secValue != nil && blockchain == BLOCKCHAIN_ETHEREUM {
+            transactionDTO.ETHDTO!.gasLimit = secValue!
+        }
+        
         vc?.sendAnalyticsEvent(screenName: "\(screenTransactionFeeWithChain)\(transactionDTO.choosenWallet!.chain)", eventName: customFeeSetuped)
     }
 

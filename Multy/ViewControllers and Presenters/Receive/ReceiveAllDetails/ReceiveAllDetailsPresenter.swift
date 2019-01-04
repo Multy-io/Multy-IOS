@@ -34,10 +34,18 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
         }
     }
     
+    var tokenHolderWallet: UserWalletRLM? {
+        return wallet?.tokenHolderWallet
+    }
+    
     var wallet: UserWalletRLM? {
         didSet {
             if wallet != nil {
                 qrBlockchainString = BlockchainType.create(wallet: wallet!).qrBlockchainString
+                
+                if wallet?.blockchain == BLOCKCHAIN_ERC20 {
+                    sendTXMode = .erc20
+                }
                
                 if oldValue != wallet {
                     if wallet!.addresses.count > 0 {
@@ -57,6 +65,8 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
             }
         }
     }
+    
+    var sendTXMode = SendTXMode.crypto
     
     var qrBlockchainString = String()
     

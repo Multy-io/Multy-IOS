@@ -1,15 +1,17 @@
-//
-//  DMTokenExtension.swift
-//  Multy
-//
-//  Created by Alex Pro on 11/6/18.
-//  Copyright © 2018 Idealnaya rabota. All rights reserved.
-//
+//Copyright 2018 Idealnaya rabota LLC
+//Licensed under Multy.io license.
+//See LICENSE for details
 
 import Foundation
 import Web3
 
 extension DataManager {
+    func supportedTokens(tikersArray: Array<String>) -> [TokenRLM] {
+        let savedTokens = Array(DataManager.shared.realmManager.erc20Tokens.values)
+        
+        return savedTokens.filter { tikersArray.contains($0.ticker.lowercased()) }
+    }
+    
     func updateTokensInfo(_ tokensarray: [TokenRLM]) {
         if tokensarray.count == 0 {
             return
@@ -22,8 +24,8 @@ extension DataManager {
         
 //        let rpcURL = (blockchainType.net_type == ETHEREUM_CHAIN_ID_MAINNET.rawValue ? "https://mainnet.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8" : (UInt32(blockchainType.net_type) == ETHEREUM_CHAIN_ID_RINKEBY.rawValue ? "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8" : "" ))
 //        let web3 = Web3(rpcURL: rpcURL)
-        let web3Mainnet = Web3(rpcURL: "https://mainnet.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8")
-        let web3Rinkeby = Web3(rpcURL: "https://rinkeby.infura.io/v3/78ae782ed28e48c0b3f74ca69c4f7ca8")
+        let web3Mainnet = Web3(rpcURL: Constants.Infura.mainnetETHUrl)
+        let web3Rinkeby = Web3(rpcURL: Constants.Infura.testnetETHUrl)
         
         tokensarray.forEach { [unowned self] in
             let newToken = TokenRLM()

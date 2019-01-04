@@ -44,6 +44,14 @@ class WalletSettingsPresenter: NSObject {
                                                 }
                                                 
                                                 
+//                                                DataManager.shared.apiManager.deleteWallet(currencyID:  self.wallet!.chain,
+//                                                                                           networkID:   self.wallet!.chainType,
+//                                                                                           walletIndex: self.wallet!.walletID, completion: { (answer, err) in
+//                                                                                            DataManager.shared.realmManager.deleteWalletBy(primaryKey: self.wallet!.id)
+//                                                                                            self.walletSettingsVC?.loader.hide()
+//                                                                                            self.walletSettingsVC?.navigationController?.popToRootViewController(animated: true)
+//                                                                                            
+//                                                })
             })
         }
     }

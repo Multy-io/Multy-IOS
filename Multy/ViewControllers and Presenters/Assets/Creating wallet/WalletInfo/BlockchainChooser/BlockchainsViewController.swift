@@ -107,7 +107,7 @@ extension TableViewDelegate: UITableViewDelegate {
             logAnalytics(indexPath: indexPath)
         } else {
             let currencyObj = presenter.availableBlockchainArray[indexPath.row]
-            delegate?.setBlockchain(blockchain: currencyObj.currencyBlockchain)
+            delegate?.setBlockchain(blockchain: currencyObj.currencyBlockchainType)
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -159,7 +159,7 @@ extension TableViewDataSource: UITableViewDataSource {
         if indexPath.section == 0 {
             let currencyObj = presenter.availableBlockchainArray[indexPath.row]
             chainCell.fillFromArr(curObj: currencyObj)
-            chainCell.updateIconsVisibility(isAvailable: true, isChecked: currencyObj.currencyBlockchain == presenter.selectedBlockchain)
+            chainCell.updateIconsVisibility(isAvailable: true, isChecked: currencyObj.currencyBlockchainType == presenter.selectedBlockchain)
         } else {
             chainCell.fillFromArr(curObj: presenter.donateBlockchainArray[indexPath.row])
             chainCell.updateIconsVisibility(isAvailable: false, isChecked: false)

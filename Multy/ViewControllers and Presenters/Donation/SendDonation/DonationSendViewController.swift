@@ -234,13 +234,13 @@ class DonationSendViewController: UIViewController, UITextFieldDelegate, Analyti
             }
         }
         
-        if string == "." {
-            self.donationTF.text?.append(",")
+        if string == "," {
+            self.donationTF.text?.append(".")
             return false
         }
         
-        if (self.donationTF.text?.contains(","))! && string != "" {
-            let strAfterDot: [String?] = (self.donationTF.text?.components(separatedBy: ","))!
+        if (self.donationTF.text?.contains("."))! && string != "" {
+            let strAfterDot: [String?] = (self.donationTF.text?.components(separatedBy: "."))!
             if strAfterDot[1]?.count == 8 {
                 return false
             }
