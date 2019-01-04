@@ -22,7 +22,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
     weak var delegate: CustomFeeRateProtocol?
     
     var rate = BigInt.zero()
-    var gasLImit = BigInt.zero()
+    var gasLimit = BigInt.zero()
     var previousSelected: Int?
     
     override func viewDidLoad() {
@@ -59,7 +59,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
             self.botNameLbl.isHidden = false
             self.botLimitTf.isHidden = false
             
-            self.botLimitTf.text = gasLImit.stringValue
+            self.botLimitTf.text = gasLimit.stringValue
             
             if rate.isNonZero {
                 self.topPriceTF.text = presenter.textForRate(rate)
@@ -100,7 +100,7 @@ class CustomFeeViewController: UIViewController, UITextFieldDelegate {
         if topPriceTF.text == nil || BigInt(topPriceTF.text!) < defaultCustomFee {
             switch presenter.blockchainType!.blockchain {
             case BLOCKCHAIN_BITCOIN:
-                let message = "\(localize(string: Constants.feeRateLessThenString)) \(defaultCustomFee) \(localize(string: Constants.satoshiPerByteString))"
+                let message = "\(localize(string: Constants.feeRateLessThenString)) \(defaultCustomFee.stringValue) \(localize(string: Constants.satoshiPerByteString))"
                 let alert = UIAlertController(title: localize(string: Constants.warningString), message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
                     self.topPriceTF.becomeFirstResponder()

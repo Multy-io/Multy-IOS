@@ -118,7 +118,7 @@ class SendDetailsPresenter: NSObject {
     }
     
     var customGasLimit: BigInt {
-        return transactionDTO.ETHDTO!.gasLimit
+        return transactionDTO.ETHDTO?.gasLimit ?? BigInt.zero()
     }
     
     var feeRates = NSDictionary() {
