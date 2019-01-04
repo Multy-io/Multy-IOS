@@ -9,8 +9,6 @@ import CommonCryptoSwift
 typealias ChangellyManager = ApiManager
 
 let changellyURL = "https://api.changelly.com"
-let apiKey = "e277668dacd24629836b4c5f289aa52d"
-let secretKey = "57ef86f42d6790fc9b02f281a43e500a5639f067e4b25dc043240d891fc4e400"
 
 extension ChangellyManager {
     func getChangellyCurrencies(completion: @escaping(_ answer: Result<NSDictionary, String>) -> ()) {
@@ -35,7 +33,7 @@ extension ChangellyManager {
         
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
-            "api-key":      apiKey,
+            "api-key":      apiChangellyKey,
             "sign":         createSign(params: params)
         ]
         
@@ -60,7 +58,7 @@ extension ChangellyManager {
             let theJSONText = String(data: theJSONData, encoding: .ascii)
             print("JSON string = \(theJSONText!)")
             
-            let sign = HMAC.SHA512(string: theJSONText!, key: secretKey)
+            let sign = HMAC.SHA512(string: theJSONText!, key: secretChangellyKey)
             
             return sign!
         } else {

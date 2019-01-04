@@ -99,7 +99,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             exchangeVC?.sendingImg.moa.url = walletFromSending?.token?.tokenImageURLString
             exchangeVC?.sendingFiatValueTF.disableView()
         }
-        exchangeVC?.sendingMaxBtn.setTitle("MAX \(walletFromSending!.availableAmountString) \(walletFromSending!.blockchain.shortName)", for: .normal)
+        exchangeVC?.sendingMaxBtn.setTitle("MAX \(walletFromSending!.availableAmountString) \(walletFromSending!.assetShortName)", for: .normal)
         exchangeVC?.sendingCryptoName.text = walletFromSending?.assetShortName
         setEndValueToSend()
     }
@@ -139,7 +139,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     func makeBlockchainRelation() {
-        let relationString = String(marketInfo.rate).showString(8) //String(walletFromSending!.exchangeCourse / walletToReceive!.exchangeCourse).showString(8)
+        let relationString = String(format: "%.8f", marketInfo.rate).showString(8) //String(walletFromSending!.exchangeCourse / walletToReceive!.exchangeCourse).showString(8)
         exchangeVC?.sendToReceiveRelation.text = "1 " + walletFromSending!.assetShortName + "= " + relationString + " " + walletToReceive!.assetShortName
     }
     
@@ -510,7 +510,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
     }
     
     func createAndSendTX(info: NSDictionary) {
-        let depositAmountString = (info["depositAmount"] as! NSNumber).stringValue.convertCryptoAmountStringToMinimalUnits(for: walletFromSending?.blockchain).stringValue
+        let depositAmountString = (info["depositAmount"] as! NSNumber).stringValue.convertCryptoAmountStringToMinimalUnits(for: walletFromSending!.assetObject).stringValue
         let depositAddress = info["deposit"] as! String
         
         var trData = (isTransactionCorrect: false, message: "Error")
@@ -521,7 +521,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                            binaryData:    &binaryData)
         var correctedAmount = depositAmountString
         
-        switch walletFromSending!.assetBlockchain {
+        switch walletFromSending!.blockchain {
         case BLOCKCHAIN_BITCOIN:
             //BTC: imported not supported
             //FIXME:
@@ -547,6 +547,13 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                                                              destinationAddress: depositAddress,
                                                              gasPriceAmountString: feeRate,
                                                              gasLimitAmountString: gasLimit)
+        case BLOCKCHAIN_ERC20:
+            trData = DataManager.shared.createERC20TokenTransaction(wallet: walletFromSending!.tokenHolderWallet!,
+                                                                    tokenWallet: walletFromSending!,
+                                                                    sendTokenAmountString: depositAmountString,
+                                                                    destinationAddress: depositAddress,
+                                                                    gasPriceAmountString: feeRate,
+                                                                    gasLimitAmountString: "\(exchangeERC20TxGasLimit)")
         default:
             exchangeVC?.loader.hideAndUnlock()
             exchangeVC?.presentAlert(with: "\(walletFromSending!.assetBlockchain.fullName): \(localize(string: Constants.notImplementedYet))")
@@ -562,7 +569,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         let addressIndex = walletFromSending!.assetWallet.blockchain == BLOCKCHAIN_ETHEREUM ? 0 : walletFromSending!.assetWallet.addresses.count
         
         let newAddressParams = [
-            "walletindex"   : walletFromSending!.walletID.intValue,
+            "walletindex"   : walletFromSending!.assetWallet.walletID.intValue,
             "address"       : addressData!["address"] as! String,
             "addressindex"  : addressIndex,
             "transaction"   : trData.message,
@@ -570,9 +577,9 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             ] as [String : Any]
         
         let params = [
-            "currencyid": walletFromSending!.chain,
+            "currencyid": walletFromSending!.assetWallet.chain,
             /*"JWT"       : jwtToken,*/
-            "networkid" : walletFromSending!.chainType,
+            "networkid" : walletFromSending!.assetWallet.chainType,
             "payload"   : newAddressParams
             ] as [String : Any]
         
@@ -589,7 +596,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
                 
                 self.sendAnalytics()
                 
-                let value = BigInt(depositAmountString).cryptoValueStringWithTicker(for: self.walletFromSending!.assetBlockchain)
+                let value = BigInt(depositAmountString).cryptoValueStringWithTicker(for: self.walletFromSending!.assetObject)
                 self.presentSuccesScreen(value , depositAddress)
             }
         }

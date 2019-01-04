@@ -4,12 +4,8 @@
 
 import Foundation
 
-let apiQuickexKey = "e23bb19933259c45eed5"
-let privateQuickexKey = "0b3048805748d1a17180"
-
 extension DataManager {
     func marketInfo(fromBlockchain: Blockchain, toBlockchain: Blockchain, completion: @escaping(Result<NSDictionary, String>) -> ()) {
-        
         let currencyPairString = self.currencyPairString(fromBlockchain: fromBlockchain, toBlockchain: toBlockchain)
         
         apiManager.marketInfo(currencyPair: currencyPairString) { completion($0) }

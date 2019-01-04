@@ -102,6 +102,8 @@
 		44DCC201205A9D34001080FB /* TopIndexRLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DCC200205A9D34001080FB /* TopIndexRLM.swift */; };
 		44DFEF9F206A51AF0068769C /* UInt64+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */; };
 		44E0245C20F7AB1F00F822D6 /* MultiSigWalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */; };
+		44E2A5B821D6559C00B350D6 /* ChangellySocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E2A5B721D6559C00B350D6 /* ChangellySocket.swift */; };
+		44E2A5BA21D657E600B350D6 /* AppSecretsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E2A5B921D657E600B350D6 /* AppSecretsInfo.swift */; };
 		44EFBE5B20923EAC0081EE3A /* Blockchain+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44EFBE5A20923EAC0081EE3A /* Blockchain+Extension.swift */; };
 		44FB26C0205A6D5600F208EB /* BlockchainTransferProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FB26BF205A6D5600F208EB /* BlockchainTransferProtocol.swift */; };
 		4506F1741FD9A2E700D575BA /* WalletSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506F1731FD9A2E700D575BA /* WalletSettingsPresenter.swift */; };
@@ -619,6 +621,8 @@
 		44DCC200205A9D34001080FB /* TopIndexRLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopIndexRLM.swift; sourceTree = "<group>"; };
 		44DFEF9E206A51AF0068769C /* UInt64+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extension.swift"; sourceTree = "<group>"; };
 		44E0245B20F7AB1F00F822D6 /* MultiSigWalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSigWalletCell.swift; sourceTree = "<group>"; };
+		44E2A5B721D6559C00B350D6 /* ChangellySocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangellySocket.swift; sourceTree = "<group>"; };
+		44E2A5B921D657E600B350D6 /* AppSecretsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecretsInfo.swift; sourceTree = "<group>"; };
 		44E39EB1217881AA0095A42A /* endian.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
 		44E39EB2217881C00095A42A /* compiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compiler.h; sourceTree = "<group>"; };
 		44E39EB3217881E90095A42A /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
@@ -1136,6 +1140,7 @@
 				445B12DC20BD782500FD0D33 /* Localized Strings */,
 				4526F8DD2015383D00D2E491 /* Multy.entitlements */,
 				452290541FBB18D30024B550 /* AppDelegate.swift */,
+				44E2A5B921D657E600B350D6 /* AppSecretsInfo.swift */,
 				452290601FBB18D30024B550 /* Info.plist */,
 				459D82362136DBCF00BE479B /* InfoPlist.strings */,
 				45EBB6A7200D312700F81322 /* GoogleService-Info.plist */,
@@ -2330,6 +2335,7 @@
 				FADC00471FC3236F00182E45 /* ApiManager.swift */,
 				FADC00491FC3238D00182E45 /* RealmManager.swift */,
 				FADC004B1FC323A900182E45 /* Socket.swift */,
+				44E2A5B721D6559C00B350D6 /* ChangellySocket.swift */,
 				FADC004D1FC323C300182E45 /* CoreLibManager.swift */,
 				85741D8620B555DB0093933B /* BLEManager.swift */,
 				4452C32021BE9A560036F39D /* QuickexManager.swift */,
@@ -2936,6 +2942,7 @@
 				45090AE01FE95E7700019D00 /* BackupSeedPhraseView.swift in Sources */,
 				85DE62DF20AB003A00423D89 /* SendPresenter.swift in Sources */,
 				448D9939219AD72F000BAE00 /* UserWalletRLM+Extension.swift in Sources */,
+				44E2A5B821D6559C00B350D6 /* ChangellySocket.swift in Sources */,
 				45B0B0ED1FEBF2CF005BB1C0 /* ContactsViewController.swift in Sources */,
 				45AC1622204820BC00E75BD6 /* CurrencyToConvertViewController.swift in Sources */,
 				45E215E21FD16AA70078945A /* GoToQrProtocol.swift in Sources */,
@@ -3159,6 +3166,7 @@
 				445D14DA20DA528D002F6747 /* ContactRLM.swift in Sources */,
 				45498F932061662A00130B94 /* CurrencyExchange.swift in Sources */,
 				45B9CB001FBB4AB200AA2A31 /* AssetsPresenter.swift in Sources */,
+				44E2A5BA21D657E600B350D6 /* AppSecretsInfo.swift in Sources */,
 				FADC004A1FC3238D00182E45 /* RealmManager.swift in Sources */,
 				45E148AA204553C8006BD4D1 /* DonationAlertPrsenter.swift in Sources */,
 				440AD8D22020D1220015AEF1 /* Dictionary+Extension.swift in Sources */,
