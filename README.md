@@ -26,7 +26,7 @@ sudo gem install cocoapods
 ```
 pod update
 ```
-3. From version 1.4.2 there must be added a file "AppSecretInfo.swift" in folder Multy
+3. From version 1.4.2 there must be added a file "AppSecretInfo.swift" in folder Multy with correct keys
 ```
 import Foundation
 
