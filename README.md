@@ -26,13 +26,24 @@ sudo gem install cocoapods
 ```
 pod update
 ```
+3. From version 1.4.2 there must be added a file "AppSecretInfo.swift" in folder Multy with correct keys
+```
+import Foundation
 
-3. Please change  ```Bundle Identifier``` and ```Team``` in ```Multy Project Settings```<br />
+//exchange
+let apiChangellyKey = "..."
+let secretChangellyKey = "..."
+
+let apiQuickexKey = "..."
+let privateQuickexKey = "..."
+
+```
+4. Please change  ```Bundle Identifier``` and ```Team``` in ```Multy Project Settings```<br />
    If you want to join our team please contact to ``` @vadimicus ```  in Telegram
 
-4. Try to build the project on device(simulator not suported)
+5. Try to build the project on device(simulator not suported)
 
-5. If you have problem with "ButtonProgressBar" on building process<br />
+6. If you have problem with "ButtonProgressBar" on building process<br />
     You can use auto-fix<br />
     Or add ``` @objc ``` in begin of bug line
 
