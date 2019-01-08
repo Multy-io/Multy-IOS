@@ -15,7 +15,9 @@ class DataManager: NSObject {
     
     let apiManager = ApiManager.shared
     let realmManager = RealmManager.shared
+    
     let socketManager = Socket.shared
+//    let changellySocket = ChangellySocket.shared
     
     let coreLibManager = CoreLibManager.shared
     
@@ -33,17 +35,9 @@ class DataManager: NSObject {
         seedWordsArray = coreLibManager.mnemonicAllWords()
         
         savedAddresses = fetchAddressesFromUD()
-//        fetchSavedAddresses(completion: { [unowned self] (addresses, error) in
-//            if error == nil {
-//                if addresses == nil {
-//                    self.savedAddresses = SavedAddressesRLM()
-//                } else {
-//                    self.savedAddresses = addresses!
-//                }
-//            } else {
-//                self.savedAddresses = SavedAddressesRLM()
-//            }
-//        })
+        
+        //MARK: not working: changellySocket: got "NO ACK" every time while emit "subscribe"
+//        changellySocket.start()
     }
     
     func currencyPairString(fromAsset: Any?, toAsset: Any?) -> String? {

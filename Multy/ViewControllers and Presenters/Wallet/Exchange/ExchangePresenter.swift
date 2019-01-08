@@ -595,6 +595,7 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
             } else {
                 
                 self.sendAnalytics()
+//                DataManager.shared.changellySocket.subscribe()
                 
                 let value = BigInt(depositAmountString).cryptoValueStringWithTicker(for: self.walletFromSending!.assetObject)
                 self.presentSuccesScreen(value , depositAddress)

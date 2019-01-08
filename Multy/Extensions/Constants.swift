@@ -336,7 +336,6 @@ let BluetoothSettingsURL_iOS10 = "App-Prefs:root=Bluetooth"
 
 let inviteCodeCount = 45
 
-
 var currentStatusStyle = UIStatusBarStyle.default
 var isServerConnectionExist = true
 let exchangeCourseDefault : Double = 1.0

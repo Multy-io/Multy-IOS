@@ -261,7 +261,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             setupUIForToken()
         }
         
-        if presenter.wallet!.blockchainType.isMainnet == false {
+        if presenter.wallet!.blockchainType.isMainnet == false || presenter.wallet!.isMultiSig {
             exchangeLabel.alpha = 0.3
             exchangeButton.isUserInteractionEnabled = false
             exchangeButton.alpha = 0.3
