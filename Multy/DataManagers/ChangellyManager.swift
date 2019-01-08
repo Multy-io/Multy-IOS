@@ -52,7 +52,7 @@ extension ChangellyManager {
         }
     }
     
-    func createSign(params: Parameters) -> String  {
+    func createSign(params: Parameters) -> String {
         if let theJSONData = try? JSONSerialization.data(withJSONObject: params,
                                                          options: []) {
             let theJSONText = String(data: theJSONData, encoding: .ascii)
