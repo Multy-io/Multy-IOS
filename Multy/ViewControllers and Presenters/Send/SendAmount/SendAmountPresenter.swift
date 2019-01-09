@@ -248,7 +248,7 @@ class SendAmountPresenter: NSObject {
     func vcViewDidLoad() {
         createPreliminaryData()
         vc?.configure()
-        resetAmount()
+        changeSendAmountString(sendAmountString)
         updateTotalSumInCrypto()
     }
     

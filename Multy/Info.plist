@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>token</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -36,7 +38,7 @@
 	<key>GIT_BRANCH_NAME</key>
 	<string>master</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>0366c387</string>
+	<string>907ab91a</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_1.4.1_79_RealmMigration-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
