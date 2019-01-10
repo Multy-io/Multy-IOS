@@ -793,6 +793,9 @@ extension TableViewDelegate: UITableViewDelegate {
             } else {
                 walletVC.presenter.walletRepresentingMode = .tokenInfo
                 walletVC.presenter.wallet = presenter.wallet!.createTokenWallet(for: presenter.assetsDataSource[indexPath.row])
+                if walletVC.presenter.wallet?.tokenHolderWallet == nil {
+                    print("что за хуйня")
+                }
             }
             
             navigationController?.pushViewController(walletVC, animated: true)
