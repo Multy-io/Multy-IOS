@@ -78,6 +78,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var exchangeLabel: UILabel!
     @IBOutlet weak var exchangeButton: UIButton!
     
+    @IBOutlet weak var bottomSectionView: UIView!
     @IBOutlet weak var sendSectionView: UIView!
     @IBOutlet weak var receiveSectionView: UIView!
     @IBOutlet weak var exchangeSectionView: UIView!
@@ -179,20 +180,14 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         if presenter.walletRepresentingMode == .tokenInfo {
             setupUIForToken()
         }
-        
-        if presenter.wallet!.blockchainType.isMainnet == false || presenter.wallet!.isMultiSig {
-            addViewsToStackView(views: [sendSectionView, receiveSectionView])
-        } else {
-            addViewsToStackView(views: [sendSectionView, receiveSectionView, exchangeSectionView])
-        }
     }
     
     func addViewsToStackView(views: [UIView]) {
         actionButtonsStackView = StackView(arrangedSubviews: views)
-        actionButtonsStackView!.frame = actionsBtnsView.frame
+        actionButtonsStackView!.frame = bottomSectionView.bounds
         
-        let backActionView = UIView(frame: actionsBtnsView.frame)
-        backActionView.backgroundColor = UIColor(redInt: 62, greenInt: 150, blueInt: 248, alpha: 1.0)
+//        let backActionView = UIView(frame: actionsBtnsView.frame)
+//        backActionView.backgroundColor = UIColor(redInt: 62, greenInt: 150, blueInt: 248, alpha: 1.0)
         
         if views.count == 1 {
             let sendView = views.first!
@@ -213,10 +208,10 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             actionButtonsStackView!.alignment = .center
             actionButtonsStackView!.layoutIfNeeded()
             
-            view.addSubview(backActionView)
-            view.addSubview(actionButtonsStackView!)
+            bottomSectionView.addSubview(actionButtonsStackView!)
+            actionButtonsStackView!.autoresizingMask = [.flexibleLeftMargin, .flexibleTopMargin, .flexibleRightMargin, .flexibleBottomMargin]
             
-            backActionView.roundCorners(corners: .allCorners, radius: 15)
+            bottomSectionView.roundCorners(corners: .allCorners, radius: 15)
             views.first!.roundCorners(corners: [.topLeft, .bottomLeft], radius: 15)
             views.last!.roundCorners(corners: [.topRight, .bottomRight], radius: 15)
         }
@@ -233,6 +228,14 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets(notification:)), name: NSNotification.Name("transactionUpdated"), object: nil)
+        }
+        
+        if actionButtonsStackView == nil {
+            if presenter.wallet!.blockchainType.isMainnet == false || presenter.wallet!.isMultiSig {
+                addViewsToStackView(views: [sendSectionView, receiveSectionView])
+            } else {
+                addViewsToStackView(views: [sendSectionView, receiveSectionView, exchangeSectionView])
+            }
         }
     }
     
