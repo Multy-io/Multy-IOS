@@ -4268,6 +4268,11 @@ By donating you help us to bring blockchain technology one step closer to ordina
                                     <constraint firstAttribute="height" constant="64" id="s1a-be-WTY"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Final receive amount can be a little bit change" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yWg-HT-fGd">
+                                <rect key="frame" x="51.5" y="358.5" width="272.5" height="46.5"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -4276,12 +4281,15 @@ By donating you help us to bring blockchain technology one step closer to ordina
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jQj-jb-Ksx" secondAttribute="trailing" constant="16" id="Dy5-ss-MjU"/>
                             <constraint firstItem="X0m-oX-I9D" firstAttribute="centerX" secondItem="inC-wS-Odb" secondAttribute="centerX" id="FqW-fh-uiP"/>
                             <constraint firstItem="tFU-ER-gzu" firstAttribute="leading" secondItem="inC-wS-Odb" secondAttribute="leading" id="LFR-lx-SUq"/>
+                            <constraint firstItem="yWg-HT-fGd" firstAttribute="top" secondItem="X0m-oX-I9D" secondAttribute="bottom" constant="1" id="MW1-vp-nBd"/>
                             <constraint firstItem="zEh-uV-Pee" firstAttribute="top" secondItem="EHR-xB-BI0" secondAttribute="bottom" id="QNG-4C-YCp"/>
                             <constraint firstItem="jQj-jb-Ksx" firstAttribute="top" secondItem="TGl-eE-5qJ" secondAttribute="bottom" constant="12" id="SIF-mb-1Ml"/>
                             <constraint firstAttribute="trailing" secondItem="TGl-eE-5qJ" secondAttribute="trailing" id="VC7-YI-frV"/>
                             <constraint firstItem="TGl-eE-5qJ" firstAttribute="leading" secondItem="inC-wS-Odb" secondAttribute="leading" id="YWi-h9-372"/>
                             <constraint firstAttribute="trailing" secondItem="Inw-se-cYP" secondAttribute="trailing" id="dSe-aw-FMK"/>
                             <constraint firstItem="X0m-oX-I9D" firstAttribute="top" secondItem="jQj-jb-Ksx" secondAttribute="bottom" constant="2.5" id="eT8-l8-nqe"/>
+                            <constraint firstItem="yWg-HT-fGd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="inC-wS-Odb" secondAttribute="leading" constant="16" id="i8Q-ap-crj"/>
+                            <constraint firstItem="yWg-HT-fGd" firstAttribute="centerX" secondItem="inC-wS-Odb" secondAttribute="centerX" id="jF0-SE-qPP"/>
                             <constraint firstItem="Inw-se-cYP" firstAttribute="leading" secondItem="inC-wS-Odb" secondAttribute="leading" id="jdh-SP-a2B"/>
                             <constraint firstItem="TGl-eE-5qJ" firstAttribute="top" secondItem="zEh-uV-Pee" secondAttribute="bottom" id="kvz-q9-osW"/>
                             <constraint firstItem="jQj-jb-Ksx" firstAttribute="centerX" secondItem="inC-wS-Odb" secondAttribute="centerX" id="pYf-Jf-BIv"/>
@@ -4321,6 +4329,7 @@ By donating you help us to bring blockchain technology one step closer to ordina
                         <outlet property="summarySendingWalletNameLbl" destination="UPt-UB-AVf" id="sZ7-uQ-wr2"/>
                         <outlet property="summaryView" destination="tFU-ER-gzu" id="M8l-4C-ngR"/>
                         <outlet property="topViewHeightConstraint" destination="A7j-9q-MBo" id="e1h-jo-86P"/>
+                        <outlet property="warningLabel" destination="yWg-HT-fGd" id="XEx-0k-701"/>
                         <outletCollection property="arrCollection" destination="D4s-MD-eNc" collectionClass="NSMutableArray" id="WGM-YR-2dg"/>
                         <outletCollection property="arrCollection" destination="jd9-6T-WcA" collectionClass="NSMutableArray" id="FH7-SK-C5a"/>
                         <outletCollection property="arrCollection" destination="kf7-57-HAz" collectionClass="NSMutableArray" id="skV-2u-60G"/>

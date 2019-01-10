@@ -46,6 +46,7 @@ class ExchangeViewController: UIViewController {
     @IBOutlet weak var arr3: UIImageView!
     @IBOutlet var arrCollection: [UIImageView]!
     
+    @IBOutlet weak var warningLabel: UILabel!
     
     @IBOutlet weak var topViewHeightConstraint: NSLayoutConstraint!  // 295 /246
     
