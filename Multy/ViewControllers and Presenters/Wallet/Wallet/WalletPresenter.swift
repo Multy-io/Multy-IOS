@@ -148,7 +148,7 @@ class WalletPresenter: NSObject {
             walletVC!.pendingAmountFiatLbl.text = fiatSymbol + wallet!.sumInFiatString
         }
         
-        walletVC!.addressLbl.text = wallet!.address
+        walletVC!.addressLbl.text = wallet!.assetWallet.address
     }
     
     func isTherePendingMoney(for indexPath: IndexPath) -> Bool {

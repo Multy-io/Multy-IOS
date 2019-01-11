@@ -4,6 +4,7 @@
 
 import UIKit
 import Web3
+import Arranged
 //import MultyCoreLibrary
 
 private typealias TableViewDelegate = WalletViewController
@@ -76,6 +77,13 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var exchangeImageView: UIImageView!
     @IBOutlet weak var exchangeLabel: UILabel!
     @IBOutlet weak var exchangeButton: UIButton!
+    
+    @IBOutlet weak var bottomSectionView: UIView!
+    @IBOutlet weak var sendSectionView: UIView!
+    @IBOutlet weak var receiveSectionView: UIView!
+    @IBOutlet weak var exchangeSectionView: UIView!
+    
+    var actionButtonsStackView: StackView?
     
     var presenter = WalletPresenter()
     
@@ -166,6 +174,47 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         addGestureRecognizers()
         
         setupUI()
+        
+        actionsBtnsView.isHidden = true
+        
+        if presenter.walletRepresentingMode == .tokenInfo {
+            setupUIForToken()
+        }
+    }
+    
+    func addViewsToStackView(views: [UIView]) {
+        actionButtonsStackView = StackView(arrangedSubviews: views)
+        actionButtonsStackView!.frame = bottomSectionView.bounds
+        
+//        let backActionView = UIView(frame: actionsBtnsView.frame)
+//        backActionView.backgroundColor = UIColor(redInt: 62, greenInt: 150, blueInt: 248, alpha: 1.0)
+        
+        if views.count == 1 {
+            let sendView = views.first!
+            
+            actionButtonsStackView!.distribution = .fill
+            actionButtonsStackView!.spacing = 0
+            actionButtonsStackView!.axis = .vertical
+            actionButtonsStackView!.alignment = .fill
+            actionButtonsStackView!.layoutIfNeeded()
+            
+            view.addSubview(actionButtonsStackView!)
+            
+            sendView.roundCorners(corners: .allCorners, radius: 15)
+        } else {
+            actionButtonsStackView!.distribution = .fillProportionally
+            actionButtonsStackView!.spacing = 2
+            actionButtonsStackView!.axis = .horizontal
+            actionButtonsStackView!.alignment = .center
+            actionButtonsStackView!.layoutIfNeeded()
+            
+            bottomSectionView.addSubview(actionButtonsStackView!)
+            actionButtonsStackView!.autoresizingMask = [.flexibleLeftMargin, .flexibleTopMargin, .flexibleRightMargin, .flexibleBottomMargin]
+            
+            bottomSectionView.roundCorners(corners: .allCorners, radius: 15)
+            views.first!.roundCorners(corners: [.topLeft, .bottomLeft], radius: 15)
+            views.last!.roundCorners(corners: [.topRight, .bottomRight], radius: 15)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -179,6 +228,14 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateMultisigWalletAfterSockets(notification:)), name: NSNotification.Name("msTransactionUpdated"), object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(self.updateWalletAfterSockets(notification:)), name: NSNotification.Name("transactionUpdated"), object: nil)
+        }
+        
+        if actionButtonsStackView == nil {
+            if presenter.wallet!.blockchainType.isMainnet == false || presenter.wallet!.isMultiSig {
+                addViewsToStackView(views: [sendSectionView, receiveSectionView])
+            } else {
+                addViewsToStackView(views: [sendSectionView, receiveSectionView, exchangeSectionView])
+            }
         }
     }
     
@@ -256,17 +313,6 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     func setupUI() {
         checkConstraints()
         makeGradientForBottom()
-        
-        if presenter.walletRepresentingMode == .tokenInfo {
-            setupUIForToken()
-        }
-        
-        if presenter.wallet!.blockchainType.isMainnet == false || presenter.wallet!.isMultiSig {
-            exchangeLabel.alpha = 0.3
-            exchangeButton.isUserInteractionEnabled = false
-            exchangeButton.alpha = 0.3
-            exchangeImageView.alpha = 0.3
-        }
         
         //------------  WARNING  ------------//
 //        if presenter.wallet?.ethWallet?.erc20Tokens.count == 0 {
@@ -366,7 +412,7 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
     }
     
     func setupAddressBtns() {
-        if presenter.wallet!.blockchain == BLOCKCHAIN_ETHEREUM {
+        if presenter.wallet!.blockchain == BLOCKCHAIN_ETHEREUM || presenter.wallet!.blockchain == BLOCKCHAIN_ERC20 {
             addressButtonsStackView.removeArrangedSubview(showAddressesBtn)
             showAddressesBtn.isHidden = true
         }
@@ -496,20 +542,14 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         settingsImg.isHidden = true
         settingsBtn.isHidden = true
         
-        showAddressesBtn.isUserInteractionEnabled = false
-        shareAddressBtn.isUserInteractionEnabled = false
-        showAddressesBtn.alpha = 0.3
-        shareAddressBtn.alpha = 0.3
-//        presenter.isToken = true
-        
         emptyLbl.isHidden = true
         emptyArrowImg.isHidden = true
         
         //cancel receive for tokens
-        receiveButton.isUserInteractionEnabled = false
-        receiveButton.alpha = 0.3
-        receiveIcon.alpha = 0.3
-        receiveLabel.alpha = 0.3
+//        receiveButton.isUserInteractionEnabled = false
+//        receiveButton.alpha = 0.3
+//        receiveIcon.alpha = 0.3
+//        receiveLabel.alpha = 0.3
     }
     
     @IBAction func titleAction(_ sender: Any) {
@@ -681,9 +721,9 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         let adressVC = storyboard.instantiateViewController(withIdentifier: "walletAdressVC") as! AddressViewController
         adressVC.modalPresentationStyle = .overCurrentContext
         adressVC.modalTransitionStyle = .crossDissolve
-        adressVC.wallet = presenter.wallet
+        adressVC.wallet = presenter.wallet!.assetWallet
         present(adressVC, animated: true, completion: nil)
-        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.chain)", eventName: "\(addressWithChainTap)\(presenter.wallet!.chain)")
+        sendAnalyticsEvent(screenName: "\(screenWalletWithChain)\(presenter.wallet!.assetWallet.chain)", eventName: "\(addressWithChainTap)\(presenter.wallet!.assetWallet.chain)")
     }
     
     @IBAction func showAllAddressessAction(_ sender: Any) {
@@ -753,6 +793,9 @@ extension TableViewDelegate: UITableViewDelegate {
             } else {
                 walletVC.presenter.walletRepresentingMode = .tokenInfo
                 walletVC.presenter.wallet = presenter.wallet!.createTokenWallet(for: presenter.assetsDataSource[indexPath.row])
+                if walletVC.presenter.wallet?.tokenHolderWallet == nil {
+                    print("что за хуйня")
+                }
             }
             
             navigationController?.pushViewController(walletVC, animated: true)

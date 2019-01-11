@@ -722,8 +722,10 @@ You can create one by tapping "+"  at the top right.</string>
                         <outlet property="requestSummLbl" destination="Cyh-TI-NTq" id="7Gb-0b-IXe"/>
                         <outlet property="scrollView" destination="dWs-Iy-4aG" id="jV3-sA-w5v"/>
                         <outlet property="searchingAnimationHolder" destination="qK9-pf-K4T" id="nrk-nq-9W0"/>
+                        <outlet property="sumChevronView" destination="d7q-S5-bpY" id="CPl-25-lHR"/>
                         <outlet property="sumValueLbl" destination="fc4-7b-wBs" id="tTd-js-uIS"/>
                         <outlet property="viewForShadow" destination="WdU-vV-Cb8" id="VFs-de-txB"/>
+                        <outlet property="walletChevronView" destination="Aws-8s-3F6" id="MfX-qd-y9Y"/>
                         <outlet property="walletCryptoSumBtn" destination="AXb-Qw-h0b" id="lcK-5n-hQZ"/>
                         <outlet property="walletCryptoSumLbl" destination="CH8-SA-hb6" id="T64-MJ-fSt"/>
                         <outlet property="walletFiatSumLbl" destination="Gny-Pb-20j" id="5TF-eb-r4x"/>
