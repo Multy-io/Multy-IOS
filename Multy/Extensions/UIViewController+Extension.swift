@@ -355,7 +355,13 @@ extension UIViewController {
         UIView.animate(withDuration: 0.2, animations: {
             view.alpha = 0
         }) { (isEnd) in
-            view.removeFromSuperview()
+//            view.removeFromSuperview()
+            
+            //FIXME: research why view has .superview as nil
+            let aView = DataManager.shared.apiManager.topVC?.view.subviews.filter { $0.tag == 500 }.first
+            if aView != nil {
+                aView?.removeFromSuperview()
+            }
         }
     }
         
