@@ -61,6 +61,8 @@ class SettingsViewController: UIViewController, AnalyticsProtocol, CancelProtoco
 //        UserPreferences.shared.getAndDecryptCipheredMode(completion: { (pinMode, error) in
 //            self.pinSwitch.isOn = (pinMode! as NSString).boolValue
 //        })
+        
+        BLEManager.shared.changeReceivingEnabling(true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

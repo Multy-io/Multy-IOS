@@ -243,7 +243,7 @@ class UserWalletRLM: Object {
     @objc dynamic var btcWallet: BTCWallet?
     @objc dynamic var multisigWallet: MultisigWallet?
     
-    weak var tokenHolderWallet: UserWalletRLM?
+    var tokenHolderWallet: UserWalletRLM?
     
     var token: TokenRLM? {
         return DataManager.shared.realmManager.erc20Tokens[address.lowercased()]

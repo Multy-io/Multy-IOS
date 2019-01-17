@@ -18,6 +18,7 @@ class SendingAnimationViewController: UIViewController, AnalyticsProtocol {
     @IBOutlet weak var transactionAmountLabel: UILabel!
     @IBOutlet weak var addressNameLabel: UILabel!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var warningLabel: UILabel!
     
     let presenter = SendingAnimationPresenter()
     
@@ -33,9 +34,15 @@ class SendingAnimationViewController: UIViewController, AnalyticsProtocol {
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.sendOK()
         }
+        
         if chainId == nil {
             return
         }
+        
+        if presenter.fromVCType == Optional<PopDestination>(.exchange) {
+            warningLabel.isHidden = false
+        }
+        
         sendAnalyticsEvent(screenName: "\(screenSendSuccessWithChain)\(chainId!)", eventName: "\(screenSendSuccessWithChain)\(chainId!)")
     }
     

@@ -175,6 +175,8 @@ class ExchangePresenter: NSObject, SendWalletProtocol {
         exchangeVC?.sendToReceiveRelation.isHidden = false
         exchangeVC?.summaryView.isHidden = false
         
+        exchangeVC?.warningLabel.isHidden = false
+        
         unlockSlideButton()
     }
     

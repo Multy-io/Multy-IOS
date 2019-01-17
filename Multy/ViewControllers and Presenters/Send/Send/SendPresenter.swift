@@ -176,7 +176,7 @@ class SendPresenter: NSObject {
             
             if request.requester == .wallet {
                 let blockchainType = BlockchainType.create(currencyID: UInt32(truncating: request.choosenAddress!.currencyID), netType: UInt32(truncating: request.choosenAddress!.networkID))
-                let sendAmount = request.choosenAddress!.amount.stringValue.stringWithDot.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain)
+                let sendAmount = request.choosenAddress!.amountString.convertCryptoAmountStringToMinimalUnits(for: blockchainType.blockchain)
                 //            let address = request.sendAddress
                 
                 result = result.filter {
@@ -193,7 +193,6 @@ class SendPresenter: NSObject {
                     $0.availableAmount > BigInt.zero() && requestBlockchainTypes.contains($0.blockchainType)
                 }
             }
-//            filteredWalletArray = walletsArr.filter{ DataManager.shared.isAddressValid(address: address, for: $0).isValid && $0.availableAmount > sendAmount}
         } else {
             result = result.filter {
                 $0.availableAmount > BigInt.zero()

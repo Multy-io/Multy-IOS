@@ -130,7 +130,7 @@ class ApiManager: NSObject, RequestRetrier {
     
     func presentServerOff() {
         let currentTabIndex = (UIApplication.shared.keyWindow?.rootViewController as? CustomTabBarViewController)?.selectedIndex
-        topVC = UIApplication.shared.keyWindow?.rootViewController?.childViewControllers[currentTabIndex!]//.childViewControllers.last
+        topVC = UIApplication.shared.keyWindow?.rootViewController//?.childViewControllers[currentTabIndex!]//.childViewControllers.last
         noConnectionView = topVC?.noConnectionView()
         noConnectionView?.alpha = 0
 //        let storyboard = UIStoryboard(name: "Main", bundle: nil)

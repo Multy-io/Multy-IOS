@@ -43,6 +43,7 @@ target 'Multy' do
   pod 'TrustWeb3Provider', :git=>'https://github.com/TrustWallet/trust-web3-provider', :commit=>'f4e0ebb1b8fa4812637babe85ef975d116543dfd'
   pod 'JSONRPCKit', :git=> 'https://github.com/bricklife/JSONRPCKit.git'
   pod 'StatefulViewController'
+  pod 'Arranged'
 
   target 'MultyTests' do
       inherit! :search_paths
