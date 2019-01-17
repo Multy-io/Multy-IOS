@@ -237,6 +237,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
                 addViewsToStackView(views: [sendSectionView, receiveSectionView, exchangeSectionView])
             }
         }
+        
+        BLEManager.shared.changeReceivingEnabling(true)
     }
     
     override func viewDidAppear(_ animated: Bool) {

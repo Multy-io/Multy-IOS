@@ -110,6 +110,8 @@ class ReceiveAllDetailsViewController: UIViewController, AnalyticsProtocol, Canc
             sumChevronView.isHidden = true
             walletChevronView.isHidden = true
         }
+        
+        BLEManager.shared.changeReceivingEnabling(false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
