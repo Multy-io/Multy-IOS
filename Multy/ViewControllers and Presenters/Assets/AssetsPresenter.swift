@@ -159,6 +159,11 @@ class AssetsPresenter: NSObject {
         }
     }
     
+    func updateBLEActivity() {
+        isBluetoothReachable = BLEManager.shared.reachability == .reachable
+        BLEManager.shared.changeReceivingEnabling(true)
+    }
+    
     func validWallets() -> [UserWalletRLM] {
         
         var result = [UserWalletRLM]()
