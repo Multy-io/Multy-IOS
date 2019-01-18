@@ -548,6 +548,10 @@ extension CreateTransactionDelegate {
                 rawTransaction = "Error"
                 
                 return false
+            } else if linkedWallet!.availableAmount < transactionDTO.ETHDTO!.gasPrice * transactionDTO.ETHDTO!.gasLimit {
+                rawTransaction = vc!.localize(string: Constants.multisigLinkedWalletHasNoMoney)
+                
+                return false
             }
             
             guard binaryData != nil,  linkedWallet != nil, transactionDTO.choosenWallet != nil, transactionDTO.sendAddress != nil else {

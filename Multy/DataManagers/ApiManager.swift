@@ -567,7 +567,6 @@ class ApiManager: NSObject, RequestRetrier {
             
         }
     }
-
     
     func getWalletOutputs(currencyID: UInt32, address: String, completion: @escaping(_ answer: NSDictionary?,_ error: Error?) -> ()) {
         let header: HTTPHeaders = [

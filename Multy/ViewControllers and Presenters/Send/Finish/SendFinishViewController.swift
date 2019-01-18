@@ -94,7 +94,6 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
         addressLbl.text = presenter.transactionDTO.sendAddress
         walletNameLbl.text = presenter.transactionDTO.choosenWallet!.name
         
-        
         walletsAddressesLbl.text = presenter.transactionDTO.choosenWallet!.stringAddressesWithSpendableOutputs()
         let fiatSum = presenter.transactionDTO.assetsWallet.sumInFiatString
         walletFiatSumAndCurrencyLbl.text = "\(presenter.transactionDTO.assetsWallet.sumInCryptoString) \(presenter.transactionDTO.assetsWallet.cryptoName)" + " / " + "\(fiatSum) \(presenter.transactionDTO.assetsWallet.fiatName)"

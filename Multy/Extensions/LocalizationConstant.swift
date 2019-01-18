@@ -172,4 +172,5 @@ extension Constants {
     static let noResultsString = "NO RESULTS"
     static let exchangeIsUnavailable = "EXCHANGE IS UNAVAILABLE"
     static let notImplementedYet = "NOT IMPLEMENTED YET"
+    static let multisigLinkedWalletHasNoMoney = "MULTISIG LINKED WALLET HAS NO MONEY"
 }
