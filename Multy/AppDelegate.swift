@@ -293,6 +293,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 //        self.authorization()
+        refreshBLEActivity()
+        
         if isActiveFirstTime == nil || isActiveFirstTime == true {
             if let vcOnScren = (window?.rootViewController?.childViewControllers[selectedIndexOfTabBar] as! UINavigationController).topViewController {
                 if let presentedPinVC = vcOnScren.presentedViewController {
@@ -313,6 +315,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AnalyticsProtocol {
             isActiveFirstTime = false
         }
 //        exchangeCourse = UserDefaults.standard.double(forKey: "exchangeCourse")
+    }
+    
+    func refreshBLEActivity() {
+        if let assetsVC = window?.rootViewController?.childViewControllers[0].childViewControllers[0] as? AssetsViewController {
+            assetsVC.presenter.updateBLEActivity()
+            assetsVC.updateUI()
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
