@@ -232,7 +232,9 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         
         self.isFirstLaunch = false
         
-        presenter.updateBLEActivity()
+        if presenter.account != nil {
+            presenter.updateBLEActivity()
+        }
         
         updateUI()
         

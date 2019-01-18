@@ -107,7 +107,7 @@ class AssetsPresenter: NSObject {
     
     var wallets: [UserWalletRLM]? {
         didSet {
-            if oldValue != wallets {
+            if oldValue != wallets && wallets != nil {
                 BLEManager.shared.updateReceiverActivity()
             }
         }
