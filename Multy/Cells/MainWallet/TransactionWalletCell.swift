@@ -100,13 +100,13 @@ class TransactionWalletCell: UITableViewCell {
                 return
             }
             
-            if histObj.isIncoming() {
+            if histObj.isIncoming {
                 address = histObj.txInputs[0].address
             } else {
                 address = histObj.txOutputs[0].address
             }
         case BLOCKCHAIN_ETHEREUM:
-            if histObj.isIncoming() {
+            if histObj.isIncoming {
                 address = histObj.addressesArray.first!
             } else {
                 address = histObj.addressesArray.last!

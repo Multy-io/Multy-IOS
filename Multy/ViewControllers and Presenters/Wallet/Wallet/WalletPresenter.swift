@@ -152,7 +152,7 @@ class WalletPresenter: NSObject {
     }
     
     func isTherePendingMoney(for indexPath: IndexPath) -> Bool {
-        return transactionDataSource[indexPath.row].isPending()
+        return transactionDataSource[indexPath.row].isPending
     }
     
     func makeHeightForTableCells(indexPath: IndexPath) -> CGFloat {

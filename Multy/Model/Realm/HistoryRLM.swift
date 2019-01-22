@@ -202,19 +202,19 @@ class HistoryRLM: Object {
         return "txId"
     }
     
-    func isIncoming() -> Bool {
+    var isIncoming: Bool {
         return txStatus.intValue == TxStatus.MempoolIncoming.rawValue || txStatus.intValue == TxStatus.BlockIncoming.rawValue || txStatus.intValue == TxStatus.BlockConfirmedIncoming.rawValue
     }
     
-    func isOutcoming() -> Bool {
+    var isOutcoming: Bool {
         return txStatus.intValue == TxStatus.MempoolOutcoming.rawValue || txStatus.intValue == TxStatus.BlockOutcoming.rawValue || txStatus.intValue == TxStatus.BlockConfirmedOutcoming.rawValue
     }
     
-    func isRejected() -> Bool {
+    var isRejected: Bool {
         return txStatus.intValue == TxStatus.Rejected.rawValue || txStatus.intValue == TxStatus.BlockMethodInvocationFail.rawValue
     }
     
-    func isPending() -> Bool {
+    var isPending: Bool {
         return txStatus.intValue == TxStatus.MempoolIncoming.rawValue || txStatus.intValue == TxStatus.MempoolOutcoming.rawValue
     }
     
