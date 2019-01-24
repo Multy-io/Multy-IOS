@@ -14,6 +14,8 @@ private typealias WalletManager = RealmManager
 private typealias LegacyCodeManager = RealmManager
 private typealias SeedPhraseManager = RealmManager
 private typealias TokensManager = RealmManager
+private typealias UpdateObjectsManager = RealmManager
+private typealias GetObjectsManager = RealmManager
 
 class RealmManager: NSObject {
     static let shared = RealmManager()
@@ -28,7 +30,7 @@ class RealmManager: NSObject {
         }
     }
     
-    let schemaVersion : UInt64 = 33
+    let schemaVersion : UInt64 = 34
     
     var account: AccountRLM?
     var config: Realm.Configuration?
@@ -159,6 +161,9 @@ class RealmManager: NSObject {
                                                     }
                                                     if oldSchemaVersion <= 33 {
                                                         self.migrateFrom32To33(with: migration)
+                                                    }
+                                                    if oldSchemaVersion <= 34 {
+                                                        self.migrateFrom33To34(with: migration)
                                                     }
             })
             
@@ -401,6 +406,8 @@ class RealmManager: NSObject {
     }
 }
 
+//MARK: -
+//MARK: -
 extension SeedPhraseManager {
     public func getSeedPhrase(completion: @escaping (_ seedPhrase: String?, _ error: NSError?) -> ()) {
         getRealm { (realmOpt, error) in
@@ -475,6 +482,8 @@ extension SeedPhraseManager {
     }
 }
 
+//MARK: -
+//MARK: -
 extension WalletManager {
     public func createWallet(_ walletDict: Dictionary<String, Any>, completion: @escaping (_ account : UserWalletRLM?, _ error: NSError?) -> ()) {
         getRealm { (realmOpt, error) in
@@ -900,6 +909,8 @@ extension WalletManager {
 //    }
 }
 
+//MARK: -
+//MARK: -
 extension CurrencyExchangeManager {
     func updateCurrencyExchangeRLM(curExchange: CurrencyExchange) {
         getRealm { (realmOpt, error) in
@@ -931,6 +942,8 @@ extension CurrencyExchangeManager {
     }
 }
 
+//MARK: -
+//MARK: -
 extension RecentAddressManager {
     func writeOrUpdateRecentAddress(blockchainType: BlockchainType, address: String, date: Date) {
         getRealm { (realmOpt, error) in
@@ -1008,6 +1021,8 @@ extension RecentAddressManager {
     }
 }
 
+//MARK: -
+//MARK: -
 extension RealmMigrationManager {
     func migrateFrom6To7(with migration: Migration) {
         migration.enumerateObjects(ofType: SpendableOutputRLM.className()) { (_, newSpendOut) in
@@ -1194,8 +1209,17 @@ extension RealmMigrationManager {
             account?["accountTypeID"] = NSNumber(integerLiteral: 0)
         }
     }
+    
+    func migrateFrom33To34(with migration: Migration) {
+        migration.enumerateObjects(ofType: StockExchangeRateRLM.className()) { (oldValue, newValue) in
+            newValue?["btc_usd"] = (oldValue?["btc_usd"] as? NSNumber)?.doubleValue
+            newValue?["eth_usd"] = (oldValue?["btc_usd"] as? NSNumber)?.doubleValue
+        }
+    }
 }
 
+//MARK: -
+//MARK: -
 extension LegacyCodeManager {
     //Greedy algorithm
     func spendableOutput(wallet: UserWalletRLM) -> [SpendableOutputRLM] {
@@ -1250,6 +1274,8 @@ extension LegacyCodeManager {
     }
 }
 
+//MARK: -
+//MARK: -
 extension TokensManager {
     func updateErc20Tokens(tokens: [TokenRLM]) {
         //tokens need to be updated iff token.decimals missing iff token.decimals = -1
@@ -1321,6 +1347,78 @@ extension TokensManager {
         getTokens {
             $0.forEach{ info[$0.contractAddress] = $0 }
             completion(info)
+        }
+    }
+}
+
+//MARK: -
+//MARK: -
+extension UpdateObjectsManager {
+    func update(objects: [Object]) {
+        getRealm { [weak self] (realmOpt, error) in
+            guard let realm = realmOpt, self != nil else {
+                return
+            }
+            
+            self!.realm = realm
+            
+            if objects.count == 0 {
+                return
+            }
+            
+            switch objects.first!.className {
+            case HistoryRLM.className():
+                self!.updateHistoryRLMObjects(objects as! [HistoryRLM], in: realm)
+            default:
+                return
+            }
+        }
+    }
+    
+    func updateHistoryRLMObjects(_ objects: [HistoryRLM], in realm: Realm) {
+        let walletPrimaryKey = objects.first!.txId.components(separatedBy: ":").last!
+        let historyObjects = fetchHistoryRLMObjects(from: realm, for: walletPrimaryKey)
+        
+        try! realm.write {
+            historyObjects.forEach{
+                realm.delete($0.txInputs)
+                realm.delete($0.txOutputs)
+                realm.delete($0.exchangeRates)
+                realm.delete($0.walletInput)
+                realm.delete($0.walletOutput)
+            }
+            
+            realm.add(objects, update: true)
+        }
+    }
+}
+
+extension GetObjectsManager {
+    private func fetchObjects<Element: Object>(of type: Element.Type, from realm: Realm) -> Results<Element> {
+        return realm.objects(type)
+    }
+    
+    private func fetchHistoryRLMObjects(from realm: Realm, for walletPrimaryKey: String) -> Results<HistoryRLM> {
+        //we are updating txs in one wallet
+        //txId - primaryKey
+        //txId = txHash + ":" + id (of his wallet)
+        
+        return fetchObjects(of: HistoryRLM.self, from: realm).filter("\(HistoryRLM.primaryKey()) ENDSWITH '\(walletPrimaryKey)'")
+    }
+    
+    func fetchSortedHistoryRLMObjects(from realm: Realm, for walletPrimaryKey: String) -> Results<HistoryRLM> {
+        return fetchHistoryRLMObjects(from:realm, for: walletPrimaryKey).sorted(byKeyPath: HistoryProperty.mempoolTime.rawValue, ascending: false)
+    }
+    
+    func fetchSortedHistoryRLMObjects(for walletPrimaryKey: String, completion: @escaping(_ historyArray: Results<HistoryRLM>) -> ()) {
+        getRealm { [weak self] (realmOpt, error) in
+            guard let realm = realmOpt, self != nil else {
+                return
+            }
+            
+            self!.realm = realm
+            
+            completion(self!.fetchSortedHistoryRLMObjects(from: realm, for: walletPrimaryKey))
         }
     }
 }

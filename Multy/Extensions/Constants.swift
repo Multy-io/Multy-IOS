@@ -187,6 +187,14 @@ var isDebug: Bool {
     #endif
 }
 
+var transactionEmptyCount: Int {
+    return screenHeight == heightOfX || screenHeight == heightOfXSMax ? 13 : 10
+}
+
+var tokenEmptyCount: Int {
+    return screenHeight == heightOfX || screenHeight == heightOfXSMax ? 13 : 10
+}
+
 func sync(lock: NSObject, closure: @escaping () -> Void) {
     objc_sync_enter(lock)
         closure()

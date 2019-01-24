@@ -4,15 +4,14 @@
 
 import UIKit
 import RealmSwift
-//import MultyCoreLibrary
+
+//usable properties as String - to avoid possible issues
+enum HistoryProperty: String {
+    case mempoolTime, txId
+}
 
 class HistoryRLM: Object {
-    
-    @objc dynamic var addresses = String() {
-        didSet {
-            addressesArray = addresses.components(separatedBy: " ")
-        }
-    }
+    @objc dynamic var addresses = String()
     @objc dynamic var blockHeight = Int()
     @objc dynamic var blockTime = Date()
     @objc dynamic var fiatCourseExchange = Double()
@@ -35,7 +34,9 @@ class HistoryRLM: Object {
     @objc dynamic var mempoolTime = Date()
     @objc dynamic var confirmations = Int()
     
-    @objc dynamic var addressesArray = [String]()
+    var addressesArray: [String] {
+        return addresses.components(separatedBy: " ")
+    }
     var exchangeRates = List<StockExchangeRateRLM>()
     var walletInput = List<UserWalletRLM>()
     var walletOutput = List<UserWalletRLM>()
@@ -64,20 +65,20 @@ class HistoryRLM: Object {
         }
         
         return result
-    }    
+    }
     
-    public class func initWithArray(historyArr: NSArray) -> List<HistoryRLM> {
-        let history = List<HistoryRLM>()
+    public class func initWithArray(historyArr: NSArray, for id: String) -> [HistoryRLM] {
+        var history = [HistoryRLM]()
         
         for obj in historyArr {
-            let histElement = HistoryRLM.initWithInfo(historyDict: obj as! NSDictionary)
+            let histElement = HistoryRLM.initWithInfo(historyDict: obj as! NSDictionary, for: id)
             history.append(histElement)
         }
         
         return history
     }
     
-    public class func initWithInfo(historyDict: NSDictionary) -> HistoryRLM {
+    public class func initWithInfo(historyDict: NSDictionary, for id: String) -> HistoryRLM {
         let hist = HistoryRLM()
         
         if let addresses = historyDict["addresses"] {
@@ -115,9 +116,11 @@ class HistoryRLM: Object {
             hist.txHash = txhash as! String
         }
         
-        if let txid = historyDict["txid"] {
-            hist.txId = txid as! String
-        }
+//        if let txid = historyDict["txid"] {
+//            hist.txId = txid as! String
+//        }
+        
+        hist.txId = hist.txHash + ":" + id
         
         if let txinputs = historyDict["txinputs"] {
             hist.txInputs = TxHistoryRLM.initWithArray(txHistoryArr: txinputs as! NSArray)
@@ -128,9 +131,9 @@ class HistoryRLM: Object {
             // BTC and ETH // FIXME: fix it later
             if hist.exchangeRates.count > 0 {
                 if hist.txInputs.count > 0 {
-                    hist.fiatCourseExchange = hist.exchangeRates.first!.btc2usd.doubleValue
+                    hist.fiatCourseExchange = hist.exchangeRates.first!.btc2usd
                 } else {
-                    hist.fiatCourseExchange = hist.exchangeRates.first!.eth2usd.doubleValue
+                    hist.fiatCourseExchange = hist.exchangeRates.first!.eth2usd
                 }
             }
         }
@@ -180,11 +183,11 @@ class HistoryRLM: Object {
         
         //ETH part
         if let fromAddress = historyDict["from"] as? String {
-            hist.addressesArray.append(fromAddress)
+            hist.addresses = hist.addresses.isEmpty ? fromAddress : hist.addresses + " " + fromAddress
         }
         
         if let destinationAddress = historyDict["to"] as? String {
-            hist.addressesArray.append(destinationAddress)
+            hist.addresses = hist.addresses.isEmpty ? destinationAddress : hist.addresses + " " + destinationAddress
         }
         
         if let nonce = historyDict["nonce"] as? Int {
@@ -198,8 +201,12 @@ class HistoryRLM: Object {
         return hist
     }
     
-    override class func primaryKey() -> String? {
-        return "txId"
+    override class func primaryKey() -> String {
+        return HistoryProperty.txId.rawValue
+    }
+    
+    var primaryKey: String {
+        return txId
     }
     
     var isIncoming: Bool {

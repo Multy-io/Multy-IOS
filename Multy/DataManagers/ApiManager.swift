@@ -264,7 +264,7 @@ class ApiManager: NSObject, RequestRetrier {
         }
     }
     
-    func getTransactionInfo(transactionString: String, completion: @escaping (_ answer: HistoryRLM?,_ error: Error?) -> ()) {
+    func getTransactionInfo(wallet: UserWalletRLM, transactionHash: String, completion: @escaping (_ answer: HistoryRLM?,_ error: Error?) -> ()) {
         
         let header: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -272,11 +272,11 @@ class ApiManager: NSObject, RequestRetrier {
         ]
         
         //MARK: USD
-        requestManager.request("\(apiUrl)api/v1/gettransactioninfo/\(transactionString)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().responseJSON { (response: DataResponse<Any>) in
+        requestManager.request("\(apiUrl)api/v1/gettransactioninfo/\(transactionHash)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).validate().responseJSON { (response: DataResponse<Any>) in
             switch response.result {
             case .success(_):
                 if response.result.value != nil {
-                    let tx = HistoryRLM.initWithInfo(historyDict: response.result.value as! NSDictionary)
+                    let tx = HistoryRLM.initWithInfo(historyDict: response.result.value as! NSDictionary, for: wallet.id)
                     completion((tx), nil)
                 }
             case .failure(_):
