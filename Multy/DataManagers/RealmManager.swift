@@ -1376,7 +1376,8 @@ extension UpdateObjectsManager {
     }
     
     func updateHistoryRLMObjects(_ objects: [HistoryRLM], in realm: Realm) {
-        let walletPrimaryKey = objects.first!.txId.components(separatedBy: ":").last!
+        //we are getting txs only for one wallet
+        let walletPrimaryKey = objects.first!.walletPrimaryKey
         let historyObjects = fetchHistoryRLMObjects(from: realm, for: walletPrimaryKey)
         
         try! realm.write {
@@ -1403,7 +1404,7 @@ extension GetObjectsManager {
         //txId - primaryKey
         //txId = txHash + ":" + id (of his wallet)
         
-        return fetchObjects(of: HistoryRLM.self, from: realm).filter("\(HistoryRLM.primaryKey()) ENDSWITH '\(walletPrimaryKey)'")
+        return fetchObjects(of: HistoryRLM.self, from: realm).filter("\(HistoryProperty.walletPrimaryKey) == '\(walletPrimaryKey)'")
     }
     
     func fetchSortedHistoryRLMObjects(from realm: Realm, for walletPrimaryKey: String) -> Results<HistoryRLM> {

@@ -7,7 +7,7 @@ import RealmSwift
 
 //usable properties as String - to avoid possible issues
 enum HistoryProperty: String {
-    case mempoolTime, txId
+    case mempoolTime, txId, walletPrimaryKey
 }
 
 class HistoryRLM: Object {
@@ -42,9 +42,8 @@ class HistoryRLM: Object {
     var walletOutput = List<UserWalletRLM>()
     
     @objc dynamic var nonce = NSNumber(value: 0)
-   
+    @objc dynamic var walletPrimaryKey = String()
     @objc dynamic var multisig : MultisigTransactionRLM? = nil
-    
     
     override static func ignoredProperties() -> [String] {
         return ["addressesArray"]
@@ -80,6 +79,8 @@ class HistoryRLM: Object {
     
     public class func initWithInfo(historyDict: NSDictionary, for id: String) -> HistoryRLM {
         let hist = HistoryRLM()
+        
+        hist.walletPrimaryKey = id
         
         if let addresses = historyDict["addresses"] {
             hist.addresses = (addresses as! NSArray).componentsJoined(by: " ")
