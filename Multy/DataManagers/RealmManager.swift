@@ -1215,6 +1215,10 @@ extension RealmMigrationManager {
             newValue?["btc_usd"] = (oldValue?["btc_usd"] as? NSNumber)?.doubleValue
             newValue?["eth_usd"] = (oldValue?["btc_usd"] as? NSNumber)?.doubleValue
         }
+        
+        migration.enumerateObjects(ofType: HistoryRLM.className()) { (_, newValue) in
+            newValue?["walletPrimaryKey"] = String()
+        }
     }
 }
 
