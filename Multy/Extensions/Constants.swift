@@ -315,28 +315,24 @@ let exchangeERC20TxGasLimit : UInt64 = 250_000
 let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 16.10.2018
 
 //
-let shortURL = "api.multy.io"
-let apiUrl = "https://\(shortURL)/"
-let socketUrl = "wss://\(shortURL)/"
+//let shortURL = "api.multy.io"
+//let apiUrl = "https://\(shortURL)/"
+//let socketUrl = "wss://\(shortURL)/"
 
 //TEST
-//let shortURL = "test.multy.io"
+let shortURL = "test.multy.io"
+let apiUrl = "http://\(shortURL)/"
+let socketUrl = "ws://\(shortURL)/"
+
+//dev
+//let shortURL = "dev.multy.io"
 //let apiUrl = "http://\(shortURL)/"
 //let socketUrl = "ws://\(shortURL)/"
 
-//stage
-//let shortURL = "148.251.42.107/"
-//let apiUrl = "http://\(shortURL)"
-//let socketUrl = "ws://\(shortURL)"
-
-//JACK
-//let shortURL = "192.168.31.146"
+//PASHA
+//let shortURL = "192.168.31.112"
 //let apiUrl = "http://\(shortURL):6778/"
 //let socketUrl = "ws://\(shortURL):6780/"
-//let socketUrl = "ws://192.168.31.147:6780"
-//let socketUrl = "http://88.198.47.112:2280"
-let apiUrlTest = "http://192.168.0.123:6778/"
-let nonLocalURL = "http://88.198.47.112:7778/"
 
 // Bluetooth
 let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"

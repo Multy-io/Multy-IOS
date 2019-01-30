@@ -85,7 +85,7 @@ class ApiManager: NSObject, RequestRetrier {
             return
         }
         
-        guard address.hasPrefix("http://test.multy.io/") || address.hasPrefix("https://api.multy.io/") || address.hasPrefix("https://stage.multy.io/") else {
+        guard address.contains(".multy.io") || address.hasPrefix("http://192.168.31.112") else {
             return
         }
         
