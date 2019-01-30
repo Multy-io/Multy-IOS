@@ -57,3 +57,4 @@
 "ENTER NON-ZERO AMOUNT" = "Будь ласка, введіть ненульову кількість!";
 "SEND AMOUNT: iPhone 5" = "Сума";
 "GAS LIMIT LESS 21K" = "Ліміт газу не може бути менше 21000";
+"MULTISIG LINKED WALLET HAS NO MONEY" = "У прив'язаного гаманця до MultiSig недостатньо коштів для оплати транзакції";

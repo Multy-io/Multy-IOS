@@ -45,6 +45,7 @@ class AccountRLM: Object {
     }
     
     var accountType: AccountType {
-        return AccountType(typeID: accountTypeID.intValue)
+//        return AccountType(typeID: accountTypeID.intValue)
+        return AccountType(wordsCount: backupSeedPhrase.split(separator: " ").count)
     }
 }

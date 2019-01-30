@@ -24,6 +24,10 @@ enum WalletBrokenState: Int, CaseIterable {
     }
 }
 
+enum WalletProperty: String {
+    case id
+}
+
 class UserWalletRLM: Object {
     @objc dynamic var id = String()    //
     @objc dynamic var chain = NSNumber(value: 0)    //UInt32
@@ -697,12 +701,16 @@ class UserWalletRLM: Object {
     }
     
     override class func primaryKey() -> String? {
-        return "id"
+        return WalletProperty.id.rawValue
     }
     
-    override static func ignoredProperties() -> [String] {
-        return ["availableSumInCrypto", "availableSumInFiat", "tokenHolderWaller"]
+    var primaryKey: String {
+        return id
     }
+    
+//    override static func ignoredProperties() -> [String] {
+//        return ["availableSumInCrypto", "availableSumInFiat", "tokenHolderWallet"]
+//    }
     
 //    public func updateWallet(walletInfo: NSDictionary) {
 //        
@@ -763,7 +771,7 @@ class UserWalletRLM: Object {
         case BLOCKCHAIN_ETHEREUM:
             result = BigInt(tx.txOutAmountString)
             
-            if tx.isOutcoming() && tx.multisig == nil {
+            if tx.isOutcoming && tx.multisig == nil {
                 result = result + tx.fee(for: blockchain)
             }
         //   return txOutAmountString.appendDelimeter(at: 18)

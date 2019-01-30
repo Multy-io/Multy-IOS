@@ -56,3 +56,4 @@
 "ENTER NON-ZERO AMOUNT" = "Please, enter non-zero amount!";
 "SEND AMOUNT: iPhone 5" = "Send Amount";
 "GAS LIMIT LESS 21K" = "Gas limit cannot be less then 21000";
+"MULTISIG LINKED WALLET HAS NO MONEY" = "MultiSig's linked wallet hasn't enough balance for the transaction fee";

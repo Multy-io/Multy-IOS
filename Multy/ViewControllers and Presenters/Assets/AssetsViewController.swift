@@ -231,10 +231,12 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         }
         
         self.isFirstLaunch = false
-        presenter.isBluetoothReachable = BLEManager.shared.reachability == .reachable
-        BLEManager.shared.changeReceivingEnabling(true)
         
-        self.updateUI()
+        if presenter.account != nil {
+            presenter.updateBLEActivity()
+        }
+        
+        updateUI()
         
         if presenter.account == nil {
             view.isUserInteractionEnabled = false

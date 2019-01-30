@@ -107,7 +107,7 @@ class AssetsPresenter: NSObject {
     
     var wallets: [UserWalletRLM]? {
         didSet {
-            if oldValue != wallets {
+            if oldValue != wallets && wallets != nil {
                 BLEManager.shared.updateReceiverActivity()
             }
         }
@@ -157,6 +157,11 @@ class AssetsPresenter: NSObject {
             self.assetsVC?.backupView?.isHidden = true
             self.assetsVC?.backupView?.isUserInteractionEnabled = false
         }
+    }
+    
+    func updateBLEActivity() {
+        isBluetoothReachable = BLEManager.shared.reachability == .reachable
+        BLEManager.shared.changeReceivingEnabling(true)
     }
     
     func validWallets() -> [UserWalletRLM] {

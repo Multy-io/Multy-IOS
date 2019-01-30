@@ -51,16 +51,24 @@ class WalletPresenter: NSObject {
         }
     }
     
-    var transactionDataSource = [HistoryRLM]() {
-        didSet {
-            if transactionDataSource.isEmpty == false {
-                walletVC?.hideEmptyLbls()
-            }
-            if oldValue != transactionDataSource {
-                self.walletVC!.transactionsTable.reloadData()
-            }
-        }
+    var transactionDataSource: Results<HistoryRLM>?
+    var transactionDataSourceToken: NotificationToken?
+    var previousDataSourceCount = 0
+    
+    var isTXEmptyLabelsShouldBeUpdated: Bool {
+        return previousDataSourceCount < transactionEmptyCount && previousDataSourceCount < transactionDataSource!.count
     }
+    
+//    var transactionDataSource = [HistoryRLM]() {
+//        didSet {
+//            if transactionDataSource.isEmpty == false {
+//                walletVC?.hideEmptyLbls()
+//            }
+//            if oldValue != transactionDataSource {
+//                self.walletVC!.transactionsTable.reloadData()
+//            }
+//        }
+//    }
     
     var isTransactionTableActive: Bool {
         get {
@@ -152,29 +160,29 @@ class WalletPresenter: NSObject {
     }
     
     func isTherePendingMoney(for indexPath: IndexPath) -> Bool {
-        return transactionDataSource[indexPath.row].isPending()
+        return transactionDataSource?[indexPath.row].isPending ?? false
     }
     
     func makeHeightForTableCells(indexPath: IndexPath) -> CGFloat {
-        switch wallet?.isMultiSig {
+        switch wallet!.isMultiSig {
         case true:
-            if indexPath.row < transactionDataSource.count && transactionDataSource[indexPath.row].multisig != nil {   //46
+            if indexPath.row < transactionDataSource?.count ?? 0 && transactionDataSource?[indexPath.row].multisig != nil {   //46
 //                if wallet!.isRejected(tx: transactionDataSource[indexPath.row]) {
-                if transactionDataSource[indexPath.row].multisig!.confirmed.boolValue {
+                if transactionDataSource?[indexPath.row].multisig!.confirmed.boolValue ?? true {
                     return 126 //64
                 } else {
 //                    return 172          //fixit: check for lockingmoney
                     return 126 
                 }
             } else {
-                if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
+                if indexPath.row < transactionDataSource?.count ?? 0 && isTherePendingMoney(for: indexPath) {
                     return 135
                 } else {
                     return 64
                 }
             }
         case false:
-            if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
+            if indexPath.row < transactionDataSource?.count ?? 0 && isTherePendingMoney(for: indexPath) {
                 return 135
             } else {
                 return 64
@@ -310,9 +318,9 @@ class WalletPresenter: NSObject {
         self.walletVC?.spiner.stopAnimating()
         self.walletVC?.isCanUpdate = true
         if error == nil && historyArray != nil {
-            self.transactionDataSource = historyArray!.sorted(by: {
-                $0.mempoolTime > $1.mempoolTime
-            })
+//            self.transactionDataSource = historyArray!.sorted(by: {
+//                $0.mempoolTime > $1.mempoolTime
+//            })
             
             self.prepareAssetsData(array: self.wallet!.ethWallet?.erc20Tokens)
             self.isSocketInitiateUpdating = false

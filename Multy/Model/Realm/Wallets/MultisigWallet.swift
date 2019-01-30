@@ -39,8 +39,7 @@ class MultisigWallet: Object {
     
     var currentOwner : MultisigOwnerRLM? {
         get {
-            return owners.filter{$0.associated.boolValue == true}.first
+            return owners.filter{ $0.associated.boolValue == true }.first
         }
     }
-    
 }

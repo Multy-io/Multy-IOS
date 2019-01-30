@@ -180,6 +180,14 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         if presenter.walletRepresentingMode == .tokenInfo {
             setupUIForToken()
         }
+        
+        DataManager.shared.realmManager.fetchSortedHistoryRLMObjects(for: presenter.wallet!.primaryKey) { [unowned self] in
+            self.presenter.transactionDataSource = $0
+            
+            DispatchQueue.main.async { [unowned self] in
+                self.addNotificationToken()
+            }
+        }
     }
     
     func addViewsToStackView(views: [UIView]) {
@@ -217,6 +225,51 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
     }
     
+    func addNotificationToken() {
+        if presenter.transactionDataSource == nil {
+            
+            return
+        }
+        
+        //if there is already token after viewDidLoad
+        presenter.transactionDataSourceToken?.invalidate()
+        
+        presenter.transactionDataSourceToken = presenter.transactionDataSource!.observe { [weak self] changes in
+            if self == nil {
+                return
+            }
+            
+            if self!.presenter.transactionDataSource!.isEmpty == false {
+                self!.hideEmptyLbls()
+            }
+
+            switch changes {
+            case .initial:
+                self!.transactionsTable!.reloadData()
+            case .update(_, let deletions, let insertions, let updates):
+                //if there is 'empty labels'
+                //we should correctly updated them
+                if self!.presenter.isTXEmptyLabelsShouldBeUpdated {
+                    //count of inserted cells 
+                    let insertionsCount = max(0, self!.presenter.previousDataSourceCount + insertions.count - transactionEmptyCount)
+                    
+                    //fix values for addition updates
+                    let fixedUpdates = (0..<transactionEmptyCount).map{ $0 }
+                    let fixedInsertions = (0..<insertionsCount).map{ $0 }
+                    print("\n\nchanges\nGOTO\n\(deletions)\n\(fixedInsertions)\n\(fixedUpdates)\n\n\n")
+
+                    self!.transactionsTable!.applyChanges(deletions: deletions, insertions: fixedInsertions, updates: fixedUpdates)
+                } else {
+                    self!.transactionsTable!.applyChanges(deletions: deletions, insertions: insertions, updates: updates)
+                }
+            case .error:
+                break
+            }
+            
+            self!.presenter.previousDataSourceCount = self!.presenter.transactionDataSource!.count
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         presenter.getHistoryAndWallet()
@@ -239,6 +292,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         }
         
         BLEManager.shared.changeReceivingEnabling(true)
+        
+        addNotificationToken()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -251,6 +306,8 @@ class WalletViewController: UIViewController, AnalyticsProtocol {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
         isViewDidAppear = false
+        
+        presenter.transactionDataSourceToken?.invalidate()
     }
     
     override func viewDidLayoutSubviews() {
@@ -760,20 +817,25 @@ extension TableViewDelegate: UITableViewDelegate {
             if tableView.numberOfRows(inSection: 0) == 0 {
                 return
             }
-            let countOfHistObjs = presenter.transactionDataSource.count
+            let countOfHistObjs = presenter.transactionDataSource?.count ?? 0
             if indexPath.row >= countOfHistObjs {
                 return
             }
             
             let storyBoard = UIStoryboard(name: "Wallet", bundle: nil)
             let transactionVC = storyBoard.instantiateViewController(withIdentifier: "transaction") as! TransactionViewController
-            let histObj = presenter.transactionDataSource[indexPath.row]
+            let histObj = presenter.transactionDataSource?[indexPath.row]
             //MS TX We can`t go to tx vc while invokation status = bad
-            if presenter.checkForInvokationStatus(histObj: histObj) == false {
+            
+            if histObj == nil {
+                return
+            }
+            
+            if presenter.checkForInvokationStatus(histObj: histObj!) == false {
                 presentInfoAlert(with: localize(string: Constants.prNotReady))
                 return
             }
-            transactionVC.presenter.histObj = histObj
+            transactionVC.presenter.histObj = histObj!
             transactionVC.presenter.blockchainType = BlockchainType.create(wallet: presenter.wallet!)
             transactionVC.presenter.wallet = presenter.wallet!
             self.navigationController?.pushViewController(transactionVC, animated: true)
@@ -795,9 +857,6 @@ extension TableViewDelegate: UITableViewDelegate {
             } else {
                 walletVC.presenter.walletRepresentingMode = .tokenInfo
                 walletVC.presenter.wallet = presenter.wallet!.createTokenWallet(for: presenter.assetsDataSource[indexPath.row])
-                if walletVC.presenter.wallet?.tokenHolderWallet == nil {
-                    print("что за хуйня")
-                }
             }
             
             navigationController?.pushViewController(walletVC, animated: true)
@@ -815,14 +874,18 @@ extension TableViewDelegate: UITableViewDelegate {
 
 extension TableViewDataSource: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let countOfHistObjs = presenter.transactionDataSource.count
-        
         if tableView == transactionsTable {
+            if presenter.transactionDataSource == nil {
+                return UITableViewCell()
+            }
+            
+            let countOfHistObjs = presenter.transactionDataSource!.count
+            
             // MULTI SIG CELL
-            if indexPath.row < countOfHistObjs && presenter.transactionDataSource[indexPath.row].multisig != nil {
+            if indexPath.row < countOfHistObjs && presenter.transactionDataSource?[indexPath.row].multisig != nil {
                 let multiSigCell = tableView.dequeueReusableCell(withIdentifier: "multiSigPendingCell") as! MultiSigPendingTableViewCell
                 multiSigCell.selectionStyle = .none
-                multiSigCell.histObj = presenter.transactionDataSource[indexPath.row]
+                multiSigCell.histObj = presenter.transactionDataSource![indexPath.row]
                 multiSigCell.wallet = presenter.wallet
                 multiSigCell.fillCell()
                 
@@ -831,7 +894,7 @@ extension TableViewDataSource: UITableViewDataSource {
             if indexPath.row < countOfHistObjs && presenter.isTherePendingMoney(for: indexPath) {
                 let pendingTrasactionCell = tableView.dequeueReusableCell(withIdentifier: "TransactionPendingCellID") as! TransactionPendingCell
                 pendingTrasactionCell.selectionStyle = .none
-                pendingTrasactionCell.histObj = presenter.transactionDataSource[indexPath.row]
+                pendingTrasactionCell.histObj = presenter.transactionDataSource![indexPath.row]
                 pendingTrasactionCell.wallet = presenter.wallet
                 pendingTrasactionCell.fillCell()
                 
@@ -843,7 +906,7 @@ extension TableViewDataSource: UITableViewDataSource {
                     if indexPath.row >= countOfHistObjs {
                         transactionCell.changeState(isEmpty: true)
                     } else {
-                        transactionCell.histObj = presenter.transactionDataSource[indexPath.row]
+                        transactionCell.histObj = presenter.transactionDataSource![indexPath.row]
                         transactionCell.wallet = presenter.wallet!
                         transactionCell.fillCell()
                         transactionCell.changeState(isEmpty: false)
@@ -878,19 +941,16 @@ extension TableViewDataSource: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == transactionsTable {
-            let countOfHistObjects = presenter.transactionDataSource.count
+            let countOfHistObjects = presenter.transactionDataSource?.count ?? 0
             if countOfHistObjects > 0 {
                 tableView.isScrollEnabled = true
-                if countOfHistObjects < 10 {
-                    return 10
+                if countOfHistObjects < transactionEmptyCount {
+                    return transactionEmptyCount
                 } else {
                     return countOfHistObjects
                 }
             } else {
-                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
-                    return 13
-                }
-                return 10
+                return transactionEmptyCount
             }
         } else {
             let countOfErc20Tokens = presenter.assetsDataSource.count
@@ -898,16 +958,13 @@ extension TableViewDataSource: UITableViewDataSource {
             if countOfErc20Tokens > 0 {
                 hideEmptyLbls()
                 tableView.isScrollEnabled = true
-                if countOfErc20Tokens < 10 {
-                    return 10
+                if countOfErc20Tokens < transactionEmptyCount {
+                    return tokenEmptyCount
                 } else {
                     return countOfErc20Tokens
                 }
             } else {
-                if screenHeight == heightOfX || screenHeight == heightOfXSMax {
-                    return 13
-                }
-                return 10
+                return tokenEmptyCount
             }
         }
     }
