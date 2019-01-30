@@ -315,14 +315,14 @@ let exchangeERC20TxGasLimit : UInt64 = 250_000
 let minimumAmountForMakeEthTX = BigInt("\(900_000_000_000_000)") // == 10 cent 16.10.2018
 
 //
-//let shortURL = "api.multy.io"
-//let apiUrl = "https://\(shortURL)/"
-//let socketUrl = "wss://\(shortURL)/"
+let shortURL = "api.multy.io"
+let apiUrl = "https://\(shortURL)/"
+let socketUrl = "wss://\(shortURL)/"
 
 //TEST
-let shortURL = "test.multy.io"
-let apiUrl = "http://\(shortURL)/"
-let socketUrl = "ws://\(shortURL)/"
+//let shortURL = "test.multy.io"
+//let apiUrl = "http://\(shortURL)/"
+//let socketUrl = "ws://\(shortURL)/"
 
 //dev
 //let shortURL = "dev.multy.io"
