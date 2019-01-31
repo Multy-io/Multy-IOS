@@ -4,7 +4,6 @@
 
 import Foundation
 import RealmSwift
-//import MultyCoreLibrary
 
 class RecentAddressesRLM: Object {
     
@@ -13,7 +12,6 @@ class RecentAddressesRLM: Object {
     @objc dynamic var name = String()
     @objc dynamic var blockchain = NSNumber(value: 0)
     @objc dynamic var blockchainNetType = NSNumber(value: 0)
-    
     
     override class func primaryKey() -> String? {
         return "address"
@@ -28,8 +26,6 @@ class RecentAddressesRLM: Object {
         
         return recentAddress
     }
-    
-    
 }
 // Logic
 // after successful sendind temporary unconfirmed address become confirmed

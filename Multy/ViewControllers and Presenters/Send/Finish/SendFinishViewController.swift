@@ -308,10 +308,10 @@ class SendFinishViewController: UIViewController, UITextFieldDelegate {
     }
 
     func createRecentAddress() {
-        let blockchainType = BlockchainType.create(wallet: presenter.transactionDTO.choosenWallet!)
-        RealmManager.shared.writeOrUpdateRecentAddress(blockchainType: blockchainType,
-                                                       address: presenter.transactionDTO.sendAddress!,
-                                                       date: Date())
+        let blockchainType = presenter.transactionDTO.choosenWallet!.blockchainType
+        DataManager.shared.realmManager.writeOrUpdateRecentAddress(blockchainType: blockchainType,
+                                                                   address: presenter.transactionDTO.sendAddress!,
+                                                                   date: Date())
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

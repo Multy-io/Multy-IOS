@@ -286,8 +286,9 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
     
     func updateUI() {
         self.tableView.reloadData()
-        noAddressLbl.isHidden = !self.presenter.recentAddresses.isEmpty
-        recentAddresses.isHidden = self.presenter.recentAddresses.isEmpty
+        
+        noAddressLbl.isHidden = self.presenter.numberOfaddresses() != 0
+        recentAddresses.isHidden = self.presenter.numberOfaddresses() == 0
     }
     
     func ipadFix() {
@@ -297,6 +298,8 @@ class SendStartViewController: UIViewController, DonationProtocol, CancelProtoco
     }
 }
 
+//MARK: -
+//MARK: -
 extension SendStartViewController:  UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -308,7 +311,10 @@ extension SendStartViewController:  UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let recentCell = self.tableView.dequeueReusableCell(withIdentifier: "recentCell") as! RecentAddressTableViewCell
-        recentCell.fillingCell(recentAddress: presenter.recentAddresses[indexPath.row])
+        
+        if recentAddresses != nil {
+            recentCell.fillingCell(recentAddress: presenter.recentAddresses![indexPath.row])
+        }
         
         return recentCell
     }
@@ -322,12 +328,18 @@ extension SendStartViewController:  UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.transactionDTO.update(from: presenter.recentAddresses[indexPath.row].address)
-        updateTVAndNextButton(with: presenter.recentAddresses[indexPath.row].address)
+        if recentAddresses == nil {
+            return
+        }
+        
+        presenter.transactionDTO.update(from: presenter.recentAddresses![indexPath.row].address)
+        updateTVAndNextButton(with: presenter.recentAddresses![indexPath.row].address)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
+//MARK: -
+//MARK: -
 extension TextViewDelegate: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if(text == "\n") {
@@ -378,6 +390,8 @@ extension TextViewDelegate: UITextViewDelegate {
     }
 }
 
+//MARK: -
+//MARK: -
 extension GestureRecognizerDelegate: UIGestureRecognizerDelegate {
     func setupLongTap() {
         let longTap = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap))
@@ -390,14 +404,16 @@ extension GestureRecognizerDelegate: UIGestureRecognizerDelegate {
         if gestureRecognizer.state == .began {
             let touchPoint = gestureRecognizer.location(in: tableView)
             if let indexPath = tableView.indexPathForRow(at: touchPoint) {
-                if indexPath.row < presenter.recentAddresses.count {
-                    openSheetWithAddress(presenter.recentAddresses[indexPath.row])
+                if indexPath.row < presenter.numberOfaddresses() && presenter.recentAddresses != nil {
+                    openSheetWithAddress(presenter.recentAddresses![indexPath.row])
                 }
             }
         }
     }
 }
 
+//MARK: -
+//MARK: -
 extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) {
         if contact.contactId == nil && presenter.selectedAddress != nil {
@@ -417,18 +433,24 @@ extension PickerContactsDelegate: EPPickerDelegate, ContactsProtocol {
     }
 }
 
+//MARK: -
+//MARK: -
 extension AnalyticsDelegate: AnalyticsProtocol {
     func logAddedAddressAnalytics() {
         sendAnalyticsEvent(screenName: screenSendTo, eventName: addressAdded)
     }
 }
 
+//MARK: -
+//MARK: -
 extension ChooseContactsAddressDelegate: ChooseContactsAddressProtocol {
     func passAddress(_ address: String) {
         updateTVAndNextButton(with: address)
     }
 }
 
+//MARK: -
+//MARK: -
 extension LocalizeDelegate: Localizable {
     var tableName: String {
         return "Sends"
