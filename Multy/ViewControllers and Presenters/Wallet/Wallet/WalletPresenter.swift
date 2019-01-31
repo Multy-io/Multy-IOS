@@ -87,7 +87,7 @@ class WalletPresenter: NSObject {
             token.name = "Ethereum"
             token.ticker = "ETH"
             token.address = "ethereum"
-            token.balance = wallet!.ethWallet!.balance
+            token.balance = wallet!.availableAmount.stringValue
             
             return token
         }
@@ -208,77 +208,6 @@ class WalletPresenter: NSObject {
         //                return 172            //cell with locked and info view
         //            }
         //            return 126                //cell with only locked or only info viewr
-    }
-    
-    func sendTestToken() {
-        let info = DataManager.shared.privateInfo(for: tokenHolderWallet!)
-        if info == nil { return }
-
-        var txInfo = Dictionary<String, Any>()
-        var accountDict = Dictionary<String, Any>()
-        var builderDict = Dictionary<String, Any>()
-        var payloadDict = Dictionary<String, Any>()
-        var txDict = Dictionary<String, Any>()
-        var feeDict = Dictionary<String, Any>()
-        
-        txInfo["blockchain"] = wallet!.blockchain.fullName
-        txInfo["net_type"] = wallet!.blockchainType.net_type
-        
-        //account
-        accountDict["type"] = ACCOUNT_TYPE_DEFAULT.rawValue
-        accountDict["private_key"] = info!["privateKey"] as! String
-        txInfo["account"] = accountDict
-        
-        //builder
-        builderDict["type"] = "erc20"
-        builderDict["action"] = "transfer"
-        //payload
-        payloadDict["balance_eth"] = tokenHolderWallet!.availableBalance.stringValue
-        payloadDict["contract_address"] = wallet!.address
-        payloadDict["balance_token"] = wallet!.ethWallet!.balance
-        payloadDict["transfer_amount_token"] = "1"
-        payloadDict["destination_address"] = "0x1430dde34403100a3e2deb515d65dcb6afe889d1"
-        builderDict["payload"] = payloadDict
-        txInfo["builder"] = builderDict
-        
-        //transaction
-        txDict["nonce"] = tokenHolderWallet!.ethWallet!.nonce
-        feeDict["gas_price"] = "1000000000"
-        feeDict["gas_limit"] = "\(3_000_000)"
-        txDict["fee"] = feeDict
-        txInfo["transaction"] = txDict
-        
-        let rawTX = DataManager.shared.makeTX(from: txInfo)
-        
-        switch rawTX {
-        case .success(let txString):
-            print(rawTX)
-            
-            let newAddressParams = [
-                "walletindex"   : tokenHolderWallet!.walletID.intValue,
-                "address"       : tokenHolderWallet!.address,
-                "addressindex"  : 0,
-                "transaction"   : txString,
-                "ishd"          : tokenHolderWallet!.shouldCreateNewAddressAfterTransaction
-                ] as [String : Any]
-            
-            let params = [
-                "currencyid": tokenHolderWallet!.chain,
-                /*"JWT"       : jwtToken,*/
-                "networkid" : tokenHolderWallet!.chainType,
-                "payload"   : newAddressParams
-                ] as [String : Any]
-            
-            DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
-                if dict != nil {
-                    print(dict)
-                } else {
-                    print(error)
-                }
-            }
-        case .failure(let error):
-            break
-        }
     }
     
     func getHistoryAndWallet() {
