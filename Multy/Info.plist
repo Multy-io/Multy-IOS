@@ -32,11 +32,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>88</string>
+	<string>89</string>
 	<key>GIT_BRANCH_NAME</key>
 	<string>RELEASE_1.5</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>a94528ee</string>
+	<string>d15f55b2</string>
 	<key>GIT_TAG_NAME</key>
 	<string>RELEASE_1.5.0-dirty</string>
 	<key>LSRequiresIPhoneOS</key>
