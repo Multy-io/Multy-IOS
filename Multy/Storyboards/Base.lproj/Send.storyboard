@@ -1635,6 +1635,7 @@ scan</string>
                     <size key="freeformSize" width="375" height="1010"/>
                     <connections>
                         <outlet property="bottomBtnConstraint" destination="oxO-oN-TlI" id="5Xu-8T-ako"/>
+                        <outlet property="donationBottomView" destination="g0w-mf-zTW" id="YV7-zy-zcV"/>
                         <outlet property="donationCryptoNameLbl" destination="gdi-l2-max" id="rRJ-QF-W5L"/>
                         <outlet property="donationFiatNameLbl" destination="sEm-BU-U5Q" id="nCt-z7-mye"/>
                         <outlet property="donationFiatSumLbl" destination="YTg-nf-xCh" id="gj4-M2-WAt"/>

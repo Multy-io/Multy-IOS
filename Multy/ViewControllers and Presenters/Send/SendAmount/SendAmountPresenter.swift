@@ -671,9 +671,9 @@ extension CreateTransactionDelegate {
     }
     
     func createRecentAddress() {
-        let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
-        RealmManager.shared.writeOrUpdateRecentAddress(blockchainType: blockchainType,
-                                                       address: transactionDTO.sendAddress!,
-                                                       date: Date())
+        let blockchainType = transactionDTO.choosenWallet!.blockchainType
+        DataManager.shared.realmManager.writeOrUpdateRecentAddress(blockchainType: blockchainType,
+                                                                   address: transactionDTO.sendAddress!,
+                                                                   date: Date())
     }
 }

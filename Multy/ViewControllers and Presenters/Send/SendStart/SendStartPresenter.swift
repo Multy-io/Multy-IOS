@@ -3,7 +3,7 @@
 //See LICENSE for details
 
 import UIKit
-//import MultyCoreLibrary
+import RealmSwift
 
 private typealias LocalizeDelegate = SendStartPresenter
 
@@ -14,7 +14,7 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
     var isFromWallet = false
     var selectedAddress: RecentAddressesRLM?
     
-    var recentAddresses = [RecentAddressesRLM]() 
+    var recentAddresses: Results<RecentAddressesRLM>?
     
     func cancelAction() {
 //        if self.isFromWallet {
@@ -93,27 +93,23 @@ class SendStartPresenter: NSObject, CancelProtocol, SendAddressProtocol, GoToQrP
 
     func getAddresses() {
         if transactionDTO.choosenWallet == nil {
-            RealmManager.shared.getRecentAddresses(for: nil, netType: nil) { (addresses, err) in
-                if addresses?.count != 0 {
-                    let arr = Array(addresses!)
-                    self.recentAddresses = arr
-                }
+            RealmManager.shared.getRecentAddresses(for: nil, netType: nil) { (addresses, _) in
+                self.recentAddresses = addresses
+                
                 self.sendStartVC?.updateUI()
             }
         } else {
             RealmManager.shared.getRecentAddresses(for: (transactionDTO.choosenWallet?.blockchainType.blockchain.rawValue)!,
-                                                   netType: (transactionDTO.choosenWallet?.blockchainType.net_type)!) { (addresses, err) in
-                if addresses?.count != 0 {
-                    let arr = Array(addresses!)
-                    self.recentAddresses = arr
-                }
+                                                   netType: (transactionDTO.choosenWallet?.blockchainType.net_type)!) { (addresses, _) in
+                self.recentAddresses = addresses
+                                                    
                 self.sendStartVC?.updateUI()
             }
         }
     }
     
     func numberOfaddresses() -> Int {
-        return self.recentAddresses.count
+        return self.recentAddresses?.count ?? 0
     }
 }
 

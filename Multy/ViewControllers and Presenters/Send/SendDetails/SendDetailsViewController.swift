@@ -31,6 +31,7 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
     @IBOutlet weak var nextButtonTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var donationHolderTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var donationHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var donationBottomView: UIView!
     
     let presenter = SendDetailsPresenter()
     
@@ -147,6 +148,9 @@ class SendDetailsViewController: UIViewController, UITextFieldDelegate, Analytic
             }
             
             self!.updateConstraints()
+            
+            // hide bottom part to be unvisible on small screens
+            self!.donationBottomView.alpha = self!.presenter.isDonationSwitchedOn! ? 1.0 : 0.0
         }) { [weak self] (success) in
             guard self != nil else {
                 return
