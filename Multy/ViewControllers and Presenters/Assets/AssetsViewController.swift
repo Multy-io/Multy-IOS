@@ -207,8 +207,6 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         NotificationCenter.default.removeObserver(self, name: Notification.Name(bluetoothReachabilityChangedNotificationName), object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(socketManagerStatusChangedNotificationName), object: nil)
         
-        presenter.changeReceivingEnabling(false)
-        
         super.viewWillDisappear(animated)
     }
     
@@ -233,10 +231,12 @@ class AssetsViewController: UIViewController, QrDataProtocol, AnalyticsProtocol,
         }
         
         self.isFirstLaunch = false
-        presenter.isBluetoothReachable = BLEManager.shared.reachability == .reachable
-        presenter.changeReceivingEnabling(true)
         
-        self.updateUI()
+        if presenter.account != nil {
+            presenter.updateBLEActivity()
+        }
+        
+        updateUI()
         
         if presenter.account == nil {
             view.isUserInteractionEnabled = false

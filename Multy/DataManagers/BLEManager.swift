@@ -48,6 +48,8 @@ class BLEManager: NSObject, CBCentralManagerDelegate {
     private var peripheralManager : CBPeripheralManager!
     private let serviceUUIDString = "8c0d3334-7711-44e3-b5c4-28b2"
     
+    var isRecevingStarted = false
+    
     var isScanning : Bool {
         get {
             return self.centralManager.isScanning
@@ -191,6 +193,80 @@ class BLEManager: NSObject, CBCentralManagerDelegate {
                     NotificationCenter.default.post(name: Notification.Name(didDiscoverNewAdvertisementNotificationName), object: nil, userInfo: ["originID" : ad.originID])
                 }
             }
+        }
+    }
+}
+
+extension BLEManager {
+    var isBluetoothReachable: Bool {
+        return reachability == .reachable
+    }
+    
+    var isSocketManagerConnected: Bool {
+        return DataManager.shared.socketManager.isStarted
+    }
+    
+    func updateReceiverActivity() {
+        if isBluetoothReachable && isSocketManagerConnected && !isRecevingStarted {
+            let _ = startReceiverActivity()
+        } else if (!isBluetoothReachable || !isSocketManagerConnected) && isRecevingStarted {
+            stopReceiverActivity()
+        }
+    }
+    
+    private func startReceiverActivity() -> (Bool, String?) {
+        let userID = DataManager.shared.realmManager.account?.userID
+        let userCode = userID?.md5().convertToUserCode
+        guard userCode != nil && userID != nil else {
+            return (false, "No account")
+        }
+        
+        guard isBluetoothReachable else {
+            return (false, "Bluetooth connection is not reachable")
+        }
+        
+        becomeReceiver(userID: userID!, userCode: userCode!)
+        shareUserCode(code: userCode!)
+        
+        isRecevingStarted = true
+        return (true, nil)
+    }
+    
+    private func stopReceiverActivity() {
+        cancelBecomeReceiver()
+        stopSharingUserCode()
+        isRecevingStarted = false
+    }
+    
+    func changeReceivingEnabling(_ enable: Bool) {
+        if enable && isRecevingStarted {
+            return
+        }
+        
+        if enable {
+            let _ = startReceiverActivity()
+        } else {
+            stopReceiverActivity()
+        }
+    }
+    
+    private func becomeReceiver(userID : String, userCode : String) {
+        DataManager.shared.socketManager.becomeMultiReceiver(receiverID: userID, userCode: userCode)
+    }
+    
+    private func cancelBecomeReceiver() {
+        DataManager.shared.socketManager.stopReceive()
+    }
+    
+    private func shareUserCode(code : String) {
+        if !BLEManager.shared.isAdvertising {
+            BLEManager.shared.advertise(userId: code)
+        }
+    }
+    
+    private func stopSharingUserCode() {
+        if BLEManager.shared.isAdvertising {
+            BLEManager.shared.stopAdvertising()
         }
     }
 }

@@ -51,16 +51,24 @@ class WalletPresenter: NSObject {
         }
     }
     
-    var transactionDataSource = [HistoryRLM]() {
-        didSet {
-            if transactionDataSource.isEmpty == false {
-                walletVC?.hideEmptyLbls()
-            }
-            if oldValue != transactionDataSource {
-                self.walletVC!.transactionsTable.reloadData()
-            }
-        }
+    var transactionDataSource: Results<HistoryRLM>?
+    var transactionDataSourceToken: NotificationToken?
+    var previousDataSourceCount = 0
+    
+    var isTXEmptyLabelsShouldBeUpdated: Bool {
+        return previousDataSourceCount < transactionEmptyCount && previousDataSourceCount < transactionDataSource!.count
     }
+    
+//    var transactionDataSource = [HistoryRLM]() {
+//        didSet {
+//            if transactionDataSource.isEmpty == false {
+//                walletVC?.hideEmptyLbls()
+//            }
+//            if oldValue != transactionDataSource {
+//                self.walletVC!.transactionsTable.reloadData()
+//            }
+//        }
+//    }
     
     var isTransactionTableActive: Bool {
         get {
@@ -79,7 +87,7 @@ class WalletPresenter: NSObject {
             token.name = "Ethereum"
             token.ticker = "ETH"
             token.address = "ethereum"
-            token.balance = wallet!.ethWallet!.balance
+            token.balance = wallet!.availableAmount.stringValue
             
             return token
         }
@@ -148,33 +156,33 @@ class WalletPresenter: NSObject {
             walletVC!.pendingAmountFiatLbl.text = fiatSymbol + wallet!.sumInFiatString
         }
         
-        walletVC!.addressLbl.text = wallet!.address
+        walletVC!.addressLbl.text = wallet!.assetWallet.address
     }
     
     func isTherePendingMoney(for indexPath: IndexPath) -> Bool {
-        return transactionDataSource[indexPath.row].isPending()
+        return transactionDataSource?[indexPath.row].isPending ?? false
     }
     
     func makeHeightForTableCells(indexPath: IndexPath) -> CGFloat {
-        switch wallet?.isMultiSig {
+        switch wallet!.isMultiSig {
         case true:
-            if indexPath.row < transactionDataSource.count && transactionDataSource[indexPath.row].multisig != nil {   //46
+            if indexPath.row < transactionDataSource?.count ?? 0 && transactionDataSource?[indexPath.row].multisig != nil {   //46
 //                if wallet!.isRejected(tx: transactionDataSource[indexPath.row]) {
-                if transactionDataSource[indexPath.row].multisig!.confirmed.boolValue {
+                if transactionDataSource?[indexPath.row].multisig!.confirmed.boolValue ?? true {
                     return 126 //64
                 } else {
 //                    return 172          //fixit: check for lockingmoney
                     return 126 
                 }
             } else {
-                if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
+                if indexPath.row < transactionDataSource?.count ?? 0 && isTherePendingMoney(for: indexPath) {
                     return 135
                 } else {
                     return 64
                 }
             }
         case false:
-            if indexPath.row < transactionDataSource.count && isTherePendingMoney(for: indexPath) {
+            if indexPath.row < transactionDataSource?.count ?? 0 && isTherePendingMoney(for: indexPath) {
                 return 135
             } else {
                 return 64
@@ -200,77 +208,6 @@ class WalletPresenter: NSObject {
         //                return 172            //cell with locked and info view
         //            }
         //            return 126                //cell with only locked or only info viewr
-    }
-    
-    func sendTestToken() {
-        let info = DataManager.shared.privateInfo(for: tokenHolderWallet!)
-        if info == nil { return }
-
-        var txInfo = Dictionary<String, Any>()
-        var accountDict = Dictionary<String, Any>()
-        var builderDict = Dictionary<String, Any>()
-        var payloadDict = Dictionary<String, Any>()
-        var txDict = Dictionary<String, Any>()
-        var feeDict = Dictionary<String, Any>()
-        
-        txInfo["blockchain"] = wallet!.blockchain.fullName
-        txInfo["net_type"] = wallet!.blockchainType.net_type
-        
-        //account
-        accountDict["type"] = ACCOUNT_TYPE_DEFAULT.rawValue
-        accountDict["private_key"] = info!["privateKey"] as! String
-        txInfo["account"] = accountDict
-        
-        //builder
-        builderDict["type"] = "erc20"
-        builderDict["action"] = "transfer"
-        //payload
-        payloadDict["balance_eth"] = tokenHolderWallet!.availableBalance.stringValue
-        payloadDict["contract_address"] = wallet!.address
-        payloadDict["balance_token"] = wallet!.ethWallet!.balance
-        payloadDict["transfer_amount_token"] = "1"
-        payloadDict["destination_address"] = "0x1430dde34403100a3e2deb515d65dcb6afe889d1"
-        builderDict["payload"] = payloadDict
-        txInfo["builder"] = builderDict
-        
-        //transaction
-        txDict["nonce"] = tokenHolderWallet!.ethWallet!.nonce
-        feeDict["gas_price"] = "1000000000"
-        feeDict["gas_limit"] = "\(3_000_000)"
-        txDict["fee"] = feeDict
-        txInfo["transaction"] = txDict
-        
-        let rawTX = DataManager.shared.makeTX(from: txInfo)
-        
-        switch rawTX {
-        case .success(let txString):
-            print(rawTX)
-            
-            let newAddressParams = [
-                "walletindex"   : tokenHolderWallet!.walletID.intValue,
-                "address"       : tokenHolderWallet!.address,
-                "addressindex"  : 0,
-                "transaction"   : txString,
-                "ishd"          : tokenHolderWallet!.shouldCreateNewAddressAfterTransaction
-                ] as [String : Any]
-            
-            let params = [
-                "currencyid": tokenHolderWallet!.chain,
-                /*"JWT"       : jwtToken,*/
-                "networkid" : tokenHolderWallet!.chainType,
-                "payload"   : newAddressParams
-                ] as [String : Any]
-            
-            DataManager.shared.sendHDTransaction(transactionParameters: params) { [unowned self] (dict, error) in
-                if dict != nil {
-                    print(dict)
-                } else {
-                    print(error)
-                }
-            }
-        case .failure(let error):
-            break
-        }
     }
     
     func getHistoryAndWallet() {
@@ -310,9 +247,9 @@ class WalletPresenter: NSObject {
         self.walletVC?.spiner.stopAnimating()
         self.walletVC?.isCanUpdate = true
         if error == nil && historyArray != nil {
-            self.transactionDataSource = historyArray!.sorted(by: {
-                $0.mempoolTime > $1.mempoolTime
-            })
+//            self.transactionDataSource = historyArray!.sorted(by: {
+//                $0.mempoolTime > $1.mempoolTime
+//            })
             
             self.prepareAssetsData(array: self.wallet!.ethWallet?.erc20Tokens)
             self.isSocketInitiateUpdating = false

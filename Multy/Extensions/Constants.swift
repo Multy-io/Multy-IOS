@@ -187,6 +187,14 @@ var isDebug: Bool {
     #endif
 }
 
+var transactionEmptyCount: Int {
+    return screenHeight == heightOfX || screenHeight == heightOfXSMax ? 13 : 10
+}
+
+var tokenEmptyCount: Int {
+    return screenHeight == heightOfX || screenHeight == heightOfXSMax ? 13 : 10
+}
+
 func sync(lock: NSObject, closure: @escaping () -> Void) {
     objc_sync_enter(lock)
         closure()
@@ -316,19 +324,15 @@ let socketUrl = "wss://\(shortURL)/"
 //let apiUrl = "http://\(shortURL)/"
 //let socketUrl = "ws://\(shortURL)/"
 
-//stage
-//let shortURL = "148.251.42.107/"
-//let apiUrl = "http://\(shortURL)"
-//let socketUrl = "ws://\(shortURL)"
+//dev
+//let shortURL = "dev.multy.io"
+//let apiUrl = "http://\(shortURL)/"
+//let socketUrl = "ws://\(shortURL)/"
 
-//JACK
-//let shortURL = "192.168.31.146"
+//PASHA
+//let shortURL = "192.168.31.112"
 //let apiUrl = "http://\(shortURL):6778/"
 //let socketUrl = "ws://\(shortURL):6780/"
-//let socketUrl = "ws://192.168.31.147:6780"
-//let socketUrl = "http://88.198.47.112:2280"
-let apiUrlTest = "http://192.168.0.123:6778/"
-let nonLocalURL = "http://88.198.47.112:7778/"
 
 // Bluetooth
 let BluetoothSettingsURL_iOS9 = "prefs:root=Bluetooth"

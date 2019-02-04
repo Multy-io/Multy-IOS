@@ -27,7 +27,7 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     var walletAddress = "" {
         didSet {
             if wallet != nil || walletAddress.isEmpty {
-                walletAddress = wallet!.address
+                walletAddress = wallet!.assetWallet.address
             }
             
             generateWirelessRequestImage()
@@ -41,15 +41,15 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     var wallet: UserWalletRLM? {
         didSet {
             if wallet != nil {
-                qrBlockchainString = BlockchainType.create(wallet: wallet!).qrBlockchainString
+                qrBlockchainString = BlockchainType.create(wallet: wallet!.assetWallet).qrBlockchainString
                 
                 if wallet?.blockchain == BLOCKCHAIN_ERC20 {
                     sendTXMode = .erc20
                 }
                
                 if oldValue != wallet {
-                    if wallet!.addresses.count > 0 {
-                        walletAddress = wallet!.addresses.last!.address
+                    if wallet!.assetWallet.addresses.count > 0 {
+                        walletAddress = wallet!.assetWallet.addresses.last!.address
                         
                         if walletAddress.isEmpty {
                             walletAddress = wallet!.address
@@ -57,8 +57,8 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
                     } else {
                         walletAddress = ""
                         
-                        if wallet!.address.isEmpty {
-                            walletAddress = wallet!.address
+                        if wallet!.assetWallet.address.isEmpty {
+                            walletAddress = wallet!.assetWallet.address
                         }
                     }
                 }
@@ -173,7 +173,7 @@ class ReceiveAllDetailsPresenter: NSObject, ReceiveSumTransferProtocol, SendWall
     func openByDL(params: NSDictionary) {
         let cryptoAmountString = params["amount"] as! String
         self.cryptoSum = BigInt(cryptoAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
-        self.cryptoName = wallet?.cryptoName
+        self.cryptoName = wallet?.assetWallet.cryptoName
         self.fiatSum = "5"
         self.fiatName = "$"
         

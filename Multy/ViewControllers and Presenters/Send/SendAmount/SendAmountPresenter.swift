@@ -248,7 +248,7 @@ class SendAmountPresenter: NSObject {
     func vcViewDidLoad() {
         createPreliminaryData()
         vc?.configure()
-        resetAmount()
+        changeSendAmountString(sendAmountString)
         updateTotalSumInCrypto()
     }
     
@@ -409,6 +409,7 @@ class SendAmountPresenter: NSObject {
         let isTxValid = estimateTransactionAndValidation()
         if !isTxValid {
             var message = rawTransaction
+            var newValue: String?
             
             if message.count > 0, vc != nil, transactionDTO.choosenWallet != nil && sendAmountInCryptoMinimalUnits > BigInt.zero() {
                 if message.hasPrefix("BigInt value is not representable as") {
@@ -417,10 +418,15 @@ class SendAmountPresenter: NSObject {
                     message = vc!.localize(string: Constants.youTryingSpendMoreThenHaveString)
                 } else if message.hasPrefix("Transaction is trying to spend more than available") {
                     message = vc!.localize(string: Constants.youTryingSpendMoreThenHaveString)
+                    newValue = "0"
                 }
                 
                 let alert = UIAlertController(title: vc!.localize(string: Constants.errorString), message: message, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in }))
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
+                    if let value = newValue {
+                        self.changeSendAmountString(value)
+                    }
+                }))
                 vc!.present(alert, animated: true, completion: nil)
                 
                 totalSumInCrypto = BigInt.zero()
@@ -548,6 +554,10 @@ extension CreateTransactionDelegate {
                 rawTransaction = "Error"
                 
                 return false
+            } else if linkedWallet!.availableAmount < transactionDTO.ETHDTO!.gasPrice * transactionDTO.ETHDTO!.gasLimit {
+                rawTransaction = vc!.localize(string: Constants.multisigLinkedWalletHasNoMoney)
+                
+                return false
             }
             
             guard binaryData != nil,  linkedWallet != nil, transactionDTO.choosenWallet != nil, transactionDTO.sendAddress != nil else {
@@ -661,9 +671,9 @@ extension CreateTransactionDelegate {
     }
     
     func createRecentAddress() {
-        let blockchainType = BlockchainType.create(wallet: transactionDTO.choosenWallet!)
-        RealmManager.shared.writeOrUpdateRecentAddress(blockchainType: blockchainType,
-                                                       address: transactionDTO.sendAddress!,
-                                                       date: Date())
+        let blockchainType = transactionDTO.choosenWallet!.blockchainType
+        DataManager.shared.realmManager.writeOrUpdateRecentAddress(blockchainType: blockchainType,
+                                                                   address: transactionDTO.sendAddress!,
+                                                                   date: Date())
     }
 }

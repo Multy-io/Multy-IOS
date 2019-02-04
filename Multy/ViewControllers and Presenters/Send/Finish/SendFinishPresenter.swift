@@ -94,6 +94,8 @@ class SendFinishPresenter: NSObject {
 //            self.addressData = DataManager.shared.privateInfo(for: updatedWallet!)
 //            self.pointer = self.addressData!["addressPointer"] as! UnsafeMutablePointer<OpaquePointer?>
             
+            
+            
             let amount = self.transactionDTO.sendAmountString!.convertCryptoAmountStringToMinimalUnits(for: BLOCKCHAIN_ETHEREUM)
             
             let trData = DataManager.shared.createETHTransaction(wallet: updatedWallet!,
@@ -130,6 +132,8 @@ class SendFinishPresenter: NSObject {
                             updatedWallet!.importedPrivateKey = walletForUpdate!.importedPrivateKey
                             
                             completion(updatedWallet, nil)
+                        } else {
+                            completion(nil, nil)
                         }
                     }
                 case .failure(_):
@@ -146,6 +150,8 @@ class SendFinishPresenter: NSObject {
                     updatedWallet!.importedPrivateKey = walletForUpdate!.importedPrivateKey
                     
                     completion(updatedWallet, nil)
+                } else {
+                    completion(nil, nil)
                 }
             }
         }

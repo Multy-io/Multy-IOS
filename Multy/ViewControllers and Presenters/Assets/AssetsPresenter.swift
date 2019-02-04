@@ -31,7 +31,7 @@ class AssetsPresenter: NSObject {
     var isBluetoothReachable = false {
         didSet {
             if oldValue != isBluetoothReachable {
-                updateReceiverActivity()
+                BLEManager.shared.updateReceiverActivity()
             }
         }
     }
@@ -39,7 +39,7 @@ class AssetsPresenter: NSObject {
     var isSocketManagerConnected = false {
         didSet {
             if oldValue != isSocketManagerConnected {
-                updateReceiverActivity()
+                BLEManager.shared.updateReceiverActivity()
             }
         }
     }
@@ -107,8 +107,8 @@ class AssetsPresenter: NSObject {
     
     var wallets: [UserWalletRLM]? {
         didSet {
-            if oldValue != wallets {
-                updateReceiverActivity()
+            if oldValue != wallets && wallets != nil {
+                BLEManager.shared.updateReceiverActivity()
             }
         }
     }
@@ -157,6 +157,11 @@ class AssetsPresenter: NSObject {
             self.assetsVC?.backupView?.isHidden = true
             self.assetsVC?.backupView?.isUserInteractionEnabled = false
         }
+    }
+    
+    func updateBLEActivity() {
+        isBluetoothReachable = BLEManager.shared.reachability == .reachable
+        BLEManager.shared.changeReceivingEnabling(true)
     }
     
     func validWallets() -> [UserWalletRLM] {
@@ -575,65 +580,5 @@ class AssetsPresenter: NSObject {
     
     func updateSocketManagerStatus() {
         isSocketManagerConnected = DataManager.shared.socketManager.isStarted
-    }
-    
-    private func updateReceiverActivity() {
-        if isBluetoothReachable && isSocketManagerConnected && !isRecevingStarted {
-            let _ = startReceiverActivity()
-        } else if (!isBluetoothReachable || !isSocketManagerConnected) && isRecevingStarted {
-            stopReceiverActivity()
-        }
-    }
-    
-    private func startReceiverActivity() -> (Bool, String?) {
-        let userID = account?.userID
-        let userCode = userID?.md5().convertToUserCode
-        guard userCode != nil && userID != nil else {
-            return (false, "No account")
-        }
-        
-        guard isBluetoothReachable else {
-            return (false, "Bluetooth connection is not reachable")
-        }
-        
-        becomeReceiver(userID: userID!, userCode: userCode!)
-        shareUserCode(code: userCode!)
-        
-        isRecevingStarted = true
-        return (true, nil)
-    }
-    
-    private func stopReceiverActivity() {
-        cancelBecomeReceiver()
-        stopSharingUserCode()
-        isRecevingStarted = false
-    }
-    
-    func changeReceivingEnabling(_ enable: Bool) {
-        if enable == true {
-            let _ = startReceiverActivity()
-        } else {
-            stopReceiverActivity()
-        }
-    }
-    
-    private func becomeReceiver(userID : String, userCode : String) {
-        DataManager.shared.socketManager.becomeMultiReceiver(receiverID: userID, userCode: userCode)
-    }
-    
-    private func cancelBecomeReceiver() {
-        DataManager.shared.socketManager.stopReceive()
-    }
-    
-    private func shareUserCode(code : String) {
-        if !BLEManager.shared.isAdvertising {
-            BLEManager.shared.advertise(userId: code)
-        }
-    }
-    
-    private func stopSharingUserCode() {
-        if BLEManager.shared.isAdvertising {
-            BLEManager.shared.stopAdvertising()
-        }
     }
 }

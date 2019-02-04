@@ -276,11 +276,11 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             }
         } else {
             txAction = .noAction
-            if presenter.histObj.isIncoming() {  // RECEIVE
+            if presenter.histObj.isIncoming {  // RECEIVE
                 self.makeBackColor(color: self.presenter.receiveBackColor)
                 self.titleLbl.textColor = .white
                 backImageView.image = UIImage(named: "backWhite")
-            } else if presenter.histObj.isOutcoming() {                        // SEND
+            } else if presenter.histObj.isOutcoming {                        // SEND
                 self.makeBackColor(color: self.presenter.sendBackColor)
                 self.transactionImg.image = #imageLiteral(resourceName: "sendBigIcon")
                 self.titleLbl.textColor = .white
@@ -368,10 +368,10 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             let arrOfOutputsAddresses = presenter.histObj.txOutputs.map{ $0.address }.joined(separator: "\n")
             self.walletToAddressLbl.text = arrOfOutputsAddresses
             
-            if presenter.histObj.isIncoming() {
+            if presenter.histObj.isIncoming {
                 self.transctionSumLbl.text = "+\(cryptoSumInBTC.fixedFraction(digits: 8))"
                 self.sumInFiatLbl.text = "+\((cryptoSumInBTC * presenter.histObj.fiatCourseExchange).fixedFraction(digits: 2)) USD"
-            } else if presenter.histObj.isOutcoming() {
+            } else if presenter.histObj.isOutcoming {
                 let outgoingAmount = presenter.wallet.txAmount(presenter.histObj)
                 self.transctionSumLbl.text = "-\(outgoingAmount.cryptoValueString(for: BLOCKCHAIN_BITCOIN))"
                 self.sumInFiatLbl.text = "-\((outgoingAmount * presenter.histObj.fiatCourseExchange).fiatValueString(for: BLOCKCHAIN_BITCOIN)) USD"
@@ -403,11 +403,11 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
             self.walletToAddressLbl.text = presenter.histObj.addressesArray.last
             
             
-            if presenter.histObj.isIncoming() {
+            if presenter.histObj.isIncoming {
                 let fiatAmountInWei = BigInt(presenter.histObj.txOutAmountString) * presenter.histObj.fiatCourseExchange
                 self.transctionSumLbl.text = "+" + BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
                 self.sumInFiatLbl.text = "+" + fiatAmountInWei.fiatValueString(for: BLOCKCHAIN_ETHEREUM) + " USD"
-            } else if presenter.histObj.isOutcoming() {
+            } else if presenter.histObj.isOutcoming {
                 let fiatAmountInWei = BigInt(presenter.histObj.txOutAmountString) * presenter.histObj.fiatCourseExchange
                 self.transctionSumLbl.text = "-" + BigInt(presenter.histObj.txOutAmountString).cryptoValueString(for: BLOCKCHAIN_ETHEREUM)
                 self.sumInFiatLbl.text = "-" + fiatAmountInWei.fiatValueString(for: BLOCKCHAIN_ETHEREUM) + " USD"
@@ -441,7 +441,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
         
         self.confirmationMembersCollectionView.reloadData()
         
-        if presenter.histObj.isOutcoming() && presenter.histObj.multisig == nil {
+        if presenter.histObj.isOutcoming && presenter.histObj.multisig == nil {
             feeView.isHidden = false
             feeViewHeightConstraint.constant = 47
             let fee = presenter.histObj.fee(for: presenter.wallet.blockchain)
@@ -463,7 +463,7 @@ class TransactionViewController: UIViewController, UIScrollViewDelegate {
     
     func contentHeight() -> CGFloat {
         var result = transactionInfoHolderView.frame.origin.y + transactionInfoHolderView.frame.size.height + 16
-        if !presenter.histObj.isIncoming() {
+        if !presenter.histObj.isIncoming {
             if isMultisig {
                 confirmaitionDetailsHeightConstraint.constant = confirmationMembersCollectionView.contentSize.height + 50
                 result = result + confirmaitionDetailsHeightConstraint.constant + 16
@@ -618,7 +618,7 @@ extension AnalyticsDelegate: AnalyticsProtocol {
         if self.presenter.blockedAmount(for: presenter.histObj) > 0 {
             state = 0
         } else {
-            if presenter.histObj.isIncoming() {
+            if presenter.histObj.isIncoming {
                 state = -1
             } else {
                 state = 1

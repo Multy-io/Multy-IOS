@@ -34,6 +34,8 @@ class SecuritySettingsViewController: UIViewController, AnalyticsProtocol, Cance
         (self.tabBarController as! CustomTabBarViewController).changeViewVisibility(isHidden: true)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.detectingSeed()
+        
+        BLEManager.shared.changeReceivingEnabling(false)
     }
 
     @IBAction func backAction(_ sender: Any) {

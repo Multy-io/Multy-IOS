@@ -21,9 +21,19 @@ class RecentAddressTableViewCell: UITableViewCell {
     }
     
     func fillingCell(recentAddress: RecentAddressesRLM) {
-        let blockchainType = BlockchainType.create(currencyID: recentAddress.blockchain.uint32Value, netType: recentAddress.blockchainNetType.uint32Value)
+        //repair old saving
+        //change ERC20 to ETH
+        if Blockchain(recentAddress.blockchain.uint32Value) == BLOCKCHAIN_ERC20 {
+            let fixedBlockchainType = BlockchainType(blockchain: BLOCKCHAIN_ETHEREUM, net_type: recentAddress.blockchainNetType.intValue)
+            createRecentAddress(recentAddress: recentAddress, with: fixedBlockchainType)
+            
+            cryptoImage.image = UIImage(named: fixedBlockchainType.iconString)
+        } else {
+            let blockchainType = BlockchainType.create(currencyID: recentAddress.blockchain.uint32Value, netType: recentAddress.blockchainNetType.uint32Value)
+            cryptoImage.image = UIImage(named: blockchainType.iconString)
+        }
+        
         addressLbl.text = recentAddress.address
-        cryptoImage.image = UIImage(named: blockchainType.iconString)
         
         let addresses = DataManager.shared.savedAddresses
         
@@ -36,4 +46,9 @@ class RecentAddressTableViewCell: UITableViewCell {
         }
     }
     
+    func createRecentAddress(recentAddress: RecentAddressesRLM, with blockchainType: BlockchainType) {
+        DataManager.shared.realmManager.writeOrUpdateRecentAddress(blockchainType: blockchainType,
+                                                                   address: recentAddress.address,
+                                                                   date: Date())
+    }
 }
