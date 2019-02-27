@@ -30,8 +30,9 @@ class ViewInBlockchainViewController: UIViewController, UIWebViewDelegate {
         //Work for bitcoin only
         switch self.presenter.blockchain {
         case BLOCKCHAIN_BITCOIN:
-            let subUrl = presenter.blockchainType!.net_type == 0 ? "" : "testnet."
-            url = "https://\(subUrl)blockchain.info/tx/\(txId)"
+            let subUrl = presenter.blockchainType!.net_type == 0 ? "btc" : "btc-testnet"
+//            url = "https://\(subUrl)blockchain.info/tx/\(txId)"
+            url = "https://live.blockcypher.com/\(subUrl)/tx/"
         case BLOCKCHAIN_ETHEREUM:
             let subUrl = presenter.blockchainType!.net_type == 1 ? "" : "rinkeby."
             url = "https://\(subUrl)etherscan.io/tx/\(presenter.txHash ?? "")"
