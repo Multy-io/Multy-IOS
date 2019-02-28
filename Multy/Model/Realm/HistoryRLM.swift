@@ -117,11 +117,9 @@ class HistoryRLM: Object {
             hist.txHash = txhash as! String
         }
         
-//        if let txid = historyDict["txid"] {
-//            hist.txId = txid as! String
-//        }
-        
-        hist.txId = hist.txHash + ":" + id
+        if let txid = historyDict["txid"] {
+            hist.txId = txid as! String
+        }
         
         if let txinputs = historyDict["txinputs"] {
             hist.txInputs = TxHistoryRLM.initWithArray(txHistoryArr: txinputs as! NSArray)
