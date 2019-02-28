@@ -329,6 +329,11 @@ let socketUrl = "wss://\(shortURL)/"
 //let apiUrl = "http://\(shortURL)/"
 //let socketUrl = "ws://\(shortURL)/"
 
+//stage
+//let shortURL = "stage.multy.io"
+//let apiUrl = "http://\(shortURL)/"
+//let socketUrl = "ws://\(shortURL)/"
+
 //PASHA
 //let shortURL = "192.168.31.112"
 //let apiUrl = "http://\(shortURL):6778/"
