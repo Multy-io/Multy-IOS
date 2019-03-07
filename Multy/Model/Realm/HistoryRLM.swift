@@ -117,10 +117,6 @@ class HistoryRLM: Object {
             hist.txHash = txhash as! String
         }
         
-        if let txid = historyDict["txid"] {
-            hist.txId = txid as! String
-        }
-        
         if let txinputs = historyDict["txinputs"] {
             hist.txInputs = TxHistoryRLM.initWithArray(txHistoryArr: txinputs as! NSArray)
         }
@@ -155,6 +151,20 @@ class HistoryRLM: Object {
             hist.txOutId = txoutid as! Int
         }
         
+        if let nonce = historyDict["nonce"] as? Int {
+            hist.nonce = NSNumber(value: nonce)
+        }
+        
+        if let txid = historyDict["txid"] {
+            hist.txId = txid as! String
+        }
+        
+        //fix issue for empty txid for ETH
+        //since txhash can be the same for different wallets we have to 'add' salt from wallets id
+        if let _ = historyDict["gasprice"] as? NSNumber, let _ = historyDict["gaslimit"] as? NSNumber, let _ = historyDict["nonce"] as? Int {
+            hist.txId = (hist.txHash + id).sha3(.sha224)
+        }
+        
         if let txoutputs = historyDict["txoutputs"] {
             hist.txOutputs = TxHistoryRLM.initWithArray(txHistoryArr: txoutputs as! NSArray)
         }
@@ -187,10 +197,6 @@ class HistoryRLM: Object {
         
         if let destinationAddress = historyDict["to"] as? String {
             hist.addresses = hist.addresses.isEmpty ? destinationAddress : hist.addresses + " " + destinationAddress
-        }
-        
-        if let nonce = historyDict["nonce"] as? Int {
-            hist.nonce = NSNumber(value: nonce)
         }
         
         if let multisig = historyDict["multisig"] as? NSDictionary {
