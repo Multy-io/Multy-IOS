@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.5.0</string>
+	<string>1.5.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -36,9 +36,9 @@
 	<key>GIT_BRANCH_NAME</key>
 	<string>RELEASE_1.5</string>
 	<key>GIT_COMMIT_HASH</key>
-	<string>3df6d27d</string>
+	<string>f5ca2f95</string>
 	<key>GIT_TAG_NAME</key>
-	<string>RELEASE_1.5.0</string>
+    <string>RELEASE_1.5.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
