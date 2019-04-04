@@ -40,10 +40,28 @@ let privateQuickexKey = "..."
 ```
 4. Please change  ```Bundle Identifier``` and ```Team``` in ```Multy Project Settings```<br />
    If you want to join our team please contact to ``` @vadimicus ```  in Telegram
+   
+5. Possible errors in frameworks:
 
-5. Try to build the project on device(simulator not suported)
+a) Issue with CCommonCrypto framework:
+It should be changed from
+```
+module CCommonCrypto {
+  header "/usr/include/CommonCrypto/CommonCrypto.h"
+  export *
+}
+```
+to
+```
+module CCommonCrypto {
+  header "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/CommonCrypto/CommonCrypto.h"
+  export *
+}
+```
 
-6. If you have problem with "ButtonProgressBar" on building process<br />
+6. Try to build the project on device(simulator not suported)
+
+7. If you have problem with "ButtonProgressBar" on building process<br />
     You can use auto-fix<br />
     Or add ``` @objc ``` in begin of bug line
 
